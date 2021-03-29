@@ -1,10 +1,7 @@
 package Business_Layer_Trucking.Facade;
 
 import Business_Layer_Trucking.Delivery.Demand;
-import Business_Layer_Trucking.Facade.FacadeObject.FacadeDemand;
-import Business_Layer_Trucking.Facade.FacadeObject.FacadeItem;
-import Business_Layer_Trucking.Facade.FacadeObject.FacadeTruckingReport;
-import Business_Layer_Trucking.Facade.FacadeObject.ResourcesService;
+import Business_Layer_Trucking.Facade.FacadeObject.*;
 import Business_Layer_Trucking.Resources.Driver;
 
 import java.awt.*;
@@ -62,5 +59,13 @@ public class FacadeService {
 
     public void continueAddDemandToReport(int first, int second) {
         deliveryService.continueAddDemandToReport(first,second);
+    }
+
+    public FacadeTruckingReport getTruckReport(int trNumber) {
+        return new FacadeTruckingReport(deliveryService.getTruckReport(trNumber));
+    }
+
+    public FacadeDeliveryForm getDeliveryForms(int dfNumber) {
+        return deliveryService.getDeliveryForm(dfNumber);
     }
 }

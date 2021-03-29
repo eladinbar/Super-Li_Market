@@ -1,5 +1,7 @@
 package Presentation_Layer_Trucking;
 
+import Business_Layer_Trucking.Facade.DeliveryService;
+import Business_Layer_Trucking.Facade.FacadeObject.FacadeDeliveryForm;
 import Business_Layer_Trucking.Facade.FacadeObject.FacadeTruckingReport;
 import Business_Layer_Trucking.Facade.FacadeService;
 
@@ -50,6 +52,15 @@ public class PresentationController {
         facadeService.saveReport();
         return (facadeService.getCurrTruckReport());
     }
+
+    public FacadeDeliveryForm getDeliveryForm(){
+        int trNumber=1;
+        FacadeTruckingReport tr = facadeService.getTruckReport(trNumber);
+        // TODO display Delivery form
+        int dfNumber =1;
+        return facadeService.getDeliveryForms(dfNumber);
+    }
+
 
 
 

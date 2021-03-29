@@ -2,6 +2,8 @@ package Business_Layer_Trucking.Facade;
 
 import Business_Layer_Trucking.Delivery.DeliveryController;
 import Business_Layer_Trucking.Delivery.Demand;
+import Business_Layer_Trucking.Delivery.TruckingReport;
+import Business_Layer_Trucking.Facade.FacadeObject.FacadeDeliveryForm;
 import Business_Layer_Trucking.Facade.FacadeObject.FacadeDemand;
 import Business_Layer_Trucking.Facade.FacadeObject.FacadeTruckingReport;
 
@@ -47,5 +49,13 @@ public class DeliveryService {
 
     public void continueAddDemandToReport(int first, int second) {
         dc.continueAddDemandToReport(first,second);
+    }
+
+    public TruckingReport getTruckReport(int trNumber) {
+        return dc.getTruckReport(trNumber);
+    }
+
+    public FacadeDeliveryForm getDeliveryForm(int dfNumber) {
+        return dc.getDeliveryForm(dfNumber);
     }
 }

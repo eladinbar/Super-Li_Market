@@ -1,10 +1,7 @@
 package Business_Layer_Trucking.Delivery;
 
-import Business_Layer_Trucking.Facade.DeliveryService;
-import Business_Layer_Trucking.Resources.Truck;
+import Business_Layer_Trucking.Facade.FacadeObject.FacadeDeliveryForm;
 
-import javax.naming.ldap.UnsolicitedNotification;
-import java.lang.management.LockInfo;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -158,5 +155,13 @@ public class DeliveryController {
 
     public void continueAddDemandToReport(int first, int second) {
         // TODO this method do not throw exception for unMatched areas
+    }
+
+    public TruckingReport getTruckReport(int trNumber) {
+        return null;
+    }
+
+    public FacadeDeliveryForm getDeliveryForm(int dfNumber) {
+        return null;
     }
 }
