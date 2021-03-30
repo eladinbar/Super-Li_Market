@@ -44,7 +44,13 @@ public class PresentationController {
         int truck=1;
         // TODO try and catch
         // TODO to display trucks
-        facadeService.chooseTruck( truck);
+        try {
+            facadeService.chooseTruck(truck);
+        }
+        catch (IllegalStateException e)
+        {
+            //Need to choose truck again
+        }
         int driver =1;
         facadeService.chooseDriver(driver);
         Date leavingHour = new Date("");
@@ -59,6 +65,74 @@ public class PresentationController {
         // TODO display Delivery form
         int dfNumber =1;
         return facadeService.getDeliveryForms(dfNumber);
+    }
+    public FacadeTruckingReport rePlanning()
+    {
+        Scanner scanner=new Scanner(System.in);
+        int option=-1;
+        while (option!=-1)
+        switch (option){
+            case 1://remove site
+            {
+                System.out.println("Choose site to remove");
+                int site=-1;
+                facadeService.removeDestination(site);
+            }
+            case 2://add demand(=site)
+            {
+                System.out.println("choose demand to add");
+                int demand=-1;
+                System.out.println("choose amount");
+                int amount=-1;
+                facadeService.addDemandToReport(demand,amount);
+            }
+            case 3://replace truck
+            {
+                System.out.println("choose new truck");
+                int truck=-1;
+                facadeService.replaceTruck(truck);
+            }
+            case 4://remove items (do we need to remove all amount of item?some of it?from one demand?if not,from which demand?)
+            {
+                System.out.println("choose item to remove");
+                int item=-1;
+                facadeService.removeItem(item);
+            }
+        }
+        return facadeService.getCurrTruckReport();
+    }
+
+    public boolean makeUnavailable_Driver()
+    {
+        //TODO display only available drivers
+        System.out.println("Choose Driver");
+        int driver=-1;
+        facadeService.makeUnavailable_Driver(driver);
+        return true;
+    }
+    public boolean makeAvailable_Driver()
+    {
+        //TODO display only unavailable drivers
+        System.out.println("Choose Driver");
+        int driver=-1;
+        facadeService.makeAvailable_Driver(driver);
+        return true;
+    }
+    public boolean makeUnavailable_Truck()
+    {
+        //TODO display only available trucks
+        System.out.println("Choose truck");
+        int truck=-1;
+        facadeService.makeUnavailable_Truck(truck);
+        return true;
+    }
+    public boolean makeAvailable_Truck()
+    {
+        //TODO display only unavailable trucks
+        System.out.println("Choose truck");
+        int truck=-1;
+        facadeService.makeAvailable_Truck(truck);
+        return true;
     }
 
 

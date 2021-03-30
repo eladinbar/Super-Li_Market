@@ -26,6 +26,11 @@ public class FacadeService {
         resourcesService.chooseTruck(truck);
         throw new UnsupportedOperationException();
     }
+    public void replaceTruck(int truck)
+    {
+        resourcesService.replaceTruck(truck);
+
+    }
 
     public FacadeDemand addDemandToReport(int demand_number, int supplyAmount){
         // TODO need to extract demand from int- number by the order
@@ -67,5 +72,29 @@ public class FacadeService {
 
     public FacadeDeliveryForm getDeliveryForms(int dfNumber) {
         return deliveryService.getDeliveryForm(dfNumber);
+    }
+
+    public void removeDestination(int site) {
+        deliveryService.removeDestination(site);
+    }
+
+    public void removeItem(int item) {
+        deliveryService.removeItem(item);
+    }
+
+    public void makeUnavailable_Driver(int driver) {
+        resourcesService.makeUnavailable_Driver(driver);
+    }
+
+    public void makeAvailable_Driver(int driver) {
+        resourcesService.makeAvailable_Driver(driver);
+    }
+
+    public void makeUnavailable_Truck(int truck) {
+        resourcesService.makeUnavailable_Truck(truck);
+    }
+
+    public void makeAvailable_Truck(int truck) {
+        resourcesService.makeAvailable_Truck(truck);
     }
 }

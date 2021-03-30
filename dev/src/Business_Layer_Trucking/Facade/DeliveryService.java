@@ -58,4 +58,12 @@ public class DeliveryService {
     public FacadeDeliveryForm getDeliveryForm(int dfNumber) {
         return dc.getDeliveryForm(dfNumber);
     }
+
+    public void removeDestination(int site) {
+        dc.removeDestination(site);
+    }
+
+    public void removeItem(int item) {
+        dc.removeItem(item);
+    }
 }

@@ -1,15 +1,18 @@
 package Business_Layer_Trucking.Resources;
 
 import java.util.HashMap;
+import java.util.LinkedList;
 
 public class ResourcesController {
     HashMap<Integer,Driver> drivers;
     HashMap<Integer,Truck> trucks;
+    LinkedList<Driver> driversByLicense;
 
     public ResourcesController()
     {
         drivers=new HashMap<>();
         trucks=new HashMap<>();
+        driversByLicense=new LinkedList<>();
     }
 
     public HashMap<Integer, Driver> getDrivers() {
@@ -22,6 +25,9 @@ public class ResourcesController {
     public void addDriver(Driver driver)
     {
       //TODO implement
+        if (driver.getLicenseType().name().equals("C1"))
+            driversByLicense.addLast(driver);
+        else driversByLicense.addFirst(driver);
       throw new UnsupportedOperationException();
     }
     public void addTruck(Truck truck)
@@ -51,8 +57,28 @@ public class ResourcesController {
     }
 
     public void chooseTruck(int truck) {
+    
     }
 
     public void chooseDriver(int driver) {
+    }
+
+    public void replaceTruck(int truck) {
+    }
+
+    public void makeUnavailable_Driver(int driver) {
+        drivers.get(driver).setUnavailable();
+    }
+
+    public void makeAvailable_Driver(int driver) {
+        drivers.get(driver).makeAvailable();
+    }
+
+    public void makeUnavailable_Truck(int truck) {
+        trucks.get(truck).setUnavailable();
+    }
+
+    public void makeAvailable_Truck(int truck) {
+        trucks.get(truck).makeAvailable();
     }
 }

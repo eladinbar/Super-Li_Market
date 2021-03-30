@@ -81,7 +81,7 @@ public class DeliveryController {
 
     public void addItemToDeliveryForm(Demand demand, int amount){
         // TODO need to add to the current forms, if not exist, create new one
-
+        //TODO update leaving weight in the form
         // TODO need to throw exception if include 2 different areas
         throw new UnsupportedOperationException();
     }
@@ -163,5 +163,13 @@ public class DeliveryController {
 
     public FacadeDeliveryForm getDeliveryForm(int dfNumber) {
         return null;
+    }
+
+    public void removeDestination(int site) {
+        //TODO implement
+        throw new UnsupportedOperationException();
+    }
+
+    public void removeItem(int item) {
     }
 }
