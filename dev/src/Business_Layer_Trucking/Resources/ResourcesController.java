@@ -22,15 +22,15 @@ public class ResourcesController {
     public HashMap<Integer, Truck> getTrucks() {
         return trucks;
     }
-    public void addDriver(Driver driver)
+    public void addDriver(int id , String name, Driver.License licenseType)
     {
       //TODO implement
-        if (driver.getLicenseType().name().equals("C1"))
+       /* if (driver.getLicenseType() == Driver.License.C1)
             driversByLicense.addLast(driver);
-        else driversByLicense.addFirst(driver);
+        else driversByLicense.addFirst(driver);*/
       throw new UnsupportedOperationException();
     }
-    public void addTruck(Truck truck)
+    public void addTruck(String model,int licenseNumber,int weightNeto,int maxWeight)
     {
         //TODO implement
         throw new UnsupportedOperationException();

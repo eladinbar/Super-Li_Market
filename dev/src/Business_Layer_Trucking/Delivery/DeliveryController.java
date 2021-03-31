@@ -93,6 +93,8 @@ public class DeliveryController {
     }
 
 
+
+
     // <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< gettters, setters>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>.
 
 
@@ -126,7 +128,7 @@ public class DeliveryController {
 
     //TODO add setters/adding methods to Maps/Lists
 
-    public boolean addSite(Site site)
+    public boolean addSite(String city,int  siteID,int  deliveryArea,String phoneNumber,String contactName )
     {
         //TODO implement
         throw new UnsupportedOperationException();
@@ -166,10 +168,14 @@ public class DeliveryController {
     }
 
     public void removeDestination(int site) {
-        //TODO implement
+        //TODO implement - need only to show current options
         throw new UnsupportedOperationException();
     }
 
-    public void removeItem(int item) {
+    public void removeItem(int item) { // TODO need to be checked- there is 2 kinds of removed item, from report and from the known items
+    }
+
+    public void addItem(int id, int weight, String name) {
+        throw new UnsupportedOperationException();
     }
 }

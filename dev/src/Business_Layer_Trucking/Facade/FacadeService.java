@@ -1,12 +1,11 @@
 package Business_Layer_Trucking.Facade;
 
-import Business_Layer_Trucking.Delivery.Demand;
 import Business_Layer_Trucking.Facade.FacadeObject.*;
 import Business_Layer_Trucking.Resources.Driver;
 
-import java.awt.*;
-import java.nio.file.attribute.FileAttributeView;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.LinkedList;
 
 public class FacadeService {
     private DeliveryService deliveryService;
@@ -96,5 +95,31 @@ public class FacadeService {
 
     public void makeAvailable_Truck(int truck) {
         resourcesService.makeAvailable_Truck(truck);
+    }
+
+
+    public HashMap<Integer, Driver> getAvailableTrucks() {
+        return resourcesService.getAvailableTrucks();
+    }
+
+    public LinkedList<FacadeDemand> getItemsOnTruck() {
+        return deliveryService.getItemsOnTruck();
+    }
+
+    public void addTruck(String model, int licenseNumber, int weightNeto, int maxWeight) {
+        resourcesService.addTruck( model, licenseNumber, weightNeto, maxWeight);
+    }
+
+    public void addDriver(int ID, String name, Driver.License licenseType) {
+        resourcesService.addDriver(ID, name, licenseType);
+    }
+
+    public void addSite(String city, int siteID, int deliveryArea, String phoneNumber, String contactName) {
+         deliveryService.addSite(city, siteID, deliveryArea, phoneNumber, contactName );
+
+    }
+
+    public void addItem(int id, int weight, String name) {
+        deliveryService.addItem(id, weight,name);
     }
 }

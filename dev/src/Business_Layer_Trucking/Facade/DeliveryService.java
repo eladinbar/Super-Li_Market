@@ -8,6 +8,7 @@ import Business_Layer_Trucking.Facade.FacadeObject.FacadeDemand;
 import Business_Layer_Trucking.Facade.FacadeObject.FacadeTruckingReport;
 
 import java.util.Date;
+import java.util.LinkedList;
 
 public class DeliveryService {
     private DeliveryController dc;
@@ -65,5 +66,22 @@ public class DeliveryService {
 
     public void removeItem(int item) {
         dc.removeItem(item);
+    }
+
+    public LinkedList<FacadeDemand> getItemsOnTruck() {
+        // TODO need to be impelemted, need to turn Demands into FacadeDemand
+
+        dc.getCurrDF();
+        return null;
+    }
+
+    public void addSite(String city, int siteID, int deliveryArea,
+                        String phoneNumber, String contactName) {
+        dc.addSite(city, siteID, deliveryArea, phoneNumber, contactName );
+
+    }
+
+    public void addItem(int id, int weight, String name) {
+        dc.addItem(id, weight,name);
     }
 }
