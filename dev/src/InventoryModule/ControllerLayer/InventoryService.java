@@ -1,5 +1,6 @@
 package InventoryModule.ControllerLayer;
 
+import InventoryModule.ControllerLayer.SimpleObjects.Category;
 import InventoryModule.ControllerLayer.SimpleObjects.Item;
 
 import java.util.List;
@@ -26,6 +27,18 @@ public interface InventoryService {
     public Response modifyItemQuantity(int itemId, int newStorageQuantity, int newStoreQuantity);
     public Response addItemSupplier(int itemId, int supplierId);
     public Response removeItemSupplier(int itemId, int supplierId);
+    /*
+    If parent category is null, the new category should be added as a main category.
+     */
+    public Response addCategory(String categoryName, String parentCategory);
+    public ResponseT<Category> getCategory(String categoryName);
+    public Response modifyCategoryName(String OldName, String newName);
+    /*
+    when the category is deleted all its sub category move to the parent category.
+     */
+    public Response removeCategory(String categoryName);
+
+
 }
 
 
