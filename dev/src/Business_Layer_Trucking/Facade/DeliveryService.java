@@ -16,28 +16,32 @@ public class DeliveryService {
 
 
     public DeliveryService(){
-        throw new UnsupportedOperationException();
+
+        this.dc = new DeliveryController();
     }
 
-    public void addDemand(int id, int site, int amount) {
-        // TODO if first- update origin
-    }
+/*    public void addDemand(int id, int site, int amount) {
+        Demand demand =  new Demand(id, site, amount);
+        dc.addItemToDeliveryForm(demand,);
+    }*/
 
-    public FacadeDemand addDemandToReport(int demand, int supplyAmount){//TODO- for ido - change it.(if needed! )
+    public FacadeDemand addDemandToReport(int demand, int supplyAmount)  {
+
+        Demand d = dc.getDemands().get(demand);
+        FacadeDemand fc = new FacadeDemand(d);
+        // TODO need to deal with exception, need to be upwards for my idea
         try {
-            Demand d = dc.getDemands().get(demand);
-            FacadeDemand fc = new FacadeDemand(d);
-            // TODO dc.addCurrTR_Destination();
-            dc.addItemToDeliveryForm(d, supplyAmount,false);
+            dc.addItemToDeliveryForm(d, supplyAmount, false);
+        } catch (IllegalStateException e){
 
-            return fc;
         }
-        catch (Exception e)
-        {
-            return null;
-        }
+
+        return fc;
+
 
     }
+
+
 
     public void createTruckingReport() {
         dc.createNewTruckingReport();
@@ -110,7 +114,7 @@ public class DeliveryService {
     public void addSite(String city, int siteID, int deliveryArea,
                         String phoneNumber, String contactName) {//TODO- for ido - change it.(if needed! )
         try{
-        dc.addSite(city, siteID, deliveryArea, phoneNumber, contactName );
+            dc.addSite(city, siteID, deliveryArea, phoneNumber, contactName );
         }
         catch (Exception e)
         {

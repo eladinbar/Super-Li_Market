@@ -108,7 +108,7 @@ public class DeliveryController {
         else throw new NoSuchElementException("TR was not found");
     }
 
-    public void addItemToDeliveryForm(Demand demand, int amount,boolean ignore) throws Exception{//update on commit - throws!
+    public void addItemToDeliveryForm(Demand demand, int amount,boolean ignore) throws IllegalStateException{//update on commit - throws!
         boolean ignoreDifferentDeliveryAreas=ignore;
         if (currDF.isEmpty())//if list is empty
         {

@@ -8,6 +8,7 @@ import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.List;
 
 public class FacadeService {
     private DeliveryService deliveryService;
@@ -39,12 +40,13 @@ public class FacadeService {
         return deliveryService.addDemandToReport(demand_number,supplyAmount);
     }
 
-    public void createDemand(int id, int site, int amount){
 
-        deliveryService.addDemand(id, site, amount);
-        throw new UnsupportedOperationException();
-    }
+    /*   public void createDemand(int id, int site, int amount){
 
+            deliveryService.addDemand(id, site, amount);
+            throw new UnsupportedOperationException();
+        }
+    */
     public void chooseDriver(int driver) {
         // TODO need to check if stands the demands weight
         // TODO need to update the trucks

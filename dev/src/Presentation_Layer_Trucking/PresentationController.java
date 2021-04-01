@@ -1,24 +1,29 @@
 package Presentation_Layer_Trucking;
 
-import Business_Layer_Trucking.Facade.DeliveryService;
 import Business_Layer_Trucking.Facade.FacadeObject.FacadeDeliveryForm;
 import Business_Layer_Trucking.Facade.FacadeObject.FacadeDemand;
+import Business_Layer_Trucking.Facade.FacadeObject.FacadeTruck;
 import Business_Layer_Trucking.Facade.FacadeObject.FacadeTruckingReport;
 import Business_Layer_Trucking.Facade.FacadeService;
 import Business_Layer_Trucking.Resources.Driver;
 
-import javax.swing.*;
-import java.sql.Time;
 import java.time.LocalDateTime;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.Scanner;
+import java.util.*;
 
 public class PresentationController {
     private FacadeService facadeService;
     private Menu_Printer menu_printer;
 
+    
+    public boolean addDemandToReport(int itemNumber, int amount){
+        facadeService.addDemandToReport(itemNumber , amount);
+        return false;
+    }
+    // TODO need to check how does Raz want it
+    public boolean continueAddDemandToReport(int itemNumber, int amount){
+        facadeService.addDemandToReport(itemNumber , amount);
+        return false;
+    }
     public FacadeTruckingReport CreateReport()
     {
         // TODO need to add quit option in any time the player can choose
@@ -198,4 +203,21 @@ public class PresentationController {
         facadeService.removeItemFromPool(item);
     }
 
+    public List<FacadeDemand> showDemads() {
+        return null;
+    }
+
+    public String getItemName(int itemID) {
+    }
+
+    public int getSiteName(int site) {
+    }
+
+    public void closeReport() {
+    }
+
+
+    public LinkedList<FacadeTruck> getTrucksAvailableTrucks() {
+        return null;
+    }
 }
