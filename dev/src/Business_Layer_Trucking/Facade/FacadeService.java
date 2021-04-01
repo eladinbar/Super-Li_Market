@@ -2,7 +2,9 @@ package Business_Layer_Trucking.Facade;
 
 import Business_Layer_Trucking.Facade.FacadeObject.*;
 import Business_Layer_Trucking.Resources.Driver;
+import Business_Layer_Trucking.Resources.Truck;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -49,7 +51,7 @@ public class FacadeService {
         resourcesService.chooseDriver(driver);
     }
 
-    public void chooseLeavingHour(Date leavingHour) {
+    public void chooseLeavingHour(LocalDateTime leavingHour) {
         deliveryService.chooseLeavingHour(leavingHour);
     }
 
@@ -77,8 +79,11 @@ public class FacadeService {
         deliveryService.removeDestination(site);
     }
 
-    public void removeItem(int item) {
-        deliveryService.removeItem(item);
+    public void removeItemFromReport(int item) {
+        deliveryService.removeItemFromReport(item);
+    }
+    public void removeItemFromPool(int item) {
+        deliveryService.removeItemFromPool(item);
     }
 
     public void makeUnavailable_Driver(int driver) {
@@ -98,7 +103,7 @@ public class FacadeService {
     }
 
 
-    public HashMap<Integer, Driver> getAvailableTrucks() {
+    public HashMap<Integer, Truck> getAvailableTrucks() {
         return resourcesService.getAvailableTrucks();
     }
 
@@ -121,5 +126,9 @@ public class FacadeService {
 
     public void addItem(int id, int weight, String name) {
         deliveryService.addItem(id, weight,name);
+    }
+
+    public void displaySites() {
+        deliveryService.displaySites();
     }
 }

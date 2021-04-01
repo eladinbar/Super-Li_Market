@@ -20,10 +20,10 @@ public class Driver {
         }
     }
 
-    public Driver(int ID, String name, boolean available,  License license){
+    public Driver(int ID, String name , License license){
         this.ID = ID;
         this.name = name;
-        this.available =   available;
+        this.available = true;
         this.licenseType = license;
     }
 

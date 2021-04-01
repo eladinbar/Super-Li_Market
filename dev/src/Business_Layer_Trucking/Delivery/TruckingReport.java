@@ -1,12 +1,14 @@
 package Business_Layer_Trucking.Delivery;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.LinkedList;
 
 public class TruckingReport {
     private int ID;
-    private Date date;
-    private Date leavingHour;
+    private LocalDate date;
+    private LocalDateTime leavingHour;
     private int truckNumber;
     private int driverID;
     private int origin;
@@ -14,8 +16,8 @@ public class TruckingReport {
     private TruckingReport TRReplace;
     private boolean completed;
 
-    public TruckingReport(int ID,Date date,Date leavingHour,int truckNumber,int driverID,
-                          int origin,LinkedList<Integer> destinations,TruckingReport TRReplace)
+    public TruckingReport(int ID, LocalDate date, LocalDateTime leavingHour, int truckNumber, int driverID,
+                          int origin, LinkedList<Integer> destinations, TruckingReport TRReplace)
     {
         // TODO need to be completed
         this.completed=false;
@@ -32,11 +34,11 @@ public class TruckingReport {
         return origin;
     }
 
-    public Date getDate() {
+    public LocalDate getDate() {
         return date;
     }
 
-    public Date getLeavingHour() {
+    public LocalDateTime getLeavingHour() {
         return leavingHour;
     }
 
@@ -69,7 +71,7 @@ public class TruckingReport {
         this.origin = origin;
     }
 
-    public void setDate(Date date) {
+    public void setDate(LocalDate date) {
         this.date = date;
     }
 
@@ -81,7 +83,7 @@ public class TruckingReport {
         this.driverID = driverID;
     }
 
-    public void setLeavingHour(Date leavingHour) {
+    public void setLeavingHour(LocalDateTime leavingHour) {
         this.leavingHour = leavingHour;
     }
 
@@ -93,4 +95,14 @@ public class TruckingReport {
         this.truckNumber = truckNumber;
     }
 
+    public void addDestination(int destination) throws Exception {
+         try {
+             destinations.add(destination);
+         }
+         catch (Exception e)
+        {
+            throw new Exception(e.getMessage());
+        }
+
+    }
 }

@@ -2,10 +2,11 @@ package Business_Layer_Trucking.Delivery;
 
 import Business_Layer_Trucking.Facade.FacadeObject.FacadeDeliveryForm;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
+import javax.management.openmbean.KeyAlreadyExistsException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.*;
 
 public class DeliveryController {
 
@@ -21,69 +22,121 @@ public class DeliveryController {
     private TruckingReport currTR;
 
 
-    public DeliveryController(HashMap<Integer,Site> sites)
+    public DeliveryController()
     {
-        // TODO need to complete here.
+
         demands=new LinkedList<>();
         activeTruckingReports=new HashMap<>();
         oldTruckingReports=new HashMap<>();
-        this.sites=sites;
+        this.sites=new HashMap<>();
         deliveryForms=new HashMap<>();
         // when data base is added, need to be setted by it;
+        this.items=new HashMap<>();
         lastDeliveryForms = 0;
         lastReportID =0;
+        currDF=new LinkedList<>();
+        currTR=new TruckingReport();
     }
 
 
 
     public void createNewTruckingReport(){
         currDF =  new LinkedList<>();
-        // TODO need to get it id by it own
         currTR =  new TruckingReport();
+        currTR.setID(lastReportID+1);
 
     }
 
 
+    public void updateCurrTR_Date(LocalDate date) throws Exception{//update on commit - throws!
+        LocalDate now=LocalDate.now();
+        if (date.compareTo(now)!=-1)
+        {
+            currTR.setDate(date);
+        }
+        else{
+            throw new IllegalArgumentException("Cant enter date that passed");
+        }
 
-
-
-
-
-
-
-
-
-
-
-    public void updateCurrTR_Date(Date date){
-        throw new UnsupportedOperationException();
     }
 
-    public void updateCurrTR_LeavingHour(Date leavingHour){
-        throw new UnsupportedOperationException();
+    public void updateCurrTR_LeavingHour(LocalDateTime leavingHour) throws Exception{//update on commit - throws!
+        LocalDateTime now=LocalDateTime.now();
+        if (leavingHour.compareTo(now)!=-1)
+        {
+            currTR.setLeavingHour(leavingHour);
+        }
+        else{
+            throw new IllegalArgumentException("Cant enter time that passed");
+        }
+
     }
-    public void updateCurrTR_TruckNumber(int number){
-        throw new UnsupportedOperationException();
+    public void updateCurrTR_TruckNumber(int number){//facade service need to check availability
+        currTR.setTruckNumber(number);
     }
-    public void updateCurrTR_DriverID(int id){
-        throw new UnsupportedOperationException();
+    public void updateCurrTR_DriverID(int id){//facade service need to check availability
+        currTR.setDriverID(id);
     }
 
-    public void updateCurrTR_Origin(int origin){
-        throw new UnsupportedOperationException();
+    public void updateCurrTR_Origin(int origin) throws Exception{//update on commit - throws!
+        try{
+            sites.get(origin);
+            currTR.setOrigin(origin);
+        }
+        catch (IllegalArgumentException exception){
+            throw new IllegalArgumentException("SiteID does not exist");
+        }
     }
-    public void addCurrTR_Destination(int destination){
-        throw new UnsupportedOperationException();
+    public void addCurrTR_Destination(int destination) throws Exception{//update on commit - throws!
+        try{
+            sites.get(destination);
+            currTR.addDestination(destination);
+        }
+        catch (Exception exception){
+            throw new Exception(exception.getMessage());
+        }
     }
-    public void updateCurrTR_TrReplaced(int tr_id){
-        throw new UnsupportedOperationException();
+    public void updateCurrTR_TrReplaced(int tr_id)throws Exception{//update on commit - throws!
+        if (oldTruckingReports.containsKey(tr_id))
+        {
+            currTR.setTRReplace(oldTruckingReports.get(tr_id));
+        }
+        else if (activeTruckingReports.containsKey(tr_id))
+        {
+            currTR.setTRReplace(activeTruckingReports.get(tr_id));
+        }
+        else throw new NoSuchElementException("TR was not found");
     }
 
-    public void addItemToDeliveryForm(Demand demand, int amount){
-        // TODO need to add to the current forms, if not exist, create new one
-        //TODO update leaving weight in the form
-        // TODO need to throw exception if include 2 different areas
-        throw new UnsupportedOperationException();
+    public void addItemToDeliveryForm(Demand demand, int amount,boolean ignore) throws Exception{//update on commit - throws!
+        boolean ignoreDifferentDeliveryAreas=ignore;
+        if (currDF.isEmpty())//if list is empty
+        {
+            //TODO check how we know what is the origin
+            HashMap<Item,Integer> itemsOnDF=new HashMap<>();
+            itemsOnDF.put(items.get(demand.getItemID()),amount);
+            DeliveryForm newDF=new DeliveryForm(1,-1,demand.getSite(),itemsOnDF,
+                    items.get(demand.getItemID()).getWeight()*amount,currTR.getID());
+        }
+        else // we need to look in the list maybe there is a form with the same origin& destination
+        {
+            for (DeliveryForm df:currDF)
+            {
+                //TODO check how we know what is the origin
+                if (df.getOrigin()==-1&&df.getDestination()==demand.getSite())
+                {
+                    HashMap<Item,Integer> itemsOnDF=new HashMap<>();
+                    itemsOnDF.put(items.get(demand.getItemID()),amount);
+                    df.getItems().put(items.get(demand.getItemID()),amount);
+                    df.setLeavingWeight(df.getLeavingWeight()+items.get(demand.getItemID()).getWeight()*amount);
+                    break;
+                }
+                if (!ignore&&sites.get(demand.getSite()).getDeliveryArea()!=sites.get(df.getDestination()).getDeliveryArea())
+                {
+                    throw new IllegalStateException("Two different delivery areas");
+                }
+            }
+        }
     }
 
 
@@ -126,56 +179,105 @@ public class DeliveryController {
         return demands;
     }
 
-    //TODO add setters/adding methods to Maps/Lists
 
-    public boolean addSite(String city,int  siteID,int  deliveryArea,String phoneNumber,String contactName )
+    public boolean addSite(String city,int  siteID,int  deliveryArea,String phoneNumber,String contactName) throws Exception
     {
-        //TODO implement
-        throw new UnsupportedOperationException();
+        if (sites.containsKey(siteID))
+        {
+            throw new KeyAlreadyExistsException("Duplicate ID");
+        }
+        else {
+            Site newSite = new Site(siteID, city, deliveryArea, phoneNumber, contactName);
+            sites.put(siteID,newSite);
+            return true;
+        }
+
     }
-    public boolean removeSite(int siteID)
+    public boolean removeSite(int siteID) throws Exception
     {
-        //TODO implement
+        if (!sites.containsKey(siteID))
+        {
+            throw new NoSuchElementException("SiteID does not exist");
+        }
+        else
+        {
+            sites.remove(siteID);
+            return true;
+        }
+
+    }
+
+
+    public void chooseLeavingHour(LocalDateTime leavingHour)throws Exception {
+        LocalDateTime now=LocalDateTime.now();
+        if (leavingHour.compareTo(now)!=-1)
+        {
+            currTR.setLeavingHour(leavingHour);
+        }
+        else{
+            throw new IllegalArgumentException("Cant enter time that passed");
+        }
+    }
+
+    public void saveReport(){
+        //TODO implement - what is the meaning?which report?
+        //  save to database?to old trucking reports?
         throw new UnsupportedOperationException();
     }
 
+    public TruckingReport getTruckReport(int trNumber) throws Exception{
+        if (oldTruckingReports.containsKey(trNumber))
+        {
+            return oldTruckingReports.get(trNumber);
+        }
+        else if (activeTruckingReports.containsKey(trNumber))
+        {
+            return activeTruckingReports.get(trNumber);
+        }
+        else throw new NoSuchElementException("No Report with that ID");
 
-    public void chooseTruck(int truck) {
-       
-        throw new UnsupportedOperationException();
-    }
-
-    public void chooseDriver(int driver) {
-        throw new UnsupportedOperationException();
-    }
-
-    public void chooseLeavingHour(Date leavingHour) {
-    }
-
-    public void saveReport() {
-    }
-
-    public void continueAddDemandToReport(int first, int second) {
-        // TODO this method do not throw exception for unMatched areas
-    }
-
-    public TruckingReport getTruckReport(int trNumber) {
-        return null;
     }
 
     public FacadeDeliveryForm getDeliveryForm(int dfNumber) {
-        return null;
+        //TODO implement
+        throw new UnsupportedOperationException();
     }
 
-    public void removeDestination(int site) {
+    public void removeDestination(int site) throws Exception{
         //TODO implement - need only to show current options
+        if (!currTR.getDestinations().contains(site))
+        {
+            throw new NoSuchElementException();
+        }
+        else currTR.getDestinations().remove(site);
+    }
+
+    public void removeItemFromReport(int item) {
+        //TODO: implement
         throw new UnsupportedOperationException();
     }
 
-    public void removeItem(int item) { // TODO need to be checked- there is 2 kinds of removed item, from report and from the known items
+    public void removeItemFromPool(int item)throws Exception {
+      if (!items.containsKey(item))
+      {
+          throw new NoSuchElementException();
+      }
+      else items.remove(item);
     }
 
-    public void addItem(int id, int weight, String name) {
-        throw new UnsupportedOperationException();
+    public void addItem(int id, int weight, String name)throws Exception {
+        if (items.containsKey(id))
+            throw new KeyAlreadyExistsException("ID already taken");
+        else {
+            Item item=new Item(id, weight, name);
+            items.put(id,item);
+        }
+    }
+
+    public void displaySites() {
+        for (Integer i:currTR.getDestinations())
+        {
+            System.out.println(i+" - "+sites.get(i).getCity()+"/n");//TODO - think about adding field name to site
+        }
     }
 }

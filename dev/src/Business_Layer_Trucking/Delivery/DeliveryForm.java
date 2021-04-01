@@ -1,22 +1,23 @@
 package Business_Layer_Trucking.Delivery;
 
 import java.util.Dictionary;
+import java.util.HashMap;
 
 public class DeliveryForm {
     private int ID;
     private int origin;
     private int destination;
-    private Dictionary<Item, Integer> items;
+    private HashMap<Item, Integer> items;
     private int leavingWeight;
     private int trID;
 
-    public DeliveryForm(int ID, int origin, int destination, Dictionary<Item,Integer> items,
+    public DeliveryForm(int ID, int origin, int destination, HashMap<Item,Integer> items,
                         int leavingWeight, int trID){
         // TODO need to be completed
         throw new UnsupportedOperationException();
     }
 
-    public Dictionary<Item, Integer> getItems() {
+    public HashMap<Item, Integer> getItems() {
         return items;
     }
 
@@ -50,7 +51,7 @@ public class DeliveryForm {
         this.ID = ID;
     }
 
-    public void setItems(Dictionary<Item, Integer> items) {
+    public void setItems(HashMap<Item, Integer> items) {
         this.items = items;
     }
 

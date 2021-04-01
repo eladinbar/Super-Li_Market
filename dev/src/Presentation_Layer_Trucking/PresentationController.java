@@ -8,6 +8,8 @@ import Business_Layer_Trucking.Facade.FacadeService;
 import Business_Layer_Trucking.Resources.Driver;
 
 import javax.swing.*;
+import java.sql.Time;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -64,7 +66,7 @@ public class PresentationController {
         }
         int driver =1;
         facadeService.chooseDriver(driver);
-        Date leavingHour = new Date("");
+        LocalDateTime leavingHour = LocalDateTime.now();//TODO- check how to call constructor
         facadeService.chooseLeavingHour(leavingHour);
         facadeService.saveReport();
         return (facadeService.getCurrTruckReport());
@@ -85,7 +87,7 @@ public class PresentationController {
         switch (option){
             case 1://remove site
             { // TODO all sout need to be deleted and remove to GUI
-                System.out.println("Choose site to remove");
+                facadeService.displaySites();//TODO - watch - added method ! take a look all the way down ( there is a sout)
                 int site=-1;
                 facadeService.removeDestination(site);
             }
@@ -119,7 +121,7 @@ public class PresentationController {
                 LinkedList<FacadeDemand> items = facadeService.getItemsOnTruck();
                 int item=-1;
 
-                facadeService.removeItem(item);
+                facadeService.removeItemFromReport(item);
             }
         }
         return facadeService.getCurrTruckReport();
@@ -188,6 +190,12 @@ public class PresentationController {
         int weight =0;
         String name="";
         facadeService.addItem(id, weight,name);
+    }
+    public void RemoveItemFromPool()
+    {
+        //TODO- implement if needed.
+        int item=-1;
+        facadeService.removeItemFromPool(item);
     }
 
 }
