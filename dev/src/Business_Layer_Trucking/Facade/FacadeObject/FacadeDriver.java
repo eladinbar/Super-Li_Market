@@ -8,19 +8,7 @@ public class FacadeDriver {
     private boolean available;
     private Driver.License licenseType;
 
- /*   public enum License{
-        C(12000),
-        C1(200000);
-        private int size;
-        private License(int size)
-        {
-            this.size=size;
-        }
 
-        public int getSize() {
-            return size;
-        }
-    }*/
 
     public FacadeDriver(int ID, String name, boolean available,  Driver.License license){
         this.ID = ID;

@@ -133,4 +133,8 @@ public class DeliveryService {
     public void displaySites() {
         dc.displaySites();
     }
+
+    public int getItemWeight(int itemID) {
+        return dc.getItemWeight(itemID);
+    }
 }

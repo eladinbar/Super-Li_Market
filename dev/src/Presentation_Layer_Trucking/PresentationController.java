@@ -1,13 +1,12 @@
 package Presentation_Layer_Trucking;
 
-import Business_Layer_Trucking.Facade.FacadeObject.FacadeDeliveryForm;
-import Business_Layer_Trucking.Facade.FacadeObject.FacadeDemand;
-import Business_Layer_Trucking.Facade.FacadeObject.FacadeTruck;
-import Business_Layer_Trucking.Facade.FacadeObject.FacadeTruckingReport;
+import Business_Layer_Trucking.Facade.FacadeObject.*;
 import Business_Layer_Trucking.Facade.FacadeService;
 import Business_Layer_Trucking.Resources.Driver;
 
+import javax.naming.ldap.UnsolicitedNotification;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.*;
 
 public class PresentationController {
@@ -15,9 +14,12 @@ public class PresentationController {
     private Menu_Printer menu_printer;
 
     
-    public boolean addDemandToReport(int itemNumber, int amount){
+    public boolean addDemandToReport(int itemNumber, int amount)  {
+        if (itemNumber == -1) return false;
         facadeService.addDemandToReport(itemNumber , amount);
-        return false;
+        return  true;
+
+
     }
     // TODO need to check how does Raz want it
     public boolean continueAddDemandToReport(int itemNumber, int amount){
@@ -132,53 +134,40 @@ public class PresentationController {
         return facadeService.getCurrTruckReport();
     }
 
-    public boolean makeUnavailable_Driver()
+    public void makeUnavailable_Driver(int driver)
     {
-        //TODO display only available drivers
-        System.out.println("Choose Driver");
-        int driver=-1;
+
         facadeService.makeUnavailable_Driver(driver);
-        return true;
     }
-    public boolean makeAvailable_Driver()
+    public boolean makeAvailable_Driver(int driver)
     {
-        //TODO display only unavailable drivers
-        System.out.println("Choose Driver");
-        int driver=-1;
+        // TODO need to prevent from making available on a mission
         facadeService.makeAvailable_Driver(driver);
         return true;
     }
-    public boolean makeUnavailable_Truck()
+    public boolean makeUnavailable_Truck(int truck)
     {
         //TODO display only available trucks
-        System.out.println("Choose truck");
-        int truck=-1;
+
         facadeService.makeUnavailable_Truck(truck);
         return true;
     }
-    public boolean makeAvailable_Truck()
+    public boolean makeAvailable_Truck(int truck)
     {
         //TODO display only unavailable trucks
-        System.out.println("Choose truck");
-        int truck=-1;
         facadeService.makeAvailable_Truck(truck);
         return true;
     }
 
-    public void addTruck(){
-        String model="";
-        int licenseNumber=0;
-        int weightNeto=0;
-        int maxWeight=0;
+    public void addTruck(String model, int licenseNumber , int weightNeto, int maxWeight){
+
         facadeService.addTruck( model, licenseNumber, weightNeto, maxWeight);
 
     }
 
-    public void addDriver(){
-        int ID =0;
-        String name="";
-        Driver.License licenseType = Driver.License.C1;
-        facadeService.addDriver(ID, name, licenseType);
+    public void addDriver(int id, String name , Driver.License license){
+
+        facadeService.addDriver(id, name, license);
     }
 
     public void addSite(){
@@ -204,20 +193,54 @@ public class PresentationController {
     }
 
     public List<FacadeDemand> showDemads() {
+        // TODO need to return null if none
         return null;
     }
 
     public String getItemName(int itemID) {
+        return null;
     }
 
     public int getSiteName(int site) {
+        return 0;
     }
 
     public void closeReport() {
     }
 
 
-    public LinkedList<FacadeTruck> getTrucksAvailableTrucks() {
+    public LinkedList<FacadeTruck> getAvailableTrucks() {
+        return null;
+    }
+
+    public FacadeTruck chooseTruck(int truckID) {
+        return facadeService.chooseTruck(truckID);
+    }
+
+    public int getWeight(int itemID) {
+        return facadeService.getItemWeight(itemID);
+    }
+
+    public LinkedList<FacadeDriver> getAvailableDrivers() {
+        return null;
+    }
+
+    public FacadeDriver chooseDriver(int driverID) {
+        return null;
+    }
+
+    public void chooseLeavingHour(LocalTime time) {
+    }
+
+    public void saveReport() {
+        facadeService.saveReport();
+    }
+
+    public LinkedList<FacadeDriver> getDrivers() {
+        return null;
+    }
+
+    public LinkedList<FacadeTruck> getTrucks() {
         return null;
     }
 }

@@ -280,4 +280,9 @@ public class DeliveryController {
             System.out.println(i+" - "+sites.get(i).getCity()+"/n");//TODO - think about adding field name to site
         }
     }
+
+    public int getItemWeight(int itemID) {
+        // TODO
+        return 0;
+    }
 }

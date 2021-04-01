@@ -21,7 +21,7 @@ public class FacadeService {
     }
 
 
-    public void chooseTruck(int truck){
+    public FacadeTruck chooseTruck(int truck){
 
         // TODO need to check if stands the demands weight
         // TODO need to update the trucks
@@ -132,5 +132,9 @@ public class FacadeService {
 
     public void displaySites() {
         deliveryService.displaySites();
+    }
+
+    public int getItemWeight(int itemID) {
+        return deliveryService.getItemWeight(itemID);
     }
 }
