@@ -1,8 +1,10 @@
 package InventoryModule.ControllerLayer;
 
 import InventoryModule.ControllerLayer.SimpleObjects.Category;
+import InventoryModule.ControllerLayer.SimpleObjects.DefectEntry;
 import InventoryModule.ControllerLayer.SimpleObjects.Item;
 
+import java.util.Date;
 import java.util.List;
 
 public interface InventoryService {
@@ -27,6 +29,9 @@ public interface InventoryService {
     public Response modifyItemQuantity(int itemId, int newStorageQuantity, int newStoreQuantity);
     public Response addItemSupplier(int itemId, int supplierId);
     public Response removeItemSupplier(int itemId, int supplierId);
+
+    //-------------------------------------------------------------------------
+
     /*
     If parent category is null, the new category should be added as a main category.
      */
@@ -37,6 +42,31 @@ public interface InventoryService {
     when the category is deleted all its sub category move to the parent category.
      */
     public Response removeCategory(String categoryName);
+
+    //-------------------------------------------------------------------------
+
+    public Response addItemSale(String saleName,int itemID, double saleDiscount, Date startDate, Date endDate);
+    public Response addCategorySale(String saleName,String categoryName, double saleDiscount, Date startDate, Date endDate);
+    public Response modifySaleName(String oldName, String newName);
+    public Response modifySaleDiscount(String saleName, double newDiscount);
+    public Response modifySaleDates(String saleName, Date startDate, Date endDate);
+
+    //-------------------------------------------------------------------------
+
+    public Response addItemDiscount(String Supplier, double discount, Date discountDate, int itemCount, int itemId);
+    public Response addCategoryDiscount(String Supplier, double discount, Date discountDate, int itemCount, String categoryName);
+
+    //-------------------------------------------------------------------------
+
+    public Response recordDefect(int itemId, String itemName, int defectQuantity, String defectLocation);
+
+    //-------------------------------------------------------------------------
+
+    public ResponseT<List<Item>> inventoryReport();
+    public ResponseT<List<Item>> itemShortageReport();
+    public ResponseT<List<DefectEntry>> defectsReport(Date fromDate, Date toDate);
+    public ResponseT<List<Item>> categoryReport(Date fromDate, Date toDate);
+
 
 
 }
