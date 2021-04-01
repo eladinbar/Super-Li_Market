@@ -1,4 +1,4 @@
 package InventoryModule.PresentationLayer;
 
-public class Manu {
+public class Menu {
 }
