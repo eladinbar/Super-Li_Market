@@ -11,6 +11,7 @@ public interface InventoryService {
                             String shelfLocation, String storageLocation,
                             int storageQuantity, int shelfQuantity,
                             int manufacturerId, List<Integer> suppliersId, int supplyTime);
+    public Response editItem();
 }
 
 
