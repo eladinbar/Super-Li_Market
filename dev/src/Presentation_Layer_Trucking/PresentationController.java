@@ -47,7 +47,7 @@ public class PresentationController {
     }
 
 
-// TODO need to check if really needed
+    // TODO need to check if really needed
     public void rePlanning()
     {
         /*int option=-1;
@@ -130,7 +130,7 @@ public class PresentationController {
         facadeService.addDriver(id, name, license);
     }
 
-    // TODO
+
     public void addSite(String city, int siteID, int deliveryArea , String phoneNumber, String contactName) throws  KeyAlreadyExistsException{
         facadeService.addSite(city, siteID, deliveryArea, phoneNumber, contactName );
     }
@@ -138,14 +138,15 @@ public class PresentationController {
     public void addItem(int id, int weight, String name) throws KeyAlreadyExistsException {
         facadeService.addItem(id, weight,name);
     }
+
+    // TODO need to add to menu after check
     public void RemoveItemFromPool()
     {
-        //TODO- implement if needed.
         int item=-1;
         facadeService.removeItemFromPool(item);
     }
 
-    public List<FacadeDemand> showDemands() {
+    public LinkedList<FacadeDemand> showDemands() {
         return facadeService.showDemands();
     }
 
@@ -153,16 +154,18 @@ public class PresentationController {
         return facadeService.getItemName(itemID);
     }
 
-    public int getSiteName(int site) {
-        return 0;
+    public String getSiteName(int site) {
+        return facadeService.getSiteName(site);
     }
 
     public void closeReport() {
+        facadeService.closeReport();
     }
 
 
     public LinkedList<FacadeTruck> getAvailableTrucks() {
-        return null;
+        return facadeService.getAvailableTrucks();
+
     }
 
     public FacadeTruck chooseTruck(int truckID) {
@@ -174,14 +177,15 @@ public class PresentationController {
     }
 
     public LinkedList<FacadeDriver> getAvailableDrivers() {
-        return null;
+        return facadeService.getAvailableDrivers();
     }
 
     public FacadeDriver chooseDriver(int driverID) {
-        return null;
+        return facadeService.chooseDriver(driverID);
     }
 
-    public void chooseLeavingHour(LocalTime time) {
+    public void chooseLeavingHour(LocalTime time) throws IllegalArgumentException {
+        facadeService.chooseLeavingHour(time);
     }
 
     public void saveReport() {
@@ -189,15 +193,15 @@ public class PresentationController {
     }
 
     public LinkedList<FacadeDriver> getDrivers() {
-        return null;
+        return facadeService.getDrivers();
     }
 
     public LinkedList<FacadeTruck> getTrucks() {
-        return null;
+        return  facadeService.getTrucks();
     }
 
-    public List<FacadeDemand> sortDemandsBySite(List<FacadeDemand> demands) {
-        return demands;
+    public LinkedList<FacadeDemand> sortDemandsBySite(LinkedList<FacadeDemand> demands) {
+        return facadeService.sortDemandsBySite(demands);
     }
 
     public LinkedList<FacadeSite> showCurrentSites() {
@@ -220,4 +224,5 @@ public class PresentationController {
 
     public FacadeTruckingReport getCurrTruckReport() {
     }
+
 }

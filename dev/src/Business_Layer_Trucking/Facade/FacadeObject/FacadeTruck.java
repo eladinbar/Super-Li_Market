@@ -1,5 +1,7 @@
 package Business_Layer_Trucking.Facade.FacadeObject;
 
+import Business_Layer_Trucking.Resources.Truck;
+
 public class FacadeTruck implements FacadeObject{
     private String model;
     private  int licenseNumber;
@@ -13,6 +15,15 @@ public class FacadeTruck implements FacadeObject{
         available=true;
         throw new UnsupportedOperationException();
     }
+
+    public FacadeTruck(Truck truck) {
+        this.model = truck.getModel();
+        this.licenseNumber = truck.getLicenseNumber();
+        this.weightNeto = truck.getWeightNeto();
+        this. maxWeight = truck.getMaxWeight();
+        this.available = truck.isAvailable();
+    }
+
 
     public boolean isAvailable() {
         return available;

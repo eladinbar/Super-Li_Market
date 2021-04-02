@@ -3,9 +3,9 @@ package Business_Layer_Trucking.Delivery;
 import Business_Layer_Trucking.Facade.FacadeObject.FacadeDeliveryForm;
 
 import javax.management.openmbean.KeyAlreadyExistsException;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.*;
 
 public class DeliveryController {
@@ -211,9 +211,9 @@ public class DeliveryController {
     }
 
 
-    public void chooseLeavingHour(LocalDateTime leavingHour)throws Exception {
-        LocalDateTime now=LocalDateTime.now();
-        if (leavingHour.compareTo(now)!=-1)
+    public void chooseLeavingHour(LocalTime leavingHour)throws IllegalArgumentException {
+        LocalTime now=LocalTime.now();
+        if (leavingHour.compareTo(now) !=-1)
         {
             currTR.setLeavingHour(leavingHour);
         }
@@ -288,5 +288,23 @@ public class DeliveryController {
     public int getItemWeight(int itemID) {
         // TODO
         return 0;
+    }
+
+    public LinkedList<Demand> showDemands() {
+        // TODO returns null if none exist
+        // TODO this method should return linked list of all the existing demands( that haven't been chosen in the current DF)
+
+        return null;
+    }
+
+    public String getItemName(int itemID) {
+        //TODO need to implement
+        // TODO throws exception in not exist
+        return null;
+    }
+
+    public String getSiteName(int site) {
+        return null;
+        //TODO need to implement
     }
 }

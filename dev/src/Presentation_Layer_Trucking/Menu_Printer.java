@@ -76,7 +76,7 @@ public class Menu_Printer {
                             + "Available: " + truck.isAvailable() );
                 }
             case 4:
-                List<FacadeDemand>  demands = pc.showDemands();
+                LinkedList<FacadeDemand>  demands = pc.showDemands();
                 if (demands == null) {
                     System.out.println("no demands left to display, Well done Sir!");
                 }
@@ -275,18 +275,28 @@ public class Menu_Printer {
     }
 
     private void chooseLeavingHour(Scanner scanner) {
-        System.out.print("please choose leaving time: \n hour: ");
-        int hour = scanner.nextInt();
-        System.out.print("minutes: ");
-        int minute = scanner.nextInt();
-        LocalTime time = LocalTime.of (hour ,minute);
-        pc.chooseLeavingHour(time);
+        boolean con =  true;
+        while (con) {
+            System.out.print("please choose leaving time: \n hour: ");
+            int hour = scanner.nextInt();
+            System.out.print("minutes: ");
+            int minute = scanner.nextInt();
+            LocalTime time = LocalTime.of(hour, minute);
+            try {
+                pc.chooseLeavingHour(time);
+                con = false;
+            } catch (IllegalArgumentException ie) {
+                System.out.println(ie.getMessage());
+                System.out.println("please choose again;");
+
+            }
+        }
     }
 
     private void chooseDemands(Scanner scanner) {
         boolean con = true;
         while (con) {
-            List<FacadeDemand>  demands = pc.showDemands();
+            LinkedList<FacadeDemand>  demands = pc.showDemands();
             if (demands == null) {
                 System.out.println("no demands left to display, Well done Sir!");
             }
@@ -439,7 +449,7 @@ public class Menu_Printer {
         }
     }
 
-    private List<FacadeDemand> sortDemandsBySite(List<FacadeDemand> demands) {
+    private LinkedList<FacadeDemand> sortDemandsBySite(LinkedList<FacadeDemand> demands) {
         return pc.sortDemandsBySite(demands);
     }
 

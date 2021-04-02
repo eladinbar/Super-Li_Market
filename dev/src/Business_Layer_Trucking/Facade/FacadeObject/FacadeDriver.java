@@ -17,6 +17,9 @@ public class FacadeDriver {
         this.licenseType = license;
     }
 
+    public FacadeDriver(Driver value) {
+    }
+
     public int getID() {
         return ID;
     }

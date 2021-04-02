@@ -7,6 +7,7 @@ import Business_Layer_Trucking.Resources.Truck;
 import javax.management.openmbean.KeyAlreadyExistsException;
 import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.Map;
 
 public class ResourcesService
 {
@@ -25,11 +26,11 @@ public class ResourcesService
         catch (Exception e){}
     }
 
-    public void chooseDriver(int driver) {//TODO- for ido - change it (if needed! )
-        try {
-            rc.chooseDriver(driver);
-        }
-        catch (Exception e){}
+    public FacadeDriver chooseDriver(int driver) {
+
+        return new FacadeDriver(rc.chooseDriver(driver));
+
+
     }
 
     public void replaceTruck(int truck) {
@@ -39,12 +40,10 @@ public class ResourcesService
     }
 
     public void makeUnavailable_Driver(int driver) {
-        // TODO need to throw exception if not exist
         rc.makeUnavailable_Driver(driver);
     }
 
     public void makeAvailable_Driver(int driver) {
-        // TODO need to prevent from making available on a mission
         rc.makeAvailable_Driver(driver);
     }
 
@@ -56,20 +55,55 @@ public class ResourcesService
         rc.makeAvailable_Truck(truck);
     }
 
-    public HashMap<Integer, Truck> getAvailableTrucks() {
-        return rc.getAvailableTrucks();
+    public LinkedList<FacadeTruck> getAvailableTrucks() {
+        LinkedList<FacadeTruck> output =  new LinkedList<>();
+        HashMap<Integer, Truck> trucks =  rc.getAvailableTrucks();
+        for (Map.Entry<Integer,Truck> entry:trucks.entrySet())
+        {
+            output.add(new FacadeTruck( entry.getValue()));
+        }
+        return output;
     }
 
 
     public void addTruck(String model, int licenseNumber, int weightNeto, int maxWeight) throws KeyAlreadyExistsException {
-             rc.addTruck( model, licenseNumber, weightNeto, maxWeight);
+        rc.addTruck( model, licenseNumber, weightNeto, maxWeight);
     }
 
     public void addDriver(int id, String name, Driver.License licenseType) {//TODO- for ido - change it (if needed! ).
 
-            rc.addDriver(id, name, licenseType);
+        rc.addDriver(id, name, licenseType);
 
     }
 
 
+    public LinkedList<FacadeDriver> getAvailableDrivers() {
+        HashMap<Integer,Driver> drivers = rc.getAvailableDrivers();
+        LinkedList<FacadeDriver> output = new LinkedList<>();
+        for(Map.Entry<Integer,Driver> entry : drivers.entrySet()){
+            output.add(new FacadeDriver(entry.getValue()));
+        }
+        return output;
+
+    }
+
+    public LinkedList<FacadeDriver> getDrivers() {
+        HashMap <Integer, Driver> drivers =  rc.getDrivers();
+        LinkedList<FacadeDriver> output =  new LinkedList<>();
+        for(HashMap.Entry<Integer,Driver> entry :  drivers.entrySet()){
+            output.add(new FacadeDriver(entry.getValue()));
+
+        }
+        return output;
+    }
+
+    public LinkedList<FacadeTruck> getTrucks() {
+        LinkedList<FacadeTruck> output =  new LinkedList<>();
+        HashMap<Integer, Truck> trucks =  rc.getTrucks();
+        for (Map.Entry<Integer,Truck> entry:trucks.entrySet())
+        {
+            output.add(new FacadeTruck( entry.getValue()));
+        }
+        return output;
+    }
 }

@@ -1,12 +1,12 @@
 package Business_Layer_Trucking.Facade;
 
+import Business_Layer_Trucking.Delivery.Demand;
 import Business_Layer_Trucking.Facade.FacadeObject.*;
 import Business_Layer_Trucking.Resources.Driver;
-import Business_Layer_Trucking.Resources.Truck;
 
 import javax.management.openmbean.KeyAlreadyExistsException;
 import java.time.LocalDateTime;
-import java.util.Date;
+import java.time.LocalTime;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -49,13 +49,13 @@ public class FacadeService {
             throw new UnsupportedOperationException();
         }
     */
-    public void chooseDriver(int driver) {
-        // TODO need to check if stands the demands weight
-        // TODO need to update the trucks
-        resourcesService.chooseDriver(driver);
+    public FacadeDriver chooseDriver(int driver) {
+
+        return resourcesService.chooseDriver(driver);
+
     }
 
-    public void chooseLeavingHour(LocalDateTime leavingHour) {
+    public void chooseLeavingHour(LocalTime leavingHour) {
         deliveryService.chooseLeavingHour(leavingHour);
     }
 
@@ -107,7 +107,7 @@ public class FacadeService {
     }
 
 
-    public HashMap<Integer, Truck> getAvailableTrucks() {
+    public LinkedList<FacadeTruck> getAvailableTrucks() {
         return resourcesService.getAvailableTrucks();
     }
 
@@ -140,11 +140,52 @@ public class FacadeService {
         return deliveryService.getItemWeight(itemID);
     }
 
-    public List<FacadeDemand> showDemands() {
+    public LinkedList<FacadeDemand> showDemands() {
         return deliveryService.showDemands();
     }
 
     public String getItemName(int itemID) {
         return deliveryService.getItemName(itemID);
+    }
+
+    public String getSiteName(int site) {
+        return deliveryService.getSiteName(site);
+    }
+
+    public void closeReport() {
+        deliveryService.closeReport();
+    }
+
+    public LinkedList<FacadeDriver> getAvailableDrivers() {
+        return resourcesService.getAvailableDrivers();
+    }
+
+    public LinkedList<FacadeDriver> getDrivers() {
+        return resourcesService.getDrivers();
+    }
+
+    public LinkedList<FacadeTruck> getTrucks() {
+        return resourcesService.getTrucks();
+    }
+
+    // TODO need to unit test it
+    public LinkedList<FacadeDemand> sortDemandsBySite(LinkedList<FacadeDemand> demands) {
+        LinkedList<FacadeDemand> newList = new LinkedList<>();
+        for (int i = demands.size() ; i>= 0 ; i--){
+            FacadeDemand min = demands.get(i);
+            int index = i;
+            for (int j= i; j>= 0; j--){
+                if (demands.get(j).getSite() < min.getSite()) {
+                    min = demands.get(j);
+                    index = j;
+                }
+            }
+            FacadeDemand temp = demands.get(i);
+            demands.set(i, min);
+            demands.set(index,temp);
+        }
+        return demands;
+
+
     }
 }

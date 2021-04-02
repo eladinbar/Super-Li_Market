@@ -2,14 +2,16 @@ package Business_Layer_Trucking.Facade;
 
 import Business_Layer_Trucking.Delivery.DeliveryController;
 import Business_Layer_Trucking.Delivery.Demand;
+import Business_Layer_Trucking.Delivery.Site;
 import Business_Layer_Trucking.Delivery.TruckingReport;
 import Business_Layer_Trucking.Facade.FacadeObject.FacadeDeliveryForm;
 import Business_Layer_Trucking.Facade.FacadeObject.FacadeDemand;
+import Business_Layer_Trucking.Facade.FacadeObject.FacadeSite;
 import Business_Layer_Trucking.Facade.FacadeObject.FacadeTruckingReport;
 
 import javax.management.openmbean.KeyAlreadyExistsException;
-import java.time.LocalDateTime;
-import java.util.Date;
+import java.time.LocalTime;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -52,12 +54,10 @@ public class DeliveryService {
 
     }
 
-    public void chooseLeavingHour(LocalDateTime leavingHour) {//TODO- for ido - change it.(if needed! )
+    public void chooseLeavingHour(LocalTime leavingHour) {//TODO- for ido - change it.(if needed! )
 
-        try {
             dc.chooseLeavingHour(leavingHour);
-        }
-        catch (Exception e){}
+
 
     }
 
@@ -131,14 +131,27 @@ public class DeliveryService {
         return dc.getItemWeight(itemID);
     }
 
-    public List<FacadeDemand> showDemands() {
-        // TODO returns null if none exist
-        // TODO this method should return linked list of all the existing demands( that haven't been chosen in the current DF)
-        return null;
+    public LinkedList<FacadeDemand> showDemands() {
+        LinkedList < FacadeDemand> output = new LinkedList<>();
+        LinkedList<Demand> demands=  dc.showDemands();
+        for ( Demand d : demands) output.add(new FacadeDemand(d));
+        return output;
     }
 
-    public String getItemName(int itemID) {
-        // TODO exception if not exist
-        return  null;
+    public String getItemName(int itemID) {return  dc.getItemName(itemID);}
+
+    public String getSiteName(int site) { return dc.getSiteName(site);    }
+
+    public void closeReport() {
+        // TODO this method is built if we want to stop building report, maybe not needed.
+    }
+
+    public LinkedList<FacadeSite> getSites() {
+        HashMap<Integer, Site> sites = dc.getSites();
+        LinkedList<FacadeSite> output = new LinkedList<>();
+        for (HashMap.Entry<Integer, Site> entry : sites.entrySet()){
+            output.add(new FacadeSite(entry.getValue()));
+        }
+        return output;
     }
 }

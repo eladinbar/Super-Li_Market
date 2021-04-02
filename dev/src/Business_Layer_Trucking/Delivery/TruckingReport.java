@@ -2,6 +2,7 @@ package Business_Layer_Trucking.Delivery;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.Date;
 import java.util.LinkedList;
 
@@ -83,7 +84,7 @@ public class TruckingReport {
         this.driverID = driverID;
     }
 
-    public void setLeavingHour(LocalDateTime leavingHour) {
+    public void setLeavingHour(LocalTime leavingHour) {
         this.leavingHour = leavingHour;
     }
 

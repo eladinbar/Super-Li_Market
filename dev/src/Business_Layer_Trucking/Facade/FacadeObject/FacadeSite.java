@@ -1,6 +1,8 @@
 package Business_Layer_Trucking.Facade.FacadeObject;
 
-public class FacadeSite {
+import Business_Layer_Trucking.Delivery.Site;
+
+public class FacadeSite implements  FacadeObject {
     private int siteID;
     private String city;
     private int deliveryArea;
@@ -11,6 +13,9 @@ public class FacadeSite {
     {
         // TODO need to be completed
         throw new UnsupportedOperationException();
+    }
+
+    public FacadeSite(Site value) {
     }
 
     public String getPhoneNumber() {
@@ -52,4 +57,6 @@ public class FacadeSite {
     public void setCity(String city) {
         this.city = city;
     }
+
+
 }

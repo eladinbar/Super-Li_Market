@@ -100,15 +100,21 @@ public class ResourcesController {
         else throw new NoSuchElementException("No such truck");
     }
 
-    public void chooseDriver(int driver) throws Exception{
-        if (trucks.containsKey(driver)){
-            if (trucks.get(driver).isAvailable())
+    public Driver chooseDriver(int driver) throws IllegalStateException , NoSuchElementException{
+
+        // TODO need to check if stands the demands weight
+        // TODO need to check whther it makes it unavailable or not? how to deal with falling program?
+        if (drivers.containsKey(driver)){
+            if (drivers.get(driver).isAvailable())
             {
-                trucks.get(driver).setUnavailable();
+                drivers.get(driver).setUnavailable();
+                // TODO inserted down here by ido
+                return drivers.get(driver);
             }
             else throw new IllegalStateException("Driver already taken");
         }
         else throw new NoSuchElementException("No such Driver");
+
     }
 
     public void replaceTruck(int new_Truck,int old_Truck ) {
@@ -125,10 +131,14 @@ public class ResourcesController {
     }
 
     public void makeUnavailable_Driver(int driver) {
+        // TODO need to throw exception if not exist
+
         drivers.get(driver).setUnavailable();
     }
 
     public void makeAvailable_Driver(int driver) {
+        // TODO need to prevent from making available on a mission
+
         drivers.get(driver).makeAvailable();
     }
 
