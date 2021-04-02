@@ -1,6 +1,5 @@
 package InventoryModule.BusinessLayer;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class Item {
@@ -14,17 +13,17 @@ public class Item {
     private Quantity quantity;
     private Location location;
 
-
-    public Item(int ID, String name, double costPrice, double sellingPrice, int minAmount, int manufacturerID, Quantity quantity, Location location) {
+    public Item(int ID, String name, double costPrice, double sellingPrice, int minAmount, int manufacturerID, List<Integer> supplierIDs,
+                int shelfQuantity, int storageQuantity, String shelfLocation, String storageLocation) {
         this.ID = ID;
         this.name = name;
         this.costPrice = costPrice;
         this.sellingPrice = sellingPrice;
         this.minAmount = minAmount;
         this.manufacturerID = manufacturerID;
-        this.supplierIDs = new ArrayList<>();
-        this.quantity = quantity;
-        this.location = location;
+        this.supplierIDs = supplierIDs;
+        this.quantity = new Quantity(shelfQuantity, storageQuantity);
+        this.location = new Location(shelfLocation, storageLocation);
     }
 
     public int getID() {

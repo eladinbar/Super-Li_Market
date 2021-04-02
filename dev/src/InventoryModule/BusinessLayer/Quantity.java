@@ -42,6 +42,11 @@ public class Quantity {
         return storageQuantity;
     }
 
+    public void setQuantity(int shelfQuantity, int storageQuantity) {
+        setShelfQuantity(shelfQuantity);
+        setStorageQuantity(storageQuantity);
+    }
+
     public void setStorageQuantity(int storageQuantity) {
         if (this.storageQuantity < storageQuantity)
             totalQuantity += storageQuantity - this.storageQuantity;

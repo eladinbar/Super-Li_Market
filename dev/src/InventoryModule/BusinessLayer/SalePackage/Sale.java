@@ -5,6 +5,7 @@ import InfrastructurePackage.Pair;
 import java.util.Date;
 
 public abstract class Sale {
+    protected String name;
     protected double discount;
     protected Pair<Date, Date> saleDates;
 
@@ -20,6 +21,14 @@ public abstract class Sale {
         return saleDates;
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
     public Date getStartDate(Date startDate) {
         return saleDates.getFirst();
     }
@@ -30,5 +39,18 @@ public abstract class Sale {
 
     public void setSaleDates(Pair<Date, Date> saleDates) {
         this.saleDates = saleDates;
+    }
+
+    public void setSaleDates(Date startDate, Date endDate) {
+        this.saleDates.setFirst(startDate);
+        this.saleDates.setSecond(endDate);
+    }
+
+    public void setStartSaleDate(Date startDate) {
+        this.saleDates.setFirst(startDate);
+    }
+
+    public void setEndSaleDate(Date endDate) {
+        this.saleDates.setSecond(endDate);
     }
 }

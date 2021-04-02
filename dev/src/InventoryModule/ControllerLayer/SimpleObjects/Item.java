@@ -10,15 +10,14 @@ public class Item {
     private int minAmount;
     private int manufacturerID;
     private List<Integer> supplierIDs;
-    private int supplyTime;
-    private int storeQuantity;
+    private int shelfQuantity;
     private int storageQuantity;
-    private String storeLocation;
+    private String shelfLocation;
     private String storageLocation;
 
     public Item(int ID, String name, double costPrice, double sellingPrice,
-                int minAmount, int manufacturerID,List<Integer> supplierIDs, int supplyTime,
-                int storeQuantity, int storageQuantity, String storeLocation, String storageLocation) {
+                int minAmount, int manufacturerID, List<Integer> supplierIDs,
+                int shelfQuantity, int storageQuantity, String shelfLocation, String storageLocation) {
         this.ID = ID;
         this.name = name;
         this.costPrice = costPrice;
@@ -26,10 +25,9 @@ public class Item {
         this.minAmount = minAmount;
         this.manufacturerID = manufacturerID;
         this.supplierIDs = supplierIDs;
-        this.supplyTime = supplyTime;
-        this.storeQuantity = storeQuantity;
+        this.shelfQuantity = shelfQuantity;
         this.storageQuantity = storageQuantity;
-        this.storeLocation = storeLocation;
+        this.shelfLocation = shelfLocation;
         this.storageLocation = storageLocation;
     }
 
@@ -89,20 +87,12 @@ public class Item {
         this.supplierIDs = supplierIDs;
     }
 
-    public int getSupplyTime() {
-        return supplyTime;
+    public int getShelfQuantity() {
+        return shelfQuantity;
     }
 
-    public void setSupplyTime(int supplyTime) {
-        this.supplyTime = supplyTime;
-    }
-
-    public int getStoreQuantity() {
-        return storeQuantity;
-    }
-
-    public void setStoreQuantity(int storeQuantity) {
-        this.storeQuantity = storeQuantity;
+    public void setShelfQuantity(int shelfQuantity) {
+        this.shelfQuantity = shelfQuantity;
     }
 
     public int getStorageQuantity() {
@@ -113,12 +103,12 @@ public class Item {
         this.storageQuantity = storageQuantity;
     }
 
-    public String getStoreLocation() {
-        return storeLocation;
+    public String getShelfLocation() {
+        return shelfLocation;
     }
 
-    public void setStoreLocation(String storeLocation) {
-        this.storeLocation = storeLocation;
+    public void setShelfLocation(String shelfLocation) {
+        this.shelfLocation = shelfLocation;
     }
 
     public String getStorageLocation() {

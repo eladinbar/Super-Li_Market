@@ -8,13 +8,15 @@ import java.util.Date;
 public class CategorySale extends Sale{
     private Category category;
 
-    public CategorySale(double discount, Pair<Date, Date> saleDates, Category category) {
+    public CategorySale(String name, double discount, Pair<Date, Date> saleDates, Category category) {
+        this.name = name;
         this.discount = discount;
         this.saleDates = saleDates;
         this.category = category;
     }
 
-    public CategorySale(double discount, Date startDate, Date endDate, Category category) {
+    public CategorySale(String name, double discount, Date startDate, Date endDate, Category category) {
+        this.name = name;
         this.discount = discount;
         this.saleDates.setFirst(startDate);
         this.saleDates.setSecond(endDate);

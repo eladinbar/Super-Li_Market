@@ -10,9 +10,9 @@ import java.util.List;
 public class InventoryServiceImpl implements InventoryService{
 
     @Override
-    public Response addItem(int id, String name, String category, double costPrice, double sellingPrice,
+    public Response addItem(int id, String name, String categoryName, double costPrice, double sellingPrice,
                             int minAmount, String shelfLocation, String storageLocation, int storageQuantity,
-                            int shelfQuantity, int manufacturerId, List<Integer> suppliersId) {
+                            int shelfQuantity, int manufacturerId, List<Integer> suppliersIds) {
         return null;
     }
 
@@ -37,17 +37,37 @@ public class InventoryServiceImpl implements InventoryService{
     }
 
     @Override
-    public Response modifyItemSellPrice(int itemId, double newSellName) {
+    public Response modifyItemSellingPrice(int itemId, double newSellingPrice) {
         return null;
     }
 
     @Override
-    public Response changeItemLocation(int itemId, String newStorageLocation, String newStoreLocation) {
+    public Response changeItemLocation(int itemId, String newStorageLocation, String newShelfLocation) {
+        return null;
+    }
+
+    @Override
+    public Response changeItemShelfLocation(int itemId, String newShelfLocation) {
+        return null;
+    }
+
+    @Override
+    public Response changeItemStorageLocation(int itemId, String newStorageLocation) {
         return null;
     }
 
     @Override
     public Response modifyItemQuantity(int itemId, int newStorageQuantity, int newStoreQuantity) {
+        return null;
+    }
+
+    @Override
+    public Response modifyItemShelfQuantity(int itemId, int newShelfQuantity) {
+        return null;
+    }
+
+    @Override
+    public Response modifyItemStorageQuantity(int itemId, int newStorageQuantity) {
         return null;
     }
 
@@ -58,6 +78,11 @@ public class InventoryServiceImpl implements InventoryService{
 
     @Override
     public Response removeItemSupplier(int itemId, int supplierId) {
+        return null;
+    }
+
+    @Override
+    public Response removeItem(int itemId) {
         return null;
     }
 
