@@ -3,93 +3,54 @@ package Presentation_Layer_Trucking;
 import Business_Layer_Trucking.Facade.FacadeObject.*;
 import Business_Layer_Trucking.Facade.FacadeService;
 import Business_Layer_Trucking.Resources.Driver;
+import com.sun.jdi.connect.Connector;
 
-import javax.naming.ldap.UnsolicitedNotification;
+import javax.management.openmbean.KeyAlreadyExistsException;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.*;
 
 public class PresentationController {
-    private FacadeService facadeService;
-    private Menu_Printer menu_printer;
+    private FacadeService facadeService; // TODO need to check the actual way we hold it -  printer, menu and so on
+    private static PresentationController instance =null;
 
-    
-    public boolean addDemandToReport(int itemNumber, int amount)  {
+    private PresentationController(){
+        this.facadeService =  new FacadeService();
+    }
+    public static PresentationController getInstance() {
+        if (instance == null)
+            instance = new PresentationController();
+        return instance;
+    }
+
+    public boolean addDemandToReport(int itemNumber, int amount, int siteID) throws IllegalStateException {
         if (itemNumber == -1) return false;
-        facadeService.addDemandToReport(itemNumber , amount);
+        facadeService.addDemandToReport(itemNumber , amount, siteID);
         return  true;
 
 
     }
-    // TODO need to check how does Raz want it
-    public boolean continueAddDemandToReport(int itemNumber, int amount){
-        facadeService.addDemandToReport(itemNumber , amount);
-        return false;
+    public boolean continueAddDemandToReport(int itemNumber, int amount, int siteID) throws IllegalArgumentException {
+        facadeService.addDemandToReport(itemNumber , amount, siteID);
+        return true;
     }
-    public FacadeTruckingReport CreateReport()
+    public void CreateReport()
     {
-        // TODO need to add quit option in any time the player can choose
         facadeService.createTruckingReport();
-        //TODO need to check how to write it
-        Scanner scanner=new Scanner(System.in);
-        scanner.next();
-        int first=1;
-        int second=1;
-        // TODO need to extract demand
-        boolean stop=false;
-        // TODO might throw exception, need to check how to handle right
-        // TODO need to display the possible Demands
-        try {
-            while (!stop) {
-                if (scanner.next() != "0")
-                    facadeService.addDemandToReport(first, second);
-                else stop = true;
-            }
-        }catch (IllegalStateException e){
-            // exception - different delivery area
-            boolean moveOn = true;
-            if (moveOn){
-                facadeService.continueAddDemandToReport(first, second);
-            }
-
-            else {
-                // Quit
-            }
-        }
-        catch (Exception e) // TODO need to check exception type
-        {
-            // exception -  overWeight
-            rePlanning();
-        }
-        int truck=1;
-        // TODO try and catch
-        // TODO to display trucks
-        try {
-            facadeService.chooseTruck(truck);
-        }
-        catch (IllegalStateException e)
-        {
-            //Need to choose truck again
-        }
-        int driver =1;
-        facadeService.chooseDriver(driver);
-        LocalDateTime leavingHour = LocalDateTime.now();//TODO- check how to call constructor
-        facadeService.chooseLeavingHour(leavingHour);
-        facadeService.saveReport();
-        return (facadeService.getCurrTruckReport());
     }
 
-    public FacadeDeliveryForm getDeliveryForm(){
-        int trNumber=1;
+    // TODO no usage atm - need to check why
+
+    public FacadeDeliveryForm getDeliveryForm(int trNumber, int dfNumber){
         FacadeTruckingReport tr = facadeService.getTruckReport(trNumber);
-        // TODO display Delivery form
-        int dfNumber =1;
         return facadeService.getDeliveryForms(dfNumber);
     }
-    public FacadeTruckingReport rePlanning()
+
+
+// TODO need to check if really needed
+    public void rePlanning()
     {
-        Scanner scanner=new Scanner(System.in);
-        int option=-1;
+        /*int option=-1;
         while (option != -1)
         switch (option){
             case 1://remove site
@@ -131,7 +92,8 @@ public class PresentationController {
                 facadeService.removeItemFromReport(item);
             }
         }
-        return facadeService.getCurrTruckReport();
+        return facadeService.getCurrTruckReport();*/
+
     }
 
     public void makeUnavailable_Driver(int driver)
@@ -141,48 +103,39 @@ public class PresentationController {
     }
     public boolean makeAvailable_Driver(int driver)
     {
-        // TODO need to prevent from making available on a mission
+
         facadeService.makeAvailable_Driver(driver);
         return true;
     }
     public boolean makeUnavailable_Truck(int truck)
     {
-        //TODO display only available trucks
 
         facadeService.makeUnavailable_Truck(truck);
         return true;
     }
     public boolean makeAvailable_Truck(int truck)
     {
-        //TODO display only unavailable trucks
         facadeService.makeAvailable_Truck(truck);
         return true;
     }
 
-    public void addTruck(String model, int licenseNumber , int weightNeto, int maxWeight){
+    public void addTruck(String model, int licenseNumber , int weightNeto, int maxWeight) throws KeyAlreadyExistsException {
 
         facadeService.addTruck( model, licenseNumber, weightNeto, maxWeight);
 
     }
 
-    public void addDriver(int id, String name , Driver.License license){
+    public void addDriver(int id, String name , Driver.License license) throws  KeyAlreadyExistsException{
 
         facadeService.addDriver(id, name, license);
     }
 
-    public void addSite(){
-        String city ="";
-        int siteID=0;
-        int deliveryArea=0;
-        String phoneNumber ="";
-        String contactName = "";
+    // TODO
+    public void addSite(String city, int siteID, int deliveryArea , String phoneNumber, String contactName) throws  KeyAlreadyExistsException{
         facadeService.addSite(city, siteID, deliveryArea, phoneNumber, contactName );
     }
 
-    public void addItem(){
-        int id =0;
-        int weight =0;
-        String name="";
+    public void addItem(int id, int weight, String name) throws KeyAlreadyExistsException {
         facadeService.addItem(id, weight,name);
     }
     public void RemoveItemFromPool()
@@ -192,13 +145,12 @@ public class PresentationController {
         facadeService.removeItemFromPool(item);
     }
 
-    public List<FacadeDemand> showDemads() {
-        // TODO need to return null if none
-        return null;
+    public List<FacadeDemand> showDemands() {
+        return facadeService.showDemands();
     }
 
     public String getItemName(int itemID) {
-        return null;
+        return facadeService.getItemName(itemID);
     }
 
     public int getSiteName(int site) {
@@ -242,5 +194,30 @@ public class PresentationController {
 
     public LinkedList<FacadeTruck> getTrucks() {
         return null;
+    }
+
+    public List<FacadeDemand> sortDemandsBySite(List<FacadeDemand> demands) {
+        return demands;
+    }
+
+    public LinkedList<FacadeSite> showCurrentSites() {
+        return null;
+    }
+
+    public LinkedList<FacadeDemand> getCurrentDemandsBySite(FacadeSite site) {
+    }
+
+    public boolean removeDestination(int siteID) { //returns true in succeed 
+    }
+
+    public LinkedList<FacadeDemand> getItemsOnTruck() {
+        return facadeService.getItemsOnTruck();
+        // TODO sort by site?
+    }
+
+    public void removeItemFromReport(int itemId) {
+    }
+
+    public FacadeTruckingReport getCurrTruckReport() {
     }
 }

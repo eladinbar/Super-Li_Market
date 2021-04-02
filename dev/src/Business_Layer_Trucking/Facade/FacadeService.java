@@ -4,6 +4,7 @@ import Business_Layer_Trucking.Facade.FacadeObject.*;
 import Business_Layer_Trucking.Resources.Driver;
 import Business_Layer_Trucking.Resources.Truck;
 
+import javax.management.openmbean.KeyAlreadyExistsException;
 import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.HashMap;
@@ -25,6 +26,7 @@ public class FacadeService {
 
         // TODO need to check if stands the demands weight
         // TODO need to update the trucks
+        // TODO this method also in use for exchange trucks
         resourcesService.chooseTruck(truck);
         throw new UnsupportedOperationException();
     }
@@ -34,10 +36,10 @@ public class FacadeService {
 
     }
 
-    public FacadeDemand addDemandToReport(int demand_number, int supplyAmount){
-        // TODO need to extract demand from int- number by the order
+    public FacadeDemand addDemandToReport(int item_number, int supplyAmount, int siteID){
 
-        return deliveryService.addDemandToReport(demand_number,supplyAmount);
+
+        return deliveryService.addDemandToReport(item_number,supplyAmount , siteID);
     }
 
 
@@ -113,7 +115,7 @@ public class FacadeService {
         return deliveryService.getItemsOnTruck();
     }
 
-    public void addTruck(String model, int licenseNumber, int weightNeto, int maxWeight) {
+    public void addTruck(String model, int licenseNumber, int weightNeto, int maxWeight)  throws KeyAlreadyExistsException {
         resourcesService.addTruck( model, licenseNumber, weightNeto, maxWeight);
     }
 
@@ -136,5 +138,13 @@ public class FacadeService {
 
     public int getItemWeight(int itemID) {
         return deliveryService.getItemWeight(itemID);
+    }
+
+    public List<FacadeDemand> showDemands() {
+        return deliveryService.showDemands();
+    }
+
+    public String getItemName(int itemID) {
+        return deliveryService.getItemName(itemID);
     }
 }

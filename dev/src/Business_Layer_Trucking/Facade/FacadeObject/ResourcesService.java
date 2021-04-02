@@ -4,6 +4,7 @@ import Business_Layer_Trucking.Resources.Driver;
 import Business_Layer_Trucking.Resources.ResourcesController;
 import Business_Layer_Trucking.Resources.Truck;
 
+import javax.management.openmbean.KeyAlreadyExistsException;
 import java.util.HashMap;
 import java.util.LinkedList;
 
@@ -38,10 +39,12 @@ public class ResourcesService
     }
 
     public void makeUnavailable_Driver(int driver) {
+        // TODO need to throw exception if not exist
         rc.makeUnavailable_Driver(driver);
     }
 
     public void makeAvailable_Driver(int driver) {
+        // TODO need to prevent from making available on a mission
         rc.makeAvailable_Driver(driver);
     }
 
@@ -58,18 +61,14 @@ public class ResourcesService
     }
 
 
-    public void addTruck(String model, int licenseNumber, int weightNeto, int maxWeight) {
-         try {
+    public void addTruck(String model, int licenseNumber, int weightNeto, int maxWeight) throws KeyAlreadyExistsException {
              rc.addTruck( model, licenseNumber, weightNeto, maxWeight);
-         }
-         catch (Exception e){}//TODO- for ido - change it (if needed! )
     }
 
     public void addDriver(int id, String name, Driver.License licenseType) {//TODO- for ido - change it (if needed! ).
-        try {
+
             rc.addDriver(id, name, licenseType);
-        }
-        catch (Exception e){}
+
     }
 
 

@@ -26,7 +26,7 @@ public class ResourcesController {
     public HashMap<Integer, Truck> getTrucks() {
         return trucks;
     }
-    public void addDriver(int id , String name, Driver.License licenseType) throws Exception
+    public void addDriver(int id , String name, Driver.License licenseType) throws KeyAlreadyExistsException
     {
         if (!drivers.containsKey(id)) {
             Driver driver=new Driver(id,name,licenseType);
@@ -40,7 +40,7 @@ public class ResourcesController {
         }
 
     }
-    public void addTruck(String model,int licenseNumber,int weightNeto,int maxWeight) throws Exception
+    public void addTruck(String model,int licenseNumber,int weightNeto,int maxWeight) throws KeyAlreadyExistsException
     {
         if (!trucks.containsKey(licenseNumber))
         {

@@ -108,7 +108,9 @@ public class DeliveryController {
         else throw new NoSuchElementException("TR was not found");
     }
 
-    public void addItemToDeliveryForm(Demand demand, int amount,boolean ignore) throws IllegalStateException{//update on commit - throws!
+    public void addItemToDeliveryForm(Demand demand, int amount,boolean ignore) throws IllegalStateException{
+        // TODO delete demand only after save- how do we deal with it? func save?
+
         boolean ignoreDifferentDeliveryAreas=ignore;
         if (currDF.isEmpty())//if list is empty
         {
@@ -176,12 +178,13 @@ public class DeliveryController {
     }
 
     public LinkedList<Demand> getDemands() {
-        return demands;
+        throw new UnsupportedOperationException();
     }
 
 
-    public boolean addSite(String city,int  siteID,int  deliveryArea,String phoneNumber,String contactName) throws Exception
+    public boolean addSite(String city,int  siteID,int  deliveryArea,String phoneNumber,String contactName) throws KeyAlreadyExistsException
     {
+
         if (sites.containsKey(siteID))
         {
             throw new KeyAlreadyExistsException("Duplicate ID");
@@ -265,7 +268,7 @@ public class DeliveryController {
       else items.remove(item);
     }
 
-    public void addItem(int id, int weight, String name)throws Exception {
+    public void addItem(int id, int weight, String name)throws KeyAlreadyExistsException {
         if (items.containsKey(id))
             throw new KeyAlreadyExistsException("ID already taken");
         else {
@@ -275,6 +278,7 @@ public class DeliveryController {
     }
 
     public void displaySites() {
+
         for (Integer i:currTR.getDestinations())
         {
             System.out.println(i+" - "+sites.get(i).getCity()+"/n");//TODO - think about adding field name to site

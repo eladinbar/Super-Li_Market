@@ -7,9 +7,11 @@ import Business_Layer_Trucking.Facade.FacadeObject.FacadeDeliveryForm;
 import Business_Layer_Trucking.Facade.FacadeObject.FacadeDemand;
 import Business_Layer_Trucking.Facade.FacadeObject.FacadeTruckingReport;
 
+import javax.management.openmbean.KeyAlreadyExistsException;
 import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.LinkedList;
+import java.util.List;
 
 public class DeliveryService {
     private DeliveryController dc;
@@ -25,17 +27,19 @@ public class DeliveryService {
         dc.addItemToDeliveryForm(demand,);
     }*/
 
-    public FacadeDemand addDemandToReport(int demand, int supplyAmount)  {
-
-        Demand d = dc.getDemands().get(demand);
-        FacadeDemand fc = new FacadeDemand(d);
-        // TODO need to deal with exception, need to be upwards for my idea
-        try {
-            dc.addItemToDeliveryForm(d, supplyAmount, false);
-        } catch (IllegalStateException e){
-
+    public FacadeDemand addDemandToReport(int itemID, int supplyAmount, int siteID)  throws IllegalStateException{
+        LinkedList<Demand> demands = dc.getDemands();
+        Demand d=null;
+        for (Demand curr:  demands) {
+            if (curr.getItemID() ==  itemID && curr.getAmount() < supplyAmount && curr.getSite() == siteID){
+                d = curr;
+            }
         }
-
+        if (d == null){
+            throw new IllegalArgumentException("one of arguments doesn't match");
+        }
+        FacadeDemand fc = new FacadeDemand(d);
+        dc.addItemToDeliveryForm(d, supplyAmount, false);
         return fc;
 
 
@@ -112,23 +116,12 @@ public class DeliveryService {
     }
 
     public void addSite(String city, int siteID, int deliveryArea,
-                        String phoneNumber, String contactName) {//TODO- for ido - change it.(if needed! )
-        try{
-            dc.addSite(city, siteID, deliveryArea, phoneNumber, contactName );
-        }
-        catch (Exception e)
-        {
+                        String phoneNumber, String contactName) throws KeyAlreadyExistsException {
 
-        }
-
+        dc.addSite(city, siteID, deliveryArea, phoneNumber, contactName );
     }
 
-    public void addItem(int id, int weight, String name) {
-        try {
-            dc.addItem(id, weight,name);
-        }
-        catch (Exception e){}
-    }
+    public void addItem(int id, int weight, String name) throws  KeyAlreadyExistsException {dc.addItem(id, weight,name);}
 
     public void displaySites() {
         dc.displaySites();
@@ -136,5 +129,16 @@ public class DeliveryService {
 
     public int getItemWeight(int itemID) {
         return dc.getItemWeight(itemID);
+    }
+
+    public List<FacadeDemand> showDemands() {
+        // TODO returns null if none exist
+        // TODO this method should return linked list of all the existing demands( that haven't been chosen in the current DF)
+        return null;
+    }
+
+    public String getItemName(int itemID) {
+        // TODO exception if not exist
+        return  null;
     }
 }
