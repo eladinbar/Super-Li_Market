@@ -1,7 +1,12 @@
 package InventoryModule.ControllerLayer;
 
-public class Response<T> {
-    private boolean errorOccurred;
-    private String message;
-    private T data;
+public class Response {
+    protected boolean errorOccurred;
+    protected String message;
+
+
+    public Response(boolean errorOccurred, String message) {
+        this.errorOccurred = errorOccurred;
+        this.message = message;
+    }
 }
