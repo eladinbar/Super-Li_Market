@@ -14,7 +14,18 @@ import java.util.List;
 public class FacadeService {
     private DeliveryService deliveryService;
     private ResourcesService resourcesService;
+    private static FacadeService instance =null;
 
+    private FacadeService(){
+        deliveryService =  DeliveryService.getInstance();
+        resourcesService =   ResourcesService.getInstance();
+    }
+
+    public static FacadeService getInstance() {
+        if (instance == null)
+            instance = new FacadeService();
+        return instance;
+    }
 
     public void createTruckingReport(){
         deliveryService.createTruckingReport();
@@ -186,6 +197,15 @@ public class FacadeService {
         }
         return demands;
 
+
+    }
+
+    public LinkedList<FacadeSite> getCurrentSites() {
+       return deliveryService.getCurrentSites();
+    }
+
+    public LinkedList<FacadeDemand> getCurrentDemandsBySite(FacadeSite site) {
+        return  deliveryService.getCurrentDemands();
 
     }
 }

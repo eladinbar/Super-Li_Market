@@ -13,18 +13,26 @@ import javax.management.openmbean.KeyAlreadyExistsException;
 import java.time.LocalTime;
 import java.util.HashMap;
 import java.util.LinkedList;
-import java.util.List;
 
 public class DeliveryService {
     private DeliveryController dc;
+    private static DeliveryService instace = null;
 
 
-    public DeliveryService(){
+    private DeliveryService(){
 
-        this.dc = new DeliveryController();
+        this.dc = DeliveryController.getInstance();
     }
 
-/*    public void addDemand(int id, int site, int amount) {
+    public static DeliveryService getInstance() {
+        if (instace == null)
+            instace =  new DeliveryService();
+        return instace;
+    }
+
+
+
+    /*    public void addDemand(int id, int site, int amount) {
         Demand demand =  new Demand(id, site, amount);
         dc.addItemToDeliveryForm(demand,);
     }*/
@@ -108,11 +116,17 @@ public class DeliveryService {
         catch (Exception e){}
     }
 
+    /**
+     *
+     * @return a LinkedList of Facade Demands, that holds all the items in the current Trucking Report in build
+     */
     public LinkedList<FacadeDemand> getItemsOnTruck() {
-        // TODO need to be impelemted, need to turn Demands into FacadeDemand
-
-        dc.getCurrDF();
-        return null;
+        LinkedList<Demand> demands = dc.getItemsOnTruck();
+        LinkedList<FacadeDemand> output = new LinkedList<>();
+        for (Demand d : demands) {
+            output.add(new FacadeDemand(d));
+        }
+        return output;
     }
 
     public void addSite(String city, int siteID, int deliveryArea,
@@ -151,6 +165,25 @@ public class DeliveryService {
         LinkedList<FacadeSite> output = new LinkedList<>();
         for (HashMap.Entry<Integer, Site> entry : sites.entrySet()){
             output.add(new FacadeSite(entry.getValue()));
+        }
+        return output;
+    }
+
+    public LinkedList<FacadeSite> getCurrentSites() {
+        LinkedList<Site>  sites = dc.getCurrentSites();
+        LinkedList<FacadeSite> output =  new LinkedList<>();
+        for (Site site: sites){
+            output.add(new FacadeSite(site));
+        }
+
+        return output;
+    }
+
+    public LinkedList<FacadeDemand> getCurrentDemands() {
+        LinkedList<Demand> demands =  dc.getDemands();
+        LinkedList<FacadeDemand> output =  new LinkedList<>();
+        for (Demand d : demands){
+            output.add(new FacadeDemand(d));
         }
         return output;
     }

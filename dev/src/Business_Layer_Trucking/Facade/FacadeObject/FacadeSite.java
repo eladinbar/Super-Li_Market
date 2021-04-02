@@ -18,6 +18,7 @@ public class FacadeSite implements  FacadeObject {
     public FacadeSite(Site value) {
     }
 
+
     public String getPhoneNumber() {
         return phoneNumber;
     }

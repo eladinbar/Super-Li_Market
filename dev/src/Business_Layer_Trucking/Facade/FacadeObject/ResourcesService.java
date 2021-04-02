@@ -11,11 +11,19 @@ import java.util.Map;
 
 public class ResourcesService
 {
-    ResourcesController rc;
+    private ResourcesController rc;
+    private static  ResourcesService instance = null;
 
 
     public ResourcesService(){
+        rc = ResourcesController.getInstance();
 
+    }
+
+    public static ResourcesService getInstance() {
+        if (instance == null)
+            instance = new ResourcesService();
+        return instance;
     }
 
 

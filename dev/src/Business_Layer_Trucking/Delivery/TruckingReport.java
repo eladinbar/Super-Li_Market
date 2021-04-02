@@ -9,7 +9,7 @@ import java.util.LinkedList;
 public class TruckingReport {
     private int ID;
     private LocalDate date;
-    private LocalDateTime leavingHour;
+    private LocalTime leavingHour;
     private int truckNumber;
     private int driverID;
     private int origin;
@@ -39,7 +39,7 @@ public class TruckingReport {
         return date;
     }
 
-    public LocalDateTime getLeavingHour() {
+    public LocalTime getLeavingHour() {
         return leavingHour;
     }
 

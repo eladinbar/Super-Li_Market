@@ -19,6 +19,11 @@ public class ResourcesController {
         driversByLicense=new LinkedList<>();
     }
 
+    public static ResourcesController getInstance() {
+        // TODO need to implement
+        return null;
+    }
+
     public HashMap<Integer, Driver> getDrivers() {
         return drivers;
     }

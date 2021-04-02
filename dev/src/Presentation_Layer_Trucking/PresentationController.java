@@ -15,7 +15,7 @@ public class PresentationController {
     private static PresentationController instance =null;
 
     private PresentationController(){
-        this.facadeService =  new FacadeService();
+        this.facadeService =  FacadeService.getInstance();
     }
     public static PresentationController getInstance() {
         if (instance == null)
@@ -205,13 +205,27 @@ public class PresentationController {
     }
 
     public LinkedList<FacadeSite> showCurrentSites() {
-        return null;
+        return facadeService.getCurrentSites();
     }
+
 
     public LinkedList<FacadeDemand> getCurrentDemandsBySite(FacadeSite site) {
+        LinkedList<FacadeDemand> demands = facadeService.getCurrentDemandsBySite(site);
+        LinkedList<FacadeDemand> output = new LinkedList<>();
+        for (FacadeDemand demand :  demands){
+            if (demand.getSite() == site.getSiteID()) output.add(demand);
+        }
+        return output;
     }
 
-    public boolean removeDestination(int siteID) { //returns true in succeed 
+    /**
+     * this method removes a destination from the in-build Trucking report
+     * @param siteID
+     * @return @returns true if succeed, throws exception otherwise
+     */
+    public boolean removeDestination(int siteID) { //returns true in succeed
+
+        return true;
     }
 
     public LinkedList<FacadeDemand> getItemsOnTruck() {
@@ -220,9 +234,12 @@ public class PresentationController {
     }
 
     public void removeItemFromReport(int itemId) {
+        facadeService.removeItemFromReport(itemId);
+
     }
 
     public FacadeTruckingReport getCurrTruckReport() {
+        return facadeService.getCurrTruckReport();
     }
 
 }

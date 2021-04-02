@@ -22,6 +22,11 @@ public class DeliveryController {
     private TruckingReport currTR;
 
 
+    public static DeliveryController getInstance() {
+        return null;
+        // TODO need to implement
+    }
+
     public DeliveryController()
     {
 
@@ -37,6 +42,7 @@ public class DeliveryController {
         currDF=new LinkedList<>();
         currTR=new TruckingReport();
     }
+
 
 
 
@@ -60,8 +66,8 @@ public class DeliveryController {
 
     }
 
-    public void updateCurrTR_LeavingHour(LocalDateTime leavingHour) throws Exception{//update on commit - throws!
-        LocalDateTime now=LocalDateTime.now();
+    public void updateCurrTR_LeavingHour(LocalTime leavingHour) throws Exception{//update on commit - throws!
+        LocalTime now=LocalTime.now();
         if (leavingHour.compareTo(now)!=-1)
         {
             currTR.setLeavingHour(leavingHour);
@@ -306,5 +312,19 @@ public class DeliveryController {
     public String getSiteName(int site) {
         return null;
         //TODO need to implement
+    }
+
+    public LinkedList<Site> getCurrentSites() {
+        return null;
+    }
+
+    /**
+     *
+     * @return LinkedList with items in the Current in-build trucking Report.
+     * no special order is returned
+     */
+    public LinkedList<Demand> getItemsOnTruck() {
+
+        return null;
     }
 }
