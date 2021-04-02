@@ -17,7 +17,7 @@ public class InventoryServiceImpl implements InventoryService{
     }
 
     @Override
-    public ResponseT<Item> getItem(int ItemId) {
+    public ResponseT<Item> getItem(int itemId) {
         return null;
     }
 

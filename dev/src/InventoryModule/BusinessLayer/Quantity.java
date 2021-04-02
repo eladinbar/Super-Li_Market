@@ -19,6 +19,15 @@ public class Quantity {
         return shelfQuantity;
     }
 
+    public void setShelfQuantity(int shelfQuantity) {
+        if (this.shelfQuantity < shelfQuantity)
+            totalQuantity += shelfQuantity - this.shelfQuantity;
+        else
+            totalQuantity -= this.shelfQuantity - shelfQuantity;
+
+        this.shelfQuantity = shelfQuantity;
+    }
+
     public void addShelfQuantity(int shelfQuantity) {
         this.shelfQuantity += shelfQuantity;
         this.totalQuantity += shelfQuantity;
@@ -31,6 +40,15 @@ public class Quantity {
 
     public int getStorageQuantity() {
         return storageQuantity;
+    }
+
+    public void setStorageQuantity(int storageQuantity) {
+        if (this.storageQuantity < storageQuantity)
+            totalQuantity += storageQuantity - this.storageQuantity;
+        else
+            totalQuantity -= this.storageQuantity - storageQuantity;
+
+        this.storageQuantity = storageQuantity;
     }
 
     public void addStorageQuantity(int storageQuantity) {

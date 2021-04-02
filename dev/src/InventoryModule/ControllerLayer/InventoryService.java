@@ -9,12 +9,9 @@ import java.util.List;
 
 public interface InventoryService {
 
-    Response addItem(int id, String name, String category,
-                            double costPrice, double sellingPrice, int minAmount,
-                            String shelfLocation, String storageLocation,
-                            int storageQuantity, int shelfQuantity,
-                            int manufacturerId, List<Integer> suppliersId);
-    ResponseT<Item> getItem(int ItemId);
+    Response addItem(int id, String name, String category, double costPrice, double sellingPrice, int minAmount,
+                     String shelfLocation, String storageLocation, int storageQuantity, int shelfQuantity, int manufacturerId, List<Integer> suppliersId);
+    ResponseT<Item> getItem(int itemId);
     Response modifyItemName(int itemId, String newName);
     Response modifyItemCategory(int itemId, String newCategoryName);
     Response modifyItemCostPrice(int itemId, double newCostPrice);
@@ -37,7 +34,7 @@ public interface InventoryService {
      */
     Response addCategory(String categoryName, String parentCategory);
     ResponseT<Category> getCategory(String categoryName);
-    Response modifyCategoryName(String OldName, String newName);
+    Response modifyCategoryName(String oldName, String newName);
     /*
     when the category is deleted all its sub category move to the parent category.
      */

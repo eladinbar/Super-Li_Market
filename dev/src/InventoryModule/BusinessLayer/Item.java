@@ -91,17 +91,47 @@ public class Item {
         return quantity;
     }
 
-    //need to implement different quantity setters
-    public void setQuantity(Quantity quantity) {
-        this.quantity = quantity;
+    public int getShelfQuantity() {
+        return quantity.getShelfQuantity();
+    }
+
+    public int getStorageQuantity() {
+        return quantity.getStorageQuantity();
+    }
+
+    public void setShelfQuantity(int shelfQuantity) {
+        this.quantity.setShelfQuantity(shelfQuantity);
+    }
+
+    public void addShelfQuantity(int shelfQuantity) {
+        this.quantity.addShelfQuantity(shelfQuantity);
+    }
+
+    public void removeShelfQuantity(int shelfQuantity) {
+        this.quantity.removeShelfQuantity(shelfQuantity);
+    }
+
+    public void setStorageQuantity(int storageQuantity) {
+        this.quantity.setStorageQuantity(storageQuantity);
+    }
+
+    public void addStorageQuantity(int storageQuantity) {
+        this.quantity.addStorageQuantity(storageQuantity);
+    }
+
+    public void removeStorageQuantity(int storageQuantity) {
+        this.quantity.removeStorageQuantity(storageQuantity);
     }
 
     public Location getLocation() {
         return location;
     }
 
-    //need to implement appropriate location setter
-    public void setLocation(Location location) {
-        this.location = location;
+    public void setShelfLocation(String shelfLocation) {
+        this.location.setShelfLocation(shelfLocation);
+    }
+
+    public void setStorageLocation(String storageLocation) {
+        this.location.setStorageLocation(storageLocation);
     }
 }
