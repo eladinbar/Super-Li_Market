@@ -2,13 +2,15 @@ package Business_Layer_Trucking.Facade.FacadeObject;
 
 import Business_Layer_Trucking.Delivery.TruckingReport;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.Date;
 import java.util.LinkedList;
 
 public class FacadeTruckingReport {
     private int ID;
-    private Date date;
-    private Date leavingHour;
+    private LocalDate date;
+    private LocalTime leavingHour;
     private int truckNumber;
     private int driverID;
     private int origin;
@@ -16,16 +18,33 @@ public class FacadeTruckingReport {
     private TruckingReport TRReplace;
     private boolean completed;
 
-    public FacadeTruckingReport(int ID,Date date,Date leavingHour,int truckNumber,int driverID,
+    public FacadeTruckingReport(int ID,LocalDate date,LocalTime leavingHour,int truckNumber,int driverID,
                           int origin,LinkedList<Integer> destinations,TruckingReport TRReplace)
     {
-        // TODO need to be completed
+        this.date=date;
+        this.ID=ID;
+        this.leavingHour=leavingHour;
+        this.truckNumber=truckNumber;
+        this.origin=origin;
+        this.driverID=driverID;
+        this.destinations=destinations;
+        this.TRReplace=TRReplace;
         this.completed=false;
-        throw new UnsupportedOperationException();
+
 
     }
 
     public FacadeTruckingReport(TruckingReport currTR) {
+
+        this.date=currTR.getDate();
+        this.ID=currTR.getID();
+        this.leavingHour=currTR.getLeavingHour();
+        this.truckNumber=currTR.getTruckNumber();
+        this.origin=currTR.getOrigin();
+        this.driverID=currTR.getDriverID();
+        this.destinations= currTR.getDestinations();
+        this.TRReplace=currTR.getTRReplace();
+        this.completed=false;
 
     }
 
@@ -37,11 +56,11 @@ public class FacadeTruckingReport {
         return origin;
     }
 
-    public Date getDate() {
+    public LocalDate getDate() {
         return date;
     }
 
-    public Date getLeavingHour() {
+    public LocalTime getLeavingHour() {
         return leavingHour;
     }
 
@@ -74,7 +93,7 @@ public class FacadeTruckingReport {
         this.origin = origin;
     }
 
-    public void setDate(Date date) {
+    public void setDate(LocalDate date) {
         this.date = date;
     }
 
@@ -86,7 +105,7 @@ public class FacadeTruckingReport {
         this.driverID = driverID;
     }
 
-    public void setLeavingHour(Date leavingHour) {
+    public void setLeavingHour(LocalTime leavingHour) {
         this.leavingHour = leavingHour;
     }
 

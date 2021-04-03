@@ -9,9 +9,12 @@ public class Truck {
 
     public Truck(String model,int licenseNumber,int weightNeto,int maxWeight)
     {
-        //TODO complete
+        this.model=model;
+        this.licenseNumber=licenseNumber;
+        this.weightNeto=weightNeto;
+        this.maxWeight=maxWeight;
         available=true;
-        throw new UnsupportedOperationException();
+
     }
 
     public boolean isAvailable() {

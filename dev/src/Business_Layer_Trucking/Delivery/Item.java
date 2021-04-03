@@ -6,8 +6,9 @@ public class Item {
     private String name;
 
     public Item(int id, int weight, String name){
-        // TODO need to be completed
-        throw new UnsupportedOperationException();
+        this.ID=id;
+        this.name=name;
+        this.weight=weight;
     }
 
     public int getWeight() {

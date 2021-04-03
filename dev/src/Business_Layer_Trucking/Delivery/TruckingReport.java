@@ -17,15 +17,22 @@ public class TruckingReport {
     private TruckingReport TRReplace;
     private boolean completed;
 
-    public TruckingReport(int ID, LocalDate date, LocalDateTime leavingHour, int truckNumber, int driverID,
+
+    public TruckingReport(int ID, LocalDate date, LocalTime leavingHour, int truckNumber, int driverID,
                           int origin, LinkedList<Integer> destinations, TruckingReport TRReplace)
     {
-        // TODO need to be completed
-        this.completed=false;
-        throw new UnsupportedOperationException();
-
+        this.ID=ID;
+        this.date=date;
+        this.leavingHour=leavingHour;
+        this.truckNumber=truckNumber;
+        this.driverID=driverID;
+        this.origin=origin;
+        this.destinations=destinations;
+        this.TRReplace=TRReplace;
     }
-    public TruckingReport(){    }
+    public TruckingReport(int ID){
+        this.ID=ID;
+    }
 
     public int getID() {
         return ID;
@@ -96,14 +103,7 @@ public class TruckingReport {
         this.truckNumber = truckNumber;
     }
 
-    public void addDestination(int destination) throws Exception {
-         try {
-             destinations.add(destination);
-         }
-         catch (Exception e)
-        {
-            throw new Exception(e.getMessage());
-        }
-
+    public void addDestination(int destination)  {
+        destinations.add(destination);
     }
 }

@@ -20,16 +20,16 @@ public class DeliveryController {
     private int lastDeliveryForms;
     private List<DeliveryForm> currDF;
     private TruckingReport currTR;
-
+    private static DeliveryController instance=null;
 
     public static DeliveryController getInstance() {
-        return null;
-        // TODO need to implement
+        if (instance==null)
+            instance=new DeliveryController();
+        return instance;
     }
 
-    public DeliveryController()
+    private DeliveryController()
     {
-
         demands=new LinkedList<>();
         activeTruckingReports=new HashMap<>();
         oldTruckingReports=new HashMap<>();
@@ -40,7 +40,7 @@ public class DeliveryController {
         lastDeliveryForms = 0;
         lastReportID =0;
         currDF=new LinkedList<>();
-        currTR=new TruckingReport();
+        currTR=new TruckingReport(lastReportID);
     }
 
 
@@ -48,13 +48,13 @@ public class DeliveryController {
 
     public void createNewTruckingReport(){
         currDF =  new LinkedList<>();
-        currTR =  new TruckingReport();
+        currTR =  new TruckingReport(lastReportID++);
         currTR.setID(lastReportID+1);
 
     }
 
 
-    public void updateCurrTR_Date(LocalDate date) throws Exception{//update on commit - throws!
+    public void updateCurrTR_Date(LocalDate date) throws IllegalArgumentException{
         LocalDate now=LocalDate.now();
         if (date.compareTo(now)!=-1)
         {
@@ -66,7 +66,7 @@ public class DeliveryController {
 
     }
 
-    public void updateCurrTR_LeavingHour(LocalTime leavingHour) throws Exception{//update on commit - throws!
+    public void updateCurrTR_LeavingHour(LocalTime leavingHour) throws IllegalArgumentException{
         LocalTime now=LocalTime.now();
         if (leavingHour.compareTo(now)!=-1)
         {
@@ -84,7 +84,7 @@ public class DeliveryController {
         currTR.setDriverID(id);
     }
 
-    public void updateCurrTR_Origin(int origin) throws Exception{//update on commit - throws!
+    public void updateCurrTR_Origin(int origin) throws IllegalArgumentException{
         try{
             sites.get(origin);
             currTR.setOrigin(origin);
@@ -93,16 +93,12 @@ public class DeliveryController {
             throw new IllegalArgumentException("SiteID does not exist");
         }
     }
-    public void addCurrTR_Destination(int destination) throws Exception{//update on commit - throws!
-        try{
+    public void addCurrTR_Destination(int destination){
             sites.get(destination);
             currTR.addDestination(destination);
-        }
-        catch (Exception exception){
-            throw new Exception(exception.getMessage());
-        }
+
     }
-    public void updateCurrTR_TrReplaced(int tr_id)throws Exception{//update on commit - throws!
+    public void updateCurrTR_TrReplaced(int tr_id)throws NoSuchElementException{
         if (oldTruckingReports.containsKey(tr_id))
         {
             currTR.setTRReplace(oldTruckingReports.get(tr_id));
@@ -114,24 +110,22 @@ public class DeliveryController {
         else throw new NoSuchElementException("TR was not found");
     }
 
-    public void addItemToDeliveryForm(Demand demand, int amount,boolean ignore) throws IllegalStateException{
-        // TODO delete demand only after save- how do we deal with it? func save?
-
+    public void addItemToDeliveryForm(Demand demand, int amount,boolean ignore,int siteID) throws IllegalStateException{
         boolean ignoreDifferentDeliveryAreas=ignore;
         if (currDF.isEmpty())//if list is empty
         {
-            //TODO check how we know what is the origin
+
             HashMap<Item,Integer> itemsOnDF=new HashMap<>();
             itemsOnDF.put(items.get(demand.getItemID()),amount);
-            DeliveryForm newDF=new DeliveryForm(1,-1,demand.getSite(),itemsOnDF,
+            DeliveryForm newDF=new DeliveryForm(1,siteID,demand.getSite(),itemsOnDF,
                     items.get(demand.getItemID()).getWeight()*amount,currTR.getID());
         }
         else // we need to look in the list maybe there is a form with the same origin& destination
         {
             for (DeliveryForm df:currDF)
             {
-                //TODO check how we know what is the origin
-                if (df.getOrigin()==-1&&df.getDestination()==demand.getSite())
+
+                if (df.getOrigin()==siteID&&df.getDestination()==demand.getSite())
                 {
                     HashMap<Item,Integer> itemsOnDF=new HashMap<>();
                     itemsOnDF.put(items.get(demand.getItemID()),amount);
@@ -188,7 +182,8 @@ public class DeliveryController {
     }
 
 
-    public boolean addSite(String city,int  siteID,int  deliveryArea,String phoneNumber,String contactName) throws KeyAlreadyExistsException
+    public boolean addSite(String city,int  siteID,int  deliveryArea,String phoneNumber,String contactName,String name)
+            throws KeyAlreadyExistsException
     {
 
         if (sites.containsKey(siteID))
@@ -196,13 +191,13 @@ public class DeliveryController {
             throw new KeyAlreadyExistsException("Duplicate ID");
         }
         else {
-            Site newSite = new Site(siteID, city, deliveryArea, phoneNumber, contactName);
+            Site newSite = new Site(siteID, city, deliveryArea, phoneNumber, contactName, name);
             sites.put(siteID,newSite);
             return true;
         }
 
     }
-    public boolean removeSite(int siteID) throws Exception
+    public boolean removeSite(int siteID) throws NoSuchElementException
     {
         if (!sites.containsKey(siteID))
         {
@@ -229,9 +224,9 @@ public class DeliveryController {
     }
 
     public void saveReport(){
-        //TODO implement - what is the meaning?which report?
-        //  save to database?to old trucking reports?
-        throw new UnsupportedOperationException();
+
+        oldTruckingReports.put(currTR.getID(),currTR);
+
     }
 
     public TruckingReport getTruckReport(int trNumber) throws Exception{
@@ -253,7 +248,6 @@ public class DeliveryController {
     }
 
     public void removeDestination(int site) throws NoSuchElementException{
-        //TODO implement - need only to show current options
         if (!currTR.getDestinations().contains(site))
         {
             throw new NoSuchElementException();
@@ -262,11 +256,25 @@ public class DeliveryController {
     }
 
     public void removeItemFromReport(Demand demand) {
-        //TODO: implement
-        throw new UnsupportedOperationException();
+
+        for (DeliveryForm df:currDF)
+        {
+            if (df.getDestination()==demand.getSite()&&df.getItems().containsKey(demand.getItemID()))
+            {
+                if (demand.getAmount()>=df.getItems().get(demand.getItemID()))
+                    df.getItems().remove(demand.getItemID());
+                else for(Map.Entry<Item,Integer> entry:df.getItems().entrySet())
+                {
+                    if(entry.getKey().getID()==demand.getItemID())
+                    {
+                        entry.setValue(entry.getValue()-demand.getAmount());
+                    }
+                }
+            }
+        }
     }
 
-    public void removeItemFromPool(int item)throws Exception {
+    public void removeItemFromPool(int item)throws NoSuchElementException {
       if (!items.containsKey(item))
       {
           throw new NoSuchElementException();
@@ -287,35 +295,56 @@ public class DeliveryController {
 
         for (Integer i:currTR.getDestinations())
         {
-            System.out.println(i+" - "+sites.get(i).getCity()+"/n");//TODO - think about adding field name to site
+            System.out.println(i+" - "+sites.get(i).getName()+"/n");
         }
     }
 
-    public int getItemWeight(int itemID) {
-        // TODO
-        return 0;
+    public int getItemWeight(int itemID) throws NoSuchElementException{
+        if (items.containsKey(itemID))
+            return items.get(itemID).getWeight();
+        else throw new NoSuchElementException();
     }
 
     public LinkedList<Demand> showDemands() {
-        // TODO returns null if none exist
-        // TODO this method should return linked list of all the existing demands( that haven't been chosen in the current DF)
+        // show demands that was not added
+        if (!demands.isEmpty())
+        {
+            LinkedList<Demand> result=new LinkedList<>();
+            for(Demand d:demands)
+            {
+                for (DeliveryForm df:currDF)
+                {
+                    if(!(df.getItems().containsKey(d.getItemID())&&df.getDestination()==d.getSite()&&d.getAmount()>0))
+                    {
+                        result.add(d);
+                    }
+                }
+            }
+
+        }
 
         return null;
     }
 
-    public String getItemName(int itemID) {
-        //TODO need to implement
-        // TODO throws exception in not exist
-        return null;
+    public String getItemName(int itemID)throws NoSuchElementException {
+        if (items.containsKey(itemID))
+            return items.get(itemID).getName();
+        else throw new NoSuchElementException();
     }
 
-    public String getSiteName(int site) {
-        return null;
-        //TODO need to implement
+    public String getSiteName(int site) throws NoSuchElementException{
+        if (sites.containsKey(site))
+            return sites.get(site).getName();
+        else throw new NoSuchElementException();
     }
 
     public LinkedList<Site> getCurrentSites() {
-        return null;
+        LinkedList<Site> result=new LinkedList<>();
+        for (Map.Entry<Integer,Site> entry:sites.entrySet())
+        {
+            result.add(entry.getValue());
+        }
+        return result;
     }
 
     /**
@@ -324,7 +353,24 @@ public class DeliveryController {
      * no special order is returned
      */
     public LinkedList<Demand> getItemsOnTruck() {
-// TODO sort by site?
-        return null;
+        LinkedList<Demand> result=new LinkedList<>();
+        for (DeliveryForm df: currDF)
+        {
+            for (Map.Entry<Item,Integer> entry:df.getItems().entrySet())
+            {
+                Demand d=new Demand(entry.getKey().getID(),df.getDestination(),entry.getValue());
+                result.add(d);
+            }
+        }
+        return result;
+    }
+
+    public LinkedList<Item> getItems() {
+        LinkedList<Item> result=new LinkedList<>();
+        for (Map.Entry<Integer,Item> entry:items.entrySet())
+        {
+            result.add(entry.getValue());
+        }
+        return result;
     }
 }

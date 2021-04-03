@@ -164,8 +164,10 @@ public class Menu_Printer {
             String contactName = scanner.nextLine();
             System.out.println("contact Number:");
             String phoneNumber = scanner.nextLine();
+            System.out.println("Name:");
+            String name=scanner.nextLine();
             try {
-                pc.addSite(city, siteID, deliveryArea, phoneNumber, contactName);
+                pc.addSite(city, siteID, deliveryArea, phoneNumber, contactName,name);
                 con = false;
             } catch (KeyAlreadyExistsException e) {
                 System.out.println(e.getMessage());

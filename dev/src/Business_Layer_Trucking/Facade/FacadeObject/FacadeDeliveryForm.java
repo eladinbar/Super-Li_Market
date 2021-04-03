@@ -14,8 +14,12 @@ public class FacadeDeliveryForm implements FacadeObject{
 
     public FacadeDeliveryForm(int ID, int origin, int destination, Dictionary<Item,Integer> items,
                         int leavingWeight, int trID){
-        // TODO need to be completed
-        throw new UnsupportedOperationException();
+        this.destination=destination;
+        this.ID=ID;
+        this.origin=origin;
+        this.items=items;
+        this.leavingWeight=leavingWeight;
+        this.trID=trID;
     }
 
     public Dictionary<Item, Integer> getItems() {

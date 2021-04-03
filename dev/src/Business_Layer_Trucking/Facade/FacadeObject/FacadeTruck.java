@@ -11,9 +11,11 @@ public class FacadeTruck implements FacadeObject{
 
     public FacadeTruck(String model,int licenseNumber,int weightNeto,int maxWeight)
     {
-        //TODO complete
-        available=true;
-        throw new UnsupportedOperationException();
+        this.model=model;
+        this.available=true;
+        this.licenseNumber=licenseNumber;
+        this.maxWeight=maxWeight;
+        this.weightNeto=weightNeto;
     }
 
     public FacadeTruck(Truck truck) {
@@ -46,13 +48,11 @@ public class FacadeTruck implements FacadeObject{
     }
     public void setUnavailable()
     {
-        //TODO implement
-        throw new UnsupportedOperationException();
+     this.available=false;
     }
     public void makeAvailable()
     {
-        //TODO implement
-        throw new UnsupportedOperationException();
+        this.available=true;
     }
 
 }

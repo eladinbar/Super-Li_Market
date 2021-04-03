@@ -8,20 +8,26 @@ import java.util.Map;
 import java.util.NoSuchElementException;
 
 public class ResourcesController {
-    HashMap<Integer,Driver> drivers;
-    HashMap<Integer,Truck> trucks;
-    LinkedList<Driver> driversByLicense;
+    private HashMap<Integer,Driver> drivers;
+    private HashMap<Integer,Truck> trucks;
+    private LinkedList<Driver> driversByLicense;
+    private  static ResourcesController instance=null;
+    private int currDriverID;
+    private int currTruckNumber;
 
-    public ResourcesController()
+    private ResourcesController()
     {
         drivers=new HashMap<>();
         trucks=new HashMap<>();
         driversByLicense=new LinkedList<>();
+        this.currDriverID=-1;
+        this.currTruckNumber=-1;
     }
 
     public static ResourcesController getInstance() {
-        // TODO need to implement
-        return null;
+        if (instance==null)
+            instance=new ResourcesController();
+        return instance;
     }
 
     public HashMap<Integer, Driver> getDrivers() {
@@ -56,7 +62,7 @@ public class ResourcesController {
             throw new KeyAlreadyExistsException("Truck already added");
         }
     }
-    public void deleteDriver(int id)throws Exception
+    public void deleteDriver(int id)throws NoSuchElementException
     {
         if (drivers.containsKey(id))
         {
@@ -65,7 +71,7 @@ public class ResourcesController {
         }
         else throw new NoSuchElementException("We do not hiring that person");
     }
-    public void deleteTruck(int licenseNumber)throws Exception
+    public void deleteTruck(int licenseNumber)throws NoSuchElementException
     {
         if (trucks.containsKey(licenseNumber))
         {
@@ -94,11 +100,11 @@ public class ResourcesController {
         return result;
     }
 
-    public void chooseTruck(int truck) throws Exception{
+    public void chooseTruck(int truck) throws IllegalStateException,NoSuchElementException{
         if (trucks.containsKey(truck)){
             if (trucks.get(truck).isAvailable())
             {
-                trucks.get(truck).setUnavailable();
+                currTruckNumber=truck;
             }
             else throw new IllegalStateException("Truck already taken");
         }
@@ -107,13 +113,12 @@ public class ResourcesController {
 
     public Driver chooseDriver(int driver) throws IllegalStateException , NoSuchElementException{
 
-        // TODO need to check if stands the demands weight
-        // TODO need to check whther it makes it unavailable or not? how to deal with falling program?
+
+        // TODO need to check whether it makes it unavailable or not? how to deal with falling program?
         if (drivers.containsKey(driver)){
             if (drivers.get(driver).isAvailable())
             {
-                drivers.get(driver).setUnavailable();
-                // TODO inserted down here by ido
+                currDriverID=driver;
                 return drivers.get(driver);
             }
             else throw new IllegalStateException("Driver already taken");
@@ -122,28 +127,38 @@ public class ResourcesController {
 
     }
 
-    public void replaceTruck(int new_Truck,int old_Truck ) {
+    public void replaceTruck(int new_Truck) {
         if (trucks.containsKey(new_Truck))
         {
             if (trucks.get(new_Truck).isAvailable())
             {
-                trucks.get(new_Truck).setUnavailable();
-                trucks.get(old_Truck).makeAvailable();
+                currTruckNumber=new_Truck;
             }
             else throw new  IllegalStateException("Truck is not available");
         }
         else throw new NoSuchElementException("Truck does not exist");
     }
 
-    public void makeUnavailable_Driver(int driver) {
-        // TODO need to throw exception if not exist
+    public void replaceDriver(int new_Driver) {
+        if (trucks.containsKey(new_Driver))
+        {
+            if (trucks.get(new_Driver).isAvailable())
+            {
+                currDriverID=new_Driver;
+            }
+            else throw new  IllegalStateException("Driver is not available");
+        }
+        else throw new NoSuchElementException("Driver does not exist");
+    }
 
+    public void makeUnavailable_Driver(int driver)throws NoSuchElementException {
+        if (!drivers.containsKey(driver))
+            throw new NoSuchElementException();
         drivers.get(driver).setUnavailable();
     }
 
     public void makeAvailable_Driver(int driver) {
         // TODO need to prevent from making available on a mission
-
         drivers.get(driver).makeAvailable();
     }
 
@@ -153,5 +168,42 @@ public class ResourcesController {
 
     public void makeAvailable_Truck(int truck) {
         trucks.get(truck).makeAvailable();
+    }
+    public void saveReport()
+    {
+        drivers.get(currDriverID).setUnavailable();
+        trucks.get(currTruckNumber).setUnavailable();
+    }
+
+    public int getCurrDriverID() {
+        return currDriverID;
+    }
+
+    public int getCurrTruckNumber() {
+        return currTruckNumber;
+    }
+
+    public void setCurrDriverID(int currDriverID) {
+        this.currDriverID = currDriverID;
+    }
+
+    public void setCurrTruckNumber(int currTruckNumber) {
+        this.currTruckNumber = currTruckNumber;
+    }
+
+    public void setDrivers(HashMap<Integer, Driver> drivers) {
+        this.drivers = drivers;
+    }
+
+    public void setDriversByLicense(LinkedList<Driver> driversByLicense) {
+        this.driversByLicense = driversByLicense;
+    }
+
+    public static void setInstance(ResourcesController instance) {
+        ResourcesController.instance = instance;
+    }
+
+    public void setTrucks(HashMap<Integer, Truck> trucks) {
+        this.trucks = trucks;
     }
 }
