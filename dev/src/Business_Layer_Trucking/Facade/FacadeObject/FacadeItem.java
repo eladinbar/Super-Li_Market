@@ -1,5 +1,7 @@
 package Business_Layer_Trucking.Facade.FacadeObject;
 
+import Business_Layer_Trucking.Delivery.Item;
+
 public class FacadeItem implements FacadeObject{
     private  int ID;
     private int weight;
@@ -10,6 +12,12 @@ public class FacadeItem implements FacadeObject{
         this.ID=ID;
         this.name=name;
         this.weight=weight;
+    }
+
+    public FacadeItem(Item item) {
+        this.ID = item.getID();
+        this.name = item.getName();
+        this.weight = item.getWeight();
     }
 
     public String getName() {

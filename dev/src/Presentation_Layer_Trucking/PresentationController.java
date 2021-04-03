@@ -53,8 +53,8 @@ public class PresentationController {
         while (option != -1)
         switch (option){
             case 1://remove site
-            { // TODO all sout need to be deleted and remove to GUI
-                facadeService.displaySites();//TODO - watch - added method ! take a look all the way down ( there is a sout)
+            {
+                facadeService.displaySites();
                 int site=-1;
                 facadeService.removeDestination(site);
             }
@@ -68,7 +68,6 @@ public class PresentationController {
                 int amount=-1;
                 FacadeDemand new_FD = facadeService.addDemandToReport(demand,amount);
                 while (new_FD != null){
-                    //TODO system in need to be added here
                     new_FD = facadeService.addDemandToReport(demand,amount);
                 }
 
@@ -139,9 +138,8 @@ public class PresentationController {
     }
 
     // TODO need to add to menu after check
-    public void RemoveItemFromPool()
+    public void RemoveItemFromPool(int item)
     {
-        int item=-1;
         facadeService.removeItemFromPool(item);
     }
 
@@ -241,4 +239,7 @@ public class PresentationController {
         return facadeService.getCurrTruckReport();
     }
 
+    public LinkedList<FacadeItem> getAllItems() {
+        return facadeService.getAllItems();
+    }
 }

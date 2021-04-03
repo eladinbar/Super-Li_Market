@@ -1,13 +1,7 @@
 package Business_Layer_Trucking.Facade;
 
-import Business_Layer_Trucking.Delivery.DeliveryController;
-import Business_Layer_Trucking.Delivery.Demand;
-import Business_Layer_Trucking.Delivery.Site;
-import Business_Layer_Trucking.Delivery.TruckingReport;
-import Business_Layer_Trucking.Facade.FacadeObject.FacadeDeliveryForm;
-import Business_Layer_Trucking.Facade.FacadeObject.FacadeDemand;
-import Business_Layer_Trucking.Facade.FacadeObject.FacadeSite;
-import Business_Layer_Trucking.Facade.FacadeObject.FacadeTruckingReport;
+import Business_Layer_Trucking.Delivery.*;
+import Business_Layer_Trucking.Facade.FacadeObject.*;
 
 import javax.management.openmbean.KeyAlreadyExistsException;
 import java.time.LocalTime;
@@ -187,5 +181,14 @@ public class DeliveryService {
             output.add(new FacadeDemand(d));
         }
         return output;
+    }
+
+    public LinkedList<FacadeItem> getAllItems() {
+        LinkedList<Item> items = dc.getItems();
+        LinkedList<FacadeItem> facadeItems = new LinkedList<>();
+        for (Item item : items){
+            facadeItems.add(new FacadeItem(item));
+        }
+        return facadeItems;
     }
 }

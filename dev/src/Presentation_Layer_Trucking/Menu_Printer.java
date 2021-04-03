@@ -27,18 +27,19 @@ public class Menu_Printer {
         System.out.println("Welcome to Trucking Menu!\nplease choose the option you'd like:");
         int spot =1;
         System.out.println(spot +". Create new Trucking Report"); spot++;
-        System.out.println(spot + ". Show Drivers"); spot++;
-        System.out.println(spot + ". Show Trucks"); spot++;
-        System.out.println(spot + ". Show Current Demands"); spot++; //4
-        System.out.println(spot + ". Add new Driver to the System"); spot++;
-        System.out.println(spot + " add new Truck to the System"); spot++;
-        System.out.println(spot + ". add new site to the System"); spot ++;
-        System.out.println(spot + ". add new item to the System"); spot ++;//8
-        System.out.println(spot + ". make truck unavailable"); spot++;
-        System.out.println(spot + ". make driver unavailable"); spot++;
-        System.out.println(spot + ". make truck available"); spot++;
-        System.out.println(spot + ". make driver available"); spot++;// 12
-        System.out.println(spot + ". go back to main Menu");
+        System.out.println(spot + ".\tShow Drivers"); spot++;
+        System.out.println(spot + ".\tShow Trucks"); spot++;
+        System.out.println(spot + ".\tShow Current Demands"); spot++; //4
+        System.out.println(spot + ".\tAdd new Driver to the System"); spot++;
+        System.out.println(spot + "\tAdd new Truck to the System"); spot++;
+        System.out.println(spot + ".\tAdd new site to the System"); spot ++;
+        System.out.println(spot + ".\tAdd new item to the System"); spot ++;//8
+        System.out.println(spot + ".\tMake truck unavailable"); spot++;
+        System.out.println(spot + ".\tMake driver unavailable"); spot++;
+        System.out.println(spot + ".\tMake truck available"); spot++;
+        System.out.println(spot + ".\tMake driver available"); spot++;// 12
+        System.out.println(spot + ".\tRemove item from the Pool");
+        System.out.println(spot + ".\tGo back to Main Menu");
         // TODO remove item/ site and whatever methods
 
 
@@ -104,11 +105,30 @@ public class Menu_Printer {
             case 12:
                 makeDriverAvailable(scanner);
             case 13:
-                System.out.println("this option isnt supported yet. to be continue");
+                removeItemFromPool(scanner);
+            case 14:
+                System.out.println("this option isn't supported yet. to be continue");
             default:
 
         }
 
+    }
+
+    private void removeItemFromPool(Scanner scanner) {
+        LinkedList <FacadeItem> items = pc.getAllItems();
+        int counter =1;
+        for (FacadeItem item: items){
+            System.out.println(counter + ")\tItem Name: " +item.getName() + "\tItem id: " +item.getID());
+            counter ++;
+        }
+        System.out.print("choose the item you'd to remove from pool:");
+        int choice =  scanner.nextInt();
+        if (choice < 1 ||  choice >  items.size() + 1){
+            System.out.println("option is out of bounds, going back to menu");
+        }
+        else {
+            pc.RemoveItemFromPool(items.get(choice).getID());
+        }
     }
 
     private void addItem(Scanner scanner) {

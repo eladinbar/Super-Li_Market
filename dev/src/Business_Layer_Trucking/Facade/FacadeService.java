@@ -211,4 +211,8 @@ public class FacadeService {
         return  deliveryService.getCurrentDemands();
 
     }
+
+    public LinkedList<FacadeItem> getAllItems() {
+        return deliveryService.getAllItems();
+    }
 }
