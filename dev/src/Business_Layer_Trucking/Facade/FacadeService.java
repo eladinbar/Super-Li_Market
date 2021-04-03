@@ -97,8 +97,8 @@ public class FacadeService {
         deliveryService.removeDestination(site);
     }
 
-    public void removeItemFromReport(int item) {
-        deliveryService.removeItemFromReport(item);
+    public void removeItemFromReport(FacadeDemand demand, int amount) {
+        deliveryService.removeItemFromReport(demand,amount);
     }
     public void removeItemFromPool(int item) {
         deliveryService.removeItemFromPool(item);

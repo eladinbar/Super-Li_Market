@@ -261,7 +261,7 @@ public class DeliveryController {
         else currTR.getDestinations().remove(site);
     }
 
-    public void removeItemFromReport(int item, int amount) {
+    public void removeItemFromReport(Demand demand) {
         //TODO: implement
         throw new UnsupportedOperationException();
     }

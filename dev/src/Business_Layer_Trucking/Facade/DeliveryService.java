@@ -106,8 +106,9 @@ public class DeliveryService {
         catch (Exception e ){}
     }
 
-    public void removeItemFromReport(int item) {
-        dc.removeItemFromReport(item);
+    public void removeItemFromReport(FacadeDemand demand, int amount) {
+
+        dc.removeItemFromReport(new Demand(demand.getItemID(),demand.getSite(),amount));
     }
     public void removeItemFromPool(int item) {
         try {

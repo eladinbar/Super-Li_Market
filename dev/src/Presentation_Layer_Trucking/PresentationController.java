@@ -232,8 +232,8 @@ public class PresentationController {
 
     }
 
-    public void removeItemFromReport(int itemId) {
-        facadeService.removeItemFromReport(itemId);
+    public void removeItemFromReport(FacadeDemand demand,  int amount ) {
+        facadeService.removeItemFromReport(demand, amount);
 
     }
 

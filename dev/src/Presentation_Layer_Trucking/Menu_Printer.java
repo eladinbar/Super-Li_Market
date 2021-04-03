@@ -435,14 +435,22 @@ public class Menu_Printer {
                 // TODO need to send : amount, item id, origin , destination can send Facade Demand and amount
                 System.out.println("choose item to remove");
                 LinkedList<FacadeDemand> items = pc.getItemsOnTruck();
+                int counter =1;
                 for(FacadeDemand demand : items){
-                    System.out.println(pc.getItemName(demand.getItemID()) + ") " +
+                    System.out.println(counter + ") " +
                             "amount: " + demand.getAmount() + " wight per unit: " + pc.getWeight(demand.getItemID())
                             + "delivery site: " + pc.getSiteName( demand.getSite() )) ;
                 }
-                System.out.print("place the item id here: ");
+                System.out.print("your choice: ");
                 int itemId = scanner.nextInt();
-                pc.removeItemFromReport(itemId);
+                while ( itemId > items.size() -1 || itemId<1) {
+                    System.out.println("your option is out of bounds, please choose again");
+                    itemId = scanner.nextInt();
+                }
+                FacadeDemand demand = items.get(itemId -1);
+                System.out.println("amount: ");
+                int amount = scanner.nextInt();
+                pc.removeItemFromReport(demand , amount);
                 return pc.getCurrTruckReport();
 
 
