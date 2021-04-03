@@ -39,8 +39,7 @@ public class PresentationController {
         facadeService.createTruckingReport();
     }
 
-    // TODO no usage atm - need to check why
-
+    // TODO need to implement together. need to send the tr
     public FacadeDeliveryForm getDeliveryForm(int trNumber, int dfNumber){
         FacadeTruckingReport tr = facadeService.getTruckReport(trNumber);
         return facadeService.getDeliveryForms(dfNumber);
@@ -224,13 +223,13 @@ public class PresentationController {
      * @return @returns true if succeed, throws exception otherwise
      */
     public boolean removeDestination(int siteID) { //returns true in succeed
-
+        facadeService.removeDestination(siteID);
         return true;
     }
 
     public LinkedList<FacadeDemand> getItemsOnTruck() {
         return facadeService.getItemsOnTruck();
-        // TODO sort by site?
+
     }
 
     public void removeItemFromReport(int itemId) {

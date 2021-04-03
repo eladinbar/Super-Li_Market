@@ -14,6 +14,8 @@ import java.util.List;
 public class FacadeService {
     private DeliveryService deliveryService;
     private ResourcesService resourcesService;
+    // TODO insert current trucking report;
+    //  notiftys when report saved
     private static FacadeService instance =null;
 
     private FacadeService(){
@@ -76,6 +78,7 @@ public class FacadeService {
 
     public void saveReport() {
         deliveryService.saveReport();
+
     }
 
     public void continueAddDemandToReport(int first, int second) {

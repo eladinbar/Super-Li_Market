@@ -46,6 +46,7 @@ public class Menu_Printer {
         switch (choose){
             case 1:
                 pc.CreateReport();
+                //chooseOrigin(scanner);
                 chooseDemands(scanner);
                 // TODO need to print the weight received
                 chooseTruckAndDriver(scanner);
@@ -396,7 +397,7 @@ public class Menu_Printer {
     }
 
     private FacadeTruckingReport rePlan(Scanner scanner) {
-        //pc.rePlanning();
+
         System.out.println("Welcome to replan menu! please choose the option you'd like to re plan the report with:");
         int spot =1;
         System.out.println(spot + ") remove a site (all the products from this site and to it will be removed)");spot++;
@@ -431,6 +432,7 @@ public class Menu_Printer {
 
             case 4://remove items
 
+                // TODO need to send : amount, item id, origin , destination can send Facade Demand and amount
                 System.out.println("choose item to remove");
                 LinkedList<FacadeDemand> items = pc.getItemsOnTruck();
                 for(FacadeDemand demand : items){

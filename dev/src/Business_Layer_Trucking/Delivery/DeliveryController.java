@@ -252,7 +252,7 @@ public class DeliveryController {
         throw new UnsupportedOperationException();
     }
 
-    public void removeDestination(int site) throws Exception{
+    public void removeDestination(int site) throws NoSuchElementException{
         //TODO implement - need only to show current options
         if (!currTR.getDestinations().contains(site))
         {
@@ -261,7 +261,7 @@ public class DeliveryController {
         else currTR.getDestinations().remove(site);
     }
 
-    public void removeItemFromReport(int item) {
+    public void removeItemFromReport(int item, int amount) {
         //TODO: implement
         throw new UnsupportedOperationException();
     }
@@ -324,7 +324,7 @@ public class DeliveryController {
      * no special order is returned
      */
     public LinkedList<Demand> getItemsOnTruck() {
-
+// TODO sort by site?
         return null;
     }
 }
