@@ -9,26 +9,28 @@ import java.util.List;
 
 public interface InventoryService {
 
-    public Response addItem(int id, String name, String category,
-                            double costPrice, double sellingPrice, int minAmount,
-                            String shelfLocation, String storageLocation,
-                            int storageQuantity, int shelfQuantity,
-                            int manufacturerId, List<Integer> suppliersId);
-    public ResponseT<Item> getItem(int ItemId);
-    public Response modifyItemName(int itemId, String newName);
-    public Response modifyItemCategory(int itemId, String newCategoryName);
-    public Response modifyItemCostPrice(int itemId, double newCostPrice);
-    public Response modifyItemSellPrice(int itemId, double newSellName);
+    Response addItem(int id, String name, String categoryName, double costPrice, double sellingPrice, int minAmount,
+                     String shelfLocation, String storageLocation, int storageQuantity, int shelfQuantity, int manufacturerId, List<Integer> suppliersIds);
+    ResponseT<Item> getItem(int itemId);
+    Response modifyItemName(int itemId, String newName);
+    Response modifyItemCategory(int itemId, String newCategoryName);
+    Response modifyItemCostPrice(int itemId, double newCostPrice);
+    Response modifyItemSellingPrice(int itemId, double newSellingPrice);
     /*
     if the locations are null, the location will stay the same.
      */
-    public Response changeItemLocation(int itemId, String newStorageLocation, String newStoreLocation);
+    Response changeItemLocation(int itemId, String newStorageLocation, String newShelfLocation);
+    Response changeItemShelfLocation(int itemId, String newShelfLocation);
+    Response changeItemStorageLocation(int itemId, String newStorageLocation);
     /*
-    If quantity is a negative number the quantity of the Respectable argument will not be changed.
+    If quantity is a negative number the quantity of the respective item will not be changed.
      */
-    public Response modifyItemQuantity(int itemId, int newStorageQuantity, int newStoreQuantity);
-    public Response addItemSupplier(int itemId, int supplierId);
-    public Response removeItemSupplier(int itemId, int supplierId);
+    Response modifyItemQuantity(int itemId, int newStorageQuantity, int newShelfQuantity);
+    Response modifyItemShelfQuantity(int itemId, int newShelfQuantity);
+    Response modifyItemStorageQuantity(int itemId, int newStorageQuantity);
+    Response addItemSupplier(int itemId, int supplierId);
+    Response removeItemSupplier(int itemId, int supplierId);
+    Response removeItem(int itemId);
 
     //-------------------------------------------------------------------------
 
