@@ -11,21 +11,24 @@ public class Shift {
     private LocalDate date;
     private HashMap<Role, List<Integer>> manning;
     private String type;
+    private int mORe;
 
     //an existing shift with a given maning
-    public Shift(LocalDate date, HashMap<Role, List<Integer>> manning, String type)
+    public Shift(LocalDate date, HashMap<Role, List<Integer>> manning, String type, int mORe)
     {
         this.date = date;
         this.manning = manning;
         this.type = type;
+        this.mORe = mORe;
     }
 
     //a new shift without an existing manning
-    public Shift(LocalDate date, String type)
+    public Shift(LocalDate date, String type, int mORe)
     {
         this.date = date;
         this.manning = new HashMap<> ();
         this.type = type;
+        this.mORe = mORe;
     }
 
     public String getType() {
@@ -95,7 +98,7 @@ public class Shift {
         for(Map.Entry<Role, Integer> entery: manning.entrySet ())
         {
             Role role = entery.getKey ();
-            free = employeeController.getRoleInDate(date, role);
+            free = employeeController.getRoleInDate(date, role, mORe);
             int[] stillFree;
             int id;
             for(int i = 0; i < ShiftTypes.getInstance ( ).getRoleManning ( type, role ); i++)

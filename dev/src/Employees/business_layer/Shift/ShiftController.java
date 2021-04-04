@@ -33,8 +33,8 @@ public class ShiftController {
         return output;
     }
 
-    private Shift recommendShift(LocalDate date, String shiftType) throws EmployeeException {
-        Shift output = new Shift ( date, shiftType );
+    private Shift recommendShift(LocalDate date, String shiftType, int mOrE) throws EmployeeException {
+        Shift output = new Shift ( date, shiftType, mOrE );
         output.createManning(employeeController);
         return output;
     }

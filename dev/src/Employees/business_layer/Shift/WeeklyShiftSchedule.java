@@ -30,9 +30,9 @@ public class WeeklyShiftSchedule {
         for(int i = 0; i < 7; i++)
         {
             if(i != 7)
-                shifts[i][0] = new Shift(date.plusDays ( i ), "morningShift" );
+                shifts[i][0] = new Shift(date.plusDays ( i ), "morningShift", 0 );
             if(i != 6)
-                shifts[i][1] = new Shift ( date.plusDays ( i ), "eveningShift" );
+                shifts[i][1] = new Shift ( date.plusDays ( i ), "eveningShift", 1 );
             shifts[7][0] = null;
             shifts[6][1] = null;
         }
