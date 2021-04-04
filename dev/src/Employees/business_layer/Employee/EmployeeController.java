@@ -1,7 +1,8 @@
 package Employees.business_layer.Employee;
 
+import Employees.EmployeeException;
+
 import java.time.LocalDate;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
@@ -15,88 +16,88 @@ public class EmployeeController {
         employees = new HashMap<Integer, Employee>();
     }
 
-    public void login(int ID, Role role){
+    public void login(int ID, Role role) throws EmployeeException {
         if(loggedIn!= null){
-            throw new EmployeeExeption("Two users cannot be logged in at the same time");
+            throw new EmployeeException("Two users cannot be logged in at the same time");
         }
         if(!employees.containsKey(ID)) {
-            throw new EmployeeExeption("Employee not found");
+            throw new EmployeeException("Employee not found");
         }
             Employee toLogin = employees.get(ID);
             if(!toLogin.isEmployed()){
-                throw new EmployeeExeption("The employee is not employed ");
+                throw new EmployeeException("The employee is not employed ");
             }
             if (toLogin.getRole() != (role)) {
-                throw new EmployeeExeption("Id does not match to the role");
+                throw new EmployeeException("Id does not match to the role");
             }
         loggedIn = toLogin;
 
     }
 
-    public void logout(){
+    public void logout() throws EmployeeException {
         if(loggedIn==null){
-            throw new EmployeeExeption("No user is loggedIn");
+            throw new EmployeeException("No user is loggedIn");
         }
         loggedIn= null;
     }
 
-    public void giveConstraint(Employee employee, LocalDate date, int shift, String reason) throws Exception {
+    public void giveConstraint(Employee employee, LocalDate date, int shift, String reason) throws EmployeeException {
         if(!employee.isEmployed()){
-            throw new EmployeeExeption("The employee is not employed ");
+            throw new EmployeeException("The employee is not employed ");
         }
         if (employee.getID() != loggedIn.getID()) {
-            throw new EmployeeExeption("The relevant employee must be logged in to perform this action");
+            throw new EmployeeException("The relevant employee must be logged in to perform this action");
         }
         employee.giveConstraint(date, shift, reason);
     }
 
     public void updateConstraint (Employee employee, LocalDate date, int shift, String reason) throws Exception {
         if (employee.getID() != loggedIn.getID()) {
-            throw new EmployeeExeption("The relevant employee must be logged in to perform this action");
+            throw new EmployeeException("The relevant employee must be logged in to perform this action");
         }
         employee.updateConstarint(date, shift, reason);
     }
 
     public void deleteConstraint (Employee employee, LocalDate date, int shift) throws Exception {
         if (employee.getID() != loggedIn.getID()) {
-            throw new EmployeeExeption("The relevant employee must be logged in to perform this action");
+            throw new EmployeeException("The relevant employee must be logged in to perform this action");
         }
         employee.deletConstraint(date, shift);
     }
 
-    public void addEmployee(Role role, int Id, TermsOfEmployment terms, LocalDate transactionDate, BankAccountInfo bank){
+    public void addEmployee(Role role, int Id, TermsOfEmployment terms, LocalDate transactionDate, BankAccountInfo bank) throws EmployeeException {
         if(!isManager(loggedIn.getRole()))
-            throw new EmployeeExeption("Only an administrator can perform this operation");
+            throw new EmployeeException("Only an administrator can perform this operation");
        Employee newEmployee = new Employee(role, Id, terms, transactionDate, bank);
        employees.put(Id, newEmployee);
     }
 
-    public void removeEmployee(int Id){
+    public void removeEmployee(int Id) throws EmployeeException {
         if(!isManager(loggedIn.getRole())){
-            throw new EmployeeExeption("Only an administrator can perform this operation");
+            throw new EmployeeException("Only an administrator can perform this operation");
         }
         if(!employees.containsKey(Id)){
-                throw new EmployeeExeption("Employee not found");
+                throw new EmployeeException("Employee not found");
         }
         employees.get(Id).setEmployed(false);
     }
 
-    public void deleteBankAccount(int Id){
+    public void deleteBankAccount(int Id) throws EmployeeException {
         if(!isManager(loggedIn.getRole())){
-            throw new EmployeeExeption("Only an administrator can perform this operation");
+            throw new EmployeeException("Only an administrator can perform this operation");
         }
         if(!employees.containsKey(Id)){
-            throw new EmployeeExeption("Employee not found");
+            throw new EmployeeException("Employee not found");
         }
         employees.get(Id).setBank(null);
     }
 
-    public void updateBankAccount(int Id, int accountNum, int bankBranch, String bank){
+    public void updateBankAccount(int Id, int accountNum, int bankBranch, String bank) throws EmployeeException {
         if(!isManager(loggedIn.getRole())){
-            throw new EmployeeExeption("Only an administrator can perform this operation");
+            throw new EmployeeException("Only an administrator can perform this operation");
         }
         if(!employees.containsKey(Id)){
-            throw new EmployeeExeption("Employee not found");
+            throw new EmployeeException("Employee not found");
         }
         BankAccountInfo toUpdate = employees.get(Id).getBank();
         toUpdate.setAccountNumber(accountNum);
@@ -104,12 +105,12 @@ public class EmployeeController {
         toUpdate.setBank(bank);
     }
 
-    public void updateTermsOfemployee(int Id, int salary, int educationFund, int sickDays, int daysOff){
+    public void updateTermsOfemployee(int Id, int salary, int educationFund, int sickDays, int daysOff) throws EmployeeException {
         if(!isManager(loggedIn.getRole())){
-            throw new EmployeeExeption("Only an administrator can perform this operation");
+            throw new EmployeeException("Only an administrator can perform this operation");
         }
         if(!employees.containsKey(Id)){
-            throw new EmployeeExeption("Employee not found");
+            throw new EmployeeException("Employee not found");
         }
         TermsOfEmployment toUpdate = employees.get(Id).getTerms();
         toUpdate.setSalary(salary);
@@ -118,7 +119,7 @@ public class EmployeeController {
         toUpdate.setDaysOff(daysOff);
     }
 
-    public LinkedList<Integer> getRoleinDate(LocalDate date, Role roleName, int shift){
+    public LinkedList<Integer> getRoleInDate(LocalDate date, Role roleName, int shift){
         LinkedList<Integer> specificRole = new LinkedList<>();
         for (Map.Entry<Integer, Employee> entry : employees.entrySet()) {
             Employee employee = entry.getValue();

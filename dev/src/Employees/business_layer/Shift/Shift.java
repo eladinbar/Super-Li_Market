@@ -101,7 +101,7 @@ public class Shift {
 
     public void createManning(EmployeeController employeeController) throws EmployeeException {
         HashMap<Role, Integer> manning = ShiftTypes.getInstance ().getShiftTypeManning ( type );
-        int[] free;
+        List<Integer> free;
         List<Integer> work = new ArrayList<> (  );
         for(Map.Entry<Role, Integer> entery: manning.entrySet ())
         {
@@ -120,14 +120,14 @@ public class Shift {
         }
     }
 
-    private int[] getFree(int[] canWork, List<Integer> work)
+    private int[] getFree(List<Integer> canWork, List<Integer> work)
     {
-        int[] free = new int[canWork.length - work.size ()];
+        int[] free = new int[canWork.size () - work.size ()];
         int index = 0;
-        for(int i = 0; i < canWork.length; i ++)
+        for(int i = 0; i < canWork.size (); i ++)
         {
-            if(!work.contains ( canWork[i]))
-                free[index++] = canWork[i];
+            if(!work.contains ( canWork.get ( i )))
+                free[index++] = canWork.get ( i );
         }
         return free;
     }

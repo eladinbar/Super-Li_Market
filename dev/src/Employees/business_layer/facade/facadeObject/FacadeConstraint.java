@@ -21,8 +21,8 @@ public class FacadeConstraint implements FacadeObject{
 
     public FacadeConstraint(Constraint constraint) {
         date = constraint.getDate();
-        morningShift = constraint.getMorningShift();
-        eveningShift = constraint.getEveningShift();
+        morningShift = constraint.isMorningShift();
+        eveningShift = constraint.isEveningShift();
         reason = constraint.getReason();
     }
 }

@@ -1,4 +1,6 @@
 package Employees.business_layer.Employee;
+import Employees.EmployeeException;
+
 import java.time.LocalDate;
 import java.util.HashMap;
 
@@ -78,18 +80,18 @@ public class Employee {
 
 
 // functions:
-    public void giveConstraint(LocalDate date, int shift, String reason){
+    public void giveConstraint(LocalDate date, int shift, String reason) throws EmployeeException {
         if (constraints.containsKey(date)){ // if the employment already has a constraint on one of the shifts that day.
             Constraint exist = constraints.get(date);
             if( shift == 1){// morning shift
                 if(exist.isMorningShift()){
-                    throw new EmployeeExeption("You already have a constraint on this shift");
+                    throw new EmployeeException ("You already have a constraint on this shift");
                 }
                 exist.setMorningShift(true);
             }
             else if (shift ==2){// evening shift
                 if(exist.isEveningShift()){
-                    throw new EmployeeExeption("You already have a constraint on this shift");
+                    throw new EmployeeException("You already have a constraint on this shift");
                 }
                 exist.setEveningShift(true);
             }

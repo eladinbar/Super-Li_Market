@@ -16,7 +16,7 @@ public class FacadeBankAccountInfo implements FacadeObject{
 
     public FacadeBankAccountInfo(BankAccountInfo bankAccountInfo)
     {
-        accountNumber = bankAccountInfo.getAccountInfo();
+        accountNumber = bankAccountInfo.getAccountNumber();
         bankBranch = bankAccountInfo.getBankBranch();
         bank = bankAccountInfo.getBank();
     }
