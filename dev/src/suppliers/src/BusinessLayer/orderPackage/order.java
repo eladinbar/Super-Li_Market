@@ -9,11 +9,15 @@ public class order {
     private boolean delivered;
     private supplier supplier;
 
-    public order(int id, Map<int, int> products, Date date, boolean delivered, BusinessLayer.supplierPackage.supplier supplier) {
+    public order(int id, Date date, supplier supplier) {
         this.id = id;
-        this.products = products;
+        this.products = new HashMap<int,int>();
+        while(true){
+            //todo add items
+            break;
+        }
         this.date = date;
-        this.delivered = delivered;
+        this.delivered = false;
         this.supplier = supplier;
     }
 }

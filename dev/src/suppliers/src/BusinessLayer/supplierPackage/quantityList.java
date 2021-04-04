@@ -4,10 +4,14 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class quantityList {
-    private Map<Integer, Integer> amount;
-    private Map<Integer, Integer> discount;
+    private Map<int, int> amount;
+    private Map<int, int> discount;
     public quantityList() {
-        amount=new HashMap<>();
-        discount=new HashMap<>();
+        while(true){
+            //todo add items to map
+            break;
+        }
+        amount=new HashMap<int,int>();
+        discount=new HashMap<int,int>();
     }
 }
