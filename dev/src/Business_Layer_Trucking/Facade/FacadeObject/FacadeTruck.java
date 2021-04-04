@@ -11,9 +11,12 @@ public class FacadeTruck implements FacadeObject{
 
     public FacadeTruck(String model,int licenseNumber,int weightNeto,int maxWeight)
     {
-        //TODO complete
         available=true;
-        throw new UnsupportedOperationException();
+        this.model = model;
+        this.licenseNumber = licenseNumber;
+        this.weightNeto = weightNeto;
+        this.maxWeight = maxWeight;
+
     }
 
     public FacadeTruck(Truck truck) {

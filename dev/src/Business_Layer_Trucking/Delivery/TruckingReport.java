@@ -106,4 +106,8 @@ public class TruckingReport {
         }
 
     }
+
+    public boolean isCompleted() {
+        return completed;
+    }
 }

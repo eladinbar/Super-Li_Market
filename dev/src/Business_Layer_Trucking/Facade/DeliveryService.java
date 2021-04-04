@@ -7,6 +7,7 @@ import javax.management.openmbean.KeyAlreadyExistsException;
 import java.time.LocalTime;
 import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.Map;
 
 public class DeliveryService {
     private DeliveryController dc;
@@ -183,11 +184,16 @@ public class DeliveryService {
         return output;
     }
 
+    /**
+     *
+     * @return @list of all items in the trucking system
+     */
     public LinkedList<FacadeItem> getAllItems() {
-        LinkedList<Item> items = dc.getItems();
+        HashMap<Integer,Item> items = dc.getItems();
+
         LinkedList<FacadeItem> facadeItems = new LinkedList<>();
-        for (Item item : items){
-            facadeItems.add(new FacadeItem(item));
+        for (Map.Entry<Integer,Item> entry: items.entrySet()){
+            facadeItems.add(new FacadeItem(entry.getValue()));
         }
         return facadeItems;
     }

@@ -11,11 +11,20 @@ public class FacadeSite implements  FacadeObject {
 
     public FacadeSite(int siteID,String city,int deliveryArea,String phoneNumber,String contactName)
     {
-        // TODO need to be completed
-        throw new UnsupportedOperationException();
+        this.siteID = siteID;
+        this.city = city;
+        this.deliveryArea = deliveryArea;
+        this.phoneNumber = phoneNumber;
+        this.contactName = contactName;
     }
 
     public FacadeSite(Site value) {
+        this.siteID = value.getSiteID();
+        this.city = value.getCity();
+        this.deliveryArea = value.getDeliveryArea();
+        this.phoneNumber = value.getPhoneNumber();
+        this.contactName = value.getContactName();
+
     }
 
 

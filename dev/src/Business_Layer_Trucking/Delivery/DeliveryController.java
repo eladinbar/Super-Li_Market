@@ -327,4 +327,9 @@ public class DeliveryController {
 // TODO sort by site?
         return null;
     }
+
+
+    public HashMap<Integer, Item> getItems() {
+        return items;
+    }
 }

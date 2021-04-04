@@ -18,6 +18,10 @@ public class FacadeDriver {
     }
 
     public FacadeDriver(Driver value) {
+        this.ID = value.getID();
+        this.name = value.getName();;
+        this.available = value.isAvailable();
+        this.licenseType = value.getLicenseType();
     }
 
     public int getID() {

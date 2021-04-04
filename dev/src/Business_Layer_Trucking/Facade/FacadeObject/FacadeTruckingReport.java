@@ -2,30 +2,47 @@ package Business_Layer_Trucking.Facade.FacadeObject;
 
 import Business_Layer_Trucking.Delivery.TruckingReport;
 
-import java.util.Date;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.LinkedList;
 
 public class FacadeTruckingReport {
     private int ID;
-    private Date date;
-    private Date leavingHour;
+    private LocalDate date;
+    private LocalTime leavingHour;
     private int truckNumber;
     private int driverID;
     private int origin;
     private LinkedList<Integer> destinations;
-    private TruckingReport TRReplace;
+    private FacadeTruckingReport TRReplace;
     private boolean completed;
 
-    public FacadeTruckingReport(int ID,Date date,Date leavingHour,int truckNumber,int driverID,
-                          int origin,LinkedList<Integer> destinations,TruckingReport TRReplace)
+    public FacadeTruckingReport(int ID, LocalDate date, LocalTime leavingHour, int truckNumber, int driverID,
+                                int origin, LinkedList<Integer> destinations, TruckingReport TRReplace)
     {
-        // TODO need to be completed
+        this.ID = ID;
+        this.date = date;
+        this.leavingHour = leavingHour;
+        this.truckNumber = truckNumber;
+        this.driverID = driverID;
+        this.origin = origin;
+        this.destinations = destinations;
+        this.TRReplace = new FacadeTruckingReport(TRReplace);
+
         this.completed=false;
-        throw new UnsupportedOperationException();
 
     }
 
     public FacadeTruckingReport(TruckingReport currTR) {
+        this.ID = currTR.getID();
+        date = currTR.getDate();
+        leavingHour = currTR.getLeavingHour();
+        truckNumber = currTR.getTruckNumber();
+        driverID = currTR.getDriverID();
+        origin = currTR.getOrigin();
+        destinations = currTR.getDestinations();
+        TRReplace = new FacadeTruckingReport( currTR.getTRReplace());
+        completed = currTR.isCompleted();
 
     }
 
@@ -37,11 +54,11 @@ public class FacadeTruckingReport {
         return origin;
     }
 
-    public Date getDate() {
+    public LocalDate getDate() {
         return date;
     }
 
-    public Date getLeavingHour() {
+    public LocalTime getLeavingHour() {
         return leavingHour;
     }
 
@@ -57,7 +74,7 @@ public class FacadeTruckingReport {
         return destinations;
     }
 
-    public TruckingReport getTRReplace() {
+    public FacadeTruckingReport getTRReplace() {
         return TRReplace;
     }
 
@@ -74,7 +91,7 @@ public class FacadeTruckingReport {
         this.origin = origin;
     }
 
-    public void setDate(Date date) {
+    public void setDate(LocalDate date) {
         this.date = date;
     }
 
@@ -86,11 +103,11 @@ public class FacadeTruckingReport {
         this.driverID = driverID;
     }
 
-    public void setLeavingHour(Date leavingHour) {
+    public void setLeavingHour(LocalTime leavingHour) {
         this.leavingHour = leavingHour;
     }
 
-    public void setTRReplace(TruckingReport TRReplace) {
+    public void setTRReplace(FacadeTruckingReport TRReplace) {
         this.TRReplace = TRReplace;
     }
 

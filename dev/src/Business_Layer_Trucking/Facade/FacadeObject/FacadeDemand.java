@@ -4,16 +4,20 @@ import Business_Layer_Trucking.Delivery.Demand;
 
 public class FacadeDemand {
     private int itemID;
-    private int Site;
+    private int site;
     private int amount;
 
     public FacadeDemand(int itemID, int site_id, int amount){
-        // TODO need to be completed
-        throw new UnsupportedOperationException();
+        this.itemID = itemID;
+        this.site = site_id;
+        this.amount = amount;
     }
 
     public FacadeDemand(Demand demand){
-        throw new UnsupportedOperationException();
+        this.itemID = demand.getItemID();
+        this.site = demand.getSite();
+        this.amount = demand.getAmount();
+
     }
 
 
@@ -26,7 +30,7 @@ public class FacadeDemand {
     }
 
     public int getSite() {
-        return Site;
+        return site;
     }
 
     public void setAmount(int amount) {
@@ -38,6 +42,6 @@ public class FacadeDemand {
     }
 
     public void setSite(int site) {
-        Site = site;
+        this.site = site;
     }
 }

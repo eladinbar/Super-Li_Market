@@ -1,24 +1,43 @@
 package Business_Layer_Trucking.Facade.FacadeObject;
 
+import Business_Layer_Trucking.Delivery.DeliveryForm;
 import Business_Layer_Trucking.Delivery.Item;
 
 import java.util.Dictionary;
+import java.util.HashMap;
+import java.util.Map;
 
 public class FacadeDeliveryForm implements FacadeObject{
     private int ID;
     private int origin;
     private int destination;
-    private Dictionary<Item, Integer> items;
+    private HashMap<FacadeItem, Integer> items;
     private int leavingWeight;
     private int trID;
 
-    public FacadeDeliveryForm(int ID, int origin, int destination, Dictionary<Item,Integer> items,
+    public FacadeDeliveryForm(int ID, int origin, int destination, HashMap<FacadeItem,Integer> items,
                         int leavingWeight, int trID){
-        // TODO need to be completed
-        throw new UnsupportedOperationException();
+        this.ID = ID;
+        this.origin = origin;
+        this.destination = destination;
+        this.items = items;
+        this.leavingWeight = leavingWeight;
+        this.trID =trID;
     }
 
-    public Dictionary<Item, Integer> getItems() {
+    public FacadeDeliveryForm(DeliveryForm df){
+        this.ID =  df.getID();
+        this.origin = df.getOrigin();
+        destination = df.getDestination();
+        items = new HashMap<FacadeItem,Integer>();
+        for (Map.Entry<Item,Integer> entry: df.getItems().entrySet() ) {
+            this.items.put(new FacadeItem(entry.getKey()) , entry.getValue());
+        }
+        leavingWeight = df.getLeavingWeight();
+        trID = df.getTrID();
+    }
+
+    public HashMap<FacadeItem, Integer> getItems() {
         return items;
     }
 
@@ -43,7 +62,6 @@ public class FacadeDeliveryForm implements FacadeObject{
     }
 
 
-    // TODO need to check when can be setted and fix!
     public void setDestination(int destination) {
         this.destination = destination;
     }
@@ -52,7 +70,7 @@ public class FacadeDeliveryForm implements FacadeObject{
         this.ID = ID;
     }
 
-    public void setItems(Dictionary<Item, Integer> items) {
+    public void setItems(HashMap<FacadeItem, Integer> items) {
         this.items = items;
     }
 
