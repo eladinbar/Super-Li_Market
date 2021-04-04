@@ -2,11 +2,6 @@ package BusinessLayer.supplierPackage;
 
 import java.util.List;
 
-enum payment{
-    check,
-    bankTrasfer,
-    cash
-}
 public class supplierCard extends personCard {
     private int companyNumber;
     private boolean isPernamentDays;
