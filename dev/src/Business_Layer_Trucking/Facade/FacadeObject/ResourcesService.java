@@ -43,8 +43,7 @@ public class ResourcesService
 
     public void replaceTruck(int truck) {
         rc.replaceTruck(truck);
-        //TODO check if need to change driver in case we replaced truck
-        //we need to send the number of the the truck we want to replace!
+        //TODO we need to send the number of the the truck we want to replace!
     }
 
     public void makeUnavailable_Driver(int driver) {

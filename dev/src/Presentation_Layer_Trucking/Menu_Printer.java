@@ -448,13 +448,11 @@ public class Menu_Printer {
 
                 System.out.println("choose new truck");
                 LinkedList<FacadeTruck> trucks = pc.getAvailableTrucks();
-                // TODO driver exchange might be needed too
                 chooseTruckAndDriver(scanner);
                 return pc.getCurrTruckReport();
 
             case 4://remove items
 
-                // TODO need to send : amount, item id, origin , destination can send Facade Demand and amount
                 System.out.println("choose item to remove");
                 LinkedList<FacadeDemand> items = pc.getItemsOnTruck();
                 int counter =1;

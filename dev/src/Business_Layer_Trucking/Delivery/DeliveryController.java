@@ -375,7 +375,4 @@ public class DeliveryController {
     }
 
 
-    public HashMap<Integer, Item> getItems() {
-        return items;
-    }
 }

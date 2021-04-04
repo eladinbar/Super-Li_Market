@@ -169,9 +169,6 @@ public class FacadeService {
         return deliveryService.getSiteName(site);
     }
 
-    public void closeReport() {
-        deliveryService.closeReport();
-    }
 
     public LinkedList<FacadeDriver> getAvailableDrivers() {
         return resourcesService.getAvailableDrivers();

@@ -8,6 +8,7 @@ import java.time.LocalTime;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
+import java.util.NoSuchElementException;
 
 public class DeliveryService {
     private DeliveryController dc;
@@ -59,7 +60,7 @@ public class DeliveryService {
 
     public void chooseLeavingHour(LocalTime leavingHour) {//TODO- for ido - change it.(if needed! )
 
-            dc.chooseLeavingHour(leavingHour);
+        dc.chooseLeavingHour(leavingHour);
 
 
     }
@@ -94,11 +95,9 @@ public class DeliveryService {
         return dc.getDeliveryForm(dfNumber);
     }
 
-    public void removeDestination(int site) {//TODO- for ido - change it.(if needed! )
-        try {
-            dc.removeDestination(site);
-        }
-        catch (Exception e ){}
+    public void removeDestination(int site) throws NoSuchElementException {
+        dc.removeDestination(site);
+
     }
 
     public void removeItemFromReport(FacadeDemand demand, int amount) {
@@ -152,9 +151,7 @@ public class DeliveryService {
 
     public String getSiteName(int site) { return dc.getSiteName(site);    }
 
-    public void closeReport() {
-        // TODO this method is built if we want to stop building report, maybe not needed.
-    }
+
 
     public LinkedList<FacadeSite> getSites() {
         HashMap<Integer, Site> sites = dc.getSites();
@@ -189,11 +186,11 @@ public class DeliveryService {
      * @return @list of all items in the trucking system
      */
     public LinkedList<FacadeItem> getAllItems() {
-        HashMap<Integer,Item> items = dc.getItems();
+        LinkedList<Item> items = dc.getItems();
 
         LinkedList<FacadeItem> facadeItems = new LinkedList<>();
-        for (Map.Entry<Integer,Item> entry: items.entrySet()){
-            facadeItems.add(new FacadeItem(entry.getValue()));
+        for (Item item: items){
+            facadeItems.add(new FacadeItem(item));
         }
         return facadeItems;
     }
