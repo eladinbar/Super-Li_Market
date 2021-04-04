@@ -13,7 +13,7 @@ public class EmployeeController {
 
     public EmployeeController(){
         this.loggedIn = null;
-        employees = new HashMap<Integer, Employee>();
+        employees = new HashMap<>();
     }
 
     public void login(int ID, Role role) throws EmployeeException {
