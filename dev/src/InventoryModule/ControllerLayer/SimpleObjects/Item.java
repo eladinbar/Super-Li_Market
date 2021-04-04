@@ -16,12 +16,9 @@ public class Item {
     private String storageLocation;
     private int manufacturerID;
 
-    public Item() {
-    }
-
     public Item(int ID, String name, double costPrice, double sellingPrice,
-                int minAmount, int manufacturerID, int storeQuantity, int storageQuantity,
-                String storeLocation, String storageLocation) {
+                int minAmount, int storeQuantity, int storageQuantity,
+                String storeLocation, String storageLocation,int manufacturerID) {
         this.ID = ID;
         this.name = name;
         this.costPrice = costPrice;
@@ -60,7 +57,7 @@ public class Item {
     }
 
     public int getTotalQuantity(){
-        return storageQuantity + storeQuantity;
+        return totalQuantity;
     }
 
     public int getMinAmount() {
