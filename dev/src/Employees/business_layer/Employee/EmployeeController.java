@@ -11,9 +11,9 @@ public class EmployeeController {
     private HashMap<Integer, Employee> employees;
     private Employee loggedIn;
 
-    public EmployeeController(Employee employee){
-        this.loggedIn = employee;
-        employees = new HashMap<Integer, Employee>();
+    public EmployeeController(){
+        this.loggedIn = null;
+        employees = new HashMap<>();
     }
 
     public void login(int ID, Role role) throws EmployeeException {
