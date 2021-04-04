@@ -3,6 +3,7 @@ package Employees.business_layer.Shift;
 import Employees.EmployeeException;
 import Employees.business_layer.Employee.EmployeeController;
 import Employees.business_layer.Employee.Role;
+import Employees.business_layer.facade.facadeObject.FacadeShift;
 
 import java.time.LocalDate;
 import java.util.*;
@@ -29,6 +30,13 @@ public class Shift {
         this.manning = new HashMap<> ();
         this.type = type;
         this.mORe = mORe;
+    }
+
+    public Shift(FacadeShift facadeShift) {
+        date = facadeShift.getDate();
+        manning = facadeShift.getManning();
+        type = facadeShift.getType();
+        mORe = facadeShift.getmORe();
     }
 
     public String getType() {
@@ -130,5 +138,9 @@ public class Shift {
             return -1;
         Random rand = new Random (  );
         return rand.nextInt ( free.length );
+    }
+
+    public int getmORe() {
+        return mORe;
     }
 }

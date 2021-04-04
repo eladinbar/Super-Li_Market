@@ -4,9 +4,9 @@ public class ResponseT <T> extends Response{
     public final T value;
 
     //an exception message was sent
-    public ResponseT(String exeptionMessage)
+    public ResponseT(String errorMessage)
     {
-        super(exeptionMessage);
+        super(errorMessage);
         value = null;
     }
 
