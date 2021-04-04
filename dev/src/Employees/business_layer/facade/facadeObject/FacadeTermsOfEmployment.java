@@ -1,5 +1,7 @@
 package Employees.business_layer.facade.facadeObject;
 
+import Employees.business_layer.Employee.TermsOfEmployment;
+
 public class FacadeTermsOfEmployment implements FacadeObject{
     private int salary;
     private int educationFund;
@@ -12,5 +14,13 @@ public class FacadeTermsOfEmployment implements FacadeObject{
         this.educationFund = educationFund;
         this.sickDays = sickDays;
         this.daysOff = daysOff;
+    }
+
+    public FacadeTermsOfEmployment(TermsOfEmployment termsOfEmployment)
+    {
+        salary = termsOfEmployment.getSalary();
+        educationFund = termsOfEmployment.getEducationFund();
+        sickDays = termsOfEmployment.getSickDays();
+        daysOff = termsOfEmployment.getDaysOff();
     }
 }

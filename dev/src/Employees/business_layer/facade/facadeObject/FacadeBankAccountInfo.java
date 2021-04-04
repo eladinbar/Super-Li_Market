@@ -1,5 +1,7 @@
 package Employees.business_layer.facade.facadeObject;
 
+import Employees.business_layer.Employee.BankAccountInfo;
+
 public class FacadeBankAccountInfo implements FacadeObject{
     private int accountNumber;
     private int bankBranch;
@@ -10,5 +12,12 @@ public class FacadeBankAccountInfo implements FacadeObject{
         this.accountNumber = accountNumber;
         this.bankBranch = bankBranch;
         this.bank = bank;
+    }
+
+    public FacadeBankAccountInfo(BankAccountInfo bankAccountInfo)
+    {
+        accountNumber = bankAccountInfo.getAccountNumber();
+        bankBranch = bankAccountInfo.getBankBranch();
+        bank = bankAccountInfo.getBank();
     }
 }

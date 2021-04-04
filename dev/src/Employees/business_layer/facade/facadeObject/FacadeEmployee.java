@@ -1,5 +1,7 @@
 package Employees.business_layer.facade.facadeObject;
 
+import Employees.business_layer.Employee.Role;
+
 import java.util.Date;
 import java.util.HashMap;
 

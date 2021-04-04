@@ -23,8 +23,9 @@ public class WeeklyShiftSchedule {
     }
 
     //a new schedule with no shifts
-    public WeeklyShiftSchedule(LocalDate date)
-    {
+    public WeeklyShiftSchedule(LocalDate date) throws EmployeeException {
+        if(date.isBefore ( LocalDate.now () ))
+            throw new EmployeeException ( "starting day has already passed." );
         this.date = date;
         this.shifts = new Shift[7][2];
         for(int i = 0; i < 7; i++)
@@ -89,12 +90,19 @@ public class WeeklyShiftSchedule {
 
     public boolean isMissing()
     {
-        for(int i = 0; i < 7; i++)
+        for(int i = 0; i < 5; i++)
         {
-            if(i < 5)
-                return (shifts[i][0].isMissing () || shifts[i][1].isMissing ());
-            return shifts[5][0].isMissing () || shifts[6][1].isMissing ();
-
+            if (shifts[i][0].isMissing () || shifts[i][1].isMissing ())
+                return true;
         }
+        return shifts[5][0].isMissing () || shifts[6][1].isMissing ();
+    }
+
+    public LocalDate getDate() {
+        return date;
+    }
+
+    public Shift[][] getShifts() {
+        return shifts;
     }
 }

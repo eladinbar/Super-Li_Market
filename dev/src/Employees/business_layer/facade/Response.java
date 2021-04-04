@@ -1,18 +1,19 @@
 package Employees.business_layer.facade;
 
 public class Response {
-    private boolean excepted;
-    private String exceptionMessage;
+    private String errorMessage = null;
 
-    public Response(String exceptionMessage)
+    public Response(String errorMessage)
     {
-        excepted = true;
-        this.exceptionMessage = exceptionMessage;
+        this.errorMessage = errorMessage;
     }
 
-    public Response()
-    {
-        this.excepted = false;
-        exceptionMessage = "";
+    public Response() { }
+
+    public  boolean errorOccured()
+    {return errorMessage != null; }
+
+    public String getErrorMessage() {
+        return errorMessage;
     }
 }

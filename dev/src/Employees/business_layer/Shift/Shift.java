@@ -3,6 +3,7 @@ package Employees.business_layer.Shift;
 import Employees.EmployeeException;
 import Employees.business_layer.Employee.EmployeeController;
 import Employees.business_layer.Employee.Role;
+import Employees.business_layer.facade.facadeObject.FacadeShift;
 
 import java.time.LocalDate;
 import java.util.*;
@@ -29,6 +30,13 @@ public class Shift {
         this.manning = new HashMap<> ();
         this.type = type;
         this.mORe = mORe;
+    }
+
+    public Shift(FacadeShift facadeShift) {
+        date = facadeShift.getDate();
+        manning = facadeShift.getManning();
+        type = facadeShift.getType();
+        mORe = facadeShift.getmORe();
     }
 
     public String getType() {
@@ -93,7 +101,7 @@ public class Shift {
 
     public void createManning(EmployeeController employeeController) throws EmployeeException {
         HashMap<Role, Integer> manning = ShiftTypes.getInstance ().getShiftTypeManning ( type );
-        int[] free;
+        List<Integer> free;
         List<Integer> work = new ArrayList<> (  );
         for(Map.Entry<Role, Integer> entery: manning.entrySet ())
         {
@@ -112,14 +120,14 @@ public class Shift {
         }
     }
 
-    private int[] getFree(int[] canWork, List<Integer> work)
+    private int[] getFree(List<Integer> canWork, List<Integer> work)
     {
-        int[] free = new int[canWork.length - work.size ()];
+        int[] free = new int[canWork.size () - work.size ()];
         int index = 0;
-        for(int i = 0; i < canWork.length; i ++)
+        for(int i = 0; i < canWork.size (); i ++)
         {
-            if(!work.contains ( canWork[i]))
-                free[index++] = canWork[i];
+            if(!work.contains ( canWork.get ( i )))
+                free[index++] = canWork.get ( i );
         }
         return free;
     }
@@ -130,5 +138,9 @@ public class Shift {
             return -1;
         Random rand = new Random (  );
         return rand.nextInt ( free.length );
+    }
+
+    public int getmORe() {
+        return mORe;
     }
 }
