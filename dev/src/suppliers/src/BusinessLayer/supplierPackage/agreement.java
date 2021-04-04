@@ -4,13 +4,13 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class agreement {
-    private Map<Integer, Integer> products;
-    private Map<Integer, Integer> prices;
+    private Map<int, int> products;
+    private Map<int, int> prices;
     private quantityList ql;
 
-    public agreement(quantityList ql) {
-        this.ql = ql;
-        products=new HashMap<>();
-        prices=new HashMap<>();
+    public agreement() {
+        this.ql=null;
+        products=new HashMap<int,int>();
+        prices=new HashMap<int,int>();
     }
 }
