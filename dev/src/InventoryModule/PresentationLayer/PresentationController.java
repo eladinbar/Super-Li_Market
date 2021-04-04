@@ -90,9 +90,7 @@ public class PresentationController implements Runnable {
     }
 
     public void showItem() {
-        System.out.println("Enter item ID: ");
-        Scanner scan = new Scanner(System.in);
-        int itemID = scan.nextInt();
+        int itemID = getItemIDFromUser();
         ResponseT<Item> r = InventoryService.getInventoryService().getItem(itemID);
         try {
             menu.printItemPrompt(r.getDate());
@@ -102,9 +100,7 @@ public class PresentationController implements Runnable {
     }
 
     public void editItem() {
-        System.out.println("Enter item ID: ");
-        Scanner scan = new Scanner(System.in);
-        int itemID = scan.nextInt();
+        int itemID = getItemIDFromUser();
         ResponseT<Item> r = InventoryService.getInventoryService().getItem(itemID);
         try {
             menu.printItemPrompt(r.getDate());
@@ -115,6 +111,12 @@ public class PresentationController implements Runnable {
 
         editItemChoiceInput(itemID);
 
+    }
+
+    private int getItemIDFromUser() {
+        System.out.println("Enter item ID: ");
+        Scanner scan = new Scanner(System.in);
+        return scan.nextInt();
     }
 
     private void editItemChoiceInput(int itemId){
@@ -180,6 +182,13 @@ public class PresentationController implements Runnable {
     }
 
     public void removeItem() {
+        int itemID = getItemIDFromUser();
+        Response r = service.removeItem(itemID);
+        if(r.isErrorOccurred()){
+            menu.ErrorPrompt(r.getMessage());
+        } else {
+            System.out.println("Item removed successfully");
+        }
     }
 
     public void addCategory() {
