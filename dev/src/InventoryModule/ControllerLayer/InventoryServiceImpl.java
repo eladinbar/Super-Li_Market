@@ -8,6 +8,11 @@ import java.util.Date;
 import java.util.List;
 
 public class InventoryServiceImpl implements InventoryService{
+    private InventoryController inventoryController;
+
+    public InventoryServiceImpl() {
+        inventoryController = new InventoryController();
+    }
 
     @Override
     public Response addItem(int id, String name, String categoryName, double costPrice, double sellingPrice,
