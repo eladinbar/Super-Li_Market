@@ -82,7 +82,7 @@ public class WeeklyShiftSchedule {
         shifts[shift.getDate ().getDayOfWeek ().getValue ()][i] = shift;
     }
 
-    public void recommendShifts(EmployeeController employeeController, int i) {
+    public void recommendShifts(EmployeeController employeeController, int i) throws EmployeeException {
         shifts[i][0].createManning ( employeeController );
         shifts[i][1].createManning ( employeeController );
     }

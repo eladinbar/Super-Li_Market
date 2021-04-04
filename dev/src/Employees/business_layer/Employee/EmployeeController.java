@@ -1,5 +1,7 @@
 package Employees.business_layer.Employee;
 
+import Employees.EmployeeException;
+
 import java.time.LocalDate;
 import java.util.Date;
 import java.util.HashMap;
@@ -10,14 +12,14 @@ public class EmployeeController {
     private HashMap<Integer, Employee> employees;
     private Employee loggedIn;
 
-    public EmployeeController(Employee employee){
-        this.loggedIn = employee;
+    public EmployeeController(){
+        this.loggedIn = null;
         employees = new HashMap<Integer, Employee>();
     }
 
-    public void login(int ID, Role role){
+    public void login(int ID, Role role) throws EmployeeException {
         if(loggedIn!= null){
-            throw new EmployeeExeption("Two users cannot be logged in at the same time");
+            throw new EmployeeException("Two users cannot be logged in at the same time");
         }
         if(!employees.containsKey(ID)) {
             throw new EmployeeExeption("Employee not found");
@@ -118,7 +120,7 @@ public class EmployeeController {
         toUpdate.setDaysOff(daysOff);
     }
 
-    public LinkedList<Integer> getRoleinDate(LocalDate date, Role roleName, int shift){
+    public LinkedList<Integer> getRoleInDate(LocalDate date, Role roleName, int shift){
         LinkedList<Integer> specificRole = new LinkedList<>();
         for (Map.Entry<Integer, Employee> entry : employees.entrySet()) {
             Employee employee = entry.getValue();
