@@ -24,6 +24,15 @@ public class Menu {
         System.out.println("\npress q to quit");
     }
 
+    public void printItemModificationMenu(List<String> modList){
+        System.out.println("please enter the number of the desired Operation: ");
+        int option = 1;
+        for (String s : modList) {
+            System.out.println(option + ". " + s);
+            option++;
+        }
+    }
+
     public void printItemPrompt(Item item) throws InvocationTargetException, IllegalAccessException, NoSuchMethodException {
         System.out.println(tf.formatItemMenuColumns());
         Method[] getMethods = {item.getClass().getMethod("getID"), item.getClass().getMethod("getName"),

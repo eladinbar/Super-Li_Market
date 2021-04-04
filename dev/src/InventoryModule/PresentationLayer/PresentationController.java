@@ -11,14 +11,31 @@ import java.util.List;
 import java.util.Scanner;
 
 public class PresentationController implements Runnable {
-    private final InventoryService inventoryService;
+    private final InventoryService service;
     private final Menu menu;
     private final List<String> OperationsList;
+    private final List<String> itemModificationList;
 
     public PresentationController() {
-        this.inventoryService = new InventoryServiceImpl();
+        this.service = new InventoryServiceImpl();
         this.OperationsList = setupOperationsList();
+        this.itemModificationList = setupItemModList();
         this.menu = new Menu();
+    }
+    private ArrayList<String> setupItemModList(){
+        ArrayList<String> list = new ArrayList<>();
+        list.add("change item name");
+        list.add("change item category");
+        list.add("change item cost price");
+        list.add("change item sell price");
+        list.add("change item storage location");
+        list.add("change item store location");
+        list.add("change item storage quantity");
+        list.add("change item store quantity");
+        list.add("Add supplier");
+        list.add("Remove supplier");
+
+        return list;
     }
 
     private ArrayList<String> setupOperationsList() {
@@ -64,7 +81,7 @@ public class PresentationController implements Runnable {
         scan.useDelimiter("\n");
         String category = scan.next();
 
-        Response r = inventoryService.addItem(id,name, category,costP,sellP,minA,storeL,storageL,storageQ,storeQ,idManf, new ArrayList<>());
+        Response r = service.addItem(id,name, category,costP,sellP,minA,storeL,storageL,storageQ,storeQ,idManf, new ArrayList<>());
         if(r.isErrorOccurred()){
             menu.ErrorPrompt(r.getMessage());
         } else {
@@ -85,6 +102,81 @@ public class PresentationController implements Runnable {
     }
 
     public void editItem() {
+        System.out.println("Enter item ID: ");
+        Scanner scan = new Scanner(System.in);
+        int itemID = scan.nextInt();
+        ResponseT<Item> r = InventoryService.getInventoryService().getItem(itemID);
+        try {
+            menu.printItemPrompt(r.getDate());
+        } catch (Exception e) {
+            menu.ErrorPrompt("could not get Item. make sure you entered the Id correctly");
+        }
+        menu.printItemModificationMenu(itemModificationList);
+
+        editItemChoiceInput(itemID);
+
+    }
+
+    private void editItemChoiceInput(int itemId){
+        Scanner scan = new Scanner(System.in);
+        String choice = scan.next();
+        switch (choice){
+            case "1" -> {
+                System.out.println("Enter new item name");
+                scan.useDelimiter("\n");
+                String newName = scan.next();
+                service.modifyItemName(itemId,newName);
+            }
+            case "2" -> {
+                System.out.println("enter new item's category");
+                System.out.println("");
+                scan.useDelimiter("\n");
+                String newCategory = scan.next();
+                service.modifyItemCategory(itemId,newCategory);
+            }
+            case "3" -> {
+                System.out.println("enter new item cost price");
+                double newPrice = scan.nextDouble();
+                service.modifyItemCostPrice(itemId,newPrice);
+            }
+            case "4" -> {
+                System.out.println("enter new item selling price");
+                double newPrice = scan.nextDouble();
+                service.modifyItemSellingPrice(itemId,newPrice);
+            }
+            case "5" -> {
+                System.out.println("enter new item storage location");
+                scan.useDelimiter("\n");
+                String newLocation = scan.next();
+                service.changeItemStorageLocation(itemId,newLocation);
+            }
+            case "6" -> {
+                System.out.println("enter new item store location");
+                scan.useDelimiter("\n");
+                String newLocation = scan.next();
+                service.changeItemShelfLocation(itemId,newLocation);
+            }
+            case "7" -> {
+                System.out.println("enter new item storage quantity");
+                int newQuantity = scan.nextInt();
+                service.modifyItemStorageQuantity(itemId,newQuantity);
+            }
+            case "8" -> {
+                System.out.println("enter new item store quantity");
+                int newQuantity = scan.nextInt();
+                service.modifyItemShelfQuantity(itemId,newQuantity);
+            }
+            case "9" -> {
+                System.out.println("add  new supplier for the item: (enter supplier id)");
+                int newSupplier = scan.nextInt();
+                service.addItemSupplier(itemId,newSupplier);
+            }
+            case "10" -> {
+                System.out.println("remove a supplier for the item: (enter supplier id)");
+                int oldSupplier = scan.nextInt();
+                service.removeItemSupplier(itemId,oldSupplier);
+            }
+        }
     }
 
     public void removeItem() {
