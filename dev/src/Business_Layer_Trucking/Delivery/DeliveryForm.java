@@ -13,9 +13,14 @@ public class DeliveryForm {
 
     public DeliveryForm(int ID, int origin, int destination, HashMap<Item,Integer> items,
                         int leavingWeight, int trID){
-        // TODO need to be completed
-        throw new UnsupportedOperationException();
-    }
+        this.ID=ID;
+        this.origin=origin;
+        this.destination=destination;
+        this.items=items;
+        this.leavingWeight=leavingWeight;
+        this.trID=trID;
+
+        }
 
     public HashMap<Item, Integer> getItems() {
         return items;

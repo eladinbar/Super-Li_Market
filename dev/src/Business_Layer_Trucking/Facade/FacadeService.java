@@ -18,6 +18,7 @@ public class FacadeService {
     //  notiftys when report saved
     private static FacadeService instance =null;
 
+
     private FacadeService(){
         deliveryService =  DeliveryService.getInstance();
         resourcesService =   ResourcesService.getInstance();
@@ -63,7 +64,7 @@ public class FacadeService {
         }
     */
     public FacadeDriver chooseDriver(int driver) {
-
+        // TODO need to check if stands the demands weight
         return resourcesService.chooseDriver(driver);
 
     }
@@ -77,7 +78,9 @@ public class FacadeService {
     }
 
     public void saveReport() {
+
         deliveryService.saveReport();
+        resourcesService.saveReport();
 
     }
 
@@ -137,8 +140,8 @@ public class FacadeService {
         resourcesService.addDriver(ID, name, licenseType);
     }
 
-    public void addSite(String city, int siteID, int deliveryArea, String phoneNumber, String contactName) {
-         deliveryService.addSite(city, siteID, deliveryArea, phoneNumber, contactName );
+    public void addSite(String city, int siteID, int deliveryArea, String phoneNumber, String contactName,String name) {
+         deliveryService.addSite(city, siteID, deliveryArea, phoneNumber, contactName,name );
 
     }
 
@@ -202,6 +205,7 @@ public class FacadeService {
 
 
     }
+
 
     public LinkedList<FacadeSite> getCurrentSites() {
        return deliveryService.getCurrentSites();

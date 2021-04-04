@@ -129,8 +129,8 @@ public class PresentationController {
     }
 
 
-    public void addSite(String city, int siteID, int deliveryArea , String phoneNumber, String contactName) throws  KeyAlreadyExistsException{
-        facadeService.addSite(city, siteID, deliveryArea, phoneNumber, contactName );
+    public void addSite(String city, int siteID, int deliveryArea , String phoneNumber, String contactName,String name) throws  KeyAlreadyExistsException{
+        facadeService.addSite(city, siteID, deliveryArea, phoneNumber, contactName,name );
     }
 
     public void addItem(int id, int weight, String name) throws KeyAlreadyExistsException {

@@ -42,7 +42,7 @@ public class ResourcesService
     }
 
     public void replaceTruck(int truck) {
-        rc.replaceTruck(truck,-1);
+        rc.replaceTruck(truck);
         //TODO check if need to change driver in case we replaced truck
         //we need to send the number of the the truck we want to replace!
     }
@@ -113,5 +113,9 @@ public class ResourcesService
             output.add(new FacadeTruck( entry.getValue()));
         }
         return output;
+    }
+
+    public void saveReport() {
+        rc.saveReport();
     }
 }

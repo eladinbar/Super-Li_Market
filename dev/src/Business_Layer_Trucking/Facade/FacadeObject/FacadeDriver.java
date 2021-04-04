@@ -41,13 +41,11 @@ public class FacadeDriver {
     }
     public void setUnavailable()
     {
-        //TODO implement
-        throw new UnsupportedOperationException();
+        this.available=false;
     }
     public void makeAvailable()
     {
-        //TODO implement
-        throw new UnsupportedOperationException();
+        this.available=true;
     }
 
     public void setID(int ID) {

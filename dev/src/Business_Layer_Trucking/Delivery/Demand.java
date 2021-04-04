@@ -2,12 +2,13 @@ package Business_Layer_Trucking.Delivery;
 
 public class Demand {
     private int itemID;
-    private int Site;
+    private int site;
     private int amount;
 
     public Demand(int itemID, int site_id, int amount){
-        // TODO need to be completed
-        throw new UnsupportedOperationException();
+        this.itemID=itemID;
+        this.site=site_id;
+        this.amount=amount;
     }
 
     public int getAmount() {
@@ -19,7 +20,7 @@ public class Demand {
     }
 
     public int getSite() {
-        return Site;
+        return site;
     }
 
     public void setAmount(int amount) {
@@ -31,6 +32,6 @@ public class Demand {
     }
 
     public void setSite(int site) {
-        Site = site;
+        site = site;
     }
 }

@@ -44,7 +44,7 @@ public class DeliveryService {
             throw new IllegalArgumentException("one of arguments doesn't match");
         }
         FacadeDemand fc = new FacadeDemand(d);
-        dc.addItemToDeliveryForm(d, supplyAmount, false);
+        dc.addItemToDeliveryForm(d, supplyAmount, false,siteID);
         return fc;
 
 
@@ -126,9 +126,9 @@ public class DeliveryService {
     }
 
     public void addSite(String city, int siteID, int deliveryArea,
-                        String phoneNumber, String contactName) throws KeyAlreadyExistsException {
+                        String phoneNumber, String contactName,String name) throws KeyAlreadyExistsException {
 
-        dc.addSite(city, siteID, deliveryArea, phoneNumber, contactName );
+        dc.addSite(city, siteID, deliveryArea, phoneNumber, contactName,name );
     }
 
     public void addItem(int id, int weight, String name) throws  KeyAlreadyExistsException {dc.addItem(id, weight,name);}
