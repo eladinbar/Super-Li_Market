@@ -11,9 +11,9 @@ import java.util.List;
 import java.util.Scanner;
 
 public class PresentationController implements Runnable {
-    private InventoryService inventoryService;
-    private Menu menu;
-    private List<String> OperationsList;
+    private final InventoryService inventoryService;
+    private final Menu menu;
+    private final List<String> OperationsList;
 
     public PresentationController() {
         this.inventoryService = new InventoryServiceImpl();
@@ -117,33 +117,15 @@ public class PresentationController implements Runnable {
         Scanner scan = new Scanner(System.in);
         String choice = scan.next();
         switch (choice) {
-            case "1":
-                showItem();
-                break;
-            case "2":
-                addItem();
-                break;
-            case "3":
-                editItem();
-                break;
-            case "4":
-                removeItem();
-                break;
-            case "5":
-                showCategory();
-                break;
-            case "6":
-                addCategory();
-                break;
-            case "7":
-                editCategory();
-                break;
-            case "8":
-                removeCategory();
-                break;
-            default:
-                menu.ErrorPrompt(choice);
-                break;
+            case "1" -> showItem();
+            case "2" -> addItem();
+            case "3" -> editItem();
+            case "4" -> removeItem();
+            case "5" -> showCategory();
+            case "6" -> addCategory();
+            case "7" -> editCategory();
+            case "8" -> removeCategory();
+            default -> menu.ErrorPrompt(choice);
         }
     }
 }
