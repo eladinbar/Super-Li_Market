@@ -31,7 +31,7 @@ public class PresentationController {
 
     }
     public boolean continueAddDemandToReport(int itemNumber, int amount, int siteID) throws IllegalArgumentException {
-        facadeService.addDemandToReport(itemNumber , amount, siteID);
+        facadeService.continueAddDemandToReport(itemNumber,amount,siteID);
         return true;
     }
     public void CreateReport()
@@ -46,53 +46,6 @@ public class PresentationController {
     }
 
 
-    // TODO need to check if really needed
-    public void rePlanning()
-    {
-        /*int option=-1;
-        while (option != -1)
-        switch (option){
-            case 1://remove site
-            {
-                facadeService.displaySites();
-                int site=-1;
-                facadeService.removeDestination(site);
-            }
-            case 2://switch demand(=site)
-            {
-                int site =-1;
-                facadeService.removeDestination(site);
-                System.out.println("choose demand to add");
-                int demand=-1;
-                System.out.println("choose amount");
-                int amount=-1;
-                FacadeDemand new_FD = facadeService.addDemandToReport(demand,amount);
-                while (new_FD != null){
-                    new_FD = facadeService.addDemandToReport(demand,amount);
-                }
-
-            }
-            case 3://replace truck
-            {
-                System.out.println("choose new truck");
-                HashMap  trucks =facadeService.getAvailableTrucks();
-
-                int truck=-1;
-                facadeService.replaceTruck(truck);
-            }
-            case 4://remove items
-            {
-                System.out.println("choose item to remove");
-
-                LinkedList<FacadeDemand> items = facadeService.getItemsOnTruck();
-                int item=-1;
-
-                facadeService.removeItemFromReport(item);
-            }
-        }
-        return facadeService.getCurrTruckReport();*/
-
-    }
 
     public void makeUnavailable_Driver(int driver)
     {
@@ -143,7 +96,7 @@ public class PresentationController {
         facadeService.removeItemFromPool(item);
     }
 
-    public LinkedList<FacadeDemand> showDemands() {
+    public LinkedList<FacadeDemand> showDemands() throws NoSuchElementException {
         return facadeService.showDemands();
     }
 
@@ -155,9 +108,6 @@ public class PresentationController {
         return facadeService.getSiteName(site);
     }
 
-    public void closeReport() {
-        facadeService.closeReport();
-    }
 
 
     public LinkedList<FacadeTruck> getAvailableTrucks() {
@@ -242,4 +192,24 @@ public class PresentationController {
     public LinkedList<FacadeItem> getAllItems() {
         return facadeService.getAllItems();
     }
+
+    public LinkedList<FacadeSite> getAllSites() throws NoSuchElementException{
+        return facadeService.getAllSites();
+    }
+
+    public void addDemandToSystem(int itemId, int site, int amount) {
+        facadeService.addDemandToSystem(itemId,site,amount);
+    }
+
+
+    // TODO
+//       need to check the exception go upwards always.
+//       need to check all exception handle
+    //  need to check truck max weight less then truck's Neto
+    //  need to implement the initial state better
+
+
+
+
+
 }

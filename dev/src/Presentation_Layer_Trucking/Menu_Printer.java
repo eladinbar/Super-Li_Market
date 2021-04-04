@@ -7,6 +7,7 @@ import javax.management.openmbean.KeyAlreadyExistsException;
 import java.time.LocalTime;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Scanner;
 
 public class Menu_Printer {
@@ -24,94 +25,152 @@ public class Menu_Printer {
 
     public void startMenu(){
         Scanner scanner =  new Scanner(System.in);
-        System.out.println("Welcome to Trucking Menu!\nplease choose the option you'd like:");
-        int spot =1;
-        System.out.println(spot +". Create new Trucking Report"); spot++;
-        System.out.println(spot + ".\tShow Drivers"); spot++;
-        System.out.println(spot + ".\tShow Trucks"); spot++;
-        System.out.println(spot + ".\tShow Current Demands"); spot++; //4
-        System.out.println(spot + ".\tAdd new Driver to the System"); spot++;
-        System.out.println(spot + "\tAdd new Truck to the System"); spot++;
-        System.out.println(spot + ".\tAdd new site to the System"); spot ++;
-        System.out.println(spot + ".\tAdd new item to the System"); spot ++;//8
-        System.out.println(spot + ".\tMake truck unavailable"); spot++;
-        System.out.println(spot + ".\tMake driver unavailable"); spot++;
-        System.out.println(spot + ".\tMake truck available"); spot++;
-        System.out.println(spot + ".\tMake driver available"); spot++;// 12
-        System.out.println(spot + ".\tRemove item from the Pool");
-        System.out.println(spot + ".\tGo back to Main Menu");
-        // TODO remove item/ site and whatever methods
+        boolean keepGoing= true;
+        while (keepGoing) {
+            System.out.println("\n\nWelcome to Trucking Menu!\nplease choose the option you'd like:");
+            int spot = 1;
+            System.out.println(spot + ". Create new Trucking Report");spot++;
+            System.out.println(spot + ".\tShow Drivers"); spot++;
+            System.out.println(spot + ".\tShow Trucks");spot++;
+            System.out.println(spot + ".\tShow Current Demands");spot++; //4
+            System.out.println(spot + ".\tAdd new Driver to the System");spot++;
+            System.out.println(spot + "\tAdd new Truck to the System");spot++;
+            System.out.println(spot + ".\tAdd new site to the System");spot++;
+            System.out.println(spot + ".\tAdd new item to the System");spot++;//8
+            System.out.println(spot + ".\tAdd new Demand to the System");spot++;
+            System.out.println(spot + ".\tMake truck unavailable");spot++;
+            System.out.println(spot + ".\tMake driver unavailable");spot++;
+            System.out.println(spot + ".\tMake truck available");spot++;//12
+            System.out.println(spot + ".\tMake driver available");spot++;
+            System.out.println(spot + ".\tRemove item from the Pool"); spot++;
+            System.out.println(spot + ".\tGo back to Main Menu");
+            // TODO remove item/ site and whatever methods
 
 
-        int choose = scanner.nextInt();
-        switch (choose){
-            case 1:
-                pc.CreateReport();
-                //chooseOrigin(scanner);
-                chooseDemands(scanner);
-                // TODO need to print the weight received
-                chooseTruckAndDriver(scanner);
-                chooseLeavingHour(scanner);
-                pc.saveReport();
+            int choose = scanner.nextInt();
+            switch (choose) {
+                case 1:
+                    // TODO exception need to stop running and not insert into next func
+                    pc.CreateReport();
+                    //chooseOrigin(scanner);
+                    chooseDemands(scanner);
+                    // TODO need to print the weight received
+                    chooseTruckAndDriver(scanner);
+                    chooseLeavingHour(scanner);
+                    pc.saveReport();
+                    break;
 
 
-
-
-
-            case 2:
-                // TODO NTH -  insert time to finish if unavailable
-                LinkedList<FacadeDriver> drivers =  pc.getDrivers();
-                if (drivers == null) System.out.println("no Drivers in the system yet");
-                else {
-                    for (FacadeDriver facadeDriver : drivers) {
-                        System.out.println(facadeDriver.getName() + ":\n" + "Driver ID: " + facadeDriver.getID() +
-                                " License Type: " + facadeDriver.getLicenseType() +
-                                " Available: " + facadeDriver.isAvailable());
+                case 2:
+                    // TODO NTH -  insert time to finish if unavailable
+                    LinkedList<FacadeDriver> drivers = pc.getDrivers();
+                    if (drivers == null) System.out.println("no Drivers in the system yet");
+                    else {
+                        for (FacadeDriver facadeDriver : drivers) {
+                            System.out.println(facadeDriver.getName() + ":\n" + "Driver ID: " + facadeDriver.getID() +
+                                    " License Type: " + facadeDriver.getLicenseType() +
+                                    " Available: " + facadeDriver.isAvailable());
+                        }
                     }
-                }
+                    break;
 
-            case 3:
-                LinkedList<FacadeTruck> trucks = pc.getTrucks();
-                for(FacadeTruck truck : trucks){
-                    System.out.println("Trucks License Number: " + truck.getLicenseNumber() +
-                            "\n model: " + truck.getModel() + " maxWeight: " + truck.getMaxWeight()
-                            + "Available: " + truck.isAvailable() );
-                }
-            case 4:
-                LinkedList<FacadeDemand>  demands = pc.showDemands();
-                if (demands == null) {
-                    System.out.println("no demands left to display, Well done Sir!");
-                }
-                else {
-                    demands = sortDemandsBySite(demands);
+                case 3:
+                    LinkedList<FacadeTruck> trucks = pc.getTrucks();
+                    for (FacadeTruck truck : trucks) {
+                        System.out.println("Trucks License Number: " + truck.getLicenseNumber() +
+                                "\nmodel: " + truck.getModel() + " maxWeight: " + truck.getMaxWeight()
+                                + " Available: " + truck.isAvailable());
+                    }
+                    break;
+                case 4:
+                    try {
+                        LinkedList<FacadeDemand> demands = pc.showDemands();
+                        demands = sortDemandsBySite(demands);
 
-                    printDemands(demands);
-                }
+                        printDemands(demands);
 
-            case 5:
-                addNewDriver(scanner);
-            case 6:
-                addNewTruck(scanner);
-            case 7:
-                addSite(scanner);
-            case 8:
-                addItem(scanner);
-            case 9:
-                makeTruckUnavailable(scanner);
-            case 10:
-                makeDriverUnavailable(scanner);
-            case 11:
-                makeTruckAvailable(scanner);
-            case 12:
-                makeDriverAvailable(scanner);
-            case 13:
-                removeItemFromPool(scanner);
-            case 14:
-                System.out.println("this option isn't supported yet. to be continue");
-            default:
+                    }
+                    catch (NoSuchElementException ne) {
+                        System.out.println(ne.getMessage());
+                    }
 
+                    break;
+
+                case 5:
+                    addNewDriver(scanner);
+                    break;
+                case 6:
+                    addNewTruck(scanner);
+                    break;
+                case 7:
+                    addSite(scanner);
+                    break;
+                case 8:
+                    addItem(scanner);
+                    break;
+
+                case 9:
+                    addDemandToSystem(scanner);
+                case 10:
+                    makeTruckUnavailable(scanner);
+                    break;
+                case 11:
+                    makeDriverUnavailable(scanner);
+                    break;
+                case 12:
+                    makeTruckAvailable(scanner);
+                    break;
+                case 13:
+                    makeDriverAvailable(scanner);
+                    break;
+                case 14:
+                    removeItemFromPool(scanner);
+                    break;
+                case 15:
+                    System.out.println("this option isn't supported yet. to be continue");
+                    keepGoing = false;
+                    break;
+                default:
+
+            }
         }
 
+    }
+
+    private void addDemandToSystem(Scanner scanner) {
+        int itemId;
+        int site;
+        int amount;
+        System.out.println("Please choose the item you'd like to delivery:");
+        try {
+            LinkedList<FacadeItem> items = pc.getAllItems();
+            for (FacadeItem item : items)
+                System.out.println("item id: " +item.getID() +  "\tname: "+ item.getName());
+                itemId=scanner.nextInt();
+            try{
+                LinkedList<FacadeSite> sites = pc.getAllSites();
+                System.out.println("please choose the site you'd like to Deliver to");
+                for (FacadeSite s: sites){
+                    System.out.println(s.getName()+":\tsiteID: "+s.getSiteID() + "\tcity: " + s.getCity() + "\t\tin Delivery Area: "  + s.getDeliveryArea());
+                }
+                site=scanner.nextInt();
+                try{
+                    System.out.print("please choose the amount you'd like to Deliver:");
+                    amount=scanner.nextInt();
+                    pc.addDemandToSystem(itemId, site, amount);
+                }
+                catch (NoSuchElementException ne){
+                    System.out.println(ne.getMessage());
+                }
+
+            }catch (NoSuchElementException ne){
+                System.out.println(ne.getMessage());
+            }
+
+
+        }catch (NoSuchElementException ne){
+            System.out.println(ne.getMessage());
+        }
     }
 
     private void removeItemFromPool(Scanner scanner) {
@@ -138,8 +197,8 @@ public class Menu_Printer {
             int id = scanner.nextInt();
             System.out.print("item weight: ");
             int weight = scanner.nextInt();
-            System.out.println("item name: ");
-            String name = scanner.nextLine();
+            System.out.print("item name: ");
+            String name = scanner.next();
             try {
                 pc.addItem(id, weight, name);
                 con = false;
@@ -154,18 +213,18 @@ public class Menu_Printer {
         boolean con = true;
         while(con) {
             System.out.print("City name:");
-            String city = scanner.nextLine();
+            String city = scanner.next();
             // TODO maybe site Id ours
             System.out.print("siteID:");
             int siteID = scanner.nextInt();
             System.out.print("Delivery area ID:");
             int deliveryArea = scanner.nextInt();
             System.out.print("contact Name:");
-            String contactName = scanner.nextLine();
-            System.out.println("contact Number:");
-            String phoneNumber = scanner.nextLine();
-            System.out.println("Name:");
-            String name=scanner.nextLine();
+            String contactName = scanner.next();
+            System.out.print("contact Number:");
+            String phoneNumber = scanner.next();
+            System.out.print("Site Name:");
+            String name=scanner.next();
             try {
                 pc.addSite(city, siteID, deliveryArea, phoneNumber, contactName,name);
                 con = false;
@@ -219,7 +278,6 @@ public class Menu_Printer {
                         " License Type: " + facadeDriver.getLicenseType() +
                         " Available: " + facadeDriver.isAvailable());
             }
-            //TODO display only available drivers
             System.out.println("Choose Driver by id");
             int driver=scanner.nextInt();
             pc.makeUnavailable_Driver(driver);
@@ -264,8 +322,10 @@ public class Menu_Printer {
 
     private void addNewDriver(Scanner scanner) {
         // TODO this method need to be checked with workers branch, might be more demands
+        // TODO need to check length of ID and only numbers
         System.out.print("ID: ");
         int ID = scanner.nextInt();
+
         System.out.print("Driver's name: ");
         String name = scanner.next();
         // TODO need to check for legal name
@@ -277,9 +337,11 @@ public class Menu_Printer {
                 case 1:
                     licenseType = Driver.License.C1;
                     stop = true;
+                    break;
                 case 2:
                     licenseType = Driver.License.C;
                     stop = true;
+                    break;
                 default:
                     System.out.println("this isn't a legal option, choose again between 1 or 2");
 
@@ -319,69 +381,70 @@ public class Menu_Printer {
     private void chooseDemands(Scanner scanner) {
         boolean con = true;
         while (con) {
-            LinkedList<FacadeDemand>  demands = pc.showDemands();
-            if (demands == null) {
-                System.out.println("no demands left to display, Well done Sir!");
-            }
-            else {
-                demands =  sortDemandsBySite(demands);
-                printDemands(demands);
-                try {
-                    // TODO need to check how to finish
-                    System.out.println("if you'de like to finish, insert -1 in item number");
-                    System.out.print("item number: ");
-                    int itemNumber = scanner.nextInt();
-                    System.out.println();
-                    System.out.print("amount: ");
-                    int amount = scanner.nextInt();
-                    System.out.println();
+            try {
+                LinkedList<FacadeDemand> demands = pc.showDemands();
+                if (demands == null) {
+                    System.out.println("no demands left to display, Well done Sir!");
+                } else {
+                    demands = sortDemandsBySite(demands);
+                    printDemands(demands);
+                    try {
+                        System.out.println("if you'de like to finish, insert -1 in item number");
+                        System.out.print("item number: ");
+                        int itemNumber = scanner.nextInt();
+                        System.out.println();
+                        System.out.print("amount: ");
+                        int amount = scanner.nextInt();
+                        System.out.println();
 
-                    System.out.println("site: ");
-                    int siteID = scanner.nextInt();
+                        System.out.print("site: ");
+                        int siteID = scanner.nextInt();
 
-                    con = pc.addDemandToReport(itemNumber, amount,siteID);
+                        con = pc.addDemandToReport(itemNumber, amount, siteID);
 
-                } catch (IllegalStateException e) {
-                    con = false;
-                    System.out.println("you chose different delivery area from the currents," +
-                            " would you like to continue? y for yes, n for not");
-                    String answer = scanner.nextLine();
-                    switch (answer) {
-                        case "y":
-                            boolean enough = false;
-                            while (!enough) {
-                                demands = pc.showDemands();
-                                if (demands == null) {
-                                    System.out.println("no demands left to display, Well done Sir!");
+                    } catch (IllegalStateException e) {
+                        con = false;
+                        System.out.println("you chose different delivery area from the currents," +
+                                " would you like to continue? y for yes, n for not");
+                        String answer = scanner.nextLine();
+                        switch (answer) {
+                            case "y":
+                                boolean enough = false;
+                                while (!enough) {
+                                    demands = pc.showDemands();
+                                    if (demands == null) {
+                                        System.out.println("no demands left to display, Well done Sir!");
+                                    } else {
+                                        demands = sortDemandsBySite(demands);
+                                        printDemands(demands);
+                                        System.out.print("item number: ");
+                                        int itemNumber = scanner.nextInt();
+                                        System.out.println();
+                                        System.out.print("amount: ");
+                                        int amount = scanner.nextInt();
+                                        System.out.println();
+                                        System.out.println("site id:");
+                                        int siteID = scanner.nextInt();
+                                        enough = pc.continueAddDemandToReport(itemNumber, amount, siteID);
+                                    }
                                 }
-                                else {
-                                    demands =  sortDemandsBySite(demands);
-                                    printDemands(demands);
-                                    System.out.print("item number: ");
-                                    int itemNumber = scanner.nextInt();
-                                    System.out.println();
-                                    System.out.print("amount: ");
-                                    int amount = scanner.nextInt();
-                                    System.out.println();
-                                    System.out.println("site id:");
-                                    int siteID = scanner.nextInt();
-                                    enough = pc.continueAddDemandToReport(itemNumber, amount, siteID);
-                                }
-                            }
-                        case "n":
-
-                            // TODO need to think where should it get out to
-                            pc.closeReport();
+                                break;
+                            case "n":
 
 
-                            return;
-                        default:
-                            System.out.println("theres no such option, choose between y or n explicit");
+                                return;
+
+                            default:
+                                System.out.println("theres no such option, choose between y or n explicit");
+                        }
+
+                    } catch (Exception e) {
+                        rePlan(scanner);
                     }
-
-                } catch (Exception e) {
-                    rePlan(scanner);
                 }
+            }catch (NoSuchElementException ne) {
+                System.out.println(ne.getMessage());
+                con = false;
             }
         }
     }
@@ -390,9 +453,9 @@ public class Menu_Printer {
         System.out.println("the current demands:");
         for (FacadeDemand fd : demands) {
             String itemName = pc.getItemName(fd.getItemID());
-            System.out.println( "item id: " + fd.getItemID() + itemName + " amount needed" + fd.getAmount() +
-                    " to " + pc.getSiteName(fd.getSite()) + " site id: " + fd.getSite()
-                    + " item weight: "  + pc.getWeight(fd.getItemID()))   ;
+            System.out.println( "item id: " + fd.getItemID() + "\t" +itemName + "\tamount needed:" + fd.getAmount() +
+                    "\tto: " + pc.getSiteName(fd.getSite()) + "\tsite id: " + fd.getSite()
+                    + "\titem weight: "  + pc.getWeight(fd.getItemID()))   ;
         }
     }
 
@@ -503,5 +566,14 @@ public class Menu_Printer {
             con = pc.removeDestination(siteID);
             if (!con) System.out.println("the chosen site id doesnt exist here!");
         }
+    }
+
+    public void putInitialTestState(){
+        pc.addDriver(203834734,"Ido" ,Driver.License.C1);
+        pc.addTruck("Volvo",123 ,1000, 10000);
+        pc.addSite("Afula", 1,1,"0502008215" , "Raz" , "Tnuva");
+        pc.addItem(1,100,"milk");
+        pc.addItem(2 , 200 , "cream cheese");
+        pc.addDemandToSystem(1, 1, 100);
     }
 }

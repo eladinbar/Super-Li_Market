@@ -46,10 +46,11 @@ public class DeliveryController {
 
 
 
-    public void createNewTruckingReport(){
+    public int createNewTruckingReport(){
         currDF =  new LinkedList<>();
         currTR =  new TruckingReport(lastReportID++);
-        currTR.setID(lastReportID+1);
+        currTR.setID(lastReportID++);
+        return lastReportID ;
 
     }
 
@@ -115,8 +116,8 @@ public class DeliveryController {
         if (currDF.isEmpty())//if list is empty
         {
 
-            HashMap<Item,Integer> itemsOnDF=new HashMap<>();
-            itemsOnDF.put(items.get(demand.getItemID()),amount);
+            HashMap<Integer,Integer> itemsOnDF=new HashMap<>();
+            itemsOnDF.put(items.get(demand.getItemID()).getID(),amount);
             DeliveryForm newDF=new DeliveryForm(1,siteID,demand.getSite(),itemsOnDF,
                     items.get(demand.getItemID()).getWeight()*amount,currTR.getID());
         }
@@ -129,7 +130,7 @@ public class DeliveryController {
                 {
                     HashMap<Item,Integer> itemsOnDF=new HashMap<>();
                     itemsOnDF.put(items.get(demand.getItemID()),amount);
-                    df.getItems().put(items.get(demand.getItemID()),amount);
+                    df.getItems().put(items.get(demand.getItemID()).getID(),amount);
                     df.setLeavingWeight(df.getLeavingWeight()+items.get(demand.getItemID()).getWeight()*amount);
                     break;
                 }
@@ -178,6 +179,7 @@ public class DeliveryController {
     }
 
     public LinkedList<Demand> getDemands() {
+        // TODO
         throw new UnsupportedOperationException();
     }
 
@@ -229,7 +231,7 @@ public class DeliveryController {
 
     }
 
-    public TruckingReport getTruckReport(int trNumber) throws Exception{
+    public TruckingReport getTruckReport(int trNumber) throws NoSuchElementException{
         if (oldTruckingReports.containsKey(trNumber))
         {
             return oldTruckingReports.get(trNumber);
@@ -263,9 +265,9 @@ public class DeliveryController {
             {
                 if (demand.getAmount()>=df.getItems().get(demand.getItemID()))
                     df.getItems().remove(demand.getItemID());
-                else for(Map.Entry<Item,Integer> entry:df.getItems().entrySet())
+                else for(Map.Entry<Integer,Integer> entry:df.getItems().entrySet())
                 {
-                    if(entry.getKey().getID()==demand.getItemID())
+                    if(entry.getKey()==demand.getItemID())
                     {
                         entry.setValue(entry.getValue()-demand.getAmount());
                     }
@@ -305,13 +307,16 @@ public class DeliveryController {
         else throw new NoSuchElementException();
     }
 
-    public LinkedList<Demand> showDemands() {
+    public LinkedList<Demand> showDemands() throws NoSuchElementException {
         // show demands that was not added
         if (!demands.isEmpty())
         {
             LinkedList<Demand> result=new LinkedList<>();
             for(Demand d:demands)
             {
+                if (currDF.isEmpty()){
+                    return demands;
+                }
                 for (DeliveryForm df:currDF)
                 {
                     if(!(df.getItems().containsKey(d.getItemID())&&df.getDestination()==d.getSite()&&d.getAmount()>0))
@@ -320,10 +325,10 @@ public class DeliveryController {
                     }
                 }
             }
-
+            return result;
         }
+        throw new NoSuchElementException("no demand found yet");
 
-        return null;
     }
 
     public String getItemName(int itemID)throws NoSuchElementException {
@@ -338,6 +343,10 @@ public class DeliveryController {
         else throw new NoSuchElementException();
     }
 
+    /**
+     *
+     * @return
+     */
     public LinkedList<Site> getCurrentSites() {
         LinkedList<Site> result=new LinkedList<>();
         for (Map.Entry<Integer,Site> entry:sites.entrySet())
@@ -356,9 +365,9 @@ public class DeliveryController {
         LinkedList<Demand> result=new LinkedList<>();
         for (DeliveryForm df: currDF)
         {
-            for (Map.Entry<Item,Integer> entry:df.getItems().entrySet())
+            for (Map.Entry<Integer,Integer> entry:df.getItems().entrySet())
             {
-                Demand d=new Demand(entry.getKey().getID(),df.getDestination(),entry.getValue());
+                Demand d=new Demand(entry.getKey(),df.getDestination(),entry.getValue());
                 result.add(d);
             }
         }
@@ -375,4 +384,40 @@ public class DeliveryController {
     }
 
 
+    public LinkedList<Site> getAllSites() throws NoSuchElementException {
+        LinkedList<Site> sites = new LinkedList<>();
+        if (!this.sites.isEmpty()) {
+            for (Map.Entry<Integer, Site> entry : this.sites.entrySet()) {
+                sites.add(entry.getValue());
+            }
+
+            return sites;
+        }
+        else throw new NoSuchElementException("No sites in the system");
+    }
+
+    public void addDemandToSystem(int itemId, int site, int amount) {
+        if (!items.containsKey(itemId))
+        {
+            throw new NoSuchElementException("Entered wrong item id");
+        }
+        if (!sites.containsKey(site))
+        {
+            throw new NoSuchElementException("Entered wrong site id");
+        }
+        boolean inserted=false;
+        for (Demand d:demands)
+        {
+            if (d.getItemID()==itemId&&d.getSite()==site) {
+                d.setAmount(d.getAmount() + amount);
+                inserted=true;
+                break;
+            }
+        }
+           if (!inserted)
+           {
+               demands.add(new Demand(itemId,site,amount));
+           }
+
+    }
 }

@@ -49,13 +49,11 @@ public class FacadeTruck implements FacadeObject{
     }
     public void setUnavailable()
     {
-        //TODO implement
-        throw new UnsupportedOperationException();
+        this.available = false;
     }
     public void makeAvailable()
     {
-        //TODO implement
-        throw new UnsupportedOperationException();
+       this.available = true;
     }
 
 }

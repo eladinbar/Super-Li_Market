@@ -53,12 +53,12 @@ public class DeliveryService {
 
 
 
-    public void createTruckingReport() {
-        dc.createNewTruckingReport();
+    public int  createTruckingReport() {
+        return dc.createNewTruckingReport();
 
     }
 
-    public void chooseLeavingHour(LocalTime leavingHour) {//TODO- for ido - change it.(if needed! )
+    public void chooseLeavingHour(LocalTime leavingHour) throws IllegalArgumentException {
 
         dc.chooseLeavingHour(leavingHour);
 
@@ -73,22 +73,24 @@ public class DeliveryService {
         dc.saveReport();
     }
 
-    public void continueAddDemandToReport(int first, int second){
-        //TODO implement
-        // notice i changed implementation way : from now "downwards" united continueAddDemandToReport and
-        //  addItemToDeliveryForm to one method and added boolean
-        //get the right demand from the demands according to first
-        //dc.addItemToDeliveryForm(first,second,true);
+    public FacadeDemand continueAddDemandToReport(int itemID, int supplyAmount, int siteID){
+        LinkedList<Demand> demands = dc.getDemands();
+        Demand d=null;
+        for (Demand curr:  demands) {
+            if (curr.getItemID() ==  itemID && curr.getAmount() < supplyAmount && curr.getSite() == siteID){
+                d = curr;
+            }
+        }
+        if (d == null){
+            throw new IllegalArgumentException("one of arguments doesn't match");
+        }
+        FacadeDemand fc = new FacadeDemand(d);
+        dc.addItemToDeliveryForm(d, supplyAmount, true,siteID);
+        return fc;
     }
 
-    public TruckingReport getTruckReport(int trNumber) {//TODO- for ido - change it.(if needed! )
-        try {
-            return dc.getTruckReport(trNumber);
-        }
-        catch (Exception e){
-            return null;
-        }
-
+    public TruckingReport getTruckReport(int trNumber) throws NoSuchElementException{
+        return dc.getTruckReport(trNumber);
     }
 
     public FacadeDeliveryForm getDeliveryForm(int dfNumber) {
@@ -104,11 +106,8 @@ public class DeliveryService {
 
         dc.removeItemFromReport(new Demand(demand.getItemID(),demand.getSite(),amount));
     }
-    public void removeItemFromPool(int item) {
-        try {
-            dc.removeItemFromPool(item);
-        }
-        catch (Exception e){}
+    public void removeItemFromPool(int item) throws NoSuchElementException{
+        dc.removeItemFromPool(item);
     }
 
     /**
@@ -140,7 +139,7 @@ public class DeliveryService {
         return dc.getItemWeight(itemID);
     }
 
-    public LinkedList<FacadeDemand> showDemands() {
+    public LinkedList<FacadeDemand> showDemands() throws NoSuchElementException {
         LinkedList < FacadeDemand> output = new LinkedList<>();
         LinkedList<Demand> demands=  dc.showDemands();
         for ( Demand d : demands) output.add(new FacadeDemand(d));
@@ -193,5 +192,19 @@ public class DeliveryService {
             facadeItems.add(new FacadeItem(item));
         }
         return facadeItems;
+    }
+
+    public LinkedList<FacadeSite> getAllSites() throws NoSuchElementException{
+        LinkedList<Site> sites=dc.getAllSites();
+        LinkedList<FacadeSite> facadeSites=new LinkedList<>();
+        for (Site s:sites)
+        {
+            facadeSites.add(new FacadeSite(s));
+        }
+        return facadeSites;
+    }
+
+    public void addDemandToSystem(int itemId, int site, int amount)throws NoSuchElementException {
+        dc.addDemandToSystem(itemId,site,amount);
     }
 }

@@ -8,11 +8,13 @@ public class FacadeSite implements  FacadeObject {
     private int deliveryArea;
     private String phoneNumber;
     private String contactName;
+    private String name;
 
-    public FacadeSite(int siteID,String city,int deliveryArea,String phoneNumber,String contactName)
+    public FacadeSite(int siteID,String city,int deliveryArea,String phoneNumber,String contactName , String name)
     {
         this.siteID = siteID;
         this.city = city;
+        this.name = name;
         this.deliveryArea = deliveryArea;
         this.phoneNumber = phoneNumber;
         this.contactName = contactName;
@@ -24,9 +26,18 @@ public class FacadeSite implements  FacadeObject {
         this.deliveryArea = value.getDeliveryArea();
         this.phoneNumber = value.getPhoneNumber();
         this.contactName = value.getContactName();
+        name = value.getName();
 
     }
 
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
 
     public String getPhoneNumber() {
         return phoneNumber;

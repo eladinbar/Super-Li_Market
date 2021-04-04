@@ -69,7 +69,6 @@ public class TruckingReport {
     public void setCompleted() {
         this.completed = true;
     }
-    //TODO:check when to set trucking report
 
     public void setID(int ID) {
         this.ID = ID;

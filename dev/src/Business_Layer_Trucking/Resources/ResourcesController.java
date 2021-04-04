@@ -2,6 +2,7 @@ package Business_Layer_Trucking.Resources;
 
 import javax.management.openmbean.KeyAlreadyExistsException;
 import javax.swing.*;
+import java.awt.*;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
@@ -100,11 +101,13 @@ public class ResourcesController {
         return result;
     }
 
-    public void chooseTruck(int truck) throws IllegalStateException,NoSuchElementException{
+    public Truck chooseTruck(int truck) throws IllegalStateException,NoSuchElementException{
+
         if (trucks.containsKey(truck)){
             if (trucks.get(truck).isAvailable())
             {
                 currTruckNumber=truck;
+                return trucks.get(truck);
             }
             else throw new IllegalStateException("Truck already taken");
         }
@@ -114,7 +117,6 @@ public class ResourcesController {
     public Driver chooseDriver(int driver) throws IllegalStateException , NoSuchElementException{
 
 
-        // TODO need to check whether it makes it unavailable or not? how to deal with falling program?
         if (drivers.containsKey(driver)){
             if (drivers.get(driver).isAvailable())
             {
@@ -127,17 +129,6 @@ public class ResourcesController {
 
     }
 
-    public void replaceTruck(int new_Truck) {
-        if (trucks.containsKey(new_Truck))
-        {
-            if (trucks.get(new_Truck).isAvailable())
-            {
-                currTruckNumber=new_Truck;
-            }
-            else throw new  IllegalStateException("Truck is not available");
-        }
-        else throw new NoSuchElementException("Truck does not exist");
-    }
 
     public void replaceDriver(int new_Driver) {
         if (trucks.containsKey(new_Driver))

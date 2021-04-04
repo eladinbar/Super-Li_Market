@@ -46,6 +46,10 @@ public class FacadeTruckingReport {
 
     }
 
+    public FacadeTruckingReport(int id) {
+        this.ID = id;
+    }
+
     public int getID() {
         return ID;
     }
@@ -81,7 +85,6 @@ public class FacadeTruckingReport {
     public void setCompleted() {
         this.completed = true;
     }
-    //TODO:check when to set trucking report
 
     public void setID(int ID) {
         this.ID = ID;

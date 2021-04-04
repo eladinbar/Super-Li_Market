@@ -5,9 +5,11 @@ import Business_Layer_Trucking.Resources.ResourcesController;
 import Business_Layer_Trucking.Resources.Truck;
 
 import javax.management.openmbean.KeyAlreadyExistsException;
+import java.nio.file.NoSuchFileException;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
+import java.util.NoSuchElementException;
 
 public class ResourcesService
 {
@@ -27,11 +29,10 @@ public class ResourcesService
     }
 
 
-    public void chooseTruck(int truck) {//TODO- for ido - change it (if needed! )
-        try {
-            rc.chooseTruck(truck);
-        }
-        catch (Exception e){}
+    public Truck chooseTruck(int truck) throws NoSuchElementException, IllegalStateException {
+
+        return rc.chooseTruck(truck);
+
     }
 
     public FacadeDriver chooseDriver(int driver) {
@@ -41,10 +42,7 @@ public class ResourcesService
 
     }
 
-    public void replaceTruck(int truck) {
-        rc.replaceTruck(truck);
-        //TODO we need to send the number of the the truck we want to replace!
-    }
+
 
     public void makeUnavailable_Driver(int driver) {
         rc.makeUnavailable_Driver(driver);
@@ -77,7 +75,7 @@ public class ResourcesService
         rc.addTruck( model, licenseNumber, weightNeto, maxWeight);
     }
 
-    public void addDriver(int id, String name, Driver.License licenseType) {//TODO- for ido - change it (if needed! ).
+    public void addDriver(int id, String name, Driver.License licenseType) throws KeyAlreadyExistsException {
 
         rc.addDriver(id, name, licenseType);
 

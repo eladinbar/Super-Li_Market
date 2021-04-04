@@ -10,10 +10,12 @@ import java.time.LocalTime;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 public class FacadeService {
     private DeliveryService deliveryService;
     private ResourcesService resourcesService;
+    private FacadeTruckingReport currTR;
     // TODO insert current trucking report;
     //  notiftys when report saved
     private static FacadeService instance =null;
@@ -31,41 +33,32 @@ public class FacadeService {
     }
 
     public void createTruckingReport(){
-        deliveryService.createTruckingReport();
+        int id = deliveryService.createTruckingReport();
+        currTR =  new FacadeTruckingReport(id);
 
     }
 
 
-    public FacadeTruck chooseTruck(int truck){
-
-        // TODO need to check if stands the demands weight
-        // TODO need to update the trucks
-        // TODO this method also in use for exchange trucks
-        resourcesService.chooseTruck(truck);
-        throw new UnsupportedOperationException();
+    public FacadeTruck chooseTruck(int truck) throws NoSuchElementException, IllegalStateException {
+        // TODO need to get weight and check
+        FacadeTruck ft =  new FacadeTruck(resourcesService.chooseTruck(truck) );
+        currTR.setTruckNumber(ft.getLicenseNumber());
+        return ft;
     }
-    public void replaceTruck(int truck)
-    {
-        resourcesService.replaceTruck(truck);
 
-    }
 
     public FacadeDemand addDemandToReport(int item_number, int supplyAmount, int siteID){
-
-
         return deliveryService.addDemandToReport(item_number,supplyAmount , siteID);
     }
 
 
-    /*   public void createDemand(int id, int site, int amount){
 
-            deliveryService.addDemand(id, site, amount);
-            throw new UnsupportedOperationException();
-        }
-    */
     public FacadeDriver chooseDriver(int driver) {
         // TODO need to check if stands the demands weight
-        return resourcesService.chooseDriver(driver);
+        FacadeDriver fd  = resourcesService.chooseDriver(driver);
+
+        currTR.setDriverID(fd.getID());
+        return fd;
 
     }
 
@@ -84,8 +77,8 @@ public class FacadeService {
 
     }
 
-    public void continueAddDemandToReport(int first, int second) {
-        deliveryService.continueAddDemandToReport(first,second);
+    public void continueAddDemandToReport(int itemID, int amount, int siteID) {
+        deliveryService.continueAddDemandToReport(itemID,amount,siteID);
     }
 
     public FacadeTruckingReport getTruckReport(int trNumber) {
@@ -141,7 +134,7 @@ public class FacadeService {
     }
 
     public void addSite(String city, int siteID, int deliveryArea, String phoneNumber, String contactName,String name) {
-         deliveryService.addSite(city, siteID, deliveryArea, phoneNumber, contactName,name );
+        deliveryService.addSite(city, siteID, deliveryArea, phoneNumber, contactName,name );
 
     }
 
@@ -157,7 +150,7 @@ public class FacadeService {
         return deliveryService.getItemWeight(itemID);
     }
 
-    public LinkedList<FacadeDemand> showDemands() {
+    public LinkedList<FacadeDemand> showDemands() throws NoSuchElementException {
         return deliveryService.showDemands();
     }
 
@@ -184,8 +177,7 @@ public class FacadeService {
 
     // TODO need to unit test it
     public LinkedList<FacadeDemand> sortDemandsBySite(LinkedList<FacadeDemand> demands) {
-        LinkedList<FacadeDemand> newList = new LinkedList<>();
-        for (int i = demands.size() ; i>= 0 ; i--){
+        for (int i = demands.size() -1 ; i>= 0 ; i--){
             FacadeDemand min = demands.get(i);
             int index = i;
             for (int j= i; j>= 0; j--){
@@ -205,7 +197,7 @@ public class FacadeService {
 
 
     public LinkedList<FacadeSite> getCurrentSites() {
-       return deliveryService.getCurrentSites();
+        return deliveryService.getCurrentSites();
     }
 
     public LinkedList<FacadeDemand> getCurrentDemandsBySite(FacadeSite site) {
@@ -215,5 +207,13 @@ public class FacadeService {
 
     public LinkedList<FacadeItem> getAllItems() {
         return deliveryService.getAllItems();
+    }
+
+    public LinkedList<FacadeSite> getAllSites() throws NoSuchElementException {
+        return deliveryService.getAllSites();
+    }
+
+    public void addDemandToSystem(int itemId, int site, int amount) {
+        deliveryService.addDemandToSystem(itemId,site,amount);
     }
 }

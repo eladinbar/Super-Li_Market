@@ -11,11 +11,11 @@ public class FacadeDeliveryForm implements FacadeObject{
     private int ID;
     private int origin;
     private int destination;
-    private HashMap<FacadeItem, Integer> items;
+    private HashMap<Integer, Integer> items;
     private int leavingWeight;
     private int trID;
 
-    public FacadeDeliveryForm(int ID, int origin, int destination, HashMap<FacadeItem,Integer> items,
+    public FacadeDeliveryForm(int ID, int origin, int destination, HashMap<Integer,Integer> items,
                         int leavingWeight, int trID){
         this.ID = ID;
         this.origin = origin;
@@ -29,15 +29,15 @@ public class FacadeDeliveryForm implements FacadeObject{
         this.ID =  df.getID();
         this.origin = df.getOrigin();
         destination = df.getDestination();
-        items = new HashMap<FacadeItem,Integer>();
-        for (Map.Entry<Item,Integer> entry: df.getItems().entrySet() ) {
-            this.items.put(new FacadeItem(entry.getKey()) , entry.getValue());
+        items = new HashMap<Integer,Integer>();
+        for (Map.Entry<Integer,Integer> entry: df.getItems().entrySet() ) {
+            this.items.put(entry.getKey() , entry.getValue());
         }
         leavingWeight = df.getLeavingWeight();
         trID = df.getTrID();
     }
 
-    public HashMap<FacadeItem, Integer> getItems() {
+    public HashMap<Integer, Integer> getItems() {
         return items;
     }
 
@@ -70,7 +70,7 @@ public class FacadeDeliveryForm implements FacadeObject{
         this.ID = ID;
     }
 
-    public void setItems(HashMap<FacadeItem, Integer> items) {
+    public void setItems(HashMap<Integer, Integer> items) {
         this.items = items;
     }
 

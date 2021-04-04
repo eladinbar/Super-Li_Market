@@ -7,11 +7,11 @@ public class DeliveryForm {
     private int ID;
     private int origin;
     private int destination;
-    private HashMap<Item, Integer> items;
+    private HashMap<Integer, Integer> items;
     private int leavingWeight;
     private int trID;
 
-    public DeliveryForm(int ID, int origin, int destination, HashMap<Item,Integer> items,
+    public DeliveryForm(int ID, int origin, int destination, HashMap<Integer,Integer> items,
                         int leavingWeight, int trID){
         this.ID=ID;
         this.origin=origin;
@@ -22,7 +22,7 @@ public class DeliveryForm {
 
         }
 
-    public HashMap<Item, Integer> getItems() {
+    public HashMap<Integer, Integer> getItems() {
         return items;
     }
 
@@ -47,7 +47,6 @@ public class DeliveryForm {
     }
 
 
-    // TODO need to check when can be setted and fix!
     public void setDestination(int destination) {
         this.destination = destination;
     }
@@ -56,7 +55,7 @@ public class DeliveryForm {
         this.ID = ID;
     }
 
-    public void setItems(HashMap<Item, Integer> items) {
+    public void setItems(HashMap<Integer, Integer> items) {
         this.items = items;
     }
 
