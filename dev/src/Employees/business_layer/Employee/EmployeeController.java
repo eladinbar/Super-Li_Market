@@ -41,28 +41,32 @@ public class EmployeeController {
         loggedIn= null;
     }
 
-    public void giveConstraint(Employee employee, LocalDate date, int shift, String reason) throws EmployeeException {
-        if(!employee.isEmployed()){
+    public void giveConstraint(LocalDate date, int shift, String reason) throws EmployeeException {
+        if(isManager(loggedIn.getRole())){
+            throw new EmployeeException("The method 'giveConstraint' was called from a user in a managerial position");
+        }
+
+        if(!loggedIn.isEmployed()){
             throw new EmployeeException("The employee is not employed ");
         }
-        if (employee.getID() != loggedIn.getID()) {
+        if (loggedIn.getID() != loggedIn.getID()) {
             throw new EmployeeException("The relevant employee must be logged in to perform this action");
         }
-        employee.giveConstraint(date, shift, reason);
+        loggedIn.giveConstraint(date, shift, reason);
     }
 
-    public void updateConstraint (Employee employee, LocalDate date, int shift, String reason) throws Exception {
-        if (employee.getID() != loggedIn.getID()) {
-            throw new EmployeeException("The relevant employee must be logged in to perform this action");
+    public void updateConstraint (LocalDate date, int shift, String reason) throws Exception {
+        if(isManager(loggedIn.getRole())){
+            throw new EmployeeException("The method 'giveConstraint' was called from a user in a managerial position");
         }
-        employee.updateConstarint(date, shift, reason);
+        loggedIn.updateConstarint(date, shift, reason);
     }
 
-    public void deleteConstraint (Employee employee, LocalDate date, int shift) throws Exception {
-        if (employee.getID() != loggedIn.getID()) {
-            throw new EmployeeException("The relevant employee must be logged in to perform this action");
+    public void deleteConstraint (LocalDate date, int shift) throws Exception {
+        if(isManager(loggedIn.getRole())){
+            throw new EmployeeException("The method 'giveConstraint' was called from a user in a managerial position");
         }
-        employee.deletConstraint(date, shift);
+        loggedIn.deletConstraint(date, shift);
     }
 
     public void addEmployee(Role role, int Id, TermsOfEmployment terms, LocalDate transactionDate, BankAccountInfo bank) throws EmployeeException {
