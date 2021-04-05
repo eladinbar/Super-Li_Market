@@ -4,6 +4,7 @@ public enum Role {
     branchManager,
     branchManagerAssistent,
     humanResourcesMananger,
+    shiftManager,
     cashier,
     guard,
     usher,
