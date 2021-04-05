@@ -17,7 +17,7 @@ public class FacadeService {
     private ResourcesService resourcesService;
     private FacadeTruckingReport currTR;
     // TODO insert current trucking report;
-    //  notiftys when report saved
+    //  notify when report saved
     private static FacadeService instance =null;
 
 
@@ -40,8 +40,12 @@ public class FacadeService {
 
 
     public FacadeTruck chooseTruck(int truck) throws NoSuchElementException, IllegalStateException {
-        // TODO need to get weight and check
-        FacadeTruck ft =  new FacadeTruck(resourcesService.chooseTruck(truck) );
+        int weightToDeliver=deliveryService.getWeightOfCurrReport();
+        FacadeTruck ft =  new FacadeTruck(resourcesService.chooseTruck(truck));
+        if (weightToDeliver+ ft.getWeightNeto()>ft.getMaxWeight())
+        {
+            throw new IllegalStateException("Total Weight is: "+weightToDeliver+ft.getWeightNeto()+"But Truck can carry: "+ft.getMaxWeight());
+        }
         currTR.setTruckNumber(ft.getLicenseNumber());
         return ft;
     }
@@ -53,9 +57,11 @@ public class FacadeService {
 
 
 
-    public FacadeDriver chooseDriver(int driver) {
-        // TODO need to check if stands the demands weight
+    public FacadeDriver chooseDriver(int driver) throws IllegalStateException{
         FacadeDriver fd  = resourcesService.chooseDriver(driver);
+        FacadeTruck ft= resourcesService.getTrucks().get(currTR.getTruckNumber());
+        if (fd.getLicenseType().getSize()< ft.getWeightNeto()+deliveryService.getWeightOfCurrReport())
+            throw new IllegalStateException("Driver cant handle this delivery");
 
         currTR.setDriverID(fd.getID());
         return fd;
@@ -85,8 +91,8 @@ public class FacadeService {
         return new FacadeTruckingReport(deliveryService.getTruckReport(trNumber));
     }
 
-    public FacadeDeliveryForm getDeliveryForms(int dfNumber) {
-        return deliveryService.getDeliveryForm(dfNumber);
+    public FacadeDeliveryForm getDeliveryForms(int dfNumber, int trNumber)throws IllegalArgumentException,NoSuchElementException {
+        return deliveryService.getDeliveryForm(dfNumber,trNumber);
     }
 
     public void removeDestination(int site) {

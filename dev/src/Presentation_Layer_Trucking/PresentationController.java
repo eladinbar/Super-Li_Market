@@ -39,10 +39,10 @@ public class PresentationController {
         facadeService.createTruckingReport();
     }
 
-    // TODO need to implement together. need to send the tr
-    public FacadeDeliveryForm getDeliveryForm(int trNumber, int dfNumber){
+
+    public FacadeDeliveryForm getDeliveryForm(int trNumber, int dfNumber) throws IllegalArgumentException,NoSuchElementException{
         FacadeTruckingReport tr = facadeService.getTruckReport(trNumber);
-        return facadeService.getDeliveryForms(dfNumber);
+        return facadeService.getDeliveryForms(dfNumber,trNumber);
     }
 
 
@@ -127,7 +127,7 @@ public class PresentationController {
         return facadeService.getAvailableDrivers();
     }
 
-    public FacadeDriver chooseDriver(int driverID) {
+    public FacadeDriver chooseDriver(int driverID) throws IllegalStateException {
         return facadeService.chooseDriver(driverID);
     }
 

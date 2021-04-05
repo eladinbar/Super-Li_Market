@@ -34,7 +34,8 @@ public class DeliveryService {
     }*/
 
     public FacadeDemand addDemandToReport(int itemID, int supplyAmount, int siteID)  throws IllegalStateException{
-        LinkedList<Demand> demands = dc.getDemands();
+        LinkedList<Demand> demands = dc.
+                getDemands();
         Demand d=null;
         for (Demand curr:  demands) {
             if (curr.getItemID() ==  itemID && curr.getAmount() < supplyAmount && curr.getSite() == siteID){
@@ -93,8 +94,8 @@ public class DeliveryService {
         return dc.getTruckReport(trNumber);
     }
 
-    public FacadeDeliveryForm getDeliveryForm(int dfNumber) {
-        return dc.getDeliveryForm(dfNumber);
+    public FacadeDeliveryForm getDeliveryForm(int dfNumber, int trNumber)throws IllegalArgumentException,NoSuchElementException {
+        return new FacadeDeliveryForm(dc.getDeliveryForm(dfNumber,trNumber));
     }
 
     public void removeDestination(int site) throws NoSuchElementException {
@@ -206,5 +207,9 @@ public class DeliveryService {
 
     public void addDemandToSystem(int itemId, int site, int amount)throws NoSuchElementException {
         dc.addDemandToSystem(itemId,site,amount);
+    }
+
+    public int getWeightOfCurrReport() {
+        return dc.getWeightOfCurrReport();
     }
 }

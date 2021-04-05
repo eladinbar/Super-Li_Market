@@ -178,12 +178,6 @@ public class DeliveryController {
         return oldTruckingReports;
     }
 
-    public LinkedList<Demand> getDemands() {
-        // TODO
-        throw new UnsupportedOperationException();
-    }
-
-
     public boolean addSite(String city,int  siteID,int  deliveryArea,String phoneNumber,String contactName,String name)
             throws KeyAlreadyExistsException
     {
@@ -244,9 +238,25 @@ public class DeliveryController {
 
     }
 
-    public FacadeDeliveryForm getDeliveryForm(int dfNumber) {
-        //TODO implement
-        throw new UnsupportedOperationException();
+    public DeliveryForm getDeliveryForm(int dfNumber, int trNumber) throws IllegalStateException,NoSuchElementException{
+        DeliveryForm result=null;
+        if (trNumber>currTR.getID())
+        {
+            throw new IllegalArgumentException("TR does not exist yet");
+        }
+        for (Map.Entry<Integer,DeliveryForm> entry:deliveryForms.entrySet())
+        {
+            if (entry.getValue().getTrID()==trNumber&&dfNumber==entry.getValue().getID())
+            {
+                result=entry.getValue();
+            }
+        }
+        if (result==null)
+        {
+            throw new NoSuchElementException();
+        }
+        return result;
+
     }
 
     public void removeDestination(int site) throws NoSuchElementException{
@@ -305,6 +315,9 @@ public class DeliveryController {
         if (items.containsKey(itemID))
             return items.get(itemID).getWeight();
         else throw new NoSuchElementException();
+    }
+    public LinkedList<Demand> getDemands() {
+        return demands;
     }
 
     public LinkedList<Demand> showDemands() throws NoSuchElementException {
@@ -419,5 +432,17 @@ public class DeliveryController {
                demands.add(new Demand(itemId,site,amount));
            }
 
+    }
+
+    public int getWeightOfCurrReport() {
+        int weight =0;
+        for (DeliveryForm df:currDF)
+        {
+            for (Map.Entry<Integer,Integer> entry:df.getItems().entrySet())
+            {
+                weight=weight+items.get(entry.getKey()).getWeight()*entry.getValue();
+            }
+        }
+        return weight;
     }
 }
