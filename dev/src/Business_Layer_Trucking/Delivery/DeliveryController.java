@@ -1,10 +1,8 @@
 package Business_Layer_Trucking.Delivery;
 
-import Business_Layer_Trucking.Facade.FacadeObject.FacadeDeliveryForm;
 
 import javax.management.openmbean.KeyAlreadyExistsException;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.*;
 
@@ -35,17 +33,14 @@ public class DeliveryController {
         oldTruckingReports=new HashMap<>();
         this.sites=new HashMap<>();
         deliveryForms=new HashMap<>();
-        // when data base is added, need to be setted by it;
+        // when data base is added, need to be set by it;
         this.items=new HashMap<>();
-        lastDeliveryForms = 0;
+        lastDeliveryForms = 1;
         lastReportID =0;
         currDF=new LinkedList<>();
         currTR=new TruckingReport(lastReportID);
     }
-
-
-
-
+    //TODO- discuss - make it private and call it from save report
     public int createNewTruckingReport(){
         currDF =  new LinkedList<>();
         currTR =  new TruckingReport(lastReportID++);
@@ -54,7 +49,11 @@ public class DeliveryController {
 
     }
 
-
+    /**
+     * update the date in the current TR
+     * @param date
+     * @throws IllegalArgumentException
+     */
     public void updateCurrTR_Date(LocalDate date) throws IllegalArgumentException{
         LocalDate now=LocalDate.now();
         if (date.compareTo(now)!=-1)
@@ -67,6 +66,11 @@ public class DeliveryController {
 
     }
 
+    /**
+     * update the leaving hour in the current TR
+     * @param leavingHour
+     * @throws IllegalArgumentException
+     */
     public void updateCurrTR_LeavingHour(LocalTime leavingHour) throws IllegalArgumentException{
         LocalTime now=LocalTime.now();
         if (leavingHour.compareTo(now)!=-1)
@@ -78,13 +82,28 @@ public class DeliveryController {
         }
 
     }
+
+    /**
+     * update the truck license number in the current TR
+     * @param number
+     */
     public void updateCurrTR_TruckNumber(int number){//facade service need to check availability
         currTR.setTruckNumber(number);
     }
+
+    /**
+     * update the driver ID in the current TR
+     * @param id
+     */
     public void updateCurrTR_DriverID(int id){//facade service need to check availability
         currTR.setDriverID(id);
     }
 
+    /**
+     * update the origin site in the current TR
+     * @param origin
+     * @throws IllegalArgumentException - in case origin does not exist
+     */
     public void updateCurrTR_Origin(int origin) throws IllegalArgumentException{
         try{
             sites.get(origin);
@@ -94,11 +113,23 @@ public class DeliveryController {
             throw new IllegalArgumentException("SiteID does not exist");
         }
     }
-    public void addCurrTR_Destination(int destination){
-            sites.get(destination);
-            currTR.addDestination(destination);
 
+    /**
+     * adding a destination to the current TR
+     * @param destination
+     * @throws IllegalArgumentException - in case destination does not exist
+     */
+    public void addCurrTR_Destination(int destination)throws IllegalArgumentException{
+        if (sites.containsKey(destination))
+            currTR.addDestination(destination);
+        else throw new IllegalArgumentException("No such site exist");
     }
+
+    /**
+     * updates for thr current TR which TR he is replacing
+     * @param tr_id
+     * @throws NoSuchElementException
+     */
     public void updateCurrTR_TrReplaced(int tr_id)throws NoSuchElementException{
         if (oldTruckingReports.containsKey(tr_id))
         {
@@ -111,6 +142,14 @@ public class DeliveryController {
         else throw new NoSuchElementException("TR was not found");
     }
 
+    /**
+     * adding item to delivery form
+     * @param demand
+     * @param amount
+     * @param ignore - indicating if to ignore the fact we delivering to two different delivery areas.
+     * @param siteID
+     * @throws IllegalStateException
+     */
     public void addItemToDeliveryForm(Demand demand, int amount,boolean ignore,int siteID) throws IllegalStateException{
         boolean ignoreDifferentDeliveryAreas=ignore;
         if (currDF.isEmpty())//if list is empty
@@ -118,8 +157,9 @@ public class DeliveryController {
 
             HashMap<Integer,Integer> itemsOnDF=new HashMap<>();
             itemsOnDF.put(items.get(demand.getItemID()).getID(),amount);
-            DeliveryForm newDF=new DeliveryForm(1,siteID,demand.getSite(),itemsOnDF,
+            DeliveryForm newDF=new DeliveryForm(lastDeliveryForms,siteID,demand.getSite(),itemsOnDF,
                     items.get(demand.getItemID()).getWeight()*amount,currTR.getID());
+            lastDeliveryForms++;
         }
         else // we need to look in the list maybe there is a form with the same origin& destination
         {
@@ -149,34 +189,6 @@ public class DeliveryController {
     }
 
 
-
-
-    // <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< gettters, setters>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>.
-
-
-    public TruckingReport getCurrTR() {
-        return currTR;
-    }
-
-    public List<DeliveryForm> getCurrDF() {
-        return currDF;
-    }
-
-    public HashMap<Integer, DeliveryForm> getDeliveryForms() {
-        return deliveryForms;
-    }
-
-    public HashMap<Integer, Site> getSites() {
-        return sites;
-    }
-
-    public HashMap<Integer, TruckingReport> getActiveTruckingReports() {
-        return activeTruckingReports;
-    }
-
-    public HashMap<Integer, TruckingReport> getOldTruckingReports() {
-        return oldTruckingReports;
-    }
 
     public boolean addSite(String city,int  siteID,int  deliveryArea,String phoneNumber,String contactName,String name)
             throws KeyAlreadyExistsException
@@ -219,6 +231,9 @@ public class DeliveryController {
         }
     }
 
+    /**
+     * Moving a TR that has been done from the active to the non active (old) zone.
+     */
     public void saveReport(){
 
         oldTruckingReports.put(currTR.getID(),currTR);
@@ -238,6 +253,14 @@ public class DeliveryController {
 
     }
 
+    /**
+     *
+     * @param dfNumber
+     * @param trNumber
+     * @return Delivery form a specific TR
+     * @throws IllegalStateException
+     * @throws NoSuchElementException
+     */
     public DeliveryForm getDeliveryForm(int dfNumber, int trNumber) throws IllegalStateException,NoSuchElementException{
         DeliveryForm result=null;
         if (trNumber>currTR.getID())
@@ -253,20 +276,29 @@ public class DeliveryController {
         }
         if (result==null)
         {
-            throw new NoSuchElementException();
+            throw new NoSuchElementException("Delivery form does not exist");
         }
         return result;
 
     }
 
+    /**
+     * Removes a destination from thr current TR
+     * @param site
+     * @throws NoSuchElementException
+     */
     public void removeDestination(int site) throws NoSuchElementException{
         if (!currTR.getDestinations().contains(site))
         {
-            throw new NoSuchElementException();
+            throw new NoSuchElementException("Site does not exist");
         }
         else currTR.getDestinations().remove(site);
     }
 
+    /**
+     *
+     * @param demand- says what item to remove,in which amount,from which site.
+     */
     public void removeItemFromReport(Demand demand) {
 
         for (DeliveryForm df:currDF)
@@ -289,7 +321,7 @@ public class DeliveryController {
     public void removeItemFromPool(int item)throws NoSuchElementException {
       if (!items.containsKey(item))
       {
-          throw new NoSuchElementException();
+          throw new NoSuchElementException("No item with that ID");
       }
       else items.remove(item);
     }
@@ -314,14 +346,19 @@ public class DeliveryController {
     public int getItemWeight(int itemID) throws NoSuchElementException{
         if (items.containsKey(itemID))
             return items.get(itemID).getWeight();
-        else throw new NoSuchElementException();
+        else throw new NoSuchElementException("No such item exist");
     }
     public LinkedList<Demand> getDemands() {
         return demands;
     }
 
+    /**
+     *
+     * @return LinkedList of demands that are not included in the current TR
+     * @throws NoSuchElementException
+     */
     public LinkedList<Demand> showDemands() throws NoSuchElementException {
-        // show demands that was not added
+
         if (!demands.isEmpty())
         {
             LinkedList<Demand> result=new LinkedList<>();
@@ -347,18 +384,18 @@ public class DeliveryController {
     public String getItemName(int itemID)throws NoSuchElementException {
         if (items.containsKey(itemID))
             return items.get(itemID).getName();
-        else throw new NoSuchElementException();
+        else throw new NoSuchElementException("No such item exist");
     }
 
     public String getSiteName(int site) throws NoSuchElementException{
         if (sites.containsKey(site))
             return sites.get(site).getName();
-        else throw new NoSuchElementException();
+        else throw new NoSuchElementException("No such site exist");
     }
 
     /**
      *
-     * @return
+     * @return LinkedList with sites in the system.
      */
     public LinkedList<Site> getCurrentSites() {
         LinkedList<Site> result=new LinkedList<>();
@@ -409,6 +446,12 @@ public class DeliveryController {
         else throw new NoSuchElementException("No sites in the system");
     }
 
+    /**
+     * Adding a demand that we received from one of the sites.
+     * @param itemId
+     * @param site
+     * @param amount
+     */
     public void addDemandToSystem(int itemId, int site, int amount) {
         if (!items.containsKey(itemId))
         {
@@ -434,6 +477,10 @@ public class DeliveryController {
 
     }
 
+    /**
+     * Calculating the total weight of the current Delivery.
+     * @return
+     */
     public int getWeightOfCurrReport() {
         int weight =0;
         for (DeliveryForm df:currDF)
@@ -445,4 +492,35 @@ public class DeliveryController {
         }
         return weight;
     }
+
+
+
+    // <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< getters, setters>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>.
+
+
+    public TruckingReport getCurrTR() {
+        return currTR;
+    }
+
+    public List<DeliveryForm> getCurrDF() {
+        return currDF;
+    }
+
+    public HashMap<Integer, DeliveryForm> getDeliveryForms() {
+        return deliveryForms;
+    }
+
+    public HashMap<Integer, Site> getSites() {
+        return sites;
+    }
+
+    public HashMap<Integer, TruckingReport> getActiveTruckingReports() {
+        return activeTruckingReports;
+    }
+
+    public HashMap<Integer, TruckingReport> getOldTruckingReports() {
+        return oldTruckingReports;
+    }
+
+
 }

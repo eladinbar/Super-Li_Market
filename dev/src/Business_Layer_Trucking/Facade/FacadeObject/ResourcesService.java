@@ -5,7 +5,6 @@ import Business_Layer_Trucking.Resources.ResourcesController;
 import Business_Layer_Trucking.Resources.Truck;
 
 import javax.management.openmbean.KeyAlreadyExistsException;
-import java.nio.file.NoSuchFileException;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
@@ -35,7 +34,7 @@ public class ResourcesService
 
     }
 
-    public FacadeDriver chooseDriver(int driver) {
+    public FacadeDriver chooseDriver(int driver)throws IllegalStateException,NoSuchElementException {
 
         return new FacadeDriver(rc.chooseDriver(driver));
 
@@ -44,7 +43,7 @@ public class ResourcesService
 
 
 
-    public void makeUnavailable_Driver(int driver) {
+    public void makeUnavailable_Driver(int driver)throws NoSuchElementException {
         rc.makeUnavailable_Driver(driver);
     }
 

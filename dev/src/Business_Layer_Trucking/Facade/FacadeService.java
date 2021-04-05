@@ -1,15 +1,11 @@
 package Business_Layer_Trucking.Facade;
 
-import Business_Layer_Trucking.Delivery.Demand;
+
 import Business_Layer_Trucking.Facade.FacadeObject.*;
 import Business_Layer_Trucking.Resources.Driver;
-
 import javax.management.openmbean.KeyAlreadyExistsException;
-import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.util.HashMap;
 import java.util.LinkedList;
-import java.util.List;
 import java.util.NoSuchElementException;
 
 public class FacadeService {
@@ -57,7 +53,7 @@ public class FacadeService {
 
 
 
-    public FacadeDriver chooseDriver(int driver) throws IllegalStateException{
+    public FacadeDriver chooseDriver(int driver) throws IllegalStateException,NoSuchElementException{
         FacadeDriver fd  = resourcesService.chooseDriver(driver);
         FacadeTruck ft= resourcesService.getTrucks().get(currTR.getTruckNumber());
         if (fd.getLicenseType().getSize()< ft.getWeightNeto()+deliveryService.getWeightOfCurrReport())
@@ -102,11 +98,14 @@ public class FacadeService {
     public void removeItemFromReport(FacadeDemand demand, int amount) {
         deliveryService.removeItemFromReport(demand,amount);
     }
-    public void removeItemFromPool(int item) {
+    public void removeItemFromPool(int item)throws NoSuchElementException{
         deliveryService.removeItemFromPool(item);
     }
+    public int getWeightOfCurrReport(){
+        return deliveryService.getWeightOfCurrReport();
+    }
 
-    public void makeUnavailable_Driver(int driver) {
+    public void makeUnavailable_Driver(int driver)throws NoSuchElementException {
         resourcesService.makeUnavailable_Driver(driver);
     }
 
@@ -144,7 +143,7 @@ public class FacadeService {
 
     }
 
-    public void addItem(int id, int weight, String name) {
+    public void addItem(int id, int weight, String name)throws KeyAlreadyExistsException {
         deliveryService.addItem(id, weight,name);
     }
 

@@ -3,10 +3,7 @@ package Presentation_Layer_Trucking;
 import Business_Layer_Trucking.Facade.FacadeObject.*;
 import Business_Layer_Trucking.Facade.FacadeService;
 import Business_Layer_Trucking.Resources.Driver;
-import com.sun.jdi.connect.Connector;
-
 import javax.management.openmbean.KeyAlreadyExistsException;
-import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.*;
 
@@ -47,14 +44,12 @@ public class PresentationController {
 
 
 
-    public void makeUnavailable_Driver(int driver)
+    public void makeUnavailable_Driver(int driver) throws NoSuchElementException
     {
-
         facadeService.makeUnavailable_Driver(driver);
     }
     public boolean makeAvailable_Driver(int driver)
     {
-
         facadeService.makeAvailable_Driver(driver);
         return true;
     }
@@ -90,8 +85,8 @@ public class PresentationController {
         facadeService.addItem(id, weight,name);
     }
 
-    // TODO need to add to menu after check
-    public void RemoveItemFromPool(int item)
+
+    public void RemoveItemFromPool(int item) throws NoSuchElementException
     {
         facadeService.removeItemFromPool(item);
     }
@@ -127,7 +122,7 @@ public class PresentationController {
         return facadeService.getAvailableDrivers();
     }
 
-    public FacadeDriver chooseDriver(int driverID) throws IllegalStateException {
+    public FacadeDriver chooseDriver(int driverID) throws IllegalStateException,NoSuchElementException {
         return facadeService.chooseDriver(driverID);
     }
 
@@ -163,6 +158,9 @@ public class PresentationController {
             if (demand.getSite() == site.getSiteID()) output.add(demand);
         }
         return output;
+    }
+    public int getWeightOfCurrReport(){
+        return facadeService.getWeightOfCurrReport();
     }
 
     /**

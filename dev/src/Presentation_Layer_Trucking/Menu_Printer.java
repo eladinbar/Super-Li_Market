@@ -54,7 +54,7 @@ public class Menu_Printer {
                     pc.CreateReport();
                     //chooseOrigin(scanner);
                     chooseDemands(scanner);
-                    // TODO need to print the weight received
+                    System.out.println("Total demands Weight is: "+pc.getWeightOfCurrReport());
                     chooseTruckAndDriver(scanner);
                     chooseLeavingHour(scanner);
                     pc.saveReport();
@@ -470,7 +470,8 @@ public class Menu_Printer {
         FacadeTruck facadeTruck = pc.chooseTruck(truckID);
         System.out.println("now please choose driver:");
         // TODO need to figure how to know the truck weight and throw exception
-        // System.out.println("please notice the truck weight is: ");
+        int weight=pc.getWeightOfCurrReport();//TODO-notice -added
+        System.out.println("please notice the truck weight is: "+weight);
         LinkedList<FacadeDriver> drivers = pc.getAvailableDrivers();
         System.out.println("available Drivers:");
         for ( FacadeDriver driver : drivers) {
@@ -511,6 +512,12 @@ public class Menu_Printer {
 
                 System.out.println("choose new truck");
                 LinkedList<FacadeTruck> trucks = pc.getAvailableTrucks();
+                //TODO need to display trucks
+                for (FacadeTruck ft:trucks)
+                {
+                    System.out.println("Truck number: "+ft.getLicenseNumber()+" , Weight neto: "+ft.getWeightNeto()
+                            +" , Max weight: "+ft.getMaxWeight());
+                }
                 chooseTruckAndDriver(scanner);
                 return pc.getCurrTruckReport();
 
@@ -555,7 +562,7 @@ public class Menu_Printer {
                 System.out.println("Site ID: " + site.getSiteID() + "Site city: " + site.getCity() +
                         "Site: Delivery area: " + site.getDeliveryArea() + "\n products:");
                 LinkedList<FacadeDemand> siteDemands = pc.getCurrentDemandsBySite(site);
-                // TODO maybe need to show weight aswell
+                // TODO maybe need to show weight as well
                 for (FacadeDemand demand : siteDemands) {
 
                     System.out.println(pc.getItemName(demand.getItemID()) + ": " +
@@ -564,7 +571,7 @@ public class Menu_Printer {
             }
             int siteID = scanner.nextInt();
             con = pc.removeDestination(siteID);
-            if (!con) System.out.println("the chosen site id doesnt exist here!");
+            if (!con) System.out.println("the chosen site id doesn't exist here!");
         }
     }
 
