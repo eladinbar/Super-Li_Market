@@ -23,4 +23,20 @@ public class FacadeTermsOfEmployment implements FacadeObject{
         sickDays = termsOfEmployment.getSickDays();
         daysOff = termsOfEmployment.getDaysOff();
     }
+
+    public int getDaysOff() {
+        return daysOff;
+    }
+
+    public int getEducationFund() {
+        return educationFund;
+    }
+
+    public int getSalary() {
+        return salary;
+    }
+
+    public int getSickDays() {
+        return sickDays;
+    }
 }

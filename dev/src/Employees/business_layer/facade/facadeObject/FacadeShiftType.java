@@ -21,4 +21,12 @@ public class FacadeShiftType implements FacadeObject{
         this.manning = new HashMap<> ();
         this.type = type;
     }
+
+    public String getType() {
+        return type;
+    }
+
+    public HashMap<Role, Integer> getManning() {
+        return manning;
+    }
 }

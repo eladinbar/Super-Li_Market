@@ -3,7 +3,7 @@ package Employees.business_layer.Employee;
 public enum Role {
     branchManager,
     branchManagerAssistent,
-    humanResourcesMananger,
+    humanResourcesManager,
     cashier,
     guard,
     usher,

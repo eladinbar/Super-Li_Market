@@ -154,6 +154,6 @@ public class EmployeeController {
     }
 
     private boolean isManager(Role role){
-        return role == Role.branchManager | role == Role.branchManagerAssistent | role == Role.humanResourcesMananger;
+        return role == Role.branchManager | role == Role.branchManagerAssistent | role == Role.humanResourcesManager;
     }
 }
