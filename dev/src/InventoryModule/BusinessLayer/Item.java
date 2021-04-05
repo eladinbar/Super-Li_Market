@@ -86,8 +86,8 @@ public class Item {
         supplierIDs.remove(supplierID);
     }
 
-    public Quantity getQuantity() {
-        return quantity;
+    public int getQuantity() {
+        return quantity.getTotalQuantity();
     }
 
     public int getShelfQuantity() {
@@ -98,24 +98,29 @@ public class Item {
         return quantity.getStorageQuantity();
     }
 
+    public void setQuantity(int shelfQuantity, int storageQuantity) {
+        this.quantity.setShelfQuantity(shelfQuantity);
+        this.quantity.setStorageQuantity(storageQuantity);
+    }
+
     public void setShelfQuantity(int shelfQuantity) {
         this.quantity.setShelfQuantity(shelfQuantity);
-    }
-
-    public void addShelfQuantity(int shelfQuantity) {
-        this.quantity.addShelfQuantity(shelfQuantity);
-    }
-
-    public void removeShelfQuantity(int shelfQuantity) {
-        this.quantity.removeShelfQuantity(shelfQuantity);
     }
 
     public void setStorageQuantity(int storageQuantity) {
         this.quantity.setStorageQuantity(storageQuantity);
     }
 
+    public void addShelfQuantity(int shelfQuantity) {
+        this.quantity.addShelfQuantity(shelfQuantity);
+    }
+
     public void addStorageQuantity(int storageQuantity) {
         this.quantity.addStorageQuantity(storageQuantity);
+    }
+
+    public void removeShelfQuantity(int shelfQuantity) {
+        this.quantity.removeShelfQuantity(shelfQuantity);
     }
 
     public void removeStorageQuantity(int storageQuantity) {
@@ -124,6 +129,19 @@ public class Item {
 
     public Location getLocation() {
         return location;
+    }
+
+    public String getShelfLocation() {
+        return location.getShelfLocation();
+    }
+
+    public String getStorageLocation() {
+        return location.getStorageLocation();
+    }
+
+    public void setLocation(String shelfLocation, String storageLocation) {
+        this.location.setShelfLocation(shelfLocation);
+        this.location.setStorageLocation(storageLocation);
     }
 
     public void setShelfLocation(String shelfLocation) {

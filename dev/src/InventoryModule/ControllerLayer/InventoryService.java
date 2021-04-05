@@ -9,6 +9,8 @@ import java.util.List;
 
 public interface InventoryService {
 
+    //-------------------------------------------------------------------------Item functions
+
     Response addItem(int id, String name, String categoryName, double costPrice, double sellingPrice, int minAmount,
                      String shelfLocation, String storageLocation, int storageQuantity, int shelfQuantity, int manufacturerId, List<Integer> suppliersIds);
     ResponseT<Item> getItem(int itemId);
@@ -19,25 +21,25 @@ public interface InventoryService {
     /*
     if the locations are null, the location will stay the same.
      */
-    Response changeItemLocation(int itemId, String newStorageLocation, String newShelfLocation);
+    Response changeItemLocation(int itemId, String newShelfLocation, String newStorageLocation);
     Response changeItemShelfLocation(int itemId, String newShelfLocation);
     Response changeItemStorageLocation(int itemId, String newStorageLocation);
     /*
     If quantity is a negative number the quantity of the respective item will not be changed.
      */
-    Response modifyItemQuantity(int itemId, int newStorageQuantity, int newShelfQuantity);
+    Response modifyItemQuantity(int itemId, int newShelfQuantity, int newStorageQuantity);
     Response modifyItemShelfQuantity(int itemId, int newShelfQuantity);
     Response modifyItemStorageQuantity(int itemId, int newStorageQuantity);
     Response addItemSupplier(int itemId, int supplierId);
     Response removeItemSupplier(int itemId, int supplierId);
     Response removeItem(int itemId);
 
-    //-------------------------------------------------------------------------
+    //-------------------------------------------------------------------------Category functions
 
     /*
     If parent category is null, the new category should be added as a main category.
      */
-    Response addCategory(String categoryName, String parentCategory);
+    Response addCategory(String categoryName, String parentCategoryName);
     ResponseT<Category> getCategory(String categoryName);
     Response modifyCategoryName(String oldName, String newName);
     /*
@@ -45,7 +47,7 @@ public interface InventoryService {
      */
     Response removeCategory(String categoryName);
 
-    //-------------------------------------------------------------------------
+    //-------------------------------------------------------------------------Sale functions
 
     Response addItemSale(String saleName,int itemID, double saleDiscount, Date startDate, Date endDate);
     Response addCategorySale(String saleName,String categoryName, double saleDiscount, Date startDate, Date endDate);
@@ -53,21 +55,21 @@ public interface InventoryService {
     Response modifySaleDiscount(String saleName, double newDiscount);
     Response modifySaleDates(String saleName, Date startDate, Date endDate);
 
-    //-------------------------------------------------------------------------
+    //-------------------------------------------------------------------------Discount functions
 
-    Response addItemDiscount(String Supplier, double discount, Date discountDate, int itemCount, int itemId);
-    Response addCategoryDiscount(String Supplier, double discount, Date discountDate, int itemCount, String categoryName);
+    Response addItemDiscount(int supplierId, double discount, Date discountDate, int itemCount, int itemId);
+    Response addCategoryDiscount(int supplierId, double discount, Date discountDate, int itemCount, String categoryName);
 
-    //-------------------------------------------------------------------------
+    //-------------------------------------------------------------------------Defect functions
 
-    Response recordDefect(int itemId, String itemName, int defectQuantity, String defectLocation);
+    Response recordDefect(int itemId, String itemName, Date entryDate, int defectQuantity, String defectLocation);
 
-    //-------------------------------------------------------------------------
+    //-------------------------------------------------------------------------Report functions
 
     ResponseT<List<Item>> inventoryReport();
+    ResponseT<List<Item>> categoryReport(String categoryName);
     ResponseT<List<Item>> itemShortageReport();
     ResponseT<List<DefectEntry>> defectsReport(Date fromDate, Date toDate);
-    ResponseT<List<Item>> categoryReport(Date fromDate, Date toDate);
 }
 
 
