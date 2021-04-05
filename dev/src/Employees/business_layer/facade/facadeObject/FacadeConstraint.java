@@ -25,5 +25,22 @@ public class FacadeConstraint implements FacadeObject{
         eveningShift = constraint.isEveningShift();
         reason = constraint.getReason();
     }
+
+    public LocalDate getDate() {
+        return date;
+    }
+
+    public String getReason() {
+        return reason;
+    }
+
+    public boolean isMorningShift()
+    {
+        return morningShift;
+    }
+
+    public boolean isEveningShift(){
+        return eveningShift;
+    }
 }
 
