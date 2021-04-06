@@ -177,7 +177,6 @@ public class PresentationController implements Runnable {
         if(categoryR != null && categoryR.isErrorOccurred()){
             System.out.println(categoryR.getMessage());
         }
-
         Response addR = service.addCategory(categoryName,parentCategoryName);
         if(categoryR != null && addR.isErrorOccurred())
             System.out.println(addR.getMessage());
