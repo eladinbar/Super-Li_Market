@@ -16,9 +16,9 @@ public class DefectEntry {
         this.itemName = itemName;
         this.entryDate = entryDate;
         this.quantity = quantity;
-        if (location.contains("SH"))
+        if (location.startsWith("SH"))
             this.location = new Location(location, null);
-        else //if (location.contains("ST")
+        else //if (location.startsWith("ST")
             this.location = new Location(null, location);
     }
 

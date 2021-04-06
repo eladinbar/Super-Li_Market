@@ -16,12 +16,14 @@ import java.util.Date;
 import java.util.List;
 
 public class InventoryController {
+    Category baseCategory;
     private final List<Category> categories;
     private final DefectsLogger defectsLogger;
     private final List<Discount> discounts;
     private final List<Sale> sales;
 
     public InventoryController() {
+        baseCategory = new Category("Uncategorized");
         categories = new ArrayList<>();
         defectsLogger = new DefectsLogger();
         discounts = new ArrayList<>();
@@ -166,7 +168,7 @@ public class InventoryController {
     public void addCategory(String categoryName, String parentCategoryName) {
         try {
             getCategory(categoryName);
-            throw new IllegalArgumentException("A category with the name:" + categoryName + "already exists in the system.");
+            throw new IllegalArgumentException("A category with the name: " + categoryName + "already exists in the system.");
         } catch (IllegalArgumentException ex) {
             Category newCategory;
             if (parentCategoryName != null) {
@@ -179,7 +181,7 @@ public class InventoryController {
             }
 
             //If no parent category was found, add new category with NULL parent
-            newCategory = new Category(categoryName, new ArrayList<>(), null, new ArrayList<>());
+            newCategory = new Category(categoryName, new ArrayList<>(), baseCategory, new ArrayList<>());
             categories.add(newCategory);
         }
     }
@@ -197,6 +199,24 @@ public class InventoryController {
         category.setName(newName);
     }
 
+    public void changeParentCategory(String categoryName, String newParentName) {
+        Category category = getCategory(categoryName);
+        Category parentCategory = getCategory(newParentName);
+        if (isSubCategory(category, parentCategory))
+            throw new IllegalArgumentException("Cannot change parent category to a sub category, please enter a different parent category.");
+        category.setParentCategory(parentCategory);
+    }
+
+    private boolean isSubCategory(Category mainCategory, Category category) {
+        boolean isSubCategory = false;
+        for (Category subCategory : mainCategory.getSubCategories()) {
+            if (category == subCategory)
+                return true;
+            isSubCategory = isSubCategory(subCategory, category);
+        }
+        return isSubCategory;
+    }
+
     /*
     when the category is removed all its sub categories move to the parent category.
      */
@@ -204,11 +224,11 @@ public class InventoryController {
         Category oldCategory = getCategory(categoryName);
         Category parentCategory = oldCategory.getParentCategory();
         for (Item item : oldCategory.getItems()) {
-            parentCategory.addItem(item); //Need to check 'null' case.............
+            parentCategory.addItem(item);
             oldCategory.removeItem(item);
         }
         for(Category subCategory : oldCategory.getSubCategories()) {
-            parentCategory.addSubCategory(subCategory); //Need to check 'null' case.............
+            parentCategory.addSubCategory(subCategory);
             oldCategory.removeSubCategory(subCategory);
         }
     }
