@@ -55,7 +55,7 @@ public class orderController {
     }
 
     public void addProductToOrder(int orderId, int companyId) throws Exception {
-        //todo complete
+        //todo complete check if the product is in the agreement
         orderExist(orderId);
         int productId=orders.get(orderId).getSupplier().getAg().getProducts().get(companyId);
         productExist(productId);

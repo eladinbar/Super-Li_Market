@@ -1,16 +1,11 @@
 package ServiceLayer.Response;
 
-public class Response<T> {
-    public String ErrorMessage;
+public class Response {
+    protected boolean errorOccurred;
+    protected String message;
 
-    public Response() {
-    }
-
-    public Response(String msg) {
-        this.ErrorMessage = msg;
-    }
-
-    public boolean ErrorOccured() {
-        return ErrorMessage != null;
+    public Response(boolean errorOccurred, String message) {
+        this.errorOccurred = errorOccurred;
+        this.message = message;
     }
 }
