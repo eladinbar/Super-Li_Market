@@ -12,7 +12,7 @@ public class supplierService {
         sp=new supplierController();
     }
 
-    public Response<supplier> addSupplier(String firstName, String lastName, String email, String id, int phone, int companyNumber, boolean isPernamentDays, boolean selfDelivery, payment payment) {
+    public Response<supplier> addSupplier(String firstName, String lastName, String email, String id, String phone, int companyNumber, boolean isPernamentDays, boolean selfDelivery, String payment) {
         Response<supplier> toReturn=null;
         try {
             sp.addSupplier(firstName, lastName, email, id, phone, companyNumber, isPernamentDays, selfDelivery, payment);
@@ -62,7 +62,7 @@ public class supplierService {
         return toReturn;
     }
 
-    public Response<supplier> updatePhone(String id, int phone) {
+    public Response<supplier> updatePhone(String id, String phone) {
         Response<supplier> toReturn=null;
         try {
             sp.updatePhone(id,phone);
@@ -102,7 +102,7 @@ public class supplierService {
         return toReturn;
     }
 
-    public Response<supplier> updatePayment(String id, payment pay) {
+    public Response<supplier> updatePayment(String id, String pay) {
         Response<supplier> toReturn=null;
         try {
             sp.updatePayment(id,pay);
@@ -112,7 +112,7 @@ public class supplierService {
         return toReturn;
     }
 
-    public Response<supplier> addContactMember(String supplierId, String firstName, String lastName, String email, String memberID, int phone) {
+    public Response<supplier> addContactMember(String supplierId, String firstName, String lastName, String email, String memberID, String phone) {
         Response<supplier> toReturn=null;
         try {
             sp.addContactMember(supplierId, firstName, lastName, email, memberID, phone) ;

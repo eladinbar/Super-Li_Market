@@ -11,7 +11,7 @@ public class supplierCard extends personCard {
     private payment payment;
     private List<personCard> contactMembers;
 
-    public supplierCard(String firstName, String lastName, String email, String id, int phone, int companyNumber, boolean isPernamentDays, boolean selfDelivery, payment payment) {
+    public supplierCard(String firstName, String lastName, String email, String id, String phone, int companyNumber, boolean isPernamentDays, boolean selfDelivery, payment payment) {
         super(firstName, lastName, email, id, phone);
         this.companyNumber = companyNumber;
         this.isPernamentDays = isPernamentDays;

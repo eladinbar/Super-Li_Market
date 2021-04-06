@@ -16,7 +16,7 @@ public class Service implements IService {
     }
 
     @Override
-    public Response<supplier> addSupplier(String firstName, String lastName, String email, String id, int phone, int companyNumber, boolean isPernamentDays, boolean selfDelivery, payment payment) {
+    public Response<supplier> addSupplier(String firstName, String lastName, String email, String id, String phone, int companyNumber, boolean isPernamentDays, boolean selfDelivery, String payment) {
         return supplierService.addSupplier(firstName, lastName, email, id, phone, companyNumber,isPernamentDays,selfDelivery,payment);
     }
     @Override
@@ -35,7 +35,7 @@ public class Service implements IService {
     }
 
     @Override
-    public Response<supplier> updatePhone(String id, int phone) {
+    public Response<supplier> updatePhone(String id, String phone) {
         return supplierService.updatePhone(id,phone);
     }
 
@@ -60,12 +60,12 @@ public class Service implements IService {
     }
 
     @Override
-    public Response<supplier> updatePayment(String id, payment pay) {
+    public Response<supplier> updatePayment(String id, String pay) {
         return supplierService.updatePayment(id,pay);
     }
 
     @Override
-    public Response<supplier> addContactMember(String supplierId, String firstName, String lastName, String email, String memberID, int phone) {
+    public Response<supplier> addContactMember(String supplierId, String firstName, String lastName, String email, String memberID, String phone) {
         return supplierService.addContactMember(supplierId, firstName, lastName, email, memberID, phone);
     }
 

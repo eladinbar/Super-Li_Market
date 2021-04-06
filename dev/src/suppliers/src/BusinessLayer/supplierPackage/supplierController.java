@@ -11,15 +11,16 @@ public class supplierController {
         this.suppliers = new HashMap<>();
         this.persons = new HashMap<>();
     }
+    //checks if the supplier exists in the system
     private void existSupplier(String id) throws Exception {
         if (!suppliers.containsKey(id))
             throw new Exception("system does not have user with the id :" + id);
     }
-
-    public void addSupplier(String firstName, String lastName, String email, String id, int phone, int companyNumber, boolean isPernamentDays, boolean selfDelivery, payment payment) throws Exception {
-        if(suppliers.containsKey(id))
+    //method that add new supplier to the system
+    public void addSupplier(String firstName, String lastName, String email, String id, String phone, int companyNumber, boolean isPernamentDays, boolean selfDelivery, String payment) throws Exception {
+        if(suppliers.containsKey(id)) //case that the supplier allready exists
             throw new Exception("supplier with the id : "+id+ " already exists");
-        supplier newSup;
+        supplier newSup=new supplier(firstName,lastName,email,id,phone,companyNumber,isPernamentDays,selfDelivery,payment);
         //todo create supplier and check valid values
     }
 
@@ -41,7 +42,7 @@ public class supplierController {
         existSupplier(id);
     }
 
-    public void updatePhone(String id, int phone) throws Exception {
+    public void updatePhone(String id, String phone) throws Exception {
         existSupplier(id);
     }
 
@@ -57,11 +58,11 @@ public class supplierController {
         existSupplier(id);
     }
 
-    public void updatePayment(String id, payment pay) throws Exception {
+    public void updatePayment(String id, String pay) throws Exception {
         existSupplier(id);
     }
 
-    public void addContactMember(String supplierId, String firstName, String lastName, String email, String memberID, int phone) throws Exception {
+    public void addContactMember(String supplierId, String firstName, String lastName, String email, String memberID, String phone) throws Exception {
         existSupplier(supplierId);
     }
 
