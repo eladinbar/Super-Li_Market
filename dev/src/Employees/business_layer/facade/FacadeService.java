@@ -2,6 +2,7 @@ package Employees.business_layer.facade;
 
 import Employees.EmployeeException;
 import Employees.business_layer.Employee.*;
+import Employees.business_layer.Shift.Shift;
 import Employees.business_layer.Shift.ShiftController;
 import Employees.business_layer.Shift.WeeklyShiftSchedule;
 import Employees.business_layer.facade.facadeObject.*;
@@ -27,13 +28,9 @@ public class FacadeService {
         return shiftService.getRecommendation ( startingDate );
     }
 
-    public Response createWeeklyshiftSchedule(LocalDate startingDate, FacadeShift[][] shifts)
+    public ResponseT<FacadeWeeklyShiftSchedule> createWeeklyshiftSchedule(LocalDate startingDate, FacadeShift[][] shifts)
     {
         return shiftService.createWeeklyshiftSchedule ( startingDate, shifts );
-    }
-
-    public ResponseT<WeeklyShiftSchedule> createEmptyWeeklyShiftSchedule(LocalDate startingDate){
-        return shiftService.createEmptyWeeklyShiftSchedule ( startingDate );
     }
 
     public Response addShift(LocalDate date, int shift, HashMap<Role, List<Integer>> manning) {
@@ -44,7 +41,7 @@ public class FacadeService {
         return shiftService.changeShift ( date, shift, manning);
     }
 
-    public Response addEmployeeToShift(Role role, int ID, LocalDate date, int shift){
+    public Response addEmployeeToShift(Role role, String ID, LocalDate date, int shift){
         return shiftService.addEmployeeToShift ( role, ID, date, shift );
     }
 
@@ -70,6 +67,10 @@ public class FacadeService {
 
     public ResponseT<FacadeWeeklyShiftSchedule> getWeeklyShiftSchedule(LocalDate date) {
         return shiftService.getWeeklyShiftSchedule ( date );
+    }
+
+    public ResponseT<FacadeShift> getShift(LocalDate date, int shift){
+        return shiftService.getShift(date, shift);
     }
 
     //employee service responsibility
@@ -120,5 +121,10 @@ public class FacadeService {
 
     public Response addManager(FacadeEmployee manager) {
         return employeeService.addManager ( manager );
+    }
+
+
+    public ResponseT<List<FacadeConstraint>> getConstraints() {
+        return employeeService.getConstraints();
     }
 }
