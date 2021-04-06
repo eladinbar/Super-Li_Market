@@ -4,6 +4,7 @@ import InventoryModule.ControllerLayer.InventoryService;
 import InventoryModule.ControllerLayer.InventoryServiceImpl;
 import InventoryModule.ControllerLayer.Response;
 import InventoryModule.ControllerLayer.ResponseT;
+import InventoryModule.ControllerLayer.SimpleObjects.Category;
 import InventoryModule.ControllerLayer.SimpleObjects.Item;
 
 import java.util.ArrayList;
@@ -37,7 +38,6 @@ public class PresentationController implements Runnable {
 
         return list;
     }
-
     private ArrayList<String> setupOperationsList() {
         ArrayList<String> list = new ArrayList<>();
         list.add("Show item");
@@ -51,7 +51,7 @@ public class PresentationController implements Runnable {
 
         return list;
     }
-
+    //Item related method
     public void addItem() {
         Scanner scan = new Scanner(System.in);
         System.out.println("Enter ID: ");
@@ -88,7 +88,6 @@ public class PresentationController implements Runnable {
             System.out.println("Item added successfully");
         }
     }
-
     public void showItem() {
         int itemID = getItemIDFromUser();
         ResponseT<Item> r = InventoryService.getInventoryService().getItem(itemID);
@@ -98,7 +97,6 @@ public class PresentationController implements Runnable {
             menu.ErrorPrompt("could not get Item. make sure you entered the Id correctly");
         }
     }
-
     public void editItem() {
         int itemID = getItemIDFromUser();
         ResponseT<Item> r = InventoryService.getInventoryService().getItem(itemID);
@@ -112,13 +110,11 @@ public class PresentationController implements Runnable {
         editItemChoiceInput(itemID);
 
     }
-
     private int getItemIDFromUser() {
         System.out.println("Enter item ID: ");
         Scanner scan = new Scanner(System.in);
         return scan.nextInt();
     }
-
     private void editItemChoiceInput(int itemId){
         Scanner scan = new Scanner(System.in);
         String choice = scan.next();
@@ -180,7 +176,6 @@ public class PresentationController implements Runnable {
             }
         }
     }
-
     public void removeItem() {
         int itemID = getItemIDFromUser();
         Response r = service.removeItem(itemID);
@@ -192,6 +187,24 @@ public class PresentationController implements Runnable {
     }
 
     public void addCategory() {
+        Scanner scan = new Scanner(System.in);
+        System.out.println("Enter new category name: ");
+        scan.useDelimiter("\n");
+        String categoryName = scan.next();
+        System.out.println("Enter parent category: (enter nothing for not setting a parent category)");
+        scan.useDelimiter("\n");
+        String parentCategoryName = scan.next();
+        ResponseT<Category> categoryR = service.getCategory(parentCategoryName);
+        if(categoryR.isErrorOccurred()){
+            System.out.println(categoryR.getMessage());
+        }
+
+        Response addR = service.addCategory(categoryName,parentCategoryName);
+        if(addR.isErrorOccurred())
+            System.out.println(addR.getMessage());
+        else
+            System.out.println("Category added successfully");
+
     }
 
     public void showCategory() {
