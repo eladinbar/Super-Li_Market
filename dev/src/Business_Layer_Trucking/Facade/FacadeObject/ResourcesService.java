@@ -74,7 +74,7 @@ public class ResourcesService
         rc.addTruck( model, licenseNumber, weightNeto, maxWeight);
     }
 
-    public void addDriver(int id, String name, Driver.License licenseType) throws KeyAlreadyExistsException {
+    public void addDriver(String id, String name, Driver.License licenseType) throws KeyAlreadyExistsException {
 
         rc.addDriver(id, name, licenseType);
 
@@ -82,9 +82,9 @@ public class ResourcesService
 
 
     public LinkedList<FacadeDriver> getAvailableDrivers() {
-        HashMap<Integer,Driver> drivers = rc.getAvailableDrivers();
+        HashMap<String,Driver> drivers = rc.getAvailableDrivers();
         LinkedList<FacadeDriver> output = new LinkedList<>();
-        for(Map.Entry<Integer,Driver> entry : drivers.entrySet()){
+        for(Map.Entry<String,Driver> entry : drivers.entrySet()){
             output.add(new FacadeDriver(entry.getValue()));
         }
         return output;
@@ -92,9 +92,9 @@ public class ResourcesService
     }
 
     public LinkedList<FacadeDriver> getDrivers() {
-        HashMap <Integer, Driver> drivers =  rc.getDrivers();
+        HashMap <String, Driver> drivers =  rc.getDrivers();
         LinkedList<FacadeDriver> output =  new LinkedList<>();
-        for(HashMap.Entry<Integer,Driver> entry :  drivers.entrySet()){
+        for(HashMap.Entry<String,Driver> entry :  drivers.entrySet()){
             output.add(new FacadeDriver(entry.getValue()));
 
         }

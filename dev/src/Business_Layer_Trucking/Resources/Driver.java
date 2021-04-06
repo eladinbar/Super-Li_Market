@@ -22,7 +22,7 @@ public class Driver {
 
     }
 
-    public Driver(int ID, String name , License license){
+    public Driver(String ID, String name , License license){
         this.ID = ID;
         this.name = name;
         this.available = true;

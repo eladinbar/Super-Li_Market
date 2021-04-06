@@ -71,7 +71,7 @@ public class PresentationController {
 
     }
 
-    public void addDriver(int id, String name , Driver.License license) throws  KeyAlreadyExistsException{
+    public void addDriver(String id, String name , Driver.License license) throws  KeyAlreadyExistsException{
 
         facadeService.addDriver(id, name, license);
     }

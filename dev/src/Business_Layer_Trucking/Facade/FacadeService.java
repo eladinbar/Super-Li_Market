@@ -134,7 +134,7 @@ public class FacadeService {
         resourcesService.addTruck( model, licenseNumber, weightNeto, maxWeight);
     }
 
-    public void addDriver(int ID, String name, Driver.License licenseType) {
+    public void addDriver(String ID, String name, Driver.License licenseType) {
         resourcesService.addDriver(ID, name, licenseType);
     }
 

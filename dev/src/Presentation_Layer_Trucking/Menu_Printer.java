@@ -203,7 +203,11 @@ public class Menu_Printer {
             System.out.print("item weight: ");
             int weight =  getIntFromUser(scanner);
             System.out.print("item name: ");
-            String name = scanner.next();
+            String name = getStringFromUser(scanner);
+            while (!name.matches("[A-Z][a-z]")){
+                System.out.println("invalid name instered, please reWrite it");
+                name = getStringFromUser(scanner);
+            }
             try {
                 pc.addItem(id, weight, name);
                 con = false;
@@ -217,19 +221,28 @@ public class Menu_Printer {
     private void addSite(Scanner scanner) {
         boolean con = true;
         while(con) {
+            // TODO should we check for valid city?
             System.out.print("City name:");
-            String city = scanner.next();
+            String city = getStringFromUser(scanner);
             // TODO maybe site Id ours
             System.out.print("siteID:");
             int siteID =  getIntFromUser(scanner);
             System.out.print("Delivery area ID:");
             int deliveryArea =  getIntFromUser(scanner);
             System.out.print("contact Name:");
-            String contactName = scanner.next();
+            String contactName = getStringFromUser(scanner);
+            while (!contactName.matches("[A-Z][a-z]")){
+                System.out.println("invalid name has been inserted, please insert again ");
+                contactName = getStringFromUser(scanner);
+            }
             System.out.print("contact Number:");
-            String phoneNumber = scanner.next();
+            String phoneNumber = getStringFromUser(scanner);
+            while (!phoneNumber.matches("[0-9]")){
+                System.out.println("phone number must be digits only, NOTICE! no signs such as '-' ");
+                phoneNumber = getStringFromUser(scanner);
+            }
             System.out.print("Site Name:");
-            String name=scanner.next();
+            String name=getStringFromUser(scanner);
             try {
                 pc.addSite(city, siteID, deliveryArea, phoneNumber, contactName,name);
                 con = false;
@@ -310,7 +323,7 @@ public class Menu_Printer {
             System.out.print("Truck License ID: ");
             int licenseNumber =  getIntFromUser(scanner);
             System.out.print("the Trucks model:");
-            String model = scanner.next();
+            String model =getStringFromUser(scanner);
             System.out.print("Weight Neto:");
             int weightNeto =  getIntFromUser(scanner);
             System.out.print("Max Weight:");
@@ -333,10 +346,18 @@ public class Menu_Printer {
         // TODO this method need to be checked with workers branch, might be more demands
         // TODO need to check length of ID and only numbers
         System.out.print("ID: ");
-        int ID =  getIntFromUser(scanner);
+        String ID =  getStringFromUser(scanner);
+        while (!ID.matches("\\d{9}")){
+            System.out.println("id must be exactly 9 digits, insert again");
+            ID = getStringFromUser(scanner);
+        }
 
         System.out.print("Driver's name: ");
-        String name = scanner.next();
+        String name = getStringFromUser(scanner);
+        while (!name.matches("[A-Z][a-z]")){
+            System.out.println("invalid name has been inserted, please insert again ");
+            name = getStringFromUser(scanner);
+        }
         // TODO need to check for legal name
         Driver.License licenseType = null;
         System.out.println("now choose Driver's License degree:\n1) C1 - more then 12k\n2) C - less then 12k");
@@ -415,7 +436,7 @@ public class Menu_Printer {
                         con = false;
                         System.out.println("you chose different delivery area from the currents," +
                                 " would you like to continue? y for yes, n for not");
-                        String answer = scanner.next();
+                        String answer = getStringFromUser(scanner);
                         switch (answer) {
                             case "y":
                                 boolean enough = false;
@@ -585,11 +606,24 @@ public class Menu_Printer {
     }
 
     public void putInitialTestState(){
-        pc.addDriver(203834734,"Ido" ,Driver.License.C1);
+        pc.addDriver("203834734","Ido" ,Driver.License.C1);
+        pc.addDriver("123456789", "Shir" ,Driver.License.C);
+        pc.addDriver("987654321", "Ofir" , Driver.License.C);
+
+        pc.addTruck("Mercedes" , 62321323 , 2000, 12000);
+        pc.addTruck("Man", 1231231, 1500, 8000);
         pc.addTruck("Volvo",123 ,1000, 10000);
+
+        pc.addSite("Haifa", 2,1 , "0502008216" , "Shimi", "SuperLee-Haifa");
+        pc.addSite("Beer Sheva" ,3, 3,"0502008217" , "Yotam" , "superLee-BeerSheva");
+        pc.addSite("Rahat" , 4 , 3 , "0502008214" , "Mohamad" , "MilkHere");
+        pc.addSite("Nazareth" , 5,1,"0522002123" , "Esti" , "Suber-LNazerath");
         pc.addSite("Afula", 1,1,"0502008215" , "Raz" , "Tnuva");
-        pc.addItem(1,100,"milk");
-        pc.addItem(2 , 200 , "cream cheese");
+        pc.addItem(1,1,"milk");
+        pc.addItem(2 , 2 , "cream cheese");
+        pc.addItem(10 , 4 , "cottage" );
+        pc.addItem(11 , 2 , "banana");
+        pc.addItem(13 , 3 , "cucumber");
         pc.addDemandToSystem(1, 1, 100);
     }
 
@@ -610,26 +644,27 @@ public class Menu_Printer {
         return choose;
     }
 
-    private String getStringFromUser(Scanner scanner){
-        boolean con = false;
+    private String getStringFromUser(Scanner scanner) {
+        boolean con = true;
         String output = "";
-        while(con){
+        while (con) {
             try {
                 output = scanner.next();
-            }catch (Exception e){
+                con= false;
+            } catch (Exception e) {
                 System.out.println("wrong input please try again");
                 scanner.nextLine();
             }
-            return output;
         }
+        return output;
+
+    }
 
 
         // TODO NTH need to print the chosen option.
-        // TODO check inputs for -1 and more over
         // TODO finish input -  maybe with exception throw
         // TODO need to check supporting products return
         // TODO improve the initialize method
-        // TODO need to check for retional numbers for each method
-        // TODO need to check for legal name
         //  TODO need to check all exception catched
+        // TODO weights - grams or Kilos
     }

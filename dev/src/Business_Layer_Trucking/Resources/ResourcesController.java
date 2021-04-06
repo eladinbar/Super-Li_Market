@@ -7,7 +7,7 @@ import java.util.Map;
 import java.util.NoSuchElementException;
 
 public class ResourcesController {
-    private HashMap<Integer,Driver> drivers;
+    private HashMap<String,Driver> drivers;
     private HashMap<Integer,Truck> trucks;
     private LinkedList<Driver> driversByLicense;
     private  static ResourcesController instance=null;
@@ -28,7 +28,7 @@ public class ResourcesController {
             instance=new ResourcesController();
         return instance;
     }
-    public void addDriver(int id , String name, Driver.License licenseType) throws KeyAlreadyExistsException
+    public void addDriver(String id , String name, Driver.License licenseType) throws KeyAlreadyExistsException
     {
         if (!drivers.containsKey(id)) {
             Driver driver=new Driver(id,name,licenseType);
@@ -70,10 +70,10 @@ public class ResourcesController {
         }
         else throw new NoSuchElementException("No such truck found");
     }
-    public HashMap<Integer,Driver> getAvailableDrivers()
+    public HashMap<String,Driver> getAvailableDrivers()
     {
-        HashMap<Integer,Driver> result=new HashMap<>();
-        for (Map.Entry<Integer,Driver> entry:drivers.entrySet())
+        HashMap<String,Driver> result=new HashMap<>();
+        for (Map.Entry<String,Driver> entry:drivers.entrySet())
         {
             if (entry.getValue().isAvailable())
                 result.put(entry.getKey(), entry.getValue());
@@ -145,7 +145,7 @@ public class ResourcesController {
 
     //<<<<<<<<<<<<<<<<<<<<<<<<<<<< getters setters >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
-    public HashMap<Integer, Driver> getDrivers() {
+    public HashMap<String, Driver> getDrivers() {
         return drivers;
     }
 
@@ -169,7 +169,7 @@ public class ResourcesController {
         this.currTruckNumber = currTruckNumber;
     }
 
-    public void setDrivers(HashMap<Integer, Driver> drivers) {
+    public void setDrivers(HashMap<String, Driver> drivers) {
         this.drivers = drivers;
     }
 
