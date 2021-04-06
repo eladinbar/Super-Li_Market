@@ -29,7 +29,7 @@ public class Menu_Printer {
         while (keepGoing) {
             System.out.println("\n\nWelcome to Trucking Menu!\nplease choose the option you'd like:");
             int spot = 1;
-            System.out.println(spot + ". Create new Trucking Report");spot++;
+            System.out.println(spot + ".\tCreate new Trucking Report");spot++;
             System.out.println(spot + ".\tShow Drivers"); spot++;
             System.out.println(spot + ".\tShow Trucks");spot++;
             System.out.println(spot + ".\tShow Current Demands");spot++; //4
@@ -46,8 +46,9 @@ public class Menu_Printer {
             System.out.println(spot + ".\tGo back to Main Menu");
             // TODO remove item/ site and whatever methods
 
+            int choose =0;
 
-            int choose = scanner.nextInt();
+            choose = getIntFromUser(scanner);
             switch (choose) {
                 case 1:
                     // TODO exception need to stop running and not insert into next func
@@ -146,17 +147,21 @@ public class Menu_Printer {
             LinkedList<FacadeItem> items = pc.getAllItems();
             for (FacadeItem item : items)
                 System.out.println("item id: " +item.getID() +  "\tname: "+ item.getName());
-                itemId=scanner.nextInt();
+
+
+            itemId = getIntFromUser(scanner);
+
             try{
                 LinkedList<FacadeSite> sites = pc.getAllSites();
                 System.out.println("please choose the site you'd like to Deliver to");
+                // TODO NTH order by site number
                 for (FacadeSite s: sites){
                     System.out.println(s.getName()+":\tsiteID: "+s.getSiteID() + "\tcity: " + s.getCity() + "\t\tin Delivery Area: "  + s.getDeliveryArea());
                 }
-                site=scanner.nextInt();
+                site = getIntFromUser(scanner);
                 try{
                     System.out.print("please choose the amount you'd like to Deliver:");
-                    amount=scanner.nextInt();
+                    amount= getIntFromUser(scanner);
                     pc.addDemandToSystem(itemId, site, amount);
                 }
                 catch (NoSuchElementException ne){
@@ -181,7 +186,7 @@ public class Menu_Printer {
             counter ++;
         }
         System.out.print("choose the item you'd to remove from pool:");
-        int choice =  scanner.nextInt();
+        int choice = getIntFromUser(scanner);
         if (choice < 1 ||  choice >  items.size() + 1){
             System.out.println("option is out of bounds, going back to menu");
         }
@@ -194,9 +199,9 @@ public class Menu_Printer {
         boolean con = true;
         while (con){
             System.out.print("Item id: ");
-            int id = scanner.nextInt();
+            int id =  getIntFromUser(scanner);
             System.out.print("item weight: ");
-            int weight = scanner.nextInt();
+            int weight =  getIntFromUser(scanner);
             System.out.print("item name: ");
             String name = scanner.next();
             try {
@@ -216,9 +221,9 @@ public class Menu_Printer {
             String city = scanner.next();
             // TODO maybe site Id ours
             System.out.print("siteID:");
-            int siteID = scanner.nextInt();
+            int siteID =  getIntFromUser(scanner);
             System.out.print("Delivery area ID:");
-            int deliveryArea = scanner.nextInt();
+            int deliveryArea =  getIntFromUser(scanner);
             System.out.print("contact Name:");
             String contactName = scanner.next();
             System.out.print("contact Number:");
@@ -246,7 +251,7 @@ public class Menu_Printer {
                         " Available: " + facadeDriver.isAvailable());
             }
             System.out.println("Choose Driver by id");
-            int driver=scanner.nextInt();
+            int driver= getIntFromUser(scanner);
             pc.makeAvailable_Driver(driver);
         }
     }
@@ -261,7 +266,7 @@ public class Menu_Printer {
                         "\n model: " + truck.getModel() + " maxWeight: " + truck.getMaxWeight()  );
             }
             System.out.println("Choose truck by License:");
-            int truck=scanner.nextInt();
+            int truck= getIntFromUser(scanner);
             // TODO throws exception for busy truck?
             pc.makeAvailable_Truck(truck) ;
         }
@@ -279,7 +284,7 @@ public class Menu_Printer {
                         " Available: " + facadeDriver.isAvailable());
             }
             System.out.println("Choose Driver by id");
-            int driver=scanner.nextInt();
+            int driver= getIntFromUser(scanner);
             pc.makeUnavailable_Driver(driver);
         }
     }
@@ -294,7 +299,7 @@ public class Menu_Printer {
                         "\n model: " + truck.getModel() + " maxWeight: " + truck.getMaxWeight()  );
             }
             System.out.println("Choose truck by License:");
-            int truck=scanner.nextInt();
+            int truck= getIntFromUser(scanner);
             pc.makeUnavailable_Truck(truck);
         }
     }
@@ -303,13 +308,17 @@ public class Menu_Printer {
         boolean con = true;
         while (con) {
             System.out.print("Truck License ID: ");
-            int licenseNumber = scanner.nextInt();
+            int licenseNumber =  getIntFromUser(scanner);
             System.out.print("the Trucks model:");
             String model = scanner.next();
             System.out.print("Weight Neto:");
-            int weightNeto = scanner.nextInt();
+            int weightNeto =  getIntFromUser(scanner);
             System.out.print("Max Weight:");
-            int maxWeight = scanner.nextInt();
+            int maxWeight =  getIntFromUser(scanner);
+            while (maxWeight < weightNeto){
+                System.out.println("the  truck's max weight is lower then it's neto weight("+weightNeto+"), please choose again or quit with -1");
+                maxWeight = getIntFromUser(scanner);
+            }
 
             try {
                 pc.addTruck(model, licenseNumber, weightNeto, maxWeight);
@@ -324,7 +333,7 @@ public class Menu_Printer {
         // TODO this method need to be checked with workers branch, might be more demands
         // TODO need to check length of ID and only numbers
         System.out.print("ID: ");
-        int ID = scanner.nextInt();
+        int ID =  getIntFromUser(scanner);
 
         System.out.print("Driver's name: ");
         String name = scanner.next();
@@ -333,7 +342,7 @@ public class Menu_Printer {
         System.out.println("now choose Driver's License degree:\n1) C1 - more then 12k\n2) C - less then 12k");
         boolean stop = false;
         while (!stop) {
-            switch (scanner.nextInt()) {
+            switch ( getIntFromUser(scanner)) {
                 case 1:
                     licenseType = Driver.License.C1;
                     stop = true;
@@ -363,9 +372,9 @@ public class Menu_Printer {
         boolean con =  true;
         while (con) {
             System.out.print("please choose leaving time: \n hour: ");
-            int hour = scanner.nextInt();
+            int hour =  getIntFromUser(scanner);
             System.out.print("minutes: ");
-            int minute = scanner.nextInt();
+            int minute =  getIntFromUser(scanner);
             LocalTime time = LocalTime.of(hour, minute);
             try {
                 pc.chooseLeavingHour(time);
@@ -391,14 +400,14 @@ public class Menu_Printer {
                     try {
                         System.out.println("if you'de like to finish, insert -1 in item number");
                         System.out.print("item number: ");
-                        int itemNumber = scanner.nextInt();
+                        int itemNumber =  getIntFromUser(scanner);
                         System.out.println();
                         System.out.print("amount: ");
-                        int amount = scanner.nextInt();
+                        int amount =  getIntFromUser(scanner);
                         System.out.println();
 
                         System.out.print("site: ");
-                        int siteID = scanner.nextInt();
+                        int siteID =  getIntFromUser(scanner);
 
                         con = pc.addDemandToReport(itemNumber, amount, siteID);
 
@@ -406,7 +415,7 @@ public class Menu_Printer {
                         con = false;
                         System.out.println("you chose different delivery area from the currents," +
                                 " would you like to continue? y for yes, n for not");
-                        String answer = scanner.nextLine();
+                        String answer = scanner.next();
                         switch (answer) {
                             case "y":
                                 boolean enough = false;
@@ -418,13 +427,13 @@ public class Menu_Printer {
                                         demands = sortDemandsBySite(demands);
                                         printDemands(demands);
                                         System.out.print("item number: ");
-                                        int itemNumber = scanner.nextInt();
+                                        int itemNumber =  getIntFromUser(scanner);
                                         System.out.println();
                                         System.out.print("amount: ");
-                                        int amount = scanner.nextInt();
+                                        int amount =  getIntFromUser(scanner);
                                         System.out.println();
                                         System.out.println("site id:");
-                                        int siteID = scanner.nextInt();
+                                        int siteID =  getIntFromUser(scanner);
                                         enough = pc.continueAddDemandToReport(itemNumber, amount, siteID);
                                     }
                                 }
@@ -466,7 +475,7 @@ public class Menu_Printer {
         for (FacadeTruck truck: trucks) {
             System.out.println("truck LicenseNumber: " + truck.getLicenseNumber() + " max Weight :" + truck.getMaxWeight())  ;
         }
-        int truckID = scanner.nextInt();
+        int truckID =  getIntFromUser(scanner);
         FacadeTruck facadeTruck = pc.chooseTruck(truckID);
         System.out.println("now please choose driver:");
         // TODO need to figure how to know the truck weight and throw exception
@@ -477,7 +486,7 @@ public class Menu_Printer {
         for ( FacadeDriver driver : drivers) {
             System.out.println("Driver ID:" + driver.getID() + " License degree: " + driver.getLicenseType() + " =" + driver.getLicenseType().getSize()  )  ;
         }
-        int driverID = scanner.nextInt();
+        int driverID =  getIntFromUser(scanner);
         FacadeDriver facadeDriver = pc.chooseDriver(driverID);
 
     }
@@ -492,7 +501,7 @@ public class Menu_Printer {
         System.out.println(spot + ") remove item");
         System.out.println("choose different number to quit");
         System.out.print("place your option");
-        int option = scanner.nextInt();
+        int option =  getIntFromUser(scanner);
         switch (option){
             case 1://remove site
 
@@ -532,14 +541,14 @@ public class Menu_Printer {
                             + "delivery site: " + pc.getSiteName( demand.getSite() )) ;
                 }
                 System.out.print("your choice: ");
-                int itemId = scanner.nextInt();
+                int itemId =  getIntFromUser(scanner);
                 while ( itemId > items.size() -1 || itemId<1) {
                     System.out.println("your option is out of bounds, please choose again");
-                    itemId = scanner.nextInt();
+                    itemId =  getIntFromUser(scanner);
                 }
                 FacadeDemand demand = items.get(itemId -1);
                 System.out.println("amount: ");
-                int amount = scanner.nextInt();
+                int amount =  getIntFromUser(scanner);
                 pc.removeItemFromReport(demand , amount);
                 return pc.getCurrTruckReport();
 
@@ -569,7 +578,7 @@ public class Menu_Printer {
                             "item ID:" + demand.getItemID() + "amount: " + demand.getAmount());
                 }
             }
-            int siteID = scanner.nextInt();
+            int siteID =  getIntFromUser(scanner);
             con = pc.removeDestination(siteID);
             if (!con) System.out.println("the chosen site id doesn't exist here!");
         }
@@ -583,4 +592,44 @@ public class Menu_Printer {
         pc.addItem(2 , 200 , "cream cheese");
         pc.addDemandToSystem(1, 1, 100);
     }
-}
+
+    private int getIntFromUser(Scanner scanner){
+        int choose = -1;
+        boolean scannerCon = true;
+        while(scannerCon)
+            try {
+                choose = scanner.nextInt();
+                if (choose < 0){
+                    System.out.println("you must choose an none-negative number ");
+                }
+                scannerCon =false;
+            }catch (Exception e){
+                System.out.println("wrong input please try again");
+                scanner.nextLine();
+            }
+        return choose;
+    }
+
+    private String getStringFromUser(Scanner scanner){
+        boolean con = false;
+        String output = "";
+        while(con){
+            try {
+                output = scanner.next();
+            }catch (Exception e){
+                System.out.println("wrong input please try again");
+                scanner.nextLine();
+            }
+            return output;
+        }
+
+
+        // TODO NTH need to print the chosen option.
+        // TODO check inputs for -1 and more over
+        // TODO finish input -  maybe with exception throw
+        // TODO need to check supporting products return
+        // TODO improve the initialize method
+        // TODO need to check for retional numbers for each method
+        // TODO need to check for legal name
+        //  TODO need to check all exception catched
+    }
