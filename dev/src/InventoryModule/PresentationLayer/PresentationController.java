@@ -8,49 +8,18 @@ import InventoryModule.ControllerLayer.SimpleObjects.Category;
 import InventoryModule.ControllerLayer.SimpleObjects.Item;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Scanner;
 
 public class PresentationController implements Runnable {
     private final InventoryService service;
     private final Menu menu;
-    private final List<String> OperationsList;
-    private final List<String> itemModificationList;
+
 
     public PresentationController() {
         this.service = new InventoryServiceImpl();
-        this.OperationsList = setupOperationsList();
-        this.itemModificationList = setupItemModList();
         this.menu = new Menu();
     }
-    private ArrayList<String> setupItemModList(){
-        ArrayList<String> list = new ArrayList<>();
-        list.add("change item name");
-        list.add("change item category");
-        list.add("change item cost price");
-        list.add("change item sell price");
-        list.add("change item storage location");
-        list.add("change item store location");
-        list.add("change item storage quantity");
-        list.add("change item store quantity");
-        list.add("Add supplier");
-        list.add("Remove supplier");
 
-        return list;
-    }
-    private ArrayList<String> setupOperationsList() {
-        ArrayList<String> list = new ArrayList<>();
-        list.add("Show item");
-        list.add("Add item");
-        list.add("Edit item");
-        list.add("Remove item");
-        list.add("Show category");
-        list.add("Add category");
-        list.add("Edit category");
-        list.add("Remove category");
-
-        return list;
-    }
     //Item related method
     public void addItem() {
         Scanner scan = new Scanner(System.in);
@@ -105,9 +74,13 @@ public class PresentationController implements Runnable {
         } catch (Exception e) {
             menu.ErrorPrompt("could not get Item. make sure you entered the Id correctly");
         }
-        menu.printItemModificationMenu(itemModificationList);
+        menu.printMenu(menu.getItemModificationList());
 
-        editItemChoiceInput(itemID);
+        Response modResp =  editItemChoiceInput(itemID);
+        if(modResp.isErrorOccurred())
+            System.out.println(modResp.getMessage());
+        else
+            System.out.println("Changes saved!");
 
     }
     private int getItemIDFromUser() {
@@ -115,66 +88,69 @@ public class PresentationController implements Runnable {
         Scanner scan = new Scanner(System.in);
         return scan.nextInt();
     }
-    private void editItemChoiceInput(int itemId){
+    private Response editItemChoiceInput(int itemId){
         Scanner scan = new Scanner(System.in);
         String choice = scan.next();
-        switch (choice){
+        Response r = null;
+         switch (choice){
             case "1" -> {
                 System.out.println("Enter new item name");
                 scan.useDelimiter("\n");
                 String newName = scan.next();
-                service.modifyItemName(itemId,newName);
+                r = service.modifyItemName(itemId,newName);
             }
             case "2" -> {
                 System.out.println("enter new item's category");
                 System.out.println("");
                 scan.useDelimiter("\n");
                 String newCategory = scan.next();
-                service.modifyItemCategory(itemId,newCategory);
+                r = service.modifyItemCategory(itemId,newCategory);
             }
             case "3" -> {
                 System.out.println("enter new item cost price");
                 double newPrice = scan.nextDouble();
-                service.modifyItemCostPrice(itemId,newPrice);
+                r = service.modifyItemCostPrice(itemId,newPrice);
             }
             case "4" -> {
                 System.out.println("enter new item selling price");
                 double newPrice = scan.nextDouble();
-                service.modifyItemSellingPrice(itemId,newPrice);
+                r = service.modifyItemSellingPrice(itemId,newPrice);
             }
             case "5" -> {
                 System.out.println("enter new item storage location");
                 scan.useDelimiter("\n");
                 String newLocation = scan.next();
-                service.changeItemStorageLocation(itemId,newLocation);
+                r = service.changeItemStorageLocation(itemId,newLocation);
             }
             case "6" -> {
                 System.out.println("enter new item store location");
                 scan.useDelimiter("\n");
                 String newLocation = scan.next();
-                service.changeItemShelfLocation(itemId,newLocation);
+                r = service.changeItemShelfLocation(itemId,newLocation);
             }
             case "7" -> {
                 System.out.println("enter new item storage quantity");
                 int newQuantity = scan.nextInt();
-                service.modifyItemStorageQuantity(itemId,newQuantity);
+                r = service.modifyItemStorageQuantity(itemId,newQuantity);
             }
             case "8" -> {
                 System.out.println("enter new item store quantity");
                 int newQuantity = scan.nextInt();
-                service.modifyItemShelfQuantity(itemId,newQuantity);
+                r = service.modifyItemShelfQuantity(itemId,newQuantity);
             }
             case "9" -> {
                 System.out.println("add  new supplier for the item: (enter supplier id)");
                 int newSupplier = scan.nextInt();
-                service.addItemSupplier(itemId,newSupplier);
+                r = service.addItemSupplier(itemId,newSupplier);
             }
             case "10" -> {
                 System.out.println("remove a supplier for the item: (enter supplier id)");
                 int oldSupplier = scan.nextInt();
-                service.removeItemSupplier(itemId,oldSupplier);
+                r = service.removeItemSupplier(itemId,oldSupplier);
             }
+            default -> r = new Response(true,"invalid choice");
         }
+        return r;
     }
     public void removeItem() {
         int itemID = getItemIDFromUser();
@@ -186,11 +162,15 @@ public class PresentationController implements Runnable {
         }
     }
 
+    private String getCategoryNameFromUser(){
+        Scanner scan = new Scanner(System.in);
+        System.out.println("Enter category name: ");
+        scan.useDelimiter("\n");
+        return scan.next();
+    }
     public void addCategory() {
         Scanner scan = new Scanner(System.in);
-        System.out.println("Enter new category name: ");
-        scan.useDelimiter("\n");
-        String categoryName = scan.next();
+        String categoryName = getCategoryNameFromUser();
         System.out.println("Enter parent category: (enter nothing for not setting a parent category)");
         scan.useDelimiter("\n");
         String parentCategoryName = scan.next();
@@ -208,12 +188,54 @@ public class PresentationController implements Runnable {
     }
 
     public void showCategory() {
+        String categoryName = getCategoryNameFromUser();
+        ResponseT<Category> rCategory = service.getCategory(categoryName);
+        if(rCategory.isErrorOccurred())
+            System.out.println(rCategory.getMessage());
+        else
+            menu.printCategoryPrompt(rCategory.getDate());
     }
 
     public void editCategory() {
+        Scanner scan = new Scanner(System.in);
+        String catName = getCategoryNameFromUser();
+        ResponseT<Category> catR = service.getCategory(catName);
+        if(catR.isErrorOccurred()) {
+            catR.getMessage();
+            return;
+        }
+        else
+        menu.printCategoryPrompt(catR.getDate());
+        menu.printMenu(menu.getCategoryModificationList());
+        scan.useDelimiter("\n");
+        String userInput = scan.next();
+        Response modResp = null;
+        switch (userInput){
+            case "1" -> {
+                System.out.println("Enter new Name");
+                scan.useDelimiter("\n");
+                String newName = scan.next();
+                modResp = service.modifyCategoryName(catR.getDate().getName(), newName);
+            }
+            case "2" -> {
+                System.out.println("Enter new parent category name: (keep in mind not to use a subcategory!)");
+                scan.useDelimiter("\n");
+                String newParent = scan.next();
+                modResp = service.changeParentCategory(catR.getDate().getName(),newParent);
+            }
+            default -> modResp = new Response(true,"invalid choice");
+        }
+
+        if(modResp.isErrorOccurred())
+            System.out.println(modResp.getMessage());
+        else
+            System.out.println("Changes Saved!");
+
     }
 
     public void removeCategory() {
+
+
     }
 
 
@@ -221,7 +243,7 @@ public class PresentationController implements Runnable {
     public void run() {
         menu.printWelcomePrompt();
         while (true) {
-            menu.printOperationMenu(OperationsList);
+            menu.printOperationMenu(menu.getOperationsList());
             operationInput();
         }
 

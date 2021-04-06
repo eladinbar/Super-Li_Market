@@ -107,6 +107,11 @@ public class InventoryServiceImpl implements InventoryService{
     }
 
     @Override
+    public Response changeParentCategory(String categoryName, String newParent) {
+        return null;
+    }
+
+    @Override
     public Response removeCategory(String categoryName) {
         return null;
     }

@@ -40,6 +40,7 @@ public interface InventoryService {
     Response addCategory(String categoryName, String parentCategory);
     ResponseT<Category> getCategory(String categoryName);
     Response modifyCategoryName(String oldName, String newName);
+    Response changeParentCategory(String categoryName, String newParent);
     /*
     when the category is deleted all its sub categories move to the parent category.
      */
