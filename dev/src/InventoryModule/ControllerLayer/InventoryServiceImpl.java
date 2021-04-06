@@ -111,7 +111,7 @@ public class InventoryServiceImpl implements InventoryService{
     }
 
     @Override
-    public Response changeParentCategory(String categoryName, String newParetName) {
+    public Response changeParentCategory(String categoryName, String newParentName) {
         return null;
     }
 
