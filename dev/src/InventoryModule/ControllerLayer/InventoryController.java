@@ -17,7 +17,7 @@ import java.util.List;
 
 public class InventoryController {
     private final List<Category> categories;
-    private DefectsLogger defectsLogger;
+    private final DefectsLogger defectsLogger;
     private final List<Discount> discounts;
     private final List<Sale> sales;
 
@@ -164,19 +164,24 @@ public class InventoryController {
     If parent category is null, the new category should be added as a main category.
      */
     public void addCategory(String categoryName, String parentCategoryName) {
-        Category newCategory;
-        if (parentCategoryName != null) {
-            for (Category category : categories) {
-                if (category.getName().equals(parentCategoryName)) {
-                    newCategory = new Category(categoryName, new ArrayList<>(), category, new ArrayList<>());
-                    categories.add(newCategory);
+        try {
+            getCategory(categoryName);
+            throw new IllegalArgumentException("A category with the name:" + categoryName + "already exists in the system.");
+        } catch (IllegalArgumentException ex) {
+            Category newCategory;
+            if (parentCategoryName != null) {
+                for (Category category : categories) {
+                    if (category.getName().equals(parentCategoryName)) {
+                        newCategory = new Category(categoryName, new ArrayList<>(), category, new ArrayList<>());
+                        categories.add(newCategory);
+                    }
                 }
             }
-        }
 
-        //If no parent category was found, add new category with NULL parent
-        newCategory = new Category(categoryName, new ArrayList<>(), null, new ArrayList<>());
-        categories.add(newCategory);
+            //If no parent category was found, add new category with NULL parent
+            newCategory = new Category(categoryName, new ArrayList<>(), null, new ArrayList<>());
+            categories.add(newCategory);
+        }
     }
 
     public Category getCategory(String categoryName) {
@@ -196,20 +201,39 @@ public class InventoryController {
     when the category is removed all its sub categories move to the parent category.
      */
     public void removeCategory(String categoryName) {
-
+        Category oldCategory = getCategory(categoryName);
+        Category parentCategory = oldCategory.getParentCategory();
+        for (Item item : oldCategory.getItems()) {
+            parentCategory.addItem(item); //Need to check 'null' case.............
+            oldCategory.removeItem(item);
+        }
+        for(Category subCategory : oldCategory.getSubCategories()) {
+            parentCategory.addSubCategory(subCategory); //Need to check 'null' case.............
+            oldCategory.removeSubCategory(subCategory);
+        }
     }
 
 
     //-------------------------------------------------------------------------Sale functions
 
     public void addItemSale(String saleName, int itemID, double saleDiscount, Date startDate, Date endDate) {
-        ItemSale newSale = new ItemSale(saleName, saleDiscount, startDate, endDate, getItem(itemID));
-        sales.add(newSale);
+        try {
+            getSale(saleName);
+            throw new IllegalArgumentException("A sale with the name " + saleName + " already exists in the system.");
+        } catch(IllegalArgumentException ex) { //No item with the same name exists
+            ItemSale newSale = new ItemSale(saleName, saleDiscount, startDate, endDate, getItem(itemID));
+            sales.add(newSale);
+        }
     }
 
     public void addCategorySale(String saleName, String categoryName, double saleDiscount, Date startDate, Date endDate) {
-        CategorySale newSale = new CategorySale(saleName, saleDiscount, startDate, endDate, getCategory(categoryName));
-        sales.add(newSale);
+        try {
+            getSale(saleName);
+            throw new IllegalArgumentException("A sale with the name " + saleName + " already exists in the system.");
+        } catch(IllegalArgumentException ex) { //No item with the same name exists
+            CategorySale newSale = new CategorySale(saleName, saleDiscount, startDate, endDate, getCategory(categoryName));
+            sales.add(newSale);
+        }
     }
 
     private Sale getSale(String saleName) {
@@ -238,22 +262,52 @@ public class InventoryController {
 
     //-------------------------------------------------------------------------Discount functions
 
-    public void addItemDiscount(int supplierID, double discount, Date discountDate, int itemCount, int itemId) {
-        ItemDiscount newDiscount = new ItemDiscount(supplierID, discount, discountDate, itemCount, getItem(itemId));
-        discounts.add(newDiscount);
+    public void addItemDiscount(int supplierId, double discount, Date discountDate, int itemCount, int itemId) {
+        try {
+            getDiscount(supplierId);
+            throw new IllegalArgumentException("A discount with supplier ID: " + supplierId + " already exists in the system.");
+        } catch (Exception ex) {
+            ItemDiscount newDiscount = new ItemDiscount(supplierId, discount, discountDate, itemCount, getItem(itemId));
+            discounts.add(newDiscount);
+        }
     }
 
-    public void addCategoryDiscount(int supplierID, double discount, Date discountDate, int itemCount, String categoryName) {
-        CategoryDiscount newDiscount = new CategoryDiscount(supplierID, discount, discountDate, itemCount, getCategory(categoryName));
-        discounts.add(newDiscount);
+    public void addCategoryDiscount(int supplierId, double discount, Date discountDate, int itemCount, String categoryName) {
+        try {
+            getDiscount(supplierId);
+            throw new IllegalArgumentException("A discount with supplier ID: " + supplierId + " already exists in the system.");
+        } catch (Exception ex) {
+            CategoryDiscount newDiscount = new CategoryDiscount(supplierId, discount, discountDate, itemCount, getCategory(categoryName));
+            discounts.add(newDiscount);
+        }
+    }
+
+    private Discount getDiscount(int supplierId) {
+        for (Discount discount : discounts) {
+            if (discount.getSupplierID() == supplierId)
+                return discount;
+        }
+        throw new IllegalArgumentException("No discount with supplier ID: " + supplierId + " exists in the system.");
     }
 
 
     //-------------------------------------------------------------------------Defect functions
 
     public void recordDefect(int itemId, String itemName, Date entryDate, int defectQuantity, String defectLocation) {
-        DefectEntry newDefect = new DefectEntry(itemId, itemName, entryDate, defectQuantity, defectLocation);
-        defectsLogger.addDefectEntry(newDefect);
+        try {
+            getDefectEntry(itemId, entryDate);
+            throw new IllegalArgumentException("A defect entry with the same ID:" + itemName + " and the same date recorded:" + entryDate + " already exists in the system.");
+        } catch (IllegalArgumentException ex) {
+            DefectEntry newDefect = new DefectEntry(itemId, itemName, entryDate, defectQuantity, defectLocation);
+            defectsLogger.addDefectEntry(newDefect);
+        }
+    }
+
+    private DefectEntry getDefectEntry(int itemId, Date entryDate) {
+        DefectEntry defectEntry = defectsLogger.getDefectEntry(itemId, entryDate);
+        if (defectEntry == null)
+            throw new IllegalArgumentException("No defect entry with ID: " + itemId + " and date recorded: " + entryDate + " were found in the system");
+        return defectEntry;
     }
 
 

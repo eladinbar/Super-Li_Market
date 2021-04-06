@@ -1,6 +1,7 @@
 package InventoryModule.BusinessLayer.DefectsPackage;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class DefectsLogger {
@@ -12,6 +13,14 @@ public class DefectsLogger {
 
     public List<DefectEntry> getDefectEntries() {
         return defectEntries;
+    }
+
+    public DefectEntry getDefectEntry(int itemId, Date entryDate) {
+        for (DefectEntry defectEntry : defectEntries) {
+            if (defectEntry.getEntryDate().equals(entryDate) & defectEntry.getItemID() == itemId)
+                return defectEntry;
+        }
+        return null;
     }
 
     public void addDefectEntry(DefectEntry defectEntry) {
