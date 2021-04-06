@@ -9,7 +9,7 @@ public class SystemLogger {
 
     public static void setup(){
         PatternLayout layout = new PatternLayout();
-        String conversionPattern = "%d{YYYY-mm-dd HH:mm:ss} [%C:%M:%L] - %m%n";
+        String conversionPattern = "%d{HH:mm:ss} [%C:%M:%L] - %m%n";
         layout.setConversionPattern(conversionPattern);
 
         RollingFileAppender fileAppender = new RollingFileAppender();
