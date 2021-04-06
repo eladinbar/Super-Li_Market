@@ -110,6 +110,11 @@ public class InventoryServiceImpl implements InventoryService{
         return null;
     }
 
+    @Override
+    public Response changeParentCategory(String categoryName, String newParetName) {
+        return null;
+    }
+
     //-------------------------------------------------------------------------Sale functions
 
     @Override
