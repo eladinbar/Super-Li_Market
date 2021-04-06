@@ -1,30 +1,55 @@
 package BusinessLayer.supplierPackage;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 import java.util.Scanner;
 
 public class agreement {
-    private Map<int, int> products;
-    private Map<int, int> prices;
+    private Map<Integer, Integer> products;
+    private Map<Integer, Integer> prices;
     private quantityList ql;
 
     public agreement() {
         this.ql=null;
-        products=new HashMap<int,int>();
-        prices=new HashMap<int,int>();
-        Scanner scanner=new Scanner(System.in);
-        //todo after fix controller with products
-        // get product from controller product
-        // set on controller new map
-        // create the agreement with the map
-        while (true) {
-            System.out.println("Please enter a product id");
-            System.out.println("please enter product company id");
-            System.out.println("please enter product price");
-            System.out.println("to continue press 1 else 0");
-            if(scanner.nextInt()==0)
-                break;
-        }
+        products=new HashMap<>();
+        prices=new HashMap<>();
+    }
+
+    public Map<Integer, Integer> getProducts() {
+        return products;
+    }
+
+    public void setProducts(Map<Integer, Integer> products) {
+        this.products = products;
+    }
+
+    public Map<Integer, Integer> getPrices() {
+        return prices;
+    }
+
+    public void setPrices(Map<Integer, Integer> prices) {
+        this.prices = prices;
+    }
+
+    public quantityList getQl() {
+        return ql;
+    }
+
+    public void setQl(quantityList ql) {
+        this.ql = ql;
+    }
+
+    public void deleteQuantityListItem(int productID) throws Exception {
+        if (ql==null)
+            throw new Exception("supplier does not have a quantity list");
+        if (!ql.getAmount().containsKey(productID))
+            throw new Exception("supplier quantity list does not contain item "+productID);
+        ql.getDiscount().remove(productID);
+        ql.getAmount().remove(productID);
+    }
+
+    public void addQuantityListItem(int productID, int amount, int discount) throws Exception {
+        if (ql==null)
+            throw new Exception("supplier does not have quantity list");
+        ql.addQuantityListItem(productID, amount, discount);
     }
 }

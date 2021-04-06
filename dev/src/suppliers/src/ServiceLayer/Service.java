@@ -21,6 +21,7 @@ public class Service implements IService {
     }
     @Override
     public Response<supplier> removeSupplier(String id) {
+        orderService.removeSupplier(id);
         return supplierService.removeSupplier(id);
     }
 

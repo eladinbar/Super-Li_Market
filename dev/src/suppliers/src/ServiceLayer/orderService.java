@@ -1,13 +1,26 @@
 package ServiceLayer;
 
+import BusinessLayer.orderPackage.orderController;
 import ServiceLayer.Response.Response;
 import ServiceLayer.objects.supplier;
 
 import java.util.Date;
 
 public class orderService {
+    private orderController oc;
+
+    public orderService() {
+        this.oc = new orderController();
+    }
+
     public Response<supplier> createOrder(Date date, String supplierID) {
-        return null;
+        Response<supplier> toReturn=null;
+        try {
+            oc.createOrder(date, supplierID);
+        } catch (Exception e) {
+            toReturn=new Response(e.getMessage());
+        }
+        return toReturn;
     }
 
     public Response<supplier> createPernamentOrder(int day, String supplierID) {
@@ -28,5 +41,15 @@ public class orderService {
 
     public Response<supplier> getProduct(int productID) {
         return null;
+    }
+
+    public Response<supplier> removeSupplier(String id) {
+        Response<supplier> toReturn=null;
+        try {
+            oc.removeSupplier(id);
+        } catch (Exception e) {
+            toReturn=new Response(e.getMessage());
+        }
+        return toReturn;
     }
 }
