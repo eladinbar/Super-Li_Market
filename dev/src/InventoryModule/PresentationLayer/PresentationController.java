@@ -161,7 +161,7 @@ public class PresentationController implements Runnable {
             System.out.println("Item removed successfully");
         }
     }
-
+    //category related method
     private String getCategoryNameFromUser(){
         Scanner scan = new Scanner(System.in);
         System.out.println("Enter category name: ");
@@ -172,21 +172,19 @@ public class PresentationController implements Runnable {
         Scanner scan = new Scanner(System.in);
         String categoryName = getCategoryNameFromUser();
         System.out.println("Enter parent category: (enter nothing for not setting a parent category)");
-        scan.useDelimiter("\n");
-        String parentCategoryName = scan.next();
+        String parentCategoryName = scan.nextLine();
         ResponseT<Category> categoryR = service.getCategory(parentCategoryName);
-        if(categoryR.isErrorOccurred()){
+        if(categoryR != null && categoryR.isErrorOccurred()){
             System.out.println(categoryR.getMessage());
         }
 
         Response addR = service.addCategory(categoryName,parentCategoryName);
-        if(addR.isErrorOccurred())
+        if(categoryR != null && addR.isErrorOccurred())
             System.out.println(addR.getMessage());
         else
             System.out.println("Category added successfully");
 
     }
-
     public void showCategory() {
         String categoryName = getCategoryNameFromUser();
         ResponseT<Category> rCategory = service.getCategory(categoryName);
@@ -195,7 +193,6 @@ public class PresentationController implements Runnable {
         else
             menu.printCategoryPrompt(rCategory.getDate());
     }
-
     public void editCategory() {
         Scanner scan = new Scanner(System.in);
         String catName = getCategoryNameFromUser();
@@ -232,10 +229,13 @@ public class PresentationController implements Runnable {
             System.out.println("Changes Saved!");
 
     }
-
     public void removeCategory() {
-
-
+        String catName = getCategoryNameFromUser();
+        Response catR = service.removeCategory(catName);
+        if(catR.isErrorOccurred())
+            System.out.println(catR.getMessage());
+        else
+            System.out.println("Category removed!");
     }
 
 
