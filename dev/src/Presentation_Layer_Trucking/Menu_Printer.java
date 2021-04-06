@@ -429,7 +429,7 @@ public class Menu_Printer {
 
                         System.out.print("site: ");
                         int siteID =  getIntFromUser(scanner);
-
+                        // TODO need to throw more excptions for such as incompatible item id
                         con = pc.addDemandToReport(itemNumber, amount, siteID);
 
                     } catch (IllegalStateException e) {
