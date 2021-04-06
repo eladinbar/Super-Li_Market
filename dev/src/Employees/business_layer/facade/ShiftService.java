@@ -32,7 +32,7 @@ public class ShiftService {
         }
     }
 
-    public Response createWeeklyshiftSchedule(LocalDate startingDate, FacadeShift[][] shifts)
+    public ResponseT<FacadeWeeklyShiftSchedule> createWeeklyshiftSchedule(LocalDate startingDate, FacadeShift[][] shifts)
     {
         try{
             Shift[][] newShifts = new Shift[7][2];
@@ -45,14 +45,14 @@ public class ShiftService {
                 if(evening != null)
                     newShifts[i][1] = new Shift ( evening );
             }
-            shiftController.createWeeklyshiftSchedule ( startingDate, newShifts );
-            return new Response (  );
+            FacadeWeeklyShiftSchedule facadeWeeklyShiftSchedule = new FacadeWeeklyShiftSchedule (shiftController.createWeeklyshiftSchedule ( startingDate, newShifts ));
+            return new ResponseT ( facadeWeeklyShiftSchedule );
         }catch (EmployeeException e){
-            return new Response ( e.getMessage () );
+            return new ResponseT ( e.getMessage () );
         }
     }
 
-    public ResponseT<WeeklyShiftSchedule> createEmptyWeeklyShiftSchedule(LocalDate startingDate){
+    public ResponseT<FacadeWeeklyShiftSchedule> createEmptyWeeklyShiftSchedule(LocalDate startingDate){
         try {
             FacadeWeeklyShiftSchedule facadeWeeklyShiftSchedule = new FacadeWeeklyShiftSchedule ( new WeeklyShiftSchedule ( startingDate ) );
             return new ResponseT( facadeWeeklyShiftSchedule );
@@ -84,7 +84,7 @@ public class ShiftService {
         }
     }
 
-    public Response addEmployeeToShift(Role role, int ID, LocalDate date, int shift){
+    public Response addEmployeeToShift(Role role, String ID, LocalDate date, int shift){
         try
         {
             shiftController.addEmployeeToShift ( role, ID, date, shift );
@@ -151,6 +151,15 @@ public class ShiftService {
             return new ResponseT ( facadeWeeklyShiftSchedule );
         }catch (EmployeeException e)
         {
+            return new ResponseT ( e.getMessage () );
+        }
+    }
+
+    public ResponseT<FacadeShift> getShift(LocalDate date, int shift) {
+        try {
+            Shift s = shiftController.getShift ( date, shift );
+            return new ResponseT (  new FacadeShift ( s ) );
+        } catch (EmployeeException e){
             return new ResponseT ( e.getMessage () );
         }
     }

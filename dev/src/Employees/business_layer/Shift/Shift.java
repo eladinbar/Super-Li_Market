@@ -10,17 +10,19 @@ import java.util.*;
 
 public class Shift {
     private LocalDate date;
-    private HashMap<Role, List<Integer>> manning;
+    private HashMap<Role, List<String>> manning;
     private String type;
     private int mORe;
+    private boolean isMissing;
 
     //an existing shift with a given maning
-    public Shift(LocalDate date, HashMap<Role, List<Integer>> manning, String type, int mORe)
+    public Shift(LocalDate date, HashMap<Role, List<String>> manning, String type, int mORe)
     {
         this.date = date;
         this.manning = manning;
         this.type = type;
         this.mORe = mORe;
+        isMissing = isMissing ();
     }
 
     //a new shift without an existing manning
@@ -30,6 +32,7 @@ public class Shift {
         this.manning = new HashMap<> ();
         this.type = type;
         this.mORe = mORe;
+        isMissing = isMissing ();
     }
 
     public Shift(FacadeShift facadeShift) {
@@ -47,13 +50,13 @@ public class Shift {
         return date;
     }
 
-    public HashMap<Role, List<Integer>> getManning() {
+    public HashMap<Role, List<String>> getManning() {
         return manning;
     }
 
     public boolean isMissing()
     {
-        for ( Map.Entry<Role, List<Integer>> entry : manning.entrySet ()) {
+        for ( Map.Entry<Role, List<String>> entry : manning.entrySet ()) {
             Role key = entry.getKey ();
             if(isRoleMissing ( key ))
                 return true;
@@ -81,7 +84,7 @@ public class Shift {
             throw new EmployeeException ( "no such employee to delete in the current shift." );
     }
 
-    public void addEmployee(Role role, int ID) throws EmployeeException
+    public void addEmployee(Role role, String ID) throws EmployeeException
     {
         if(!manning.containsKey ( role )){
             manning.put ( role, new ArrayList<> () );
