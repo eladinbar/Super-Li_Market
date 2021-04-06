@@ -1,7 +1,6 @@
 package ServiceLayer;
 
 import ServiceLayer.Response.Response;
-import ServiceLayer.objects.payment;
 import ServiceLayer.objects.supplier;
 
 import java.util.Date;
@@ -131,8 +130,13 @@ public class Service implements IService {
     }
 
     @Override
-    public Response<supplier> addProduct(String name, int productID, String manufacturer) {
-        return orderService.addProduct(name, productID, manufacturer);
+    public Response<supplier> addProductToOrder(int orderId, int productId) {
+        return orderService.addProductToOrder(orderId, productId);
+    }
+
+    @Override
+    public Response<supplier> createProduct(String name, String manufacturer) {
+        return orderService.createProduct(name, manufacturer);
     }
 
     @Override

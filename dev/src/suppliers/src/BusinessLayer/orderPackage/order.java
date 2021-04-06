@@ -60,4 +60,14 @@ public class order {
     public void setSupplier(BusinessLayer.supplierPackage.supplier supplier) {
         this.supplier = supplier;
     }
+
+    public void approveOrder() throws Exception {
+        if (delivered)
+            throw new Exception("order already delivered");
+        delivered = true;
+    }
+
+    public void addProductToOrder(int orderId, int productId) {
+
+    }
 }

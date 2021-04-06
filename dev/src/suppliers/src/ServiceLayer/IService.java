@@ -37,10 +37,11 @@ public interface IService {
     Response<supplier> createPernamentOrder(int day, String supplierID);
     Response<supplier> approveOrder(int orderID);
     Response<supplier> getOrder(int orderID);
+    Response<supplier> addProductToOrder(int orderId , int productId);
     //todo check if nessesary Response<supplier> setOrders();
 
     //products
     //todo check about enum
-    Response<supplier> addProduct(String name,int productID, String manufacturer);
+    Response<supplier> createProduct(String name, String manufacturer);
     Response<supplier> getProduct(int productID);
 }
