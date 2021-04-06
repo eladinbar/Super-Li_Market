@@ -59,7 +59,7 @@ public class PresentationController implements Runnable {
     }
     public void showItem() {
         int itemID = getItemIDFromUser();
-        ResponseT<Item> r = InventoryService.getInventoryService().getItem(itemID);
+        ResponseT<Item> r = service.getItem(itemID);
         try {
             menu.printItemPrompt(r.getDate());
         } catch (Exception e) {
@@ -68,7 +68,7 @@ public class PresentationController implements Runnable {
     }
     public void editItem() {
         int itemID = getItemIDFromUser();
-        ResponseT<Item> r = InventoryService.getInventoryService().getItem(itemID);
+        ResponseT<Item> r = service.getItem(itemID);
         try {
             menu.printItemPrompt(r.getDate());
         } catch (Exception e) {
