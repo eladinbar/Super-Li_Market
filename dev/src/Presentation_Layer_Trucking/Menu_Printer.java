@@ -25,6 +25,7 @@ public class Menu_Printer {
 
     public void startMenu(){
         Scanner scanner =  new Scanner(System.in);
+        scanner.useDelimiter("\n");
         boolean keepGoing= true;
         while (keepGoing) {
             System.out.println("\n\nWelcome to Trucking Menu!\nplease choose the option you'd like:");
@@ -231,13 +232,13 @@ public class Menu_Printer {
             int deliveryArea =  getIntFromUser(scanner);
             System.out.print("contact Name:");
             String contactName = getStringFromUser(scanner);
-            while (!contactName.matches("[A-Z][a-z]")){
+            while (!contactName.matches("[A-Z a-z]*")){
                 System.out.println("invalid name has been inserted, please insert again ");
                 contactName = getStringFromUser(scanner);
             }
             System.out.print("contact Number:");
             String phoneNumber = getStringFromUser(scanner);
-            while (!phoneNumber.matches("[0-9]")){
+            while (!phoneNumber.matches("[0-9]*")){
                 System.out.println("phone number must be digits only, NOTICE! no signs such as '-' ");
                 phoneNumber = getStringFromUser(scanner);
             }
@@ -298,7 +299,11 @@ public class Menu_Printer {
             }
             System.out.println("Choose Driver by id");
             int driver= getIntFromUser(scanner);
-            pc.makeUnavailable_Driver(driver);
+            try {
+                pc.makeUnavailable_Driver(driver);
+            }catch (NoSuchElementException e){
+                System.out.println(e.getMessage());
+            }
         }
     }
 
@@ -344,49 +349,48 @@ public class Menu_Printer {
 
     private void addNewDriver(Scanner scanner) {
         // TODO this method need to be checked with workers branch, might be more demands
-        // TODO need to check length of ID and only numbers
-        System.out.print("ID: ");
-        String ID =  getStringFromUser(scanner);
-        while (!ID.matches("\\d{9}")){
-            System.out.println("id must be exactly 9 digits, insert again");
-            ID = getStringFromUser(scanner);
-        }
 
-        System.out.print("Driver's name: ");
-        String name = getStringFromUser(scanner);
-        while (!name.matches("[A-Z][a-z]")){
-            System.out.println("invalid name has been inserted, please insert again ");
-            name = getStringFromUser(scanner);
-        }
-        // TODO need to check for legal name
-        Driver.License licenseType = null;
-        System.out.println("now choose Driver's License degree:\n1) C1 - more then 12k\n2) C - less then 12k");
-        boolean stop = false;
-        while (!stop) {
-            switch ( getIntFromUser(scanner)) {
-                case 1:
-                    licenseType = Driver.License.C1;
-                    stop = true;
-                    break;
-                case 2:
-                    licenseType = Driver.License.C;
-                    stop = true;
-                    break;
-                default:
-                    System.out.println("this isn't a legal option, choose again between 1 or 2");
-
+        try {
+            System.out.print("ID: ");
+            String ID = getStringFromUser(scanner);
+            while (!ID.matches("\\d{9}")) {
+                System.out.println("id must be exactly 9 digits, insert again");
+                ID = getStringFromUser(scanner);
             }
-            boolean con = true;
-            while(con) {
-                try {
-                    pc.addDriver(ID, name, licenseType);
-                    con = false;
-                } catch (KeyAlreadyExistsException e) {
-                    System.out.println(e.getMessage());
+
+            System.out.print("Driver's name: ");
+            String name = getStringFromUser(scanner);
+            while (!name.matches("^[A-Z a-z]*")) {
+                System.out.println("invalid name has been inserted, please insert again ");
+                name = getStringFromUser(scanner);
+            }
+            // TODO need to check for legal name
+            Driver.License licenseType = null;
+            System.out.println("now choose Driver's License degree:\n1) C1 - more then 12k\n2) C - less then 12k");
+            boolean stop = false;
+            while (!stop) {
+                switch (getIntFromUser(scanner)) {
+                    case 1:
+                        licenseType = Driver.License.C1;
+                        stop = true;
+                        break;
+                    case 2:
+                        licenseType = Driver.License.C;
+                        stop = true;
+                        break;
+                    default:
+                        System.out.println("this isn't a legal option, choose again between 1 or 2");
 
                 }
             }
+            pc.addDriver(ID, name, licenseType);
+
+
+        } catch (KeyAlreadyExistsException e) {
+            System.out.println(e.getMessage());
+            System.out.println("");
         }
+
     }
 
     private void chooseLeavingHour(Scanner scanner) {
@@ -418,14 +422,18 @@ public class Menu_Printer {
                 } else {
                     demands = sortDemandsBySite(demands);
                     printDemands(demands);
-                    try {
-                        System.out.println("if you'de like to finish, insert -1 in item number");
-                        System.out.print("item number: ");
-                        int itemNumber =  getIntFromUser(scanner);
+                    try {// TODO need to fix the -1
+                        System.out.println("\nif you'de like to finish, insert -1 in item number");
                         System.out.println();
+                        System.out.print("item number: ");
+                        int itemNumber =getIntFromUser(scanner);
+                        while(itemNumber <1 || itemNumber > demands.size()){
+                            System.out.println("option out of bounds, please choose again");
+                            itemNumber =  getIntFromUser(scanner);
+                        }
+                        itemNumber = demands.get(itemNumber-1).getItemID();
                         System.out.print("amount: ");
                         int amount =  getIntFromUser(scanner);
-                        System.out.println();
 
                         System.out.print("site: ");
                         int siteID =  getIntFromUser(scanner);
@@ -468,8 +476,11 @@ public class Menu_Printer {
                                 System.out.println("theres no such option, choose between y or n explicit");
                         }
 
-                    } catch (Exception e) {
-                        rePlan(scanner);
+                    }catch (IllegalArgumentException e){
+                        System.out.println(e.getMessage());
+                    }
+                    catch (Exception e) {
+                        e.getMessage();
                     }
                 }
             }catch (NoSuchElementException ne) {
@@ -481,34 +492,55 @@ public class Menu_Printer {
 
     private void printDemands(List<FacadeDemand> demands) {
         System.out.println("the current demands:");
+        int spot = 1;
         for (FacadeDemand fd : demands) {
             String itemName = pc.getItemName(fd.getItemID());
-            System.out.println( "item id: " + fd.getItemID() + "\t" +itemName + "\tamount needed:" + fd.getAmount() +
-                    "\tto: " + pc.getSiteName(fd.getSite()) + "\tsite id: " + fd.getSite()
-                    + "\titem weight: "  + pc.getWeight(fd.getItemID()))   ;
+            System.out.println(spot + ")\t" +  itemName + ":\titem id: " +  fd.getItemID() +"\n"+"\tamount needed:" + fd.getAmount() +
+                    "\t\tto: " + pc.getSiteName(fd.getSite()) + "\t\tsite id: " + fd.getSite()
+                    + "\t\titem weight: "  + pc.getWeight(fd.getItemID()))   ;spot++;
         }
     }
 
     private void chooseTruckAndDriver(Scanner scanner) {
         System.out.println("please choose the Truck you'd like to deliver it with:");
         LinkedList<FacadeTruck> trucks =  pc.getAvailableTrucks();
+        int weight=pc.getWeightOfCurrReport();
+        System.out.println("please notice the truck weight is: "+weight);
         System.out.println("available trucks:");
         for (FacadeTruck truck: trucks) {
             System.out.println("truck LicenseNumber: " + truck.getLicenseNumber() + " max Weight :" + truck.getMaxWeight())  ;
         }
         int truckID =  getIntFromUser(scanner);
-        FacadeTruck facadeTruck = pc.chooseTruck(truckID);
+        boolean con =true;
+        while(con) {
+            try {
+                FacadeTruck facadeTruck = pc.chooseTruck(truckID);
+                con = false;
+            }catch (NoSuchElementException|IllegalStateException e  ){
+                System.out.println(e.getMessage());
+                rePlan(scanner);
+            }
+        }
         System.out.println("now please choose driver:");
         // TODO need to figure how to know the truck weight and throw exception
-        int weight=pc.getWeightOfCurrReport();//TODO-notice -added
-        System.out.println("please notice the truck weight is: "+weight);
+
         LinkedList<FacadeDriver> drivers = pc.getAvailableDrivers();
         System.out.println("available Drivers:");
         for ( FacadeDriver driver : drivers) {
             System.out.println("Driver ID:" + driver.getID() + " License degree: " + driver.getLicenseType() + " =" + driver.getLicenseType().getSize()  )  ;
         }
         int driverID =  getIntFromUser(scanner);
-        FacadeDriver facadeDriver = pc.chooseDriver(driverID);
+        con =true;
+        while(con) {
+            try {
+                FacadeDriver facadeDriver = pc.chooseDriver(driverID);
+                con = false;
+            }catch (NoSuchElementException|IllegalStateException e  ){
+                System.out.println(e.getMessage());
+                rePlan(scanner);
+            }
+        }
+
 
     }
 
@@ -625,6 +657,8 @@ public class Menu_Printer {
         pc.addItem(11 , 2 , "banana");
         pc.addItem(13 , 3 , "cucumber");
         pc.addDemandToSystem(1, 1, 100);
+        pc.addDemandToSystem(2,2,1000);
+        pc.addDemandToSystem(11, 4,500);
     }
 
     private int getIntFromUser(Scanner scanner){
@@ -649,11 +683,10 @@ public class Menu_Printer {
         String output = "";
         while (con) {
             try {
-                output = scanner.next();
+                    output =scanner.next();
                 con= false;
             } catch (Exception e) {
                 System.out.println("wrong input please try again");
-                scanner.nextLine();
             }
         }
         return output;
@@ -661,10 +694,9 @@ public class Menu_Printer {
     }
 
 
-        // TODO NTH need to print the chosen option.
-        // TODO finish input -  maybe with exception throw
-        // TODO need to check supporting products return
-        // TODO improve the initialize method
-        //  TODO need to check all exception catched
-        // TODO weights - grams or Kilos
-    }
+    // TODO NTH need to print the chosen option.
+    // TODO finish input -  maybe with exception throw
+    // TODO need to check supporting products return
+    //  TODO need to check all exception catched
+    // TODO weights - grams or Kilos
+}

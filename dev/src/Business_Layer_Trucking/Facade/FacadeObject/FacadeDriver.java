@@ -3,14 +3,14 @@ package Business_Layer_Trucking.Facade.FacadeObject;
 import Business_Layer_Trucking.Resources.Driver;
 
 public class FacadeDriver {
-    private  int ID;
+    private  String ID;
     private String name;
     private boolean available;
     private Driver.License licenseType;
 
 
 
-    public FacadeDriver(int ID, String name, boolean available,  Driver.License license){
+    public FacadeDriver(String ID, String name, boolean available,  Driver.License license){
         this.ID = ID;
         this.name = name;
         this.available =   available;
@@ -24,7 +24,7 @@ public class FacadeDriver {
         this.licenseType = value.getLicenseType();
     }
 
-    public int getID() {
+    public String getID() {
         return ID;
     }
 
@@ -48,7 +48,7 @@ public class FacadeDriver {
         this.available=true;
     }
 
-    public void setID(int ID) {
+    public void setID(String  ID) {
         this.ID = ID;
     }
 

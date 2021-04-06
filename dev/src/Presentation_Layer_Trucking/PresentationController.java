@@ -20,7 +20,7 @@ public class PresentationController {
         return instance;
     }
 
-    public boolean addDemandToReport(int itemNumber, int amount, int siteID) throws IllegalStateException {
+    public boolean addDemandToReport(int itemNumber, int amount, int siteID) throws IllegalStateException, IllegalArgumentException {
         if (itemNumber == -1) return false;
         facadeService.addDemandToReport(itemNumber , amount, siteID);
         return  true;
@@ -110,7 +110,7 @@ public class PresentationController {
 
     }
 
-    public FacadeTruck chooseTruck(int truckID) {
+    public FacadeTruck chooseTruck(int truckID) throws NoSuchElementException, IllegalStateException{
         return facadeService.chooseTruck(truckID);
     }
 

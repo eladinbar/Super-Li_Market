@@ -1,7 +1,7 @@
 package Business_Layer_Trucking.Resources;
 
 public class Driver {
-    private  int ID;
+    private  String ID;
     private String name;
     private boolean available;
     private License licenseType;
@@ -29,7 +29,7 @@ public class Driver {
         this.licenseType = license;
     }
 
-    public int getID() {
+    public String getID() {
         return ID;
     }
 
@@ -53,7 +53,7 @@ public class Driver {
         available=true;
     }
 
-    public void setID(int ID) {
+    public void setID(String ID) {
         this.ID = ID;
     }
 

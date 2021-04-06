@@ -95,7 +95,7 @@ public class DeliveryController {
      * update the driver ID in the current TR
      * @param id
      */
-    public void updateCurrTR_DriverID(int id){//facade service need to check availability
+    public void updateCurrTR_DriverID(String id){//facade service need to check availability
         currTR.setDriverID(id);
     }
 

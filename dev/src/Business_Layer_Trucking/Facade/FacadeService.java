@@ -47,7 +47,7 @@ public class FacadeService {
     }
 
 
-    public FacadeDemand addDemandToReport(int item_number, int supplyAmount, int siteID){
+    public FacadeDemand addDemandToReport(int item_number, int supplyAmount, int siteID) throws IllegalStateException, IllegalArgumentException{
         return deliveryService.addDemandToReport(item_number,supplyAmount , siteID);
     }
 
@@ -196,9 +196,8 @@ public class FacadeService {
             demands.set(index,temp);
         }
         return demands;
-
-
     }
+
 
 
     public LinkedList<FacadeSite> getCurrentSites() {
