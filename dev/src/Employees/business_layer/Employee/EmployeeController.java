@@ -71,7 +71,7 @@ public class EmployeeController {
 
     public void addEmployee(Role role, int Id, TermsOfEmployment terms, LocalDate transactionDate, BankAccountInfo bank) throws EmployeeException {
         if(!isManager(loggedIn.getRole()))
-            throw new EmployeeException("Only an administrator can perform this operation");
+            throw new EmployeeException("Only an administrator can perform this operation11");
        Employee newEmployee = new Employee(role, Id, terms, transactionDate, bank);
        employees.put(Id, newEmployee);
     }

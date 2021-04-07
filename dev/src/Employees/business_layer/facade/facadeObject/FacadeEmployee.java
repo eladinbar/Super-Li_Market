@@ -50,7 +50,7 @@ public class FacadeEmployee implements FacadeObject{
     }
 
     public Role getRole() {
-        return role;
+         return role;
     }
 
     public FacadeBankAccountInfo getFacadeBankAccountInfo() {
