@@ -1,5 +1,7 @@
 package InventoryModule.ControllerLayer;
 
+import InventoryModule.BusinessLayer.DiscountPackage.CategoryDiscount;
+import InventoryModule.BusinessLayer.DiscountPackage.ItemDiscount;
 import InventoryModule.ControllerLayer.SimpleObjects.*;
 import InventoryModule.ControllerLayer.SimpleObjects.DefectEntry;
 
@@ -7,6 +9,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
+import java.util.stream.Stream;
 
 public class InventoryServiceImpl implements InventoryService {
     private InventoryController inventoryController;
@@ -190,18 +193,66 @@ public class InventoryServiceImpl implements InventoryService {
         return null;
     }
 
+    //-------------------------------------------------------------------------Discount functions
+
     @Override
+    @SuppressWarnings("unchecked")
     public <T extends SimpleEntity> ResponseT<List<Discount<T>>> getDiscount(int supplierId, Calendar discountDate) {
-        return null;
+        //response to return created
+        ResponseT<List<Discount<T>>> responseT;
+        List<Discount<T>> simpleDiscs = new ArrayList<>();
+        if (supplierId <= 0) {
+            responseT = new ResponseT<>(true, "One oe more Arguments is invalid", null);
+            return responseT;
+        }
+        List<InventoryModule.BusinessLayer.DiscountPackage.Discount> discountList;
+        try {
+            discountList = inventoryController.getDiscount(supplierId, discountDate);
+
+        } catch (Exception e) {
+            responseT = new ResponseT<>(true, e.getMessage(), null);
+            return responseT;
+        }
+
+        for (InventoryModule.BusinessLayer.DiscountPackage.Discount disc : discountList) {
+            //simple discount created
+            Discount<T> simple = new Discount<>(disc.getSupplierID(), disc.getDiscount(), disc.getDate(), disc.getItemCount());
+            //Item Discount case
+            if (disc.getClass() == ItemDiscount.class) {
+                InventoryModule.BusinessLayer.Item i = ((ItemDiscount) disc).getItem();
+                Item simpleItem = new Item(i.getID(), i.getName(), i.getCostPrice(), i.getSellingPrice(), i.getMinAmount(),
+                        i.getShelfQuantity(), i.getStorageQuantity(), i.getShelfLocation(), i.getStorageLocation(), i.getManufacturerID());
+                simple.setAppliesOn((T) simpleItem);
+            } else { //Category Discount case
+                InventoryModule.BusinessLayer.Category c = ((CategoryDiscount) disc).getCategory();
+                List<Item> categoryItems = new ArrayList<>();
+                //converting Items of category
+                for (InventoryModule.BusinessLayer.Item i : c.getItems()) {
+                    Item simpleCatItem = new Item(i.getID(), i.getName(), i.getCostPrice(), i.getSellingPrice(), i.getMinAmount(),
+                            i.getShelfQuantity(), i.getStorageQuantity(), i.getShelfLocation(), i.getStorageLocation(), i.getManufacturerID());
+                    categoryItems.add(simpleCatItem);
+                }
+                //getting tre sub categories names
+                List<String> subCategories = new ArrayList<>();
+                for (InventoryModule.BusinessLayer.Category subC : c.getSubCategories()) {
+                    subCategories.add(subC.getName());
+                }
+                //creating simple category
+                Category simpleCategory = new Category(c.getName(), categoryItems, c.getParentCategory().getName(), subCategories);
+                simple.setAppliesOn((T) simpleCategory);
+            }
+            simpleDiscs.add(simple);
+        }
+        responseT = new ResponseT<>(false,"",simpleDiscs);
+        return responseT;
+
     }
 
-
-    //-------------------------------------------------------------------------Discount functions
 
     @Override
     public Response addItemDiscount(int supplierId, double discount, Calendar discountDate, int itemCount, int itemId) {
         Response response;
-        if (supplierId <= 0 || (discount <= 0 || discount >= 1) || itemCount <= 0 || itemId<=0) {
+        if (supplierId <= 0 || (discount <= 0 || discount >= 1) || itemCount <= 0 || itemId <= 0) {
             response = new Response(true, "One oe more Arguments is invalid");
             return response;
         }

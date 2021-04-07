@@ -35,4 +35,8 @@ public class Discount<T extends SimpleEntity> {
     public T getAppliesOn() {
         return appliesOn;
     }
+
+    public void setAppliesOn(T appliesOn) {
+        this.appliesOn = appliesOn;
+    }
 }

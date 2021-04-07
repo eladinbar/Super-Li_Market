@@ -5,10 +5,10 @@ import java.util.List;
 public class Category implements SimpleEntity {
     private String name;
     private List<Item> items;
-    private Category parentCategory;
-    private List<Category> subCategories;
+    private String parentCategory;
+    private List<String> subCategories;
 
-    public Category(String name, List<Item> items, Category parentCategory, List<Category> subCategories) {
+    public Category(String name, List<Item> items, String parentCategory, List<String> subCategories) {
         this.name = name;
         this.items = items;
         this.parentCategory = parentCategory;
@@ -31,19 +31,19 @@ public class Category implements SimpleEntity {
         this.items = items;
     }
 
-    public Category getParentCategory() {
+    public String getParentCategory() {
         return parentCategory;
     }
 
-    public void setParentCategory(Category parentCategory) {
+    public void setParentCategory(String parentCategory) {
         this.parentCategory = parentCategory;
     }
 
-    public List<Category> getSubCategories() {
+    public List<String> getSubCategories() {
         return subCategories;
     }
 
-    public void setSubCategories(List<Category> subCategories) {
+    public void setSubCategories(List<String> subCategories) {
         this.subCategories = subCategories;
     }
 }

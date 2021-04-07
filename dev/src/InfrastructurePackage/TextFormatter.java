@@ -30,8 +30,8 @@ public class TextFormatter {
 
     public void CategoryMenuFormat(Category category) {
         System.out.println("Category Name: " + category.getName() + "\n" +
-                "Parent Category: " + category.getParentCategory().getName() + "\n" +
-                "Sub-categories: " + category.getSubCategories().stream().map((c) -> c.getName()).
+                "Parent Category: " + category.getParentCategory() + "\n" +
+                "Sub-categories: " + category.getSubCategories().stream().map((c) -> c).
                 reduce("", (acc, curr) -> acc + ", " + curr));
     }
 
