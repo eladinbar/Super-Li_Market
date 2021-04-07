@@ -20,6 +20,9 @@ public class MenuPrinter {
                 case 1:
                     addSupplierFunc();
                     break;
+                case 3:
+                    updateSupplierDetailFunc();
+                    break;
             }
         }
     }
@@ -45,25 +48,123 @@ public class MenuPrinter {
         int payment=scan.nextInt();
     }
     private void updateSupplierDetailFunc() throws ReflectiveOperationException {
+        int opt=-1;
         System.out.println("please enter supplier id");
         String supplierID=getStringFromUser();
-        System.out.println("Please choose an option to Edit:");
-        System.out.println("1. edit first name");
-        System.out.println("2. edit last name");
-        System.out.println("3. edit phone number");
-        System.out.println("4. edit email");
-        System.out.println("5. edit company number");
-        System.out.println("6. edit permanent orders option");
-        System.out.println("7. edit delivery option");
-        System.out.println("8. edit payment method");
-        System.out.println("9. add contact person");
-        System.out.println("10. remove contact person");
-        System.out.println("for main menu choose any other option");
-        System.out.print("option : ");
-        int choose= scan.nextInt();
-        switch (choose){
-            case 1:
-
+        boolean flag=true;
+        while (flag) {
+            System.out.println("Please choose an option to Edit:");
+            System.out.println("1. edit first name");
+            System.out.println("2. edit last name");
+            System.out.println("3. edit phone number");
+            System.out.println("4. edit email");
+            System.out.println("5. edit company number");
+            System.out.println("6. edit permanent orders option");
+            System.out.println("7. edit delivery option");
+            System.out.println("8. edit payment method");
+            System.out.println("9. add contact person");
+            System.out.println("10. remove contact person");
+            System.out.println("for main menu choose any other option");
+            System.out.print("option : ");
+            int choose = scan.nextInt();
+            switch (choose) {
+                case 1:
+                    System.out.print("please enter first name: ");
+                    //pc.updateFirstName(supplierID, getStringFromUser());
+                    break;
+                case 2:
+                    System.out.print("please enter last name: ");
+                    //pc.updateLastName(supplierID, getStringFromUser());
+                    break;
+                case 3:
+                    System.out.print("please enter phone number: ");
+                    //pc.updatePhone(supplierID, getStringFromUser());
+                    break;
+                case 4:
+                    System.out.print("please enter email: ");
+                    //pc.updateEmail(supplierID, getStringFromUser());
+                    break;
+                case 5:
+                    System.out.print("please enter company number: ");
+                    //pc.updateCompanyNumber(supplierID, scan.nextInt());
+                    break;
+                case 6:
+                    while (true) {
+                        System.out.print("choose:\n1. permanent days\n2. non permanent days\n option number: ");
+                        opt = scan.nextInt();
+                        if (opt == 1) {
+                            //pc.updatePernamentDays(supplierID, true);
+                            break;
+                        } else if (opt == 2) {
+                            //pc.updatePernamentDays(supplierID, false);
+                            break;
+                        } else
+                            System.out.println("invalid option please chose again");
+                    }
+                    break;
+                case 7:
+                    while (true) {
+                        System.out.print("choose:\n1. self delivery\n2. not self delivery\n option number: ");
+                        opt = scan.nextInt();
+                        if (opt == 1) {
+                            //pc.updateSelfDelivery(supplierID, true);
+                            break;
+                        } else if (opt == 2) {
+                            //pc.updateSelfDelivery(supplierID, false);
+                            break;
+                        } else
+                            System.out.println("invalid option please chose again");
+                    }
+                    break;
+                case 8:
+                    while (true) {
+                        System.out.print("please choose a payment method\n1. Cash\n2. Bank transfer\n3. check\nchoose number: ");
+                        opt = scan.nextInt();
+                        if (opt == 1) {
+                            //pc.updatePayment(supplierID, "cash");
+                            break;
+                        }
+                        if (opt == 2) {
+                            //pc.updatePayment(supplierID, "bankTrasfer");
+                            break;
+                        }
+                        if (opt == 3) {
+                            //pc.updatePayment(supplierID,"check");
+                            break;
+                        } else
+                            System.out.println("invalid option please chose again");
+                    }
+                case 9:
+                    while (true) {
+                        System.out.println("Choose an option:\n1. add a contact person\n2. back to main menu");
+                        opt = scan.nextInt();
+                        if (opt == 2)
+                            break;
+                        else if (opt != 1)
+                            System.out.println("invalid option");
+                        else if (opt == 1) {
+                            System.out.print("please enter following details: ");
+                            System.out.print("\nfirst name: ");
+                            String firstName = getStringFromUser();
+                            System.out.print("last name: ");
+                            String lName = getStringFromUser();
+                            System.out.print("email: ");
+                            String email = getStringFromUser();
+                            System.out.print("ID: ");
+                            String ID = getStringFromUser();
+                            System.out.print("phone: ");
+                            String phone = getStringFromUser();
+                            //pc.addContactMember(supplierID,firstName,lName,email,ID,phone);
+                        }
+                    }
+                    break;
+                case 10:
+                    System.out.println("please enter a contact member id to remove:");
+                    //pc.deleteContactMember(supplierID,getStringFromUser());
+                    break;
+                default:
+                    flag = false;
+            }
         }
     }
 
