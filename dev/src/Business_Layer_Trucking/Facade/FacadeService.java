@@ -12,8 +12,6 @@ public class FacadeService {
     private DeliveryService deliveryService;
     private ResourcesService resourcesService;
     private FacadeTruckingReport currTR;
-    // TODO insert current trucking report;
-    //  notify when report saved
     private static FacadeService instance =null;
 
 
@@ -55,7 +53,12 @@ public class FacadeService {
 
     public FacadeDriver chooseDriver(int driver) throws IllegalStateException,NoSuchElementException{
         FacadeDriver fd  = resourcesService.chooseDriver(driver);
-        FacadeTruck ft= resourcesService.getTrucks().get(currTR.getTruckNumber());
+        FacadeTruck ft  = null;
+        for (FacadeTruck ft2 : resourcesService.getTrucks()){
+            if (ft2.getLicenseNumber().equals(currTR.getTruckNumber()))
+                ft = ft2;
+        }
+        if (ft==null) throw new NoSuchElementException("the truck's license Number does not exist");
         if (fd.getLicenseType().getSize()< ft.getWeightNeto()+deliveryService.getWeightOfCurrReport())
             throw new IllegalStateException("Driver cant handle this delivery");
 
@@ -130,7 +133,7 @@ public class FacadeService {
         return deliveryService.getItemsOnTruck();
     }
 
-    public void addTruck(String model, int licenseNumber, int weightNeto, int maxWeight)  throws KeyAlreadyExistsException {
+    public void addTruck(String model, String licenseNumber, int weightNeto, int maxWeight)  throws KeyAlreadyExistsException {
         resourcesService.addTruck( model, licenseNumber, weightNeto, maxWeight);
     }
 
@@ -180,7 +183,6 @@ public class FacadeService {
         return resourcesService.getTrucks();
     }
 
-    // TODO need to unit test it
     public LinkedList<FacadeDemand> sortDemandsBySite(LinkedList<FacadeDemand> demands) {
         for (int i = demands.size() -1 ; i>= 0 ; i--){
             FacadeDemand min = demands.get(i);

@@ -10,14 +10,14 @@ public class FacadeTruckingReport {
     private int ID;
     private LocalDate date;
     private LocalTime leavingHour;
-    private int truckNumber;
+    private String  truckNumber;
     private String driverID;
     private int origin;
     private LinkedList<Integer> destinations;
     private FacadeTruckingReport TRReplace;
     private boolean completed;
 
-    public FacadeTruckingReport(int ID, LocalDate date, LocalTime leavingHour, int truckNumber, String driverID,
+    public FacadeTruckingReport(int ID, LocalDate date, LocalTime leavingHour, String truckNumber, String driverID,
                                 int origin, LinkedList<Integer> destinations, TruckingReport TRReplace)
     {
         this.ID = ID;
@@ -70,7 +70,7 @@ public class FacadeTruckingReport {
         return driverID;
     }
 
-    public int getTruckNumber() {
+    public String getTruckNumber() {
         return truckNumber;
     }
 
@@ -114,7 +114,7 @@ public class FacadeTruckingReport {
         this.TRReplace = TRReplace;
     }
 
-    public void setTruckNumber(int truckNumber) {
+    public void setTruckNumber(String  truckNumber) {
         this.truckNumber = truckNumber;
     }
 

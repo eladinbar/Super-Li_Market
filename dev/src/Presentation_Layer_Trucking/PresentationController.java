@@ -21,7 +21,7 @@ public class PresentationController {
     }
 
     public boolean addDemandToReport(int itemNumber, int amount, int siteID) throws IllegalStateException, IllegalArgumentException {
-        if (itemNumber == -1) return false;
+        if (itemNumber == 0) return false;
         facadeService.addDemandToReport(itemNumber , amount, siteID);
         return  true;
 
@@ -65,7 +65,7 @@ public class PresentationController {
         return true;
     }
 
-    public void addTruck(String model, int licenseNumber , int weightNeto, int maxWeight) throws KeyAlreadyExistsException {
+    public void addTruck(String model, String licenseNumber , int weightNeto, int maxWeight) throws KeyAlreadyExistsException {
 
         facadeService.addTruck( model, licenseNumber, weightNeto, maxWeight);
 

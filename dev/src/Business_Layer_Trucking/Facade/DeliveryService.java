@@ -211,4 +211,11 @@ public class DeliveryService {
     public int getWeightOfCurrReport() {
         return dc.getWeightOfCurrReport();
     }
+
+    //TODO
+    // 1. create active DF hash map
+    // 2. update DF on saveReport
+    // 3. need to create mathod for update DF weight
+    // 4. need to update TR from active to old when all DF has been updated and release driver and truck
+    // 5. need update save to replace TR to active and not old
 }

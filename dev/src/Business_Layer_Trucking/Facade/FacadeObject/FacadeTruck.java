@@ -4,12 +4,12 @@ import Business_Layer_Trucking.Resources.Truck;
 
 public class FacadeTruck implements FacadeObject{
     private String model;
-    private  int licenseNumber;
+    private  String licenseNumber;
     private int weightNeto;
     private  int maxWeight;
     private boolean available;
 
-    public FacadeTruck(String model,int licenseNumber,int weightNeto,int maxWeight)
+    public FacadeTruck(String model,String licenseNumber,int weightNeto,int maxWeight)
     {
         available=true;
         this.model = model;
@@ -32,7 +32,7 @@ public class FacadeTruck implements FacadeObject{
         return available;
     }
 
-    public int getLicenseNumber() {
+    public String  getLicenseNumber() {
         return licenseNumber;
     }
 

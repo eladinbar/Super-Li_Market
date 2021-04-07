@@ -8,7 +8,7 @@ import java.util.NoSuchElementException;
 
 public class ResourcesController {
     private HashMap<String,Driver> drivers;
-    private HashMap<Integer,Truck> trucks;
+    private HashMap<String,Truck> trucks;
     private LinkedList<Driver> driversByLicense;
     private  static ResourcesController instance=null;
     private int currDriverID;
@@ -42,7 +42,7 @@ public class ResourcesController {
         }
 
     }
-    public void addTruck(String model,int licenseNumber,int weightNeto,int maxWeight) throws KeyAlreadyExistsException
+    public void addTruck(String model,String licenseNumber,int weightNeto,int maxWeight) throws KeyAlreadyExistsException
     {
         if (!trucks.containsKey(licenseNumber))
         {
@@ -80,10 +80,10 @@ public class ResourcesController {
         }
         return result;
     }
-    public HashMap<Integer,Truck> getAvailableTrucks()
+    public HashMap<String,Truck> getAvailableTrucks()
     {
-        HashMap<Integer,Truck> result=new HashMap<>();
-        for (Map.Entry<Integer,Truck> entry:trucks.entrySet())
+        HashMap<String,Truck> result=new HashMap<>();
+        for (Map.Entry<String,Truck> entry:trucks.entrySet())
         {
             if (entry.getValue().isAvailable())
                 result.put(entry.getKey(), entry.getValue());
@@ -149,7 +149,7 @@ public class ResourcesController {
         return drivers;
     }
 
-    public HashMap<Integer, Truck> getTrucks() {
+    public HashMap<String , Truck> getTrucks() {
         return trucks;
     }
 
@@ -181,7 +181,4 @@ public class ResourcesController {
         ResourcesController.instance = instance;
     }
 
-    public void setTrucks(HashMap<Integer, Truck> trucks) {
-        this.trucks = trucks;
-    }
 }

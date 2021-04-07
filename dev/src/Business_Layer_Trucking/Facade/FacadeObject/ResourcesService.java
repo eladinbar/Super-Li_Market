@@ -61,8 +61,8 @@ public class ResourcesService
 
     public LinkedList<FacadeTruck> getAvailableTrucks() {
         LinkedList<FacadeTruck> output =  new LinkedList<>();
-        HashMap<Integer, Truck> trucks =  rc.getAvailableTrucks();
-        for (Map.Entry<Integer,Truck> entry:trucks.entrySet())
+        HashMap<String , Truck> trucks =  rc.getAvailableTrucks();
+        for (Map.Entry<String ,Truck> entry:trucks.entrySet())
         {
             output.add(new FacadeTruck( entry.getValue()));
         }
@@ -70,7 +70,7 @@ public class ResourcesService
     }
 
 
-    public void addTruck(String model, int licenseNumber, int weightNeto, int maxWeight) throws KeyAlreadyExistsException {
+    public void addTruck(String model, String  licenseNumber, int weightNeto, int maxWeight) throws KeyAlreadyExistsException {
         rc.addTruck( model, licenseNumber, weightNeto, maxWeight);
     }
 
@@ -103,8 +103,8 @@ public class ResourcesService
 
     public LinkedList<FacadeTruck> getTrucks() {
         LinkedList<FacadeTruck> output =  new LinkedList<>();
-        HashMap<Integer, Truck> trucks =  rc.getTrucks();
-        for (Map.Entry<Integer,Truck> entry:trucks.entrySet())
+        HashMap<String , Truck> trucks =  rc.getTrucks();
+        for (Map.Entry<String ,Truck> entry:trucks.entrySet())
         {
             output.add(new FacadeTruck( entry.getValue()));
         }

@@ -40,11 +40,11 @@ public class DeliveryController {
         currDF=new LinkedList<>();
         currTR=new TruckingReport(lastReportID);
     }
-    //TODO- discuss - make it private and call it from save report
+
     public int createNewTruckingReport(){
         currDF =  new LinkedList<>();
-        currTR =  new TruckingReport(lastReportID++);
-        currTR.setID(lastReportID++);
+        currTR =  new TruckingReport(lastReportID);
+        currTR.setID(lastReportID);
         return lastReportID ;
 
     }
@@ -87,7 +87,7 @@ public class DeliveryController {
      * update the truck license number in the current TR
      * @param number
      */
-    public void updateCurrTR_TruckNumber(int number){//facade service need to check availability
+    public void updateCurrTR_TruckNumber(String  number){//facade service need to check availability
         currTR.setTruckNumber(number);
     }
 
@@ -151,14 +151,13 @@ public class DeliveryController {
      * @throws IllegalStateException
      */
     public void addItemToDeliveryForm(Demand demand, int amount,boolean ignore,int siteID) throws IllegalStateException{
-        boolean ignoreDifferentDeliveryAreas=ignore;
         if (currDF.isEmpty())//if list is empty
         {
-
             HashMap<Integer,Integer> itemsOnDF=new HashMap<>();
             itemsOnDF.put(items.get(demand.getItemID()).getID(),amount);
             DeliveryForm newDF=new DeliveryForm(lastDeliveryForms,siteID,demand.getSite(),itemsOnDF,
                     items.get(demand.getItemID()).getWeight()*amount,currTR.getID());
+            currDF.add(newDF);
             lastDeliveryForms++;
         }
         else // we need to look in the list maybe there is a form with the same origin& destination
@@ -166,6 +165,8 @@ public class DeliveryController {
             for (DeliveryForm df:currDF)
             {
 
+                // TODO 1.add to current DF
+                //  2.relate to case list is not empty but new destination.
                 if (df.getOrigin()==siteID&&df.getDestination()==demand.getSite())
                 {
                     HashMap<Item,Integer> itemsOnDF=new HashMap<>();
@@ -237,6 +238,7 @@ public class DeliveryController {
     public void saveReport(){
 
         oldTruckingReports.put(currTR.getID(),currTR);
+        lastReportID++;
 
     }
 
@@ -359,6 +361,7 @@ public class DeliveryController {
      */
     public LinkedList<Demand> showDemands() throws NoSuchElementException {
 
+        // TODO need to subtract the amount from current DF and current TR in order to show the relavent amount
         if (!demands.isEmpty())
         {
             LinkedList<Demand> result=new LinkedList<>();

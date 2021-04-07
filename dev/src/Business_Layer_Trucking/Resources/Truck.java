@@ -2,12 +2,12 @@ package Business_Layer_Trucking.Resources;
 
 public class Truck {
     private String model;
-    private  int licenseNumber;
+    private  String licenseNumber;
     private int weightNeto;
     private  int maxWeight;
     private boolean available;
 
-    public Truck(String model,int licenseNumber,int weightNeto,int maxWeight)
+    public Truck(String model,String licenseNumber,int weightNeto,int maxWeight)
     {
         this.model=model;
         this.licenseNumber=licenseNumber;
@@ -21,7 +21,7 @@ public class Truck {
         return available;
     }
 
-    public int getLicenseNumber() {
+    public String getLicenseNumber() {
         return licenseNumber;
     }
 

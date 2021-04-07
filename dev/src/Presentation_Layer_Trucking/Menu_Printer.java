@@ -326,14 +326,19 @@ public class Menu_Printer {
         boolean con = true;
         while (con) {
             System.out.print("Truck License ID: ");
-            int licenseNumber =  getIntFromUser(scanner);
+            String licenseNumber =  getStringFromUser(scanner);
+            while (!licenseNumber.matches("[0-9]*"))
+            {
+                System.out.println("License number should only contain digits,please try again");
+                licenseNumber = getStringFromUser(scanner);
+            }
             System.out.print("the Trucks model:");
             String model =getStringFromUser(scanner);
             System.out.print("Weight Neto:");
             int weightNeto =  getIntFromUser(scanner);
             System.out.print("Max Weight:");
             int maxWeight =  getIntFromUser(scanner);
-            while (maxWeight < weightNeto){
+            while (maxWeight <= weightNeto){
                 System.out.println("the  truck's max weight is lower then it's neto weight("+weightNeto+"), please choose again or quit with -1");
                 maxWeight = getIntFromUser(scanner);
             }
@@ -423,7 +428,7 @@ public class Menu_Printer {
                     demands = sortDemandsBySite(demands);
                     printDemands(demands);
                     try {// TODO need to fix the -1
-                        System.out.println("\nif you'de like to finish, insert -1 in item number");
+                        System.out.println("\nif you'de like to finish, insert 0 in item number");
                         System.out.println();
                         System.out.print("item number: ");
                         int itemNumber =getIntFromUser(scanner);
@@ -642,9 +647,9 @@ public class Menu_Printer {
         pc.addDriver("123456789", "Shir" ,Driver.License.C);
         pc.addDriver("987654321", "Ofir" , Driver.License.C);
 
-        pc.addTruck("Mercedes" , 62321323 , 2000, 12000);
-        pc.addTruck("Man", 1231231, 1500, 8000);
-        pc.addTruck("Volvo",123 ,1000, 10000);
+        pc.addTruck("Mercedes" , "62321323" , 2000, 12000);
+        pc.addTruck("Man", "1231231", 1500, 8000);
+        pc.addTruck("Volvo","123" ,1000, 10000);
 
         pc.addSite("Haifa", 2,1 , "0502008216" , "Shimi", "SuperLee-Haifa");
         pc.addSite("Beer Sheva" ,3, 3,"0502008217" , "Yotam" , "superLee-BeerSheva");
@@ -694,9 +699,18 @@ public class Menu_Printer {
     }
 
 
+    // TODO change weight to double -  all the way down
+
+
     // TODO NTH need to print the chosen option.
     // TODO finish input -  maybe with exception throw
     // TODO need to check supporting products return
     //  TODO need to check all exception catched
     // TODO weights - grams or Kilos
+
+
+
+    // TODO site id- not for chose
+    // TODO need to implement the weight insert exceptions
+    // TODO need to do the DF updates
 }
