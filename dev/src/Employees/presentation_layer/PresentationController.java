@@ -63,26 +63,30 @@ public class PresentationController {
                 choice = menuPrinter.managerMenu ();
                 handleManagerChoice ( choice );
             case 3:
-                createShiftType (  );
+                getShiftType ();
                 choice = menuPrinter.managerMenu ();
                 handleManagerChoice ( choice );
             case 4:
-                getEmployeeList();
+                createShiftType (  );
                 choice = menuPrinter.managerMenu ();
                 handleManagerChoice ( choice );
             case 5:
-                getEmployeeByManager( );
+                getEmployeeList();
                 choice = menuPrinter.managerMenu ();
                 handleManagerChoice ( choice );
             case 6:
-                getEmployeeConstraints();
+                getEmployeeByManager( );
                 choice = menuPrinter.managerMenu ();
                 handleManagerChoice ( choice );
             case 7:
-                addEmployee (  );
+                getConstraintsOfEmployee ();
                 choice = menuPrinter.managerMenu ();
                 handleManagerChoice ( choice );
             case 8:
+                addEmployee (  );
+                choice = menuPrinter.managerMenu ();
+                handleManagerChoice ( choice );
+            case 9:
                 if(logout () == false)
                 {
                     choice = menuPrinter.managerMenu ();
@@ -231,10 +235,6 @@ public class PresentationController {
         return manning;
     }
 
-    public void addShift(LocalDate date, int shift, HashMap<Role, List<Integer>> manning) {
-
-    }
-
     public void changeShift(LocalDate date, int shift) {
         HashMap<String, List<String>> manning = createManning ();
         Response response = facadeService.changeShift ( date, shift, manning );
@@ -300,12 +300,77 @@ public class PresentationController {
         menuPrinter.print ( "Shift type added successfully.\n" );
     }
 
-    public void updateRoleManning(String shiftType, Role role, int num) {
-
+    private void getShiftType() {
+        menuPrinter.print ( "Write the shift type you would like to display: " );
+        String shiftType = menuPrinter.getString ( );
+        ResponseT<HashMap<Role, Integer>> manning = facadeService.getShiftType(shiftType);
+        if(manning.errorOccured ())
+        {
+            menuPrinter.print ( manning.getErrorMessage () );
+            return;
+        }
+        for( Map.Entry<Role, Integer> entry : manning.value.entrySet () )
+        {
+            menuPrinter.print ( entry.getKey ().name () + " - " + entry.getValue () );
+        }
+        int choice = menuPrinter.shiftTypeMenu();
+        handleShiftTypeMenuChoice(shiftType, choice);
     }
 
-    public void addRoleManning(String shiftType, Role role, int num) {
+    private void handleShiftTypeMenuChoice(String shiftType, int choice) {
+        switch (choice){
+            case 1:
+                updateRoleManning ( shiftType );
+                choice = menuPrinter.shiftTypeMenu ( );
+                handleShiftTypeMenuChoice ( shiftType, choice);
+            case 2:
+                addRoleManning ( shiftType );
+                choice = menuPrinter.shiftTypeMenu ( );
+                handleShiftTypeMenuChoice ( shiftType, choice);
+            case 3:
+                deleteRoleManning( shiftType );
+                choice = menuPrinter.shiftTypeMenu ( );
+                handleShiftTypeMenuChoice ( shiftType, choice);
+            case 4:
+                return;
+            default:
+                menuPrinter.printChoiceException ();
+                return;
+        }
+    }
 
+    private void deleteRoleManning(String shiftType) {
+        String role = menuPrinter.roleMenu ();
+        Response response = facadeService.deleteRoleFromShiftType(shiftType, role);
+        if (response.errorOccured ()) {
+            menuPrinter.print ( response.getErrorMessage ( ) );
+            return;
+        }
+        menuPrinter.print ( "Role manning updated successfully.\n" );
+    }
+
+    private void updateRoleManning(String shiftType) {
+        String role = menuPrinter.roleMenu ();
+        menuPrinter.print ( "Write the manning you would like for role: " );
+        int num = menuPrinter.getInt ();
+        Response response = facadeService.updateRoleManning ( shiftType, role, num );
+        if (response.errorOccured ()) {
+            menuPrinter.print ( response.getErrorMessage ( ) );
+            return;
+        }
+        menuPrinter.print ( "Role manning updated successfully.\n" );
+    }
+
+    private void addRoleManning(String shiftType) {
+        String role = menuPrinter.roleMenu ();
+        menuPrinter.print ( "Write the manning you would like for role: " );
+        int num = menuPrinter.getInt ();
+        Response response = facadeService.addRoleManning ( shiftType, role, num );
+        if (response.errorOccured ()) {
+            menuPrinter.print ( response.getErrorMessage ( ) );
+            return;
+        }
+        menuPrinter.print ( "Role added successfully.\n" );
     }
 
     public void getWeeklyShiftSchedule() {
@@ -402,15 +467,15 @@ public class PresentationController {
     private void getConstraintsOfEmployee() {
         menuPrinter.print ( "ID of employee you would like to display: " );
         String id = menuPrinter.getString ();
-        ResponseT<List<FacadeConstraint>> constraints = facadeService.getConstraints(id);
+        ResponseT< HashMap <LocalDate, FacadeConstraint> > constraints = facadeService.getConstraints ( ID );
         if(constraints.errorOccured ())
         {
             menuPrinter.print ( constraints.getErrorMessage () );
             return;
         }
         menuPrinter.print ( "Constraints:\n" );
-        for ( FacadeConstraint entry: constraints.value) {
-            menuPrinter.print ( stringConverter.convertConstraint ( entry ) );
+        for ( Map.Entry<LocalDate, FacadeConstraint> entry: constraints.value.entrySet ()) {
+            menuPrinter.print ( stringConverter.convertConstraint ( entry.getValue () ) );
         }
     }
 
@@ -420,7 +485,7 @@ public class PresentationController {
             menuPrinter.print ( employee.getErrorMessage ( ) );
             return false;
         }
-        menuPrinter.print ("ID " + employee.value.getID () + " loggedout succesfuly.");
+        menuPrinter.print ("ID " + employee.value.getID () + " loggedout succesfuly.\n");
         return true;
     }
 
@@ -461,9 +526,14 @@ public class PresentationController {
         menuPrinter.print ( "Employee added successfully.\n" );
     }
 
-    public void removeEmployee()  {
-        String Id;
-
+    public void removeEmployee(String ID)  {
+        Response response = facadeService.removeEmployee ( ID );
+        if(response.errorOccured ())
+        {
+            menuPrinter.print ( response.getErrorMessage () );
+            return;
+        }
+        menuPrinter.print ( "Employee deleted successfully.\n" );
     }
 
     public void updateBankAccount(String ID) {
@@ -479,7 +549,7 @@ public class PresentationController {
             menuPrinter.print ( response.getErrorMessage () );
             return;
         }
-        menuPrinter.print ( "Bank account changed successfully." );
+        menuPrinter.print ( "Bank account changed successfully.\n" );
     }
 
     public void updateTermsOfemployee(String ID) {
@@ -497,7 +567,7 @@ public class PresentationController {
             menuPrinter.print ( response.getErrorMessage () );
             return;
         }
-        menuPrinter.print ( "Terms of employment changed successfully." );
+        menuPrinter.print ( "Terms of employment changed successfully.\n" );
     }
 
     public void getEmployee() {
@@ -517,7 +587,7 @@ public class PresentationController {
     }
 
     private void editSchedule(){
-        menuPrinter.print ( "Would you like to edit one of the shifts? n\\y" );
+        menuPrinter.print ( "Would you like to edit one of the shifts? n\\y\n" );
         char c = menuPrinter.getChar ( );
         if (c == 'y') {
             LocalDate date = menuPrinter.getShiftDate ( );
@@ -547,13 +617,7 @@ public class PresentationController {
         Response response;
         switch (choice){
             case 1:
-                response = facadeService.removeEmployee ( facadeEmployee.getID () );
-                if(response.errorOccured ())
-                {
-                    menuPrinter.print ( response.getErrorMessage () );
-                    return;
-                }
-                menuPrinter.print ( "Employee deleted successfully." );
+                removeEmployee (facadeEmployee.getID ());
             case 2:
                 updateBankAccount (facadeEmployee.getID ());
             case 3:
@@ -561,12 +625,6 @@ public class PresentationController {
             default:
                 menuPrinter.printChoiceException ();
         }
-    }
-
-    private void getEmployeeConstraints() {
-        menuPrinter.print ( "Write the ID of the employee you would like to display: " );
-        String ID = menuPrinter.getString ( );
-        ResponseT< HashMap <LocalDate, FacadeConstraint> > constraints = facadeService.getConstraints ( ID );
     }
 
     private void getEmployeeList() {

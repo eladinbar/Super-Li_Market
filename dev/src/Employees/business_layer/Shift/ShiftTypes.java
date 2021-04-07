@@ -28,21 +28,27 @@ public class ShiftTypes {
         return shiftTypes.get ( shiftType ).get ( role );
     }
 
-    public void unpdateRoleManning(String shiftType, Role role, int num) throws EmployeeException {
+    public void unpdateRoleManning(String shiftType, String role, int num) throws EmployeeException {
         if (!shiftTypes.containsKey ( shiftType ))
             throw new EmployeeException ( "no such shift type to update." );
-        if (!shiftTypes.get ( shiftType ).containsKey ( role ))
-            shiftTypes.get ( shiftType ).put ( role, num );
+        Role newRole = Role.valueOf ( role );
+        if(newRole == null)
+            throw new EmployeeException ( "Illegal role name." );
+        if (!shiftTypes.get ( shiftType ).containsKey ( newRole ))
+            shiftTypes.get ( shiftType ).put ( newRole, num );
         else
-            shiftTypes.get ( shiftType ).replace ( role, num );
+            shiftTypes.get ( shiftType ).replace ( newRole, num );
     }
 
-    public void addRoleManning(String shiftType, Role role, int num) throws EmployeeException {
+    public void addRoleManning(String shiftType, String role, int num) throws EmployeeException {
         if (!shiftTypes.containsKey ( shiftType ))
             throw new EmployeeException ( "no such shift type exist to add a role manning." );
-        if (shiftTypes.get ( shiftType ).containsKey ( role ))
+        Role newRole = Role.valueOf ( role );
+        if(newRole == null)
+            throw new EmployeeException ( "Illegal role name." );
+        if (shiftTypes.get ( shiftType ).containsKey ( newRole ))
             throw new EmployeeException ( "role is already exsits in manning." );
-        shiftTypes.get ( shiftType ).put ( role, num );
+        shiftTypes.get ( shiftType ).put ( newRole, num );
     }
 
     public HashMap<Role, Integer> getShiftTypeManning(String shiftType) throws EmployeeException {
@@ -56,30 +62,14 @@ public class ShiftTypes {
             throw new EmployeeException ( "this current shift type already exists." );
         HashMap<Role, Integer> newManning = new HashMap<> ( );
         for ( Map.Entry<String, Integer> entry : manning.entrySet ( ) ) {
-            newManning.put ( stringToRole ( entry.getKey ( ) ), entry.getValue ( ) );
+            newManning.put ( Role.valueOf ( entry.getKey ( ) ), entry.getValue ( ) );
         }
         shiftTypes.put ( shiftType, newManning );
     }
 
-    private Role stringToRole(String s) throws EmployeeException {
-        switch (s) {
-            case "branchManager":
-                return Role.branchManager;
-            case "branchManagerAssistent":
-                return Role.branchManagerAssistent;
-            case "humanResourcesManager":
-                return Role.humanResourcesManager;
-            case "cashier":
-                return Role.cashier;
-            case "guard":
-                return Role.guard;
-            case "usher":
-                return Role.usher;
-            case "storeKeeper":
-                return Role.storeKeeper;
-            default:
-                throw new EmployeeException ( "role chosen is illegal." );
-
-        }
+    public void deleteRole(String shiftType, String role) throws EmployeeException {
+        if(!shiftType.contains ( shiftType ))
+            throw new EmployeeException ( "Illegal shift type." );
+        shiftTypes.remove ( Role.valueOf ( role ) );
     }
 }

@@ -125,7 +125,7 @@ public class ShiftService {
         }
     }
 
-    public Response updateRoleManning(String shiftType, Role role, int num) {
+    public Response updateRoleManning(String shiftType, String role, int num) {
         try {
             shiftController.updateRoleManning ( shiftType, role, num );
             return new Response (  );
@@ -135,7 +135,7 @@ public class ShiftService {
         }
     }
 
-    public Response addRoleManning(String shiftType, Role role, int num) {
+    public Response addRoleManning(String shiftType, String role, int num) {
         try {
             shiftController.addRoleManning ( shiftType, role, num );
             return new Response (  );
@@ -161,6 +161,25 @@ public class ShiftService {
             return new ResponseT (  new FacadeShift ( s ) );
         } catch (EmployeeException e){
             return new ResponseT ( e.getMessage () );
+        }
+    }
+
+    public ResponseT<HashMap<Role, Integer>> getShiftTypeManning(String shiftType) {
+        try{
+            HashMap<Role, Integer> manning = ShiftTypes.getInstance ().getShiftTypeManning ( shiftType );
+            return new ResponseT ( manning );
+        }catch (EmployeeException e){
+            return new ResponseT ( e.getMessage () );
+        }
+    }
+
+    public Response deleteRoleFromShiftType(String shiftType, String role) {
+        try {
+            shiftController.deleteRoleFromShiftType(shiftType, role);
+            return new Response (  );
+        }catch (EmployeeException e)
+        {
+            return new Response ( e.getMessage () );
         }
     }
 }

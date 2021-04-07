@@ -30,10 +30,6 @@ public class FacadeService {
         return shiftService.createWeeklyshiftSchedule ( startingDate, shifts );
     }
 
-    public Response addShift(LocalDate date, int shift, HashMap<String, List<String>> manning) {
-        return shiftService.addShift ( date, shift, manning );
-    }
-
     public Response changeShift(LocalDate date, int shift, HashMap<String, List<String>> manning) {
         return shiftService.changeShift ( date, shift, manning);
     }
@@ -54,11 +50,11 @@ public class FacadeService {
         return shiftService.createShiftType ( shiftype, manning );
     }
 
-    public Response updateRoleManning(String shiftType, Role role, int num) {
+    public Response updateRoleManning(String shiftType, String role, int num) {
         return shiftService.updateRoleManning ( shiftType, role, num );
     }
 
-    public Response addRoleManning(String shiftType, Role role, int num) {
+    public Response addRoleManning(String shiftType, String role, int num) {
         return shiftService.addRoleManning ( shiftType, role, num );
     }
 
@@ -68,6 +64,14 @@ public class FacadeService {
 
     public ResponseT<FacadeShift> getShift(LocalDate date, int shift){
         return shiftService.getShift(date, shift);
+    }
+
+    public ResponseT<HashMap<Role, Integer>> getShiftType(String shiftType) {
+        return shiftService.getShiftTypeManning(shiftType);
+    }
+
+    public Response deleteRoleFromShiftType(String shiftType, String role) {
+        return shiftService.deleteRoleFromShiftType(shiftType, role);
     }
 
     //employee service responsibility
@@ -84,16 +88,8 @@ public class FacadeService {
         return employeeService.giveConstraint ( employee, date, shift, reason );
     }
 
-    public Response updateConstraint (FacadeEmployee employee, LocalDate date, int shift, String reason) {
-        return employeeService.updateConstraint ( employee, date, shift, reason);
-    }
-
     public Response deleteConstraint (LocalDate date, int shift)  {
         return employeeService.deleteConstraint (date, shift );
-    }
-
-    public Response addEmployee(Role role, int Id, FacadeTermsOfEmployment terms, LocalDate transactionDate, FacadeBankAccountInfo bank) {
-        return employeeService.addEmployee ( role, Id, terms, transactionDate, bank );
     }
 
     public Response removeEmployee(String Id)  {
@@ -136,4 +132,5 @@ public class FacadeService {
     public ResponseT<HashMap<Role, List<String>>> getEmployees() {
         return employeeService.getEmployees();
     }
+
 }

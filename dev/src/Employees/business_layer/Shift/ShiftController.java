@@ -74,11 +74,11 @@ public class ShiftController {
         ShiftTypes.getInstance ().addShiftType ( shiftype, manning );
     }
 
-    public void updateRoleManning(String shiftType, Role role, int num) throws EmployeeException {
+    public void updateRoleManning(String shiftType, String role, int num) throws EmployeeException {
         ShiftTypes.getInstance ().unpdateRoleManning ( shiftType, role, num );
     }
 
-    public void addRoleManning(String shiftType, Role role, int num) throws EmployeeException {
+    public void addRoleManning(String shiftType, String role, int num) throws EmployeeException {
         ShiftTypes.getInstance ().addRoleManning ( shiftType, role, num );
     }
 
@@ -91,5 +91,9 @@ public class ShiftController {
 
     public Shift getShift(LocalDate date, int shift) throws EmployeeException {
         return getWeeklyShiftSchedule ( date ).getShift (date, shift);
+    }
+
+    public void deleteRoleFromShiftType(String shiftType, String role) throws EmployeeException {
+        ShiftTypes.getInstance ().deleteRole(shiftType, role);
     }
 }

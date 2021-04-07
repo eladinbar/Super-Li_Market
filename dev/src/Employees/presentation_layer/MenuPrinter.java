@@ -61,12 +61,13 @@ public class MenuPrinter {
         System.out.println ("Choose your next action:\n" +
                 "1.Create weekly shift schedule\n" +
                 "2.Show weekly shift schedule\n" +
-                "3.Create a new Shift type\n" +
-                "4.Get a list of employees ordered by role\n" +
-                "5.Get employee information\n" +
-                "6.Get employee constraints\n" +
-                "7.Add a new employee to the system\n" +
-                "8.Logout\n" );
+                "3.Show an existing shift type\n" +
+                "4.Create a new Shift type\n" +
+                "5.Get a list of employees ordered by role\n" +
+                "6.Get employee information\n" +
+                "7.Get employee constraints\n" +
+                "8.Add a new employee to the system\n" +
+                "9.Logout\n" );
         return sc.nextInt ();
     }
 
@@ -254,6 +255,15 @@ public class MenuPrinter {
                 "1.Delete employee\n" +
                 "2.Update employee bank account\n" +
                 "3.Update employee terms of employment" +
+                "4.Back" );
+        return sc.nextInt ();
+    }
+
+    public int shiftTypeMenu() {
+        System.out.println ("Choose the option you would like:\n" +
+                "1.Update an existing role manning\n" +
+                "2.Add a new role manning\n" +
+                "3.Delete an existing role from shift" +
                 "4.Back" );
         return sc.nextInt ();
     }
