@@ -37,7 +37,7 @@ public class InventoryServiceImpl implements InventoryService {
             inventoryController.addItem(id, name, categoryName, costPrice, sellingPrice,
                     minAmount, shelfLocation, storageLocation,
                     shelfQuantity, storageQuantity, manufacturerId, suppliersIds);
-            response = new Response(false, "Item added successfully");
+            response = new Response(false, "Item added successfully.");
             return response;
         } catch (IllegalArgumentException ex) {
             response = new Response(true, ex.getMessage());
@@ -65,101 +65,354 @@ public class InventoryServiceImpl implements InventoryService {
             responseT = new ResponseT(true, ex.getMessage(), null);
             return responseT;
         }
-
     }
 
     @Override
     public Response modifyItemName(int itemId, String newName) {
-        return null;
+        Response response;
+        //Check basic argument constraints
+        if (itemId < 0 | newName == null || newName.trim().isEmpty()) {
+            response = new Response(true, "One or more of the given arguments is invalid.");
+            return response;
+        }
+        //Call business layer function
+        try {
+            inventoryController.modifyItemName(itemId, newName);
+            response = new Response(false, "Item name modified successfully.");
+            return response;
+        } catch (IllegalArgumentException ex) {
+            response = new Response(true, ex.getMessage());
+            return response;
+        }
     }
 
     @Override
     public Response modifyItemCategory(int itemId, String newCategoryName) {
-        return null;
+        Response response;
+        //Check basic argument constraints
+        if (itemId < 0) {
+            response = new Response(true, "Item ID can only be represented as a non-negative number.");
+            return response;
+        }
+        //Call business layer function
+        try {
+            inventoryController.modifyItemCategory(itemId, newCategoryName);
+            response = new Response(false, "Item category modified successfully.");
+            return response;
+        } catch (IllegalArgumentException ex) {
+            response = new Response(true, ex.getMessage());
+            return response;
+        }
     }
 
     @Override
     public Response modifyItemCostPrice(int itemId, double newCostPrice) {
-        return null;
+        Response response;
+        //Check basic argument constraints
+        if (itemId < 0 | newCostPrice < 0) {
+            response = new Response(true, "One or more of the given arguments is invalid.");
+            return response;
+        }
+        //Call business layer function
+        try {
+            inventoryController.modifyItemCostPrice(itemId, newCostPrice);
+            response = new Response(false, "Item cost price modified successfully.");
+            return response;
+        } catch (IllegalArgumentException ex) {
+            response = new Response(true, ex.getMessage());
+            return response;
+        }
     }
 
     @Override
     public Response modifyItemSellingPrice(int itemId, double newSellingPrice) {
-        return null;
+        Response response;
+        //Check basic argument constraints
+        if (itemId < 0 | newSellingPrice < 0) {
+            response = new Response(true, "One or more of the given arguments is invalid.");
+            return response;
+        }
+        //Call business layer function
+        try {
+            inventoryController.modifyItemSellingPrice(itemId, newSellingPrice);
+            response = new Response(false, "Item selling price modified successfully.");
+            return response;
+        } catch (IllegalArgumentException ex) {
+            response = new Response(true, ex.getMessage());
+            return response;
+        }
     }
 
     @Override
     public Response changeItemLocation(int itemId, String newShelfLocation, String newStorageLocation) {
-        return null;
+        Response response;
+        //Check basic argument constraints
+        if (itemId < 0 | newShelfLocation == null || newShelfLocation.trim().equals("") |
+                newStorageLocation == null || newStorageLocation.trim().equals("")) {
+            response = new Response(true, "One or more of the given arguments is invalid.");
+            return response;
+        }
+        //Call business layer function
+        try {
+            inventoryController.changeItemLocation(itemId, newShelfLocation, newStorageLocation);
+            response = new Response(false, "Item location changed successfully.");
+            return response;
+        } catch (IllegalArgumentException ex) {
+            response = new Response(true, ex.getMessage());
+            return response;
+        }
     }
 
     @Override
     public Response changeItemShelfLocation(int itemId, String newShelfLocation) {
-        return null;
+        Response response;
+        //Check basic argument constraints
+        if (itemId < 0 | newShelfLocation == null || newShelfLocation.trim().equals("")) {
+            response = new Response(true, "One or more of the given arguments is invalid.");
+            return response;
+        }
+        //Call business layer function
+        try {
+            inventoryController.changeItemShelfLocation(itemId, newShelfLocation);
+            response = new Response(false, "Item shelf location changed successfully.");
+            return response;
+        } catch (IllegalArgumentException ex) {
+            response = new Response(true, ex.getMessage());
+            return response;
+        }
     }
 
     @Override
     public Response changeItemStorageLocation(int itemId, String newStorageLocation) {
-        return null;
+        Response response;
+        //Check basic argument constraints
+        if (itemId < 0 | newStorageLocation == null || newStorageLocation.trim().equals("")) {
+            response = new Response(true, "One or more of the given arguments is invalid.");
+            return response;
+        }
+        //Call business layer function
+        try {
+            inventoryController.changeItemStorageLocation(itemId, newStorageLocation);
+            response = new Response(false, "Item storage location changed successfully.");
+            return response;
+        } catch (IllegalArgumentException ex) {
+            response = new Response(true, ex.getMessage());
+            return response;
+        }
     }
 
     @Override
     public Response modifyItemQuantity(int itemId, int newShelfQuantity, int newStorageQuantity) {
-        return null;
+        Response response;
+        //Check basic argument constraints
+        if (itemId < 0 | newShelfQuantity <0  | newStorageQuantity < 0) {
+            response = new Response(true, "One or more of the given arguments is invalid.");
+            return response;
+        }
+        //Call business layer function
+        try {
+            inventoryController.modifyItemQuantity(itemId, newShelfQuantity, newStorageQuantity);
+            response = new Response(false, "Item quantity modified successfully.");
+            return response;
+        } catch (IllegalArgumentException ex) {
+            response = new Response(true, ex.getMessage());
+            return response;
+        }
     }
 
     @Override
     public Response modifyItemShelfQuantity(int itemId, int newShelfQuantity) {
-        return null;
+        Response response;
+        //Check basic argument constraints
+        if (itemId < 0 | newShelfQuantity <0) {
+            response = new Response(true, "One or more of the given arguments is invalid.");
+            return response;
+        }
+        //Call business layer function
+        try {
+            inventoryController.modifyItemShelfQuantity(itemId, newShelfQuantity);
+            response = new Response(false, "Item shelf quantity modified successfully.");
+            return response;
+        } catch (IllegalArgumentException ex) {
+            response = new Response(true, ex.getMessage());
+            return response;
+        }
     }
 
     @Override
     public Response modifyItemStorageQuantity(int itemId, int newStorageQuantity) {
-        return null;
+        Response response;
+        //Check basic argument constraints
+        if (itemId < 0 | newStorageQuantity < 0) {
+            response = new Response(true, "One or more of the given arguments is invalid.");
+            return response;
+        }
+        //Call business layer function
+        try {
+            inventoryController.modifyItemStorageQuantity(itemId, newStorageQuantity);
+            response = new Response(false, "Item storage quantity modified successfully.");
+            return response;
+        } catch (IllegalArgumentException ex) {
+            response = new Response(true, ex.getMessage());
+            return response;
+        }
     }
 
     @Override
     public Response addItemSupplier(int itemId, int supplierId) {
-        return null;
+        Response response;
+        //Check basic argument constraints
+        if (itemId < 0 | supplierId < 0) {
+            response = new Response(true, "One or more of the given arguments is invalid.");
+            return response;
+        }
+        //Call business layer function
+        try {
+            inventoryController.addItemSupplier(itemId, supplierId);
+            response = new Response(false, "Item supplier added successfully.");
+            return response;
+        } catch (IllegalArgumentException ex) {
+            response = new Response(true, ex.getMessage());
+            return response;
+        }
     }
 
     @Override
     public Response removeItemSupplier(int itemId, int supplierId) {
-        return null;
+        Response response;
+        //Check basic argument constraints
+        if (itemId < 0 | supplierId < 0) {
+            response = new Response(true, "One or more of the given arguments is invalid.");
+            return response;
+        }
+        //Call business layer function
+        try {
+            inventoryController.removeItemSupplier(itemId, supplierId);
+            response = new Response(false, "Item supplier removed successfully.");
+            return response;
+        } catch (IllegalArgumentException ex) {
+            response = new Response(true, ex.getMessage());
+            return response;
+        }
     }
 
     @Override
     public Response removeItem(int itemId) {
-        return null;
+        Response response;
+        //Check basic argument constraints
+        if (itemId < 0) {
+            response = new Response(true, "Item ID can only be represented as a non-negative number.");
+            return response;
+        }
+        //Call business layer function
+        try {
+            inventoryController.removeItem(itemId);
+            response = new Response(false, "Item removed successfully.");
+            return response;
+        } catch (IllegalArgumentException ex) {
+            response = new Response(true, ex.getMessage());
+            return response;
+        }
     }
 
     //-------------------------------------------------------------------------Category functions
 
     @Override
     public Response addCategory(String categoryName, String parentCategoryName) {
-        return null;
+        Response response;
+        //Call business layer function
+        try {
+            inventoryController.addCategory(categoryName, parentCategoryName);
+            response = new Response(false, "Category added successfully.");
+            return response;
+        } catch (IllegalArgumentException ex) {
+            response = new Response(true, ex.getMessage());
+            return response;
+        }
     }
 
     @Override
     public ResponseT<Category> getCategory(String categoryName) {
-        return null;
+        ResponseT<Category> responseT;
+        //Call business layer function
+        try {
+            InventoryModule.BusinessLayer.Category tempCategory = inventoryController.getCategory(categoryName);
+            //Simplify business layer category fields
+            List<Item> simpleItems = getSimpleItems(tempCategory.getItems());
+            List<String> simpleSubCategories = getSimpleCategories(tempCategory.getSubCategories());
+            //Create simple category
+            Category simpleCategory = new Category(categoryName, simpleItems, tempCategory.getParentCategory().getName(),
+                                                    simpleSubCategories);
+            responseT = new ResponseT<>(false, "", simpleCategory);
+            return responseT;
+        } catch (IllegalArgumentException ex) {
+            responseT = new ResponseT(true, ex.getMessage(), null);
+            return responseT;
+        }
+    }
+
+    private List<String> getSimpleCategories(List<InventoryModule.BusinessLayer.Category> categories) {
+        List<String> simpleCategories = new ArrayList<>();
+        for (InventoryModule.BusinessLayer.Category category : categories) {
+            simpleCategories.add(category.getName());
+        }
+        return simpleCategories;
+    }
+
+    private List<Item> getSimpleItems(List<InventoryModule.BusinessLayer.Item> items) {
+        List<Item> simpleItems = new ArrayList<>();
+        for (InventoryModule.BusinessLayer.Item item : items) {
+            Item simpleItem = new Item(item.getID(), item.getName(), item.getCostPrice(), item.getSellingPrice(),
+                                        item.getMinAmount(), item.getShelfQuantity(), item.getStorageQuantity(),
+                                        item.getShelfLocation(), item.getStorageLocation(), item.getManufacturerID());
+            simpleItems.add(simpleItem);
+        }
+        return simpleItems;
     }
 
     @Override
     public Response modifyCategoryName(String oldName, String newName) {
-        return null;
+        Response response;
+        //Call business layer function
+        try {
+            inventoryController.modifyCategoryName(oldName, newName);
+            response = new Response(false, "Category name modified successfully.");
+            return response;
+        } catch (IllegalArgumentException ex) {
+            response = new Response(true, ex.getMessage());
+            return response;
+        }
     }
 
     @Override
     public Response removeCategory(String categoryName) {
-        return null;
+        Response response;
+        //Call business layer function
+        try {
+            inventoryController.removeCategory(categoryName);
+            response = new Response(false, "Category removed successfully.");
+            return response;
+        } catch (Exception ex) {
+            response = new Response(true, ex.getMessage());
+            return response;
+        }
     }
 
     @Override
     public Response changeParentCategory(String categoryName, String newParentName) {
-        return null;
+        Response response;
+        //Call business layer function
+        try {
+            inventoryController.changeParentCategory(categoryName, newParentName);
+            response = new Response(false, "Parent category changed successfully.");
+            return response;
+        } catch (Exception ex) {
+            response = new Response(true, ex.getMessage());
+            return response;
+        }
     }
 
+    //-------------------------------------------------------------------------Sale functions
 
     @Override
     public <T extends SimpleEntity> ResponseT<Sale<T>> showSale(String saleName) {
@@ -175,8 +428,6 @@ public class InventoryServiceImpl implements InventoryService {
     public Response addCategorySale(String saleName, String categoryName, double saleDiscount, Calendar startDate, Calendar endDate) {
         return null;
     }
-
-    //-------------------------------------------------------------------------Sale functions
 
     @Override
     public Response modifySaleName(String oldName, String newName) {
