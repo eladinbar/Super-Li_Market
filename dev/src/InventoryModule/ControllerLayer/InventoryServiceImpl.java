@@ -413,8 +413,52 @@ public class InventoryServiceImpl implements InventoryService {
     //-------------------------------------------------------------------------Sale functions
 
     @Override
-    public <T extends SimpleEntity> ResponseT<Sale<T>> showSale(String saleName) {
-        return null;
+    @SuppressWarnings("unchecked")
+    public <T extends SimpleEntity> ResponseT<Sale<T>> getSale(String saleName) {
+        //response to return created
+        ResponseT<Sale<T>> responseT;
+        if (saleName.trim().isEmpty()) {
+            responseT = new ResponseT<>(true, "One or more arguments is invalid", null);
+            return responseT;
+        }
+        InventoryModule.BusinessLayer.SalePackage.Sale sale;
+        try {
+            sale = inventoryController.getSale(saleName);
+
+        } catch (Exception e) {
+            responseT = new ResponseT<>(true, e.getMessage(), null);
+            return responseT;
+        }
+
+            //simple sale created
+            Sale<T> simple = new Sale<>(sale.getName(), sale.getDiscount(), sale.getSaleDates(), null);
+            //Item Sale case
+            if (sale.getClass() == InventoryModule.BusinessLayer.SalePackage.ItemSale.class) {
+                InventoryModule.BusinessLayer.Item i = ((InventoryModule.BusinessLayer.SalePackage.ItemSale) sale).getItem();
+                Item simpleItem = new Item(i.getID(), i.getName(), i.getCostPrice(), i.getSellingPrice(), i.getMinAmount(),
+                        i.getShelfQuantity(), i.getStorageQuantity(), i.getShelfLocation(), i.getStorageLocation(), i.getManufacturerID());
+                simple.setAppliesOn((T) simpleItem);
+            } else { //Category Sale case
+                InventoryModule.BusinessLayer.Category c = ((InventoryModule.BusinessLayer.SalePackage.CategorySale) sale).getCategory();
+                List<Item> categoryItems = new ArrayList<>();
+                //converting Items of category
+                for (InventoryModule.BusinessLayer.Item i : c.getItems()) {
+                    Item simpleCatItem = new Item(i.getID(), i.getName(), i.getCostPrice(), i.getSellingPrice(), i.getMinAmount(),
+                            i.getShelfQuantity(), i.getStorageQuantity(), i.getShelfLocation(), i.getStorageLocation(), i.getManufacturerID());
+                    categoryItems.add(simpleCatItem);
+                }
+                //getting the sub categories names
+                List<String> subCategories = new ArrayList<>();
+                for (InventoryModule.BusinessLayer.Category subC : c.getSubCategories()) {
+                    subCategories.add(subC.getName());
+                }
+                //creating simple category
+                Category simpleCategory = new Category(c.getName(), categoryItems, c.getParentCategory().getName(), subCategories);
+                simple.setAppliesOn((T) simpleCategory);
+            }
+
+        responseT = new ResponseT<>(false, "", simple);
+        return responseT;
     }
 
     @Override
@@ -549,7 +593,6 @@ public class InventoryServiceImpl implements InventoryService {
         }
         responseT = new ResponseT<>(false,"",simpleDiscs);
         return responseT;
-
     }
 
 

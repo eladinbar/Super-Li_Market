@@ -46,7 +46,7 @@ public interface InventoryService {
     Response removeCategory(String categoryName);
     Response changeParentCategory(String categoryName, String newParentName);
     //-------------------------------------------------------------------------Sale functions
-    <T extends SimpleEntity> ResponseT<Sale<T>> showSale(String saleName);
+    <T extends SimpleEntity> ResponseT<Sale<T>> getSale(String saleName);
     Response addItemSale(String saleName, int itemID, double saleDiscount, Calendar startDate, Calendar endDate);
     Response addCategorySale(String saleName,String categoryName, double saleDiscount, Calendar startDate, Calendar endDate);
 

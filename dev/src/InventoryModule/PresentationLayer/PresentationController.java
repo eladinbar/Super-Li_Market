@@ -201,7 +201,7 @@ public class PresentationController implements Runnable {
 
     private <T extends SimpleEntity> void showSale() {
         String saleName = menu.instructAndReceive("Enter sale name:");
-        ResponseT<Sale<T>> saleR = service.showSale(saleName);
+        ResponseT<Sale<T>> saleR = service.getSale(saleName);
         if (saleR.isErrorOccurred()) {
             menu.errorPrompt(saleR.getMessage());
         } else {
@@ -273,7 +273,7 @@ public class PresentationController implements Runnable {
 
     private <T extends SimpleEntity> void modifySale() {
         String saleName = menu.instructAndReceive("Enter category name: ");
-        ResponseT<Sale<T>> saleR = service.showSale(saleName);
+        ResponseT<Sale<T>> saleR = service.getSale(saleName);
         if (saleR.isErrorOccurred()) {
             menu.errorPrompt(saleR.getMessage());
             return;
