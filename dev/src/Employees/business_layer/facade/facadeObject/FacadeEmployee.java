@@ -1,5 +1,6 @@
 package Employees.business_layer.facade.facadeObject;
 
+import Employees.business_layer.Employee.Employee;
 import Employees.business_layer.Employee.Role;
 
 import java.time.LocalDate;
@@ -8,7 +9,7 @@ import java.util.HashMap;
 
 public class FacadeEmployee implements FacadeObject{
     private Role role;
-    private int ID;
+    private String ID;
     private LocalDate transactionDate;
     private FacadeBankAccountInfo facadeBankAccountInfo;
     private FacadeTermsOfEmployment facadeTermsOfEmployment;
@@ -16,7 +17,7 @@ public class FacadeEmployee implements FacadeObject{
     private boolean isManager;
 
     //an existing employee with given constraints
-    public FacadeEmployee(Role role, int ID, LocalDate transactionDate, FacadeBankAccountInfo facadeBankAccountInfo, FacadeTermsOfEmployment facadeTermsOfEmployment, HashMap<LocalDate, FacadeConstraint> constraints)
+    public FacadeEmployee(Role role, String ID, LocalDate transactionDate, FacadeBankAccountInfo facadeBankAccountInfo, FacadeTermsOfEmployment facadeTermsOfEmployment, HashMap<LocalDate, FacadeConstraint> constraints)
     {
         this.role = role;
         this.ID = ID;
@@ -24,14 +25,11 @@ public class FacadeEmployee implements FacadeObject{
         this.facadeBankAccountInfo = facadeBankAccountInfo;
         this.facadeTermsOfEmployment = facadeTermsOfEmployment;
         this.constraints = constraints;
-        if(role == Role.humanResourcesManager || role == Role.branchManager || role == Role.branchManagerAssistent)
-            isManager = true;
-        else
-            isManager = false;
+        isManager = (role == Role.humanResourcesManager || role == Role.branchManager || role == Role.branchManagerAssistent);
     }
 
     //new employee with no constraints
-    public FacadeEmployee(Role role, int ID, LocalDate transactionDate, FacadeBankAccountInfo facadeBankAccountInfo, FacadeTermsOfEmployment facadeTermsOfEmployment)
+    public FacadeEmployee(Role role, String ID, LocalDate transactionDate, FacadeBankAccountInfo facadeBankAccountInfo, FacadeTermsOfEmployment facadeTermsOfEmployment)
     {
         this.role = role;
         this.ID = ID;
@@ -40,12 +38,19 @@ public class FacadeEmployee implements FacadeObject{
         this.facadeTermsOfEmployment = facadeTermsOfEmployment;
         this.constraints = new HashMap<>();
     }
+    public FacadeEmployee(Employee employee){
+        this.role= employee.getRole();
+        this.ID= employee.getID();
+        this.transactionDate= employee.getTransactionDate();
+        this.facadeBankAccountInfo= new FacadeBankAccountInfo(employee.getBank());
+        this.facadeTermsOfEmployment= new FacadeTermsOfEmployment(employee.getTerms());
+    }
 
     public LocalDate getTransactionDate() {
         return transactionDate;
     }
 
-    public int getID() {
+    public String getID() {
         return ID;
     }
 

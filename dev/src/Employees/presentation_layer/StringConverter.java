@@ -4,7 +4,7 @@ import Employees.business_layer.facade.facadeObject.*;
 
 public class StringConverter {
 
-    public String convertBankAccountInfo( FacadeBankAccountInfo facadeBankAccountInfo){}
+    private String convertBankAccountInfo( FacadeBankAccountInfo facadeBankAccountInfo){}
 
     public String convertConstraint(FacadeConstraint facadeConstraint){}
 
@@ -14,7 +14,7 @@ public class StringConverter {
 
     public String convertShiftType(FacadeShiftType facadeShiftType){}
 
-    public String convertTermsOfEmployment(FacadeTermsOfEmployment facadeTermsOfEmployment){}
+    private String convertTermsOfEmployment(FacadeTermsOfEmployment facadeTermsOfEmployment){}
 
     public String convertWeeklyShiftSchedule(FacadeWeeklyShiftSchedule facadeWeeklyShiftSchedule){}
 }

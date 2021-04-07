@@ -6,16 +6,18 @@ import java.util.HashMap;
 
 public class Employee {
     private Role role;
-    private int ID;
-    boolean employed;
+    private String ID;
+    private boolean isManager;
+    private boolean employed;
     private  TermsOfEmployment terms;
     private LocalDate transactionDate;
     private BankAccountInfo bank;
     private HashMap<LocalDate, Constraint> constraints;
 
-    public Employee (Role role, int ID, TermsOfEmployment terms, LocalDate transactionDate,  BankAccountInfo bank ){
+    public Employee (Role role, String ID, TermsOfEmployment terms, LocalDate transactionDate,  BankAccountInfo bank ){
         this.role = role;
         this.ID = ID;
+        this.isManager = isManager(role);
         employed = true;
         this.terms = terms;
         this.transactionDate = transactionDate;
@@ -28,9 +30,11 @@ public class Employee {
         return role;
     }
 
-    public int getID() {
+    public String getID() {
         return ID;
     }
+
+    public boolean getIsManager() { return isManager; }
 
     public boolean isEmployed() {
         return employed;
@@ -58,7 +62,7 @@ public class Employee {
         this.role = role;
     }
 
-    public void setID(int ID) {
+    public void setID(String ID) {
         this.ID = ID;
     }
 
@@ -100,10 +104,10 @@ public class Employee {
 
         else{ // if the employment has no constraint on that day.
             Constraint newConstraint;
-            if(shift == 1){ // morning shift
+            if(shift == 0){ // morning shift
                 newConstraint = new Constraint(date, true, false, reason );
             }
-            else if( shift == 2){
+            else if( shift == 1){
                 newConstraint = new Constraint(date, false, true, reason );
             }
             else{
@@ -113,25 +117,25 @@ public class Employee {
         }
     }
 
-public void updateConstarint (LocalDate date, int shift, String reason) throws Exception {
+public void updateConstarint (LocalDate date, int shift, String reason) throws EmployeeException {
     if (!constraints.containsKey(date)){
         throw new EmployeeException("There is no constraint to update on that day");
     }
     Constraint exist = constraints.get(date);
-    if( shift == 1){// morning shift
+    if( shift == 0){// morning shift
         exist.setMorningShift(true);
     }
-    else if (shift ==2){// evening shift
+    else if (shift ==1){// evening shift
         exist.setEveningShift(true);
     }
     else{
         exist.setMorningShift(true);
         exist.setEveningShift(true);
     }
-    exist.setReason(exist.getReason()+"\n"+reason);// הסיבה החדשה דורסת את הקיימת? תלוי במימוש
+    exist.setReason(exist.getReason()+"\n"+reason);
 }
 
-public void deletConstraint(LocalDate date, int shift) throws Exception {
+public void deleteConstraint(LocalDate date, int shift) throws EmployeeException {
     if (!constraints.containsKey(date)){
         throw new EmployeeException("There is no constraint to delete on that day");
     }
@@ -146,4 +150,10 @@ public void deletConstraint(LocalDate date, int shift) throws Exception {
         exist.setEveningShift(false);
     }
 }
+
+//private methods
+
+    private boolean isManager(Role role){
+        return role == Role.branchManager | role == Role.branchManagerAssistent | role == Role.humanResourcesManager;
+    }
 }
