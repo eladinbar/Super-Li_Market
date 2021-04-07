@@ -30,9 +30,8 @@ public class TextFormatter {
 
     public void CategoryMenuFormat(Category category) {
         System.out.println("Category Name: " + category.getName() + "\n" +
-                "Parent Category: " + category.getParentCategory().getName() + "\n" +
-                "Sub-categories: " + category.getSubCategories().stream().map((c) -> c.getName()).
-                reduce("", (acc, curr) -> acc + ", " + curr));
+                "Parent Category: " + category.getParentCategory() + "\n" +
+                "Sub-categories: " + category.getSubCategories().stream().reduce("", (acc, curr) -> acc + ", " + curr));
     }
 
     public <T extends SimpleEntity> void saleMenuFormat(Sale<T> sale) {
