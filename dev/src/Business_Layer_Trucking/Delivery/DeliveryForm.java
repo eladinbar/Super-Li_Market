@@ -10,6 +10,7 @@ public class DeliveryForm {
     private HashMap<Integer, Integer> items;
     private int leavingWeight;
     private int trID;
+    private boolean completed;
 
     public DeliveryForm(int ID, int origin, int destination, HashMap<Integer,Integer> items,
                         int leavingWeight, int trID){
@@ -19,7 +20,7 @@ public class DeliveryForm {
         this.items=items;
         this.leavingWeight=leavingWeight;
         this.trID=trID;
-
+        this.completed=false;
         }
 
     public HashMap<Integer, Integer> getItems() {
@@ -46,6 +47,13 @@ public class DeliveryForm {
         return trID;
     }
 
+    public boolean isCompleted() {
+        return completed;
+    }
+
+    public void setCompleted() {
+        this.completed = true;
+    }
 
     public void setDestination(int destination) {
         this.destination = destination;
