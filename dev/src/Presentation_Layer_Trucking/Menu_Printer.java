@@ -721,9 +721,97 @@ public class Menu_Printer {
         FacadeDeliveryForm fdf = deliveryForms.get(chose);
 
         int weight = getIntFromUser(scanner);
-        pc.updateDeliveryFormRealWeight(ftr.getID() ,fdf.getID() , weight);
-        rePlan(scanner);
+        try {
+            pc.updateDeliveryFormRealWeight(ftr.getID(), fdf.getID(), weight);
+        }catch (IllegalStateException illegalStateException){
+            System.out.println(illegalStateException.getMessage());
+            rePlanAfterWeight(scanner,ftr.getID());
+            updateDeliveryForm(scanner);
+        }
 
+    }
+
+    private void rePlanAfterWeight(Scanner scanner, int trID) throws ReflectiveOperationException {
+
+        System.out.println("Welcome to replan menu! please choose the option you'd like to re plan the report with:");
+        int spot =1;
+        System.out.println(spot + ") remove a site (all the products from this site and to it will be removed)");spot++;
+        System.out.println(spot + ") switch demands  - removes a site and adds a new demand to add by choose"); spot++;
+        System.out.println(spot + ") change a truck");spot++;
+        System.out.println(spot + ") remove item");
+        System.out.println("choose different number to quit");
+        System.out.print("place your option");
+
+
+        /*int option =  getIntFromUser(scanner);
+        switch (option){
+            case 1://remove site
+
+                removeSite(scanner , trID);
+
+
+            case 2://switch demand(=site)
+
+                removeSite(scanner, trID);
+                chooseDemands(scanner);
+
+
+
+            case 3://replace truck
+
+                System.out.println("choose new truck");
+                LinkedList<FacadeTruck> trucks = pc.getAvailableTrucks();
+                spot =1;
+                //TODO need to display trucks
+                for (FacadeTruck ft:trucks)
+                {
+                    System.out.println(spot+")Truck number: "+ft.getLicenseNumber()+" , Weight neto: "+ft.getWeightNeto()
+                            +" , Max weight: "+ft.getMaxWeight());spot++;
+                }
+                int chose = getIntFromUser(scanner);
+                while(chose<1 || chose>trucks.size()){
+                    chose = getIntFromUser(scanner);
+                }
+                FacadeTruck facadeTruck = trucks.get(chose);
+                try {
+                    pc.replaceTruck(facadeTruck.getLicenseNumber(), trID);
+                }catch (IllegalStateException illegalStateException){
+                    illegalStateException.getMessage();
+                    // TODO replace driver
+                }
+
+            case 4://remove items
+
+                System.out.println("choose item to remove");
+
+                LinkedList<FacadeTruckingReport> reports = pc.getActiveTruckingReports();
+                FacadeTruckingReport truckingReport = null;
+                for (FacadeTruckingReport ftr: reports){
+                    if (ftr.getID() == trID)
+                        truckingReport = ftr;
+                }
+                LinkedList<FacadeDeliveryForm> fdf = pc.getDeliveryForms(trID);
+                int counter =1;
+                for(FacadeDemand demand : items){
+                    System.out.println(counter + ") " +
+                            "amount: " + demand.getAmount() + " wight per unit: " + pc.getWeight(demand.getItemID())
+                            + "delivery site: " + pc.getSiteName( demand.getSite() )) ;
+                }
+                System.out.print("your choice: ");
+                int itemId =  getIntFromUser(scanner);
+                while ( itemId > items.size() -1 || itemId<1) {
+                    System.out.println("your option is out of bounds, please choose again");
+                    itemId =  getIntFromUser(scanner);
+                }
+                FacadeDemand demand = items.get(itemId -1);
+                System.out.println("amount: ");
+                int amount =  getIntFromUser(scanner);
+                pc.removeItemFromReport(demand , amount);
+
+
+            default:
+                return null;
+        }*/
     }
 
     public void putInitialTestState(){
@@ -851,4 +939,8 @@ public class Menu_Printer {
     // TODO site id- not for chose
     // TODO need to implement the weight insert exceptions
     // TODO need to do the DF updates
+    // TODO need create replaced TR
+
+
+
 }
