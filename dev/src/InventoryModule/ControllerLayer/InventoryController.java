@@ -170,6 +170,9 @@ public class InventoryController {
             getCategory(categoryName);
             throw new IllegalArgumentException("A category with the name: " + categoryName + " already exists in the system.");
         } catch (IllegalArgumentException ex) {
+            if (ex.getMessage().equals("A category with the name: " + categoryName + " already exists in the system."))
+                throw ex; //Rethrow exception thrown in 'try' block (different error message)
+
             Category newCategory;
             if (parentCategoryName != null) {
                 for (Category category : categories) {
@@ -244,6 +247,9 @@ public class InventoryController {
             getSale(saleName);
             throw new IllegalArgumentException("A sale with the name " + saleName + " already exists in the system.");
         } catch(IllegalArgumentException ex) { //No item with the same name exists
+            if (ex.getMessage().equals("A sale with the name " + saleName + " already exists in the system."))
+                throw ex; //Rethrow exception thrown in 'try' block (different error message)
+
             ItemSale newSale = new ItemSale(saleName, saleDiscount, startDate, endDate, getItem(itemID));
             sales.add(newSale);
         }
@@ -254,6 +260,9 @@ public class InventoryController {
             getSale(saleName);
             throw new IllegalArgumentException("A sale with the name " + saleName + " already exists in the system.");
         } catch(IllegalArgumentException ex) { //No item with the same name exists
+            if (ex.getMessage().equals("A sale with the name " + saleName + " already exists in the system."))
+                throw ex; //Rethrow exception thrown in 'try' block (different error message)
+
             CategorySale newSale = new CategorySale(saleName, saleDiscount, startDate, endDate, getCategory(categoryName));
             sales.add(newSale);
         }
@@ -290,6 +299,9 @@ public class InventoryController {
             getDiscount(supplierId);
             throw new IllegalArgumentException("A discount with supplier ID: " + supplierId + " already exists in the system.");
         } catch (Exception ex) {
+            if (ex.getMessage().equals("A discount with supplier ID: " + supplierId + " already exists in the system."))
+                throw ex; //Rethrow exception thrown in 'try' block (different error message)
+
             ItemDiscount newDiscount = new ItemDiscount(supplierId, discount, discountDate, itemCount, getItem(itemId));
             discounts.add(newDiscount);
         }
@@ -300,6 +312,9 @@ public class InventoryController {
             getDiscount(supplierId);
             throw new IllegalArgumentException("A discount with supplier ID: " + supplierId + " already exists in the system.");
         } catch (Exception ex) {
+            if (ex.getMessage().equals("A discount with supplier ID: " + supplierId + " already exists in the system."))
+                throw ex; //Rethrow exception thrown in 'try' block (different error message)
+
             CategoryDiscount newDiscount = new CategoryDiscount(supplierId, discount, discountDate, itemCount, getCategory(categoryName));
             discounts.add(newDiscount);
         }
@@ -321,6 +336,9 @@ public class InventoryController {
             getDefectEntry(itemId, entryDate);
             throw new IllegalArgumentException("A defect entry with the same ID:" + itemName + " and the same date recorded:" + entryDate + " already exists in the system.");
         } catch (IllegalArgumentException ex) {
+            if (ex.getMessage().equals("A defect entry with the same ID:" + itemName + " and the same date recorded:" + entryDate + " already exists in the system."))
+                throw ex; //Rethrow exception thrown in 'try' block (different error message)
+
             DefectEntry newDefect = new DefectEntry(itemId, itemName, entryDate, defectQuantity, defectLocation);
             defectsLogger.addDefectEntry(newDefect);
         }
