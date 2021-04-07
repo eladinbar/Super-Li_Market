@@ -12,12 +12,13 @@ public class DeliveryController {
     private HashMap<Integer,TruckingReport> activeTruckingReports;//<trID,TR>
     private HashMap<Integer,TruckingReport> oldTruckingReports;//<trID,TR>
     private HashMap<Integer,LinkedList<DeliveryForm>> activeDeliveryForms;
+    private HashMap<Integer,LinkedList<DeliveryForm>> oldDeliveryForms;
     private HashMap<Integer,Site> sites;//<siteID,TR>
     private HashMap<Integer,DeliveryForm> deliveryForms;//<dfID,TR>
     private HashMap<Integer, Item> items;
     private int lastReportID ;
     private int lastDeliveryForms;
-    private List<DeliveryForm> currDF;
+    private LinkedList<DeliveryForm> currDF;
     private TruckingReport currTR;
     private static DeliveryController instance=null;
 
@@ -29,17 +30,19 @@ public class DeliveryController {
 
     private DeliveryController()
     {
-        demands=new LinkedList<>();
-        activeTruckingReports=new HashMap<>();
-        oldTruckingReports=new HashMap<>();
+        this.demands=new LinkedList<>();
+        this.activeTruckingReports=new HashMap<>();
+        this.oldTruckingReports=new HashMap<>();
+        this.oldDeliveryForms=new HashMap<>();
         this.sites=new HashMap<>();
-        deliveryForms=new HashMap<>();
+        this.deliveryForms=new HashMap<>();
         // when data base is added, need to be set by it;
         this.items=new HashMap<>();
-        lastDeliveryForms = 1;
-        lastReportID =0;
-        currDF=new LinkedList<>();
-        currTR=new TruckingReport(lastReportID);
+        this.lastDeliveryForms = 1;
+        this.lastReportID =0;
+        this.currDF=new LinkedList<>();
+        this.currTR=new TruckingReport(lastReportID);
+        this.activeDeliveryForms=new HashMap<>();
     }
 
     public int createNewTruckingReport(){
@@ -239,6 +242,7 @@ public class DeliveryController {
     public void saveReport(){
 
         activeTruckingReports.put(currTR.getID(),currTR);
+        activeDeliveryForms.put(currTR.getID(),currDF);
         lastReportID++;
 
     }
@@ -542,5 +546,22 @@ public class DeliveryController {
 
     public void updateDeliveryFormRealWeight(int dfID, int weight){
         deliveryForms.get(dfID).setLeavingWeight(weight);
+        deliveryForms.get(dfID).setCompleted();
+    }
+
+    public boolean checkIfAllCompleted(int trID) {
+        LinkedList<DeliveryForm> dfs=activeDeliveryForms.get(trID);
+        boolean completed=true;
+        for (DeliveryForm df:dfs)
+        {
+            completed=completed&&df.isCompleted();
+        }
+        return completed;
+
+    }
+
+    public void archive(int trID){
+        oldTruckingReports.put(trID,activeTruckingReports.get(trID));
+        oldDeliveryForms.put(trID,getDeliveryForms(trID));
     }
 }

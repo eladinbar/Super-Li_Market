@@ -242,11 +242,15 @@ public class FacadeService {
                 ft=facadeTruck;
         }
 
-        if (deliveryService.getWeightOfCurrReport()- deliveryService.getDeliveryForm(trID,dfID).getLeavingWeight()
-                +weight> ft.getMaxWeight())
+        if (weight> ft.getMaxWeight())
             throw new IllegalStateException("Overweight related to Delivery Form Number:"+dfID+"  In TR number: "+trID);
         else deliveryService.updateDeliveryFormRealWeight(dfID,weight);
+         if (deliveryService.checkIfAllCompleted(trID)){
+             deliveryService.archive(trID);
+         }
     }
+
+
 }
 
 

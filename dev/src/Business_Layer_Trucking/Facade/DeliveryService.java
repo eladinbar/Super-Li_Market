@@ -239,11 +239,13 @@ public class DeliveryService {
         dc.updateDeliveryFormRealWeight(dfID,weight);
     }
 
+    public boolean checkIfAllCompleted(int trID) {
+        return dc.checkIfAllCompleted(trID);
+    }
+
+    public void archive(int trID) {
+        dc.archive(trID);
+    }
 }
 
-//TODO
-// 1. create active DF hash map
-// 2. update DF on saveReport
-// 3. need to create method for update DF weight
-// 4. need to update TR from active to old when all DF has been updated and release driver and truck
-// 5. need update save to replace TR to active and not old
+
