@@ -150,7 +150,11 @@ public class Menu {
     }
 
     public <T extends SimpleEntity> void printEntity(Sale<T> sale) {
-
+        tf.saleMenuFormat(sale);
+        if(sale.getAppliesOn().getClass() == Item.class)
+            printEntity((Item) sale.getAppliesOn());
+        else if (sale.getAppliesOn().getClass() == Category.class)
+            printEntity((Category) sale.getAppliesOn());
     }
 
     public void printEntity(DefectEntry entry) throws InvocationTargetException, IllegalAccessException, NoSuchMethodException {

@@ -1,8 +1,6 @@
 package InfrastructurePackage;
 
-import InventoryModule.ControllerLayer.SimpleObjects.Category;
-import InventoryModule.ControllerLayer.SimpleObjects.DefectEntry;
-import InventoryModule.ControllerLayer.SimpleObjects.Item;
+import InventoryModule.ControllerLayer.SimpleObjects.*;
 
 import java.lang.reflect.Field;
 
@@ -35,6 +33,12 @@ public class TextFormatter {
                 "Parent Category: " + category.getParentCategory().getName() + "\n" +
                 "Sub-categories: " + category.getSubCategories().stream().map((c) -> c.getName()).
                 reduce("", (acc, curr) -> acc + ", " + curr));
+    }
+
+    public <T extends SimpleEntity> void saleMenuFormat(Sale<T> sale) {
+        System.out.println("Category Name: " + sale.getName() + "\n" +
+                "Discount: " + sale.getDiscount() + "\n" +
+                "Sale Dates: " + sale.getSaleDates().getFirst().toString() + " until " + sale.getSaleDates().getSecond().toString());
     }
 
     public String centerString(String s, int width) {
