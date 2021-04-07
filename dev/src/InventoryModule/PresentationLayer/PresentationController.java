@@ -301,13 +301,61 @@ public class PresentationController implements Runnable {
             System.out.println("Changes Saved!");
     }
 
-    private void showSupplierDiscount() {
+    private <T extends SimpleEntity> void showSupplierDiscount() {
+        int suppId = Integer.parseInt(menu.instructAndReceive("Enter supplier ID:"));
+        String[] disDateS = menu.instructAndReceive("Enter the date of the discount").split("-");;
+        Calendar date = Calendar.getInstance();
+        date.set(Integer.parseInt(disDateS[0]), Integer.parseInt(disDateS[1])-1, Integer.parseInt(disDateS[2]));
+        ResponseT<List<Discount<T>>> discR = service.getDiscount(suppId,date);
+        for (Discount<T> d: discR.getDate()) {
+            menu.printEntity(d);
+        }
+
     }
 
     private void addItemSupplierDiscount() {
+        int suppId = Integer.parseInt(menu.instructAndReceive("Enter supplier ID:"));
+        int itemId = Integer.parseInt(menu.instructAndReceive("Enter item id that the discount applies on:"));
+        double discountGiven = Double.parseDouble(menu.instructAndReceive("Enter discount received for the item: for 10% enter 0.1"));
+
+        String[] dateS = menu.instructAndReceive("Enter discount date: use this format <YYYY-MM-DD>").split("-");
+        Calendar date = Calendar.getInstance();
+        date.set(Integer.parseInt(dateS[0]), Integer.parseInt(dateS[1])-1, Integer.parseInt(dateS[2]));
+        int itemCount = Integer.parseInt(menu.instructAndReceive("Enter the amount the discount applied for:"));
+        if(itemCount <= 0){
+            menu.errorPrompt("Item amount have to be at least 1.");
+            return;
+        }
+        Response r1 = service.addItemDiscount(suppId,discountGiven,date,itemCount,itemId);
+        if(r1.isErrorOccurred()){
+            menu.errorPrompt(r1.getMessage());
+            return;
+        }
+        System.out.println("Sale Added successfully");
+
+
     }
 
     private void addCategorySupplierDiscount() {
+        int suppId = Integer.parseInt(menu.instructAndReceive("Enter supplier ID:"));
+        String catName = menu.instructAndReceive("Enter category name that the discount applies on:");
+        double discountGiven = Double.parseDouble(menu.instructAndReceive("Enter discount received for the item: for 10% enter 0.1"));
+
+        String[] dateS = menu.instructAndReceive("Enter discount date: use this format <YYYY-MM-DD>").split("-");
+        Calendar date = Calendar.getInstance();
+        date.set(Integer.parseInt(dateS[0]), Integer.parseInt(dateS[1])-1, Integer.parseInt(dateS[2]));
+        int itemCount = Integer.parseInt(menu.instructAndReceive("Enter the amount the discount applied for:"));
+        if(itemCount <= 0){
+            menu.errorPrompt("Item amount have to be at least 1.");
+            return;
+        }
+        Response r1 = service.addCategoryDiscount(suppId,discountGiven,date,itemCount,catName);
+        if(r1.isErrorOccurred()){
+            menu.errorPrompt(r1.getMessage());
+            return;
+        }
+        System.out.println("Sale Added successfully");
+
     }
 
     private void recordDefect() {

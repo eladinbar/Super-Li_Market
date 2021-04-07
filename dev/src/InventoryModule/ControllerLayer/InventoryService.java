@@ -57,6 +57,7 @@ public interface InventoryService {
 
     //-------------------------------------------------------------------------Discount functions
 
+    <T extends SimpleEntity> ResponseT<List<Discount<T>>> getDiscount(int supplierId, Calendar discountDate);
     Response addItemDiscount(int supplierId, double discount, Calendar discountDate, int itemCount, int itemId);
     Response addCategoryDiscount(int supplierId, double discount, Calendar discountDate, int itemCount, String categoryName);
 

@@ -148,7 +148,10 @@ public class InventoryServiceImpl implements InventoryService{
         return null;
     }
 
-
+    @Override
+    public <T extends SimpleEntity> ResponseT<List<Discount<T>>> getDiscount(int supplierId, Calendar discountDate) {
+        return null;
+    }
 
 
     //-------------------------------------------------------------------------Discount functions

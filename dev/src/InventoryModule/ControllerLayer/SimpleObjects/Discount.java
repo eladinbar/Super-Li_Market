@@ -7,6 +7,7 @@ public class Discount<T extends SimpleEntity> {
     private double discount;
     private Calendar date;
     private int itemCount;
+    private T appliesOn;
 
     public Discount(int supplierID, double discount, Calendar date, int itemCount) {
         this.supplierID = supplierID;
@@ -29,5 +30,9 @@ public class Discount<T extends SimpleEntity> {
 
     public int getItemCount() {
         return itemCount;
+    }
+
+    public T getAppliesOn() {
+        return appliesOn;
     }
 }

@@ -40,6 +40,15 @@ public class TextFormatter {
                 "Discount: " + sale.getDiscount() + "\n" +
                 "Sale Dates: " + sale.getSaleDates().getFirst().toString() + " until " + sale.getSaleDates().getSecond().toString());
     }
+    public <T extends SimpleEntity> void discountMenuFormat(Discount<T> discount) {
+        System.out.println("Supplier ID: " + discount.getSupplierID() + "\n" +
+                "Discount: " + discount.getDiscount() + "\n" +
+                "Date: " + discount.getDate().toString() + "\n" +
+                "Count: " + discount.getItemCount() +
+                 "Applied On:");
+    }
+
+
 
     public String centerString(String s, int width) {
         return String.format("%-" + width + "s", String.format("%" + (s.length() + (width - s.length()) / 2) + "s", s));
