@@ -307,7 +307,7 @@ public class PresentationController implements Runnable {
         Calendar date = Calendar.getInstance();
         date.set(Integer.parseInt(disDateS[0]), Integer.parseInt(disDateS[1])-1, Integer.parseInt(disDateS[2]));
         ResponseT<List<Discount<T>>> discR = service.getDiscount(suppId,date);
-        for (Discount<T> d: discR.getDate()) {
+        for (Discount<T> d: discR.getElement()) {
             menu.printEntity(d);
         }
 
