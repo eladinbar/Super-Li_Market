@@ -16,6 +16,7 @@ public class DeliveryController {
     private HashMap<Integer,Site> sites;//<siteID,TR>
     private HashMap<Integer,DeliveryForm> deliveryForms;//<dfID,TR>
     private HashMap<Integer, Item> items;
+    private int lastSiteID;
     private int lastReportID ;
     private int lastDeliveryForms;
     private LinkedList<DeliveryForm> currDF;
@@ -40,6 +41,7 @@ public class DeliveryController {
         this.items=new HashMap<>();
         this.lastDeliveryForms = 1;
         this.lastReportID =0;
+        this.lastSiteID =1;
         this.currDF=new LinkedList<>();
         this.currTR=new TruckingReport(lastReportID);
         this.activeDeliveryForms=new HashMap<>();
@@ -160,7 +162,7 @@ public class DeliveryController {
             HashMap<Integer,Integer> itemsOnDF=new HashMap<>();
             itemsOnDF.put(items.get(demand.getItemID()).getID(),amount);
             DeliveryForm newDF=new DeliveryForm(lastDeliveryForms,siteID,demand.getSite(),itemsOnDF,
-                    items.get(demand.getItemID()).getWeight()*amount,currTR.getID());
+                    (int)items.get(demand.getItemID()).getWeight()*amount,currTR.getID());
             currDF.add(newDF);
             lastDeliveryForms++;
         }
@@ -174,7 +176,7 @@ public class DeliveryController {
                     HashMap<Item,Integer> itemsOnDF=new HashMap<>();
                     itemsOnDF.put(items.get(demand.getItemID()),amount);
                     df.getItems().put(items.get(demand.getItemID()).getID(),amount);
-                    df.setLeavingWeight(df.getLeavingWeight()+items.get(demand.getItemID()).getWeight()*amount);
+                    df.setLeavingWeight((int) (df.getLeavingWeight()+items.get(demand.getItemID()).getWeight()*amount));
                     added=true;
                     break;
                 }
@@ -189,7 +191,7 @@ public class DeliveryController {
                 itemsOnDF.put(items.get(demand.getItemID()).getID(),amount);
 
                 DeliveryForm deliveryForm=new DeliveryForm(lastDeliveryForms,siteID,demand.getSite()
-                        ,itemsOnDF,demand.getAmount()*items.get(demand.getItemID()).getWeight(),currTR.getID());
+                        ,itemsOnDF, (int) (demand.getAmount()*items.get(demand.getItemID()).getWeight()),currTR.getID());
                 currDF.add(deliveryForm);
             }
         }
@@ -203,19 +205,18 @@ public class DeliveryController {
 
 
 
-    public boolean addSite(String city,int  siteID,int  deliveryArea,String phoneNumber,String contactName,String name)
-            throws KeyAlreadyExistsException
+    public boolean addSite(String city,int  deliveryArea,String phoneNumber,String contactName,String name)
+
     {
 
-        if (sites.containsKey(siteID))
-        {
-            throw new KeyAlreadyExistsException("Duplicate ID");
-        }
-        else {
-            Site newSite = new Site(siteID, city, deliveryArea, phoneNumber, contactName, name);
-            sites.put(siteID,newSite);
-            return true;
-        }
+
+
+        Site newSite = new Site(lastSiteID, city, deliveryArea, phoneNumber, contactName, name);
+
+        sites.put(lastSiteID,newSite);
+        lastSiteID++;
+        return true;
+
 
     }
     public boolean removeSite(int siteID) throws NoSuchElementException
@@ -334,14 +335,14 @@ public class DeliveryController {
     }
 
     public void removeItemFromPool(int item)throws NoSuchElementException {
-      if (!items.containsKey(item))
-      {
-          throw new NoSuchElementException("No item with that ID");
-      }
-      else items.remove(item);
+        if (!items.containsKey(item))
+        {
+            throw new NoSuchElementException("No item with that ID");
+        }
+        else items.remove(item);
     }
 
-    public void addItem(int id, int weight, String name)throws KeyAlreadyExistsException {
+    public void addItem(int id, double weight, String name)throws KeyAlreadyExistsException {
         if (items.containsKey(id))
             throw new KeyAlreadyExistsException("ID already taken");
         else {
@@ -358,7 +359,7 @@ public class DeliveryController {
         }
     }
 
-    public int getItemWeight(int itemID) throws NoSuchElementException{
+    public double getItemWeight(int itemID) throws NoSuchElementException{
         if (items.containsKey(itemID))
             return items.get(itemID).getWeight();
         else throw new NoSuchElementException("No such item exist");
@@ -396,7 +397,8 @@ public class DeliveryController {
             }
             return result;
         }
-        throw new NoSuchElementException("no demand found yet");
+
+        throw new NoSuchElementException("no more demands found yet");
 
     }
 
@@ -489,10 +491,10 @@ public class DeliveryController {
                 break;
             }
         }
-           if (!inserted)
-           {
-               demands.add(new Demand(itemId,site,amount));
-           }
+        if (!inserted)
+        {
+            demands.add(new Demand(itemId,site,amount));
+        }
 
     }
 
@@ -506,7 +508,7 @@ public class DeliveryController {
         {
             for (Map.Entry<Integer,Integer> entry:df.getItems().entrySet())
             {
-                weight=weight+items.get(entry.getKey()).getWeight()*entry.getValue();
+                weight= (int) (weight+items.get(entry.getKey()).getWeight()*entry.getValue());
             }
         }
         return weight;

@@ -20,6 +20,7 @@ public class PresentationController {
         return instance;
     }
 
+
     public boolean addDemandToReport(int itemNumber, int amount, int siteID) throws IllegalStateException, IllegalArgumentException {
         if (itemNumber == 0) return false;
         facadeService.addDemandToReport(itemNumber , amount, siteID);
@@ -77,11 +78,11 @@ public class PresentationController {
     }
 
 
-    public void addSite(String city, int siteID, int deliveryArea , String phoneNumber, String contactName,String name) throws  KeyAlreadyExistsException{
-        facadeService.addSite(city, siteID, deliveryArea, phoneNumber, contactName,name );
+    public void addSite(String city,  int deliveryArea , String phoneNumber, String contactName,String name) throws  KeyAlreadyExistsException{
+        facadeService.addSite(city,  deliveryArea, phoneNumber, contactName,name );
     }
 
-    public void addItem(int id, int weight, String name) throws KeyAlreadyExistsException {
+    public void addItem(int id, double weight, String name) throws KeyAlreadyExistsException {
         facadeService.addItem(id, weight,name);
     }
 
@@ -114,7 +115,7 @@ public class PresentationController {
         return facadeService.chooseTruck(truck);
     }
 
-    public int getWeight(int itemID) {
+    public double getWeight(int itemID) {
         return facadeService.getItemWeight(itemID);
     }
 
@@ -167,10 +168,11 @@ public class PresentationController {
      * this method removes a destination from the in-build Trucking report
      * @param siteID
      * @return @returns true if succeed, throws exception otherwise
+     * @throws  NoSuchElementException
      */
-    public boolean removeDestination(int siteID) { //returns true in succeed
+    public boolean removeDestination(int siteID) throws NoSuchElementException { //returns true in succeed
         facadeService.removeDestination(siteID);
-        return true;
+        return false;
     }
 
     public LinkedList<FacadeDemand> getItemsOnTruck() {

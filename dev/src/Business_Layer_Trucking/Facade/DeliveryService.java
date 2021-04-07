@@ -123,19 +123,19 @@ public class DeliveryService {
         return output;
     }
 
-    public void addSite(String city, int siteID, int deliveryArea,
+    public void addSite(String city,  int deliveryArea,
                         String phoneNumber, String contactName,String name) throws KeyAlreadyExistsException {
 
-        dc.addSite(city, siteID, deliveryArea, phoneNumber, contactName,name );
+        dc.addSite(city,  deliveryArea, phoneNumber, contactName,name );
     }
 
-    public void addItem(int id, int weight, String name) throws  KeyAlreadyExistsException {dc.addItem(id, weight,name);}
+    public void addItem(int id, double weight, String name) throws  KeyAlreadyExistsException {dc.addItem(id, weight,name);}
 
     public void displaySites() {
         dc.displaySites();
     }
 
-    public int getItemWeight(int itemID) {
+    public double getItemWeight(int itemID) {
         return dc.getItemWeight(itemID);
     }
 

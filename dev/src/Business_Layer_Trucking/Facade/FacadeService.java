@@ -96,7 +96,7 @@ public class FacadeService {
         return deliveryService.getDeliveryForm(dfNumber,trNumber);
     }
 
-    public void removeDestination(int site) {
+    public void removeDestination(int site)throws NoSuchElementException {
         deliveryService.removeDestination(site);
     }
 
@@ -143,12 +143,12 @@ public class FacadeService {
         resourcesService.addDriver(ID, name, licenseType);
     }
 
-    public void addSite(String city, int siteID, int deliveryArea, String phoneNumber, String contactName,String name) {
-        deliveryService.addSite(city, siteID, deliveryArea, phoneNumber, contactName,name );
+    public void addSite(String city,  int deliveryArea, String phoneNumber, String contactName,String name) {
+        deliveryService.addSite(city,  deliveryArea, phoneNumber, contactName,name );
 
     }
 
-    public void addItem(int id, int weight, String name)throws KeyAlreadyExistsException {
+    public void addItem(int id, double weight, String name)throws KeyAlreadyExistsException {
         deliveryService.addItem(id, weight,name);
     }
 
@@ -156,7 +156,7 @@ public class FacadeService {
         deliveryService.displaySites();
     }
 
-    public int getItemWeight(int itemID) {
+    public double getItemWeight(int itemID) {
         return deliveryService.getItemWeight(itemID);
     }
 

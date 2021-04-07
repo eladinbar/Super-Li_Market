@@ -248,7 +248,7 @@ public class Menu_Printer {
             System.out.print("Item id: ");
             int id =  getIntFromUser(scanner);
             System.out.print("item weight: ");
-            int weight =  getIntFromUser(scanner);
+            double weight =  getDoubleFromUser(scanner);
             System.out.print("item name: ");
             String name = getStringFromUser(scanner);
             while (!name.matches("[A-Z][a-z]")){
@@ -271,9 +271,7 @@ public class Menu_Printer {
             // TODO should we check for valid city?
             System.out.print("City name:");
             String city = getStringFromUser(scanner);
-            // TODO maybe site Id ours
-            System.out.print("siteID:");
-            int siteID =  getIntFromUser(scanner);
+
             System.out.print("Delivery area ID:");
             int deliveryArea =  getIntFromUser(scanner);
             System.out.print("contact Name:");
@@ -291,7 +289,7 @@ public class Menu_Printer {
             System.out.print("Site Name:");
             String name=getStringFromUser(scanner);
             try {
-                pc.addSite(city, siteID, deliveryArea, phoneNumber, contactName,name);
+                pc.addSite(city, deliveryArea, phoneNumber, contactName,name);
                 con = false;
             } catch (KeyAlreadyExistsException e) {
                 System.out.println(e.getMessage());
@@ -434,6 +432,7 @@ public class Menu_Printer {
 
                 }
             }
+
             pc.addDriver(ID, name, licenseType);
 
 
@@ -447,7 +446,7 @@ public class Menu_Printer {
     private void chooseLeavingHour(Scanner scanner) throws ReflectiveOperationException {
         boolean con =  true;
         while (con) {
-            System.out.print("please choose leaving time: \n hour: ");
+            System.out.print("please choose leaving time: \nhour: ");
             int hour =  getIntFromUser(scanner);
             System.out.print("minutes: ");
             int minute =  getIntFromUser(scanner);
@@ -468,72 +467,74 @@ public class Menu_Printer {
         while (con) {
             try {
                 LinkedList<FacadeDemand> demands = pc.showDemands();
-                if (demands == null) {
-                    System.out.println("no demands left to display, Well done Sir!");
-                } else {
-                    demands = sortDemandsBySite(demands);
-                    printDemands(demands);
-                    try {// TODO need to fix the -1
-                        System.out.println("\nif you'de like to finish, insert 0 in item number");
-                        System.out.println();
-                        System.out.print("item number: ");
-                        int itemNumber =getIntFromUser(scanner);
-                        while(itemNumber <1 || itemNumber > demands.size()){
+
+                demands = sortDemandsBySite(demands);
+                printDemands(demands);
+                try {
+                    System.out.println("\nif you'd like to finish, insert " + (demands.size() + 1) + " in item number");
+                    System.out.println();
+                    System.out.print("item number: ");
+                    int itemNumber = getIntFromUser(scanner);
+                    if (itemNumber == demands.size() + 1){
+                        con = false;
+                    }
+                    else
+                    {
+                        while (itemNumber < 1 || itemNumber > demands.size()) {
                             System.out.println("option out of bounds, please choose again");
-                            itemNumber =  getIntFromUser(scanner);
+                            itemNumber = getIntFromUser(scanner);
                         }
-                        itemNumber = demands.get(itemNumber-1).getItemID();
+                        itemNumber = demands.get(itemNumber - 1).getItemID();
                         System.out.print("amount: ");
-                        int amount =  getIntFromUser(scanner);
+                        int amount = getIntFromUser(scanner);
 
                         System.out.print("site: ");
-                        int siteID =  getIntFromUser(scanner);
+                        int siteID = getIntFromUser(scanner);
                         // TODO need to throw more excptions for such as incompatible item id
                         con = pc.addDemandToReport(itemNumber, amount, siteID);
 
-                    } catch (IllegalStateException e) {
-                        con = false;
-                        System.out.println("you chose different delivery area from the currents," +
-                                " would you like to continue? y for yes, n for not");
-                        String answer = getStringFromUser(scanner);
-                        switch (answer) {
-                            case "y":
-                                boolean enough = false;
-                                while (!enough) {
-                                    demands = pc.showDemands();
-                                    if (demands == null) {
-                                        System.out.println("no demands left to display, Well done Sir!");
-                                    } else {
-                                        demands = sortDemandsBySite(demands);
-                                        printDemands(demands);
-                                        System.out.print("item number: ");
-                                        int itemNumber =  getIntFromUser(scanner);
-                                        System.out.println();
-                                        System.out.print("amount: ");
-                                        int amount =  getIntFromUser(scanner);
-                                        System.out.println();
-                                        System.out.println("site id:");
-                                        int siteID =  getIntFromUser(scanner);
-                                        enough = pc.continueAddDemandToReport(itemNumber, amount, siteID);
-                                    }
+                    }
+                } catch (IllegalStateException e) { // different delivery area
+                    con = false;
+                    System.out.println("you chose different delivery area from the currents," +
+                            " would you like to continue? y for yes, n for not");
+                    String answer = getStringFromUser(scanner);
+                    switch (answer) {
+                        case "y":
+                            boolean enough = false;
+                            while (!enough) {
+                                demands = pc.showDemands();
+                                if (demands == null) {
+                                    System.out.println("no demands left to display, Well done Sir!");
+                                } else {
+                                    demands = sortDemandsBySite(demands);
+                                    printDemands(demands);
+                                    System.out.print("item number: ");
+                                    int itemNumber =  getIntFromUser(scanner);
+                                    System.out.println();
+                                    System.out.print("amount: ");
+                                    int amount =  getIntFromUser(scanner);
+                                    System.out.println();
+                                    System.out.println("site id:");
+                                    int siteID =  getIntFromUser(scanner);
+                                    enough = pc.continueAddDemandToReport(itemNumber, amount, siteID);
                                 }
-                                break;
-                            case "n":
+                            }
+                            break;
+                        case "n":
 
 
-                                return;
+                            return;
 
-                            default:
-                                System.out.println("theres no such option, choose between y or n explicit");
-                        }
-
-                    }catch (IllegalArgumentException e){
-                        System.out.println(e.getMessage());
+                        default:
+                            System.out.println("theres no such option, choose between y or n explicit");
                     }
-                    catch (Exception e) {
-                        e.getMessage();
-                    }
+
+                }catch (IllegalArgumentException e){ // one of arguments doesn't match
+                    System.out.println(e.getMessage());
                 }
+
+
             }catch (NoSuchElementException ne) {
                 System.out.println(ne.getMessage());
                 con = false;
@@ -683,8 +684,13 @@ public class Menu_Printer {
                 }
             }
             int siteID =  getIntFromUser(scanner);
-            con = pc.removeDestination(siteID);
-            if (!con) System.out.println("the chosen site id doesn't exist here!");
+            try {
+                con = pc.removeDestination(siteID);
+            }catch (NoSuchElementException ne){
+                System.out.println(ne.getMessage());
+
+            }
+
         }
     }
 
@@ -877,11 +883,11 @@ public class Menu_Printer {
         pc.addTruck("Man", "1231231", 1500, 8000);
         pc.addTruck("Volvo","123" ,1000, 10000);
 
-        pc.addSite("Haifa", 2,1 , "0502008216" , "Shimi", "SuperLee-Haifa");
-        pc.addSite("Beer Sheva" ,3, 3,"0502008217" , "Yotam" , "superLee-BeerSheva");
-        pc.addSite("Rahat" , 4 , 3 , "0502008214" , "Mohamad" , "MilkHere");
-        pc.addSite("Nazareth" , 5,1,"0522002123" , "Esti" , "Suber-LNazerath");
-        pc.addSite("Afula", 1,1,"0502008215" , "Raz" , "Tnuva");
+        pc.addSite("Haifa", 2, "0502008216" , "Shimi", "SuperLee-Haifa");
+        pc.addSite("Beer Sheva" ,3, "0502008217" , "Yotam" , "superLee-BeerSheva");
+        pc.addSite("Rahat" , 4 , "0502008214" , "Mohamad" , "MilkHere");
+        pc.addSite("Nazareth" , 5,"0522002123" , "Esti" , "Suber-LNazerath");
+        pc.addSite("Afula", 1,"0502008215" , "Raz" , "Tnuva");
         pc.addItem(1,1,"milk");
         pc.addItem(2 , 2 , "cream cheese");
         pc.addItem(10 , 4 , "cottage" );
@@ -980,18 +986,12 @@ public class Menu_Printer {
 
 
 
-    // TODO change weight to double -  all the way down
 
 
     // TODO NTH need to print the chosen option.
-    // TODO need to check supporting products return
-    //  TODO need to check all exception catched
-    // TODO weights - grams or Kilos
 
 
 
-    // TODO site id- not for chose
-    // TODO need to implement the weight insert exceptions
     // TODO need to do the DF updates
     // TODO need create replaced TR
     // TODO show on TR - and finished or not

@@ -4,10 +4,10 @@ import Business_Layer_Trucking.Delivery.Item;
 
 public class FacadeItem implements FacadeObject{
     private  int ID;
-    private int weight;
+    private double weight;
     private String name;
 
-    public FacadeItem(int ID, int weight, String name)
+    public FacadeItem(int ID, double weight, String name)
     {
         this.ID=ID;
         this.name=name;
@@ -28,7 +28,7 @@ public class FacadeItem implements FacadeObject{
         return ID;
     }
 
-    public int getWeight() {
+    public double getWeight() {
         return weight;
     }
 
@@ -40,7 +40,7 @@ public class FacadeItem implements FacadeObject{
         this.ID = ID;
     }
 
-    public void setWeight(int weight) {
+    public void setWeight(double weight) {
         this.weight = weight;
     }
 }
