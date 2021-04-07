@@ -64,7 +64,7 @@ public class Menu_Printer {
                         chooseDemands(scanner);
                         System.out.println("Total demands Weight is: " + pc.getWeightOfCurrReport());
                         chooseTruckAndDriver(scanner);
-                        chooseLeavingHour(scanner);//TODO CHECK HOUR
+                        chooseLeavingHour(scanner);
                         pc.saveReport();
                     }catch ( ReflectiveOperationException re){
                         System.out.println(re.getMessage());}
@@ -772,7 +772,7 @@ public class Menu_Printer {
                 pc.getAvailableTrucks();
                 String truckNumber ="0";
                 try {
-                    pc.replaceTruck(tr.getID(), truckNumber);
+                    pc.replaceTruck(tr.getID(), truckNumber,weight);
                 }catch(Exception e){
                     System.out.println(e.getMessage());
                     pc.getAvailableDrivers();
