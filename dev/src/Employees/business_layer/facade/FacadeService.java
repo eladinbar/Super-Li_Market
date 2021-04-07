@@ -96,19 +96,15 @@ public class FacadeService {
         return employeeService.addEmployee ( role, Id, terms, transactionDate, bank );
     }
 
-    public Response removeEmployee(int Id)  {
+    public Response removeEmployee(String Id)  {
         return employeeService.removeEmployee ( Id );
     }
 
-    public Response deleteBankAccount(int Id){
-        return employeeService.removeEmployee ( Id );
-    }
-
-    public Response updateBankAccount(int Id, int accountNum, int bankBranch, String bank) {
+    public Response updateBankAccount(String Id, int accountNum, int bankBranch, String bank) {
         return employeeService.updateBankAccount ( Id,accountNum,bankBranch,bank );
     }
 
-    public Response updateTermsOfemployee(int Id, int salary, int educationFund, int sickDays, int daysOff) {
+    public Response updateTermsOfEmployee(String Id, int salary, int educationFund, int sickDays, int daysOff) {
         return employeeService.updateTermsOfemployee ( Id,salary,educationFund,sickDays,daysOff );
     }
 

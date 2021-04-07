@@ -5,7 +5,7 @@ import java.util.HashMap;
 
 public class FacadeEmployee implements FacadeObject{
     private String role;
-    private int ID;
+    private String ID;
     private LocalDate transactionDate;
     private FacadeBankAccountInfo facadeBankAccountInfo;
     private FacadeTermsOfEmployment facadeTermsOfEmployment;
@@ -13,7 +13,7 @@ public class FacadeEmployee implements FacadeObject{
     private boolean isManager;
 
     //an existing employee with given constraints
-    public FacadeEmployee(String role, int ID, LocalDate transactionDate, FacadeBankAccountInfo facadeBankAccountInfo, FacadeTermsOfEmployment facadeTermsOfEmployment, HashMap<LocalDate, FacadeConstraint> constraints)
+    public FacadeEmployee(String role, String ID, LocalDate transactionDate, FacadeBankAccountInfo facadeBankAccountInfo, FacadeTermsOfEmployment facadeTermsOfEmployment, HashMap<LocalDate, FacadeConstraint> constraints)
     {
         this.role = role;
         this.ID = ID;
@@ -28,7 +28,7 @@ public class FacadeEmployee implements FacadeObject{
     }
 
     //new employee with no constraints
-    public FacadeEmployee(String role, int ID, LocalDate transactionDate, FacadeBankAccountInfo facadeBankAccountInfo, FacadeTermsOfEmployment facadeTermsOfEmployment)
+    public FacadeEmployee(String role, String ID, LocalDate transactionDate, FacadeBankAccountInfo facadeBankAccountInfo, FacadeTermsOfEmployment facadeTermsOfEmployment)
     {
         this.role = role;
         this.ID = ID;
@@ -42,7 +42,7 @@ public class FacadeEmployee implements FacadeObject{
         return transactionDate;
     }
 
-    public int getID() {
+    public String getID() {
         return ID;
     }
 

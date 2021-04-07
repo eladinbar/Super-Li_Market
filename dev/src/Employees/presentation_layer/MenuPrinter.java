@@ -1,8 +1,6 @@
 package Employees.presentation_layer;
 
-import Employees.business_layer.Employee.Role;
 import Employees.business_layer.facade.facadeObject.FacadeBankAccountInfo;
-import Employees.business_layer.facade.facadeObject.FacadeConstraint;
 import Employees.business_layer.facade.facadeObject.FacadeEmployee;
 import Employees.business_layer.facade.facadeObject.FacadeTermsOfEmployment;
 
@@ -67,7 +65,7 @@ public class MenuPrinter {
                 "4.Get a list of employees ordered by role\n" +
                 "5.Get employee information\n" +
                 "6.Get employee constraints\n" +
-                "7.Add a new Employee to the system\n" +
+                "7.Add a new employee to the system\n" +
                 "8.Logout\n" );
         return sc.nextInt ();
     }
@@ -86,8 +84,8 @@ public class MenuPrinter {
 
 
     public FacadeEmployee createManagerAccountMenu() {
-        String role;
-        int ID, accountNumber, bankBranch, salary, educationFund, sickDays, daysOff;
+        String ID, role;
+        int accountNumber, bankBranch, salary, educationFund, sickDays, daysOff;
         String bank;
         FacadeBankAccountInfo bankAccountInfo;
         FacadeTermsOfEmployment termsOfEmployment;
@@ -106,7 +104,7 @@ public class MenuPrinter {
             return null;
         }
         System.out.println ( "ID: " );
-        ID = sc.nextInt ( );
+        ID = sc.next ( );
         System.out.println ( "\n" );
         System.out.println ( "transaction date:\n");
         transactionDate = dateMenu ();
@@ -130,14 +128,14 @@ public class MenuPrinter {
     }
 
     public FacadeEmployee getEmployeeDetails(){
-        int ID, accountNumber, bankBranch, salary, educationFund, sickDays, daysOff;
-        String role, bank;
+        int accountNumber, bankBranch, salary, educationFund, sickDays, daysOff;
+        String ID, role, bank;
         FacadeBankAccountInfo bankAccountInfo;
         FacadeTermsOfEmployment termsOfEmployment;
         role = roleMenu ();
         LocalDate transactionDate;
         System.out.println ( "ID: " );
-        ID = sc.nextInt ( );
+        ID = sc.next ( );
         System.out.println ( "\n" );
         System.out.println ( "transaction date:\n");
         transactionDate = dateMenu ();
@@ -213,17 +211,6 @@ public class MenuPrinter {
         System.out.println ( s );
     }
 
-    public FacadeConstraint giveConstraintMenu() {
-        LocalDate date = dateMenu ();
-        System.out.println ( "Type 0 for morning shift, 1 for evening shift or 2 for both: " );
-        int shift =  sc.nextInt ();
-        boolean morning = shift == 0 | shift == 2;
-        boolean evening = shift == 1 | shift == 2;
-        System.out.println ( " Reason: " );
-        String reason =  sc.next ();
-        return new FacadeConstraint ( date, morning, evening, reason );
-    }
-
     public String idGetter() {
         System.out.println ("Write the ID of an employee you would like to add to the shift or 0 if you are done: ");
         return sc.next ();
@@ -260,5 +247,14 @@ public class MenuPrinter {
 
     public void printChoiceException() {
         System.out.println ("Choice is illegal.");
+    }
+
+    public int getEmployeeMenu() {
+        System.out.println ("Choose the option you would like:\n" +
+                "1.Delete employee\n" +
+                "2.Update employee bank account\n" +
+                "3.Update employee terms of employment" +
+                "4.Back" );
+        return sc.nextInt ();
     }
 }

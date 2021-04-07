@@ -71,7 +71,7 @@ public class PresentationController {
                 choice = menuPrinter.managerMenu ();
                 handleManagerChoice ( choice );
             case 5:
-                getEmployee( );
+                getEmployeeByManager( );
                 choice = menuPrinter.managerMenu ();
                 handleManagerChoice ( choice );
             case 6:
@@ -324,7 +324,6 @@ public class PresentationController {
         int id = menuPrinter.loginID ( );
         String role = menuPrinter.roleMenu ();
         int choice;
-        FacadeEmployee facadeEmployee;
         if(role != null) {
             ResponseT<FacadeEmployee> employee = facadeService.login ( id, role );
             if(employee.errorOccured ())
@@ -439,11 +438,6 @@ public class PresentationController {
         menuPrinter.print ( "Constraint added successfully.\n" );
     }
 
-//    public void updateConstraint (LocalDate date, int shift, String reason) {
-//        FacadeConstraint facadeConstraint = menuPrinter.giveConstraintMenu ();
-//        facadeService.updateConstraint ( facadeConstraint );
-//    }
-
     public void deleteConstraint ()  {
         LocalDate date = menuPrinter.dateMenu ();
         int shift = menuPrinter.getShiftNum ();
@@ -472,19 +466,38 @@ public class PresentationController {
 
     }
 
-    public void updateBankAccount() {
-        String Id;
-        int accountNum;
-        int bankBranch;
-        String bank;
+    public void updateBankAccount(String ID) {
+        menuPrinter.print ( "Write account number: " );
+        int accountNum = menuPrinter.getInt ();
+        menuPrinter.print ( "Write bank branch: " );
+        int bankBranch = menuPrinter.getInt ();
+        menuPrinter.print ( "Write bank name: " );
+        String bank = menuPrinter.getString ();
+        Response response = facadeService.updateBankAccount ( ID, accountNum, bankBranch, bank );
+        if(response.errorOccured ())
+        {
+            menuPrinter.print ( response.getErrorMessage () );
+            return;
+        }
+        menuPrinter.print ( "Bank account changed successfully." );
     }
 
-    public void updateTermsOfemployee() {
-        String Id;
-        int salary;
-        int educationFund;
-        int sickDays;
-        int daysOff;
+    public void updateTermsOfemployee(String ID) {
+        menuPrinter.print ( "Write salary: " );
+        int salary = menuPrinter.getInt ();
+        menuPrinter.print ( "Write education fund: " );
+        int educationFund = menuPrinter.getInt ();
+        menuPrinter.print ( "Write sick days: " );
+        int sickDays = menuPrinter.getInt ();
+        menuPrinter.print ( "Write days off: " );
+        int daysOff = menuPrinter.getInt ();
+        Response response = facadeService.updateTermsOfEmployee ( ID, salary, educationFund, sickDays, daysOff );
+        if(response.errorOccured ())
+        {
+            menuPrinter.print ( response.getErrorMessage () );
+            return;
+        }
+        menuPrinter.print ( "Terms of employment changed successfully." );
     }
 
     public void getEmployee() {
@@ -514,9 +527,40 @@ public class PresentationController {
         }
     }
 
+    private void getEmployeeByManager() {
+        menuPrinter.print ( "Write the ID of the employee you would like to display: " );
+        String ID = menuPrinter.getString ( );
+        ResponseT<FacadeEmployee> employee = facadeService.getEmployee ( ID );
+        if (employee.errorOccured ())
+        {
+            menuPrinter.print ( employee.getErrorMessage () );
+            return;
+        }
+        String s = stringConverter.convertEmployee ( employee.value );
+        menuPrinter.print ( s );
+        int choice = menuPrinter.getEmployeeMenu ();
+        if(choice < 4)
+            updateEmployee (employee.value, choice);
+    }
 
-
-    private void updateEmployee() {
+    private void updateEmployee(FacadeEmployee facadeEmployee, int choice) {
+        Response response;
+        switch (choice){
+            case 1:
+                response = facadeService.removeEmployee ( facadeEmployee.getID () );
+                if(response.errorOccured ())
+                {
+                    menuPrinter.print ( response.getErrorMessage () );
+                    return;
+                }
+                menuPrinter.print ( "Employee deleted successfully." );
+            case 2:
+                updateBankAccount (facadeEmployee.getID ());
+            case 3:
+                updateTermsOfemployee (facadeEmployee.getID ());
+            default:
+                menuPrinter.printChoiceException ();
+        }
     }
 
     private void getEmployeeConstraints() {
