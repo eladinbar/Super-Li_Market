@@ -399,6 +399,8 @@ public class InventoryController {
         for (Category category : categories) {
             inventoryReportList.addAll(category.getItems());
         }
+        //Add all items in base category to the report
+        inventoryReportList.addAll(baseCategory.getItems());
         return inventoryReportList;
     }
 
