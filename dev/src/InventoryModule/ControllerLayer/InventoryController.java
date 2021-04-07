@@ -34,6 +34,13 @@ public class InventoryController {
 
     public void addItem(int id, String name, String categoryName, double costPrice, double sellingPrice, int minAmount,
                      String shelfLocation, String storageLocation, int storageQuantity, int shelfQuantity, int manufacturerId, List<Integer> suppliersIds) {
+        //If categoryName is empty or null, add item with the base category
+        if (categoryName == null || categoryName.trim().equals("")) {
+            Item newItem = new Item(id, name, costPrice, sellingPrice, minAmount, manufacturerId, suppliersIds,
+                    shelfQuantity, storageQuantity, shelfLocation, storageLocation);
+            baseCategory.addItem(newItem);
+        }
+
         //Determine the appropriate category in which to add the new item
         Category itemCategory = null;
         for (Category category : categories) {
@@ -47,7 +54,7 @@ public class InventoryController {
 
         //If 'itemCategory' is still 'null' no category with the given name exists in the system
         if (itemCategory == null)
-            throw new IllegalArgumentException("No category with with name: " + categoryName + " was found in the system.");
+            throw new IllegalArgumentException("No category with name: " + categoryName + " was found in the system.");
 
         //Create a new item with the given attributes and add it to the appropriate category
         Item newItem = new Item(id, name, costPrice, sellingPrice, minAmount, manufacturerId, suppliersIds,
