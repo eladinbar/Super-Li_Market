@@ -1,9 +1,11 @@
 package ServiceLayer;
 
 import BusinessLayer.orderPackage.orderController;
+import BusinessLayer.supplierPackage.supplierController;
 import ServiceLayer.Response.Response;
 import ServiceLayer.objects.supplier;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 public class orderService {
@@ -13,76 +15,92 @@ public class orderService {
         this.oc = new orderController();
     }
 
-    public Response<supplier> createOrder(Date date, String supplierID) {
-        Response<supplier> toReturn=null;
+    public Response createOrder(LocalDate date, String supplierID, supplierController sp) {
+        Response toReturn=null;
         try {
-            oc.createOrder(date, supplierID);
+            oc.createOrder(date,sp.getSupplier(supplierID));
         } catch (Exception e) {
-            toReturn=new Response(e.getMessage());
+            toReturn=new Response(true,e.getMessage());
         }
         return toReturn;
     }
 
-    public Response<supplier> createPernamentOrder(int day, String supplierID) {
-        return null;
+    public Response createPernamentOrder(int day, String supplierID, supplierController sp) {
+        Response toReturn=null;
+        try {
+            oc.createPermOrder(day,sp.getSupplier(supplierID));
+        } catch (Exception e) {
+            toReturn=new Response(true,e.getMessage());
+        }
+        return toReturn;
     }
 
-    public Response<supplier> approveOrder(int orderID) {
-        Response<supplier> toReturn=null;
+    public Response approveOrder(int orderID) {
+        Response toReturn=null;
         try {
             oc.approveOrder(orderID);
         } catch (Exception e) {
-            toReturn=new Response(e.getMessage());
+            toReturn=new Response(true,e.getMessage());
         }
         return toReturn;
     }
 
-    public Response<supplier> getOrder(int orderID) {
-        Response<supplier> toReturn=null;
+    public Response getOrder(int orderID) {
+        Response toReturn=null;
         try {
             oc.getOrder(orderID);
         } catch (Exception e) {
-            toReturn=new Response(e.getMessage());
+            toReturn=new Response(true,e.getMessage());
         }
         return toReturn;
     }
 
-    public Response<supplier> createProduct(String name, String manufacturer) {
-        Response<supplier> toReturn=null;
+    public Response createProduct(String name, String manufacturer) {
+        Response toReturn=null;
         try {
             oc.createProduct(name,  manufacturer);
         } catch (Exception e) {
-            toReturn=new Response(e.getMessage());
+            toReturn=new Response(true,e.getMessage());
         }
         return toReturn;
     }
 
-    public Response<supplier> getProduct(int productID) {
-        Response<supplier> toReturn=null;
+    public Response getProduct(int productID) {
+        Response toReturn=null;
         try {
             oc.getProduct(productID);
         } catch (Exception e) {
-            toReturn=new Response(e.getMessage());
+            toReturn=new Response(true,e.getMessage());
         }
         return toReturn;
     }
 
-    public Response<supplier> removeSupplier(String id) {
-        Response<supplier> toReturn=null;
+    public Response removeSupplier(String id) {
+        Response toReturn=null;
         try {
             oc.removeSupplier(id);
         } catch (Exception e) {
-            toReturn=new Response(e.getMessage());
+            toReturn=new Response(true,e.getMessage());
         }
         return toReturn;
     }
 
-    public Response<supplier> addProductToOrder(int orderId, int productId) {
-        Response<supplier> toReturn=null;
+    public Response addProductToOrder(int orderId, int productId) {
+        Response toReturn=null;
         try {
             oc.addProductToOrder(orderId, productId);
         } catch (Exception e) {
-            toReturn=new Response(e.getMessage());
+            toReturn=new Response(true,e.getMessage());
+        }
+        return toReturn;
+    }
+
+    public Response productExists(int productID) {
+        Response toReturn=null;
+        try {
+            oc.productExist(productID);
+        } catch (Exception e) {
+            toReturn=new Response(true,e.getMessage());
         }
         return toReturn;
     }

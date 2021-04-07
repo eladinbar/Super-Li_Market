@@ -1,6 +1,5 @@
 package BusinessLayer.supplierPackage;
 import java.util.*;
-import java.util.function.Supplier;
 
 public class supplierController {
     private Map<String,supplier> suppliers;
@@ -106,14 +105,17 @@ public class supplierController {
 
     public void addQuantityList(String supplierID) throws Exception {
         existSupplier(supplierID);
+        suppliers.get(supplierID).addQuantityList();
     }
 
     public void editQuantityListAmount(String supplierID, int productID, int amount) throws Exception {
         existSupplier(supplierID);
+        suppliers.get(supplierID).editQuantityListAmount(productID,amount);
     }
 
     public void editQuantityListDiscount(String supplierID, int productID, int discount) throws Exception {
         existSupplier(supplierID);
+        suppliers.get(supplierID).editQuantityListDiscount(productID,discount);
     }
 
     public void deleteQuantityList(String supplierID) throws Exception {
@@ -121,7 +123,7 @@ public class supplierController {
         suppliers.get(supplierID).deleteQuantityList();
     }
 
-//todo add method to order controller
+    //todo add method to order controller
     public void addQuantityListItem(String supplierID, int productID, int amount, int discount) throws Exception {
         existSupplier(supplierID);
         suppliers.get(supplierID).addQuantityListItem(productID, amount, discount);

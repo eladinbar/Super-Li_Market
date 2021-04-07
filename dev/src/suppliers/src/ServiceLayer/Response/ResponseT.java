@@ -7,4 +7,12 @@ public class ResponseT<T> extends Response {
         super(errorOccurred,message);
         this.date = date;
     }
+
+    public T getDate() {
+        return date;
+    }
+
+    public void setDate(T date) {
+        this.date = date;
+    }
 }

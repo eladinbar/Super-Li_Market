@@ -52,4 +52,22 @@ public class agreement {
             throw new Exception("supplier does not have quantity list");
         ql.addQuantityListItem(productID, amount, discount);
     }
+
+    public void addQuantityList() throws Exception {
+        if(ql!=null)
+            throw new Exception("supplier already have a quantity list");
+        ql=new quantityList();
+    }
+
+    public void editQuantityListAmount(int productID, int amount) throws Exception {
+        if (ql==null)
+            throw new Exception("supplier does not have quantity list");
+        ql.editQuantityListAmount(productID, amount);
+    }
+
+    public void editQuantityListDiscount(int productID, int discount) throws Exception {
+        if (ql==null)
+            throw new Exception("supplier does not have quantity list");
+        ql.editQuantityListDiscount(productID, discount);
+    }
 }

@@ -8,4 +8,20 @@ public class Response {
         this.errorOccurred = errorOccurred;
         this.message = message;
     }
+
+    public boolean isErrorOccurred() {
+        return errorOccurred;
+    }
+
+    public void setErrorOccurred(boolean errorOccurred) {
+        this.errorOccurred = errorOccurred;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
 }

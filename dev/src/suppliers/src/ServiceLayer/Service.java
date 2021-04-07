@@ -1,8 +1,10 @@
 package ServiceLayer;
 
 import ServiceLayer.Response.Response;
+import ServiceLayer.Response.ResponseT;
 import ServiceLayer.objects.supplier;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 public class Service implements IService {
@@ -10,137 +12,140 @@ public class Service implements IService {
     private supplierService supplierService;
 
     public Service() {
-        this.orderService = new orderService();
         this.supplierService = new supplierService();
+        this.orderService = new orderService();
     }
 
     @Override
-    public Response<supplier> addSupplier(String firstName, String lastName, String email, String id, String phone, int companyNumber, boolean isPernamentDays, boolean selfDelivery, String payment) {
+    public Response addSupplier(String firstName, String lastName, String email, String id, String phone, int companyNumber, boolean isPernamentDays, boolean selfDelivery, String payment) {
         return supplierService.addSupplier(firstName, lastName, email, id, phone, companyNumber,isPernamentDays,selfDelivery,payment);
     }
     @Override
-    public Response<supplier> removeSupplier(String id) {
+    public Response removeSupplier(String id) {
         orderService.removeSupplier(id);
         return supplierService.removeSupplier(id);
     }
 
     @Override
-    public Response<supplier> updateFirstName(String id, String firstName) {
+    public Response updateFirstName(String id, String firstName) {
         return supplierService.updateFirstName(id,firstName);
     }
 
     @Override
-    public Response<supplier> updateLastName(String id, String lastName) {
+    public Response updateLastName(String id, String lastName) {
         return supplierService.updateLastName(id,lastName);
     }
 
     @Override
-    public Response<supplier> updatePhone(String id, String phone) {
+    public Response updatePhone(String id, String phone) {
         return supplierService.updatePhone(id,phone);
     }
 
     @Override
-    public Response<supplier> updateEmail(String id, String email) {
+    public Response updateEmail(String id, String email) {
         return supplierService.updateEmail(id,email);
     }
 
     @Override
-    public Response<supplier> updateCompanyNumber(String id, int companyNumber) {
+    public Response updateCompanyNumber(String id, int companyNumber) {
         return supplierService.updateCompanyNumber(id,companyNumber);
     }
 
     @Override
-    public Response<supplier> updateSelfDelivery(String id, boolean self) {
+    public Response updateSelfDelivery(String id, boolean self) {
         return supplierService.updateSelfDelivery(id,self);
     }
 
     @Override
-    public Response<supplier> updatePernamentDays(String id, boolean perm) {
+    public Response updatePernamentDays(String id, boolean perm) {
         return supplierService.updatePernamentDays(id,perm);
     }
 
     @Override
-    public Response<supplier> updatePayment(String id, String pay) {
+    public Response updatePayment(String id, String pay) {
         return supplierService.updatePayment(id,pay);
     }
 
     @Override
-    public Response<supplier> addContactMember(String supplierId, String firstName, String lastName, String email, String memberID, String phone) {
+    public Response addContactMember(String supplierId, String firstName, String lastName, String email, String memberID, String phone) {
         return supplierService.addContactMember(supplierId, firstName, lastName, email, memberID, phone);
     }
 
     @Override
-    public Response<supplier> deleteContactMember(String supplierID, String memberID) {
+    public Response deleteContactMember(String supplierID, String memberID) {
         return supplierService.deleteContactMember(supplierID, memberID);
     }
 
     @Override
-    public Response<supplier> getSupplier(String id) {
+    public Response getSupplier(String id) {
         return supplierService.getSupplier(id);
     }
 
     @Override
-    public Response<supplier> addQuantityList(String supplierID) {
+    public Response addQuantityList(String supplierID) {
         return supplierService.addQuantityList(supplierID);
     }
 
     @Override
-    public Response<supplier> editQuantityListAmount(String supplierID, int productID, int amount) {
+    public Response editQuantityListAmount(String supplierID, int productID, int amount) {
         return supplierService.editQuantityListAmount(supplierID, productID, amount);
     }
 
     @Override
-    public Response<supplier> editQuantityListDiscount(String supplierID, int productID, int discount) {
+    public Response editQuantityListDiscount(String supplierID, int productID, int discount) {
         return supplierService.editQuantityListDiscount(supplierID, productID, discount);
     }
 
     @Override
-    public Response<supplier> deleteQuantityList(String supplierID) {
+    public Response deleteQuantityList(String supplierID) {
         return supplierService.deleteQuantityList(supplierID);
     }
 
     @Override
-    public Response<supplier> addQuantityListItem(String supplierID, int productID, int amount, int discount) {
-        return supplierService.addQuantityListItem(supplierID, productID, amount,  discount);
+    public Response addQuantityListItem(String supplierID, int productID, int amount, int discount) {
+        Response r=orderService.productExists(productID);
+        if(!r.isErrorOccurred())
+            return supplierService.addQuantityListItem(supplierID, productID, amount,  discount);
+        return r;
     }
 
     @Override
-    public Response<supplier> deleteQuantityListItem(String supplierID, int productID) {
+    public Response deleteQuantityListItem(String supplierID, int productID) {
         return supplierService.deleteQuantityListItem(supplierID, productID);
     }
 
     @Override
-    public Response<supplier> createOrder(Date date, String supplierID) {
-        return orderService.createOrder(date, supplierID);
+    public Response createOrder(LocalDate date, String supplierID) {
+        return orderService.createOrder(date, supplierID, supplierService.getSp());
     }
 
     @Override
-    public Response<supplier> createPernamentOrder(int day, String supplierID) {
-        return orderService.createPernamentOrder(day, supplierID);
+    public Response createPernamentOrder(int day, String supplierID) {
+        return orderService.createPernamentOrder(day, supplierID, supplierService.getSp());
     }
 
     @Override
-    public Response<supplier> approveOrder(int orderID) {
+    public Response approveOrder(int orderID) {
         return orderService.approveOrder(orderID);
     }
 
     @Override
-    public Response<supplier> getOrder(int orderID) {
+    public Response getOrder(int orderID) {
         return orderService.getOrder(orderID);
     }
 
     @Override
-    public Response<supplier> addProductToOrder(int orderId, int productId) {
+    public Response addProductToOrder(int orderId, int productId) {
         return orderService.addProductToOrder(orderId, productId);
     }
 
     @Override
-    public Response<supplier> createProduct(String name, String manufacturer) {
+    public Response createProduct(String name, String manufacturer) {
         return orderService.createProduct(name, manufacturer);
     }
 
     @Override
-    public Response<supplier> getProduct(int productID) {
+    public Response getProduct(int productID) {
         return orderService.getProduct(productID);
     }
 }

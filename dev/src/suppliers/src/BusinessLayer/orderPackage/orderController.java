@@ -1,4 +1,7 @@
 package BusinessLayer.orderPackage;
+import BusinessLayer.supplierPackage.supplier;
+
+import java.time.LocalDate;
 import java.util.*;
 
 public class orderController {
@@ -30,8 +33,13 @@ public class orderController {
         }
     }
 
-    public void createOrder(Date date, String supplierID) {
-
+    public order createOrder(LocalDate date, supplier supplier) throws Exception {
+        if(date.isBefore(LocalDate.now()))
+            throw new Exception("the date should be in the future");
+        order o=new order(orderCounter,date,supplier);
+        orders.put(orderCounter,o);
+        orderCounter++;
+        return o;
     }
 
     public void approveOrder(int orderID) throws Exception {
@@ -44,7 +52,7 @@ public class orderController {
             throw new Exception("order does not exist");
     }
 
-    private void productExist (int productId) throws Exception {
+    public void productExist (int productId) throws Exception {
         if (!products.containsKey(productId))
             throw new Exception("product "+ productId+" does not exist");
     }
@@ -74,5 +82,10 @@ public class orderController {
     public product getProduct(int productID) throws Exception {
         productExist(productID);
         return products.get(productID);
+    }
+
+    public void createPermOrder(int day, supplier supplier) throws Exception {
+        order order = createOrder(null,supplier);
+        pernamentOrders.get(day).add(order);
     }
 }

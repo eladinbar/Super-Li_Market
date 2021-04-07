@@ -1,21 +1,18 @@
 package BusinessLayer.orderPackage;
 import BusinessLayer.supplierPackage.supplier;
 
+import java.time.LocalDate;
 import  java.util.*;
 public class order {
     private int id;
     private  Map<Integer, Integer> products;
-    private Date date;
+    private LocalDate date;
     private boolean delivered;
     private supplier supplier;
 
-    public order(int id, Date date, supplier supplier) {
+    public order(int id, LocalDate date, supplier supplier) {
         this.id = id;
         this.products = new HashMap<>();
-        while(true){
-            //todo add items
-            break;
-        }
         this.date = date;
         this.delivered = false;
         this.supplier = supplier;
@@ -37,11 +34,11 @@ public class order {
         this.products = products;
     }
 
-    public Date getDate() {
+    public LocalDate getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(LocalDate date) {
         this.date = date;
     }
 

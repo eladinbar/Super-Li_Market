@@ -2,6 +2,8 @@ package ServiceLayer;
 
 import ServiceLayer.Response.Response;
 import ServiceLayer.objects.*;
+
+import java.time.LocalDate;
 import java.util.Date;
 
 public interface IService {
@@ -30,7 +32,7 @@ public interface IService {
     Response deleteQuantityListItem(String supplierID,int productID);
 
     //orders
-    Response createOrder(Date date, String supplierID);
+    Response createOrder(LocalDate date, String supplierID);
     Response createPernamentOrder(int day, String supplierID);
     Response approveOrder(int orderID);
     Response getOrder(int orderID);
@@ -38,7 +40,6 @@ public interface IService {
     //todo check if nessesary Response<supplier> setOrders();
 
     //products
-    //todo check about enum
     Response createProduct(String name, String manufacturer);
     Response getProduct(int productID);
 }
