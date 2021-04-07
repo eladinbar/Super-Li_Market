@@ -364,6 +364,19 @@ public class PresentationController implements Runnable {
     }
 
     private void recordDefect() {
+        Calendar date = Calendar.getInstance();
+        int itemID = Integer.parseInt(menu.instructAndReceive("Enter item ID: "));
+        int defectedAmount = Integer.parseInt(menu.instructAndReceive("Enter The defected amount: "));
+        String location = menu.instructAndReceive("Enter storage/shelf Location: follow this format \"<ST/SH>-A<number>-<L/R>-S<shelf>\"");
+
+        Response recorded = service.recordDefect(itemID,date,defectedAmount,location);
+        if(recorded.isErrorOccurred()){
+            menu.errorPrompt(recorded.getMessage());
+            return;
+        }
+        System.out.println("Defect Reported!");
+
+
     }
 
     private void inventoryReport() {

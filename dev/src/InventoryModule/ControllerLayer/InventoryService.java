@@ -64,7 +64,7 @@ public interface InventoryService {
 
     //-------------------------------------------------------------------------Defect functions
 
-    Response recordDefect(int itemId, String itemName, Calendar entryDate, int defectQuantity, String defectLocation);
+    Response recordDefect(int itemId, Calendar entryDate, int defectQuantity, String defectLocation);
 
     //-------------------------------------------------------------------------Report functions
 

@@ -210,7 +210,8 @@ public class InventoryServiceImpl implements InventoryService {
     //-------------------------------------------------------------------------Defect Functions
 
     @Override
-    public Response recordDefect(int itemId, String itemName, Calendar entryDate, int defectQuantity, String defectLocation) {
+    public Response recordDefect(int itemId, Calendar entryDate, int defectQuantity, String defectLocation) {
+        if(itemId <= 0){}
         return null;
     }
 
