@@ -1,9 +1,8 @@
 package InventoryModule.ControllerLayer;
 
-import InventoryModule.ControllerLayer.SimpleObjects.Category;
-import InventoryModule.ControllerLayer.SimpleObjects.DefectEntry;
-import InventoryModule.ControllerLayer.SimpleObjects.Item;
+import InventoryModule.ControllerLayer.SimpleObjects.*;
 
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -44,23 +43,26 @@ public interface InventoryService {
     when the category is deleted all its sub categories move to the parent category.
      */
     Response removeCategory(String categoryName);
-    Response changeParentCategory(String categoryName, String newParetName);
+    Response changeParentCategory(String categoryName, String newParentName);
     //-------------------------------------------------------------------------Sale functions
+    <T extends SimpleEntity> ResponseT<Sale<T>> showSale(String saleName);
+    Response addItemSale(String saleName, int itemID, double saleDiscount, Calendar startDate, Calendar endDate);
+    Response addCategorySale(String saleName,String categoryName, double saleDiscount, Calendar startDate, Calendar endDate);
 
-    Response addItemSale(String saleName,int itemID, double saleDiscount, Date startDate, Date endDate);
-    Response addCategorySale(String saleName,String categoryName, double saleDiscount, Date startDate, Date endDate);
+
+
     Response modifySaleName(String oldName, String newName);
     Response modifySaleDiscount(String saleName, double newDiscount);
-    Response modifySaleDates(String saleName, Date startDate, Date endDate);
+    Response modifySaleDates(String saleName, Calendar startDate, Calendar endDate);
 
     //-------------------------------------------------------------------------Discount functions
 
-    Response addItemDiscount(int supplierId, double discount, Date discountDate, int itemCount, int itemId);
-    Response addCategoryDiscount(int supplierId, double discount, Date discountDate, int itemCount, String categoryName);
+    Response addItemDiscount(int supplierId, double discount, Calendar discountDate, int itemCount, int itemId);
+    Response addCategoryDiscount(int supplierId, double discount, Calendar discountDate, int itemCount, String categoryName);
 
     //-------------------------------------------------------------------------Defect functions
 
-    Response recordDefect(int itemId, String itemName, Date entryDate, int defectQuantity, String defectLocation);
+    Response recordDefect(int itemId, String itemName, Calendar entryDate, int defectQuantity, String defectLocation);
 
     //-------------------------------------------------------------------------Report functions
 

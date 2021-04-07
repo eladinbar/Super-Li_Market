@@ -1,9 +1,7 @@
 package InventoryModule.ControllerLayer.SimpleObjects;
 
-import java.util.List;
 
-
-public class Item {
+public class Item implements SimpleEntity {
     private int ID;
     private String name;
     private double costPrice;

@@ -1,9 +1,8 @@
 package InventoryModule.ControllerLayer;
 
-import InventoryModule.ControllerLayer.SimpleObjects.Category;
-import InventoryModule.ControllerLayer.SimpleObjects.DefectEntry;
-import InventoryModule.ControllerLayer.SimpleObjects.Item;
+import InventoryModule.ControllerLayer.SimpleObjects.*;
 
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -115,17 +114,24 @@ public class InventoryServiceImpl implements InventoryService{
         return null;
     }
 
+
+
+    @Override
+    public <T extends SimpleEntity> ResponseT<Sale<T>> showSale(String saleName) {
+        return null;
+    }
+
+    @Override
+    public Response addItemSale(String saleName, int itemID, double saleDiscount, Calendar startDate, Calendar endDate) {
+        return null;
+    }
+
+    @Override
+    public Response addCategorySale(String saleName, String categoryName, double saleDiscount, Calendar startDate, Calendar endDate) {
+        return null;
+    }
+
     //-------------------------------------------------------------------------Sale functions
-
-    @Override
-    public Response addItemSale(String saleName, int itemID, double saleDiscount, Date startDate, Date endDate) {
-        return null;
-    }
-
-    @Override
-    public Response addCategorySale(String saleName, String categoryName, double saleDiscount, Date startDate, Date endDate) {
-        return null;
-    }
 
     @Override
     public Response modifySaleName(String oldName, String newName) {
@@ -138,26 +144,29 @@ public class InventoryServiceImpl implements InventoryService{
     }
 
     @Override
-    public Response modifySaleDates(String saleName, Date startDate, Date endDate) {
+    public Response modifySaleDates(String saleName, Calendar startDate, Calendar endDate) {
         return null;
     }
+
+
+
 
     //-------------------------------------------------------------------------Discount functions
 
     @Override
-    public Response addItemDiscount(int supplierId, double discount, Date discountDate, int itemCount, int itemId) {
+    public Response addItemDiscount(int supplierId, double discount, Calendar discountDate, int itemCount, int itemId) {
         return null;
     }
 
     @Override
-    public Response addCategoryDiscount(int supplierId, double discount, Date discountDate, int itemCount, String categoryName) {
+    public Response addCategoryDiscount(int supplierId, double discount, Calendar discountDate, int itemCount, String categoryName) {
         return null;
     }
 
     //-------------------------------------------------------------------------Defect Functions
 
     @Override
-    public Response recordDefect(int itemId, String itemName, Date entryDate, int defectQuantity, String defectLocation) {
+    public Response recordDefect(int itemId, String itemName, Calendar entryDate, int defectQuantity, String defectLocation) {
         return null;
     }
 
