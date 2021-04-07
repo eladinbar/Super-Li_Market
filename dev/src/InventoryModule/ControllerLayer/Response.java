@@ -9,4 +9,12 @@ public class Response {
         this.errorOccurred = errorOccurred;
         this.message = message;
     }
+
+    public boolean isErrorOccurred() {
+        return errorOccurred;
+    }
+
+    public String getMessage() {
+        return message;
+    }
 }

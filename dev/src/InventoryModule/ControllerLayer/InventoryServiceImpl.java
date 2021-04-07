@@ -1,13 +1,14 @@
 package InventoryModule.ControllerLayer;
 
-import InventoryModule.ControllerLayer.SimpleObjects.Category;
-import InventoryModule.ControllerLayer.SimpleObjects.DefectEntry;
-import InventoryModule.ControllerLayer.SimpleObjects.Item;
+import InventoryModule.ControllerLayer.SimpleObjects.*;
 
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
 public class InventoryServiceImpl implements InventoryService{
+
+    //-------------------------------------------------------------------------Item functions
 
     @Override
     public Response addItem(int id, String name, String categoryName, double costPrice, double sellingPrice,
@@ -42,7 +43,7 @@ public class InventoryServiceImpl implements InventoryService{
     }
 
     @Override
-    public Response changeItemLocation(int itemId, String newStorageLocation, String newShelfLocation) {
+    public Response changeItemLocation(int itemId, String newShelfLocation, String newStorageLocation) {
         return null;
     }
 
@@ -57,7 +58,7 @@ public class InventoryServiceImpl implements InventoryService{
     }
 
     @Override
-    public Response modifyItemQuantity(int itemId, int newStorageQuantity, int newStoreQuantity) {
+    public Response modifyItemQuantity(int itemId, int newShelfQuantity, int newStorageQuantity) {
         return null;
     }
 
@@ -86,8 +87,10 @@ public class InventoryServiceImpl implements InventoryService{
         return null;
     }
 
+    //-------------------------------------------------------------------------Category functions
+
     @Override
-    public Response addCategory(String categoryName, String parentCategory) {
+    public Response addCategory(String categoryName, String parentCategoryName) {
         return null;
     }
 
@@ -97,7 +100,7 @@ public class InventoryServiceImpl implements InventoryService{
     }
 
     @Override
-    public Response modifyCategoryName(String OldName, String newName) {
+    public Response modifyCategoryName(String oldName, String newName) {
         return null;
     }
 
@@ -107,14 +110,28 @@ public class InventoryServiceImpl implements InventoryService{
     }
 
     @Override
-    public Response addItemSale(String saleName, int itemID, double saleDiscount, Date startDate, Date endDate) {
+    public Response changeParentCategory(String categoryName, String newParentName) {
+        return null;
+    }
+
+
+
+    @Override
+    public <T extends SimpleEntity> ResponseT<Sale<T>> showSale(String saleName) {
         return null;
     }
 
     @Override
-    public Response addCategorySale(String saleName, String categoryName, double saleDiscount, Date startDate, Date endDate) {
+    public Response addItemSale(String saleName, int itemID, double saleDiscount, Calendar startDate, Calendar endDate) {
         return null;
     }
+
+    @Override
+    public Response addCategorySale(String saleName, String categoryName, double saleDiscount, Calendar startDate, Calendar endDate) {
+        return null;
+    }
+
+    //-------------------------------------------------------------------------Sale functions
 
     @Override
     public Response modifySaleName(String oldName, String newName) {
@@ -127,27 +144,44 @@ public class InventoryServiceImpl implements InventoryService{
     }
 
     @Override
-    public Response modifySaleDates(String saleName, Date startDate, Date endDate) {
+    public Response modifySaleDates(String saleName, Calendar startDate, Calendar endDate) {
         return null;
     }
 
     @Override
-    public Response addItemDiscount(String Supplier, double discount, Date discountDate, int itemCount, int itemId) {
+    public <T extends SimpleEntity> ResponseT<List<Discount<T>>> getDiscount(int supplierId, Calendar discountDate) {
+        return null;
+    }
+
+
+    //-------------------------------------------------------------------------Discount functions
+
+    @Override
+    public Response addItemDiscount(int supplierId, double discount, Calendar discountDate, int itemCount, int itemId) {
         return null;
     }
 
     @Override
-    public Response addCategoryDiscount(String Supplier, double discount, Date discountDate, int itemCount, String categoryName) {
+    public Response addCategoryDiscount(int supplierId, double discount, Calendar discountDate, int itemCount, String categoryName) {
         return null;
     }
 
+    //-------------------------------------------------------------------------Defect Functions
+
     @Override
-    public Response recordDefect(int itemId, String itemName, int defectQuantity, String defectLocation) {
+    public Response recordDefect(int itemId, String itemName, Calendar entryDate, int defectQuantity, String defectLocation) {
         return null;
     }
+
+    //-------------------------------------------------------------------------Report functions
 
     @Override
     public ResponseT<List<Item>> inventoryReport() {
+        return null;
+    }
+
+    @Override
+    public ResponseT<List<Item>> categoryReport(String categoryName) {
         return null;
     }
 
@@ -157,12 +191,7 @@ public class InventoryServiceImpl implements InventoryService{
     }
 
     @Override
-    public ResponseT<List<DefectEntry>> defectsReport(Date fromDate, Date toDate) {
-        return null;
-    }
-
-    @Override
-    public ResponseT<List<Item>> categoryReport(Date fromDate, Date toDate) {
+    public ResponseT<List<DefectEntry>> defectsReport(Calendar fromDate, Calendar toDate) {
         return null;
     }
 }

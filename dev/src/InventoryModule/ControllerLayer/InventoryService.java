@@ -1,9 +1,8 @@
 package InventoryModule.ControllerLayer;
 
-import InventoryModule.ControllerLayer.SimpleObjects.Category;
-import InventoryModule.ControllerLayer.SimpleObjects.DefectEntry;
-import InventoryModule.ControllerLayer.SimpleObjects.Item;
+import InventoryModule.ControllerLayer.SimpleObjects.*;
 
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -37,40 +36,41 @@ public interface InventoryService {
     /*
     If parent category is null, the new category should be added as a main category.
      */
-    public Response addCategory(String categoryName, String parentCategory);
-    public ResponseT<Category> getCategory(String categoryName);
-    public Response modifyCategoryName(String OldName, String newName);
+    Response addCategory(String categoryName, String parentCategoryName);
+    ResponseT<Category> getCategory(String categoryName);
+    Response modifyCategoryName(String oldName, String newName);
     /*
-    when the category is deleted all its sub category move to the parent category.
+    when the category is deleted all its sub categories move to the parent category.
      */
-    public Response removeCategory(String categoryName);
-
-    //-------------------------------------------------------------------------
-
-    public Response addItemSale(String saleName,int itemID, double saleDiscount, Date startDate, Date endDate);
-    public Response addCategorySale(String saleName,String categoryName, double saleDiscount, Date startDate, Date endDate);
-    public Response modifySaleName(String oldName, String newName);
-    public Response modifySaleDiscount(String saleName, double newDiscount);
-    public Response modifySaleDates(String saleName, Date startDate, Date endDate);
-
-    //-------------------------------------------------------------------------
-
-    public Response addItemDiscount(String Supplier, double discount, Date discountDate, int itemCount, int itemId);
-    public Response addCategoryDiscount(String Supplier, double discount, Date discountDate, int itemCount, String categoryName);
-
-    //-------------------------------------------------------------------------
-
-    public Response recordDefect(int itemId, String itemName, int defectQuantity, String defectLocation);
-
-    //-------------------------------------------------------------------------
-
-    public ResponseT<List<Item>> inventoryReport();
-    public ResponseT<List<Item>> itemShortageReport();
-    public ResponseT<List<DefectEntry>> defectsReport(Date fromDate, Date toDate);
-    public ResponseT<List<Item>> categoryReport(Date fromDate, Date toDate);
+    Response removeCategory(String categoryName);
+    Response changeParentCategory(String categoryName, String newParentName);
+    //-------------------------------------------------------------------------Sale functions
+    <T extends SimpleEntity> ResponseT<Sale<T>> showSale(String saleName);
+    Response addItemSale(String saleName, int itemID, double saleDiscount, Calendar startDate, Calendar endDate);
+    Response addCategorySale(String saleName,String categoryName, double saleDiscount, Calendar startDate, Calendar endDate);
 
 
 
+    Response modifySaleName(String oldName, String newName);
+    Response modifySaleDiscount(String saleName, double newDiscount);
+    Response modifySaleDates(String saleName, Calendar startDate, Calendar endDate);
+
+    //-------------------------------------------------------------------------Discount functions
+
+    <T extends SimpleEntity> ResponseT<List<Discount<T>>> getDiscount(int supplierId, Calendar discountDate);
+    Response addItemDiscount(int supplierId, double discount, Calendar discountDate, int itemCount, int itemId);
+    Response addCategoryDiscount(int supplierId, double discount, Calendar discountDate, int itemCount, String categoryName);
+
+    //-------------------------------------------------------------------------Defect functions
+
+    Response recordDefect(int itemId, String itemName, Calendar entryDate, int defectQuantity, String defectLocation);
+
+    //-------------------------------------------------------------------------Report functions
+
+    ResponseT<List<Item>> inventoryReport();
+    ResponseT<List<Item>> categoryReport(String categoryName);
+    ResponseT<List<Item>> itemShortageReport();
+    ResponseT<List<DefectEntry>> defectsReport(Calendar fromDate, Calendar toDate);
 }
 
 
