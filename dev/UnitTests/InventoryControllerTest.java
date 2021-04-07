@@ -11,173 +11,182 @@ import org.junit.Test;
 import java.util.ArrayList;
 import java.util.List;
 
-class InventoryControllerTest {
-    InventoryController inventoryController;
-    Category baseCategory;
-    private List<Category> categories;
-    private DefectsLogger defectsLogger;
-    private List<Discount> discounts;
-    private List<Sale> sales;
+public class InventoryControllerTest {
+    private static InventoryController inventoryController;
 
     @BeforeClass
-    void setUp() {
+    public static void setUp() {
         inventoryController = new InventoryController();
-        baseCategory = new Category("Uncategorized");
-        categories = new ArrayList<>();
-        defectsLogger = new DefectsLogger();
-        discounts = new ArrayList<>();
-        sales = new ArrayList<>();
     }
 
     @After
-    void tearDown() {
+    public void tearDown() {
+        inventoryController = new InventoryController();
+    }
+
+    @Test
+    public void addItemTest() {
 
     }
 
     @Test
-    void addItem() {
-
+    public void getItemTest() {
     }
 
     @Test
-    void getItem() {
+    public void modifyItemNameTest() {
     }
 
     @Test
-    void modifyItemName() {
+    public void modifyItemCategoryTest() {
     }
 
     @Test
-    void modifyItemCategory() {
+    public void modifyItemCostPriceTest() {
     }
 
     @Test
-    void modifyItemCostPrice() {
+    public void modifyItemSellingPriceTest() {
     }
 
     @Test
-    void modifyItemSellingPrice() {
+    public void changeItemLocationTest() {
     }
 
     @Test
-    void changeItemLocation() {
+    public void changeItemShelfLocationTest() {
     }
 
     @Test
-    void changeItemShelfLocation() {
+    public void changeItemStorageLocationTest() {
     }
 
     @Test
-    void changeItemStorageLocation() {
+    public void modifyItemQuantityTest() {
     }
 
     @Test
-    void modifyItemQuantity() {
+    public void modifyItemShelfQuantityTest() {
     }
 
     @Test
-    void modifyItemShelfQuantity() {
+    public void modifyItemStorageQuantityTest() {
     }
 
     @Test
-    void modifyItemStorageQuantity() {
+    public void addItemSupplierTest() {
     }
 
     @Test
-    void addItemSupplier() {
+    public void removeItemSupplierTest() {
     }
 
     @Test
-    void removeItemSupplier() {
+    public void removeItemTest() {
     }
 
     @Test
-    void removeItem() {
+    public void testAddCategory_NullParent() {
+        //act
+        inventoryController.addCategory("test", null);
+        //assert (an exception is NOT expected to be thrown here)
     }
 
     @Test(expected = IllegalArgumentException.class)
-    void addExistingCategory() {
-        //set up
-        Category newCategory = new Category("test");
+    public void testAddCategory_nonExistingParent() {
         //act
-        inventoryController.addCategory("test", "");
-        //assert
-
+        inventoryController.addCategory("test", "parent");
     }
 
     @Test
-    void addCategory() {
+    public void testAddCategory_existingParent() {
         //set up
-        Category newCategory = new Category("test");
+        inventoryController.addCategory("parent", null);
         //act
-        inventoryController.addCategory("test", "");
-        //assert
+        inventoryController.addCategory("test", "parent");
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testAddCategory_existingCategory() {
+        //set up
+        inventoryController.addCategory("test", null);
+        //act
+        inventoryController.addCategory("test", null);
+    }
+
+    @Test
+    public void testGetCategory_existingCategory() {
+        //set up
+        inventoryController.addCategory("test", null);
+        //act
+        inventoryController.getCategory("test");
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testGetCategory_nonExistingCategory() {
+        //act
+        inventoryController.getCategory("test");
+    }
+
+    @Test
+    public void modifyCategoryNameTest() {
+    }
+
+    @Test
+    public void changeParentCategoryTest() {
 
     }
 
     @Test
-    void getCategory() {
+    public void removeCategoryTest() {
     }
 
     @Test
-    void modifyCategoryName() {
+    public void addItemSaleTest() {
     }
 
     @Test
-    void changeParentCategory() {
-
-    }
-
-    @Test
-    void removeCategory() {
-    }
-
-    @Test
-    void addItemSale() {
-    }
-
-    @Test
-    void addCategorySale() {
+    public void addCategorySaleTest() {
 
     }
 
     @Test
-    void modifySaleName() {
+    public void modifySaleNameTest() {
     }
 
     @Test
-    void modifySaleDiscount() {
+    public void modifySaleDiscountTest() {
     }
 
     @Test
-    void modifySaleDates() {
+    public void modifySaleDatesTest() {
     }
 
     @Test
-    void addItemDiscount() {
+    public void addItemDiscountTest() {
     }
 
     @Test
-    void addCategoryDiscount() {
+    public void addCategoryDiscountTest() {
     }
 
     @Test
-    void recordDefect() {
+    public void recordDefectTest() {
     }
 
     @Test
-    void inventoryReport() {
+    public void inventoryReportTest() {
     }
 
     @Test
-    void categoryReport() {
+    public void categoryReportTest() {
     }
 
     @Test
-    void itemShortageReport() {
+    public void itemShortageReportTest() {
     }
 
     @Test
-    void defectsReport() {
+    public void defectsReportTest() {
     }
 }
