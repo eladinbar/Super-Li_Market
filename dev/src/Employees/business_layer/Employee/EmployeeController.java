@@ -6,7 +6,6 @@ import Employees.business_layer.facade.facadeObject.FacadeEmployee;
 import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.LinkedList;
-import java.util.List;
 import java.util.Map;
 
 public class EmployeeController {
@@ -36,7 +35,7 @@ public class EmployeeController {
             throw new EmployeeException("Two users cannot be logged in at the same time");
         }
         if(!employees.containsKey(ID)) {
-            throw new EmployeeException("Employee not found");
+            throw new EmployeeException("There is no record of this employee in the system");
         }
             Employee toLogin = employees.get(ID);
             if(!toLogin.isEmployed()){
@@ -84,9 +83,7 @@ public class EmployeeController {
         if(!loggedIn.isEmployed()) {
             throw new EmployeeException("The employee is not employed ");
         }
-        if(!vaildDate(date)){
-            throw new EmployeeException("A constraint can be filed up to two weeks in advance");
-        }
+
         loggedIn.giveConstraint(date, shift, reason);
     }
 
@@ -297,7 +294,7 @@ public class EmployeeController {
         return false;
     }
 
-    private boolean vaildDate(LocalDate date) {
+    private boolean validDate(LocalDate date) {
         return (LocalDate.now().isBefore(date.minusWeeks(2)));
     }
 

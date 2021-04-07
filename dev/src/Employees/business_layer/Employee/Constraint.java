@@ -1,4 +1,6 @@
 package Employees.business_layer.Employee;
+import Employees.EmployeeException;
+
 import java.time.LocalDate;
 
 
@@ -8,7 +10,9 @@ public class Constraint {
     private boolean eveningShift;
     private String reason;
 
-    public Constraint(LocalDate date, boolean morningShift, boolean evningShift, String reason){
+    public Constraint(LocalDate date, boolean morningShift, boolean evningShift, String reason) throws EmployeeException {
+        if(!validDate(date)){throw new EmployeeException("A constraint can be filed up to two weeks in advance");
+        }
         this.date = date;
         this.morningShift = morningShift;
         this.eveningShift = evningShift;
@@ -47,4 +51,10 @@ public class Constraint {
     public void setReason(String reason) {
         this.reason = reason;
     }
+
+//private methods
+private boolean validDate(LocalDate date) {
+    return (LocalDate.now().isBefore(date.minusWeeks(2)));
+}
+
 }
