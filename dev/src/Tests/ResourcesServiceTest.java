@@ -23,12 +23,12 @@ class ResourcesServiceTest {
     {
         rc=ResourcesController.getInstance();
         instance=ResourcesService.getInstance();
-        HashMap<Integer, Truck> trucks=new HashMap<>();
-        Truck truck=new Truck("volvo",1234567,1000,10000);
-        Truck truck2=new Truck("volvi",2345678,2500,5000);
+        HashMap<String, Truck> trucks=new HashMap<>();
+        Truck truck=new Truck("volvo","1234567",1000,10000);
+        Truck truck2=new Truck("volvi","2345678",2500,5000);
         trucks.put(truck.getLicenseNumber(),truck);
         trucks.put(truck2.getLicenseNumber(),truck2);
-        rc.setTrucks(trucks);
+        //rc.setTrucks(trucks);
         rc.setDrivers(new HashMap<>());
     }
 
@@ -41,7 +41,7 @@ class ResourcesServiceTest {
     //--------------------------- Simple Adders-----------------------------------------
     @Test
     void testAddTruck_Ok() {
-        rc.addTruck("volvi",3456789,2500,5000);
+        rc.addTruck("volvi","3456789",2500,5000);
         assertEquals(3,rc.getTrucks().size());
     }
 
@@ -54,14 +54,14 @@ class ResourcesServiceTest {
 
     @Test
     void testAddDriver(){
-        rc.addDriver(1234567,"raz", Driver.License.C1);
+        rc.addDriver("1234567","raz", Driver.License.C1);
         assertNotNull(rc.getDrivers().get(1234567));
     }
     @Test
     void testMultiAddDriver(){
-        rc.addDriver(1234567,"raz", Driver.License.C1);
-        rc.addDriver(1123456,"raz", Driver.License.C1);
-        rc.addDriver(1134567,"raz", Driver.License.C1);
+        rc.addDriver("1234567","raz", Driver.License.C1);
+        rc.addDriver("1123456","raz", Driver.License.C1);
+        rc.addDriver("1134567","raz", Driver.License.C1);
         assertNotNull(rc.getDrivers().get(1234567));
     }
 
@@ -74,9 +74,9 @@ class ResourcesServiceTest {
     @Test
     void testGetDrivers()
     {
-        rc.addDriver(1234567,"raz", Driver.License.C1);
-        rc.addDriver(1123456,"raz", Driver.License.C1);
-        rc.addDriver(1134567,"raz", Driver.License.C1);
+        rc.addDriver("1234567","raz", Driver.License.C1);
+        rc.addDriver("1123456","raz", Driver.License.C1);
+        rc.addDriver("1134567","raz", Driver.License.C1);
         assertEquals(3,rc.getDrivers().size());
     }
 
@@ -90,9 +90,9 @@ class ResourcesServiceTest {
 
     @Test
     void testMakeUnavailable_Driver() {
-        rc.addDriver(1234567,"raz", Driver.License.C1);
-        rc.addDriver(1123456,"raz", Driver.License.C1);
-        rc.addDriver(1134567,"raz", Driver.License.C1);
+        rc.addDriver("1234567","raz", Driver.License.C1);
+        rc.addDriver("1123456","raz", Driver.License.C1);
+        rc.addDriver("1134567","raz", Driver.License.C1);
         rc.makeUnavailable_Driver(1234567);
         assertFalse(rc.getDrivers().get(1234567).isAvailable());
         assertTrue(rc.getDrivers().get(1123456).isAvailable());
@@ -101,9 +101,9 @@ class ResourcesServiceTest {
 
     @Test
     void testMakeAvailable_Driver() {
-        rc.addDriver(1234567,"raz", Driver.License.C1);
-        rc.addDriver(1123456,"raz", Driver.License.C1);
-        rc.addDriver(1134567,"raz", Driver.License.C1);
+        rc.addDriver("1234567","raz", Driver.License.C1);
+        rc.addDriver("1123456","raz", Driver.License.C1);
+        rc.addDriver("1134567","raz", Driver.License.C1);
         rc.makeUnavailable_Driver(1234567);
         rc.makeAvailable_Driver(1234567);
         assertTrue(rc.getDrivers().get(1234567).isAvailable());
@@ -129,9 +129,9 @@ class ResourcesServiceTest {
     }
     @Test
     void testGetAvailableDrivers() {
-        rc.addDriver(1234567,"raz", Driver.License.C1);
-        rc.addDriver(1123456,"raz", Driver.License.C1);
-        rc.addDriver(1134567,"raz", Driver.License.C1);
+        rc.addDriver("1234567","raz", Driver.License.C1);
+        rc.addDriver("1123456","raz", Driver.License.C1);
+        rc.addDriver("1134567","raz", Driver.License.C1);
         rc.makeUnavailable_Driver(1234567);
         assertEquals(2,rc.getAvailableTrucks().size());
     }
@@ -144,15 +144,15 @@ class ResourcesServiceTest {
 
     @Test
     void testChooseDriver() {
-        rc.addDriver(1234567,"raz", Driver.License.C1);
-        rc.addDriver(1123456,"raz", Driver.License.C1);
-        rc.addDriver(1134567,"raz", Driver.License.C1);
+        rc.addDriver("1234567","raz", Driver.License.C1);
+        rc.addDriver("1123456","raz", Driver.License.C1);
+        rc.addDriver("1134567","raz", Driver.License.C1);
         rc.chooseDriver(1234567);
         assertEquals(1234567,rc.getCurrDriverID());
     }
     @Test
     void testSaveReport() {
-        rc.addDriver(1234567,"raz", Driver.License.C1);
+        rc.addDriver("1234567","raz", Driver.License.C1);
         rc.chooseTruck(1234567);
         rc.chooseDriver(1234567);
         rc.saveReport();
