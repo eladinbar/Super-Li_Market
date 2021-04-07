@@ -19,7 +19,7 @@ public class EmployeeController {
 
     public Employee getLoggedIn(){ return loggedIn;}
 
-    public Employee login(String ID, Role role) throws EmployeeException {
+    public Employee login(String ID, String role) throws EmployeeException {
         if(loggedIn!= null){
             throw new EmployeeException("Two users cannot be logged in at the same time");
         }
@@ -30,7 +30,7 @@ public class EmployeeController {
             if(!toLogin.isEmployed()){
                 throw new EmployeeException("The employee is not employed ");
             }
-            if (toLogin.getRole() != (role)) {
+            if (toLogin.getRole() != Role.valueOf(role)) {
                 throw new EmployeeException("Id does not match to the role");
             }
         loggedIn = toLogin;
