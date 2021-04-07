@@ -1,14 +1,16 @@
 package Presentation_Layer_Trucking;
 
+import Business_Layer_Trucking.Delivery.TruckingReport;
 import Business_Layer_Trucking.Facade.FacadeObject.*;
 import Business_Layer_Trucking.Resources.Driver;
+import jdk.jshell.spi.ExecutionControl;
 
 import javax.management.openmbean.KeyAlreadyExistsException;
+import java.io.NotActiveException;
+import java.nio.file.StandardOpenOption;
 import java.time.LocalTime;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.Scanner;
+import java.util.*;
+import java.util.concurrent.ExecutionException;
 
 public class Menu_Printer {
     PresentationController pc;
@@ -45,21 +47,28 @@ public class Menu_Printer {
             System.out.println(spot + ".\tMake driver available");spot++;
             System.out.println(spot + ".\tRemove item from the Pool"); spot++;
             System.out.println(spot + ".\tGo back to Main Menu");
+
+
             // TODO remove item/ site and whatever methods
 
             int choose =0;
 
-            choose = getIntFromUser(scanner);
+            choose = getIntFromUserMain(scanner);
             switch (choose) {
+
                 case 1:
                     // TODO exception need to stop running and not insert into next func
-                    pc.CreateReport();
-                    //chooseOrigin(scanner);
-                    chooseDemands(scanner);
-                    System.out.println("Total demands Weight is: "+pc.getWeightOfCurrReport());
-                    chooseTruckAndDriver(scanner);
-                    chooseLeavingHour(scanner);
-                    pc.saveReport();
+                    try {
+                        pc.CreateReport();
+                        //chooseOrigin(scanner);
+                        chooseDemands(scanner);
+                        System.out.println("Total demands Weight is: " + pc.getWeightOfCurrReport());
+                        chooseTruckAndDriver(scanner);
+                        chooseLeavingHour(scanner);
+                        pc.saveReport();
+                    }catch ( ReflectiveOperationException re){
+                        System.out.println(re.getMessage());}
+
                     break;
 
 
@@ -91,55 +100,91 @@ public class Menu_Printer {
 
                         printDemands(demands);
 
-                    }
-                    catch (NoSuchElementException ne) {
+                    } catch (NoSuchElementException ne) {
                         System.out.println(ne.getMessage());
                     }
 
                     break;
 
                 case 5:
-                    addNewDriver(scanner);
+                    try {
+                        addNewDriver(scanner);
+
+                    }catch ( ReflectiveOperationException re){
+                        System.out.println(re.getMessage());}
+
                     break;
                 case 6:
-                    addNewTruck(scanner);
+                    try{
+                        addNewTruck(scanner);
+
+                    }catch ( ReflectiveOperationException re){
+                        System.out.println(re.getMessage());}
                     break;
                 case 7:
-                    addSite(scanner);
+                    try{
+                        addSite(scanner);
+                    }catch ( ReflectiveOperationException re){
+                        System.out.println(re.getMessage());}
                     break;
                 case 8:
-                    addItem(scanner);
+                    try{
+                        addItem(scanner);
+                    }catch ( ReflectiveOperationException re){
+                        System.out.println(re.getMessage());}
                     break;
 
                 case 9:
-                    addDemandToSystem(scanner);
+                    try{
+                        addDemandToSystem(scanner);
+                    }catch ( ReflectiveOperationException re){
+                        System.out.println(re.getMessage());}
+                    break;
                 case 10:
-                    makeTruckUnavailable(scanner);
+                    try{
+                        makeTruckUnavailable(scanner);
+                    }catch ( ReflectiveOperationException re){
+                        System.out.println(re.getMessage());}
                     break;
                 case 11:
-                    makeDriverUnavailable(scanner);
+                    try{
+                        makeDriverUnavailable(scanner);
+                    }catch ( ReflectiveOperationException re){
+                        System.out.println(re.getMessage());}
                     break;
                 case 12:
-                    makeTruckAvailable(scanner);
+                    try{
+                        makeTruckAvailable(scanner);
+                    }catch ( ReflectiveOperationException re){
+                        System.out.println(re.getMessage());}
                     break;
                 case 13:
-                    makeDriverAvailable(scanner);
+                    try{
+                        makeDriverAvailable(scanner);
+                    }catch ( ReflectiveOperationException re){
+                        System.out.println(re.getMessage());}
                     break;
                 case 14:
-                    removeItemFromPool(scanner);
+                    try{
+                        removeItemFromPool(scanner);
+                    }catch ( ReflectiveOperationException re){
+                        System.out.println(re.getMessage());}
                     break;
                 case 15:
+
                     System.out.println("this option isn't supported yet. to be continue");
                     keepGoing = false;
+
                     break;
                 default:
 
             }
         }
-
     }
 
-    private void addDemandToSystem(Scanner scanner) {
+
+
+    private void addDemandToSystem(Scanner scanner) throws ReflectiveOperationException {
         int itemId;
         int site;
         int amount;
@@ -148,6 +193,7 @@ public class Menu_Printer {
             LinkedList<FacadeItem> items = pc.getAllItems();
             for (FacadeItem item : items)
                 System.out.println("item id: " +item.getID() +  "\tname: "+ item.getName());
+
 
 
             itemId = getIntFromUser(scanner);
@@ -179,7 +225,7 @@ public class Menu_Printer {
         }
     }
 
-    private void removeItemFromPool(Scanner scanner) {
+    private void removeItemFromPool(Scanner scanner) throws ReflectiveOperationException {
         LinkedList <FacadeItem> items = pc.getAllItems();
         int counter =1;
         for (FacadeItem item: items){
@@ -196,7 +242,7 @@ public class Menu_Printer {
         }
     }
 
-    private void addItem(Scanner scanner) {
+    private void addItem(Scanner scanner) throws ReflectiveOperationException{
         boolean con = true;
         while (con){
             System.out.print("Item id: ");
@@ -219,7 +265,7 @@ public class Menu_Printer {
         }
     }
 
-    private void addSite(Scanner scanner) {
+    private void addSite(Scanner scanner) throws ReflectiveOperationException{
         boolean con = true;
         while(con) {
             // TODO should we check for valid city?
@@ -253,7 +299,7 @@ public class Menu_Printer {
         }
     }
 
-    private void makeDriverAvailable(Scanner scanner) {
+    private void makeDriverAvailable(Scanner scanner) throws ReflectiveOperationException {
         LinkedList<FacadeDriver> drivers = pc.getDrivers();
         if (drivers == null) System.out.println("no drivers in the system yet");
         else{
@@ -270,7 +316,7 @@ public class Menu_Printer {
         }
     }
 
-    private void makeTruckAvailable(Scanner scanner) {
+    private void makeTruckAvailable(Scanner scanner) throws ReflectiveOperationException {
         LinkedList<FacadeTruck> trucks = pc.getTrucks();
         if (trucks == null) System.out.println("no trucks in the system yet");
         else{
@@ -286,7 +332,7 @@ public class Menu_Printer {
         }
     }
 
-    private void makeDriverUnavailable(Scanner scanner) {
+    private void makeDriverUnavailable(Scanner scanner) throws ReflectiveOperationException{
         LinkedList<FacadeDriver> drivers = pc.getAvailableDrivers();
         if (drivers == null) System.out.println("no available drivers");
         else{
@@ -307,7 +353,7 @@ public class Menu_Printer {
         }
     }
 
-    private void makeTruckUnavailable(Scanner scanner) {
+    private void makeTruckUnavailable(Scanner scanner) throws  ReflectiveOperationException{
         LinkedList<FacadeTruck> trucks = pc.getAvailableTrucks();
         if (trucks == null) System.out.println("no available trucks");
         else{
@@ -322,7 +368,7 @@ public class Menu_Printer {
         }
     }
 
-    private void addNewTruck(Scanner scanner) {
+    private void addNewTruck(Scanner scanner) throws ReflectiveOperationException{
         boolean con = true;
         while (con) {
             System.out.print("Truck License ID: ");
@@ -352,7 +398,7 @@ public class Menu_Printer {
         }
     }
 
-    private void addNewDriver(Scanner scanner) {
+    private void addNewDriver(Scanner scanner) throws ReflectiveOperationException{
         // TODO this method need to be checked with workers branch, might be more demands
 
         try {
@@ -398,7 +444,7 @@ public class Menu_Printer {
 
     }
 
-    private void chooseLeavingHour(Scanner scanner) {
+    private void chooseLeavingHour(Scanner scanner) throws ReflectiveOperationException {
         boolean con =  true;
         while (con) {
             System.out.print("please choose leaving time: \n hour: ");
@@ -417,7 +463,7 @@ public class Menu_Printer {
         }
     }
 
-    private void chooseDemands(Scanner scanner) {
+    private void chooseDemands(Scanner scanner) throws ReflectiveOperationException {
         boolean con = true;
         while (con) {
             try {
@@ -506,7 +552,7 @@ public class Menu_Printer {
         }
     }
 
-    private void chooseTruckAndDriver(Scanner scanner) {
+    private void chooseTruckAndDriver(Scanner scanner) throws ReflectiveOperationException {
         System.out.println("please choose the Truck you'd like to deliver it with:");
         LinkedList<FacadeTruck> trucks =  pc.getAvailableTrucks();
         int weight=pc.getWeightOfCurrReport();
@@ -549,7 +595,7 @@ public class Menu_Printer {
 
     }
 
-    private FacadeTruckingReport rePlan(Scanner scanner) {
+    private FacadeTruckingReport rePlan(Scanner scanner) throws ReflectiveOperationException {
 
         System.out.println("Welcome to replan menu! please choose the option you'd like to re plan the report with:");
         int spot =1;
@@ -620,7 +666,7 @@ public class Menu_Printer {
         return pc.sortDemandsBySite(demands);
     }
 
-    private void removeSite(Scanner scanner){
+    private void removeSite(Scanner scanner) throws ReflectiveOperationException{
         boolean con = true;
         while(con) {
             LinkedList<FacadeSite> sites = pc.showCurrentSites();
@@ -640,6 +686,132 @@ public class Menu_Printer {
             con = pc.removeDestination(siteID);
             if (!con) System.out.println("the chosen site id doesn't exist here!");
         }
+    }
+
+    void updateDeliveryForm(Scanner scanner) throws ReflectiveOperationException{
+        LinkedList<FacadeTruckingReport> truckingReports =  pc.getActiveTruckingReports();
+        System.out.println("please choose the report you'd like to advance");
+        int spot = 1;
+        for(FacadeTruckingReport ftr: truckingReports){
+            System.out.print(spot+")" + "origin site:"+ftr.getOrigin() + "\ndestinations:\n" );
+            LinkedList<Integer> destinations =  ftr.getDestinations();
+            spot ++;
+            for (Integer des: destinations){
+                System.out.println("\t"+pc.getSiteName(des));
+            }
+        }
+        int chose = getIntFromUser(scanner);
+        while(chose<1 || chose>truckingReports.size())
+            chose = getIntFromUser(scanner);
+        FacadeTruckingReport ftr = truckingReports.get(chose-1);
+        LinkedList<FacadeDeliveryForm> deliveryForms =  pc.getDeliveryForms(ftr.getID());
+        spot =1;
+        for (FacadeDeliveryForm dlf: deliveryForms){
+            System.out.println(spot+")origin:"+ dlf.getOrigin() + "\tdestination" + dlf.getDestination() +
+                    "\nitems delivered:" );
+            spot++;
+            for (Map.Entry<Integer,Integer> entry: dlf.getItems().entrySet()){
+                System.out.println("\t" + pc.getItemName(entry.getKey()) + "\tamount: " +entry.getValue());
+            }
+
+        }
+        chose = getIntFromUser(scanner);
+        while(chose<1 || chose>deliveryForms.size() )
+            chose = getIntFromUser(scanner);
+        FacadeDeliveryForm fdf = deliveryForms.get(chose);
+
+        int weight = getIntFromUser(scanner);
+        try {
+            pc.updateDeliveryFormRealWeight(ftr.getID(), fdf.getID(), weight);
+        }catch (IllegalStateException illegalStateException){
+            System.out.println(illegalStateException.getMessage());
+            rePlanAfterWeight(scanner,ftr.getID());
+            updateDeliveryForm(scanner);
+        }
+
+    }
+
+    private void rePlanAfterWeight(Scanner scanner, int trID) throws ReflectiveOperationException {
+
+        System.out.println("Welcome to replan menu! please choose the option you'd like to re plan the report with:");
+        int spot =1;
+        System.out.println(spot + ") remove a site (all the products from this site and to it will be removed)");spot++;
+        System.out.println(spot + ") switch demands  - removes a site and adds a new demand to add by choose"); spot++;
+        System.out.println(spot + ") change a truck");spot++;
+        System.out.println(spot + ") remove item");
+        System.out.println("choose different number to quit");
+        System.out.print("place your option");
+
+
+        /*int option =  getIntFromUser(scanner);
+        switch (option){
+            case 1://remove site
+
+                removeSite(scanner , trID);
+
+
+            case 2://switch demand(=site)
+
+                removeSite(scanner, trID);
+                chooseDemands(scanner);
+
+
+
+            case 3://replace truck
+
+                System.out.println("choose new truck");
+                LinkedList<FacadeTruck> trucks = pc.getAvailableTrucks();
+                spot =1;
+                //TODO need to display trucks
+                for (FacadeTruck ft:trucks)
+                {
+                    System.out.println(spot+")Truck number: "+ft.getLicenseNumber()+" , Weight neto: "+ft.getWeightNeto()
+                            +" , Max weight: "+ft.getMaxWeight());spot++;
+                }
+                int chose = getIntFromUser(scanner);
+                while(chose<1 || chose>trucks.size()){
+                    chose = getIntFromUser(scanner);
+                }
+                FacadeTruck facadeTruck = trucks.get(chose);
+                try {
+                    pc.replaceTruck(facadeTruck.getLicenseNumber(), trID);
+                }catch (IllegalStateException illegalStateException){
+                    illegalStateException.getMessage();
+                    // TODO replace driver
+                }
+
+            case 4://remove items
+
+                System.out.println("choose item to remove");
+
+                LinkedList<FacadeTruckingReport> reports = pc.getActiveTruckingReports();
+                FacadeTruckingReport truckingReport = null;
+                for (FacadeTruckingReport ftr: reports){
+                    if (ftr.getID() == trID)
+                        truckingReport = ftr;
+                }
+                LinkedList<FacadeDeliveryForm> fdf = pc.getDeliveryForms(trID);
+                int counter =1;
+                for(FacadeDemand demand : items){
+                    System.out.println(counter + ") " +
+                            "amount: " + demand.getAmount() + " wight per unit: " + pc.getWeight(demand.getItemID())
+                            + "delivery site: " + pc.getSiteName( demand.getSite() )) ;
+                }
+                System.out.print("your choice: ");
+                int itemId =  getIntFromUser(scanner);
+                while ( itemId > items.size() -1 || itemId<1) {
+                    System.out.println("your option is out of bounds, please choose again");
+                    itemId =  getIntFromUser(scanner);
+                }
+                FacadeDemand demand = items.get(itemId -1);
+                System.out.println("amount: ");
+                int amount =  getIntFromUser(scanner);
+                pc.removeItemFromReport(demand , amount);
+
+
+            default:
+                return null;
+        }*/
     }
 
     public void putInitialTestState(){
@@ -666,57 +838,98 @@ public class Menu_Printer {
         pc.addDemandToSystem(11, 4,500);
     }
 
-    private int getIntFromUser(Scanner scanner){
+    private int getIntFromUserMain(Scanner scanner){
         int choose = -1;
         boolean scannerCon = true;
         while(scannerCon)
             try {
                 choose = scanner.nextInt();
+
                 if (choose < 0){
                     System.out.println("you must choose an none-negative number ");
                 }
                 scannerCon =false;
-            }catch (Exception e){
+            } catch (InputMismatchException ie){
+                System.out.println("wrong input please try again");
+                scanner.nextLine();
+            } catch (NoSuchElementException|IllegalStateException e){
+                System.out.println("wrong input please try again");
+                scanner.nextLine();
+            }
+        return choose;
+
+    }
+    private int getIntFromUser(Scanner scanner) throws ReflectiveOperationException{
+        int choose = -1;
+        boolean scannerCon = true;
+        while(scannerCon)
+            try {
+                choose = scanner.nextInt();
+                if (choose == -1) throw new ReflectiveOperationException ("by pressing -1 you chose to go back");
+                if (choose < 0){
+                    System.out.println("you must choose an none-negative number ");
+                }
+                scannerCon =false;
+            } catch (InputMismatchException ie){
+                System.out.println("wrong input please try again");
+                scanner.nextLine();
+            } catch (NoSuchElementException|IllegalStateException e){
                 System.out.println("wrong input please try again");
                 scanner.nextLine();
             }
         return choose;
     }
 
-    private String getStringFromUser(Scanner scanner) {
+
+
+    private double getDoubleFromUser(Scanner scanner) throws ReflectiveOperationException{
+
+        double choose = -1;
+        boolean scannerCon = true;
+        while(scannerCon)
+            try {
+                choose = scanner.nextDouble();
+                if (choose == -1) throw new ReflectiveOperationException("by pressing -1 you chose to go back");
+                if (choose < 0){
+                    System.out.println("you must choose an none-negative number ");
+                }
+                scannerCon =false;
+            } catch (InputMismatchException ie){
+                System.out.println("wrong input please try again");
+                scanner.nextLine();
+            } catch (NoSuchElementException|IllegalStateException e){
+                System.out.println("wrong input please try again");
+                scanner.nextLine();
+            }
+        return choose;
+    }
+
+    private String getStringFromUser(Scanner scanner) throws ReflectiveOperationException {
+
         boolean con = true;
         String output = "";
         while (con) {
             try {
-                    output =scanner.next();
+                output =scanner.next();
+                if (output.equals("-1")) throw new ReflectiveOperationException("by pressing -1 you chose to go back");
                 con= false;
-            } catch (Exception e) {
+            }catch (NoSuchElementException|IllegalStateException e){
                 System.out.println("wrong input please try again");
+                scanner.nextLine();
             }
         }
         return output;
 
     }
 
-    void updateDeliveryForm(Scanner scanner){
-        LinkedList<FacadeTruckingReport> truckingReports =  pc.getActiveTruckingReports();
-        int trID=0;
 
-        LinkedList<FacadeDeliveryForm> deliveryForms =  pc.getDeliveryForms(trID);
-        int weight = 0;
 
-        int dfID=0;
-        pc.updateDeliveryFormRealWeight(trID,dfID,weight);
-        rePlan(scanner);
-
-    }
 
 
     // TODO change weight to double -  all the way down
 
 
     // TODO NTH need to print the chosen option.
-    // TODO finish input -  maybe with exception throw
     // TODO need to check supporting products return
     //  TODO need to check all exception catched
     // TODO weights - grams or Kilos
@@ -726,4 +939,8 @@ public class Menu_Printer {
     // TODO site id- not for chose
     // TODO need to implement the weight insert exceptions
     // TODO need to do the DF updates
+    // TODO need create replaced TR
+
+
+
 }
