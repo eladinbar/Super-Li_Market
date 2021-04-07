@@ -9,8 +9,8 @@ public class quantityList {
     private Map<Integer, Integer> discount;
 
     public quantityList() {
-        amount=new HashMap<>();
-        discount=new HashMap<>();
+        amount = new HashMap<>();
+        discount = new HashMap<>();
     }
 
     public Map<Integer, Integer> getAmount() {
@@ -29,13 +29,15 @@ public class quantityList {
     }
 
     private void productExists(int productID) throws Exception {
-        if(!amount.containsKey(productID))
+        if (!amount.containsKey(productID))
             throw new Exception("quantity list does not have the product " + productID);
     }
+
     private void checkAmount(int amount) throws Exception {
         if (amount < 1)
             throw new Exception("illegal amount");
     }
+
     private void checkDiscount(int discount) throws Exception {
         if (discount < 1 || discount >= maxDiscount)
             throw new Exception("illegal discount");
@@ -45,13 +47,13 @@ public class quantityList {
         productExists(productID);
         checkAmount(amount);
         this.amount.remove(productID);
-        this.amount.put(productID,amount);
+        this.amount.put(productID, amount);
     }
 
     public void editQuantityListDiscount(int productID, int discount) throws Exception {
         productExists(productID);
         checkAmount(discount);
         this.discount.remove(productID);
-        this.discount.put(productID,discount);
+        this.discount.put(productID, discount);
     }
 }

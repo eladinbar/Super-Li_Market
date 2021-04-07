@@ -2,8 +2,8 @@ package BusinessLayer.orderPackage;
 
 public class product {
     private String name;
-    private  int productID;
-    private  manufacturers manu;
+    private int productID;
+    private manufacturers manu;
 
     public product(String name, int productID, manufacturers manu) {
         this.name = name;

@@ -1,4 +1,5 @@
 package PresentationLayer;
+
 import java.util.*;
 import java.util.Scanner;
 
@@ -7,51 +8,100 @@ public class MenuPrinter {
     private Scanner scan;
 
     public MenuPrinter() {
-        scan=new Scanner(System.in);
+        scan = new Scanner(System.in);
         this.pc = new PresentationController();
+        createObjectsForTests();
     }
 
+    //the main function
     public void startWork() throws ReflectiveOperationException {
         System.out.println("welcome to Super Lee");
-        int choose=1;
-        while (choose>0) {
+        int choose = 1;
+        while (choose > 0) {
             choose = PrintMenu();
             switch (choose) {
                 case 1:
                     addSupplierFunc();
                     break;
+                case 2:
+                    break;
                 case 3:
                     updateSupplierDetailFunc();
+                    break;
+                case 4:
+                    break;
+                case 5:
+                    break;
+                case 6:
+                    break;
+                case 7:
+                    break;
+                case 8:
+                    approveOrder();
+                    break;
+                case 9:
+                    getOrder();
+                    break;
+                case 10:
+                    addProductToOrder();
+                    break;
+                case 11:
+                    createProduct();
+                    break;
+                case 12:
+                    getProduct();
                     break;
             }
         }
     }
+
+    //a helper function to print the menu
+    public int PrintMenu() {
+        System.out.println("1. add supplier");
+        System.out.println("2. get supplier");
+        System.out.println("3. update supplier details");//todo add edit menu
+        System.out.println("4. add quantity List");
+        System.out.println("5. edit quantity List");//todo add edit menu
+        System.out.println("6. create new order");//todo add menu
+        System.out.println("7. set permanent order");//todo add menu
+        System.out.println("8. approve order");
+        System.out.println("9. get order");
+        System.out.println("10. add product to order");
+        System.out.println("11. add new product");
+        System.out.println("12. get product");
+        System.out.println("Please choose an option:");
+        return scan.nextInt();
+    }
+
+    //a helper function that add supplier to the system
     private void addSupplierFunc() throws ReflectiveOperationException {
         System.out.print("please enter following details: ");
         System.out.print("\nfirst name: ");
-        String firstName=getStringFromUser();
+        String firstName = getStringFromUser();
         System.out.print("last name: ");
-        String lName=getStringFromUser();
+        String lName = getStringFromUser();
         System.out.print("email: ");
-        String email=getStringFromUser();
+        String email = getStringFromUser();
         System.out.print("ID: ");
-        String ID=getStringFromUser();
+        String ID = getStringFromUser();
         System.out.print("phone: ");
-        String phone=getStringFromUser();
+        String phone = getStringFromUser();
         System.out.print("companyNumber: ");
-        int companyNumber=scan.nextInt();
+        int companyNumber = scan.nextInt();
         System.out.print("do you a permanent order days? y/n: ");
-        String permanent=getStringFromUser();
+        String permanent = getStringFromUser();
         System.out.print("do you deliver the orders by yourself? y/n: ");
-        String selfDelivery=getStringFromUser();
+        String selfDelivery = getStringFromUser();
         System.out.print("how whould you like to pay?\n1. Cash\n2. Bank transfer\n3. check\nchoose number: ");
-        int payment=scan.nextInt();
+        int payment = scan.nextInt();
     }
+
+    //a helper funtion that edit supplier details in the system
     private void updateSupplierDetailFunc() throws ReflectiveOperationException {
-        int opt=-1;
+        int opt = -1;
         System.out.println("please enter supplier id");
-        String supplierID=getStringFromUser();
-        boolean flag=true;
+        String supplierID = getStringFromUser();
+        boolean flag = true;
         while (flag) {
             System.out.println("Please choose an option to Edit:");
             System.out.println("1. edit first name");
@@ -168,33 +218,53 @@ public class MenuPrinter {
         }
     }
 
-    public int PrintMenu(){
-        System.out.println("1. add supplier");
-        System.out.println("2. get supplier");
-        System.out.println("3. update supplier details");//todo add edit menu
-        System.out.println("4. add quantity List");
-        System.out.println("5. edit quantity List");//todo add edit menu
-        System.out.println("6. create new order");//todo add menu
-        System.out.println("7. set permanent order");//todo add menu
-        System.out.println("8. approve order");
-        System.out.println("9. get order");
-        System.out.println("10. add product to order");
-        System.out.println("11. add new product");
-        System.out.println("12. get product");
-        System.out.println("Please choose an option:");
-        return scan.nextInt();
+    //a helper function that approve that the order arrived in the system
+    private void approveOrder() {
+        System.out.println("please enter order ID");
+        pc.approveOrder(scan.nextInt());
     }
 
+    //a helper function to get an order from the system
+    private void getOrder() {
+        System.out.println("please enter order ID");
+        pc.getOrder(scan.nextInt());
+    }
+
+    //a helper function to add a product to an order
+    private void addProductToOrder() {
+        System.out.println("please enter order ID");
+        int orderID = scan.nextInt();
+        System.out.println("enter a product company number ID");
+        int productID = scan.nextInt();
+        pc.addProductToOrder(orderID, productID);
+    }
+
+    //a helper function to get a product
+    private void getProduct() {
+        System.out.println("please enter product ID");
+        pc.getProduct(scan.nextInt());
+    }
+
+    //a helper function to add a new product to the system
+    private void createProduct() throws ReflectiveOperationException {
+        System.out.println("please enter product name");
+        String name = getStringFromUser();
+        System.out.println("please enter manufacturer name");
+        String manufacturer = getStringFromUser();
+        pc.createProduct(name, manufacturer);
+    }
+
+    //a helper function to get a string from the user
     private String getStringFromUser() throws ReflectiveOperationException {
 
         boolean con = true;
         String output = "";
         while (con) {
             try {
-                output =scan.next();
+                output = scan.next();
                 if (output.equals("-1")) throw new ReflectiveOperationException("by pressing -1 you chose to go back");
-                con= false;
-            }catch (NoSuchElementException|IllegalStateException e){
+                con = false;
+            } catch (NoSuchElementException | IllegalStateException e) {
                 System.out.println("wrong input please try again");
                 scan.nextLine();
             }
@@ -203,4 +273,22 @@ public class MenuPrinter {
 
     }
 
+    public void createObjectsForTests() {
+        int id = 333333333;
+        int phone = 0544444444;
+        for (int i = 0; i < 10; i++)
+            pc.addSupplier("Supplier" + i, "LastName" + i, "email" + i + "@gmail.com", "" + (id + i), "" + (phone + i), 1, true, true, "cash");
+        for (int i = 10; i < 20; i++)
+            pc.addSupplier("Supplier" + i, "LastName" + i, "email" + i + "@gmail.com", "" + (id + i), "" + (phone + i), 1, false, true, "check");
+        for (int i = 0; i < 10; i++)
+            pc.createProduct("name" + i, "osem");
+        for (int i = 10; i < 20; i++)
+            pc.createProduct("name" + i, "elit");
+        for (int i = 10; i < 30; i++)
+            pc.createProduct("name" + i, "tnuva");
+        for (int i = 30; i < 40; i++)
+            pc.createProduct("name" + i, "gad");
+        for (int i = 40; i < 50; i++)
+            pc.createProduct("name" + i, "knor");
+    }
 }

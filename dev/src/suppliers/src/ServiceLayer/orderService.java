@@ -16,91 +16,91 @@ public class orderService {
     }
 
     public Response createOrder(LocalDate date, String supplierID, supplierController sp) {
-        Response toReturn=null;
+        Response toReturn = null;
         try {
-            oc.createOrder(date,sp.getSupplier(supplierID));
+            oc.createOrder(date, sp.getSupplier(supplierID));
         } catch (Exception e) {
-            toReturn=new Response(true,e.getMessage());
+            toReturn = new Response(true, e.getMessage());
         }
         return toReturn;
     }
 
     public Response createPernamentOrder(int day, String supplierID, supplierController sp) {
-        Response toReturn=null;
+        Response toReturn = null;
         try {
-            oc.createPermOrder(day,sp.getSupplier(supplierID));
+            oc.createPermOrder(day, sp.getSupplier(supplierID));
         } catch (Exception e) {
-            toReturn=new Response(true,e.getMessage());
+            toReturn = new Response(true, e.getMessage());
         }
         return toReturn;
     }
 
     public Response approveOrder(int orderID) {
-        Response toReturn=null;
+        Response toReturn = null;
         try {
             oc.approveOrder(orderID);
         } catch (Exception e) {
-            toReturn=new Response(true,e.getMessage());
+            toReturn = new Response(true, e.getMessage());
         }
         return toReturn;
     }
 
     public Response getOrder(int orderID) {
-        Response toReturn=null;
+        Response toReturn = null;
         try {
             oc.getOrder(orderID);
         } catch (Exception e) {
-            toReturn=new Response(true,e.getMessage());
+            toReturn = new Response(true, e.getMessage());
         }
         return toReturn;
     }
 
     public Response createProduct(String name, String manufacturer) {
-        Response toReturn=null;
+        Response toReturn = null;
         try {
-            oc.createProduct(name,  manufacturer);
+            oc.createProduct(name, manufacturer);
         } catch (Exception e) {
-            toReturn=new Response(true,e.getMessage());
+            toReturn = new Response(true, e.getMessage());
         }
         return toReturn;
     }
 
     public Response getProduct(int productID) {
-        Response toReturn=null;
+        Response toReturn = null;
         try {
             oc.getProduct(productID);
         } catch (Exception e) {
-            toReturn=new Response(true,e.getMessage());
+            toReturn = new Response(true, e.getMessage());
         }
         return toReturn;
     }
 
     public Response removeSupplier(String id) {
-        Response toReturn=null;
+        Response toReturn = null;
         try {
             oc.removeSupplier(id);
         } catch (Exception e) {
-            toReturn=new Response(true,e.getMessage());
+            toReturn = new Response(true, e.getMessage());
         }
         return toReturn;
     }
 
     public Response addProductToOrder(int orderId, int productId) {
-        Response toReturn=null;
+        Response toReturn = null;
         try {
             oc.addProductToOrder(orderId, productId);
         } catch (Exception e) {
-            toReturn=new Response(true,e.getMessage());
+            toReturn = new Response(true, e.getMessage());
         }
         return toReturn;
     }
 
     public Response productExists(int productID) {
-        Response toReturn=null;
+        Response toReturn = null;
         try {
             oc.productExist(productID);
         } catch (Exception e) {
-            toReturn=new Response(true,e.getMessage());
+            toReturn = new Response(true, e.getMessage());
         }
         return toReturn;
     }

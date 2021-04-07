@@ -1,11 +1,13 @@
 package BusinessLayer.orderPackage;
+
 import BusinessLayer.supplierPackage.supplier;
 
 import java.time.LocalDate;
-import  java.util.*;
+import java.util.*;
+
 public class order {
     private int id;
-    private  Map<Integer, Integer> products;
+    private Map<Integer, Integer> products;
     private LocalDate date;
     private boolean delivered;
     private supplier supplier;

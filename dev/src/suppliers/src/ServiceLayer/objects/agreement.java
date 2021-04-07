@@ -8,9 +8,9 @@ public class agreement {
     private Map<Integer, Integer> prices;
     private quantityList ql;
 
-    public agreement(Map<Integer, Integer> products, Map<Integer, Integer> prices , ServiceLayer.objects.quantityList ql) {
-        this.ql=ql;
-        this.products= products;
-        this.prices= prices;
+    public agreement(Map<Integer, Integer> products, Map<Integer, Integer> prices, ServiceLayer.objects.quantityList ql) {
+        this.ql = ql;
+        this.products = products;
+        this.prices = prices;
     }
 }

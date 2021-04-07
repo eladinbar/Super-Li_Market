@@ -18,8 +18,9 @@ public class Service implements IService {
 
     @Override
     public Response addSupplier(String firstName, String lastName, String email, String id, String phone, int companyNumber, boolean isPernamentDays, boolean selfDelivery, String payment) {
-        return supplierService.addSupplier(firstName, lastName, email, id, phone, companyNumber,isPernamentDays,selfDelivery,payment);
+        return supplierService.addSupplier(firstName, lastName, email, id, phone, companyNumber, isPernamentDays, selfDelivery, payment);
     }
+
     @Override
     public Response removeSupplier(String id) {
         orderService.removeSupplier(id);
@@ -28,42 +29,42 @@ public class Service implements IService {
 
     @Override
     public Response updateFirstName(String id, String firstName) {
-        return supplierService.updateFirstName(id,firstName);
+        return supplierService.updateFirstName(id, firstName);
     }
 
     @Override
     public Response updateLastName(String id, String lastName) {
-        return supplierService.updateLastName(id,lastName);
+        return supplierService.updateLastName(id, lastName);
     }
 
     @Override
     public Response updatePhone(String id, String phone) {
-        return supplierService.updatePhone(id,phone);
+        return supplierService.updatePhone(id, phone);
     }
 
     @Override
     public Response updateEmail(String id, String email) {
-        return supplierService.updateEmail(id,email);
+        return supplierService.updateEmail(id, email);
     }
 
     @Override
     public Response updateCompanyNumber(String id, int companyNumber) {
-        return supplierService.updateCompanyNumber(id,companyNumber);
+        return supplierService.updateCompanyNumber(id, companyNumber);
     }
 
     @Override
     public Response updateSelfDelivery(String id, boolean self) {
-        return supplierService.updateSelfDelivery(id,self);
+        return supplierService.updateSelfDelivery(id, self);
     }
 
     @Override
     public Response updatePernamentDays(String id, boolean perm) {
-        return supplierService.updatePernamentDays(id,perm);
+        return supplierService.updatePernamentDays(id, perm);
     }
 
     @Override
     public Response updatePayment(String id, String pay) {
-        return supplierService.updatePayment(id,pay);
+        return supplierService.updatePayment(id, pay);
     }
 
     @Override
@@ -103,9 +104,9 @@ public class Service implements IService {
 
     @Override
     public Response addQuantityListItem(String supplierID, int productID, int amount, int discount) {
-        Response r=orderService.productExists(productID);
-        if(!r.isErrorOccurred())
-            return supplierService.addQuantityListItem(supplierID, productID, amount,  discount);
+        Response r = orderService.productExists(productID);
+        if (!r.isErrorOccurred())
+            return supplierService.addQuantityListItem(supplierID, productID, amount, discount);
         return r;
     }
 
