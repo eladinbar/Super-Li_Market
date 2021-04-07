@@ -3,13 +3,12 @@ package InventoryModule.ControllerLayer;
 import InventoryModule.ControllerLayer.SimpleObjects.*;
 
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
 public interface InventoryService {
 
     Response addItem(int id, String name, String categoryName, double costPrice, double sellingPrice, int minAmount,
-                     String shelfLocation, String storageLocation, int storageQuantity, int shelfQuantity, int manufacturerId, List<Integer> suppliersIds);
+                     String shelfLocation, String storageLocation, int shelfQuantity, int storageQuantity, int manufacturerId, List<Integer> suppliersIds);
     ResponseT<Item> getItem(int itemId);
     Response modifyItemName(int itemId, String newName);
     Response modifyItemCategory(int itemId, String newCategoryName);

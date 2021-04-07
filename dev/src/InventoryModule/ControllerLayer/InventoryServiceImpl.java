@@ -3,23 +3,63 @@ package InventoryModule.ControllerLayer;
 import InventoryModule.ControllerLayer.SimpleObjects.*;
 
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
-public class InventoryServiceImpl implements InventoryService{
+public class InventoryServiceImpl implements InventoryService {
+    private InventoryController inventoryController;
+
+    public InventoryServiceImpl() {
+        inventoryController = new InventoryController();
+    }
 
     //-------------------------------------------------------------------------Item functions
 
     @Override
     public Response addItem(int id, String name, String categoryName, double costPrice, double sellingPrice,
-                            int minAmount, String shelfLocation, String storageLocation, int storageQuantity,
-                            int shelfQuantity, int manufacturerId, List<Integer> suppliersIds) {
-        return null;
+                            int minAmount, String shelfLocation, String storageLocation, int shelfQuantity,
+                            int storageQuantity, int manufacturerId, List<Integer> suppliersIds) {
+        Response response;
+        //Check basic argument constraints
+        if (id < 0 | name == null || name.trim().isEmpty() | costPrice < 0 | sellingPrice < 0 | minAmount < 0 |
+                shelfLocation == null || shelfLocation.trim().isEmpty() | storageLocation == null || storageLocation.trim().isEmpty() |
+                shelfQuantity < 0 | storageQuantity < 0 | manufacturerId < 0) {
+            response = new Response(true, "One or more of the given arguments is invalid.");
+            return response;
+        }
+        //Call business layer function
+        try {
+            inventoryController.addItem(id, name, categoryName, costPrice, sellingPrice,
+                                        minAmount, shelfLocation, storageLocation,
+                                        shelfQuantity, storageQuantity, manufacturerId, suppliersIds);
+            response = new Response(false, "Item added successfully");
+            return response;
+        } catch(IllegalArgumentException ex) {
+            response = new Response(true, ex.getMessage());
+            return response;
+        }
     }
 
     @Override
     public ResponseT<Item> getItem(int itemId) {
-        return null;
+        ResponseT<Item> responseT;
+        //Check basic argument constraints
+        if (itemId < 0) {
+            responseT = new ResponseT<>(true, "Item ID can only be represented as a non-negative number.", null);
+            return responseT;
+        }
+        //Call business layer function
+        try {
+            InventoryModule.BusinessLayer.Item tempItem = inventoryController.getItem(itemId);
+            Item simpleItem = new Item(itemId, tempItem.getName(), tempItem.getCostPrice(), tempItem.getSellingPrice(),
+                    tempItem.getMinAmount(), tempItem.getShelfQuantity(), tempItem.getStorageQuantity(), tempItem.getShelfLocation(),
+                    tempItem.getStorageLocation(), tempItem.getManufacturerID());
+            responseT = new ResponseT<>(false, "", simpleItem);
+            return responseT;
+        } catch (IllegalArgumentException ex) {
+            responseT = new ResponseT(true, ex.getMessage(), null);
+            return responseT;
+        }
+
     }
 
     @Override
