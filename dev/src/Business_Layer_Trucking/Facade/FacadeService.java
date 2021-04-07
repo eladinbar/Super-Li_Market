@@ -233,7 +233,9 @@ public class FacadeService {
         return deliveryService.getDeliveryForms(trID);
     }
 
-    public void updateDeliveryFormRealWeight(int trID, int dfID, int weight)throws IllegalStateException{
+    public void updateDeliveryFormRealWeight(int trID, int dfID, int weight) throws IllegalStateException{
+        // TODO if fails, update old TR to be old. creates new TR with compatible replaced
+        // TODO need to update all the DF  to the new TR
         LinkedList<FacadeTruck>trucks=resourcesService.getTrucks();
         FacadeTruck ft=null;
         for (FacadeTruck facadeTruck:trucks)
