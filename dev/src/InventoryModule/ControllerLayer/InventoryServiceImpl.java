@@ -180,17 +180,44 @@ public class InventoryServiceImpl implements InventoryService {
 
     @Override
     public Response modifySaleName(String oldName, String newName) {
-        return null;
+        Response response;
+        try{
+            inventoryController.modifySaleName(oldName, newName);
+
+        } catch (Exception e){
+            response = new Response(true, e.getMessage());
+            return  response;
+        }
+        response = new Response(false,"");
+        return response;
     }
 
     @Override
     public Response modifySaleDiscount(String saleName, double newDiscount) {
-        return null;
+        Response response;
+        try{
+            inventoryController.modifySaleDiscount(saleName, newDiscount);
+
+        } catch (Exception e){
+            response = new Response(true, e.getMessage());
+            return  response;
+        }
+        response = new Response(false,"");
+        return response;
     }
 
     @Override
     public Response modifySaleDates(String saleName, Calendar startDate, Calendar endDate) {
-        return null;
+        Response response;
+        try{
+            inventoryController.modifySaleDates(saleName, startDate, endDate);
+
+        } catch (Exception e){
+            response = new Response(true, e.getMessage());
+            return  response;
+        }
+        response = new Response(false,"");
+        return response;
     }
 
     //-------------------------------------------------------------------------Discount functions
