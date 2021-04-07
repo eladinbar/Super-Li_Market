@@ -35,9 +35,13 @@ public class Shift {
         isMissing = isMissing ();
     }
 
-    public Shift(FacadeShift facadeShift) {
+    public Shift(FacadeShift facadeShift) throws EmployeeException {
         date = facadeShift.getDate();
-        manning = facadeShift.getManning();
+        manning = new HashMap<> (  );
+        for( Map.Entry <String, List<String>> entry: facadeShift.getManning ().entrySet ())
+        {
+            manning.put ( stringToRole(entry.getKey ()), entry.getValue ());
+        }
         type = facadeShift.getType();
         mORe = facadeShift.getmORe();
     }
@@ -77,28 +81,30 @@ public class Shift {
         return false;
     }
 
-    public void deleteEmployee(Role role, int ID) throws EmployeeException {
-        if(manning.containsKey ( role ) && manning.get ( role ).contains ( ID ))
-            manning.get ( role ).remove ( ID );
+    public void deleteEmployee(String role, String ID) throws EmployeeException {
+        Role newRole = stringToRole ( role );
+        if(manning.containsKey ( newRole ) && manning.get ( newRole ).contains ( ID ))
+            manning.get ( newRole ).remove ( ID );
         else
             throw new EmployeeException ( "no such employee to delete in the current shift." );
     }
 
-    public void addEmployee(Role role, String ID) throws EmployeeException
+    public void addEmployee(String role, String ID) throws EmployeeException
     {
-        if(!manning.containsKey ( role )){
-            manning.put ( role, new ArrayList<> () );
+        Role newRole = stringToRole ( role );
+        if(!manning.containsKey ( newRole )){
+            manning.put ( newRole, new ArrayList<> () );
         }
-        if(manning.get ( role ).contains ( ID ))
+        if(manning.get ( newRole ).contains ( ID ))
             throw new EmployeeException ( "this employee already exists in shift." );
-        manning.get ( role ).add ( ID );
+        manning.get ( newRole ).add ( ID );
     }
 
     public void changeShiftType(String shiftType) {
         this.type = shiftType;
     }
 
-    public void changeManning(HashMap<Role,List<Integer>> manning) {
+    public void changeManning(HashMap<Role,List<String>> manning) {
         this.manning = manning;
     }
 
@@ -145,5 +151,27 @@ public class Shift {
 
     public int getmORe() {
         return mORe;
+    }
+
+    private Role stringToRole(String s) throws EmployeeException {
+        switch (s) {
+            case "branchManager":
+                return Role.branchManager;
+            case "branchManagerAssistent":
+                return Role.branchManagerAssistent;
+            case "humanResourcesManager":
+                return Role.humanResourcesManager;
+            case "cashier":
+                return Role.cashier;
+            case "guard":
+                return Role.guard;
+            case "usher":
+                return Role.usher;
+            case "storeKeeper":
+                return Role.storeKeeper;
+            default:
+                throw new EmployeeException ( "role chosen is illegal." );
+
+        }
     }
 }

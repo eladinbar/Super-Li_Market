@@ -51,29 +51,145 @@ public class PresentationController {
 
     }
 
-    public void getRecommendation(LocalDate startingDate) {
-//        if()
-//        stringConverter.convertWeeklyShiftSchedule (facadeService.getRecommendation ( startingDate ).value);
+    private void handleManagerChoice(int choice){
+        switch (choice){
+            case 1:
+                createWeeklyshiftSchedule ( );
+                choice = menuPrinter.managerMenu ();
+                handleManagerChoice ( choice );
+            case 2:
+                getWeeklyShiftScheduleManager ( );
+                choice = menuPrinter.managerMenu ();
+                handleManagerChoice ( choice );
+            case 3:
+                createShiftType (  );
+                choice = menuPrinter.managerMenu ();
+                handleManagerChoice ( choice );
+            case 4:
+                getEmployeeList();
+                choice = menuPrinter.managerMenu ();
+                handleManagerChoice ( choice );
+            case 5:
+                getEmployee( );
+                choice = menuPrinter.managerMenu ();
+                handleManagerChoice ( choice );
+            case 6:
+                getEmployeeConstraints();
+                choice = menuPrinter.managerMenu ();
+                handleManagerChoice ( choice );
+            case 7:
+                addEmployee (  );
+                choice = menuPrinter.managerMenu ();
+                handleManagerChoice ( choice );
+            case 8:
+                if(logout () == false)
+                {
+                    choice = menuPrinter.managerMenu ();
+                    handleManagerChoice ( choice );
+                }
+                while(login () == false);
+            default:
+                menuPrinter.printChoiceException();
+                choice = menuPrinter.managerMenu ();
+                handleManagerChoice ( choice );
+        }
+    }
+
+    private void handleSimpleEmployeeChoice(int choice){
+        switch (choice){
+            case 1:
+                getWeeklyShiftSchedule ( );
+                choice = menuPrinter.simpleEmployeeMenu ();
+                handleSimpleEmployeeChoice ( choice );
+            case 2:
+                getShift();
+                choice = menuPrinter.simpleEmployeeMenu ();
+                handleSimpleEmployeeChoice ( choice );
+            case 3:
+                giveConstraint (  );
+                choice = menuPrinter.simpleEmployeeMenu ();
+                handleSimpleEmployeeChoice ( choice );
+            case 4:
+                deleteConstraint (  );
+                choice = menuPrinter.simpleEmployeeMenu ();
+                handleSimpleEmployeeChoice ( choice );
+            case 5:
+                getEmployee ();
+                choice = menuPrinter.simpleEmployeeMenu ();
+                handleSimpleEmployeeChoice ( choice );
+            case 6:
+                getConstraints ();
+                choice = menuPrinter.simpleEmployeeMenu ();
+                handleSimpleEmployeeChoice ( choice );
+            case 7:
+                if(logout () == false)
+                {
+                    choice = menuPrinter.simpleEmployeeMenu ();
+                    handleSimpleEmployeeChoice ( choice );
+                }
+                while(login () == false);
+            default:
+                menuPrinter.printChoiceException();
+        }
+    }
+
+    private void handleManagerScheduleChoice(LocalDate date, int shift, int choice) {
+        switch (choice) {
+            case 1:
+                changeShift ( date, shift );
+                choice = menuPrinter.scheduleManagerMenu ( );
+                handleManagerScheduleChoice ( date, shift, choice );
+            case 2:
+                addEmployeeToShift ( date, shift );
+                choice = menuPrinter.scheduleManagerMenu ( );
+                handleManagerScheduleChoice ( date, shift, choice );
+            case 3:
+                deleteEmployeeFromShift ( date, shift );
+                choice = menuPrinter.scheduleManagerMenu ( );
+                handleManagerScheduleChoice ( date, shift, choice );
+            case 4:
+                changeShiftType ( date, shift );
+                choice = menuPrinter.scheduleManagerMenu ( );
+                handleManagerScheduleChoice ( date, shift, choice );
+            case 5:
+                return;
+            default:
+                menuPrinter.printChoiceException ( );
+                return;
+        }
+    }
+
+    public void getRecommendation() {
+        LocalDate date = menuPrinter.schedule ();
     }
 
     public void createWeeklyshiftSchedule()
     {
-        menuPrinter.print ( "Write the shift's details: \n" );
-        LocalDate date = menuPrinter.schedule ();
-        FacadeShift[][] shifts = new FacadeShift[7][2];
-        for(int i = 0; i < 6; i++)
+        int choice = menuPrinter.createWeeklyShiftSchedule();
+        if(choice < 1 || choice > 2)
         {
-            shifts[i][0] = createFirstShift ( date.plusDays ( i ) );
-            shifts[i][1] = createSecondShift ( date.plusDays ( i ) );
-        }
-        shifts[5][0] = createFirstShift ( date.plusDays ( 5 ) );
-        shifts[6][1] = createSecondShift ( date.plusDays ( 6 ) );
-        ResponseT<FacadeWeeklyShiftSchedule> weeklyShiftSchedule = facadeService.createWeeklyshiftSchedule ( date, shifts );
-        if(weeklyShiftSchedule.errorOccured ())
-        {
-            menuPrinter.print ( weeklyShiftSchedule.getErrorMessage () );
+            menuPrinter.printChoiceException();
             return;
         }
+        if(choice == 1) {
+            menuPrinter.print ( "Write the shift's details: \n" );
+            LocalDate date = menuPrinter.schedule ( );
+            FacadeShift[][] shifts = new FacadeShift[7][2];
+            for ( int i = 0 ; i < 6 ; i++ ) {
+                shifts[i][0] = createFirstShift ( date.plusDays ( i ) );
+                shifts[i][1] = createSecondShift ( date.plusDays ( i ) );
+            }
+            shifts[5][0] = createFirstShift ( date.plusDays ( 5 ) );
+            shifts[6][1] = createSecondShift ( date.plusDays ( 6 ) );
+            ResponseT<FacadeWeeklyShiftSchedule> weeklyShiftSchedule = facadeService.createWeeklyshiftSchedule ( date, shifts );
+            if (weeklyShiftSchedule.errorOccured ( )) {
+                menuPrinter.print ( weeklyShiftSchedule.getErrorMessage ( ) );
+                return;
+            }
+        }
+        else
+            getRecommendation (  );
+        editSchedule ();
     }
 
     private FacadeShift createFirstShift(LocalDate date)
@@ -81,7 +197,7 @@ public class PresentationController {
         menuPrinter.print( "Write the type of the first shift in date " + date );
         String type = menuPrinter.getString ();
         FacadeShift shift = new FacadeShift ( date, type, 0 );
-        HashMap <Role, List<String>> manning = createManning ();
+        HashMap <String, List<String>> manning = createManning ();
         shift.setManning ( manning );
         return shift;
     }
@@ -91,14 +207,14 @@ public class PresentationController {
         menuPrinter.print( "Write the type of the first second in date " + date );
         String type = menuPrinter.getString ();
         FacadeShift shift = new FacadeShift ( date, type, 1 );
-        HashMap <Role, List<String>> manning = createManning ();
+        HashMap <String, List<String>> manning = createManning ();
         shift.setManning ( manning );
         return shift;
     }
 
-    private HashMap<Role, List<String>> createManning(){
-        Role role = menuPrinter.roleMenu ();
-        HashMap <Role, List<String>> manning = new HashMap<> (  );
+    private HashMap<String, List<String>> createManning(){
+        String role = menuPrinter.roleMenu ();
+        HashMap <String, List<String>> manning = new HashMap<> (  );
         List<String> roleManning = new ArrayList<> (  );
         while(role != null)
         {
@@ -117,24 +233,56 @@ public class PresentationController {
 
     }
 
-    public void changeShift(LocalDate date, int shift, HashMap<Role, List<Integer>> manning) {
-
+    public void changeShift(LocalDate date, int shift) {
+        HashMap<Role, List<String>> manning = createManning ();
+        Response response = facadeService.changeShift ( date, shift, manning );
+        if(response.errorOccured ())
+        {
+            menuPrinter.print ( response.getErrorMessage ());
+            return;
+        }
     }
 
-    public void addEmployeeToShift(Role role, String ID, LocalDate date, int shift){
-
+    public void addEmployeeToShift(LocalDate date, int shift) {
+        String role = menuPrinter.roleMenu ( );
+        menuPrinter.print ( "ID: " );
+        String ID = menuPrinter.getString ( );
+        Response response = facadeService.addEmployeeToShift ( role, ID, date, shift );
+        if (response.errorOccured ( ))
+            menuPrinter.print ( response.getErrorMessage ( ) );
     }
 
-    public void deleteEmployeeFromShift(Role role, int ID, LocalDate date, int shift)  {
-
+    public void deleteEmployeeFromShift(LocalDate date, int shift)  {
+        String role = menuPrinter.roleMenu ( );
+        menuPrinter.print ( "ID: " );
+        String ID = menuPrinter.getString ( );
+        Response response = facadeService.deleteEmployeeFromShift ( role, ID, date, shift );
+        if (response.errorOccured ( ))
+            menuPrinter.print ( response.getErrorMessage ( ) );
     }
 
-    public void changeShiftType(LocalDate date, int shift, String shiftType) {
-
+    public void changeShiftType(LocalDate date, int shift) {
+        menuPrinter.print ( "Write shift type name: " );
+        String shiftType = menuPrinter.getString ( );
+        Response response = facadeService.changeShiftType ( date, shift, shiftType );
+        if (response.errorOccured ( ))
+            menuPrinter.print ( response.getErrorMessage ( ) );
     }
 
-    public void createShiftType(String shiftype, HashMap<Role, Integer> manning){
-
+    public void createShiftType(){
+        menuPrinter.print ( "Write the shift type name: " );
+        String shiftype = menuPrinter.getString ();
+        HashMap<String, Integer> manning = new HashMap<> (  );
+        String role = menuPrinter.roleMenu ();
+        while (role != null)
+        {
+            menuPrinter.print ( "Write the num of employees you would like in this role: " );
+            manning.put ( role, ( menuPrinter.getInt () ) );
+            role = menuPrinter.roleMenu ();
+        }
+        Response response = facadeService.createShiftType ( shiftype, manning );
+        if (response.errorOccured ( ))
+            menuPrinter.print ( response.getErrorMessage ( ) );
     }
 
     public void updateRoleManning(String shiftType, Role role, int num) {
@@ -159,7 +307,7 @@ public class PresentationController {
 
     public boolean login() {
         int id = menuPrinter.loginID ( );
-        Role role = menuPrinter.roleMenu ();
+        String role = menuPrinter.roleMenu ();
         int choice;
         FacadeEmployee facadeEmployee;
         if(role != null) {
@@ -184,80 +332,13 @@ public class PresentationController {
             return false;
     }
 
-    private void handleManagerChoice(int choice){
-        switch (choice){
-            case 1:
-                createWeeklyshiftSchedule ( );
-                choice = menuPrinter.managerMenu ();
-                handleManagerChoice ( choice );
-            case 2:
-                getWeeklyShiftScheduleManager ( );
-                choice = menuPrinter.managerMenu ();
-                handleManagerChoice ( choice );
-            case 3:
-                getEmployee( );
-                choice = menuPrinter.managerMenu ();
-                handleManagerChoice ( choice );
-            case 4:
-                addEmployee (  );
-                choice = menuPrinter.managerMenu ();
-                handleManagerChoice ( choice );
-            case 5:
-                removeEmployee (  );
-                choice = menuPrinter.managerMenu ();
-                handleManagerChoice ( choice );
-            case 6:
-                logout ();
-            default:
-                System.out.println ("choice is illegal.");
-                choice = menuPrinter.managerMenu ();
-                handleManagerChoice ( choice );
-        }
-    }
 
-    private void handleSimpleEmployeeChoice(int choice){
-        switch (choice){
-            case 1:
-                getWeeklyShiftSchedule ( );
-                choice = menuPrinter.simpleEmployeeMenu ();
-                handleSimpleEmployeeChoice ( choice );
-            case 2:
-                getShift();
-                choice = menuPrinter.simpleEmployeeMenu ();
-                handleSimpleEmployeeChoice ( choice );
-            case 3:
-                giveConstraint (  );
-                choice = menuPrinter.simpleEmployeeMenu ();
-                handleSimpleEmployeeChoice ( choice );
-            case 4:
-                deleteConstraint (  );
-                choice = menuPrinter.simpleEmployeeMenu ();
-                handleSimpleEmployeeChoice ( choice );
-//            case 5:
-//                updateConstraint (  );
-//                choice = menuPrinter.simpleEmployeeMenu ();
-//                handleSimpleEmployeeChoice ( choice );
-            case 5:
-                getConstraints();
-                choice = menuPrinter.simpleEmployeeMenu ();
-                handleSimpleEmployeeChoice ( choice );
-            case 6:
-                if(logout () == false)
-                {
-                    choice = menuPrinter.simpleEmployeeMenu ();
-                    handleSimpleEmployeeChoice ( choice );
-                }
-                while(login () == false);
-            default:
-                System.out.println ("choice is illegal.");
-        }
-    }
 
     private void getShift() {
         LocalDate date = menuPrinter.getShiftDate ();
         int shift = menuPrinter.getShiftNum ();
         if(shift < 0 || shift > 2) {
-            menuPrinter.print ( "Shift type is illegal.\n" );
+            menuPrinter.printChoiceException();
             return;
         }
         if(shift < 2) {
@@ -304,7 +385,22 @@ public class PresentationController {
         }
     }
 
-    public boolean logout()  {
+    private void getConstraintsOfEmployee() {
+        menuPrinter.print ( "ID of employee you would like to display: " );
+        String id = menuPrinter.getString ();
+        ResponseT<List<FacadeConstraint>> constraints = facadeService.getConstraints(id);
+        if(constraints.errorOccured ())
+        {
+            menuPrinter.print ( constraints.getErrorMessage () );
+            return;
+        }
+        menuPrinter.print ( "Constraints:\n" );
+        for ( FacadeConstraint entry: constraints.value) {
+            menuPrinter.print ( stringConverter.convertConstraint ( entry ) );
+        }
+    }
+
+    private boolean logout()  {
         ResponseT<FacadeEmployee> employee = facadeService.logout ().errorOccured ();
         if(employee.errorOccured ()) {
             menuPrinter.print ( employee.getErrorMessage ( ) );
@@ -333,7 +429,7 @@ public class PresentationController {
     public void deleteConstraint ()  {
         LocalDate date = menuPrinter.dateMenu ();
         int shift = menuPrinter.getShiftNum ();
-        Response r = facadeService.deleteConstraint ( date, shift);
+        Response r = facadeService.deleteConstraint (date, shift);
         if (r.errorOccured ())
             menuPrinter.print ( r.getErrorMessage () );
     }
@@ -367,10 +463,41 @@ public class PresentationController {
     }
 
     public void getEmployee() {
-
+        ResponseT<FacadeEmployee> employee = facadeService.getLoggedin();
+        if (employee.errorOccured ())
+        {
+            menuPrinter.print ( employee.getErrorMessage () );
+            return;
+        }
+        String s = stringConverter.convertEmployee ( employee.value );
+        menuPrinter.print ( s );
     }
 
     private void getWeeklyShiftScheduleManager() {
+        getWeeklyShiftSchedule ( );
+        editSchedule ();
+    }
 
+    private void editSchedule(){
+        menuPrinter.print ( "Would you like to edit one of the shifts? n\\y" );
+        char c = menuPrinter.getChar ( );
+        if (c == 'y') {
+            LocalDate date = menuPrinter.getShiftDate ( );
+            int shift = menuPrinter.getOneShiftNum ( );
+            int choice = menuPrinter.scheduleManagerMenu ( );
+            handleManagerScheduleChoice (date, shift, choice );
+        }
+    }
+
+
+
+    private void updateEmployee() {
+    }
+
+    private void getEmployeeConstraints() {
+    }
+
+    private void getEmployeeList() {
+        ResponseT<List<FacadeEmployee>> employees = facadeService.getEmployees ( )
     }
 }

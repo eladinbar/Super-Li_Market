@@ -42,14 +42,14 @@ public class WeeklyShiftSchedule {
         isMissing = true;
     }
 
-    public void addEmployeeToShift(Role role, String ID, LocalDate date, int shift) throws EmployeeException {
+    public void addEmployeeToShift(String role, String ID, LocalDate date, int shift) throws EmployeeException {
         if(shift > 2 || shift < 1 || checkDatesValidity ( this.date, date ))
             throw new EmployeeException ( "no such shift to add the employee." );
         getShift ( date, shift ).addEmployee ( role, ID );
         isMissing = isMissing();
     }
 
-    public void deleteEmployeeFromShift(Role role, int ID, LocalDate date, int shift) throws EmployeeException {
+    public void deleteEmployeeFromShift(String role, String ID, LocalDate date, int shift) throws EmployeeException {
         if(shift > 2 || shift < 1 || checkDatesValidity ( this.date, date ))
             throw new EmployeeException ( "no such shift to delete the employee from." );
         getShift ( date, shift ).deleteEmployee ( role, ID );
@@ -72,12 +72,12 @@ public class WeeklyShiftSchedule {
         return shifts[date.getDayOfWeek ().getValue ()][shift];
     }
 
-    public void changeShift(LocalDate date, int shift, HashMap<Role, List<Integer>> manning) {
+    public void changeShift(LocalDate date, int shift, HashMap<Role, List<String>> manning) {
         shifts[date.getDayOfWeek ().getValue ()][shift].changeManning( manning );
         isMissing = isMissing();
     }
 
-    public void addShift(LocalDate date, int shift, HashMap<Role, List<Integer>> manning) throws EmployeeException {
+    public void addShift(LocalDate date, int shift, HashMap<Role, List<String>> manning) throws EmployeeException {
         if (getShift ( date, shift ).getManning () != null)
             throw new EmployeeException ( "shift is already exists." );
         changeShift ( date, shift, manning );

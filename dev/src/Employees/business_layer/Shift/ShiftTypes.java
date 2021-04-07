@@ -4,6 +4,7 @@ import Employees.EmployeeException;
 import Employees.business_layer.Employee.Role;
 
 import java.util.HashMap;
+import java.util.Map;
 
 public class ShiftTypes {
     private static ShiftTypes instance = null;
@@ -15,46 +16,70 @@ public class ShiftTypes {
         shiftTypes = new HashMap<> ( );
     }
 
-    public static ShiftTypes getInstance()
-    {
-        if(instance == null)
-            instance = new ShiftTypes ();
+    public static ShiftTypes getInstance() {
+        if (instance == null)
+            instance = new ShiftTypes ( );
         return instance;
     }
 
-    public int getRoleManning(String shiftType, Role role)
-    {
-        if(!shiftTypes.containsKey ( shiftType ) || !shiftTypes.get ( shiftType ).containsKey ( role ))
+    public int getRoleManning(String shiftType, Role role) {
+        if (!shiftTypes.containsKey ( shiftType ) || !shiftTypes.get ( shiftType ).containsKey ( role ))
             return 0;
         return shiftTypes.get ( shiftType ).get ( role );
     }
 
     public void unpdateRoleManning(String shiftType, Role role, int num) throws EmployeeException {
-        if(!shiftTypes.containsKey ( shiftType ))
+        if (!shiftTypes.containsKey ( shiftType ))
             throw new EmployeeException ( "no such shift type to update." );
-        if(!shiftTypes.get ( shiftType ).containsKey ( role ))
-            shiftTypes.get ( shiftType ).put ( role,num );
+        if (!shiftTypes.get ( shiftType ).containsKey ( role ))
+            shiftTypes.get ( shiftType ).put ( role, num );
         else
             shiftTypes.get ( shiftType ).replace ( role, num );
     }
 
     public void addRoleManning(String shiftType, Role role, int num) throws EmployeeException {
-        if(!shiftTypes.containsKey ( shiftType ))
+        if (!shiftTypes.containsKey ( shiftType ))
             throw new EmployeeException ( "no such shift type exist to add a role manning." );
-        if(shiftTypes.get ( shiftType ).containsKey ( role ))
-            throw new EmployeeException ("role is already exsits in manning.");
-        shiftTypes.get ( shiftType ).put ( role, num);
+        if (shiftTypes.get ( shiftType ).containsKey ( role ))
+            throw new EmployeeException ( "role is already exsits in manning." );
+        shiftTypes.get ( shiftType ).put ( role, num );
     }
 
     public HashMap<Role, Integer> getShiftTypeManning(String shiftType) throws EmployeeException {
-        if(!shiftTypes.containsKey ( shiftType ))
+        if (!shiftTypes.containsKey ( shiftType ))
             throw new EmployeeException ( "no such Shift type." );
         return shiftTypes.get ( shiftType );
     }
 
-    public void addShiftType(String shiftType, HashMap<Role, Integer> manning) throws EmployeeException {
-        if(shiftType.contains ( shiftType ))
+    public void addShiftType(String shiftType, HashMap<String, Integer> manning) throws EmployeeException {
+        if (shiftType.contains ( shiftType ))
             throw new EmployeeException ( "this current shift type already exists." );
-        shiftTypes.put ( shiftType, manning );
+        HashMap<Role, Integer> newManning = new HashMap<> ( );
+        for ( Map.Entry<String, Integer> entry : manning.entrySet ( ) ) {
+            newManning.put ( stringToRole ( entry.getKey ( ) ), entry.getValue ( ) );
+        }
+        shiftTypes.put ( shiftType, newManning );
+    }
+
+    private Role stringToRole(String s) throws EmployeeException {
+        switch (s) {
+            case "branchManager":
+                return Role.branchManager;
+            case "branchManagerAssistent":
+                return Role.branchManagerAssistent;
+            case "humanResourcesManager":
+                return Role.humanResourcesManager;
+            case "cashier":
+                return Role.cashier;
+            case "guard":
+                return Role.guard;
+            case "usher":
+                return Role.usher;
+            case "storeKeeper":
+                return Role.storeKeeper;
+            default:
+                throw new EmployeeException ( "role chosen is illegal." );
+
+        }
     }
 }

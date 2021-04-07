@@ -3,10 +3,12 @@ package Employees.business_layer.facade;
 import Employees.EmployeeException;
 import Employees.business_layer.Employee.*;
 import Employees.business_layer.facade.facadeObject.FacadeBankAccountInfo;
+import Employees.business_layer.facade.facadeObject.FacadeConstraint;
 import Employees.business_layer.facade.facadeObject.FacadeEmployee;
 import Employees.business_layer.facade.facadeObject.FacadeTermsOfEmployment;
 
 import java.time.LocalDate;
+import java.util.List;
 
 public class EmployeeService {
     EmployeeController employeeController;
@@ -69,4 +71,17 @@ public class EmployeeService {
 
     }
 
+    public ResponseT<FacadeEmployee> getLoggedin() {
+    }
+
+    public ResponseT<List<FacadeConstraint>> getConstraints() {
+    }
+
+    public ResponseT<List<FacadeConstraint>> getConstraints(String id) {
+
+    }
+
+    public ResponseT<List<FacadeEmployee>> getEmployees() {
+
+    }
 }

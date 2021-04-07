@@ -6,16 +6,17 @@ import Employees.business_layer.Shift.Shift;
 import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class FacadeShift implements FacadeObject {
     private LocalDate date;
-    private HashMap<Role, List<String>> manning;
+    private HashMap<String, List<String>> manning;
     private String type;
     private int mORe;
     private boolean isMissing;
 
     //an existing shift with a given maning
-    public FacadeShift(LocalDate date, HashMap<Role, List<String>> manning, String type, int mORe, boolean isMissing)
+    public FacadeShift(LocalDate date, HashMap<String, List<String>> manning, String type, int mORe, boolean isMissing)
     {
         this.date = date;
         this.manning = manning;
@@ -36,7 +37,11 @@ public class FacadeShift implements FacadeObject {
 
     public FacadeShift(Shift shift) {
         date = shift.getDate ();
-        manning = shift.getManning ();
+        manning = new HashMap<> (  );
+        for( Map.Entry <Role, List<String>> entry: shift.getManning ().entrySet ())
+        {
+            manning.put ( entry.getKey ().name (), entry.getValue ());
+        }
         type = shift.getType ();
         mORe = shift.getmORe();
         isMissing = shift.isMissing ();
@@ -50,7 +55,7 @@ public class FacadeShift implements FacadeObject {
         return type;
     }
 
-    public HashMap<Role, List<String>> getManning() {
+    public HashMap<String, List<String>> getManning() {
         return manning;
     }
 
@@ -62,7 +67,7 @@ public class FacadeShift implements FacadeObject {
         return isMissing;
     }
 
-    public void setManning(HashMap<Role, List<String>> manning) {
+    public void setManning(HashMap<String, List<String>> manning) {
         this.manning = manning;
     }
 }
