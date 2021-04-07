@@ -14,7 +14,6 @@ public class Driver {
         {
             this.size=size;
         }
-
         public int getSize() {
             return size;
         }

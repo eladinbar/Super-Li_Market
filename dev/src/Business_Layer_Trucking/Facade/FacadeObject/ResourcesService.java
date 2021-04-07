@@ -28,13 +28,13 @@ public class ResourcesService
     }
 
 
-    public Truck chooseTruck(int truck) throws NoSuchElementException, IllegalStateException {
+    public Truck chooseTruck(String truck) throws NoSuchElementException, IllegalStateException {
 
         return rc.chooseTruck(truck);
 
     }
 
-    public FacadeDriver chooseDriver(int driver)throws IllegalStateException,NoSuchElementException {
+    public FacadeDriver chooseDriver(String driver)throws IllegalStateException,NoSuchElementException {
 
         return new FacadeDriver(rc.chooseDriver(driver));
 
@@ -43,19 +43,19 @@ public class ResourcesService
 
 
 
-    public void makeUnavailable_Driver(int driver)throws NoSuchElementException {
+    public void makeUnavailable_Driver(String driver)throws NoSuchElementException {
         rc.makeUnavailable_Driver(driver);
     }
 
-    public void makeAvailable_Driver(int driver) {
+    public void makeAvailable_Driver(String driver) {
         rc.makeAvailable_Driver(driver);
     }
 
-    public void makeUnavailable_Truck(int truck) {
+    public void makeUnavailable_Truck(String truck) {
         rc.makeUnavailable_Truck(truck);
     }
 
-    public void makeAvailable_Truck(int truck) {
+    public void makeAvailable_Truck(String truck) {
         rc.makeAvailable_Truck(truck);
     }
 
@@ -113,5 +113,9 @@ public class ResourcesService
 
     public void saveReport() {
         rc.saveReport();
+    }
+
+    public void replaceTruck(String old_truck, String truckNumber) {
+        rc.replaceTruck(old_truck,truckNumber);
     }
 }

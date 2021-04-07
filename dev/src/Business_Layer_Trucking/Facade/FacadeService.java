@@ -35,7 +35,7 @@ public class FacadeService {
     }
 
 
-    public FacadeTruck chooseTruck(int truck) throws NoSuchElementException, IllegalStateException {
+    public FacadeTruck chooseTruck(String truck) throws NoSuchElementException, IllegalStateException {
         int weightToDeliver=deliveryService.getWeightOfCurrReport();
         FacadeTruck ft =  new FacadeTruck(resourcesService.chooseTruck(truck));
         if (weightToDeliver+ ft.getWeightNeto()>ft.getMaxWeight())
@@ -53,7 +53,7 @@ public class FacadeService {
 
 
 
-    public FacadeDriver chooseDriver(int driver) throws IllegalStateException,NoSuchElementException{
+    public FacadeDriver chooseDriver(String driver) throws IllegalStateException,NoSuchElementException{
         FacadeDriver fd  = resourcesService.chooseDriver(driver);
         FacadeTruck ft  = null;
         for (FacadeTruck ft2 : resourcesService.getTrucks()){
@@ -110,19 +110,19 @@ public class FacadeService {
         return deliveryService.getWeightOfCurrReport();
     }
 
-    public void makeUnavailable_Driver(int driver)throws NoSuchElementException {
+    public void makeUnavailable_Driver(String driver)throws NoSuchElementException {
         resourcesService.makeUnavailable_Driver(driver);
     }
 
-    public void makeAvailable_Driver(int driver) {
+    public void makeAvailable_Driver(String driver) {
         resourcesService.makeAvailable_Driver(driver);
     }
 
-    public void makeUnavailable_Truck(int truck) {
+    public void makeUnavailable_Truck(String truck) {
         resourcesService.makeUnavailable_Truck(truck);
     }
 
-    public void makeAvailable_Truck(int truck) {
+    public void makeAvailable_Truck(String truck) {
         resourcesService.makeAvailable_Truck(truck);
     }
 
@@ -253,6 +253,11 @@ public class FacadeService {
     }
 
 
+    public void replaceTruck(int trid, String truckNumber) {
+        FacadeTruckingReport ftr=getTruckReport(trid);
+        String old_truck=ftr.getTruckNumber();
+        resourcesService.replaceTruck(old_truck,truckNumber);
+    }
 }
 
 

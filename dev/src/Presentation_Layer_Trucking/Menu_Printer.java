@@ -311,7 +311,7 @@ public class Menu_Printer {
                         " Available: " + facadeDriver.isAvailable());
             }
             System.out.println("Choose Driver by id");
-            int driver= getIntFromUser(scanner);
+            String driver= getStringFromUser(scanner);
             pc.makeAvailable_Driver(driver);
         }
     }
@@ -326,7 +326,7 @@ public class Menu_Printer {
                         "\n model: " + truck.getModel() + " maxWeight: " + truck.getMaxWeight()  );
             }
             System.out.println("Choose truck by License:");
-            int truck= getIntFromUser(scanner);
+            String truck= getStringFromUser(scanner);
             // TODO throws exception for busy truck?
             pc.makeAvailable_Truck(truck) ;
         }
@@ -344,7 +344,7 @@ public class Menu_Printer {
                         " Available: " + facadeDriver.isAvailable());
             }
             System.out.println("Choose Driver by id");
-            int driver= getIntFromUser(scanner);
+            String driver= getStringFromUser(scanner);
             try {
                 pc.makeUnavailable_Driver(driver);
             }catch (NoSuchElementException e){
@@ -363,7 +363,7 @@ public class Menu_Printer {
                         "\n model: " + truck.getModel() + " maxWeight: " + truck.getMaxWeight()  );
             }
             System.out.println("Choose truck by License:");
-            int truck= getIntFromUser(scanner);
+            String truck= getStringFromUser(scanner);
             pc.makeUnavailable_Truck(truck);
         }
     }
@@ -561,11 +561,11 @@ public class Menu_Printer {
         for (FacadeTruck truck: trucks) {
             System.out.println("truck LicenseNumber: " + truck.getLicenseNumber() + " max Weight :" + truck.getMaxWeight())  ;
         }
-        int truckID =  getIntFromUser(scanner);
+        String truck =  getStringFromUser(scanner);
         boolean con =true;
         while(con) {
             try {
-                FacadeTruck facadeTruck = pc.chooseTruck(truckID);
+                FacadeTruck facadeTruck = pc.chooseTruck(truck);
                 con = false;
             }catch (NoSuchElementException|IllegalStateException e  ){
                 System.out.println(e.getMessage());
@@ -580,7 +580,7 @@ public class Menu_Printer {
         for ( FacadeDriver driver : drivers) {
             System.out.println("Driver ID:" + driver.getID() + " License degree: " + driver.getLicenseType() + " =" + driver.getLicenseType().getSize()  )  ;
         }
-        int driverID =  getIntFromUser(scanner);
+        String driverID =  getStringFromUser(scanner);
         con =true;
         while(con) {
             try {
@@ -760,7 +760,7 @@ public class Menu_Printer {
                 // TODO need to show sites
                 int itemNumber =0;
                 int amount =0;
-                int siteID =0;
+                siteID =0;
                 pc.removeSiteFromTruckReport(siteID, tr.getID());
                 // TODO need to show demands - loop
                 pc.addDemandToTruckReport(tr.getID(),itemNumber, amount);
@@ -770,7 +770,7 @@ public class Menu_Printer {
 
 
                 pc.getAvailableTrucks();
-                int truckNumber =0;
+                String truckNumber ="0";
                 try {
                     pc.replaceTruck(tr.getID(), truckNumber);
                 }catch(Exception e){

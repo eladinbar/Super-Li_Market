@@ -44,22 +44,22 @@ public class PresentationController {
 
 
 
-    public void makeUnavailable_Driver(int driver) throws NoSuchElementException
+    public void makeUnavailable_Driver(String driver) throws NoSuchElementException
     {
         facadeService.makeUnavailable_Driver(driver);
     }
-    public boolean makeAvailable_Driver(int driver)
+    public boolean makeAvailable_Driver(String driver)
     {
         facadeService.makeAvailable_Driver(driver);
         return true;
     }
-    public boolean makeUnavailable_Truck(int truck)
+    public boolean makeUnavailable_Truck(String truck)
     {
 
         facadeService.makeUnavailable_Truck(truck);
         return true;
     }
-    public boolean makeAvailable_Truck(int truck)
+    public boolean makeAvailable_Truck(String truck)
     {
         facadeService.makeAvailable_Truck(truck);
         return true;
@@ -110,8 +110,8 @@ public class PresentationController {
 
     }
 
-    public FacadeTruck chooseTruck(int truckID) throws NoSuchElementException, IllegalStateException{
-        return facadeService.chooseTruck(truckID);
+    public FacadeTruck chooseTruck(String truck) throws NoSuchElementException, IllegalStateException{
+        return facadeService.chooseTruck(truck);
     }
 
     public int getWeight(int itemID) {
@@ -122,7 +122,7 @@ public class PresentationController {
         return facadeService.getAvailableDrivers();
     }
 
-    public FacadeDriver chooseDriver(int driverID) throws IllegalStateException,NoSuchElementException {
+    public FacadeDriver chooseDriver(String driverID) throws IllegalStateException,NoSuchElementException {
         return facadeService.chooseDriver(driverID);
     }
 
@@ -217,14 +217,16 @@ public class PresentationController {
     public void addDemandToTruckReport(int id, int itemNumber, int amount) {
     }
 
-    public void replaceTruck(int id, int truckNumber) {
+    public void replaceTruck(int id, String truckNumber) {
         // TODO need to check the current driver fits the new Trucks weight
+        facadeService.replaceTruck(id,truckNumber);
     }
 
     public void replaceDriver(int id, int driverID) {
     }
 
     public LinkedList<FacadeDemand> getItemOnReport(int id) {
+        return null;
     }
 
     public void removeItemFromTruckingReport(int id, FacadeDemand demand) {
