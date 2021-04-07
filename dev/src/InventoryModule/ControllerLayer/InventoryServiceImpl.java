@@ -6,6 +6,7 @@ import InventoryModule.ControllerLayer.SimpleObjects.DefectEntry;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 public class InventoryServiceImpl implements InventoryService {
     private InventoryController inventoryController;
@@ -393,8 +394,19 @@ public class InventoryServiceImpl implements InventoryService {
 
     @Override
     public Response recordDefect(int itemId, Calendar entryDate, int defectQuantity, String defectLocation) {
-        if(itemId <= 0){}
-        return null;
+        Response recorded;
+        if (itemId <= 0 || defectQuantity <= 0 || defectLocation.isEmpty() || defectLocation.isBlank()) {
+            recorded = new Response(true, "One oe more Arguments is invalid");
+            return recorded;
+        }
+        try {
+            inventoryController.recordDefect(itemId, entryDate, defectQuantity, defectLocation);
+        } catch (Exception e){
+            recorded = new Response(true,e.getMessage());
+            return recorded;
+        }
+        recorded = new Response(false,"");
+        return recorded;
     }
 
     //-------------------------------------------------------------------------Report functions
@@ -405,15 +417,15 @@ public class InventoryServiceImpl implements InventoryService {
         List<Item> simpleItemList = new ArrayList<>();
         try {
             List<InventoryModule.BusinessLayer.Item> shortageItems = inventoryController.inventoryReport();
-            for (InventoryModule.BusinessLayer.Item i: shortageItems) {
-                Item simpleItem = new Item(i.getID(),i.getName(),i.getCostPrice(),i.getSellingPrice(),i.getMinAmount(),
-                        i.getShelfQuantity(),i.getStorageQuantity(),i.getShelfLocation(),i.getStorageLocation(),i.getManufacturerID());
+            for (InventoryModule.BusinessLayer.Item i : shortageItems) {
+                Item simpleItem = new Item(i.getID(), i.getName(), i.getCostPrice(), i.getSellingPrice(), i.getMinAmount(),
+                        i.getShelfQuantity(), i.getStorageQuantity(), i.getShelfLocation(), i.getStorageLocation(), i.getManufacturerID());
                 simpleItemList.add(simpleItem);
             }
-            shortageResponse = new ResponseT<>(false,"",simpleItemList);
+            shortageResponse = new ResponseT<>(false, "", simpleItemList);
 
         } catch (Exception e) {
-            shortageResponse = new ResponseT<>(true,e.getMessage(),null);
+            shortageResponse = new ResponseT<>(true, e.getMessage(), null);
         }
         return shortageResponse;
     }
@@ -424,15 +436,15 @@ public class InventoryServiceImpl implements InventoryService {
         List<Item> simpleItemList = new ArrayList<>();
         try {
             List<InventoryModule.BusinessLayer.Item> shortageItems = inventoryController.categoryReport(categoryName);
-            for (InventoryModule.BusinessLayer.Item i: shortageItems) {
-                Item simpleItem = new Item(i.getID(),i.getName(),i.getCostPrice(),i.getSellingPrice(),i.getMinAmount(),
-                        i.getShelfQuantity(),i.getStorageQuantity(),i.getShelfLocation(),i.getStorageLocation(),i.getManufacturerID());
+            for (InventoryModule.BusinessLayer.Item i : shortageItems) {
+                Item simpleItem = new Item(i.getID(), i.getName(), i.getCostPrice(), i.getSellingPrice(), i.getMinAmount(),
+                        i.getShelfQuantity(), i.getStorageQuantity(), i.getShelfLocation(), i.getStorageLocation(), i.getManufacturerID());
                 simpleItemList.add(simpleItem);
             }
-            shortageResponse = new ResponseT<>(false,"",simpleItemList);
+            shortageResponse = new ResponseT<>(false, "", simpleItemList);
 
         } catch (Exception e) {
-            shortageResponse = new ResponseT<>(true,e.getMessage(),null);
+            shortageResponse = new ResponseT<>(true, e.getMessage(), null);
         }
         return shortageResponse;
     }
@@ -443,15 +455,15 @@ public class InventoryServiceImpl implements InventoryService {
         List<Item> simpleItemList = new ArrayList<>();
         try {
             List<InventoryModule.BusinessLayer.Item> shortageItems = inventoryController.itemShortageReport();
-            for (InventoryModule.BusinessLayer.Item i: shortageItems) {
-                Item simpleItem = new Item(i.getID(),i.getName(),i.getCostPrice(),i.getSellingPrice(),i.getMinAmount(),
-                        i.getShelfQuantity(),i.getStorageQuantity(),i.getShelfLocation(),i.getStorageLocation(),i.getManufacturerID());
+            for (InventoryModule.BusinessLayer.Item i : shortageItems) {
+                Item simpleItem = new Item(i.getID(), i.getName(), i.getCostPrice(), i.getSellingPrice(), i.getMinAmount(),
+                        i.getShelfQuantity(), i.getStorageQuantity(), i.getShelfLocation(), i.getStorageLocation(), i.getManufacturerID());
                 simpleItemList.add(simpleItem);
             }
-            shortageResponse = new ResponseT<>(false,"",simpleItemList);
+            shortageResponse = new ResponseT<>(false, "", simpleItemList);
 
         } catch (Exception e) {
-            shortageResponse = new ResponseT<>(true,e.getMessage(),null);
+            shortageResponse = new ResponseT<>(true, e.getMessage(), null);
         }
         return shortageResponse;
     }
