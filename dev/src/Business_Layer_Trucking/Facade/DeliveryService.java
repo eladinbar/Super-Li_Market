@@ -212,10 +212,38 @@ public class DeliveryService {
         return dc.getWeightOfCurrReport();
     }
 
-    //TODO
-    // 1. create active DF hash map
-    // 2. update DF on saveReport
-    // 3. need to create mathod for update DF weight
-    // 4. need to update TR from active to old when all DF has been updated and release driver and truck
-    // 5. need update save to replace TR to active and not old
+    public LinkedList<FacadeTruckingReport> getActiveTruckingReports() {
+        LinkedList<FacadeTruckingReport> result=new LinkedList<>();
+        LinkedList<TruckingReport> reports=dc.getActiveTruckingReports();
+        for (TruckingReport tr: reports)
+        {
+            result.add(new FacadeTruckingReport(tr));
+        }
+        return result;
+
+
+    }
+
+    public LinkedList<FacadeDeliveryForm> getDeliveryForms(int trID) {
+        LinkedList<FacadeDeliveryForm> result=new LinkedList<>();
+        LinkedList<DeliveryForm> deliveryForms=dc.getDeliveryForms(trID);
+        for (DeliveryForm df:deliveryForms)
+        {
+            result.add(new FacadeDeliveryForm(df));
+        }
+        return result;
+
+    }
+
+    public void updateDeliveryFormRealWeight(int dfID, int weight)throws IllegalStateException {
+        dc.updateDeliveryFormRealWeight(dfID,weight);
+    }
+
 }
+
+//TODO
+// 1. create active DF hash map
+// 2. update DF on saveReport
+// 3. need to create method for update DF weight
+// 4. need to update TR from active to old when all DF has been updated and release driver and truck
+// 5. need update save to replace TR to active and not old

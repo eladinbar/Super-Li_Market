@@ -39,7 +39,7 @@ public class PresentationController {
 
     public FacadeDeliveryForm getDeliveryForm(int trNumber, int dfNumber) throws IllegalArgumentException,NoSuchElementException{
         FacadeTruckingReport tr = facadeService.getTruckReport(trNumber);
-        return facadeService.getDeliveryForms(dfNumber,trNumber);
+        return facadeService.getDeliveryForm(dfNumber,trNumber);
     }
 
 
@@ -200,22 +200,23 @@ public class PresentationController {
     }
 
     public LinkedList<FacadeTruckingReport> getActiveTruckingReports() {
-        return  null;
+        return facadeService.getActiveTruckingReports();
     }
 
     public LinkedList<FacadeDeliveryForm> getDeliveryForms(int trID) {
-        return  null;
+        return facadeService.getDeliveryForms(trID);
     }
 
-    public void updateDeliveryFormRealWeight(int weight) {
+    public void updateDeliveryFormRealWeight(int trID, int dfID, int weight) throws IllegalStateException{
+        facadeService.updateDeliveryFormRealWeight(trID,dfID,weight);
     }
 
 
     // TODO
-//       need to check the exception go upwards always.
-//       need to check all exception handle
-    //  need to check truck max weight less then truck's Neto
-    //  need to implement the initial state better
+    //   need to check the exception go upwards always.
+    //   need to check all exception handle
+    //   need to check truck max weight less then truck's Neto
+    //   need to implement the initial state better
 
 
 

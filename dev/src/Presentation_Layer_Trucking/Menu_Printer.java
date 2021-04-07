@@ -704,7 +704,9 @@ public class Menu_Printer {
 
         LinkedList<FacadeDeliveryForm> deliveryForms =  pc.getDeliveryForms(trID);
         int weight = 0;
-        pc.updateDeliveryFormRealWeight(weight);
+
+        int dfID=0;
+        pc.updateDeliveryFormRealWeight(trID,dfID,weight);
         rePlan(scanner);
 
     }

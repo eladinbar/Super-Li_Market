@@ -9,10 +9,11 @@ import java.util.*;
 public class DeliveryController {
 
     private LinkedList<Demand>  demands;
-    private HashMap<Integer,TruckingReport> activeTruckingReports;
-    private HashMap<Integer,TruckingReport> oldTruckingReports;
-    private HashMap<Integer,Site> sites;
-    private HashMap<Integer,DeliveryForm> deliveryForms;
+    private HashMap<Integer,TruckingReport> activeTruckingReports;//<trID,TR>
+    private HashMap<Integer,TruckingReport> oldTruckingReports;//<trID,TR>
+    private HashMap<Integer,LinkedList<DeliveryForm>> activeDeliveryForms;
+    private HashMap<Integer,Site> sites;//<siteID,TR>
+    private HashMap<Integer,DeliveryForm> deliveryForms;//<dfID,TR>
     private HashMap<Integer, Item> items;
     private int lastReportID ;
     private int lastDeliveryForms;
@@ -237,7 +238,7 @@ public class DeliveryController {
      */
     public void saveReport(){
 
-        oldTruckingReports.put(currTR.getID(),currTR);
+        activeTruckingReports.put(currTR.getID(),currTR);
         lastReportID++;
 
     }
@@ -512,13 +513,26 @@ public class DeliveryController {
     public HashMap<Integer, DeliveryForm> getDeliveryForms() {
         return deliveryForms;
     }
+    public LinkedList<DeliveryForm> getDeliveryForms(int trID){
+        LinkedList<DeliveryForm> forms=new LinkedList<>();
+        for (Map.Entry<Integer,DeliveryForm> entry:deliveryForms.entrySet())
+        {
+            forms.add(entry.getValue());
+        }
+        return forms;
+    }
 
     public HashMap<Integer, Site> getSites() {
         return sites;
     }
 
-    public HashMap<Integer, TruckingReport> getActiveTruckingReports() {
-        return activeTruckingReports;
+    public LinkedList<TruckingReport> getActiveTruckingReports() {
+        LinkedList<TruckingReport> result= new LinkedList<>();
+        for(Map.Entry<Integer,TruckingReport> entry:activeTruckingReports.entrySet())
+        {
+            result.add(entry.getValue());
+        }
+        return result;
     }
 
     public HashMap<Integer, TruckingReport> getOldTruckingReports() {
@@ -526,4 +540,7 @@ public class DeliveryController {
     }
 
 
+    public void updateDeliveryFormRealWeight(int dfID, int weight){
+        deliveryForms.get(dfID).setLeavingWeight(weight);
+    }
 }

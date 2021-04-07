@@ -1,11 +1,13 @@
 package Business_Layer_Trucking.Facade;
 
 
+import Business_Layer_Trucking.Delivery.DeliveryForm;
 import Business_Layer_Trucking.Facade.FacadeObject.*;
 import Business_Layer_Trucking.Resources.Driver;
 import javax.management.openmbean.KeyAlreadyExistsException;
 import java.time.LocalTime;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.NoSuchElementException;
 
 public class FacadeService {
@@ -90,7 +92,7 @@ public class FacadeService {
         return new FacadeTruckingReport(deliveryService.getTruckReport(trNumber));
     }
 
-    public FacadeDeliveryForm getDeliveryForms(int dfNumber, int trNumber)throws IllegalArgumentException,NoSuchElementException {
+    public FacadeDeliveryForm getDeliveryForm(int dfNumber, int trNumber)throws IllegalArgumentException,NoSuchElementException {
         return deliveryService.getDeliveryForm(dfNumber,trNumber);
     }
 
@@ -222,4 +224,29 @@ public class FacadeService {
     public void addDemandToSystem(int itemId, int site, int amount) {
         deliveryService.addDemandToSystem(itemId,site,amount);
     }
+
+    public LinkedList<FacadeTruckingReport> getActiveTruckingReports() {
+        return deliveryService.getActiveTruckingReports();
+    }
+
+    public LinkedList<FacadeDeliveryForm> getDeliveryForms(int trID){
+        return deliveryService.getDeliveryForms(trID);
+    }
+
+    public void updateDeliveryFormRealWeight(int trID, int dfID, int weight)throws IllegalStateException{
+        LinkedList<FacadeTruck>trucks=resourcesService.getTrucks();
+        FacadeTruck ft=null;
+        for (FacadeTruck facadeTruck:trucks)
+        {
+            if (facadeTruck.getLicenseNumber().equals(currTR.getTruckNumber()));
+                ft=facadeTruck;
+        }
+
+        if (deliveryService.getWeightOfCurrReport()- deliveryService.getDeliveryForm(trID,dfID).getLeavingWeight()
+                +weight> ft.getMaxWeight())
+            throw new IllegalStateException("Overweight related to Delivery Form Number:"+dfID+"  In TR number: "+trID);
+        else deliveryService.updateDeliveryFormRealWeight(dfID,weight);
+    }
 }
+
+
