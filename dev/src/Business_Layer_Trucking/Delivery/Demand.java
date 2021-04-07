@@ -2,7 +2,7 @@ package Business_Layer_Trucking.Delivery;
 
 public class Demand {
     private int itemID;
-    private int site;
+    private int site;//the destination - who raised the demand
     private int amount;
 
     public Demand(int itemID, int site_id, int amount){

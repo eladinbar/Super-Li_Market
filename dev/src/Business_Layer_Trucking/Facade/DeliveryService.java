@@ -246,6 +246,10 @@ public class DeliveryService {
     public void archive(int trID) {
         dc.archive(trID);
     }
+
+    public void archiveNotCompleted(int trID){
+        dc.archiveNotCompleted(trID);
+    }
 }
 
 

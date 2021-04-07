@@ -217,7 +217,7 @@ public class PresentationController {
     public void addDemandToTruckReport(int id, int itemNumber, int amount) {
     }
 
-    public void replaceTruck(int id, String truckNumber) {
+    public void replaceTruck(int id, String truckNumber)throws IllegalStateException,IllegalArgumentException {
         // TODO need to check the current driver fits the new Trucks weight
         facadeService.replaceTruck(id,truckNumber);
     }

@@ -234,8 +234,8 @@ public class FacadeService {
     }
 
     public void updateDeliveryFormRealWeight(int trID, int dfID, int weight) throws IllegalStateException{
-        // TODO if fails, update old TR to be old. creates new TR with compatible replaced
-        // TODO need to update all the DF  to the new TR
+
+
         LinkedList<FacadeTruck>trucks=resourcesService.getTrucks();
         FacadeTruck ft=null;
         for (FacadeTruck facadeTruck:trucks)
@@ -245,7 +245,12 @@ public class FacadeService {
         }
 
         if (weight> ft.getMaxWeight())
+        {
+            // TODO if fails, update old TR to be old. creates new TR with compatible replaced
+            deliveryService.archiveNotCompleted(trID);
             throw new IllegalStateException("Overweight related to Delivery Form Number:"+dfID+"  In TR number: "+trID);
+        }
+
         else deliveryService.updateDeliveryFormRealWeight(dfID,weight);
          if (deliveryService.checkIfAllCompleted(trID)){
              deliveryService.archive(trID);
@@ -253,10 +258,40 @@ public class FacadeService {
     }
 
 
-    public void replaceTruck(int trid, String truckNumber) {
+    public void replaceTruck(int trid, String truckNumber) throws IllegalStateException,IllegalArgumentException{
         FacadeTruckingReport ftr=getTruckReport(trid);
         String old_truck=ftr.getTruckNumber();
+        String curr_Driver=ftr.getDriverID();
+        LinkedList<FacadeDriver> listfd=resourcesService.getDrivers();
+        FacadeDriver fd=null;
+        for (FacadeDriver f:listfd)
+        {
+            if (f.getID().equals(curr_Driver))
+                fd=f;
+        }
+
+
+        FacadeTruck ft;
         resourcesService.replaceTruck(old_truck,truckNumber);
+        LinkedList<FacadeTruck> trucks=resourcesService.getTrucks();
+        for (FacadeTruck f:trucks)
+        {
+            if (f.getLicenseNumber()==truckNumber)
+            {
+                ft=f;
+                break;
+            }
+        }
+        int weight=0;
+        //TODO - need to get total weight of truck in here
+        if (fd!=null){
+            if (weight>fd.getLicenseType().getSize())
+            {
+                throw new IllegalStateException("Driver cant handle this weight");
+            }
+        }
+        else throw new IllegalArgumentException("Entered wrong driver ID");
+
     }
 }
 
