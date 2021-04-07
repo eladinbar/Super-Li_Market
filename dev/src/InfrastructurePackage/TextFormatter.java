@@ -20,12 +20,12 @@ public class TextFormatter {
 
     public String DefectsMenuFormat(){
         Field[] defectFields = DefectEntry.class.getDeclaredFields();
-        String outPut = "";
+        String output = "";
         for (int i = 0; i < defectFields.length - 1; i++) {
             String currentField = defectFields[i].getName();
-            outPut = outPut + centerString(currentField, 20) + "|";
+            output = output + centerString(currentField, 20) + "|";
         }
-        return outPut + centerString(defectFields[defectFields.length - 1].getName(), paddingSize);
+        return output + centerString(defectFields[defectFields.length - 1].getName(), paddingSize);
     }
 
     public void CategoryMenuFormat(Category category) {

@@ -319,29 +319,100 @@ public class InventoryServiceImpl implements InventoryService {
 
     @Override
     public Response addCategory(String categoryName, String parentCategoryName) {
-        return null;
+        Response response;
+        //Call business layer function
+        try {
+            inventoryController.addCategory(categoryName, parentCategoryName);
+            response = new Response(false, "Category added successfully.");
+            return response;
+        } catch (IllegalArgumentException ex) {
+            response = new Response(true, ex.getMessage());
+            return response;
+        }
     }
 
     @Override
     public ResponseT<Category> getCategory(String categoryName) {
-        return null;
+        ResponseT<Category> responseT;
+        //Call business layer function
+        try {
+            InventoryModule.BusinessLayer.Category tempCategory = inventoryController.getCategory(categoryName);
+            //Simplify business layer category fields
+            List<Item> simpleItems = getSimpleItems(tempCategory.getItems());
+            List<String> simpleSubCategories = getSimpleCategories(tempCategory.getSubCategories());
+            //Create simple category
+            Category simpleCategory = new Category(categoryName, simpleItems, tempCategory.getParentCategory().getName(),
+                                                    simpleSubCategories);
+            responseT = new ResponseT<>(false, "", simpleCategory);
+            return responseT;
+        } catch (IllegalArgumentException ex) {
+            responseT = new ResponseT(true, ex.getMessage(), null);
+            return responseT;
+        }
+    }
+
+    private List<String> getSimpleCategories(List<InventoryModule.BusinessLayer.Category> categories) {
+        List<String> simpleCategories = new ArrayList<>();
+        for (InventoryModule.BusinessLayer.Category category : categories) {
+            simpleCategories.add(category.getName());
+        }
+        return simpleCategories;
+    }
+
+    private List<Item> getSimpleItems(List<InventoryModule.BusinessLayer.Item> items) {
+        List<Item> simpleItems = new ArrayList<>();
+        for (InventoryModule.BusinessLayer.Item item : items) {
+            Item simpleItem = new Item(item.getID(), item.getName(), item.getCostPrice(), item.getSellingPrice(),
+                                        item.getMinAmount(), item.getShelfQuantity(), item.getStorageQuantity(),
+                                        item.getShelfLocation(), item.getStorageLocation(), item.getManufacturerID());
+            simpleItems.add(simpleItem);
+        }
+        return simpleItems;
     }
 
     @Override
     public Response modifyCategoryName(String oldName, String newName) {
-        return null;
+        Response response;
+        //Call business layer function
+        try {
+            inventoryController.modifyCategoryName(oldName, newName);
+            response = new Response(false, "Category name modified successfully.");
+            return response;
+        } catch (IllegalArgumentException ex) {
+            response = new Response(true, ex.getMessage());
+            return response;
+        }
     }
 
     @Override
     public Response removeCategory(String categoryName) {
-        return null;
+        Response response;
+        //Call business layer function
+        try {
+            inventoryController.removeCategory(categoryName);
+            response = new Response(false, "Category removed successfully.");
+            return response;
+        } catch (Exception ex) {
+            response = new Response(true, ex.getMessage());
+            return response;
+        }
     }
 
     @Override
     public Response changeParentCategory(String categoryName, String newParentName) {
-        return null;
+        Response response;
+        //Call business layer function
+        try {
+            inventoryController.changeParentCategory(categoryName, newParentName);
+            response = new Response(false, "Parent category changed successfully.");
+            return response;
+        } catch (Exception ex) {
+            response = new Response(true, ex.getMessage());
+            return response;
+        }
     }
 
+    //-------------------------------------------------------------------------Sale functions
 
     @Override
     public <T extends SimpleEntity> ResponseT<Sale<T>> showSale(String saleName) {
@@ -357,8 +428,6 @@ public class InventoryServiceImpl implements InventoryService {
     public Response addCategorySale(String saleName, String categoryName, double saleDiscount, Calendar startDate, Calendar endDate) {
         return null;
     }
-
-    //-------------------------------------------------------------------------Sale functions
 
     @Override
     public Response modifySaleName(String oldName, String newName) {
