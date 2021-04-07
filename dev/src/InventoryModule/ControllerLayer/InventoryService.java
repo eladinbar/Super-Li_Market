@@ -71,5 +71,3 @@ public interface InventoryService {
     ResponseT<List<Item>> itemShortageReport();
     ResponseT<List<DefectEntry>> defectsReport(Calendar fromDate, Calendar toDate);
 }
-
-

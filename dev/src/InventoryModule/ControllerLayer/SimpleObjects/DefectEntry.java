@@ -1,7 +1,6 @@
 package InventoryModule.ControllerLayer.SimpleObjects;
 
 import java.util.Calendar;
-import java.util.Date;
 
 public class DefectEntry implements SimpleEntity {
     private Calendar entryDate;
