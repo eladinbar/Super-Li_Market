@@ -1,16 +1,9 @@
 package Presentation_Layer_Trucking;
-
-import Business_Layer_Trucking.Delivery.TruckingReport;
 import Business_Layer_Trucking.Facade.FacadeObject.*;
 import Business_Layer_Trucking.Resources.Driver;
-import jdk.jshell.spi.ExecutionControl;
-
 import javax.management.openmbean.KeyAlreadyExistsException;
-import java.io.NotActiveException;
-import java.nio.file.StandardOpenOption;
 import java.time.LocalTime;
 import java.util.*;
-import java.util.concurrent.ExecutionException;
 
 public class Menu_Printer {
     PresentationController pc;
@@ -45,8 +38,9 @@ public class Menu_Printer {
             System.out.println(spot + ".\tMake driver unavailable");spot++;
             System.out.println(spot + ".\tMake truck available");spot++;//12
             System.out.println(spot + ".\tMake driver available");spot++;
+            System.out.println(spot + "\tupdate a Trucking report and its Delivery Form's leaving weight");spot++
             System.out.println(spot + ".\tRemove item from the Pool"); spot++;
-            System.out.println(spot + ".\tGo back to Main Menu");
+            System.out.println(spot + ".\tGo back to Main Menu"); // 16
 
 
             // TODO remove item/ site and whatever methods
@@ -166,11 +160,17 @@ public class Menu_Printer {
                     break;
                 case 14:
                     try{
+                        updateDeliveryForm(scanner);
+                    }catch (ReflectiveOperationException re){
+                        System.out.println(re.getMessage());
+                    }
+                case 15:
+                    try{
                         removeItemFromPool(scanner);
                     }catch ( ReflectiveOperationException re){
                         System.out.println(re.getMessage());}
                     break;
-                case 15:
+                case 16:
 
                     System.out.println("this option isn't supported yet. to be continue");
                     keepGoing = false;
@@ -188,24 +188,37 @@ public class Menu_Printer {
         int itemId;
         int site;
         int amount;
+        int spot=1;
         System.out.println("Please choose the item you'd like to delivery:");
         try {
             LinkedList<FacadeItem> items = pc.getAllItems();
-            for (FacadeItem item : items)
-                System.out.println("item id: " +item.getID() +  "\tname: "+ item.getName());
-
-
+            for (FacadeItem item : items) {
+                System.out.println(spot + ")item id: " + item.getID() + "\tname: " + item.getName());
+                spot++;
+            }
 
             itemId = getIntFromUser(scanner);
+            while(itemId<1 || itemId>items.size()){
+                System.out.println("the option you chose is out of bounds, try again");
+                itemId = getIntFromUser(scanner);
+            }
+            itemId = items.get((itemId -1)).getID();
 
             try{
                 LinkedList<FacadeSite> sites = pc.getAllSites();
                 System.out.println("please choose the site you'd like to Deliver to");
                 // TODO NTH order by site number
+                spot = 1;
                 for (FacadeSite s: sites){
-                    System.out.println(s.getName()+":\tsiteID: "+s.getSiteID() + "\tcity: " + s.getCity() + "\t\tin Delivery Area: "  + s.getDeliveryArea());
+                    System.out.println(spot+")"+s.getName()+":\tsiteID: "+s.getSiteID() + "\tcity: " + s.getCity() + "\t\tin Delivery Area: "  + s.getDeliveryArea());
+                    spot++;
                 }
                 site = getIntFromUser(scanner);
+                while(site<1 || site>sites.size()){
+                    System.out.println("the option you chose is out of bounds, try again");
+                    site = getIntFromUser(scanner);
+                }
+                site = sites.get(site-1).getSiteID();
                 try{
                     System.out.print("please choose the amount you'd like to Deliver:");
                     amount= getIntFromUser(scanner);
@@ -383,7 +396,7 @@ public class Menu_Printer {
             System.out.print("Max Weight:");
             int maxWeight =  getIntFromUser(scanner);
             while (maxWeight <= weightNeto){
-                System.out.println("the  truck's max weight is lower then it's neto weight("+weightNeto+"), please choose again or quit with -1");
+                System.out.println("the  truck's max weight is not higher then it's neto weight("+weightNeto+"), please choose again or quit with -1");
                 maxWeight = getIntFromUser(scanner);
             }
 
@@ -488,7 +501,7 @@ public class Menu_Printer {
                         System.out.print("amount: ");
                         int amount = getIntFromUser(scanner);
 
-                        System.out.print("site: ");
+                        System.out.print("site ID: ");
                         int siteID = getIntFromUser(scanner);
                         // TODO need to throw more excptions for such as incompatible item id
                         con = pc.addDemandToReport(itemNumber, amount, siteID);
@@ -548,7 +561,7 @@ public class Menu_Printer {
         for (FacadeDemand fd : demands) {
             String itemName = pc.getItemName(fd.getItemID());
             System.out.println(spot + ")\t" +  itemName + ":\titem id: " +  fd.getItemID() +"\n"+"\tamount needed:" + fd.getAmount() +
-                    "\t\tto: " + pc.getSiteName(fd.getSite()) + "\t\tsite id: " + fd.getSite()
+                    "\t\tto: " + pc.getSiteName(fd.getSite()) + "\t\tdelivery area: "  +  pc.getSiteDeliveryArea(fd.getSite()) + "\t site ID:" + fd.getSite()
                     + "\t\titem weight: "  + pc.getWeight(fd.getItemID()))   ;spot++;
         }
     }
@@ -910,10 +923,10 @@ public class Menu_Printer {
                 }
                 scannerCon =false;
             } catch (InputMismatchException ie){
-                System.out.println("wrong input please try again");
+                System.out.println("wrong input - a number must be inserted please try again ");
                 scanner.nextLine();
             } catch (NoSuchElementException|IllegalStateException e){
-                System.out.println("wrong input please try again");
+                System.out.println("wrong input - a number must be inserted please try again ");
                 scanner.nextLine();
             }
         return choose;
@@ -931,10 +944,10 @@ public class Menu_Printer {
                 }
                 scannerCon =false;
             } catch (InputMismatchException ie){
-                System.out.println("wrong input please try again");
+                System.out.println("wrong input - a number must be inserted please try again ");
                 scanner.nextLine();
             } catch (NoSuchElementException|IllegalStateException e){
-                System.out.println("wrong input please try again");
+                System.out.println("wrong input - a number must be inserted please try again ");
                 scanner.nextLine();
             }
         return choose;
@@ -955,10 +968,10 @@ public class Menu_Printer {
                 }
                 scannerCon =false;
             } catch (InputMismatchException ie){
-                System.out.println("wrong input please try again");
+                System.out.println("wrong input - a number must be inserted please try again ");
                 scanner.nextLine();
             } catch (NoSuchElementException|IllegalStateException e){
-                System.out.println("wrong input please try again");
+                System.out.println("wrong input - a number must be inserted please try again ");
                 scanner.nextLine();
             }
         return choose;

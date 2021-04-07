@@ -1,3 +1,4 @@
+/*
 package Tests;
 
 import Business_Layer_Trucking.Delivery.TruckingReport;
@@ -160,4 +161,4 @@ class ResourcesServiceTest {
         assertFalse(rc.getDrivers().get(1234567).isAvailable());
 
     }
-}
+}*/

@@ -296,6 +296,10 @@ public class FacadeService {
         else throw new IllegalArgumentException("Entered wrong driver ID");
 
     }
+
+    public int getSiteDeliveryArea(int site) {
+        return deliveryService.getSiteDeliveryArea(site);
+    }
 }
 
 

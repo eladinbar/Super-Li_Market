@@ -250,6 +250,10 @@ public class DeliveryService {
     public void archiveNotCompleted(int trID){
         dc.archiveNotCompleted(trID);
     }
+
+    public int getSiteDeliveryArea(int site) {
+        return dc.getSiteDeliveryArea(site);
+    }
 }
 
 

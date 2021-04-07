@@ -390,7 +390,7 @@ public class DeliveryController {
                     {
                         Demand toAdd=new Demand(d.getItemID(),d.getSite(),d.getAmount()-df.getItems().get(d.getItemID()));
                         result.add(toAdd);
-                        //TODO - check if working
+                        //TODO - check if working -  not it is not
                         //result.add(d);
                     }
                 }
@@ -587,5 +587,9 @@ public class DeliveryController {
         activeDeliveryForms.put(new_TR_ID,dfsToTranfer);
 
 
+    }
+
+    public int getSiteDeliveryArea(int siteID) {
+        return sites.get(siteID).getDeliveryArea();
     }
 }
