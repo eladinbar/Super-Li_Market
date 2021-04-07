@@ -18,29 +18,55 @@ public class MenuPrinter {
             choose = PrintMenu();
             switch (choose) {
                 case 1:
-                    System.out.print("please enter following details: ");
-                    System.out.print("\nfirst name: ");
-                    String firstName=getStringFromUser();
-                    System.out.print("last name: ");
-                    String lName=getStringFromUser();
-                    System.out.print("email: ");
-                    String email=getStringFromUser();
-                    System.out.print("ID: ");
-                    String ID=getStringFromUser();
-                    System.out.print("phone: ");
-                    String phone=getStringFromUser();
-                    System.out.print("companyNumber: ");
-                    int companyNumber=scan.nextInt();
-                    System.out.print("do you a permanent order days? y/n: ");
-                    String permanent=getStringFromUser();
-                    System.out.print("do you deliver the orders by yourself? y/n: ");
-                    String selfDelivery=getStringFromUser();
-                    System.out.print("how whould you like to pay?\n1. Cash\n2. Bank transfer\n3. check\nchoose number: ");
-                    int payment=scan.nextInt();
+                    addSupplierFunc();
                     break;
             }
         }
     }
+    private void addSupplierFunc() throws ReflectiveOperationException {
+        System.out.print("please enter following details: ");
+        System.out.print("\nfirst name: ");
+        String firstName=getStringFromUser();
+        System.out.print("last name: ");
+        String lName=getStringFromUser();
+        System.out.print("email: ");
+        String email=getStringFromUser();
+        System.out.print("ID: ");
+        String ID=getStringFromUser();
+        System.out.print("phone: ");
+        String phone=getStringFromUser();
+        System.out.print("companyNumber: ");
+        int companyNumber=scan.nextInt();
+        System.out.print("do you a permanent order days? y/n: ");
+        String permanent=getStringFromUser();
+        System.out.print("do you deliver the orders by yourself? y/n: ");
+        String selfDelivery=getStringFromUser();
+        System.out.print("how whould you like to pay?\n1. Cash\n2. Bank transfer\n3. check\nchoose number: ");
+        int payment=scan.nextInt();
+    }
+    private void updateSupplierDetailFunc() throws ReflectiveOperationException {
+        System.out.println("please enter supplier id");
+        String supplierID=getStringFromUser();
+        System.out.println("Please choose an option to Edit:");
+        System.out.println("1. edit first name");
+        System.out.println("2. edit last name");
+        System.out.println("3. edit phone number");
+        System.out.println("4. edit email");
+        System.out.println("5. edit company number");
+        System.out.println("6. edit permanent orders option");
+        System.out.println("7. edit delivery option");
+        System.out.println("8. edit payment method");
+        System.out.println("9. add contact person");
+        System.out.println("10. remove contact person");
+        System.out.println("for main menu choose any other option");
+        System.out.print("option : ");
+        int choose= scan.nextInt();
+        switch (choose){
+            case 1:
+
+        }
+    }
+
     public int PrintMenu(){
         System.out.println("1. add supplier");
         System.out.println("2. get supplier");
