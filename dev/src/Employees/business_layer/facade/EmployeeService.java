@@ -8,6 +8,8 @@ import Employees.business_layer.facade.facadeObject.FacadeEmployee;
 import Employees.business_layer.facade.facadeObject.FacadeTermsOfEmployment;
 
 import java.time.LocalDate;
+import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 
 public class EmployeeService {
@@ -136,30 +138,56 @@ public class EmployeeService {
         }
     }
 
-    public ResponseT<List<FacadeConstraint>> getConstraints() {
+    public ResponseT<HashMap<LocalDate,FacadeConstraint>> getConstraints() {
         try{
-
+            HashMap<LocalDate,FacadeConstraint> constraints = convertConstrainToFacade(employeeController.getConstraints());
+            return new ResponseT<>(constraints);
         }
         catch (EmployeeException e){
-
+            return new ResponseT<>(e.getMessage());
         }
     }
 
-    public ResponseT<List<FacadeConstraint>> getConstraints(String id) {
-        try{
 
+
+    public ResponseT<HashMap<LocalDate,FacadeConstraint>> getConstraints(String id) {
+        try{
+            HashMap<LocalDate,FacadeConstraint> constraints = convertConstrainToFacade(employeeController.getConstraints(id));
+            return new ResponseT<>(constraints);
         }
         catch (EmployeeException e){
-
+            return new ResponseT<>(e.getMessage());
         }
     }
 
-    public ResponseT<List<FacadeEmployee>> getEmployees() {
+    public ResponseT<HashMap<Role,List<String>>> getEmployees() {
         try{
+            HashMap<Role, List<String>> toReturn = new HashMap<>();
+            HashMap<String, Employee> employees = employeeController.getEmployees();
 
+            for (Role role: Role.values()) {
+                List<String> empByRole = new LinkedList<>();
+                for (Employee employee: employees.values()) {
+                    if(employee.getRole()==role){
+                        empByRole.add(employee.getID());
+                    }
+                }
+                toReturn.put(role, empByRole);
+            }
+            return new ResponseT<>(toReturn);
         }
         catch (EmployeeException e){
-
+            return new ResponseT<>(e.getMessage());
         }
+    }
+
+    //private methods:
+    private HashMap<LocalDate, FacadeConstraint> convertConstrainToFacade(HashMap<LocalDate, Constraint> toConvert) {
+        HashMap<LocalDate, FacadeConstraint> converted = new HashMap<>();
+        for (LocalDate date: toConvert.keySet()) {
+            FacadeConstraint facadeConstraint = new FacadeConstraint(toConvert.get(date));
+            converted.put(date, facadeConstraint );
+        }
+        return converted;
     }
 }

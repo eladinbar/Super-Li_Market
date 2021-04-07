@@ -6,6 +6,7 @@ import Employees.business_layer.facade.facadeObject.FacadeEmployee;
 import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 
 public class EmployeeController {
@@ -24,6 +25,12 @@ public class EmployeeController {
         return loggedIn;
     }
 
+    public HashMap<String, Employee> getEmployees() throws EmployeeException {
+        if(employees.isEmpty()){
+            throw new EmployeeException("There is no record of the super's employees");
+        }
+        return employees;
+    }
     public Employee login(String ID, String role) throws EmployeeException {
         if(loggedIn!= null){
             throw new EmployeeException("Two users cannot be logged in at the same time");
@@ -99,6 +106,20 @@ public class EmployeeController {
         loggedIn.deleteConstraint(date, shift);
     }
 
+    public HashMap<LocalDate, Constraint> getConstraints() throws EmployeeException {
+        if(loggedIn.getIsManager()){
+            throw new EmployeeException("A manager has no list of constraints");
+        }
+        return loggedIn.getConstraints();
+    }
+
+    public HashMap<LocalDate, Constraint> getConstraints(String Id) throws EmployeeException {
+        if(!loggedIn.getIsManager()){
+            throw new EmployeeException("Only an administrator can perform this operation");
+        }
+        return employees.get(Id).getConstraints();
+    }
+
     public Employee addEmployee(FacadeEmployee e) throws EmployeeException {
 
         if(loggedIn==null){
@@ -142,6 +163,7 @@ public class EmployeeController {
         if(!loggedIn.getIsManager()){
             throw new EmployeeException("Only an administrator can perform this operation");
         }
+
 
         if(!employees.containsKey(Id)){
                 throw new EmployeeException("Employee not found");
@@ -278,4 +300,6 @@ public class EmployeeController {
     private boolean vaildDate(LocalDate date) {
         return (LocalDate.now().isBefore(date.minusWeeks(2)));
     }
+
+
 }
