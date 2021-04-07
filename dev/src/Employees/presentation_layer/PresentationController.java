@@ -36,13 +36,11 @@ public class PresentationController {
 
     public void uploadClean(){
         char choice = menuPrinter.uploadClean ();
-        int choice2, id;
-        Role role;
         FacadeEmployee manager;
         if(choice == 'y') {
             manager = menuPrinter.createManagerAccountMenu ( );
             facadeService.addEmployee ( manager );
-            while(login () == false);
+            while(login (true) == false);
         }
         else
             menuPrinter.print ("Only a manager can start a clean program." );
@@ -67,7 +65,7 @@ public class PresentationController {
                 choice = menuPrinter.managerMenu ();
                 handleManagerChoice ( choice );
             case 4:
-                createShiftType (  );
+                createShiftType ( 2 );
                 choice = menuPrinter.managerMenu ();
                 handleManagerChoice ( choice );
             case 5:
@@ -92,7 +90,7 @@ public class PresentationController {
                     choice = menuPrinter.managerMenu ();
                     handleManagerChoice ( choice );
                 }
-                while(login () == false);
+                while(login (false) == false);
             default:
                 menuPrinter.printChoiceException();
                 choice = menuPrinter.managerMenu ();
@@ -132,7 +130,7 @@ public class PresentationController {
                     choice = menuPrinter.simpleEmployeeMenu ();
                     handleSimpleEmployeeChoice ( choice );
                 }
-                while(login () == false);
+                while(login (false) == false);
             default:
                 menuPrinter.printChoiceException();
         }
@@ -289,9 +287,16 @@ public class PresentationController {
         menuPrinter.print ( "Shift type changed successfully.\n" );
     }
 
-    public void createShiftType(){
-        menuPrinter.print ( "Write the shift type name: " );
-        String shiftype = menuPrinter.getString ();
+    public void createShiftType(int type){
+        String shiftype;
+        if(type == 0)
+            shiftype = "morningShift";
+        else if(type == 1)
+            shiftype = "eveningShift";
+        else {
+            menuPrinter.print ( "Write the shift type name: " );
+            shiftype = menuPrinter.getString ( );
+        }
         HashMap<String, Integer> manning = new HashMap<> (  );
         String role = menuPrinter.roleMenu ();
         while (role != null)
@@ -347,6 +352,14 @@ public class PresentationController {
         }
     }
 
+    private void createShiftTypes() {
+        menuPrinter.print ( "For continuing the you have to create and characterize morning shift type and evening shift type.\n" +
+                "Create morning shift type:\n" );
+        createShiftType(0);
+        menuPrinter.print ( "Create evening shift type:" );
+        createShiftType(1);
+    }
+
     private void deleteRoleManning(String shiftType) {
         String role = menuPrinter.roleMenu ();
         Response response = facadeService.deleteRoleFromShiftType(shiftType, role);
@@ -393,7 +406,7 @@ public class PresentationController {
         menuPrinter.print(s);
     }
 
-    public boolean login() {
+    public boolean login(boolean first) {
         int id = menuPrinter.loginID ( );
         String role = menuPrinter.roleMenu ();
         int choice;
@@ -404,6 +417,8 @@ public class PresentationController {
                 menuPrinter.print ( employee.getErrorMessage () );
                 return false;
             }
+            if(first == true)
+                createShiftTypes();
             if(employee.value.isManager ()) {
                 choice = menuPrinter.managerMenu ( );
                 handleManagerChoice ( choice );
@@ -418,7 +433,6 @@ public class PresentationController {
         else
             return false;
     }
-
 
 
     private void getShift() {

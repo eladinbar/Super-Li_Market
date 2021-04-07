@@ -76,7 +76,7 @@ public class FacadeService {
 
     //employee service responsibility
 
-    public Response login(int ID, Role role) {
+    public Response login(String ID, Role role) {
         return employeeService.login ( ID, role );
     }
 
