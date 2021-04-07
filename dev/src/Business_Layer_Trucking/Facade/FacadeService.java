@@ -69,7 +69,7 @@ public class FacadeService {
 
     }
 
-    public void chooseLeavingHour(LocalTime leavingHour) {
+    public void chooseLeavingHour(LocalTime leavingHour) throws IllegalArgumentException{
         deliveryService.chooseLeavingHour(leavingHour);
     }
 
@@ -258,7 +258,7 @@ public class FacadeService {
     }
 
 
-    public void replaceTruck(int trid, String truckNumber) throws IllegalStateException,IllegalArgumentException{
+    public void replaceTruck(int trid, String truckNumber, int weight) throws IllegalStateException,IllegalArgumentException{
         FacadeTruckingReport ftr=getTruckReport(trid);
         String old_truck=ftr.getTruckNumber();
         String curr_Driver=ftr.getDriverID();
@@ -271,7 +271,7 @@ public class FacadeService {
         }
 
 
-        FacadeTruck ft;
+        FacadeTruck ft=null;
         resourcesService.replaceTruck(old_truck,truckNumber);
         LinkedList<FacadeTruck> trucks=resourcesService.getTrucks();
         for (FacadeTruck f:trucks)
@@ -282,8 +282,11 @@ public class FacadeService {
                 break;
             }
         }
-        int weight=0;
-        //TODO - need to get total weight of truck in here
+        if (ft!=null){
+            if(ft.getMaxWeight()<weight)
+                throw new IllegalStateException("Truck cant carry"+weight+"kgs");
+        }
+        else throw new IllegalArgumentException("Entered wrong Truck number");
         if (fd!=null){
             if (weight>fd.getLicenseType().getSize())
             {
