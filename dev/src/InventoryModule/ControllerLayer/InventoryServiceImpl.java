@@ -200,31 +200,55 @@ public class InventoryServiceImpl implements InventoryService {
 
     @Override
     public Response addItemDiscount(int supplierId, double discount, Calendar discountDate, int itemCount, int itemId) {
-        return null;
+        Response response;
+        if (supplierId <= 0 || (discount <= 0 || discount >= 1) || itemCount <= 0 || itemId<=0) {
+            response = new Response(true, "One oe more Arguments is invalid");
+            return response;
+        }
+        try {
+            inventoryController.addItemDiscount(supplierId, discount, discountDate, itemCount, itemId);
+        } catch (Exception e) {
+            response = new Response(true, e.getMessage());
+            return response;
+        }
+        response = new Response(false, "");
+        return response;
     }
 
     @Override
     public Response addCategoryDiscount(int supplierId, double discount, Calendar discountDate, int itemCount, String categoryName) {
-        return null;
+        Response response;
+        if (supplierId <= 0 || (discount <= 0 || discount >= 1) || itemCount <= 0 || categoryName.isEmpty() || categoryName.isBlank()) {
+            response = new Response(true, "One oe more Arguments is invalid");
+            return response;
+        }
+        try {
+            inventoryController.addCategoryDiscount(supplierId, discount, discountDate, itemCount, categoryName);
+        } catch (Exception e) {
+            response = new Response(true, e.getMessage());
+            return response;
+        }
+        response = new Response(false, "");
+        return response;
     }
 
     //-------------------------------------------------------------------------Defect Functions
 
     @Override
     public Response recordDefect(int itemId, Calendar entryDate, int defectQuantity, String defectLocation) {
-        Response recorded;
+        Response response;
         if (itemId <= 0 || defectQuantity <= 0 || defectLocation.isEmpty() || defectLocation.isBlank()) {
-            recorded = new Response(true, "One oe more Arguments is invalid");
-            return recorded;
+            response = new Response(true, "One oe more Arguments is invalid");
+            return response;
         }
         try {
             inventoryController.recordDefect(itemId, entryDate, defectQuantity, defectLocation);
-        } catch (Exception e){
-            recorded = new Response(true,e.getMessage());
-            return recorded;
+        } catch (Exception e) {
+            response = new Response(true, e.getMessage());
+            return response;
         }
-        recorded = new Response(false,"");
-        return recorded;
+        response = new Response(false, "");
+        return response;
     }
 
     //-------------------------------------------------------------------------Report functions
