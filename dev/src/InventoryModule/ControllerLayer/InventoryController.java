@@ -39,6 +39,7 @@ public class InventoryController {
             Item newItem = new Item(id, name, costPrice, sellingPrice, minAmount, manufacturerId, suppliersIds,
                     shelfQuantity, storageQuantity, shelfLocation, storageLocation);
             baseCategory.addItem(newItem);
+            return;
         }
 
         //Determine the appropriate category in which to add the new item
@@ -68,6 +69,11 @@ public class InventoryController {
                 if (item.getID() == itemId)
                     return item;
             }
+        }
+        //Check in base category as well
+        for (Item item : baseCategory.getItems()) {
+            if (item.getID() == itemId)
+                return item;
         }
         throw new IllegalArgumentException("No item with ID: " + itemId + " was found in the system.");
     }
