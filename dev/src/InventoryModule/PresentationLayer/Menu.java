@@ -157,6 +157,15 @@ public class Menu {
             printEntity((Category) sale.getAppliesOn());
     }
 
+    public <T extends SimpleEntity> void printEntity(Discount<T> discount) {
+        tf.discountMenuFormat(discount);
+        if(discount.getAppliesOn().getClass() == Category.class){
+            printEntity((Category) discount.getAppliesOn());
+        }
+        else if (discount.getAppliesOn().getClass() == Item.class)
+            printEntity((Item) discount.getAppliesOn());
+    }
+
     public void printEntity(DefectEntry entry) throws InvocationTargetException, IllegalAccessException, NoSuchMethodException {
         Method[] getMethods = {entry.getClass().getMethod("getEntryDate"), entry.getClass().getMethod("getItemId"),
                 entry.getClass().getMethod("getItemName"), entry.getClass().getMethod("getQuantity"),
@@ -179,6 +188,7 @@ public class Menu {
                 item.getClass().getMethod("getManufacturerID")};
         handleEntityAliment(item, getMethods);
     }
+
 
     private <T> void handleEntityAliment(T elem, Method[] getMethods) throws IllegalAccessException, InvocationTargetException {
         String output = "";
