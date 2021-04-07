@@ -1,4 +1,8 @@
 package ServiceLayer.objects;
 
-public enum payment {
+public enum payment
+{
+    check,
+    bankTrasfer,
+    cash
 }
