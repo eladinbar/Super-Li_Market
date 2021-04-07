@@ -3,19 +3,19 @@ package InventoryModule.BusinessLayer.SalePackage;
 import InfrastructurePackage.Pair;
 import InventoryModule.BusinessLayer.Category;
 
-import java.util.Date;
+import java.util.Calendar;
 
 public class CategorySale extends Sale{
     private Category category;
 
-    public CategorySale(String name, double discount, Pair<Date, Date> saleDates, Category category) {
+    public CategorySale(String name, double discount, Pair<Calendar, Calendar> saleDates, Category category) {
         this.name = name;
         this.discount = discount;
         this.saleDates = saleDates;
         this.category = category;
     }
 
-    public CategorySale(String name, double discount, Date startDate, Date endDate, Category category) {
+    public CategorySale(String name, double discount, Calendar startDate, Calendar endDate, Category category) {
         this.name = name;
         this.discount = discount;
         this.saleDates.setFirst(startDate);

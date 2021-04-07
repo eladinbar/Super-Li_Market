@@ -1,11 +1,11 @@
 package InventoryModule.BusinessLayer.DiscountPackage;
 
-import java.util.Date;
+import java.util.Calendar;
 
 public abstract class Discount {
     protected int supplierID;
     protected double discount;
-    protected Date date;
+    protected Calendar date;
     protected int itemCount;
 
     public int getSupplierID() {
@@ -24,11 +24,11 @@ public abstract class Discount {
         this.discount = discount;
     }
 
-    public Date getDate() {
+    public Calendar getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(Calendar date) {
         this.date = date;
     }
 

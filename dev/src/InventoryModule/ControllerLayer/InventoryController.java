@@ -12,7 +12,7 @@ import InventoryModule.BusinessLayer.SalePackage.ItemSale;
 import InventoryModule.BusinessLayer.SalePackage.Sale;
 
 import java.util.ArrayList;
-import java.util.Date;
+import java.util.Calendar;
 import java.util.List;
 
 public class InventoryController {
@@ -168,7 +168,7 @@ public class InventoryController {
     public void addCategory(String categoryName, String parentCategoryName) {
         try {
             getCategory(categoryName);
-            throw new IllegalArgumentException("A category with the name: " + categoryName + "already exists in the system.");
+            throw new IllegalArgumentException("A category with the name: " + categoryName + " already exists in the system.");
         } catch (IllegalArgumentException ex) {
             Category newCategory;
             if (parentCategoryName != null) {
@@ -176,13 +176,16 @@ public class InventoryController {
                     if (category.getName().equals(parentCategoryName)) {
                         newCategory = new Category(categoryName, new ArrayList<>(), category, new ArrayList<>());
                         categories.add(newCategory);
+                        return;
                     }
                 }
+                throw new IllegalArgumentException("No parent category with the name: " + parentCategoryName + " was found in the system.");
             }
-
-            //If no parent category was found, add new category with NULL parent
-            newCategory = new Category(categoryName, new ArrayList<>(), baseCategory, new ArrayList<>());
-            categories.add(newCategory);
+            else {
+                //If parent category is null, add new category with "Uncategorized" as its parent category
+                newCategory = new Category(categoryName, new ArrayList<>(), baseCategory, new ArrayList<>());
+                categories.add(newCategory);
+            }
         }
     }
 
@@ -236,7 +239,7 @@ public class InventoryController {
 
     //-------------------------------------------------------------------------Sale functions
 
-    public void addItemSale(String saleName, int itemID, double saleDiscount, Date startDate, Date endDate) {
+    public void addItemSale(String saleName, int itemID, double saleDiscount, Calendar startDate, Calendar endDate) {
         try {
             getSale(saleName);
             throw new IllegalArgumentException("A sale with the name " + saleName + " already exists in the system.");
@@ -246,7 +249,7 @@ public class InventoryController {
         }
     }
 
-    public void addCategorySale(String saleName, String categoryName, double saleDiscount, Date startDate, Date endDate) {
+    public void addCategorySale(String saleName, String categoryName, double saleDiscount, Calendar startDate, Calendar endDate) {
         try {
             getSale(saleName);
             throw new IllegalArgumentException("A sale with the name " + saleName + " already exists in the system.");
@@ -256,7 +259,7 @@ public class InventoryController {
         }
     }
 
-    private Sale getSale(String saleName) {
+    public Sale getSale(String saleName) {
         for (Sale sale : sales) {
             if (sale.getName().equals(saleName))
                 return sale;
@@ -274,7 +277,7 @@ public class InventoryController {
         sale.setDiscount(newDiscount);
     }
 
-    public void modifySaleDates(String saleName, Date startDate, Date endDate) {
+    public void modifySaleDates(String saleName, Calendar startDate, Calendar endDate) {
         Sale sale = getSale(saleName);
         sale.setSaleDates(startDate, endDate);
     }
@@ -282,7 +285,7 @@ public class InventoryController {
 
     //-------------------------------------------------------------------------Discount functions
 
-    public void addItemDiscount(int supplierId, double discount, Date discountDate, int itemCount, int itemId) {
+    public void addItemDiscount(int supplierId, double discount, Calendar discountDate, int itemCount, int itemId) {
         try {
             getDiscount(supplierId);
             throw new IllegalArgumentException("A discount with supplier ID: " + supplierId + " already exists in the system.");
@@ -292,7 +295,7 @@ public class InventoryController {
         }
     }
 
-    public void addCategoryDiscount(int supplierId, double discount, Date discountDate, int itemCount, String categoryName) {
+    public void addCategoryDiscount(int supplierId, double discount, Calendar discountDate, int itemCount, String categoryName) {
         try {
             getDiscount(supplierId);
             throw new IllegalArgumentException("A discount with supplier ID: " + supplierId + " already exists in the system.");
@@ -302,7 +305,7 @@ public class InventoryController {
         }
     }
 
-    private Discount getDiscount(int supplierId) {
+    public Discount getDiscount(int supplierId) {
         for (Discount discount : discounts) {
             if (discount.getSupplierID() == supplierId)
                 return discount;
@@ -313,7 +316,7 @@ public class InventoryController {
 
     //-------------------------------------------------------------------------Defect functions
 
-    public void recordDefect(int itemId, String itemName, Date entryDate, int defectQuantity, String defectLocation) {
+    public void recordDefect(int itemId, String itemName, Calendar entryDate, int defectQuantity, String defectLocation) {
         try {
             getDefectEntry(itemId, entryDate);
             throw new IllegalArgumentException("A defect entry with the same ID:" + itemName + " and the same date recorded:" + entryDate + " already exists in the system.");
@@ -323,7 +326,7 @@ public class InventoryController {
         }
     }
 
-    private DefectEntry getDefectEntry(int itemId, Date entryDate) {
+    public DefectEntry getDefectEntry(int itemId, Calendar entryDate) {
         DefectEntry defectEntry = defectsLogger.getDefectEntry(itemId, entryDate);
         if (defectEntry == null)
             throw new IllegalArgumentException("No defect entry with ID: " + itemId + " and date recorded: " + entryDate + " were found in the system");
@@ -358,10 +361,10 @@ public class InventoryController {
         return shortageReportList;
     }
 
-    public List<DefectEntry> defectsReport(Date fromDate, Date toDate) {
+    public List<DefectEntry> defectsReport(Calendar fromDate, Calendar toDate) {
         List<DefectEntry> defectEntryList = new ArrayList<>();
         for (DefectEntry defectEntry : defectsLogger.getDefectEntries()) {
-            Date entryDate = defectEntry.getEntryDate();
+            Calendar entryDate = defectEntry.getEntryDate();
             if(entryDate.compareTo(fromDate) >= 0 & entryDate.compareTo(toDate) <= 0)
                 defectEntryList.add(defectEntry);
         }
