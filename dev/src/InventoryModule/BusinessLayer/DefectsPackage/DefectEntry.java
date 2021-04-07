@@ -2,16 +2,16 @@ package InventoryModule.BusinessLayer.DefectsPackage;
 
 import InventoryModule.BusinessLayer.Location;
 
-import java.util.Date;
+import java.util.Calendar;
 
 public class DefectEntry {
     private int itemID;
     private String itemName;
-    private Date entryDate;
+    private Calendar entryDate;
     private int quantity;
     private Location location; //can only be one - shelf or storage
 
-    public DefectEntry(int itemID, String itemName, Date entryDate, int quantity, String location) {
+    public DefectEntry(int itemID, String itemName, Calendar entryDate, int quantity, String location) {
         this.itemID = itemID;
         this.itemName = itemName;
         this.entryDate = entryDate;
@@ -22,11 +22,11 @@ public class DefectEntry {
             this.location = new Location(null, location);
     }
 
-    public Date getEntryDate() {
+    public Calendar getEntryDate() {
         return entryDate;
     }
 
-    public void setEntryDate(Date entryDate) {
+    public void setEntryDate(Calendar entryDate) {
         this.entryDate = entryDate;
     }
 

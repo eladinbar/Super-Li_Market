@@ -2,12 +2,12 @@ package InventoryModule.BusinessLayer.DiscountPackage;
 
 import InventoryModule.BusinessLayer.Item;
 
-import java.util.Date;
+import java.util.Calendar;
 
 public class ItemDiscount extends Discount{
     private Item item;
 
-    public ItemDiscount(int supplierID, double discount, Date date, int itemCount, Item item) {
+    public ItemDiscount(int supplierID, double discount, Calendar date, int itemCount, Item item) {
         this.supplierID = supplierID;
         this.discount = discount;
         this.date = date;
