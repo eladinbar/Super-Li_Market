@@ -1,10 +1,7 @@
 package Employees.business_layer.facade;
 
-import Employees.EmployeeException;
 import Employees.business_layer.Employee.*;
-import Employees.business_layer.Shift.Shift;
 import Employees.business_layer.Shift.ShiftController;
-import Employees.business_layer.Shift.WeeklyShiftSchedule;
 import Employees.business_layer.facade.facadeObject.*;
 
 import java.time.LocalDate;
@@ -33,11 +30,11 @@ public class FacadeService {
         return shiftService.createWeeklyshiftSchedule ( startingDate, shifts );
     }
 
-    public Response addShift(LocalDate date, int shift, HashMap<Role, List<String>> manning) {
+    public Response addShift(LocalDate date, int shift, HashMap<String, List<String>> manning) {
         return shiftService.addShift ( date, shift, manning );
     }
 
-    public Response changeShift(LocalDate date, int shift, HashMap<Role, List<String>> manning) {
+    public Response changeShift(LocalDate date, int shift, HashMap<String, List<String>> manning) {
         return shiftService.changeShift ( date, shift, manning);
     }
 
@@ -140,7 +137,7 @@ public class FacadeService {
         return  employeeService.getConstraints (id);
     }
 
-    public ResponseT<List<FacadeEmployee>> getEmployees() {
+    public ResponseT<HashMap<Role, List<String>>> getEmployees() {
         return employeeService.getEmployees();
     }
 }

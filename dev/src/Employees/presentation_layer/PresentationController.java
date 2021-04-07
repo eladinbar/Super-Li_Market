@@ -13,6 +13,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class PresentationController {
     FacadeService facadeService;
@@ -234,7 +235,7 @@ public class PresentationController {
     }
 
     public void changeShift(LocalDate date, int shift) {
-        HashMap<Role, List<String>> manning = createManning ();
+        HashMap<String, List<String>> manning = createManning ();
         Response response = facadeService.changeShift ( date, shift, manning );
         if(response.errorOccured ())
         {
@@ -374,14 +375,14 @@ public class PresentationController {
 
     private void getConstraints() {
         menuPrinter.print ( "Constraints:\n" );
-        ResponseT<List<FacadeConstraint>> constraints = facadeService.getConstraints();
+        ResponseT<HashMap<LocalDate, FacadeConstraint>> constraints = facadeService.getConstraints();
         if(constraints.errorOccured ())
         {
             menuPrinter.print ( constraints.getErrorMessage () );
             return;
         }
-        for ( FacadeConstraint entry: constraints.value) {
-            menuPrinter.print ( stringConverter.convertConstraint ( entry ) );
+        for ( Map.Entry<LocalDate, FacadeConstraint> entry: constraints.value.entrySet ()) {
+            menuPrinter.print ( stringConverter.convertConstraint ( entry.getValue () ) );
         }
     }
 
@@ -495,9 +496,24 @@ public class PresentationController {
     }
 
     private void getEmployeeConstraints() {
+        menuPrinter.print ( "Write the ID of the employee you would like to display: " );
+        String ID = menuPrinter.getString ( );
+        ResponseT< HashMap <LocalDate, FacadeConstraint> > constraints = facadeService.getConstraints ( ID );
     }
 
     private void getEmployeeList() {
-        ResponseT<List<FacadeEmployee>> employees = facadeService.getEmployees ( )
+        ResponseT<HashMap<Role, List<String>>> employees = facadeService.getEmployees ( );
+        if(employees.errorOccured ())
+        {
+            menuPrinter.print ( employees.getErrorMessage () );
+            return;
+        }
+        for ( Map.Entry<Role, List<String>> entry : employees.value.entrySet () ){
+            menuPrinter.print ( entry.getKey ().name () +":\n" );
+            for(String s: entry.getValue ())
+            {
+                menuPrinter.print ( s + "\n" );
+            }
+        }
     }
 }

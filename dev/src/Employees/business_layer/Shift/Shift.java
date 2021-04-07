@@ -40,7 +40,7 @@ public class Shift {
         manning = new HashMap<> (  );
         for( Map.Entry <String, List<String>> entry: facadeShift.getManning ().entrySet ())
         {
-            manning.put ( stringToRole(entry.getKey ()), entry.getValue ());
+            manning.put ( Role.valueOf(entry.getKey ()), entry.getValue ());
         }
         type = facadeShift.getType();
         mORe = facadeShift.getmORe();
@@ -82,7 +82,7 @@ public class Shift {
     }
 
     public void deleteEmployee(String role, String ID) throws EmployeeException {
-        Role newRole = stringToRole ( role );
+        Role newRole = Role.valueOf ( role );
         if(manning.containsKey ( newRole ) && manning.get ( newRole ).contains ( ID ))
             manning.get ( newRole ).remove ( ID );
         else
@@ -91,7 +91,7 @@ public class Shift {
 
     public void addEmployee(String role, String ID) throws EmployeeException
     {
-        Role newRole = stringToRole ( role );
+        Role newRole = Role.valueOf ( role );
         if(!manning.containsKey ( newRole )){
             manning.put ( newRole, new ArrayList<> () );
         }
@@ -104,8 +104,11 @@ public class Shift {
         this.type = shiftType;
     }
 
-    public void changeManning(HashMap<Role,List<String>> manning) {
-        this.manning = manning;
+    public void changeManning(HashMap<String,List<String>> manning) {
+        this.manning = new HashMap<> (  );
+        for( Map.Entry<String, List<String >> entry : manning.entrySet () ){
+            this.manning.put ( Role.valueOf ( entry.getKey () ), entry.getValue () );
+        }
     }
 
     public void createManning(EmployeeController employeeController) throws EmployeeException {
@@ -151,27 +154,5 @@ public class Shift {
 
     public int getmORe() {
         return mORe;
-    }
-
-    private Role stringToRole(String s) throws EmployeeException {
-        switch (s) {
-            case "branchManager":
-                return Role.branchManager;
-            case "branchManagerAssistent":
-                return Role.branchManagerAssistent;
-            case "humanResourcesManager":
-                return Role.humanResourcesManager;
-            case "cashier":
-                return Role.cashier;
-            case "guard":
-                return Role.guard;
-            case "usher":
-                return Role.usher;
-            case "storeKeeper":
-                return Role.storeKeeper;
-            default:
-                throw new EmployeeException ( "role chosen is illegal." );
-
-        }
     }
 }

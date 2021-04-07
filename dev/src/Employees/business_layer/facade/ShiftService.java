@@ -63,7 +63,7 @@ public class ShiftService {
 
     }
 
-    public Response addShift(LocalDate date, int shift, HashMap<Role, List<String>> manning) {
+    public Response addShift(LocalDate date, int shift, HashMap<String, List<String>> manning) {
         try
         {
             shiftController.addShift ( date, shift, manning );
@@ -74,7 +74,7 @@ public class ShiftService {
         }
     }
 
-    public Response changeShift(LocalDate date, int shift, HashMap<Role, List<String>> manning) {
+    public Response changeShift(LocalDate date, int shift, HashMap<String, List<String>> manning) {
         try {
             shiftController.changeShift ( date, shift, manning );
             return new Response (  );

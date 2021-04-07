@@ -50,11 +50,11 @@ public class ShiftController {
         return new WeeklyShiftSchedule ( startingDate );
     }
 
-    public void addShift(LocalDate date, int shift, HashMap<Role, List<String>> manning) throws EmployeeException {
+    public void addShift(LocalDate date, int shift, HashMap<String, List<String>> manning) throws EmployeeException {
         getWeeklyShiftSchedule ( date ).addShift(date, shift, manning);
     }
 
-    public void changeShift(LocalDate date, int shift, HashMap<Role, List<String>> manning) throws EmployeeException {
+    public void changeShift(LocalDate date, int shift, HashMap<String, List<String>> manning) throws EmployeeException {
         getWeeklyShiftSchedule ( date ).changeShift(date, shift, manning);
     }
 

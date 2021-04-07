@@ -72,12 +72,12 @@ public class WeeklyShiftSchedule {
         return shifts[date.getDayOfWeek ().getValue ()][shift];
     }
 
-    public void changeShift(LocalDate date, int shift, HashMap<Role, List<String>> manning) {
+    public void changeShift(LocalDate date, int shift, HashMap<String, List<String>> manning) {
         shifts[date.getDayOfWeek ().getValue ()][shift].changeManning( manning );
         isMissing = isMissing();
     }
 
-    public void addShift(LocalDate date, int shift, HashMap<Role, List<String>> manning) throws EmployeeException {
+    public void addShift(LocalDate date, int shift, HashMap<String, List<String>> manning) throws EmployeeException {
         if (getShift ( date, shift ).getManning () != null)
             throw new EmployeeException ( "shift is already exists." );
         changeShift ( date, shift, manning );
