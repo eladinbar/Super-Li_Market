@@ -1,5 +1,6 @@
 package Employees.business_layer.facade;
 
+import Employees.EmployeeException;
 import Employees.business_layer.Employee.*;
 import Employees.business_layer.Shift.ShiftController;
 import Employees.business_layer.facade.facadeObject.*;
@@ -133,4 +134,14 @@ public class FacadeService {
         return employeeService.getEmployees();
     }
 
+    public Response createData() {
+        try {
+            employeeService.createData ( );
+            shiftService.createData ( );
+            return new Response (  );
+        }catch (EmployeeException e)
+        {
+            return new Response ( e.getMessage () );
+        }
+    }
 }
