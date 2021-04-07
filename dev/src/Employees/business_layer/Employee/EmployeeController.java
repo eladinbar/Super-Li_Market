@@ -17,7 +17,12 @@ public class EmployeeController {
         employees = new HashMap<>();
     }
 
-    public Employee getLoggedIn(){ return loggedIn;}
+    public Employee getLoggedIn() throws EmployeeException {
+        if(loggedIn==null){
+            throw new EmployeeException("No user is login");
+        }
+        return loggedIn;
+    }
 
     public Employee login(String ID, String role) throws EmployeeException {
         if(loggedIn!= null){
@@ -78,21 +83,6 @@ public class EmployeeController {
         loggedIn.giveConstraint(date, shift, reason);
     }
 
-
-    public void updateConstraint (LocalDate date, int shift, String reason) throws EmployeeException {
-        if(loggedIn==null){
-            throw new EmployeeException("No user is login");
-        }
-
-        if(loggedIn.getIsManager()){
-            throw new EmployeeException("The method 'giveConstraint' was called from a user in a managerial position");
-        }
-        if(!loggedIn.isEmployed()){
-            throw new EmployeeException("The employee is not employed ");
-        }
-
-        loggedIn.updateConstarint(date, shift, reason);
-    }
 
     public void deleteConstraint (LocalDate date, int shift) throws EmployeeException {
         if(loggedIn==null){
@@ -160,7 +150,7 @@ public class EmployeeController {
         return employees.get(Id);
     }
 
-    public void deleteBankAccount(int Id) throws EmployeeException {
+    public void deleteBankAccount(String Id) throws EmployeeException {
         if(loggedIn==null){
             throw new EmployeeException("No user is login");
         }

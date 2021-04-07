@@ -117,23 +117,6 @@ public class Employee {
         }
     }
 
-public void updateConstarint (LocalDate date, int shift, String reason) throws EmployeeException {
-    if (!constraints.containsKey(date)){
-        throw new EmployeeException("There is no constraint to update on that day");
-    }
-    Constraint exist = constraints.get(date);
-    if( shift == 0){// morning shift
-        exist.setMorningShift(true);
-    }
-    else if (shift ==1){// evening shift
-        exist.setEveningShift(true);
-    }
-    else{
-        exist.setMorningShift(true);
-        exist.setEveningShift(true);
-    }
-    exist.setReason(exist.getReason()+"\n"+reason);
-}
 
 public void deleteConstraint(LocalDate date, int shift) throws EmployeeException {
     if (!constraints.containsKey(date)){
