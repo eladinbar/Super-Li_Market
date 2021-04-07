@@ -211,6 +211,25 @@ public class PresentationController {
         facadeService.updateDeliveryFormRealWeight(trID,dfID,weight);
     }
 
+    public void removeSiteFromTruckReport(int siteID, int id) {
+    }
+
+    public void addDemandToTruckReport(int id, int itemNumber, int amount) {
+    }
+
+    public void replaceTruck(int id, int truckNumber) {
+        // TODO need to check the current driver fits the new Trucks weight
+    }
+
+    public void replaceDriver(int id, int driverID) {
+    }
+
+    public LinkedList<FacadeDemand> getItemOnReport(int id) {
+    }
+
+    public void removeItemFromTruckingReport(int id, FacadeDemand demand) {
+    }
+
 
     // TODO
     //   need to check the exception go upwards always.

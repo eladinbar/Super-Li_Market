@@ -725,13 +725,13 @@ public class Menu_Printer {
             pc.updateDeliveryFormRealWeight(ftr.getID(), fdf.getID(), weight);
         }catch (IllegalStateException illegalStateException){
             System.out.println(illegalStateException.getMessage());
-            rePlanAfterWeight(scanner,ftr.getID());
+            rePlanAfterWeight(scanner,ftr);
             updateDeliveryForm(scanner);
         }
 
     }
 
-    private void rePlanAfterWeight(Scanner scanner, int trID) throws ReflectiveOperationException {
+    private void rePlanAfterWeight(Scanner scanner, FacadeTruckingReport tr) throws ReflectiveOperationException {
 
         System.out.println("Welcome to replan menu! please choose the option you'd like to re plan the report with:");
         int spot =1;
@@ -741,6 +741,60 @@ public class Menu_Printer {
         System.out.println(spot + ") remove item");
         System.out.println("choose different number to quit");
         System.out.print("place your option");
+
+        int option = getIntFromUser(scanner);
+        switch (option){
+            case 1:
+                LinkedList<Integer> s =  tr.getDestinations();
+                System.out.println("please choose the site you'd like to remove");
+                for (Integer id: s){
+
+                }
+                int siteID=0;
+
+                pc.removeSiteFromTruckReport(siteID, tr.getID());
+                break;
+
+
+            case 2:
+                // TODO need to show sites
+                int itemNumber =0;
+                int amount =0;
+                int siteID =0;
+                pc.removeSiteFromTruckReport(siteID, tr.getID());
+                // TODO need to show demands - loop
+                pc.addDemandToTruckReport(tr.getID(),itemNumber, amount);
+                break;
+
+            case 3: // truck replace
+
+
+                pc.getAvailableTrucks();
+                int truckNumber =0;
+                try {
+                    pc.replaceTruck(tr.getID(), truckNumber);
+                }catch(Exception e){
+                    System.out.println(e.getMessage());
+                    pc.getAvailableDrivers();
+                    int driverID =0;
+                    try {
+                        pc.replaceDriver(tr.getID(), driverID);
+                    }catch (Exception ex){
+                        System.out.println(ex.getMessage());
+                        rePlanAfterWeight(scanner, tr);
+                    }
+                }
+                break;
+            case 4: //remove items
+                LinkedList<FacadeDemand> items =   pc.getItemOnReport(tr.getID());
+                // TODO show items
+
+                FacadeDemand demand= null;
+                pc.removeItemFromTruckingReport(tr.getID(), demand);
+
+
+
+        }
 
 
         /*int option =  getIntFromUser(scanner);
@@ -940,6 +994,7 @@ public class Menu_Printer {
     // TODO need to implement the weight insert exceptions
     // TODO need to do the DF updates
     // TODO need create replaced TR
+    // TODO show on TR - and finished or not
 
 
 
