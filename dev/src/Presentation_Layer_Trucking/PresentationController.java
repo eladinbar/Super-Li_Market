@@ -199,6 +199,17 @@ public class PresentationController {
         facadeService.addDemandToSystem(itemId,site,amount);
     }
 
+    public LinkedList<FacadeTruckingReport> getActiveTruckingReports() {
+        return  null;
+    }
+
+    public LinkedList<FacadeDeliveryForm> getDeliveryForms(int trID) {
+        return  null;
+    }
+
+    public void updateDeliveryFormRealWeight(int weight) {
+    }
+
 
     // TODO
 //       need to check the exception go upwards always.

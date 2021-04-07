@@ -698,6 +698,17 @@ public class Menu_Printer {
 
     }
 
+    void updateDeliveryForm(Scanner scanner){
+        LinkedList<FacadeTruckingReport> truckingReports =  pc.getActiveTruckingReports();
+        int trID=0;
+
+        LinkedList<FacadeDeliveryForm> deliveryForms =  pc.getDeliveryForms(trID);
+        int weight = 0;
+        pc.updateDeliveryFormRealWeight(weight);
+        rePlan(scanner);
+
+    }
+
 
     // TODO change weight to double -  all the way down
 
