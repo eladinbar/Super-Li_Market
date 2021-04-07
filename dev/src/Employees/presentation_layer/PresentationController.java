@@ -166,6 +166,14 @@ public class PresentationController {
 
     public void getRecommendation() {
         LocalDate date = menuPrinter.schedule ();
+        ResponseT<FacadeWeeklyShiftSchedule> weeklyShiftSchedule = facadeService.getRecommendation ( date );
+        if(weeklyShiftSchedule.errorOccured ())
+        {
+            menuPrinter.print ( weeklyShiftSchedule.getErrorMessage () );
+            return;
+        }
+        menuPrinter.print ( stringConverter.convertWeeklyShiftSchedule ( weeklyShiftSchedule.value ) );
+        editSchedule ();
     }
 
     public void createWeeklyshiftSchedule()
