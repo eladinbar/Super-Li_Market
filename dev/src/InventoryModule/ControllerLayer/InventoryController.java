@@ -166,6 +166,9 @@ public class InventoryController {
     If parent category is null, the new category should be added as a main category.
      */
     public void addCategory(String categoryName, String parentCategoryName) {
+        if (categoryName.equals(parentCategoryName))
+            throw new IllegalArgumentException("A category cannot have itself as its parent category.");
+
         try {
             getCategory(categoryName);
             throw new IllegalArgumentException("A category with the name: " + categoryName + " already exists in the system.");
@@ -175,10 +178,11 @@ public class InventoryController {
 
             Category newCategory;
             if (parentCategoryName != null) {
-                for (Category category : categories) {
-                    if (category.getName().equals(parentCategoryName)) {
-                        newCategory = new Category(categoryName, new ArrayList<>(), category, new ArrayList<>());
+                for (Category parentCategory : categories) {
+                    if (parentCategory.getName().equals(parentCategoryName)) {
+                        newCategory = new Category(categoryName, new ArrayList<>(), parentCategory, new ArrayList<>());
                         categories.add(newCategory);
+                        parentCategory.addSubCategory(newCategory);
                         return;
                     }
                 }
@@ -206,14 +210,27 @@ public class InventoryController {
     }
 
     public void changeParentCategory(String categoryName, String newParentName) {
+        if (categoryName.equals(newParentName))
+            throw new IllegalArgumentException("A category cannot have itself as its parent category.");
+
         Category category = getCategory(categoryName);
-        Category parentCategory = getCategory(newParentName);
-        if (isSubCategory(category, parentCategory))
-            throw new IllegalArgumentException("Cannot change parent category to a sub category, please enter a different parent category.");
-        category.setParentCategory(parentCategory);
+
+        if (category.getParentCategory().getName().equals(newParentName)) //Parent category equals to new parent category
+            return;
+
+        //If newParentName is null, set parent category as base category
+        if (newParentName == null)
+            category.setParentCategory(baseCategory);
+        //Else, check whether the given newParentName is a valid parent category to 'category'
+        else {
+            Category parentCategory = getCategory(newParentName);
+            if (isSubCategory(category, parentCategory))
+                throw new IllegalArgumentException("Cannot change parent category to a sub category, please enter a different parent category.");
+            category.setParentCategory(parentCategory);
+        }
     }
 
-    private boolean isSubCategory(Category mainCategory, Category category) {
+    public boolean isSubCategory(Category mainCategory, Category category) {
         boolean isSubCategory = false;
         for (Category subCategory : mainCategory.getSubCategories()) {
             if (category == subCategory)
@@ -237,6 +254,7 @@ public class InventoryController {
             parentCategory.addSubCategory(subCategory);
             oldCategory.removeSubCategory(subCategory);
         }
+        categories.remove(oldCategory);
     }
 
 

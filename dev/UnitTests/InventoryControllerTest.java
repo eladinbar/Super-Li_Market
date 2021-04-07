@@ -1,15 +1,10 @@
 import InventoryModule.BusinessLayer.Category;
-import InventoryModule.BusinessLayer.DefectsPackage.DefectsLogger;
-import InventoryModule.BusinessLayer.DiscountPackage.Discount;
-import InventoryModule.BusinessLayer.SalePackage.Sale;
 import InventoryModule.ControllerLayer.InventoryController;
 import org.junit.After;
-import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import java.util.ArrayList;
-import java.util.List;
+import static org.junit.Assert.*;
 
 public class InventoryControllerTest {
     private static InventoryController inventoryController;
@@ -90,6 +85,7 @@ public class InventoryControllerTest {
         //act
         inventoryController.addCategory("test", null);
         //assert (an exception is NOT expected to be thrown here)
+        inventoryController.getCategory("test");
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -104,6 +100,14 @@ public class InventoryControllerTest {
         inventoryController.addCategory("parent", null);
         //act
         inventoryController.addCategory("test", "parent");
+        //assert (an exception is NOT expected to be thrown here)
+        inventoryController.getCategory("test");
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testAddCategory_sameParent() {
+        //act
+        inventoryController.addCategory("test", "test");
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -129,16 +133,74 @@ public class InventoryControllerTest {
     }
 
     @Test
-    public void modifyCategoryNameTest() {
+    public void testModifyCategoryName_existingCategory() {
+        //set up
+        inventoryController.addCategory("test", null);
+        //act
+        inventoryController.modifyCategoryName("test", "newTest");
+        //assert
+        inventoryController.getCategory("newTest");
+        try {
+            inventoryController.getCategory("test");
+            fail("Test expected getCategory(\"test\") to throw an exception.");
+        } catch (IllegalArgumentException ex) {
+            assertTrue(true);
+        }
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testModifyCategoryName_nonExistingCategory() {
+        //act
+        inventoryController.modifyCategoryName("test", "newTest");
     }
 
     @Test
-    public void changeParentCategoryTest() {
+    public void testChangeParentCategoryTest_validParent() {
+        //set up
+        inventoryController.addCategory("test", null);
+        //act
+        inventoryController.changeParentCategory("test", null);
+        //assert
+        Category category = inventoryController.getCategory("test");
+        assertEquals(category.getParentCategory().getName(), "Uncategorized");
+    }
 
+    @Test(expected = IllegalArgumentException.class)
+    public void testChangeParentCategoryTest_subCategory() {
+        //set up
+        inventoryController.addCategory("test", null);
+        inventoryController.addCategory("test2", "test");
+        //act
+        inventoryController.changeParentCategory("test", "test2");
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testChangeParentCategoryTest_sameCategory() {
+        //set up
+        inventoryController.addCategory("test", null);
+        //act
+        inventoryController.changeParentCategory("test", "test");
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testRemoveCategory_nonExistingCategory() {
+        //act
+        inventoryController.removeCategory("test");
     }
 
     @Test
-    public void removeCategoryTest() {
+    public void testRemoveCategory_existingCategory() {
+        //set up
+        inventoryController.addCategory("test", null);
+        //act
+        inventoryController.removeCategory("test");
+        //assert
+        try {
+            inventoryController.getCategory("test");
+            fail("Test expected IllegalArgumentException to be thrown after trying to get non-existing category.");
+        } catch(IllegalArgumentException ex) {
+            assertTrue(true); //Exception caught, function worked as intended
+        }
     }
 
     @Test
