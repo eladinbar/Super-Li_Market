@@ -64,7 +64,7 @@ public class Menu_Printer {
                         chooseDemands(scanner);
                         System.out.println("Total demands Weight is: " + pc.getWeightOfCurrReport());
                         chooseTruckAndDriver(scanner);
-                        chooseLeavingHour(scanner);
+                        chooseLeavingHour(scanner);//TODO CHECK HOUR
                         pc.saveReport();
                     }catch ( ReflectiveOperationException re){
                         System.out.println(re.getMessage());}
@@ -725,13 +725,13 @@ public class Menu_Printer {
             pc.updateDeliveryFormRealWeight(ftr.getID(), fdf.getID(), weight);
         }catch (IllegalStateException illegalStateException){
             System.out.println(illegalStateException.getMessage());
-            rePlanAfterWeight(scanner,ftr);
+            rePlanAfterWeight(scanner,ftr,weight);
             updateDeliveryForm(scanner);
         }
 
     }
 
-    private void rePlanAfterWeight(Scanner scanner, FacadeTruckingReport tr) throws ReflectiveOperationException {
+    private void rePlanAfterWeight(Scanner scanner, FacadeTruckingReport tr,int weight) throws ReflectiveOperationException {
 
         System.out.println("Welcome to replan menu! please choose the option you'd like to re plan the report with:");
         int spot =1;
@@ -781,7 +781,7 @@ public class Menu_Printer {
                         pc.replaceDriver(tr.getID(), driverID);
                     }catch (Exception ex){
                         System.out.println(ex.getMessage());
-                        rePlanAfterWeight(scanner, tr);
+                        rePlanAfterWeight(scanner, tr,weight);
                     }
                 }
                 break;
