@@ -31,11 +31,11 @@ public class InventoryServiceImpl implements InventoryService {
         //Call business layer function
         try {
             inventoryController.addItem(id, name, categoryName, costPrice, sellingPrice,
-                                        minAmount, shelfLocation, storageLocation,
-                                        shelfQuantity, storageQuantity, manufacturerId, suppliersIds);
+                    minAmount, shelfLocation, storageLocation,
+                    shelfQuantity, storageQuantity, manufacturerId, suppliersIds);
             response = new Response(false, "Item added successfully");
             return response;
-        } catch(IllegalArgumentException ex) {
+        } catch (IllegalArgumentException ex) {
             response = new Response(true, ex.getMessage());
             return response;
         }
@@ -157,7 +157,6 @@ public class InventoryServiceImpl implements InventoryService {
     }
 
 
-
     @Override
     public <T extends SimpleEntity> ResponseT<Sale<T>> showSale(String saleName) {
         return null;
@@ -219,32 +218,74 @@ public class InventoryServiceImpl implements InventoryService {
 
     @Override
     public ResponseT<List<Item>> inventoryReport() {
-        return null;
+        ResponseT<List<Item>> shortageResponse;
+        List<Item> simpleItemList = new ArrayList<>();
+        try {
+            List<InventoryModule.BusinessLayer.Item> shortageItems = inventoryController.inventoryReport();
+            for (InventoryModule.BusinessLayer.Item i: shortageItems) {
+                Item simpleItem = new Item(i.getID(),i.getName(),i.getCostPrice(),i.getSellingPrice(),i.getMinAmount(),
+                        i.getShelfQuantity(),i.getStorageQuantity(),i.getShelfLocation(),i.getStorageLocation(),i.getManufacturerID());
+                simpleItemList.add(simpleItem);
+            }
+            shortageResponse = new ResponseT<>(false,"",simpleItemList);
+
+        } catch (Exception e) {
+            shortageResponse = new ResponseT<>(true,e.getMessage(),null);
+        }
+        return shortageResponse;
     }
 
     @Override
     public ResponseT<List<Item>> categoryReport(String categoryName) {
-        return null;
+        ResponseT<List<Item>> shortageResponse;
+        List<Item> simpleItemList = new ArrayList<>();
+        try {
+            List<InventoryModule.BusinessLayer.Item> shortageItems = inventoryController.categoryReport(categoryName);
+            for (InventoryModule.BusinessLayer.Item i: shortageItems) {
+                Item simpleItem = new Item(i.getID(),i.getName(),i.getCostPrice(),i.getSellingPrice(),i.getMinAmount(),
+                        i.getShelfQuantity(),i.getStorageQuantity(),i.getShelfLocation(),i.getStorageLocation(),i.getManufacturerID());
+                simpleItemList.add(simpleItem);
+            }
+            shortageResponse = new ResponseT<>(false,"",simpleItemList);
+
+        } catch (Exception e) {
+            shortageResponse = new ResponseT<>(true,e.getMessage(),null);
+        }
+        return shortageResponse;
     }
 
     @Override
     public ResponseT<List<Item>> itemShortageReport() {
-        return null;
+        ResponseT<List<Item>> shortageResponse;
+        List<Item> simpleItemList = new ArrayList<>();
+        try {
+            List<InventoryModule.BusinessLayer.Item> shortageItems = inventoryController.itemShortageReport();
+            for (InventoryModule.BusinessLayer.Item i: shortageItems) {
+                Item simpleItem = new Item(i.getID(),i.getName(),i.getCostPrice(),i.getSellingPrice(),i.getMinAmount(),
+                        i.getShelfQuantity(),i.getStorageQuantity(),i.getShelfLocation(),i.getStorageLocation(),i.getManufacturerID());
+                simpleItemList.add(simpleItem);
+            }
+            shortageResponse = new ResponseT<>(false,"",simpleItemList);
+
+        } catch (Exception e) {
+            shortageResponse = new ResponseT<>(true,e.getMessage(),null);
+        }
+        return shortageResponse;
     }
 
     @Override
     public ResponseT<List<DefectEntry>> defectsReport(Calendar fromDate, Calendar toDate) {
         ResponseT<List<DefectEntry>> defectResponse;
         List<DefectEntry> simpleEntries = new ArrayList<>();
-        try{
-            List<InventoryModule.BusinessLayer.DefectsPackage.DefectEntry> defectsReport =  inventoryController.defectsReport(fromDate,toDate);
-            for (InventoryModule.BusinessLayer.DefectsPackage.DefectEntry entry: defectsReport){
-                DefectEntry simple = new DefectEntry(entry.getEntryDate(),entry.getItemID(),entry.getItemName(), entry.getQuantity(), entry.getLocation());
+        try {
+            List<InventoryModule.BusinessLayer.DefectsPackage.DefectEntry> defectsReport = inventoryController.defectsReport(fromDate, toDate);
+            for (InventoryModule.BusinessLayer.DefectsPackage.DefectEntry entry : defectsReport) {
+                DefectEntry simple = new DefectEntry(entry.getEntryDate(), entry.getItemID(), entry.getItemName(), entry.getQuantity(), entry.getLocation());
                 simpleEntries.add(simple);
             }
-            defectResponse = new ResponseT<>(false,"",simpleEntries);
-        } catch (Exception e){
-            defectResponse = new ResponseT<>(true, e.getMessage(),null);
+            defectResponse = new ResponseT<>(false, "", simpleEntries);
+        } catch (Exception e) {
+            defectResponse = new ResponseT<>(true, e.getMessage(), null);
         }
         return defectResponse;
     }
