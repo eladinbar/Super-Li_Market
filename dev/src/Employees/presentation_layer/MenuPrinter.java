@@ -32,25 +32,27 @@ public class MenuPrinter {
         return sc.nextInt ();
     }
 
-    public Role roleMenu(){
+    public String roleMenu(){
         System.out.println ("Choose role:\n1.branch manager\n2.banch manager assistent\n" +
-                "3.human resources manager\n4.cashier\n5.guard\n6.usher\n7.store keeper\n" );
+                "3.human resources manager\n4.cashier\n5.guard\n6.usher\n7.store keeper\n8.Back" );
         int choice =  sc.nextInt ();
         switch (choice){
             case 1:
-                return Role.branchManager;
+                return "branchManager";
             case 2:
-                return Role.branchManagerAssistent;
+                return "branchManagerAssistent";
             case 3:
-                return Role.humanResourcesManager;
+                return "humanResourcesManager";
             case 4:
-                return Role.cashier;
+                return "cashier";
             case 5:
-                return Role.guard;
+                return "guard";
             case 6:
-                return Role.usher;
+                return "usher";
             case 7:
-                return Role.storeKeeper;
+                return "storeKeeper";
+            case 8:
+                return null;
             default:
                 System.out.println ("choice is illegal.");
                 return null;
@@ -58,24 +60,27 @@ public class MenuPrinter {
     }
 
     public int managerMenu(){
-        System.out.println ("Choose your next action:\n1.Create weekly shift schedule\n" +
+        System.out.println ("Choose your next action:\n" +
+                "1.Create weekly shift schedule\n" +
                 "2.Show weekly shift schedule\n" +
-                "3.Get employee information\n" +
-                "4.Add new Employee to the system\n" +
-                "5.Remove employee from the system\n" +
-                "6.Logout\n" );
+                "3.Create a new Shift type\n" +
+                "4.Get a list of employees ordered by role\n" +
+                "5.Get employee information\n" +
+                "6.Get employee constraints\n" +
+                "7.Add a new Employee to the system\n" +
+                "8.Logout\n" );
         return sc.nextInt ();
     }
 
     public int simpleEmployeeMenu(){
         System.out.println ("Choose your next action:\n" +
-                "1.Show weekly shift schedule\n" +
-                "2.Show single shift\n" +
+                "1.Show a weekly shift schedule\n" +
+                "2.Show a single shift\n" +
                 "3.Add a new constraint\n" +
                 "4.delete an existing constraint\n" +
-//                "5.Update an existing constraint\n" +
-                "5.Show constraints\n" +
-                "6.Logout\n" );
+                "5.Show my employee card\n" +
+                "6.Show constraints\n" +
+                "7.Logout\n" );
         return sc.nextInt ();
     }
 
@@ -90,19 +95,16 @@ public class MenuPrinter {
         System.out.println ( "Create account:\n" +
                 "choose role:\n1.branch manager\n2.branch manager assistent\n3.human resources manager\n" );
         int input = sc.nextInt ( );
-        switch (input) {
-            case 1:
-                role = Role.branchManager;
-            case 2:
-                role = Role.branchManagerAssistent;
-            case 3:
-                role = Role.humanResourcesManager;
-            default:
-                System.out.println ( "your choice is out of bounds." );
-                role = null;
-        }
-        if (role == null)
+        if(input == 1)
+            role = Role.branchManager;
+        else if (input == 2)
+            role = Role.branchManagerAssistent;
+        else if(input == 3)
+            role = Role.humanResourcesManager;
+        else{
+            printChoiceException ();
             return null;
+        }
         System.out.println ( "ID: " );
         ID = sc.nextInt ( );
         System.out.println ( "\n" );
@@ -156,17 +158,22 @@ public class MenuPrinter {
     }
 
     public LocalDate schedule() {
-        System.out.println ("Write the first date of the week:\n" );
+        System.out.println ("First date of the week:\n" );
         return dateMenu ();
     }
 
     public LocalDate getShiftDate() {
-        System.out.println ("Write the date you would like to display:\n" );
+        System.out.println ("Shift date:\n" );
         return dateMenu ();
     }
 
     public int getShiftNum(){
         System.out.println ( "Type 0 for morning shift, 1 for evening shift and 2 for both: " );
+        return sc.nextInt ();
+    }
+
+    public int getOneShiftNum(){
+        System.out.println ( "Type 0 for morning shift and 1 for evening shift: " );
         return sc.nextInt ();
     }
 
@@ -185,6 +192,32 @@ public class MenuPrinter {
         return new FacadeConstraint ( date, morning, evening, reason );
     }
 
+    public String idGetter() {
+        System.out.println ("Write the ID of an employee you would like to add to the shift or 0 if you are done: ");
+        return sc.next ();
+    }
+
+    public int scheduleManagerMenu() {
+        System.out.println ("Choose the option you would like:\n" +
+                "1.Change shift by creating a new one\n" +
+                "2.Add an employee to shift\n" +
+                "3.Delete an employee from shift\n" +
+                "4.Change shift type\n" +
+                "5.Back" );
+        return sc.nextInt ();
+    }
+
+    public int createWeeklyShiftSchedule() {
+        System.out.println ("Choose an option: /n" +
+                "1. Creating a shift schedule manually\n" +
+                "2. Getting a system recommendation." );
+        return sc.nextInt ();
+    }
+
+    public char getChar() {
+        return sc.next ().charAt ( 0 );
+    }
+
     public String getString() {
         return sc.next ();
     }
@@ -193,8 +226,7 @@ public class MenuPrinter {
         return sc.nextInt ();
     }
 
-    public String idGetter() {
-        System.out.println ("Write the ID of an employee you would like to add to the shift or 0 if you are done: ");
-        return sc.next ();
+    public void printChoiceException() {
+        System.out.println ("Choice is illegal.");
     }
 }

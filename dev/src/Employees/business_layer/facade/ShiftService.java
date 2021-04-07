@@ -63,7 +63,7 @@ public class ShiftService {
 
     }
 
-    public Response addShift(LocalDate date, int shift, HashMap<Role, List<Integer>> manning) {
+    public Response addShift(LocalDate date, int shift, HashMap<Role, List<String>> manning) {
         try
         {
             shiftController.addShift ( date, shift, manning );
@@ -74,7 +74,7 @@ public class ShiftService {
         }
     }
 
-    public Response changeShift(LocalDate date, int shift, HashMap<Role, List<Integer>> manning) {
+    public Response changeShift(LocalDate date, int shift, HashMap<Role, List<String>> manning) {
         try {
             shiftController.changeShift ( date, shift, manning );
             return new Response (  );
@@ -84,7 +84,7 @@ public class ShiftService {
         }
     }
 
-    public Response addEmployeeToShift(Role role, String ID, LocalDate date, int shift){
+    public Response addEmployeeToShift(String role, String ID, LocalDate date, int shift){
         try
         {
             shiftController.addEmployeeToShift ( role, ID, date, shift );
@@ -95,7 +95,7 @@ public class ShiftService {
         }
     }
 
-    public Response deleteEmployeeFromShift(Role role, int ID, LocalDate date, int shift)  {
+    public Response deleteEmployeeFromShift(String role, String ID, LocalDate date, int shift)  {
         try {
             shiftController.deleteEmployeeFromShift ( role, ID, date, shift );
             return new Response (  );
@@ -115,7 +115,7 @@ public class ShiftService {
         }
     }
 
-    public Response createShiftType(String shiftype, HashMap<Role, Integer> manning){
+    public Response createShiftType(String shiftype, HashMap<String, Integer> manning){
         try {
             shiftController.createShiftType ( shiftype, manning );
             return new Response (  );

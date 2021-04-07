@@ -50,19 +50,19 @@ public class ShiftController {
         return new WeeklyShiftSchedule ( startingDate );
     }
 
-    public void addShift(LocalDate date, int shift, HashMap<Role, List<Integer>> manning) throws EmployeeException {
+    public void addShift(LocalDate date, int shift, HashMap<Role, List<String>> manning) throws EmployeeException {
         getWeeklyShiftSchedule ( date ).addShift(date, shift, manning);
     }
 
-    public void changeShift(LocalDate date, int shift, HashMap<Role, List<Integer>> manning) throws EmployeeException {
+    public void changeShift(LocalDate date, int shift, HashMap<Role, List<String>> manning) throws EmployeeException {
         getWeeklyShiftSchedule ( date ).changeShift(date, shift, manning);
     }
 
-    public void addEmployeeToShift(Role role, String ID, LocalDate date, int shift) throws EmployeeException {
+    public void addEmployeeToShift(String role, String ID, LocalDate date, int shift) throws EmployeeException {
         getWeeklyShiftSchedule ( date ).addEmployeeToShift ( role, ID, date, shift );
     }
 
-    public void deleteEmployeeFromShift(Role role, int ID, LocalDate date, int shift) throws EmployeeException {
+    public void deleteEmployeeFromShift(String role, String ID, LocalDate date, int shift) throws EmployeeException {
         getWeeklyShiftSchedule ( date ).deleteEmployeeFromShift (role, ID, date, shift );
     }
 
@@ -70,7 +70,7 @@ public class ShiftController {
         getWeeklyShiftSchedule ( date ).changeShiftType ( date, shift, shiftType );
     }
 
-    public void createShiftType(String shiftype, HashMap<Role, Integer> manning) throws EmployeeException {
+    public void createShiftType(String shiftype, HashMap<String, Integer> manning) throws EmployeeException {
         ShiftTypes.getInstance ().addShiftType ( shiftype, manning );
     }
 
