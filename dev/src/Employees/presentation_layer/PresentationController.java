@@ -187,6 +187,7 @@ public class PresentationController {
                 menuPrinter.print ( weeklyShiftSchedule.getErrorMessage ( ) );
                 return;
             }
+            menuPrinter.print ( "Weekly shift schedule created successfully.\n" );
         }
         else
             getRecommendation (  );
@@ -242,6 +243,7 @@ public class PresentationController {
             menuPrinter.print ( response.getErrorMessage ());
             return;
         }
+        menuPrinter.print ( "Shift changed successfully.\n" );
     }
 
     public void addEmployeeToShift(LocalDate date, int shift) {
@@ -249,8 +251,11 @@ public class PresentationController {
         menuPrinter.print ( "ID: " );
         String ID = menuPrinter.getString ( );
         Response response = facadeService.addEmployeeToShift ( role, ID, date, shift );
-        if (response.errorOccured ( ))
+        if (response.errorOccured ( )) {
             menuPrinter.print ( response.getErrorMessage ( ) );
+            return;
+        }
+        menuPrinter.print ( "Employee added to shift successfully.\n" );
     }
 
     public void deleteEmployeeFromShift(LocalDate date, int shift)  {
@@ -258,16 +263,22 @@ public class PresentationController {
         menuPrinter.print ( "ID: " );
         String ID = menuPrinter.getString ( );
         Response response = facadeService.deleteEmployeeFromShift ( role, ID, date, shift );
-        if (response.errorOccured ( ))
+        if (response.errorOccured ( )) {
             menuPrinter.print ( response.getErrorMessage ( ) );
+            return;
+        }
+        menuPrinter.print ( "Employee deleted from shift successfully.\n" );
     }
 
     public void changeShiftType(LocalDate date, int shift) {
         menuPrinter.print ( "Write shift type name: " );
         String shiftType = menuPrinter.getString ( );
         Response response = facadeService.changeShiftType ( date, shift, shiftType );
-        if (response.errorOccured ( ))
+        if (response.errorOccured ( )) {
             menuPrinter.print ( response.getErrorMessage ( ) );
+            return;
+        }
+        menuPrinter.print ( "Shift type changed successfully.\n" );
     }
 
     public void createShiftType(){
@@ -282,8 +293,11 @@ public class PresentationController {
             role = menuPrinter.roleMenu ();
         }
         Response response = facadeService.createShiftType ( shiftype, manning );
-        if (response.errorOccured ( ))
+        if (response.errorOccured ( )) {
             menuPrinter.print ( response.getErrorMessage ( ) );
+            return;
+        }
+        menuPrinter.print ( "Shift type added successfully.\n" );
     }
 
     public void updateRoleManning(String shiftType, Role role, int num) {
@@ -418,8 +432,11 @@ public class PresentationController {
         menuPrinter.print ( "reason: " );
         String reason = menuPrinter.getString();
         Response r = facadeService.giveConstraint ( date, shift, reason );
-        if (r.errorOccured ())
-            menuPrinter.print ( r.getErrorMessage () );
+        if (r.errorOccured ()) {
+            menuPrinter.print ( r.getErrorMessage ( ) );
+            return;
+        }
+        menuPrinter.print ( "Constraint added successfully.\n" );
     }
 
 //    public void updateConstraint (LocalDate date, int shift, String reason) {
@@ -431,16 +448,23 @@ public class PresentationController {
         LocalDate date = menuPrinter.dateMenu ();
         int shift = menuPrinter.getShiftNum ();
         Response r = facadeService.deleteConstraint (date, shift);
-        if (r.errorOccured ())
-            menuPrinter.print ( r.getErrorMessage () );
+        if (r.errorOccured ()) {
+            menuPrinter.print ( r.getErrorMessage ( ) );
+            return;
+        }
+        menuPrinter.print ( "Constraint deleted successfully.\n" );
     }
 
     public void addEmployee() {
-        Role role;
-        String Id;
-        FacadeTermsOfEmployment terms;
-        LocalDate transactionDate;
-        FacadeBankAccountInfo bank;
+        menuPrinter.print ( "Write the new employee details:\n" );
+        FacadeEmployee facadeEmployee = menuPrinter.getEmployeeDetails ( );
+        Response response = facadeService.addEmployee ( facadeEmployee );
+        if(response.errorOccured ())
+        {
+            menuPrinter.print ( response.getErrorMessage () );
+            return;
+        }
+        menuPrinter.print ( "Employee added successfully.\n" );
     }
 
     public void removeEmployee()  {

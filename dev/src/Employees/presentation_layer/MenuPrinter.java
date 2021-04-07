@@ -86,7 +86,7 @@ public class MenuPrinter {
 
 
     public FacadeEmployee createManagerAccountMenu() {
-        Role role;
+        String role;
         int ID, accountNumber, bankBranch, salary, educationFund, sickDays, daysOff;
         String bank;
         FacadeBankAccountInfo bankAccountInfo;
@@ -96,11 +96,11 @@ public class MenuPrinter {
                 "choose role:\n1.branch manager\n2.branch manager assistent\n3.human resources manager\n" );
         int input = sc.nextInt ( );
         if(input == 1)
-            role = Role.branchManager;
+            role = "branchManager";
         else if (input == 2)
-            role = Role.branchManagerAssistent;
+            role = "branchManagerAssistent";
         else if(input == 3)
-            role = Role.humanResourcesManager;
+            role = "humanResourcesManager";
         else{
             printChoiceException ();
             return null;
@@ -127,6 +127,38 @@ public class MenuPrinter {
         daysOff = sc.nextInt ();
         termsOfEmployment = new FacadeTermsOfEmployment ( salary, educationFund, sickDays, daysOff );
         return new FacadeEmployee ( role, ID, transactionDate, bankAccountInfo, termsOfEmployment );
+    }
+
+    public FacadeEmployee getEmployeeDetails(){
+        int ID, accountNumber, bankBranch, salary, educationFund, sickDays, daysOff;
+        String role, bank;
+        FacadeBankAccountInfo bankAccountInfo;
+        FacadeTermsOfEmployment termsOfEmployment;
+        role = roleMenu ();
+        LocalDate transactionDate;
+        System.out.println ( "ID: " );
+        ID = sc.nextInt ( );
+        System.out.println ( "\n" );
+        System.out.println ( "transaction date:\n");
+        transactionDate = dateMenu ();
+        System.out.println ("\nbank account info:\nbank: " );
+        bank = sc.next ();
+        System.out.println ("\nbank branch: " );
+        bankBranch = sc.nextInt ();
+        System.out.println ("\nbank account number: " );
+        accountNumber = sc.nextInt ();
+        bankAccountInfo = new FacadeBankAccountInfo (accountNumber, bankBranch, bank );
+        System.out.println ("\nterms of employment:\nsalary: " );
+        salary = sc.nextInt ();
+        System.out.println ("\neducation fund: " );
+        educationFund = sc.nextInt ();
+        System.out.println ("\nsick days: " );
+        sickDays = sc.nextInt ();
+        System.out.println ("\ndays off: " );
+        daysOff = sc.nextInt ();
+        termsOfEmployment = new FacadeTermsOfEmployment ( salary, educationFund, sickDays, daysOff );
+        return new FacadeEmployee ( role, ID, transactionDate, bankAccountInfo, termsOfEmployment );
+
     }
 
     public LocalDate dateMenu()

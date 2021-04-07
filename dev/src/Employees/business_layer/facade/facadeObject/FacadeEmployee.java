@@ -1,13 +1,10 @@
 package Employees.business_layer.facade.facadeObject;
 
-import Employees.business_layer.Employee.Role;
-
 import java.time.LocalDate;
-import java.util.Date;
 import java.util.HashMap;
 
 public class FacadeEmployee implements FacadeObject{
-    private Role role;
+    private String role;
     private int ID;
     private LocalDate transactionDate;
     private FacadeBankAccountInfo facadeBankAccountInfo;
@@ -16,7 +13,7 @@ public class FacadeEmployee implements FacadeObject{
     private boolean isManager;
 
     //an existing employee with given constraints
-    public FacadeEmployee(Role role, int ID, LocalDate transactionDate, FacadeBankAccountInfo facadeBankAccountInfo, FacadeTermsOfEmployment facadeTermsOfEmployment, HashMap<LocalDate, FacadeConstraint> constraints)
+    public FacadeEmployee(String role, int ID, LocalDate transactionDate, FacadeBankAccountInfo facadeBankAccountInfo, FacadeTermsOfEmployment facadeTermsOfEmployment, HashMap<LocalDate, FacadeConstraint> constraints)
     {
         this.role = role;
         this.ID = ID;
@@ -24,14 +21,14 @@ public class FacadeEmployee implements FacadeObject{
         this.facadeBankAccountInfo = facadeBankAccountInfo;
         this.facadeTermsOfEmployment = facadeTermsOfEmployment;
         this.constraints = constraints;
-        if(role == Role.humanResourcesManager || role == Role.branchManager || role == Role.branchManagerAssistent)
+        if(role.equals ("humanResourcesManager") || role.equals ( "branchManager") || role.equals ( "branchManagerAssistent" ))
             isManager = true;
         else
             isManager = false;
     }
 
     //new employee with no constraints
-    public FacadeEmployee(Role role, int ID, LocalDate transactionDate, FacadeBankAccountInfo facadeBankAccountInfo, FacadeTermsOfEmployment facadeTermsOfEmployment)
+    public FacadeEmployee(String role, int ID, LocalDate transactionDate, FacadeBankAccountInfo facadeBankAccountInfo, FacadeTermsOfEmployment facadeTermsOfEmployment)
     {
         this.role = role;
         this.ID = ID;
@@ -49,7 +46,7 @@ public class FacadeEmployee implements FacadeObject{
         return ID;
     }
 
-    public Role getRole() {
+    public String getRole() {
          return role;
     }
 
