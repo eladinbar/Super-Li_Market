@@ -163,7 +163,7 @@ public class InventoryController {
     //-------------------------------------------------------------------------Category functions
 
     /*
-    If parent category is null, the new category should be added as a main category.
+    If parent category is null or empty, the new category should be added as a main category.
      */
     public void addCategory(String categoryName, String parentCategoryName) {
         if (categoryName.equals(parentCategoryName))
@@ -177,7 +177,7 @@ public class InventoryController {
                 throw ex; //Rethrow exception thrown in 'try' block (different error message)
 
             Category newCategory;
-            if (parentCategoryName != null) {
+            if (parentCategoryName != null && !parentCategoryName.trim().equals("")) {
                 for (Category parentCategory : categories) {
                     if (parentCategory.getName().equals(parentCategoryName)) {
                         newCategory = new Category(categoryName, new ArrayList<>(), parentCategory, new ArrayList<>());
@@ -189,7 +189,7 @@ public class InventoryController {
                 throw new IllegalArgumentException("No parent category with the name: " + parentCategoryName + " was found in the system.");
             }
             else {
-                //If parent category is null, add new category with "Uncategorized" as its parent category
+                //If parent category is null or empty, add new category with "Uncategorized" as its parent category
                 newCategory = new Category(categoryName, new ArrayList<>(), baseCategory, new ArrayList<>());
                 categories.add(newCategory);
             }
@@ -218,8 +218,8 @@ public class InventoryController {
         if (category.getParentCategory().getName().equals(newParentName)) //Parent category equals to new parent category
             return;
 
-        //If newParentName is null, set parent category as base category
-        if (newParentName == null)
+        //If newParentName is null or empty, set parent category as base category
+        if (newParentName == null || newParentName.trim().equals(""))
             category.setParentCategory(baseCategory);
         //Else, check whether the given newParentName is a valid parent category to 'category'
         else {
@@ -314,7 +314,7 @@ public class InventoryController {
 
     public void addItemDiscount(int supplierId, double discount, Calendar discountDate, int itemCount, int itemId) {
         try {
-            getDiscount(supplierId);
+            getDiscount(supplierId, discountDate);
             throw new IllegalArgumentException("A discount with supplier ID: " + supplierId + " already exists in the system.");
         } catch (Exception ex) {
             if (ex.getMessage().equals("A discount with supplier ID: " + supplierId + " already exists in the system."))
@@ -327,7 +327,7 @@ public class InventoryController {
 
     public void addCategoryDiscount(int supplierId, double discount, Calendar discountDate, int itemCount, String categoryName) {
         try {
-            getDiscount(supplierId);
+            getDiscount(supplierId, discountDate);
             throw new IllegalArgumentException("A discount with supplier ID: " + supplierId + " already exists in the system.");
         } catch (Exception ex) {
             if (ex.getMessage().equals("A discount with supplier ID: " + supplierId + " already exists in the system."))
@@ -338,12 +338,16 @@ public class InventoryController {
         }
     }
 
-    public Discount getDiscount(int supplierId) {
+    public List<Discount> getDiscount(int supplierId, Calendar discountDate) {
+        List<Discount> discountList = new ArrayList<>();
         for (Discount discount : discounts) {
-            if (discount.getSupplierID() == supplierId)
-                return discount;
+            if (discount.getSupplierID() == supplierId & discount.getDate().equals(discountDate))
+                discountList.add(discount);
         }
-        throw new IllegalArgumentException("No discount with supplier ID: " + supplierId + " exists in the system.");
+
+        if (discountList.isEmpty())
+            throw new IllegalArgumentException("No discount with supplier ID: " + supplierId + " exists in the system.");
+        return discountList;
     }
 
 

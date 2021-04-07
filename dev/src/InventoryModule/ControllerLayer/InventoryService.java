@@ -7,6 +7,8 @@ import java.util.List;
 
 public interface InventoryService {
 
+    //-------------------------------------------------------------------------Item functions
+
     Response addItem(int id, String name, String categoryName, double costPrice, double sellingPrice, int minAmount,
                      String shelfLocation, String storageLocation, int shelfQuantity, int storageQuantity, int manufacturerId, List<Integer> suppliersIds);
     ResponseT<Item> getItem(int itemId);
@@ -30,7 +32,7 @@ public interface InventoryService {
     Response removeItemSupplier(int itemId, int supplierId);
     Response removeItem(int itemId);
 
-    //-------------------------------------------------------------------------
+    //-------------------------------------------------------------------------Category functions
 
     /*
     If parent category is null, the new category should be added as a main category.
