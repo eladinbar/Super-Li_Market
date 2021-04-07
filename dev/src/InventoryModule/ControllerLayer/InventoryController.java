@@ -399,6 +399,8 @@ public class InventoryController {
         for (Category category : categories) {
             inventoryReportList.addAll(category.getItems());
         }
+        //Add all items in base category to the report
+        inventoryReportList.addAll(baseCategory.getItems());
         return inventoryReportList;
     }
 
@@ -415,6 +417,11 @@ public class InventoryController {
                 if (item.getQuantity() <= item.getMinAmount())
                     shortageReportList.add(item);
             }
+        }
+        //Check for under minimum amount items in base category
+        for (Item item : baseCategory.getItems()) {
+            if (item.getQuantity() <= item.getMinAmount())
+                shortageReportList.add(item);
         }
         return shortageReportList;
     }
