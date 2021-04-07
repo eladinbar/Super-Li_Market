@@ -8,11 +8,9 @@ import InventoryModule.ControllerLayer.SimpleObjects.DefectEntry;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
-import java.util.stream.Stream;
 
 public class InventoryServiceImpl implements InventoryService {
-    private InventoryController inventoryController;
+    private final InventoryController inventoryController;
 
     public InventoryServiceImpl() {
         inventoryController = new InventoryController();
@@ -39,7 +37,7 @@ public class InventoryServiceImpl implements InventoryService {
                     shelfQuantity, storageQuantity, manufacturerId, suppliersIds);
             response = new Response(false, "Item added successfully.");
             return response;
-        } catch (IllegalArgumentException ex) {
+        } catch (Exception ex) {
             response = new Response(true, ex.getMessage());
             return response;
         }
@@ -61,8 +59,8 @@ public class InventoryServiceImpl implements InventoryService {
                     tempItem.getStorageLocation(), tempItem.getManufacturerID());
             responseT = new ResponseT<>(false, "", simpleItem);
             return responseT;
-        } catch (IllegalArgumentException ex) {
-            responseT = new ResponseT(true, ex.getMessage(), null);
+        } catch (Exception ex) {
+            responseT = new ResponseT<>(true, ex.getMessage(), null);
             return responseT;
         }
     }
@@ -80,7 +78,7 @@ public class InventoryServiceImpl implements InventoryService {
             inventoryController.modifyItemName(itemId, newName);
             response = new Response(false, "Item name modified successfully.");
             return response;
-        } catch (IllegalArgumentException ex) {
+        } catch (Exception ex) {
             response = new Response(true, ex.getMessage());
             return response;
         }
@@ -99,7 +97,7 @@ public class InventoryServiceImpl implements InventoryService {
             inventoryController.modifyItemCategory(itemId, newCategoryName);
             response = new Response(false, "Item category modified successfully.");
             return response;
-        } catch (IllegalArgumentException ex) {
+        } catch (Exception ex) {
             response = new Response(true, ex.getMessage());
             return response;
         }
@@ -118,7 +116,7 @@ public class InventoryServiceImpl implements InventoryService {
             inventoryController.modifyItemCostPrice(itemId, newCostPrice);
             response = new Response(false, "Item cost price modified successfully.");
             return response;
-        } catch (IllegalArgumentException ex) {
+        } catch (Exception ex) {
             response = new Response(true, ex.getMessage());
             return response;
         }
@@ -137,7 +135,7 @@ public class InventoryServiceImpl implements InventoryService {
             inventoryController.modifyItemSellingPrice(itemId, newSellingPrice);
             response = new Response(false, "Item selling price modified successfully.");
             return response;
-        } catch (IllegalArgumentException ex) {
+        } catch (Exception ex) {
             response = new Response(true, ex.getMessage());
             return response;
         }
@@ -157,7 +155,7 @@ public class InventoryServiceImpl implements InventoryService {
             inventoryController.changeItemLocation(itemId, newShelfLocation, newStorageLocation);
             response = new Response(false, "Item location changed successfully.");
             return response;
-        } catch (IllegalArgumentException ex) {
+        } catch (Exception ex) {
             response = new Response(true, ex.getMessage());
             return response;
         }
@@ -176,7 +174,7 @@ public class InventoryServiceImpl implements InventoryService {
             inventoryController.changeItemShelfLocation(itemId, newShelfLocation);
             response = new Response(false, "Item shelf location changed successfully.");
             return response;
-        } catch (IllegalArgumentException ex) {
+        } catch (Exception ex) {
             response = new Response(true, ex.getMessage());
             return response;
         }
@@ -195,7 +193,7 @@ public class InventoryServiceImpl implements InventoryService {
             inventoryController.changeItemStorageLocation(itemId, newStorageLocation);
             response = new Response(false, "Item storage location changed successfully.");
             return response;
-        } catch (IllegalArgumentException ex) {
+        } catch (Exception ex) {
             response = new Response(true, ex.getMessage());
             return response;
         }
@@ -214,7 +212,7 @@ public class InventoryServiceImpl implements InventoryService {
             inventoryController.modifyItemQuantity(itemId, newShelfQuantity, newStorageQuantity);
             response = new Response(false, "Item quantity modified successfully.");
             return response;
-        } catch (IllegalArgumentException ex) {
+        } catch (Exception ex) {
             response = new Response(true, ex.getMessage());
             return response;
         }
@@ -233,7 +231,7 @@ public class InventoryServiceImpl implements InventoryService {
             inventoryController.modifyItemShelfQuantity(itemId, newShelfQuantity);
             response = new Response(false, "Item shelf quantity modified successfully.");
             return response;
-        } catch (IllegalArgumentException ex) {
+        } catch (Exception ex) {
             response = new Response(true, ex.getMessage());
             return response;
         }
@@ -252,7 +250,7 @@ public class InventoryServiceImpl implements InventoryService {
             inventoryController.modifyItemStorageQuantity(itemId, newStorageQuantity);
             response = new Response(false, "Item storage quantity modified successfully.");
             return response;
-        } catch (IllegalArgumentException ex) {
+        } catch (Exception ex) {
             response = new Response(true, ex.getMessage());
             return response;
         }
@@ -271,7 +269,7 @@ public class InventoryServiceImpl implements InventoryService {
             inventoryController.addItemSupplier(itemId, supplierId);
             response = new Response(false, "Item supplier added successfully.");
             return response;
-        } catch (IllegalArgumentException ex) {
+        } catch (Exception ex) {
             response = new Response(true, ex.getMessage());
             return response;
         }
@@ -290,7 +288,7 @@ public class InventoryServiceImpl implements InventoryService {
             inventoryController.removeItemSupplier(itemId, supplierId);
             response = new Response(false, "Item supplier removed successfully.");
             return response;
-        } catch (IllegalArgumentException ex) {
+        } catch (Exception ex) {
             response = new Response(true, ex.getMessage());
             return response;
         }
@@ -309,7 +307,7 @@ public class InventoryServiceImpl implements InventoryService {
             inventoryController.removeItem(itemId);
             response = new Response(false, "Item removed successfully.");
             return response;
-        } catch (IllegalArgumentException ex) {
+        } catch (Exception ex) {
             response = new Response(true, ex.getMessage());
             return response;
         }
@@ -325,7 +323,7 @@ public class InventoryServiceImpl implements InventoryService {
             inventoryController.addCategory(categoryName, parentCategoryName);
             response = new Response(false, "Category added successfully.");
             return response;
-        } catch (IllegalArgumentException ex) {
+        } catch (Exception ex) {
             response = new Response(true, ex.getMessage());
             return response;
         }
@@ -345,8 +343,8 @@ public class InventoryServiceImpl implements InventoryService {
                                                     simpleSubCategories);
             responseT = new ResponseT<>(false, "", simpleCategory);
             return responseT;
-        } catch (IllegalArgumentException ex) {
-            responseT = new ResponseT(true, ex.getMessage(), null);
+        } catch (Exception ex) {
+            responseT = new ResponseT<>(true, ex.getMessage(), null);
             return responseT;
         }
     }
@@ -378,7 +376,7 @@ public class InventoryServiceImpl implements InventoryService {
             inventoryController.modifyCategoryName(oldName, newName);
             response = new Response(false, "Category name modified successfully.");
             return response;
-        } catch (IllegalArgumentException ex) {
+        } catch (Exception ex) {
             response = new Response(true, ex.getMessage());
             return response;
         }
@@ -421,12 +419,40 @@ public class InventoryServiceImpl implements InventoryService {
 
     @Override
     public Response addItemSale(String saleName, int itemID, double saleDiscount, Calendar startDate, Calendar endDate) {
-        return null;
+        Response response;
+        //Check basic argument constraints
+        if (saleName == null || saleName.trim().equals("") | itemID < 0 | saleDiscount < 0) {
+            response = new Response(true, "One or more of the given arguments is invalid.");
+            return response;
+        }
+        //Call business layer function
+        try {
+            inventoryController.addItemSale(saleName, itemID, saleDiscount, startDate, endDate);
+            response = new Response(false, "Item Sale added successfully.");
+            return response;
+        } catch (Exception ex) {
+            response = new Response(true, ex.getMessage());
+            return response;
+        }
     }
 
     @Override
     public Response addCategorySale(String saleName, String categoryName, double saleDiscount, Calendar startDate, Calendar endDate) {
-        return null;
+        Response response;
+        //Check basic argument constraints
+        if (saleName == null || saleName.trim().equals("") | saleDiscount < 0) {
+            response = new Response(true, "One or more of the given arguments is invalid.");
+            return response;
+        }
+        //Call business layer function
+        try {
+            inventoryController.addCategorySale(saleName, categoryName, saleDiscount, startDate, endDate);
+            response = new Response(false, "Category Sale added successfully.");
+            return response;
+        } catch (Exception ex) {
+            response = new Response(true, ex.getMessage());
+            return response;
+        }
     }
 
     @Override
