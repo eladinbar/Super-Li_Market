@@ -16,7 +16,7 @@ import java.util.Calendar;
 import java.util.List;
 
 public class InventoryController {
-    Category baseCategory;
+    private final Category baseCategory;
     private final List<Category> categories;
     private final DefectsLogger defectsLogger;
     private final List<Discount> discounts;
