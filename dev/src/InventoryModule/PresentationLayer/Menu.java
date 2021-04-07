@@ -3,7 +3,6 @@ package InventoryModule.PresentationLayer;
 import InfrastructurePackage.TextFormatter;
 import InventoryModule.ControllerLayer.SimpleObjects.*;
 
-import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -182,9 +181,9 @@ public class Menu {
     private void printItem(Item item) throws InvocationTargetException, IllegalAccessException, NoSuchMethodException {
         Method[] getMethods = {item.getClass().getMethod("getID"), item.getClass().getMethod("getName"),
                 item.getClass().getMethod("getCostPrice"), item.getClass().getMethod("getSellingPrice"),
-                item.getClass().getMethod("getStoreQuantity"), item.getClass().getMethod("getStorageQuantity"),
+                item.getClass().getMethod("getShelfQuantity"), item.getClass().getMethod("getStorageQuantity"),
                 item.getClass().getMethod("getTotalQuantity"), item.getClass().getMethod("getMinAmount"),
-                item.getClass().getMethod("getStoreLocation"), item.getClass().getMethod("getStorageLocation"),
+                item.getClass().getMethod("getShelfLocation"), item.getClass().getMethod("getStorageLocation"),
                 item.getClass().getMethod("getManufacturerID")};
         handleEntityAliment(item, getMethods);
     }

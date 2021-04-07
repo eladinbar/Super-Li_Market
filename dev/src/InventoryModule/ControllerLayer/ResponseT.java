@@ -1,14 +1,14 @@
 package InventoryModule.ControllerLayer;
 
 public class ResponseT<T> extends Response {
-    private T date;
+    private final T element;
 
-    public ResponseT(boolean errorOccurred, String message,T date) {
+    public ResponseT(boolean errorOccurred, String message, T element) {
         super(errorOccurred,message);
-        this.date = date;
+        this.element = element;
     }
 
-    public T getDate() {
-        return date;
+    public T getElement() {
+        return element;
     }
 }
