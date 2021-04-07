@@ -75,7 +75,7 @@ public class PresentationController implements Runnable {
     private Response editItemChoiceInput(int itemId) {
         Scanner scan = new Scanner(System.in);
         String choice = scan.next();
-        Response r = null;
+        Response r;
         switch (choice) {
             case "1" -> {
                 String newName = menu.instructAndReceive("Enter new item name");
@@ -169,7 +169,7 @@ public class PresentationController implements Runnable {
             menu.printEntity(catR.getDate());
         menu.printMenu(menu.getCategoryModificationList());
         String userInput = menu.instructAndReceive("Enter choice: ");
-        Response modResp = null;
+        Response modResp;
         switch (userInput) {
             case "1" -> {
 
@@ -258,10 +258,10 @@ public class PresentationController implements Runnable {
     private Pair<Calendar, Calendar> getSaleDates() {
         String[] startDate = menu.instructAndReceive("Enter start date: use this format <YYYY-MM-DD>").split("-");
         Calendar start = Calendar.getInstance();
-        start.set(Integer.parseInt(startDate[0]), Integer.parseInt(startDate[1]), Integer.parseInt(startDate[2]));
+        start.set(Integer.parseInt(startDate[0]), Integer.parseInt(startDate[1])-1, Integer.parseInt(startDate[2]));
         String[] endDate = menu.instructAndReceive("Enter end date: use this format <YYYY-MM-DD>").split("-");
         Calendar end = Calendar.getInstance();
-        end.set(Integer.parseInt(endDate[0]), Integer.parseInt(endDate[1]), Integer.parseInt(endDate[2]));
+        end.set(Integer.parseInt(endDate[0]), Integer.parseInt(endDate[1])-1, Integer.parseInt(endDate[2]));
         Pair<Calendar,Calendar> dates = new Pair<>(start,end);
         //checking that the date make sense
         if(start.compareTo(end) > 0){
@@ -282,7 +282,7 @@ public class PresentationController implements Runnable {
 
         menu.printMenu(menu.getSaleModificationList());
         String userInput = menu.instructAndReceive("Enter choice: ");
-        Response modResp = null;
+        Response modResp;
         switch (userInput) {
             case "1" -> {
                 String newName = menu.instructAndReceive("Enter new name: ");
