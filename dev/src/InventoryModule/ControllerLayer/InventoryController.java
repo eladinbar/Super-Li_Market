@@ -418,6 +418,11 @@ public class InventoryController {
                     shortageReportList.add(item);
             }
         }
+        //Check for under minimum amount items in base category
+        for (Item item : baseCategory.getItems()) {
+            if (item.getQuantity() <= item.getMinAmount())
+                shortageReportList.add(item);
+        }
         return shortageReportList;
     }
 
