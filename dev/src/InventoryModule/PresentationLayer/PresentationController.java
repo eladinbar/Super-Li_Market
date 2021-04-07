@@ -74,48 +74,50 @@ public class PresentationController implements Runnable {
         String choice = scan.next();
         Response r;
         switch (choice) {
-            case "1" -> {
+            case "1":
                 String newName = menu.instructAndReceive("Enter new item name");
                 r = service.modifyItemName(itemId, newName);
-            }
-            case "2" -> {
+                break;
+            case "2":
                 String newCategory = menu.instructAndReceive("Enter new item's category");
                 r = service.modifyItemCategory(itemId, newCategory);
-            }
-            case "3" -> {
-                double newPrice = Double.parseDouble(menu.instructAndReceive("enter new item cost price"));
-                r = service.modifyItemCostPrice(itemId, newPrice);
-            }
-            case "4" -> {
-                double newPrice = Double.parseDouble(menu.instructAndReceive("enter new item selling price"));
-                r = service.modifyItemSellingPrice(itemId, newPrice);
-            }
-            case "5" -> {
-                String newLocation = menu.instructAndReceive("enter new item storage location");
-                r = service.changeItemStorageLocation(itemId, newLocation);
-            }
-            case "6" -> {
-                String newLocation = menu.instructAndReceive("enter new item store location");
-                r = service.changeItemShelfLocation(itemId, newLocation);
-            }
-            case "7" -> {
-                int newQuantity = Integer.parseInt(menu.instructAndReceive("enter new item storage quantity"));
-                r = service.modifyItemStorageQuantity(itemId, newQuantity);
-            }
-            case "8" -> {
-                int newQuantity = Integer.parseInt(menu.instructAndReceive("enter new item store quantity"));
-                r = service.modifyItemShelfQuantity(itemId, newQuantity);
-            }
-            case "9" -> {
+                break;
+            case "3":
+                double newCPrice = Double.parseDouble(menu.instructAndReceive("enter new item cost price"));
+                r = service.modifyItemCostPrice(itemId, newCPrice);
+                break;
+            case "4":
+                double newSPrice = Double.parseDouble(menu.instructAndReceive("enter new item selling price"));
+                r = service.modifyItemSellingPrice(itemId, newSPrice);
+                break;
+            case "5":
+                String newLocationST = menu.instructAndReceive("enter new item storage location");
+                r = service.changeItemStorageLocation(itemId, newLocationST);
+                break;
+            case "6":
+                String newLocationSH = menu.instructAndReceive("enter new item shelf location");
+                r = service.changeItemShelfLocation(itemId, newLocationSH);
+                break;
+            case "7":
+                int newQuantityST = Integer.parseInt(menu.instructAndReceive("enter new item storage quantity"));
+                r = service.modifyItemStorageQuantity(itemId, newQuantityST);
+                break;
+            case "8":
+                int newQuantitySH = Integer.parseInt(menu.instructAndReceive("enter new item shelf quantity"));
+                r = service.modifyItemShelfQuantity(itemId, newQuantitySH);
+                break;
+            case "9":
                 int newSupplier = Integer.parseInt(menu.instructAndReceive("add  new supplier for the item: (enter supplier id)"));
                 r = service.addItemSupplier(itemId, newSupplier);
-            }
-            case "10" -> {
+                break;
+            case "10":
                 System.out.println("remove a supplier for the item: (enter supplier id)");
                 int oldSupplier = scan.nextInt();
                 r = service.removeItemSupplier(itemId, oldSupplier);
-            }
-            default -> r = new Response(true, "invalid choice");
+                break;
+            default:
+                r = new Response(true, "invalid choice");
+                break;
         }
         return r;
     }
@@ -168,16 +170,17 @@ public class PresentationController implements Runnable {
         String userInput = menu.instructAndReceive("Enter choice: ");
         Response modResp;
         switch (userInput) {
-            case "1" -> {
-
+            case "1":
                 String newName = menu.instructAndReceive("Enter new name: ");
                 modResp = service.modifyCategoryName(catR.getData().getName(), newName);
-            }
-            case "2" -> {
+                break;
+            case "2":
                 String newParent = menu.instructAndReceive("Enter new parent category name: (keep in mind not to use a subcategory!)");
                 modResp = service.changeParentCategory(catR.getData().getName(), newParent);
-            }
-            default -> modResp = new Response(true, "invalid choice");
+                break;
+            default:
+                modResp = new Response(true, "invalid choice");
+                break;
         }
 
         if (modResp.isErrorOccurred())
@@ -281,19 +284,21 @@ public class PresentationController implements Runnable {
         String userInput = menu.instructAndReceive("Enter choice: ");
         Response modResp;
         switch (userInput) {
-            case "1" -> {
+            case "1":
                 String newName = menu.instructAndReceive("Enter new name: ");
                 modResp = service.modifySaleName(saleR.getData().getName(), newName);
-            }
-            case "2" -> {
+                break;
+            case "2":
                 double newDisc = Double.parseDouble(menu.instructAndReceive("Enter sale Discount: (for 10% enter 0.1) "));
                 modResp = service.modifySaleDiscount(saleR.getData().getName(), newDisc);
-            }
-            case "3" -> {
+                break;
+            case "3":
                 Pair<Calendar, Calendar> dates = getStartEndDates();
-                modResp = service.modifySaleDates(saleR.getData().getName(), dates.getFirst(),dates.getSecond());
-            }
-            default -> modResp = new Response(true, "invalid choice");
+                modResp = service.modifySaleDates(saleR.getData().getName(), dates.getFirst(), dates.getSecond());
+                break;
+            default:
+                modResp = new Response(true, "invalid choice");
+                break;
         }
         if (modResp.isErrorOccurred())
             menu.errorPrompt(modResp.getMessage());
@@ -427,27 +432,69 @@ public class PresentationController implements Runnable {
         Scanner scan = new Scanner(System.in);
         String choice = scan.next();
         switch (choice) {
-            case "1" -> showItem();
-            case "2" -> addItem();
-            case "3" -> editItem();
-            case "4" -> removeItem();
-            case "5" -> showCategory();
-            case "6" -> addCategory();
-            case "7" -> editCategory();
-            case "8" -> removeCategory();
-            case "9" -> showSale();
-            case "10" -> addItemSale();
-            case "11" -> addCategorySale();
-            case "12" -> modifySale();
-            case "13" -> showSupplierDiscount();
-            case "14" -> addItemSupplierDiscount();
-            case "15" -> addCategorySupplierDiscount();
-            case "16" -> recordDefect();
-            case "17" -> inventoryReport();
-            case "18" -> categoryReport();
-            case "19" -> itemShortageReport();
-            case "20" -> defectsReport();
-            default -> menu.errorPrompt(choice);
+            case "1":
+                showItem();
+                break;
+            case "2":
+                addItem();
+                break;
+            case "3":
+                editItem();
+                break;
+            case "4":
+                removeItem();
+                break;
+            case "5":
+                showCategory();
+                break;
+            case "6":
+                addCategory();
+                break;
+            case "7":
+                editCategory();
+                break;
+            case "8":
+                removeCategory();
+                break;
+            case "9":
+                showSale();
+                break;
+            case "10":
+                addItemSale();
+                break;
+            case "11":
+                addCategorySale();
+                break;
+            case "12":
+                modifySale();
+                break;
+            case "13":
+                showSupplierDiscount();
+                break;
+            case "14":
+                addItemSupplierDiscount();
+                break;
+            case "15":
+                addCategorySupplierDiscount();
+                break;
+            case "16":
+                recordDefect();
+                break;
+            case "17":
+                inventoryReport();
+                break;
+            case "18":
+                categoryReport();
+                break;
+            case "19":
+                itemShortageReport();
+                break;
+            case "20":
+                defectsReport();
+                break;
+            default:
+                menu.errorPrompt(choice);
+                break;
         }
     }
 

@@ -1,7 +1,9 @@
 package InventoryModule.ControllerLayer;
 
 import InventoryModule.ControllerLayer.SimpleObjects.*;
+import InventoryModule.ControllerLayer.SimpleObjects.DefectEntry;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
@@ -232,6 +234,18 @@ public class InventoryServiceImpl implements InventoryService {
 
     @Override
     public ResponseT<List<DefectEntry>> defectsReport(Calendar fromDate, Calendar toDate) {
-        return null;
+        ResponseT<List<DefectEntry>> defectResponse;
+        List<DefectEntry> simpleEntries = new ArrayList<>();
+        try{
+            List<InventoryModule.BusinessLayer.DefectsPackage.DefectEntry> defectsReport =  inventoryController.defectsReport(fromDate,toDate);
+            for (InventoryModule.BusinessLayer.DefectsPackage.DefectEntry entry: defectsReport){
+                DefectEntry simple = new DefectEntry(entry.getEntryDate(),entry.getItemID(),entry.getItemName(), entry.getQuantity(), entry.getLocation());
+                simpleEntries.add(simple);
+            }
+            defectResponse = new ResponseT<>(false,"",simpleEntries);
+        } catch (Exception e){
+            defectResponse = new ResponseT<>(true, e.getMessage(),null);
+        }
+        return defectResponse;
     }
 }
