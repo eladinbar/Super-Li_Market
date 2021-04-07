@@ -93,7 +93,7 @@ class ResourcesServiceTest {
         rc.addDriver("1234567","raz", Driver.License.C1);
         rc.addDriver("1123456","raz", Driver.License.C1);
         rc.addDriver("1134567","raz", Driver.License.C1);
-        rc.makeUnavailable_Driver(1234567);
+        rc.makeUnavailable_Driver("1234567");
         assertFalse(rc.getDrivers().get(1234567).isAvailable());
         assertTrue(rc.getDrivers().get(1123456).isAvailable());
 
@@ -104,27 +104,27 @@ class ResourcesServiceTest {
         rc.addDriver("1234567","raz", Driver.License.C1);
         rc.addDriver("1123456","raz", Driver.License.C1);
         rc.addDriver("1134567","raz", Driver.License.C1);
-        rc.makeUnavailable_Driver(1234567);
-        rc.makeAvailable_Driver(1234567);
-        assertTrue(rc.getDrivers().get(1234567).isAvailable());
+        rc.makeUnavailable_Driver("1234567");
+        rc.makeAvailable_Driver("1234567");
+        assertTrue(rc.getDrivers().get("1234567").isAvailable());
     }
 
     @Test
     void testMakeUnavailable_Truck() {
-        rc.makeUnavailable_Truck(1234567);
-        assertFalse(rc.getTrucks().get(1234567).isAvailable());
+        rc.makeUnavailable_Truck("1234567");
+        assertFalse(rc.getTrucks().get("1234567").isAvailable());
     }
 
     @Test
     void testMakeAvailable_Truck(){
-        rc.makeUnavailable_Truck(1234567);
-        rc.makeAvailable_Truck(1234567);
-        assertTrue(rc.getTrucks().get(1234567).isAvailable());
+        rc.makeUnavailable_Truck("1234567");
+        rc.makeAvailable_Truck("1234567");
+        assertTrue(rc.getTrucks().get("1234567").isAvailable());
     }
 
     @Test
     void testGetAvailableTrucks() {
-        rc.makeUnavailable_Truck(1234567);
+        rc.makeUnavailable_Truck("1234567");
         assertEquals(1,rc.getAvailableTrucks().size());
     }
     @Test
@@ -132,13 +132,13 @@ class ResourcesServiceTest {
         rc.addDriver("1234567","raz", Driver.License.C1);
         rc.addDriver("1123456","raz", Driver.License.C1);
         rc.addDriver("1134567","raz", Driver.License.C1);
-        rc.makeUnavailable_Driver(1234567);
+        rc.makeUnavailable_Driver("1234567");
         assertEquals(2,rc.getAvailableTrucks().size());
     }
 
     @Test
     void testChooseTruck(){
-        rc.chooseTruck(1234567);
+        rc.chooseTruck("1234567");
         assertEquals(1234567,rc.getCurrTruckNumber());
     }
 
@@ -147,14 +147,14 @@ class ResourcesServiceTest {
         rc.addDriver("1234567","raz", Driver.License.C1);
         rc.addDriver("1123456","raz", Driver.License.C1);
         rc.addDriver("1134567","raz", Driver.License.C1);
-        rc.chooseDriver(1234567);
-        assertEquals(1234567,rc.getCurrDriverID());
+        rc.chooseDriver("1234567");
+        assertEquals("1234567",rc.getCurrDriverID());
     }
     @Test
     void testSaveReport() {
         rc.addDriver("1234567","raz", Driver.License.C1);
-        rc.chooseTruck(1234567);
-        rc.chooseDriver(1234567);
+        rc.chooseTruck("1234567");
+        rc.chooseDriver("1234567");
         rc.saveReport();
         assertFalse(rc.getTrucks().get(1234567).isAvailable());
         assertFalse(rc.getDrivers().get(1234567).isAvailable());

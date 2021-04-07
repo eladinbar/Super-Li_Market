@@ -64,7 +64,7 @@ public class Menu_Printer {
                         chooseDemands(scanner);
                         System.out.println("Total demands Weight is: " + pc.getWeightOfCurrReport());
                         chooseTruckAndDriver(scanner);
-                        chooseLeavingHour(scanner);
+                        chooseLeavingHour(scanner);//TODO CHECK HOUR
                         pc.saveReport();
                     }catch ( ReflectiveOperationException re){
                         System.out.println(re.getMessage());}
@@ -311,7 +311,7 @@ public class Menu_Printer {
                         " Available: " + facadeDriver.isAvailable());
             }
             System.out.println("Choose Driver by id");
-            int driver= getIntFromUser(scanner);
+            String driver= getStringFromUser(scanner);
             pc.makeAvailable_Driver(driver);
         }
     }
@@ -326,7 +326,7 @@ public class Menu_Printer {
                         "\n model: " + truck.getModel() + " maxWeight: " + truck.getMaxWeight()  );
             }
             System.out.println("Choose truck by License:");
-            int truck= getIntFromUser(scanner);
+            String truck= getStringFromUser(scanner);
             // TODO throws exception for busy truck?
             pc.makeAvailable_Truck(truck) ;
         }
@@ -344,7 +344,7 @@ public class Menu_Printer {
                         " Available: " + facadeDriver.isAvailable());
             }
             System.out.println("Choose Driver by id");
-            int driver= getIntFromUser(scanner);
+            String driver= getStringFromUser(scanner);
             try {
                 pc.makeUnavailable_Driver(driver);
             }catch (NoSuchElementException e){
@@ -363,7 +363,7 @@ public class Menu_Printer {
                         "\n model: " + truck.getModel() + " maxWeight: " + truck.getMaxWeight()  );
             }
             System.out.println("Choose truck by License:");
-            int truck= getIntFromUser(scanner);
+            String truck= getStringFromUser(scanner);
             pc.makeUnavailable_Truck(truck);
         }
     }
@@ -561,11 +561,11 @@ public class Menu_Printer {
         for (FacadeTruck truck: trucks) {
             System.out.println("truck LicenseNumber: " + truck.getLicenseNumber() + " max Weight :" + truck.getMaxWeight())  ;
         }
-        int truckID =  getIntFromUser(scanner);
+        String truck =  getStringFromUser(scanner);
         boolean con =true;
         while(con) {
             try {
-                FacadeTruck facadeTruck = pc.chooseTruck(truckID);
+                FacadeTruck facadeTruck = pc.chooseTruck(truck);
                 con = false;
             }catch (NoSuchElementException|IllegalStateException e  ){
                 System.out.println(e.getMessage());
@@ -580,7 +580,7 @@ public class Menu_Printer {
         for ( FacadeDriver driver : drivers) {
             System.out.println("Driver ID:" + driver.getID() + " License degree: " + driver.getLicenseType() + " =" + driver.getLicenseType().getSize()  )  ;
         }
-        int driverID =  getIntFromUser(scanner);
+        String driverID =  getStringFromUser(scanner);
         con =true;
         while(con) {
             try {
@@ -725,13 +725,13 @@ public class Menu_Printer {
             pc.updateDeliveryFormRealWeight(ftr.getID(), fdf.getID(), weight);
         }catch (IllegalStateException illegalStateException){
             System.out.println(illegalStateException.getMessage());
-            rePlanAfterWeight(scanner,ftr);
+            rePlanAfterWeight(scanner,ftr,weight);
             updateDeliveryForm(scanner);
         }
 
     }
 
-    private void rePlanAfterWeight(Scanner scanner, FacadeTruckingReport tr) throws ReflectiveOperationException {
+    private void rePlanAfterWeight(Scanner scanner, FacadeTruckingReport tr,int weight) throws ReflectiveOperationException {
 
         System.out.println("Welcome to replan menu! please choose the option you'd like to re plan the report with:");
         int spot =1;
@@ -760,7 +760,7 @@ public class Menu_Printer {
                 // TODO need to show sites
                 int itemNumber =0;
                 int amount =0;
-                int siteID =0;
+                siteID =0;
                 pc.removeSiteFromTruckReport(siteID, tr.getID());
                 // TODO need to show demands - loop
                 pc.addDemandToTruckReport(tr.getID(),itemNumber, amount);
@@ -770,7 +770,7 @@ public class Menu_Printer {
 
 
                 pc.getAvailableTrucks();
-                int truckNumber =0;
+                String truckNumber ="0";
                 try {
                     pc.replaceTruck(tr.getID(), truckNumber);
                 }catch(Exception e){
@@ -781,7 +781,7 @@ public class Menu_Printer {
                         pc.replaceDriver(tr.getID(), driverID);
                     }catch (Exception ex){
                         System.out.println(ex.getMessage());
-                        rePlanAfterWeight(scanner, tr);
+                        rePlanAfterWeight(scanner, tr,weight);
                     }
                 }
                 break;

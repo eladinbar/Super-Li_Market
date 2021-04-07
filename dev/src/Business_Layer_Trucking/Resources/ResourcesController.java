@@ -10,17 +10,17 @@ public class ResourcesController {
     private HashMap<String,Driver> drivers;
     private HashMap<String,Truck> trucks;
     private LinkedList<Driver> driversByLicense;
-    private  static ResourcesController instance=null;
-    private int currDriverID;
-    private int currTruckNumber;
+    private static ResourcesController instance=null;
+    private String currDriverID;
+    private String currTruckNumber;
 
     private ResourcesController()
     {
         drivers=new HashMap<>();
         trucks=new HashMap<>();
         driversByLicense=new LinkedList<>();
-        this.currDriverID=-1;
-        this.currTruckNumber=-1;
+        this.currDriverID="-1";
+        this.currTruckNumber="-1";
     }
 
     public static ResourcesController getInstance() {
@@ -91,7 +91,7 @@ public class ResourcesController {
         return result;
     }
 
-    public Truck chooseTruck(int truck) throws IllegalStateException,NoSuchElementException{
+    public Truck chooseTruck(String truck) throws IllegalStateException,NoSuchElementException{
 
         if (trucks.containsKey(truck)){
             if (trucks.get(truck).isAvailable())
@@ -104,7 +104,7 @@ public class ResourcesController {
         else throw new NoSuchElementException("No such truck");
     }
 
-    public Driver chooseDriver(int driver) throws IllegalStateException , NoSuchElementException{
+    public Driver chooseDriver(String driver) throws IllegalStateException , NoSuchElementException{
 
         if (drivers.containsKey(driver)){
             if (drivers.get(driver).isAvailable())
@@ -119,22 +119,22 @@ public class ResourcesController {
     }
 
 
-    public void makeUnavailable_Driver(int driver)throws NoSuchElementException {
+    public void makeUnavailable_Driver(String driver)throws NoSuchElementException {
         if (!drivers.containsKey(driver))
             throw new NoSuchElementException("Driver does not exist");
         drivers.get(driver).setUnavailable();
     }
 
-    public void makeAvailable_Driver(int driver) {
+    public void makeAvailable_Driver(String driver) {
         //TODO need to prevent from making available on a mission
         drivers.get(driver).makeAvailable();
     }
 
-    public void makeUnavailable_Truck(int truck) {
+    public void makeUnavailable_Truck(String truck) {
         trucks.get(truck).setUnavailable();
     }
 
-    public void makeAvailable_Truck(int truck) {
+    public void makeAvailable_Truck(String truck) {
         trucks.get(truck).makeAvailable();
     }
     public void saveReport()
@@ -153,19 +153,19 @@ public class ResourcesController {
         return trucks;
     }
 
-    public int getCurrDriverID() {
+    public String getCurrDriverID() {
         return currDriverID;
     }
 
-    public int getCurrTruckNumber() {
+    public String getCurrTruckNumber() {
         return currTruckNumber;
     }
 
-    public void setCurrDriverID(int currDriverID) {
+    public void setCurrDriverID(String currDriverID) {
         this.currDriverID = currDriverID;
     }
 
-    public void setCurrTruckNumber(int currTruckNumber) {
+    public void setCurrTruckNumber(String currTruckNumber) {
         this.currTruckNumber = currTruckNumber;
     }
 
@@ -181,4 +181,9 @@ public class ResourcesController {
         ResourcesController.instance = instance;
     }
 
+    public void replaceTruck(String old_truck, String truckNumber) {
+        makeAvailable_Truck(currTruckNumber);
+        this.currTruckNumber=truckNumber;
+        makeUnavailable_Truck(truckNumber);
+    }
 }

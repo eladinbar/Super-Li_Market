@@ -165,24 +165,32 @@ public class DeliveryController {
             lastDeliveryForms++;
         }
         else // we need to look in the list maybe there is a form with the same origin& destination
-        {
+        {boolean added=false;
             for (DeliveryForm df:currDF)
             {
 
-                // TODO 1.add to current DF
-                //  2.relate to case list is not empty but new destination.
                 if (df.getOrigin()==siteID&&df.getDestination()==demand.getSite())
                 {
                     HashMap<Item,Integer> itemsOnDF=new HashMap<>();
                     itemsOnDF.put(items.get(demand.getItemID()),amount);
                     df.getItems().put(items.get(demand.getItemID()).getID(),amount);
                     df.setLeavingWeight(df.getLeavingWeight()+items.get(demand.getItemID()).getWeight()*amount);
+                    added=true;
                     break;
                 }
                 if (!ignore&&sites.get(demand.getSite()).getDeliveryArea()!=sites.get(df.getDestination()).getDeliveryArea())
                 {
                     throw new IllegalStateException("Two different delivery areas");
                 }
+            }
+            if (!added)
+            {
+                HashMap<Integer,Integer> itemsOnDF=new HashMap<>();
+                itemsOnDF.put(items.get(demand.getItemID()).getID(),amount);
+
+                DeliveryForm deliveryForm=new DeliveryForm(lastDeliveryForms,siteID,demand.getSite()
+                        ,itemsOnDF,demand.getAmount()*items.get(demand.getItemID()).getWeight(),currTR.getID());
+                currDF.add(deliveryForm);
             }
         }
     }
@@ -379,7 +387,10 @@ public class DeliveryController {
                 {
                     if(!(df.getItems().containsKey(d.getItemID())&&df.getDestination()==d.getSite()&&d.getAmount()>0))
                     {
-                        result.add(d);
+                        Demand toAdd=new Demand(d.getItemID(),d.getSite(),d.getAmount()-df.getItems().get(d.getItemID()));
+                        result.add(toAdd);
+                        //TODO - check if working
+                        //result.add(d);
                     }
                 }
             }
@@ -563,5 +574,16 @@ public class DeliveryController {
     public void archive(int trID){
         oldTruckingReports.put(trID,activeTruckingReports.get(trID));
         oldDeliveryForms.put(trID,getDeliveryForms(trID));
+    }
+
+    public void archiveNotCompleted(int trID) {
+        // TODO need to update all the DF to the new TR
+        LinkedList<DeliveryForm> dfsToTranfer= activeDeliveryForms.get(trID);
+        oldTruckingReports.put(trID,activeTruckingReports.get(trID));
+        int new_TR_ID=createNewTruckingReport();
+        oldDeliveryForms.put(trID,dfsToTranfer);
+        activeDeliveryForms.put(new_TR_ID,dfsToTranfer);
+
+
     }
 }
