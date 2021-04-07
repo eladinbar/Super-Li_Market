@@ -353,16 +353,21 @@ public class InventoryController {
 
     //-------------------------------------------------------------------------Defect functions
 
-    public void recordDefect(int itemId, String itemName, Calendar entryDate, int defectQuantity, String defectLocation) {
+    public void recordDefect(int itemId, Calendar entryDate, int defectQuantity, String defectLocation) {
         try {
-            getDefectEntry(itemId, entryDate);
-            throw new IllegalArgumentException("A defect entry with the same ID:" + itemName + " and the same date recorded:" + entryDate + " already exists in the system.");
-        } catch (IllegalArgumentException ex) {
-            if (ex.getMessage().equals("A defect entry with the same ID:" + itemName + " and the same date recorded:" + entryDate + " already exists in the system."))
-                throw ex; //Rethrow exception thrown in 'try' block (different error message)
+            Item item = getItem(itemId);
+            try {
+                getDefectEntry(itemId, entryDate);
+                throw new IllegalArgumentException("A defect entry with the same ID:" + itemId + " and the same date recorded:" + entryDate + " already exists in the system.");
+            } catch (IllegalArgumentException ex) {
+                if (ex.getMessage().equals("A defect entry with the same ID:" + itemId + " and the same date recorded:" + entryDate + " already exists in the system."))
+                    throw ex; //Rethrow exception thrown in 'try' block (different error message)
 
-            DefectEntry newDefect = new DefectEntry(itemId, itemName, entryDate, defectQuantity, defectLocation);
-            defectsLogger.addDefectEntry(newDefect);
+                DefectEntry newDefect = new DefectEntry(itemId, item.getName(), entryDate, defectQuantity, defectLocation);
+                defectsLogger.addDefectEntry(newDefect);
+            }
+        } catch (IllegalArgumentException ex) {
+            throw new IllegalArgumentException(ex.getMessage());
         }
     }
 
