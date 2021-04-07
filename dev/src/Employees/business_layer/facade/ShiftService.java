@@ -52,28 +52,6 @@ public class ShiftService {
         }
     }
 
-    public ResponseT<FacadeWeeklyShiftSchedule> createEmptyWeeklyShiftSchedule(LocalDate startingDate){
-        try {
-            FacadeWeeklyShiftSchedule facadeWeeklyShiftSchedule = new FacadeWeeklyShiftSchedule ( new WeeklyShiftSchedule ( startingDate ) );
-            return new ResponseT( facadeWeeklyShiftSchedule );
-        }catch (EmployeeException e)
-        {
-            return new ResponseT<> ( e.getMessage () );
-        }
-
-    }
-
-    public Response addShift(LocalDate date, int shift, HashMap<String, List<String>> manning) {
-        try
-        {
-            shiftController.addShift ( date, shift, manning );
-            return new Response (  );
-        }catch (EmployeeException e)
-        {
-            return new Response ( e.getMessage () );
-        }
-    }
-
     public Response changeShift(LocalDate date, int shift, HashMap<String, List<String>> manning) {
         try {
             shiftController.changeShift ( date, shift, manning );
@@ -84,14 +62,12 @@ public class ShiftService {
         }
     }
 
-    public Response addEmployeeToShift(String role, String ID, LocalDate date, int shift){
-        try
-        {
+    public Response addEmployeeToShift(String role, String ID, LocalDate date, int shift) {
+        try {
             shiftController.addEmployeeToShift ( role, ID, date, shift );
-            return new Response (  );
-        }catch (EmployeeException e)
-        {
-            return new Response ( e.getMessage () );
+            return new Response ( );
+        } catch (EmployeeException e) {
+            return new Response ( e.getMessage ( ) );
         }
     }
 

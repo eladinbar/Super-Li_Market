@@ -25,7 +25,9 @@ public class ShiftController {
 
     public WeeklyShiftSchedule getRecommendation(LocalDate startingDate) throws EmployeeException {
         if(startingDate.isBefore ( LocalDate.now () ))
-            throw new EmployeeException ( "starting day has already passed." );
+            throw new EmployeeException ( "Starting date has already passed." );
+        if(startingDate.getDayOfWeek ().getValue () != 7)
+            throw new EmployeeException ( "Starting date is not Sunday." );
         WeeklyShiftSchedule output = createEmptyWeeklyShiftSchedule ( startingDate );
         for(int i = 0; i < 7; i ++)
         {
@@ -36,10 +38,14 @@ public class ShiftController {
 
     public WeeklyShiftSchedule createWeeklyshiftSchedule(LocalDate startingDate, Shift[][] shifts) throws EmployeeException {
         if(startingDate.isBefore ( LocalDate.now () ))
-            throw new EmployeeException ( "starting day has already passed." );
+            throw new EmployeeException ( "Starting date has already passed." );
+        if(startingDate.getDayOfWeek ().getValue () != 7)
+            throw new EmployeeException ( "Starting date is not sunday." );
         if(shifts == null)
             throw new EmployeeException ( "shifts are illegal." );
-        WeeklyShiftSchedule weeklyShiftSchedule = new WeeklyShiftSchedule ( startingDate, shifts );
+        if(this.shifts.containsKey ( startingDate ))
+            throw new EmployeeException ( "Weekly shift schedule is already exists in the system. \nYou can watch it and edit if you would like." );
+        WeeklyShiftSchedule weeklyShiftSchedule = new WeeklyShiftSchedule (employeeController, startingDate, shifts );
         this.shifts.put ( startingDate, weeklyShiftSchedule );
         return weeklyShiftSchedule;
     }
@@ -50,15 +56,17 @@ public class ShiftController {
         return new WeeklyShiftSchedule ( startingDate );
     }
 
-    public void addShift(LocalDate date, int shift, HashMap<String, List<String>> manning) throws EmployeeException {
-        getWeeklyShiftSchedule ( date ).addShift(date, shift, manning);
-    }
+//    public void addShift(LocalDate date, int shift, HashMap<String, List<String>> manning) throws EmployeeException {
+//        getWeeklyShiftSchedule ( date ).addShift(employeeController, date, shift, manning);
+//    }
 
     public void changeShift(LocalDate date, int shift, HashMap<String, List<String>> manning) throws EmployeeException {
-        getWeeklyShiftSchedule ( date ).changeShift(date, shift, manning);
+        getWeeklyShiftSchedule ( date ).changeShift(employeeController, date, shift, manning);
     }
 
     public void addEmployeeToShift(String role, String ID, LocalDate date, int shift) throws EmployeeException {
+        if(!employeeController.isExist(role, ID))
+            throw new EmployeeException ( "Id - " + ID + " and role - " + role + " does not exist in system." );
         getWeeklyShiftSchedule ( date ).addEmployeeToShift ( role, ID, date, shift );
     }
 
@@ -85,7 +93,7 @@ public class ShiftController {
     public WeeklyShiftSchedule getWeeklyShiftSchedule(LocalDate date) throws EmployeeException {
         WeeklyShiftSchedule output = shifts.get (date.minusDays ( date.getDayOfWeek ().getValue () % 7) );
         if(output == null)
-            throw new EmployeeException ( "no such shift exists." );
+            throw new EmployeeException ( "No such shift exists." );
         return output;
     }
 

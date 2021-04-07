@@ -1,6 +1,9 @@
+import Employees.presentation_layer.PresentationController;
+
 public class Main {
 
     public static void main(String[] args) {
-        System.out.println("Hello World!");
+        PresentationController presentationController = new PresentationController ();
+        presentationController.start ();
     }
 }

@@ -13,32 +13,28 @@ public class MenuPrinter {
 
     public int uploadProgram(){
         System.out.println ("choose the option you'd like:\n1.upload a program with an existing data.\n2.upload a program without an existing data." );
-        return sc.nextInt ();
+        return getInt ();
     }
 
     public char uploadClean(){
         System.out.println ("Are you a manager in Super-Lee? y/n\nyour answer:" );
-        return sc.next().charAt ( 0 );
-    }
-
-    public int uploadData(){
-        return 0;
+        return getChar ();
     }
 
     public int loginID(){
         System.out.println ("To login type you Id:\n" );
-        return sc.nextInt ();
+        return getInt ();
     }
 
     public String roleMenu(){
-        System.out.println ("Choose role:\n1.branch manager\n2.banch manager assistent\n" +
+        System.out.println ("Choose role:\n1.branch manager\n2.branch manager assistant\n" +
                 "3.human resources manager\n4.cashier\n5.guard\n6.usher\n7.store keeper\n8.Back" );
-        int choice =  sc.nextInt ();
+        int choice =  getInt ();
         switch (choice){
             case 1:
                 return "branchManager";
             case 2:
-                return "branchManagerAssistent";
+                return "branchManagerAssistant";
             case 3:
                 return "humanResourcesManager";
             case 4:
@@ -68,7 +64,7 @@ public class MenuPrinter {
                 "7.Get employee constraints\n" +
                 "8.Add a new employee to the system\n" +
                 "9.Logout\n" );
-        return sc.nextInt ();
+        return getInt ();
     }
 
     public int simpleEmployeeMenu(){
@@ -80,60 +76,33 @@ public class MenuPrinter {
                 "5.Show my employee card\n" +
                 "6.Show constraints\n" +
                 "7.Logout\n" );
-        return sc.nextInt ();
+        return getInt ();
     }
 
 
     public FacadeEmployee createManagerAccountMenu() {
-        String ID, role;
-        int accountNumber, bankBranch, salary, educationFund, sickDays, daysOff;
-        String bank;
-        FacadeBankAccountInfo bankAccountInfo;
-        FacadeTermsOfEmployment termsOfEmployment;
-        LocalDate transactionDate;
+        String role;
         System.out.println ( "Create account:\n" +
-                "choose role:\n1.branch manager\n2.branch manager assistent\n3.human resources manager\n" );
-        int input = sc.nextInt ( );
+                "choose role:\n1.branch manager\n2.branch manager assistant\n3.human resources manager\n" );
+        int input = getInt ();
         if(input == 1)
             role = "branchManager";
         else if (input == 2)
-            role = "branchManagerAssistent";
+            role = "branchManagerAssistant";
         else if(input == 3)
             role = "humanResourcesManager";
         else{
             printChoiceException ();
             return null;
         }
-        System.out.println ( "ID: " );
-        ID = sc.next ( );
-        System.out.println ( "\n" );
-        System.out.println ( "transaction date:\n");
-        transactionDate = dateMenu ();
-        System.out.println ("\nbank account info:\nbank: " );
-        bank = sc.next ();
-        System.out.println ("\nbank branch: " );
-        bankBranch = sc.nextInt ();
-        System.out.println ("\nbank account number: " );
-        accountNumber = sc.nextInt ();
-        bankAccountInfo = new FacadeBankAccountInfo (accountNumber, bankBranch, bank );
-        System.out.println ("\nterms of employment:\nsalary: " );
-        salary = sc.nextInt ();
-        System.out.println ("\neducation fund: " );
-        educationFund = sc.nextInt ();
-        System.out.println ("\nsick days: " );
-        sickDays = sc.nextInt ();
-        System.out.println ("\ndays off: " );
-        daysOff = sc.nextInt ();
-        termsOfEmployment = new FacadeTermsOfEmployment ( salary, educationFund, sickDays, daysOff );
-        return new FacadeEmployee ( role, ID, transactionDate, bankAccountInfo, termsOfEmployment );
+        return getEmployeeDetails ( role );
     }
 
-    public FacadeEmployee getEmployeeDetails(){
+    public FacadeEmployee getEmployeeDetails(String role){
         int accountNumber, bankBranch, salary, educationFund, sickDays, daysOff;
-        String ID, role, bank;
+        String ID, bank;
         FacadeBankAccountInfo bankAccountInfo;
         FacadeTermsOfEmployment termsOfEmployment;
-        role = roleMenu ();
         LocalDate transactionDate;
         System.out.println ( "ID: " );
         ID = sc.next ( );
@@ -143,21 +112,20 @@ public class MenuPrinter {
         System.out.println ("\nbank account info:\nbank: " );
         bank = sc.next ();
         System.out.println ("\nbank branch: " );
-        bankBranch = sc.nextInt ();
+        bankBranch = getInt ();
         System.out.println ("\nbank account number: " );
-        accountNumber = sc.nextInt ();
+        accountNumber = getInt ();
         bankAccountInfo = new FacadeBankAccountInfo (accountNumber, bankBranch, bank );
         System.out.println ("\nterms of employment:\nsalary: " );
-        salary = sc.nextInt ();
+        salary = getInt ();
         System.out.println ("\neducation fund: " );
-        educationFund = sc.nextInt ();
+        educationFund = getInt ();
         System.out.println ("\nsick days: " );
-        sickDays = sc.nextInt ();
+        sickDays = getInt ();
         System.out.println ("\ndays off: " );
-        daysOff = sc.nextInt ();
+        daysOff = getInt ();
         termsOfEmployment = new FacadeTermsOfEmployment ( salary, educationFund, sickDays, daysOff );
         return new FacadeEmployee ( role, ID, transactionDate, bankAccountInfo, termsOfEmployment );
-
     }
 
     public LocalDate dateMenu()
@@ -165,7 +133,7 @@ public class MenuPrinter {
         int input;
         System.out.println ("Date:\n" );
         System.out.println ( "day:" );
-        input = sc.nextInt ( );
+        input = getInt ();
         int day, month;
         if (input > 31 || input < 1) {
             System.out.println ( "day is illegal" );
@@ -180,7 +148,7 @@ public class MenuPrinter {
         }
         month = input;
         System.out.println ("\nyear:" );
-        input = sc.nextInt ( );
+        input = getInt ();
         if (input > 2021 || input < 1961) {
             System.out.println ( "year is illegal" );
             return null;
@@ -200,12 +168,12 @@ public class MenuPrinter {
 
     public int getShiftNum(){
         System.out.println ( "Type 0 for morning shift, 1 for evening shift and 2 for both: " );
-        return sc.nextInt ();
+        return getInt ();
     }
 
     public int getOneShiftNum(){
         System.out.println ( "Type 0 for morning shift and 1 for evening shift: " );
-        return sc.nextInt ();
+        return getInt ();
     }
 
     public void print(String s) {
@@ -224,14 +192,14 @@ public class MenuPrinter {
                 "3.Delete an employee from shift\n" +
                 "4.Change shift type\n" +
                 "5.Back" );
-        return sc.nextInt ();
+        return getInt ();
     }
 
     public int createWeeklyShiftSchedule() {
         System.out.println ("Choose an option: /n" +
                 "1. Creating a shift schedule manually\n" +
                 "2. Getting a system recommendation." );
-        return sc.nextInt ();
+        return getInt ();
     }
 
     public char getChar() {
@@ -243,7 +211,14 @@ public class MenuPrinter {
     }
 
     public int getInt(){
-        return sc.nextInt ();
+        while(true)
+        {
+            try{
+                return sc.nextInt ();
+            }catch (Exception e){
+                System.out.println ("Not a number, p;ease try again.\n" );
+            }
+        }
     }
 
     public void printChoiceException() {
@@ -256,7 +231,7 @@ public class MenuPrinter {
                 "2.Update employee bank account\n" +
                 "3.Update employee terms of employment" +
                 "4.Back" );
-        return sc.nextInt ();
+        return getInt ();
     }
 
     public int shiftTypeMenu() {
@@ -265,6 +240,6 @@ public class MenuPrinter {
                 "2.Add a new role manning\n" +
                 "3.Delete an existing role from shift" +
                 "4.Back" );
-        return sc.nextInt ();
+        return getInt ();
     }
 }

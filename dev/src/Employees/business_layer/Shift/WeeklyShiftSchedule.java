@@ -8,6 +8,7 @@ import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class WeeklyShiftSchedule {
     private LocalDate date;
@@ -16,10 +17,13 @@ public class WeeklyShiftSchedule {
 
 
     //an existing schedule with given shifts
-    public WeeklyShiftSchedule(LocalDate date, Shift[][] shifts)
-    {
+    public WeeklyShiftSchedule(EmployeeController employeeController, LocalDate date, Shift[][] shifts) throws EmployeeException {
         if(date.getDayOfWeek ().equals ( DayOfWeek.SUNDAY ))
         this.date = date;
+        for(int i = 0; i < 7; i ++)
+        {
+            checkManningVallidity2 ( employeeController, shifts[i][0].getManning () );
+        }
         this.shifts = shifts;
         isMissing = isMissing ();
     }
@@ -61,8 +65,9 @@ public class WeeklyShiftSchedule {
         isMissing = isMissing();
     }
 
-    private boolean checkDatesValidity(LocalDate start, LocalDate end)
-    {
+    private boolean checkDatesValidity(LocalDate start, LocalDate end) throws EmployeeException {
+        if(end.isBefore ( LocalDate.now () ))
+            throw new EmployeeException ( "The date of the shift already passed." );
         return (end.isAfter ( start ) && end.minusDays ( 7 ).isBefore ( start ));
     }
 
@@ -72,24 +77,46 @@ public class WeeklyShiftSchedule {
         return shifts[date.getDayOfWeek ().getValue ()][shift];
     }
 
-    public void changeShift(LocalDate date, int shift, HashMap<String, List<String>> manning) {
+    public void changeShift(EmployeeController employeeController, LocalDate date, int shift, HashMap<String, List<String>> manning) throws EmployeeException {
+        checkManningVallidity ( employeeController, manning );
         shifts[date.getDayOfWeek ().getValue ()][shift].changeManning( manning );
         isMissing = isMissing();
     }
 
-    public void addShift(LocalDate date, int shift, HashMap<String, List<String>> manning) throws EmployeeException {
+    public void addShift(EmployeeController employeeController, LocalDate date, int shift, HashMap<String, List<String>> manning) throws EmployeeException {
+        checkManningVallidity ( employeeController, manning );
         if (getShift ( date, shift ).getManning () != null)
             throw new EmployeeException ( "shift is already exists." );
-        changeShift ( date, shift, manning );
+        changeShift (employeeController, date, shift, manning );
         isMissing = isMissing();
     }
 
-    public void addShift(int i, Shift shift) throws EmployeeException {
-        if(i< 0 || i > 1)
-            throw new EmployeeException ( "no such shift to add (0-1)." );
-        shifts[shift.getDate ().getDayOfWeek ().getValue ()][i] = shift;
-        isMissing = isMissing();
+    private void checkManningVallidity(EmployeeController employeeController, HashMap<String, List<String>> manning) throws EmployeeException {
+        for( Map.Entry<String, List<String>> entry : manning.entrySet () )
+        {
+            for(String employee : entry.getValue ()) {
+                if (!employeeController.isExist ( entry.getKey ( ), employee ))
+                    throw new EmployeeException ( "Id - " + employee + " and role - " + entry.getKey () + " does not exist in system.");
+            }
+        }
     }
+
+    private void checkManningVallidity2(EmployeeController employeeController, HashMap<Role, List<String>> manning) throws EmployeeException {
+        for( Map.Entry<Role, List<String>> entry : manning.entrySet () )
+        {
+            for(String employee : entry.getValue ()) {
+                if (!employeeController.isExist ( entry.getKey ( ).name (), employee ))
+                    throw new EmployeeException ( "Id - " + employee + " and role - " + entry.getKey () + " does not exist in system.");
+            }
+        }
+    }
+
+//    public void addShift(int i, Shift shift) throws EmployeeException {
+//        if(i< 0 || i > 1)
+//            throw new EmployeeException ( "no such shift to add (0-1)." );
+//        shifts[shift.getDate ().getDayOfWeek ().getValue ()][i] = shift;
+//        isMissing = isMissing();
+//    }
 
     public void recommendShifts(EmployeeController employeeController, int i) throws EmployeeException {
         shifts[i][0].createManning ( employeeController );

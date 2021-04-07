@@ -12,8 +12,6 @@ public class StringConverter {
 
     public String convertShift(FacadeShift facadeShift){}
 
-    public String convertShiftType(FacadeShiftType facadeShiftType){}
-
     public String convertTermsOfEmployment(FacadeTermsOfEmployment facadeTermsOfEmployment){}
 
     public String convertWeeklyShiftSchedule(FacadeWeeklyShiftSchedule facadeWeeklyShiftSchedule){}
