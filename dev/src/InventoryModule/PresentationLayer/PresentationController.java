@@ -45,7 +45,7 @@ public class PresentationController implements Runnable {
         int itemID = Integer.parseInt(menu.instructAndReceive("Enter item ID: "));
         ResponseT<Item> r = service.getItem(itemID);
         try {
-            menu.printEntity(r.getElement());
+            menu.printEntity(r.getData());
         } catch (Exception e) {
             menu.errorPrompt("could not get Item. make sure you entered the Id correctly");
         }
@@ -55,7 +55,7 @@ public class PresentationController implements Runnable {
         int itemID = Integer.parseInt(menu.instructAndReceive("Enter item ID: "));
         ResponseT<Item> r = service.getItem(itemID);
         try {
-            menu.printEntity(r.getElement());
+            menu.printEntity(r.getData());
         } catch (Exception e) {
             menu.errorPrompt("could not get Item. make sure you entered the Id correctly");
         }
@@ -153,7 +153,7 @@ public class PresentationController implements Runnable {
         if (rCategory.isErrorOccurred())
             System.out.println(rCategory.getMessage());
         else
-            menu.printEntity(rCategory.getElement());
+            menu.printEntity(rCategory.getData());
     }
 
     private void editCategory() {
@@ -163,7 +163,7 @@ public class PresentationController implements Runnable {
             menu.errorPrompt(catR.getMessage());
             return;
         } else
-            menu.printEntity(catR.getElement());
+            menu.printEntity(catR.getData());
         menu.printMenu(menu.getCategoryModificationList());
         String userInput = menu.instructAndReceive("Enter choice: ");
         Response modResp;
@@ -171,11 +171,11 @@ public class PresentationController implements Runnable {
             case "1" -> {
 
                 String newName = menu.instructAndReceive("Enter new name: ");
-                modResp = service.modifyCategoryName(catR.getElement().getName(), newName);
+                modResp = service.modifyCategoryName(catR.getData().getName(), newName);
             }
             case "2" -> {
                 String newParent = menu.instructAndReceive("Enter new parent category name: (keep in mind not to use a subcategory!)");
-                modResp = service.changeParentCategory(catR.getElement().getName(), newParent);
+                modResp = service.changeParentCategory(catR.getData().getName(), newParent);
             }
             default -> modResp = new Response(true, "invalid choice");
         }
@@ -202,7 +202,7 @@ public class PresentationController implements Runnable {
         if (saleR.isErrorOccurred()) {
             menu.errorPrompt(saleR.getMessage());
         } else {
-            menu.printEntity(saleR.getElement());
+            menu.printEntity(saleR.getData());
         }
     }
 
@@ -275,7 +275,7 @@ public class PresentationController implements Runnable {
             menu.errorPrompt(saleR.getMessage());
             return;
         } else
-            menu.printEntity(saleR.getElement());
+            menu.printEntity(saleR.getData());
 
         menu.printMenu(menu.getSaleModificationList());
         String userInput = menu.instructAndReceive("Enter choice: ");
@@ -283,15 +283,15 @@ public class PresentationController implements Runnable {
         switch (userInput) {
             case "1" -> {
                 String newName = menu.instructAndReceive("Enter new name: ");
-                modResp = service.modifySaleName(saleR.getElement().getName(), newName);
+                modResp = service.modifySaleName(saleR.getData().getName(), newName);
             }
             case "2" -> {
                 double newDisc = Double.parseDouble(menu.instructAndReceive("Enter sale Discount: (for 10% enter 0.1) "));
-                modResp = service.modifySaleDiscount(saleR.getElement().getName(), newDisc);
+                modResp = service.modifySaleDiscount(saleR.getData().getName(), newDisc);
             }
             case "3" -> {
                 Pair<Calendar, Calendar> dates = getStartEndDates();
-                modResp = service.modifySaleDates(saleR.getElement().getName(), dates.getFirst(),dates.getSecond());
+                modResp = service.modifySaleDates(saleR.getData().getName(), dates.getFirst(),dates.getSecond());
             }
             default -> modResp = new Response(true, "invalid choice");
         }
@@ -307,7 +307,7 @@ public class PresentationController implements Runnable {
         Calendar date = Calendar.getInstance();
         date.set(Integer.parseInt(disDateS[0]), Integer.parseInt(disDateS[1])-1, Integer.parseInt(disDateS[2]));
         ResponseT<List<Discount<T>>> discR = service.getDiscount(suppId,date);
-        for (Discount<T> d: discR.getElement()) {
+        for (Discount<T> d: discR.getData()) {
             menu.printEntity(d);
         }
 
@@ -367,7 +367,7 @@ public class PresentationController implements Runnable {
             menu.errorPrompt(reportResp.getMessage());
             return;
         }
-        menu.printEntity(reportResp.getElement());
+        menu.printEntity(reportResp.getData());
     }
 
     private void categoryReport() {
@@ -381,8 +381,8 @@ public class PresentationController implements Runnable {
         if(categoryItems.isErrorOccurred()){
             menu.errorPrompt(categoryItems.getMessage());
         }
-        menu.getTextFormatter().CategoryMenuFormat(catR.getElement());
-        menu.printEntity(categoryItems.getElement());
+        menu.getTextFormatter().CategoryMenuFormat(catR.getData());
+        menu.printEntity(categoryItems.getData());
     }
 
     private void itemShortageReport() {
@@ -391,7 +391,7 @@ public class PresentationController implements Runnable {
             menu.errorPrompt(shortage.getMessage());
             return;
         }
-        menu.printEntity(shortage.getElement());
+        menu.printEntity(shortage.getData());
     }
 
     private void defectsReport() {
@@ -403,7 +403,7 @@ public class PresentationController implements Runnable {
         }
         menu.getTextFormatter().DefectsMenuFormat();
         try {
-            for (DefectEntry entry : defects.getElement()) {
+            for (DefectEntry entry : defects.getData()) {
                 menu.printEntity(entry);
             }
         } catch (Exception e){

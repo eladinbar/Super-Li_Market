@@ -1,14 +1,14 @@
 package InventoryModule.ControllerLayer;
 
 public class ResponseT<T> extends Response {
-    private final T element;
+    private final T data;
 
-    public ResponseT(boolean errorOccurred, String message, T element) {
+    public ResponseT(boolean errorOccurred, String message, T data) {
         super(errorOccurred,message);
-        this.element = element;
+        this.data = data;
     }
 
-    public T getElement() {
-        return element;
+    public T getData() {
+        return data;
     }
 }
