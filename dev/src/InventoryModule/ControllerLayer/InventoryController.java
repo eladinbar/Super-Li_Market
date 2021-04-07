@@ -260,7 +260,8 @@ public class InventoryController {
 
     //-------------------------------------------------------------------------Sale functions
 
-    public void addItemSale(String saleName, int itemID, double saleDiscount, Calendar startDate, Calendar endDate) {
+    public void addItemSale(String saleName, int itemId, double saleDiscount, Calendar startDate, Calendar endDate) {
+        getItem(itemId); //Makes sure an item with 'itemId' exists in the system, throws an exception if not
         try {
             getSale(saleName);
             throw new IllegalArgumentException("A sale with the name " + saleName + " already exists in the system.");
@@ -268,12 +269,13 @@ public class InventoryController {
             if (ex.getMessage().equals("A sale with the name " + saleName + " already exists in the system."))
                 throw ex; //Rethrow exception thrown in 'try' block (different error message)
 
-            ItemSale newSale = new ItemSale(saleName, saleDiscount, startDate, endDate, getItem(itemID));
+            ItemSale newSale = new ItemSale(saleName, saleDiscount, startDate, endDate, getItem(itemId));
             sales.add(newSale);
         }
     }
 
     public void addCategorySale(String saleName, String categoryName, double saleDiscount, Calendar startDate, Calendar endDate) {
+        getCategory(categoryName); //Makes sure a category with 'categoryName' exists in the system, throws an exception if not
         try {
             getSale(saleName);
             throw new IllegalArgumentException("A sale with the name " + saleName + " already exists in the system.");
@@ -313,6 +315,7 @@ public class InventoryController {
     //-------------------------------------------------------------------------Discount functions
 
     public void addItemDiscount(int supplierId, double discount, Calendar discountDate, int itemCount, int itemId) {
+        getItem(itemId); //Makes sure an item with 'itemId' exists in the system, throws an exception if not
         try {
             getDiscount(supplierId, discountDate);
             throw new IllegalArgumentException("A discount with supplier ID: " + supplierId + " already exists in the system.");
@@ -326,6 +329,7 @@ public class InventoryController {
     }
 
     public void addCategoryDiscount(int supplierId, double discount, Calendar discountDate, int itemCount, String categoryName) {
+        getCategory(categoryName); //Makes sure a category with 'categoryName' exists in the system, throws an exception if not
         try {
             getDiscount(supplierId, discountDate);
             throw new IllegalArgumentException("A discount with supplier ID: " + supplierId + " already exists in the system.");
@@ -354,20 +358,16 @@ public class InventoryController {
     //-------------------------------------------------------------------------Defect functions
 
     public void recordDefect(int itemId, Calendar entryDate, int defectQuantity, String defectLocation) {
+        Item item = getItem(itemId);
         try {
-            Item item = getItem(itemId);
-            try {
-                getDefectEntry(itemId, entryDate);
-                throw new IllegalArgumentException("A defect entry with the same ID:" + itemId + " and the same date recorded:" + entryDate + " already exists in the system.");
-            } catch (IllegalArgumentException ex) {
-                if (ex.getMessage().equals("A defect entry with the same ID:" + itemId + " and the same date recorded:" + entryDate + " already exists in the system."))
-                    throw ex; //Rethrow exception thrown in 'try' block (different error message)
-
-                DefectEntry newDefect = new DefectEntry(itemId, item.getName(), entryDate, defectQuantity, defectLocation);
-                defectsLogger.addDefectEntry(newDefect);
-            }
+            getDefectEntry(itemId, entryDate);
+            throw new IllegalArgumentException("A defect entry with the same ID:" + itemId + " and the same date recorded:" + entryDate + " already exists in the system.");
         } catch (IllegalArgumentException ex) {
-            throw new IllegalArgumentException(ex.getMessage());
+            if (ex.getMessage().equals("A defect entry with the same ID:" + itemId + " and the same date recorded:" + entryDate + " already exists in the system."))
+                throw ex; //Rethrow exception thrown in 'try' block (different error message)
+
+            DefectEntry newDefect = new DefectEntry(itemId, item.getName(), entryDate, defectQuantity, defectLocation);
+            defectsLogger.addDefectEntry(newDefect);
         }
     }
 
