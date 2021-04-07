@@ -69,7 +69,7 @@ public interface InventoryService {
     ResponseT<List<Item>> inventoryReport();
     ResponseT<List<Item>> categoryReport(String categoryName);
     ResponseT<List<Item>> itemShortageReport();
-    ResponseT<List<DefectEntry>> defectsReport(Date fromDate, Date toDate);
+    ResponseT<List<DefectEntry>> defectsReport(Calendar fromDate, Calendar toDate);
 }
 
 

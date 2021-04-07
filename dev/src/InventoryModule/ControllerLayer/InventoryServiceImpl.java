@@ -188,7 +188,7 @@ public class InventoryServiceImpl implements InventoryService{
     }
 
     @Override
-    public ResponseT<List<DefectEntry>> defectsReport(Date fromDate, Date toDate) {
+    public ResponseT<List<DefectEntry>> defectsReport(Calendar fromDate, Calendar toDate) {
         return null;
     }
 }

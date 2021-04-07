@@ -5,10 +5,7 @@ import InventoryModule.ControllerLayer.InventoryService;
 import InventoryModule.ControllerLayer.InventoryServiceImpl;
 import InventoryModule.ControllerLayer.Response;
 import InventoryModule.ControllerLayer.ResponseT;
-import InventoryModule.ControllerLayer.SimpleObjects.Category;
-import InventoryModule.ControllerLayer.SimpleObjects.Item;
-import InventoryModule.ControllerLayer.SimpleObjects.Sale;
-import InventoryModule.ControllerLayer.SimpleObjects.SimpleEntity;
+import InventoryModule.ControllerLayer.SimpleObjects.*;
 
 import java.util.*;
 
@@ -212,7 +209,7 @@ public class PresentationController implements Runnable {
     private void addItemSale() {
         String saleName = menu.instructAndReceive("Enter sale name:");
         double saleDiscount = Double.parseDouble(menu.instructAndReceive("Enter sale Discount: for 10% enter 0.1"));
-        Pair<Calendar, Calendar> dates = getSaleDates();
+        Pair<Calendar, Calendar> dates = getStartEndDates();
         if (dates == null) return;
         //getting the item to be applied on
         int applyOnItem = Integer.parseInt(menu.instructAndReceive("Enter item id for the sale: "));
@@ -236,7 +233,7 @@ public class PresentationController implements Runnable {
         String saleName = menu.instructAndReceive("Enter sale name:");
         double saleDiscount = Double.parseDouble(menu.instructAndReceive("Enter sale Discount: for 10% enter 0.1"));
         //getting the dates
-        Pair<Calendar, Calendar> dates = getSaleDates();
+        Pair<Calendar, Calendar> dates = getStartEndDates();
         if (dates == null) return;
 
         //getting the item to be applied on
@@ -255,7 +252,7 @@ public class PresentationController implements Runnable {
         System.out.println("Sale Added successfully");
     }
 
-    private Pair<Calendar, Calendar> getSaleDates() {
+    private Pair<Calendar, Calendar> getStartEndDates() {
         String[] startDate = menu.instructAndReceive("Enter start date: use this format <YYYY-MM-DD>").split("-");
         Calendar start = Calendar.getInstance();
         start.set(Integer.parseInt(startDate[0]), Integer.parseInt(startDate[1])-1, Integer.parseInt(startDate[2]));
@@ -293,7 +290,7 @@ public class PresentationController implements Runnable {
                 modResp = service.modifySaleDiscount(saleR.getDate().getName(), newDisc);
             }
             case "3" -> {
-                Pair<Calendar, Calendar> dates = getSaleDates();
+                Pair<Calendar, Calendar> dates = getStartEndDates();
                 modResp = service.modifySaleDates(saleR.getDate().getName(), dates.getFirst(),dates.getSecond());
             }
             default -> modResp = new Response(true, "invalid choice");
@@ -317,15 +314,54 @@ public class PresentationController implements Runnable {
     }
 
     private void inventoryReport() {
+        ResponseT<List<Item>> reportResp = service.inventoryReport();
+        if(reportResp.isErrorOccurred()){
+            menu.errorPrompt(reportResp.getMessage());
+            return;
+        }
+        menu.printEntity(reportResp.getDate());
     }
 
     private void categoryReport() {
+        String catName = menu.instructAndReceive("Enter category name: ");
+        ResponseT<Category> catR = service.getCategory(catName);
+        if (catR.isErrorOccurred()) {
+            menu.errorPrompt(catR.getMessage());
+            return;
+        }
+        ResponseT<List<Item>> categoryItems = service.categoryReport(catName);
+        if(categoryItems.isErrorOccurred()){
+            menu.errorPrompt(categoryItems.getMessage());
+        }
+        menu.getTextFormatter().CategoryMenuFormat(catR.getDate());
+        menu.printEntity(categoryItems.getDate());
     }
 
     private void itemShortageReport() {
+        ResponseT<List<Item>> shortage = service.itemShortageReport();
+        if(shortage.isErrorOccurred()) {
+            menu.errorPrompt(shortage.getMessage());
+            return;
+        }
+        menu.printEntity(shortage.getDate());
     }
 
     private void defectsReport() {
+        Pair<Calendar,Calendar> interval = getStartEndDates();
+        ResponseT<List<DefectEntry>> defects = service.defectsReport(interval.getFirst(),interval.getSecond());
+        if(defects.isErrorOccurred()) {
+            menu.errorPrompt(defects.getMessage());
+            return;
+        }
+        menu.getTextFormatter().DefectsMenuFormat();
+        try {
+            for (DefectEntry entry : defects.getDate()) {
+                menu.printEntity(entry);
+            }
+        } catch (Exception e){
+            menu.errorPrompt("Something went wrong");
+        }
+
     }
 
 
@@ -333,7 +369,7 @@ public class PresentationController implements Runnable {
     public void run() {
         menu.printWelcomePrompt();
         while (true) {
-            menu.printOperationMenu(menu.getOperationsList());
+            menu.printOperationMenu();
             operationInput();
         }
 

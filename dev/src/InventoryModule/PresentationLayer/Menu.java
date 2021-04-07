@@ -1,11 +1,9 @@
 package InventoryModule.PresentationLayer;
 
 import InfrastructurePackage.TextFormatter;
-import InventoryModule.ControllerLayer.SimpleObjects.Category;
-import InventoryModule.ControllerLayer.SimpleObjects.Item;
-import InventoryModule.ControllerLayer.SimpleObjects.Sale;
-import InventoryModule.ControllerLayer.SimpleObjects.SimpleEntity;
+import InventoryModule.ControllerLayer.SimpleObjects.*;
 
+import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -14,7 +12,7 @@ import java.util.Scanner;
 
 public class Menu {
     private TextFormatter tf = new TextFormatter();
-    private final List<String> OperationsList;
+    private final List<String> operationsList;
     private final List<String> itemModificationList;
     private final List<String> categoryModificationList;
     private final List<String> saleModificationList;
@@ -22,7 +20,7 @@ public class Menu {
 
     public Menu() {
         itemModificationList = setupItemModList();
-        this.OperationsList = setupOperationsList();
+        this.operationsList = setupOperationsList();
         categoryModificationList = setupCategoryModList();
         saleModificationList = setupSaleModList();
         scan = new Scanner(System.in);
@@ -37,7 +35,6 @@ public class Menu {
 
         return list;
     }
-
     private List<String> setupSaleModList() {
         ArrayList<String> list = new ArrayList<>();
         list.add("Change sale name");
@@ -46,7 +43,6 @@ public class Menu {
 
         return list;
     }
-
     private List<String> setupItemModList() {
         ArrayList<String> list = new ArrayList<>();
         list.add("change item name");
@@ -62,7 +58,6 @@ public class Menu {
 
         return list;
     }
-
     private List<String> setupOperationsList() {
         ArrayList<String> list = new ArrayList<>();
         list.add("Show item");
@@ -90,32 +85,27 @@ public class Menu {
     }
 
     //Getters
-    public List<String> getOperationsList() {
-        return OperationsList;
-    }
-
     public List<String> getItemModificationList() {
         return itemModificationList;
     }
-
     public List<String> getCategoryModificationList() {
         return categoryModificationList;
     }
-
     public List<String> getSaleModificationList() {
         return saleModificationList;
+    }
+    public TextFormatter getTextFormatter() {
+        return tf;
     }
 
     //print Options
     public void printWelcomePrompt() {
         System.out.println("Welcome to 'Super-Li' Inventory System!");
     }
-
-    public void printOperationMenu(List<String> operationList) {
-        printMenu(operationList);
+    public void printOperationMenu() {
+        printMenu(operationsList);
         System.out.println("\npress q to quit");
     }
-
     public void printMenu(List<String> menuElements) {
         System.out.println("please enter the number of the desired Operation: ");
         int option = 1;
@@ -124,45 +114,37 @@ public class Menu {
             option++;
         }
     }
-
     public void errorPrompt(String errorInput) {
         System.out.println("Error: " + errorInput);
     }
 
     //Entities print methods
-    public void printEntity(Item item) throws InvocationTargetException, IllegalAccessException, NoSuchMethodException {
+    public void printEntity(Item item) {
         System.out.println(tf.formatItemMenuColumns());
-        Method[] getMethods = {item.getClass().getMethod("getID"), item.getClass().getMethod("getName"),
-                item.getClass().getMethod("getCostPrice"), item.getClass().getMethod("getSellingPrice"),
-                item.getClass().getMethod("getStoreQuantity"), item.getClass().getMethod("getStorageQuantity"),
-                item.getClass().getMethod("getTotalQuantity"), item.getClass().getMethod("getMinAmount"),
-                item.getClass().getMethod("getStoreLocation"), item.getClass().getMethod("getStorageLocation"),
-                item.getClass().getMethod("getManufacturerID")};
-        String output = "";
-        for (int i = 0; i < getMethods.length - 1; i++) {
-            Method currentMethod = getMethods[i];
-            output = output + tf.centerString(currentMethod.invoke(item).toString(), tf.getPaddingSize()) + "|";
+        try {
+            printItem(item);
+        } catch (Exception e){
+            errorPrompt("Something went wrong...");
         }
-        System.out.println(output + tf.centerString(getMethods[getMethods.length - 1].invoke(item).toString(), tf.getPaddingSize()));
-
     }
-
+    public void printEntity(List<Item> itemList)  {
+        System.out.println(tf.formatItemMenuColumns());
+        try {
+            for (Item i : itemList) {
+                printItem(i);
+            }
+        } catch (Exception e){
+            errorPrompt("Something went wrong...");
+        }
+    }
     public void printEntity(Category category) {
-        System.out.println("Category Name: " + category.getName() + "\n" +
-                "Parent Category: " + category.getParentCategory().getName() + "\n" +
-                "Sub-categories: " + category.getSubCategories().stream().map((c) -> c.getName()).
-                reduce("", (acc, curr) -> acc + ", " + curr));
+        tf.CategoryMenuFormat(category);
         System.out.println(tf.formatItemMenuColumns());
         for (Item i : category.getItems()) {
-
             try {
-                printEntity(i);
-            } catch (InvocationTargetException e) {
-                e.printStackTrace();
-            } catch (IllegalAccessException e) {
-                e.printStackTrace();
-            } catch (NoSuchMethodException e) {
-                e.printStackTrace();
+                printItem(i);
+            } catch (Exception e) {
+                errorPrompt("Something went wrong...");
             }
         }
     }
@@ -171,10 +153,36 @@ public class Menu {
 
     }
 
+    public void printEntity(DefectEntry entry) throws InvocationTargetException, IllegalAccessException, NoSuchMethodException {
+        Method[] getMethods = {entry.getClass().getMethod("getEntryDate"), entry.getClass().getMethod("getItemId"),
+                entry.getClass().getMethod("getItemName"), entry.getClass().getMethod("getQuantity"),
+                entry.getClass().getMethod("getLocation")};
+        handleEntityAliment(entry,getMethods);
+    }
+
     //User Input methods
     public String instructAndReceive(String instruction) {
         System.out.println(instruction);
         return scan.nextLine();
+    }
+
+    private void printItem(Item item) throws InvocationTargetException, IllegalAccessException, NoSuchMethodException {
+        Method[] getMethods = {item.getClass().getMethod("getID"), item.getClass().getMethod("getName"),
+                item.getClass().getMethod("getCostPrice"), item.getClass().getMethod("getSellingPrice"),
+                item.getClass().getMethod("getStoreQuantity"), item.getClass().getMethod("getStorageQuantity"),
+                item.getClass().getMethod("getTotalQuantity"), item.getClass().getMethod("getMinAmount"),
+                item.getClass().getMethod("getStoreLocation"), item.getClass().getMethod("getStorageLocation"),
+                item.getClass().getMethod("getManufacturerID")};
+        handleEntityAliment(item, getMethods);
+    }
+
+    private <T> void handleEntityAliment(T elem, Method[] getMethods) throws IllegalAccessException, InvocationTargetException {
+        String output = "";
+        for (int i = 0; i < getMethods.length - 1; i++) {
+            Method currentMethod = getMethods[i];
+            output = output + tf.centerString(currentMethod.invoke(elem).toString(), tf.getPaddingSize()) + "|";
+        }
+        System.out.println(output + tf.centerString(getMethods[getMethods.length - 1].invoke(elem).toString(), tf.getPaddingSize()));
     }
 
 

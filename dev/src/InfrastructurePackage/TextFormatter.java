@@ -1,5 +1,7 @@
 package InfrastructurePackage;
 
+import InventoryModule.ControllerLayer.SimpleObjects.Category;
+import InventoryModule.ControllerLayer.SimpleObjects.DefectEntry;
 import InventoryModule.ControllerLayer.SimpleObjects.Item;
 
 import java.lang.reflect.Field;
@@ -16,6 +18,23 @@ public class TextFormatter {
             outPut = outPut + centerString(currentField, 20) + "|";
         }
         return outPut + centerString(itemFields[itemFields.length - 1].getName(), paddingSize);
+    }
+
+    public String DefectsMenuFormat(){
+        Field[] defectFields = DefectEntry.class.getDeclaredFields();
+        String outPut = "";
+        for (int i = 0; i < defectFields.length - 1; i++) {
+            String currentField = defectFields[i].getName();
+            outPut = outPut + centerString(currentField, 20) + "|";
+        }
+        return outPut + centerString(defectFields[defectFields.length - 1].getName(), paddingSize);
+    }
+
+    public void CategoryMenuFormat(Category category) {
+        System.out.println("Category Name: " + category.getName() + "\n" +
+                "Parent Category: " + category.getParentCategory().getName() + "\n" +
+                "Sub-categories: " + category.getSubCategories().stream().map((c) -> c.getName()).
+                reduce("", (acc, curr) -> acc + ", " + curr));
     }
 
     public String centerString(String s, int width) {
