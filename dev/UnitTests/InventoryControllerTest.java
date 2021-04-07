@@ -4,6 +4,8 @@ import org.junit.After;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import java.util.ArrayList;
+
 import static org.junit.Assert.*;
 
 public class InventoryControllerTest {
@@ -19,9 +21,11 @@ public class InventoryControllerTest {
         inventoryController = new InventoryController();
     }
 
-    @Test
-    public void addItemTest() {
-
+    @Test(expected = IllegalArgumentException.class)
+    public void testAddItem_nonExistingCategory() {
+        //act
+        inventoryController.addItem(1, "item", "category", 1, 1, 1,
+                "SH-A3-L-S4", "ST-A1-R-S2", 1, 1, 1, new ArrayList<>());
     }
 
     @Test
