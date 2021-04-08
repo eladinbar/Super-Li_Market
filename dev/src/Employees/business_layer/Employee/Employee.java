@@ -2,9 +2,8 @@ package Employees.business_layer.Employee;
 import Employees.EmployeeException;
 
 import java.time.LocalDate;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashMap;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class Employee {
     private Role role;
@@ -125,7 +124,8 @@ public class Employee {
             }
             constraints.put(date, newConstraint);
         }
-        //Collections.sort(constraints, Comparator.comparing());
+
+        constraints = sortConstraintsByDate(constraints);
     }
 
 
@@ -177,5 +177,15 @@ public void deleteConstraint(LocalDate date, int shift) throws EmployeeException
 
     private boolean validDate(LocalDate date) {
         return (LocalDate.now().isBefore(date.minusWeeks(2)));
+    }
+
+    private HashMap<LocalDate, Constraint> sortConstraintsByDate(HashMap<LocalDate, Constraint> constraints) {
+        constraints.entrySet().stream().sorted(Map.Entry.comparingByKey()).collect(Collectors.toMap(
+                Map.Entry::getKey,
+                Map.Entry::getValue,
+                (a,b)->{ throw new AssertionError();},
+                LinkedHashMap::new
+        ));
+    return constraints;
     }
 }
