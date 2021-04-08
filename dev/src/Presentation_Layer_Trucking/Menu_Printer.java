@@ -575,7 +575,14 @@ public class Menu_Printer {
         for (FacadeTruck truck: trucks) {
             System.out.println("truck LicenseNumber: " + truck.getLicenseNumber() + " max Weight :" + truck.getMaxWeight())  ;
         }
-        String truck =  getStringFromUser(scanner);
+        int chose = getIntFromUser(scanner);
+        while (chose<1 ||chose > trucks.size()){
+            System.out.println("option out of bounds, please try again");
+
+            chose = getIntFromUser(scanner);
+        }
+
+        String truck = trucks.get(chose-1).getLicenseNumber();
         boolean con =true;
         while(con) {
             try {
@@ -587,14 +594,21 @@ public class Menu_Printer {
             }
         }
         System.out.println("now please choose driver:");
-        // TODO need to figure how to know the truck weight and throw exception
 
         LinkedList<FacadeDriver> drivers = pc.getAvailableDrivers();
         System.out.println("available Drivers:");
+        int spot =1;
         for ( FacadeDriver driver : drivers) {
-            System.out.println("Driver ID:" + driver.getID() + " License degree: " + driver.getLicenseType() + " =" + driver.getLicenseType().getSize()  )  ;
+            System.out.println(spot+") Driver ID:" + driver.getID() + " License degree: " + driver.getLicenseType() + " =" + driver.getLicenseType().getSize()  )  ;
+            spot++;
         }
-        String driverID =  getStringFromUser(scanner);
+        chose = getIntFromUser(scanner);
+        while (chose<1 || chose>drivers.size()){
+            System.out.println("option is out of bounds, please try again");
+            chose = getIntFromUser(scanner);
+        }
+
+        String driverID = drivers.get(chose-1).getID();
         con =true;
         while(con) {
             try {
@@ -769,6 +783,7 @@ public class Menu_Printer {
             }
 
 
+            // remove site and add new items
             case 2: {
                 removeSiteFromTruckReport(scanner, tr);
                 int siteID;
@@ -850,31 +865,52 @@ public class Menu_Printer {
                 }
 
 
-                LinkedList<FacadeDemand> demands = pc.showDemands();
 
-                demands = sortDemandsBySite(demands);
-                printDemands(demands);
-                int amount = 0;
-                siteID = 0;
-                pc.removeSiteFromTruckReport(siteID, tr.getID());
-                // TODO need to show demands - loop
-                int itemNumber=0;
-                pc.addDemandToTruckReport(itemNumber, amount,siteID, tr.getID());
                 break;
             }
 
 
-            case 3: // truck replace
+            // replace truck
+            case 3:
+                System.out.println("please choose the Truck you'd like to deliver it with:");
+                LinkedList<FacadeTruck> trucks =  pc.getAvailableTrucks();
 
+                System.out.println("please notice the truck weight is: "+weight);
+                System.out.println("available trucks:");
+                spot =1;
+                for (FacadeTruck truck: trucks) {
+                    System.out.println(spot+") truck LicenseNumber: " + truck.getLicenseNumber() + " max Weight :" + truck.getMaxWeight())  ;
+                    spot++;
+                }
+                int chose = getIntFromUser(scanner);
+                while (chose<1 ||chose > trucks.size()){
+                    System.out.println("option out of bounds, please try again");
 
-                pc.getAvailableTrucks();
-                String truckNumber = "0";
+                    chose = getIntFromUser(scanner);
+                }
+
+                String truckNumber = trucks.get(chose-1).getLicenseNumber();
                 try {
                     pc.replaceTruck(tr.getID(), truckNumber, weight);
-                } catch (Exception e) {
+                } catch (IllegalStateException|IllegalArgumentException e) {
                     System.out.println(e.getMessage());
-                    pc.getAvailableDrivers();
-                    int driverID = 0;
+                    System.out.println("now please choose driver:");
+
+                    LinkedList<FacadeDriver> drivers = pc.getAvailableDrivers();
+                    System.out.println("available Drivers:");
+                    spot =1;
+                    for ( FacadeDriver driver : drivers) {
+                        System.out.println(spot+") Driver ID:" + driver.getID() + " License degree: " + driver.getLicenseType() + " =" + driver.getLicenseType().getSize()  )  ;
+                        spot++;
+                    }
+                    chose = getIntFromUser(scanner);
+                    while (chose<1 || chose>drivers.size()){
+                        System.out.println("option is out of bounds, please try again");
+                        chose = getIntFromUser(scanner);
+                    }
+
+                    String driverID = drivers.get(chose-1).getID();
+
                     try {
                         pc.replaceDriver(tr.getID(), driverID);
                     } catch (Exception ex) {
@@ -894,7 +930,7 @@ public class Menu_Printer {
         }
 
 
-        }
+    }
 
     private void removeSiteFromTruckReport(Scanner scanner, FacadeTruckingReport tr) throws ReflectiveOperationException {
         int spot;

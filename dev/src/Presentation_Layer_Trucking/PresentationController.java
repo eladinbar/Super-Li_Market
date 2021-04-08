@@ -229,7 +229,7 @@ public class PresentationController {
         facadeService.replaceTruck(id,truckNumber,weight);
     }
 
-    public void replaceDriver(int trID, int driverID) {
+    public void replaceDriver(int trID, String driverID) {
         // TODO need to implement
     }
 
