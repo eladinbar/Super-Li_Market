@@ -291,9 +291,9 @@ public class EmployeeController {
         FacadeTermsOfEmployment termsOfEmployment2 = new FacadeTermsOfEmployment(salary+2, educationFund,sickDays, daysOff );
         FacadeEmployee branchManagerAssistent = new FacadeEmployee("branchManagerAssistent", "45600000", LocalDate.now(), employeeAccountInfo2, termsOfEmployment2);
 
-        FacadeBankAccountInfo employeeAccountInfo3 = new FacadeBankAccountInfo(accountNum+#, bankBranch, bankName);
+        FacadeBankAccountInfo employeeAccountInfo3 = new FacadeBankAccountInfo(accountNum+3, bankBranch, bankName);
         FacadeTermsOfEmployment termsOfEmployment3 = new FacadeTermsOfEmployment(salary+3, educationFund,sickDays, daysOff );
-        FacadeEmployee humanResourcesManager = new FacadeEmployee("humanResourcesManager", "78900000", LocalDate.now(), employeeAccountInfo1, termsOfEmployment1);
+        FacadeEmployee humanResourcesManager = new FacadeEmployee("humanResourcesManager", "78900000", LocalDate.now(), employeeAccountInfo3, termsOfEmployment3);
 
         try {
             addManager(branchManager);
