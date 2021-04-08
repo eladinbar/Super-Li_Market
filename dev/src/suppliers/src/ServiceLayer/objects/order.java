@@ -1,4 +1,5 @@
 package ServiceLayer.objects;
+
 import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.Map;
@@ -17,12 +18,13 @@ public class order {
         this.delivered = delivered;
         this.supplier = supplier;
     }
-    public order(BusinessLayer.orderPackage.order order){
-        this.id=order.getId();
-        this.products=order.getProducts();
-        this.date=order.getDate();
-        this.delivered=order.isDelivered();
-        this.supplier=new ServiceLayer.objects.supplier(order.getSupplier());
+
+    public order(BusinessLayer.orderPackage.order order) {
+        this.id = order.getId();
+        this.products = order.getProducts();
+        this.date = order.getDate();
+        this.delivered = order.isDelivered();
+        this.supplier = new ServiceLayer.objects.supplier(order.getSupplier());
     }
 
     public int getId() {
@@ -31,12 +33,21 @@ public class order {
 
     @Override
     public String toString() {
-        String proToString="";
-        for (Map.Entry<Integer,Integer> en:products.entrySet()) {
-            proToString+="\nproduct id : "+en.getKey()+"       amount: "+en.getValue();
+        String proToString = "";
+        for (Map.Entry<Integer, Integer> en : products.entrySet()) {
+            proToString += "\nproduct id : " + en.getKey() + "       amount: " + en.getValue();
         }
+
+        if (date == null) {
+            return "order details: " +
+                    "\nid: " + id + " " +
+                    "\nproducts: " + proToString +
+                    "\ndelivered: " + delivered +
+                    "\nsupplier: " + supplier.getName();
+        }
+
         return "order details: " +
-                "\nid: " + id +" "+
+                "\nid: " + id + " " +
                 "\nproducts: " + proToString +
                 "\ndate: " + date.toString() +
                 "\ndelivered: " + delivered +

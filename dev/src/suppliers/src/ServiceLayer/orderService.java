@@ -28,12 +28,12 @@ public class orderService {
         return toReturn;
     }
 
-    public Response createPernamentOrder(int day, String supplierID, supplierController sp) {
-        Response toReturn = null;
+    public ResponseT<order> createPernamentOrder(int day, String supplierID, supplierController sp) {
+        ResponseT<order> toReturn;
         try {
-            oc.createPermOrder(day, sp.getSupplier(supplierID));
+            toReturn = new ResponseT<>(new order(oc.createPermOrder(day, sp.getSupplier(supplierID))));
         } catch (Exception e) {
-            toReturn = new Response(e.getMessage());
+            toReturn = new ResponseT<>(e.getMessage());
         }
         return toReturn;
     }

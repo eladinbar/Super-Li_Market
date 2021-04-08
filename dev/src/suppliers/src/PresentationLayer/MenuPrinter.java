@@ -249,7 +249,7 @@ public class MenuPrinter {
         String order = pc.createPernamentOrder(day, supplierId);
         System.out.println(order);
         int orderId=-1;
-        if (order.split(" ")[1].equals("details")) {
+        if (order.split(" ")[1].equals("details:")) {
             orderId = Integer.parseInt(order.split(" ")[3]);
             while (true) {
                 System.out.println("1. add new product");

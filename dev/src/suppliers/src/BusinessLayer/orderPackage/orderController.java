@@ -35,7 +35,7 @@ public class orderController {
     }
 
     public order createOrder(LocalDate date, supplier supplier) throws Exception {
-        if (date.isBefore(LocalDate.now()))
+        if (date!=null && date.isBefore(LocalDate.now()))
             throw new Exception("the date should be in the future");
         order o = new order(orderCounter, date, supplier);
         orders.put(orderCounter, o);
@@ -89,8 +89,9 @@ public class orderController {
         return products.get(productID);
     }
 
-    public void createPermOrder(int day, supplier supplier) throws Exception {
+    public order createPermOrder(int day, supplier supplier) throws Exception {
         order order = createOrder(null, supplier);
         pernamentOrders.get(day).add(order);
+        return order;
     }
 }
