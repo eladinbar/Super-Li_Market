@@ -236,8 +236,8 @@ public class DeliveryService {
 
     }
 
-    public void updateDeliveryFormRealWeight(int dfID, int weight)throws IllegalStateException {
-        dc.updateDeliveryFormRealWeight(dfID,weight);
+    public void updateDeliveryFormRealWeight(int trID,int dfID, int weight)throws IllegalStateException {
+        dc.updateDeliveryFormRealWeight(trID,dfID,weight);
     }
 
     public boolean checkIfAllCompleted(int trID) {

@@ -243,7 +243,8 @@ public class FacadeService {
         FacadeTruck ft=null;
         for (FacadeTruck facadeTruck:trucks)
         {
-            if (facadeTruck.getLicenseNumber().equals(currTR.getTruckNumber()));
+
+            if (facadeTruck.getLicenseNumber().equals(getTruckReport(trID).getTruckNumber()))//should not be currTR
                 ft=facadeTruck;
         }
 
@@ -253,7 +254,7 @@ public class FacadeService {
             throw new IllegalStateException("Overweight related to Delivery Form Number:"+dfID+"  In TR number: "+trID);
         }
 
-        else deliveryService.updateDeliveryFormRealWeight(dfID,weight);
+        else deliveryService.updateDeliveryFormRealWeight(trID,dfID,weight);
          if (deliveryService.checkIfAllCompleted(trID)){
              deliveryService.archive(trID);
          }

@@ -172,6 +172,7 @@ public class Menu_Printer {
                     }catch (ReflectiveOperationException re){
                         System.out.println(re.getMessage());
                     }
+                    break;
                 case 15:
                     try{
                         removeItemFromPool(scanner);
@@ -184,6 +185,7 @@ public class Menu_Printer {
                     }catch (ReflectiveOperationException e){
                         System.out.println(e.getMessage());
                     }
+                    break;
 
                 case 17:
 
@@ -300,11 +302,11 @@ public class Menu_Printer {
         }
         System.out.print("choose the item you'd to remove from pool:");
         int choice = getIntFromUser(scanner);
-        if (choice < 1 ||  choice >  items.size() + 1){
+        if (choice < 1 ||  choice >  items.size() ){
             System.out.println("option is out of bounds, going back to menu");
         }
         else {
-            pc.RemoveItemFromPool(items.get(choice).getID());
+            pc.RemoveItemFromPool(items.get(choice-1).getID());
         }
     }
 
@@ -558,17 +560,22 @@ public class Menu_Printer {
                         int itemNumber = demands.get(chose - 1).getItemID();
                         System.out.print("amount: ");
                         int amount = getIntFromUser(scanner);
+                        while (amount <=0){
+                            System.out.println("cannot deliver a non- positive number of items, please try again");
+                            amount = getIntFromUser(scanner);
+                        }
                         int siteID = demands.get(chose - 1).getSite(); // destination to delivery to
                         con = pc.addDemandToReport(itemNumber, amount, siteID);
 
                     }
                 } catch (IllegalStateException e) { // different delivery area
-                    con = false;
                     System.out.println("you chose different delivery area from the currents," +
                             " would you like to continue? y for yes, n for not");
                     String answer = getStringFromUser(scanner);
                     switch (answer) {
                         case "y":
+                            con = false;
+
                             boolean enough = false;
                             while (!enough) {
                                 demands = pc.showDemands();
@@ -592,7 +599,7 @@ public class Menu_Printer {
                         case "n":
 
 
-                            return;
+                            break;
 
                         default:
                             System.out.println("theres no such option, choose between y or n explicit");
@@ -795,13 +802,15 @@ public class Menu_Printer {
             }
         }
         int chose = getIntFromUser(scanner);
-        while(chose<1 || chose>truckingReports.size())
+        while(chose<1 || chose>truckingReports.size()) {
+            System.out.println("option out of bounds, please try again");
             chose = getIntFromUser(scanner);
+        }
         FacadeTruckingReport ftr = truckingReports.get(chose-1);
         LinkedList<FacadeDeliveryForm> deliveryForms =  pc.getDeliveryForms(ftr.getID());
         spot =1;
         for (FacadeDeliveryForm dlf: deliveryForms){
-            System.out.println(spot+")origin:"+ dlf.getOrigin() + "\tdestination" + dlf.getDestination() +
+            System.out.println(spot+")origin: "+ dlf.getOrigin() + "\tdestination: " + dlf.getDestination() +
                     "\nitems delivered:" );
             spot++;
             for (Map.Entry<Integer,Integer> entry: dlf.getItems().entrySet()){
@@ -809,11 +818,12 @@ public class Menu_Printer {
             }
 
         }
+        System.out.print("Choose delivery form you'd like to update:");
         chose = getIntFromUser(scanner);
         while(chose<1 || chose>deliveryForms.size() )
             chose = getIntFromUser(scanner);
         FacadeDeliveryForm fdf = deliveryForms.get(chose-1);
-
+        System.out.print("Please enter the current truck weight: ");
         int weight = getIntFromUser(scanner);
         try {
             pc.updateDeliveryFormRealWeight(ftr.getID(), fdf.getID(), weight);
@@ -1069,21 +1079,24 @@ public class Menu_Printer {
     private int getIntFromUser(Scanner scanner) throws ReflectiveOperationException{
         int choose = -1;
         boolean scannerCon = true;
-        while(scannerCon)
+        while(scannerCon) {
             try {
                 choose = scanner.nextInt();
-                if (choose == -1) throw new ReflectiveOperationException ("by pressing -1 you chose to go back");
-                if (choose < 0){
+                if (choose == -1) throw new ReflectiveOperationException("by pressing -1 you chose to go back");
+                if (choose < 0) {
                     System.out.println("you must choose an none-negative number ");
                 }
-                scannerCon =false;
-            } catch (InputMismatchException ie){
+                else {
+                    scannerCon = false;
+                }
+            } catch (InputMismatchException ie) {
                 System.out.println("wrong input - a number must be inserted please try again ");
                 scanner.nextLine();
-            } catch (NoSuchElementException|IllegalStateException e){
+            } catch (NoSuchElementException | IllegalStateException e) {
                 System.out.println("wrong input - a number must be inserted please try again ");
                 scanner.nextLine();
             }
+        }
         return choose;
     }
 

@@ -14,7 +14,9 @@ public class DeliveryController {
     private HashMap<Integer,LinkedList<DeliveryForm>> activeDeliveryForms;
     private HashMap<Integer,LinkedList<DeliveryForm>> oldDeliveryForms;
     private HashMap<Integer,Site> sites;//<siteID,TR>
+/*
     private HashMap<Integer,DeliveryForm> deliveryForms;//<dfID,TR>
+*/
     private HashMap<Integer, Item> items;
     private int lastSiteID;
     private int lastReportID ;
@@ -36,7 +38,9 @@ public class DeliveryController {
         this.oldTruckingReports=new HashMap<>();
         this.oldDeliveryForms=new HashMap<>();
         this.sites=new HashMap<>();
+/*
         this.deliveryForms=new HashMap<>();
+*/
         // when data base is added, need to be set by it;
         this.items=new HashMap<>();
         this.lastDeliveryForms = 1;
@@ -200,7 +204,10 @@ public class DeliveryController {
                         ,itemsOnDF, (int) (demand.getAmount()*items.get(demand.getItemID()).getWeight()),currTR.getID());
                 currDF.add(deliveryForm);
             }
+
         }
+        updateTruckReportDestinations(currTR.getID());
+
     }
 
 
@@ -290,11 +297,12 @@ public class DeliveryController {
         {
             throw new IllegalArgumentException("TR does not exist yet");
         }
-        for (Map.Entry<Integer,DeliveryForm> entry:deliveryForms.entrySet())
+        LinkedList<DeliveryForm> dfs=activeDeliveryForms.get(trNumber);
+        for (DeliveryForm df:dfs)
         {
-            if (entry.getValue().getTrID()==trNumber&&dfNumber==entry.getValue().getID())
+            if (df.getTrID()==trNumber&&dfNumber==df.getID())
             {
-                result=entry.getValue();
+                result=df;
             }
         }
         if (result==null)
@@ -339,6 +347,7 @@ public class DeliveryController {
                 }
             }
         }
+        updateTruckReportDestinations(currTR.getID());
     }
 
     public void removeItemFromPool(int item)throws NoSuchElementException {
@@ -542,16 +551,11 @@ public class DeliveryController {
         return currDF;
     }
 
-    public HashMap<Integer, DeliveryForm> getDeliveryForms() {
-        return deliveryForms;
-    }
+//    public HashMap<Integer, DeliveryForm> getDeliveryForms() {
+//        return deliveryForms;
+//    }
     public LinkedList<DeliveryForm> getDeliveryForms(int trID){
-        LinkedList<DeliveryForm> forms=new LinkedList<>();
-        for (Map.Entry<Integer,DeliveryForm> entry:deliveryForms.entrySet())
-        {
-            forms.add(entry.getValue());
-        }
-        return forms;
+        return activeDeliveryForms.get(trID);
     }
 
     public HashMap<Integer, Site> getSites() {
@@ -572,9 +576,15 @@ public class DeliveryController {
     }
 
 
-    public void updateDeliveryFormRealWeight(int dfID, int weight){
-        deliveryForms.get(dfID).setLeavingWeight(weight);
-        deliveryForms.get(dfID).setCompleted();
+    public void updateDeliveryFormRealWeight(int trID, int dfID, int weight){
+        LinkedList<DeliveryForm> deliveryForms = activeDeliveryForms.get(trID);
+        for (DeliveryForm df:deliveryForms){
+            if (df.getID() == dfID) {
+                df.setLeavingWeight(weight);
+                df.setCompleted();
+            }
+
+        }
     }
 
     public boolean checkIfAllCompleted(int trID) {
@@ -637,7 +647,9 @@ public class DeliveryController {
             {
                 throw new IllegalStateException("Two different delivery areas");
             }
-            if (df.getDestination()==siteID)
+            int origin=items.get(itemNumber).getOriginSiteId();
+
+            if ((df.getDestination()==siteID&&df.getOrigin()==origin&&df.getItems().containsKey(itemNumber)))
             {
                 HashMap<Integer,Integer> items=df.getItems();
                 for (Map.Entry<Integer,Integer> entry:items.entrySet())
@@ -656,7 +668,7 @@ public class DeliveryController {
                 else break;
             }
         }
-        tr.addDestination(siteID);
+        updateTruckReportDestinations(trID);
         return added;
     }
 
@@ -694,6 +706,7 @@ public class DeliveryController {
                     deliveryForms.remove(df);
             }
         }
+        updateTruckReportDestinations(trID);
 
     }
 
@@ -725,6 +738,7 @@ public class DeliveryController {
             ldfs.add(newDF);
             updateTruckReportDestinations(trId);
         }
+
         return true;
     }
 

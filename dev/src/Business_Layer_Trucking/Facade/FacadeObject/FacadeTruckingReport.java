@@ -41,7 +41,9 @@ public class FacadeTruckingReport {
         driverID = currTR.getDriverID();
         origin = currTR.getOrigin();
         destinations = currTR.getDestinations();
-        TRReplace = new FacadeTruckingReport( currTR.getTRReplace());
+        if (currTR.getTRReplace()!= null){
+            TRReplace = new FacadeTruckingReport( currTR.getTRReplace());
+        }
         completed = currTR.isCompleted();
 
     }
