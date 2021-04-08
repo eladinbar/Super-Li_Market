@@ -1,6 +1,8 @@
 package Business_Layer_Trucking.Delivery;
 
 
+import Business_Layer_Trucking.Facade.FacadeObject.FacadeDemand;
+
 import javax.management.openmbean.KeyAlreadyExistsException;
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -14,9 +16,9 @@ public class DeliveryController {
     private HashMap<Integer,LinkedList<DeliveryForm>> activeDeliveryForms;
     private HashMap<Integer,LinkedList<DeliveryForm>> oldDeliveryForms;
     private HashMap<Integer,Site> sites;//<siteID,TR>
-/*
-    private HashMap<Integer,DeliveryForm> deliveryForms;//<dfID,TR>
-*/
+    /*
+        private HashMap<Integer,DeliveryForm> deliveryForms;//<dfID,TR>
+    */
     private HashMap<Integer, Item> items;
     private int lastSiteID;
     private int lastReportID ;
@@ -190,13 +192,16 @@ public class DeliveryController {
                     break;
                 }
                 if (!ignore&&sites.get(demand.getSite()).getDeliveryArea()!=sites.get(df.getDestination()).getDeliveryArea()
-                        && demand.getSite()!=items.get(demand.getItemID()).getOriginSiteId())
+                        && demand.getSite()!=items.get(demand.getItemID()).getOriginSiteId() )
                 {
                     throw new IllegalStateException("Two different delivery areas");
                 }
             }
             if (!added)
             {
+                if (sites.get(items.get(demand.getItemID()).getOriginSiteId()).getDeliveryArea() != sites.get(demand.getSite()).getDeliveryArea()){
+                    throw new IllegalStateException("Two different delivery areas");
+                }
                 HashMap<Integer,Integer> itemsOnDF=new HashMap<>();
                 itemsOnDF.put(items.get(demand.getItemID()).getID(),amount);
 
@@ -427,6 +432,8 @@ public class DeliveryController {
             LinkedList<Demand> result=new LinkedList<>();
             for(Demand d:demands)
             {
+                boolean added =false;
+
                 if (currDF.isEmpty()){
                     return demands;
                 }
@@ -438,13 +445,14 @@ public class DeliveryController {
                         if (newAmount>0){
                             Demand toAdd=new Demand(d.getItemID(),d.getSite(),newAmount);
                             result.add(toAdd);
+                            added = true;
                         }
-                        //TODO - check if working -  not it is not
                         //result.add(d);
                     }
-                    else
-                        result.add(d);
+
                 }
+                if (!added)
+                    result.add(d);
             }
             return result;
         }
@@ -543,8 +551,13 @@ public class DeliveryController {
             }
         }
         if (!inserted)
-        {
+        {   // checks the delivery area is same
             demands.add(new Demand(itemId,site,amount));
+            if (sites.get(items.get(itemId).getOriginSiteId()).getDeliveryArea() != sites.get(site).getDeliveryArea())
+                throw new InputMismatchException("the demand has 2 delivery area in it\n" +
+                        "you may remove it through menu or you can procced.\n" +
+                        "please notice, if you proceed");
+
         }
 
     }
@@ -578,7 +591,7 @@ public class DeliveryController {
         return currDF;
     }
 
-//    public HashMap<Integer, DeliveryForm> getDeliveryForms() {
+    //    public HashMap<Integer, DeliveryForm> getDeliveryForms() {
 //        return deliveryForms;
 //    }
     public LinkedList<DeliveryForm> getDeliveryForms(int trID){
@@ -792,5 +805,16 @@ public class DeliveryController {
         }
         tr.setDestinations(newDestinations);
 
+    }
+
+
+
+    public void removeDemand(int itemID, int site) {
+        for (Demand d: demands) {
+            if (d.getSite() == site && d.getItemID() == itemID){
+                demands.remove(d);
+                break;
+            }
+        }
     }
 }

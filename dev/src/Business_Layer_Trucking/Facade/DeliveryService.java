@@ -302,6 +302,10 @@ public class DeliveryService {
     public void chooseTruck(String truck) {
         dc.updateCurrTR_TruckNumber(truck);
     }
+
+    public void removeDemand(FacadeDemand d) {
+        dc.removeDemand(d.getItemID(), d.getSite());
+    }
 }
 
 
