@@ -9,7 +9,7 @@ import java.time.LocalTime;
 import java.util.*;
 
 public class PresentationController {
-    private FacadeService facadeService; // TODO need to check the actual way we hold it -  printer, menu and so on
+    private FacadeService facadeService;
     private static PresentationController instance =null;
 
     private PresentationController(){
@@ -227,7 +227,7 @@ public class PresentationController {
     }
 
     public void replaceTruck(int id, String truckNumber, int weight)throws IllegalStateException,IllegalArgumentException {
-        // TODO need to check the current driver fits the new Trucks weight
+
         facadeService.replaceTruck(id,truckNumber,weight);
     }
 
@@ -258,11 +258,6 @@ public class PresentationController {
 
     }
 
-    // TODO
-    //   need to check the exception go upwards always.
-    //   need to check all exception handle
-    //   need to check truck max weight less then truck's Neto
-    //   need to implement the initial state better
 
 
 

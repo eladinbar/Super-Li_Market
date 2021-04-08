@@ -294,6 +294,14 @@ public class DeliveryService {
     public void removeSiteFromPool(int siteID) {
         dc.removeSite(siteID);
     }
+
+    public void chooseDriver(String driver) {
+        dc.updateCurrTR_DriverID(driver);
+    }
+
+    public void chooseTruck(String truck) {
+        dc.updateCurrTR_TruckNumber(truck);
+    }
 }
 
 
