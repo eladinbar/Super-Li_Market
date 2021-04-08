@@ -44,6 +44,7 @@ public class FacadeService {
             throw new IllegalStateException("Total Weight is: "+weightToDeliver+ft.getWeightNeto()+"But Truck can carry: "+ft.getMaxWeight());
         }
         currTR.setTruckNumber(ft.getLicenseNumber());
+        deliveryService.chooseTruck(truck);
         return ft;
     }
 
@@ -65,6 +66,7 @@ public class FacadeService {
         if (fd.getLicenseType().getSize()< ft.getWeightNeto()+deliveryService.getWeightOfCurrReport())
             throw new IllegalStateException("Driver cant handle this delivery");
 
+        deliveryService.chooseDriver(driver);
         currTR.setDriverID(fd.getID());
         return fd;
 
@@ -241,18 +243,18 @@ public class FacadeService {
         FacadeTruck ft=null;
         for (FacadeTruck facadeTruck:trucks)
         {
-            if (facadeTruck.getLicenseNumber().equals(currTR.getTruckNumber()));
+
+            if (facadeTruck.getLicenseNumber().equals(getTruckReport(trID).getTruckNumber()))//should not be currTR
                 ft=facadeTruck;
         }
 
         if (weight> ft.getMaxWeight())
         {
-            // TODO if fails, update old TR to be old. creates new TR with compatible replaced
             deliveryService.archiveNotCompleted(trID);
             throw new IllegalStateException("Overweight related to Delivery Form Number:"+dfID+"  In TR number: "+trID);
         }
 
-        else deliveryService.updateDeliveryFormRealWeight(dfID,weight);
+        else deliveryService.updateDeliveryFormRealWeight(trID,dfID,weight);
          if (deliveryService.checkIfAllCompleted(trID)){
              deliveryService.archive(trID);
          }

@@ -126,7 +126,6 @@ public class ResourcesController {
     }
 
     public void makeAvailable_Driver(String driver) {
-        //TODO need to prevent from making available on a mission
         drivers.get(driver).makeAvailable();
     }
 

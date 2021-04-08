@@ -236,8 +236,8 @@ public class DeliveryService {
 
     }
 
-    public void updateDeliveryFormRealWeight(int dfID, int weight)throws IllegalStateException {
-        dc.updateDeliveryFormRealWeight(dfID,weight);
+    public void updateDeliveryFormRealWeight(int trID,int dfID, int weight)throws IllegalStateException {
+        dc.updateDeliveryFormRealWeight(trID,dfID,weight);
     }
 
     public boolean checkIfAllCompleted(int trID) {
@@ -293,6 +293,14 @@ public class DeliveryService {
 
     public void removeSiteFromPool(int siteID) {
         dc.removeSite(siteID);
+    }
+
+    public void chooseDriver(String driver) {
+        dc.updateCurrTR_DriverID(driver);
+    }
+
+    public void chooseTruck(String truck) {
+        dc.updateCurrTR_TruckNumber(truck);
     }
 }
 
