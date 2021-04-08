@@ -152,6 +152,10 @@ public class ResourcesController {
         return trucks;
     }
 
+    public void setTrucks(HashMap<String, Truck> trucks) {
+        this.trucks = trucks;
+    }
+
     public String getCurrDriverID() {
         return currDriverID;
     }
