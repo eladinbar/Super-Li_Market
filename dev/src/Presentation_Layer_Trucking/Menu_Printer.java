@@ -269,7 +269,7 @@ public class Menu_Printer {
         try {
             LinkedList<FacadeItem> items = pc.getAllItems();
             for (FacadeItem item : items) {
-                System.out.println(spot + ")item id: " + item.getID() + "\tname: " + item.getName());
+                System.out.println(spot + ")item id: " + item.getID() + "\tname: " + item.getName() + "\tdelivery area: " + pc.getSiteDeliveryArea(item.getOriginId()));
                 spot++;
             }
 
@@ -630,20 +630,35 @@ public class Menu_Printer {
                             boolean enough = false;
                             while (!enough) {
                                 demands = pc.showDemands();
-                                if (demands == null) {
-                                    System.out.println("no demands left to display, Well done Sir!");
-                                } else {
-                                    demands = sortDemandsBySite(demands);
-                                    printDemands(demands);
-                                    System.out.print("item number: ");
-                                    int itemNumber =  getIntFromUser(scanner);
-                                    System.out.println();
+                                demands = sortDemandsBySite(demands);
+                                printDemands(demands);
+                                System.out.println("\nif you'd like to finish, insert " + (demands.size() + 1) + " in item number");
+                                System.out.println();
+                                System.out.print("item number: ");
+                                int chose = getIntFromUser(scanner);
+                                if (chose == demands.size() + 1){
+                                    enough = true;
+                                }
+                                else
+                                {
+                                    while (chose < 1 || chose > demands.size()) {
+                                        System.out.println("option out of bounds, please choose again");
+                                        chose = getIntFromUser(scanner);
+                                    }
+                                    int itemNumber = demands.get(chose - 1).getItemID();
                                     System.out.print("amount: ");
-                                    int amount =  getIntFromUser(scanner);
-                                    System.out.println();
-                                    System.out.println("site id:");
-                                    int siteID =  getIntFromUser(scanner);
-                                    enough = pc.continueAddDemandToReport(itemNumber, amount, siteID);
+                                    int amount = getIntFromUser(scanner);
+                                    while (amount <=0){
+                                        System.out.println("cannot deliver a non- positive number of items, please try again");
+                                        amount = getIntFromUser(scanner);
+                                    }
+                                    int siteID = demands.get(chose - 1).getSite(); // destination to delivery to
+                                    try {
+                                        pc.continueAddDemandToReport(itemNumber, amount, siteID);
+                                    }catch (IllegalArgumentException illegalArgumentException){
+                                        System.out.println(illegalArgumentException.getMessage());
+                                    }
+
                                 }
                             }
                             break;
@@ -1094,24 +1109,24 @@ public class Menu_Printer {
         pc.addTruck("Man", "1231231", 1500, 8000);
         pc.addTruck("Volvo","123" ,1000, 10000);
 
-        pc.addSite("Haifa", 2, "0502008216" , "Shimi", "SuperLee-Haifa");
-        pc.addSite("Beer Sheva" ,3, "0502008217" , "Yotam" , "superLee-BeerSheva");
-        pc.addSite("Rahat" , 4 , "0502008214" , "Mohamad" , "MilkHere");
-        pc.addSite("Nazareth" , 5,"0522002123" , "Esti" , "Suber-LNazerath");
-        pc.addSite("Afula", 1,"0502008215" , "Raz" , "Tnuva");
-        pc.addSite("Geva" , 5, "0503988883", "ShirHayafa","Dubi");
+        pc.addSite("Haifa", 1, "0502008216" , "Shimi", "SuperLee-Haifa");
+        pc.addSite("Nazareth" , 1,"0522002123" , "Esti" , "Suber-LNazerath");
+        pc.addSite("Beer Sheva" ,2, "0502008217" , "Yotam" , "superLee-BeerSheva");
+        pc.addSite("Rahat" , 2 , "0502008214" , "Mohamad" , "MilkHere");
+        pc.addSite("Afula", 3,"0502008215" , "Raz" , "Tnuva");
+        pc.addSite("Geva" , 3, "0503988883", "ShirHayafa","Dubi");
 
-        pc.addItem(1,1,"milk",3);
+        pc.addItem(1,1,"milk",1);
         pc.addItem(2 , 2 , "cream cheese",1);
-        pc.addItem(10 , 4 , "cottage" ,1);
-        pc.addItem(11 , 2 , "banana",2);
-        pc.addItem(13 , 3 , "cucumber",4);
-        pc.addItem(3,0.1,"chocolate",5);
+        pc.addItem(3 , 4 , "cottage" ,2);
+        pc.addItem(4 , 2 , "banana",2);
+        pc.addItem(5 , 3 , "cucumber",3);
+        pc.addItem(6,0.1,"chocolate",5);
 
-        pc.addDemandToSystem(3,6,1000);
-        pc.addDemandToSystem(1, 1, 100);
-        pc.addDemandToSystem(2,2,1000);
-        pc.addDemandToSystem(11, 4,500);
+        pc.addDemandToSystem(1,2,1000);
+        pc.addDemandToSystem(3, 1, 100);
+        pc.addDemandToSystem(5,4,1000);
+        pc.addDemandToSystem(6, 6,500);
     }
 
     private int getIntFromUserMain(Scanner scanner){

@@ -172,6 +172,9 @@ public class DeliveryController {
             currDF.add(newDF);
             currTR.setOrigin(items.get(demand.getItemID()).getOriginSiteId());
             lastDeliveryForms++;
+            if (sites.get(items.get(demand.getItemID()).getOriginSiteId()).getDeliveryArea() != sites.get(demand.getSite()).getDeliveryArea()){
+                throw new IllegalStateException("Two different delivery areas");
+            }
         }
         else // we need to look in the list maybe there is a form with the same origin& destination
         {

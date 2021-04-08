@@ -78,7 +78,7 @@ public class DeliveryService {
         LinkedList<Demand> demands = dc.getDemands();
         Demand d=null;
         for (Demand curr:  demands) {
-            if (curr.getItemID() ==  itemID && curr.getAmount() < supplyAmount && curr.getSite() == siteID){
+            if (curr.getItemID() ==  itemID && curr.getAmount() > supplyAmount && curr.getSite() == siteID){
                 d = curr;
             }
         }
