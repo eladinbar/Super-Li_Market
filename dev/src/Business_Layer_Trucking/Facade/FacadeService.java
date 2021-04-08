@@ -343,6 +343,13 @@ public class FacadeService {
     public boolean continueAddDemandToTruckReport(int itemNumber, int amount, int siteID, int truckId) {
         return deliveryService.continueAddDemandToTruckReport(itemNumber,amount,siteID,truckId);
     }
+    public void chooseDateToCurrentTR(LocalDate chosen) {
+        deliveryService.chooseDateToCurrentTR(chosen);
+    }
+
+    public void removeSiteFromPool(int siteID) {
+        deliveryService.removeSiteFromPool(siteID);
+    }
 }
 
 

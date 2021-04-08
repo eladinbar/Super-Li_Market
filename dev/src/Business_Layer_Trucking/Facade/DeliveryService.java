@@ -257,7 +257,7 @@ public class DeliveryService {
     }
 
     public void removeSiteFromTruckReport(int siteID, int trID) throws NoSuchElementException{
-         dc.removeSiteFromTruckReport(siteID,trID);
+        dc.removeSiteFromTruckReport(siteID,trID);
     }
 
     public boolean addDemandToTruckReport(int itemNumber, int amount, int siteID, int trID) throws IllegalStateException{
@@ -284,6 +284,15 @@ public class DeliveryService {
 
     public boolean continueAddDemandToTruckReport(int itemNumber, int amount, int siteID, int truckId) {
         return dc.continueAddDemandToTruckReport(itemNumber,amount,siteID,truckId);
+    }
+
+
+    public void chooseDateToCurrentTR(LocalDate chosen) {
+        dc.chooseDateToCurrentTR(chosen);
+    }
+
+    public void removeSiteFromPool(int siteID) {
+        dc.removeSite(siteID);
     }
 }
 

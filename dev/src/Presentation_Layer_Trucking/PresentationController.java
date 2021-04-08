@@ -254,6 +254,7 @@ public class PresentationController {
         facadeService.chooseDateToCurrentTR(chosen);
     }
     public void removeSiteFromPool(int siteID){
+        facadeService.removeSiteFromPool(siteID);
 
     }
 

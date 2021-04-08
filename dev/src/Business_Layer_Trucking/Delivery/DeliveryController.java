@@ -230,6 +230,12 @@ public class DeliveryController {
         else
         {
             sites.remove(siteID);
+            for (Map.Entry<Integer,Item> entry: items.entrySet()){
+                if (entry.getValue().getOriginSiteId() == siteID){
+                    removeItemFromPool(entry.getKey());
+                }
+
+            }
             return true;
         }
 
@@ -341,6 +347,7 @@ public class DeliveryController {
         {
             throw new NoSuchElementException("No item with that ID");
         }
+        // TODO need to delete demands from each DF, Demands, TR
         else items.remove(item);
     }
 
@@ -715,6 +722,10 @@ public class DeliveryController {
             ldfs.add(newDF);
         }
         return true;
+    }
+
+    public void chooseDateToCurrentTR(LocalDate chosen) {
+        currTR.setDate(chosen);
     }
 }
 //TODO:
