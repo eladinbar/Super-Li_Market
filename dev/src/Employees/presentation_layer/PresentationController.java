@@ -43,7 +43,7 @@ public class PresentationController {
             {
                 manager = menuPrinter.createManagerAccountMenu ();
             }
-            facadeService.addEmployee ( manager );
+            facadeService.addManager ( manager );
             while(!login (true));
         }
         else

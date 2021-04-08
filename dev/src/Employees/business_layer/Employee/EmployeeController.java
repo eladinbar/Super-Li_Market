@@ -153,7 +153,7 @@ public class EmployeeController {
 
 
     public Employee addManager(FacadeEmployee e) throws EmployeeException {
-        if(!loggedIn.getIsManager()){
+        if(e.isManager ()){
             throw new EmployeeException("Only an administrator can perform this operation");
         }
         if(!validId(e.getID())){
