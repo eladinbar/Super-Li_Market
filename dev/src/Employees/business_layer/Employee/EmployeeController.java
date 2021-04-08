@@ -161,7 +161,6 @@ public class EmployeeController {
             throw new EmployeeException("Only an administrator can perform this operation");
         }
 
-
         if(!employees.containsKey(Id)){
                 throw new EmployeeException("Employee not found");
         }
@@ -251,6 +250,10 @@ public class EmployeeController {
             }
         }
         return specificRole;
+    }
+
+    public boolean isExist(String role, String Id){
+        return employees.containsValue(Id) && employees.get(Id).isEmployed();
     }
 
     public void createData (){}
