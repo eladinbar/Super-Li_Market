@@ -168,4 +168,8 @@ public class supplier {
             throw new Exception("supplier does not have a quantity list");
         return ag.getQl();
     }
+
+    public void addItemToAgreement(int productID, int companyProductID,int price) throws Exception {
+        ag.addItemToAgreement(productID,companyProductID,price);
+    }
 }

@@ -20,7 +20,7 @@ public class ResponseT <T> extends Response{
     @Override
     public String toString() {
         if(errorOccured())
-            return getErrorMessage();
+            return "Error: "+getErrorMessage();
         return value.toString();
     }
 }

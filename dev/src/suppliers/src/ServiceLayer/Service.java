@@ -113,10 +113,10 @@ public class Service implements IService {
         return r;
     }
 
-    public ResponseT<product> addItemToAgreement(String id, int productID, int companyProductID){
+    public ResponseT<product> addItemToAgreement(String id, int productID, int companyProductID,int price){
         ResponseT<product> r = orderService.getProduct(productID);
         if (!r.errorOccured())
-            return supplierService.addItemToAgreement(id,productID,companyProductID, orderService);
+            return supplierService.addItemToAgreement(id,productID,companyProductID,price, orderService);
         return r;
     }
 

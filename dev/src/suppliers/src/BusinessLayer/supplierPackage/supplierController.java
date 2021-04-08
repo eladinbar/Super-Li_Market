@@ -145,7 +145,8 @@ public class supplierController {
         return suppliers.get(supplierId).getQuantityList();
     }
 
-    public void addItemToAgreement(String id, int productID, int companyProductID) {
-
+    public void addItemToAgreement(String id, int productID, int companyProductID,int price) throws Exception {
+        existSupplier(id);
+        suppliers.get(id).addItemToAgreement(productID, companyProductID,price);
     }
 }

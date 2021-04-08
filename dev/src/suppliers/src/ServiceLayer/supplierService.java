@@ -220,10 +220,10 @@ public class supplierService {
         return toReturn;
     }
 
-    public ResponseT<product> addItemToAgreement(String id, int productID, int companyProductID, orderService oc) {
+    public ResponseT<product> addItemToAgreement(String id, int productID, int companyProductID,int price, orderService oc) {
         ResponseT<product> toReturn;
         try {
-            sp.addItemToAgreement(id, productID, companyProductID);
+            sp.addItemToAgreement(id, productID, companyProductID,price);
             toReturn = oc.getProduct(productID);
         } catch (Exception e) {
             toReturn = new ResponseT<>(e.getMessage());

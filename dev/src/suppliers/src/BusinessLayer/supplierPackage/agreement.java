@@ -72,4 +72,11 @@ public class agreement {
             throw new Exception("supplier does not have quantity list");
         ql.editQuantityListDiscount(productID, discount);
     }
+
+    public void addItemToAgreement(int productID, int companyProductID,int price) throws Exception {
+        if(products.containsKey(productID))
+            throw new Exception("agreement already have the item");
+        products.put(productID,companyProductID);
+        prices.put(productID,price);
+    }
 }

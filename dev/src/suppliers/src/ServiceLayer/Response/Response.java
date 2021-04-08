@@ -21,7 +21,7 @@ public class Response {
 
     public String toString(){
         if (errorOccured())
-            return getErrorMessage();
+            return "Error: "+getErrorMessage();
         return "";
     }
 }

@@ -125,9 +125,11 @@ public class MenuPrinter {
                 System.out.println("choose items to agreement: ");
                 System.out.print("enter product id: ");
                 int productID=scan.nextInt();
-                System.out.println("enter you company product id");
+                System.out.print("enter you company product id: ");
                 int companyProductID=scan.nextInt();
-                System.out.println(pc.addItemToagreement(ID,productID,companyProductID));
+                System.out.print("enter price: ");
+                int price=scan.nextInt();
+                System.out.println(pc.addItemToagreement(ID,productID,companyProductID,price));
             }
         }
     }
