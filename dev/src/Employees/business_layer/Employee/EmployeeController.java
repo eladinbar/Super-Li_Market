@@ -25,9 +25,18 @@ public class EmployeeController {
     }
 
     public HashMap<String, Employee> getEmployees() throws EmployeeException {
+        if(loggedIn==null){
+            throw new EmployeeException("No user is login");
+        }
+
+        if(!loggedIn.getIsManager()) {
+            throw new EmployeeException("Only an administrator can perform this operation");
+        }
+
         if(employees.isEmpty()){
             throw new EmployeeException("There is no record of the super's employees");
         }
+
         return employees;
     }
     public Employee login(String ID, String role) throws EmployeeException {
@@ -129,6 +138,9 @@ public class EmployeeController {
         if(!validId(e.getID())){
             throw new EmployeeException("An invalid ID was entered ");
         }
+        if(employees.containsKey(e.getID())){
+            throw new EmployeeException("Employee already added to the system");
+        }
        TermsOfEmployment terms = new TermsOfEmployment(e.getFacadeTermsOfEmployment().getSalary(), e.getFacadeTermsOfEmployment().getEducationFund(), e.getFacadeTermsOfEmployment().getSickDays(), e.getFacadeTermsOfEmployment().getDaysOff());
        BankAccountInfo bank = new BankAccountInfo(e.getFacadeBankAccountInfo().getAccountNumber(), e.getFacadeBankAccountInfo().getBankBranch(), e.getFacadeBankAccountInfo().getBank());
        Employee newEmployee = new Employee(e.getRole(), e.getID(),terms, e.getTransactionDate(), bank);
@@ -144,6 +156,9 @@ public class EmployeeController {
         }
         if(!validId(e.getID())){
             throw new EmployeeException("An invalid ID was entered ");
+        }
+        if(employees.containsKey(e.getID())){
+            throw new EmployeeException("Manager already added to the system");
         }
         TermsOfEmployment terms = new TermsOfEmployment(e.getFacadeTermsOfEmployment().getSalary(), e.getFacadeTermsOfEmployment().getEducationFund(), e.getFacadeTermsOfEmployment().getSickDays(), e.getFacadeTermsOfEmployment().getDaysOff());
         BankAccountInfo bank = new BankAccountInfo(e.getFacadeBankAccountInfo().getAccountNumber(), e.getFacadeBankAccountInfo().getBankBranch(), e.getFacadeBankAccountInfo().getBank());
@@ -164,6 +179,7 @@ public class EmployeeController {
         if(!employees.containsKey(Id)){
                 throw new EmployeeException("Employee not found");
         }
+        if(Id.equals(loggedIn.getID())){ logout();}
         employees.get(Id).setEmployed(false);
         return employees.get(Id);
     }
@@ -240,9 +256,7 @@ public class EmployeeController {
                       if (!employee.getConstraints().get(date).isEveningShift())// If the employee is free on this shift
                           specificRole.add(employee.getID());
                     }
-                  if (shift == 2) {
-
-                  }
+                  if (shift == 2) {}
                 }
                 else{ // If the employee is free on this day
                     specificRole.add(employee.getID());

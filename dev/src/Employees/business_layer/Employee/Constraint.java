@@ -36,7 +36,8 @@ public class Constraint {
         return reason;
     }
 // Setters:
-    public void setDate(LocalDate date) {
+    public void setDate(LocalDate date) throws EmployeeException {
+        if(!validDate(date)){ throw new EmployeeException("A constraint can be filed up to two weeks in advance");}
         this.date = date;
     }
 
