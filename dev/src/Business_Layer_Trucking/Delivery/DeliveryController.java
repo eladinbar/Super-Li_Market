@@ -161,9 +161,10 @@ public class DeliveryController {
         {
             HashMap<Integer,Integer> itemsOnDF=new HashMap<>();
             itemsOnDF.put(items.get(demand.getItemID()).getID(),amount);
-            DeliveryForm newDF=new DeliveryForm(lastDeliveryForms,siteID,demand.getSite(),itemsOnDF,
+            DeliveryForm newDF=new DeliveryForm(lastDeliveryForms,siteID,items.get(demand.getItemID()).getOriginSiteId() ,itemsOnDF,
                     (int)items.get(demand.getItemID()).getWeight()*amount,currTR.getID());
             currDF.add(newDF);
+            currTR.setOrigin(items.get(demand.getItemID()).getOriginSiteId());
             lastDeliveryForms++;
         }
         else // we need to look in the list maybe there is a form with the same origin& destination
@@ -180,7 +181,8 @@ public class DeliveryController {
                     added=true;
                     break;
                 }
-                if (!ignore&&sites.get(demand.getSite()).getDeliveryArea()!=sites.get(df.getDestination()).getDeliveryArea())
+                if (!ignore&&sites.get(demand.getSite()).getDeliveryArea()!=sites.get(df.getDestination()).getDeliveryArea()
+                && demand.getSite()!=items.get(demand.getItemID()).getOriginSiteId())
                 {
                     throw new IllegalStateException("Two different delivery areas");
                 }
@@ -190,7 +192,7 @@ public class DeliveryController {
                 HashMap<Integer,Integer> itemsOnDF=new HashMap<>();
                 itemsOnDF.put(items.get(demand.getItemID()).getID(),amount);
 
-                DeliveryForm deliveryForm=new DeliveryForm(lastDeliveryForms,siteID,demand.getSite()
+                DeliveryForm deliveryForm=new DeliveryForm(lastDeliveryForms,siteID,items.get(demand.getItemID()).getOriginSiteId()
                         ,itemsOnDF, (int) (demand.getAmount()*items.get(demand.getItemID()).getWeight()),currTR.getID());
                 currDF.add(deliveryForm);
             }
@@ -342,11 +344,13 @@ public class DeliveryController {
         else items.remove(item);
     }
 
-    public void addItem(int id, double weight, String name)throws KeyAlreadyExistsException {
+    public void addItem(int id, double weight, String name, int siteID)throws NoSuchElementException,KeyAlreadyExistsException {
         if (items.containsKey(id))
             throw new KeyAlreadyExistsException("ID already taken");
+        else if (!sites.containsKey(siteID))
+            throw new NoSuchElementException("this site doesn't exist");
         else {
-            Item item=new Item(id, weight, name);
+            Item item=new Item(id, weight, name,siteID );
             items.put(id,item);
         }
     }
@@ -592,4 +596,9 @@ public class DeliveryController {
     public int getSiteDeliveryArea(int siteID) {
         return sites.get(siteID).getDeliveryArea();
     }
+
+    public void chooseDateToCurrentTR(LocalDate chosen) {
+        currTR.setDate(chosen);
+    }
 }
+

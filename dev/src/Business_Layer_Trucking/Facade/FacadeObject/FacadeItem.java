@@ -6,12 +6,15 @@ public class FacadeItem implements FacadeObject{
     private  int ID;
     private double weight;
     private String name;
+    private int originId;
 
-    public FacadeItem(int ID, double weight, String name)
+    public FacadeItem(int ID, double weight, String name, int originId)
     {
         this.ID=ID;
         this.name=name;
         this.weight=weight;
+        this.originId = originId;
+
     }
 
     public FacadeItem(Item item) {
@@ -42,5 +45,9 @@ public class FacadeItem implements FacadeObject{
 
     public void setWeight(double weight) {
         this.weight = weight;
+    }
+
+    public int getOriginId() {
+        return originId;
     }
 }

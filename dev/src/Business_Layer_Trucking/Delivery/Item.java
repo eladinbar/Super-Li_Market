@@ -4,11 +4,18 @@ public class Item {
     private  int ID;
     private double weight;
     private String name;
+    private int originSiteId ;
 
-    public Item(int id, double weight, String name){
+    public Item(int id, double weight, String name, int originSiteID){
         this.ID=id;
         this.name=name;
         this.weight=weight;
+        this.originSiteId = originSiteID;
+
+    }
+
+    public int getOriginSiteId() {
+        return originSiteId;
     }
 
     public double getWeight() {

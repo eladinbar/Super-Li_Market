@@ -4,6 +4,7 @@ import Business_Layer_Trucking.Delivery.*;
 import Business_Layer_Trucking.Facade.FacadeObject.*;
 
 import javax.management.openmbean.KeyAlreadyExistsException;
+import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -129,7 +130,7 @@ public class DeliveryService {
         dc.addSite(city,  deliveryArea, phoneNumber, contactName,name );
     }
 
-    public void addItem(int id, double weight, String name) throws  KeyAlreadyExistsException {dc.addItem(id, weight,name);}
+    public void addItem(int id, double weight, String name, int siteID) throws NoSuchElementException, KeyAlreadyExistsException {dc.addItem(id, weight,name,siteID);}
 
     public void displaySites() {
         dc.displaySites();
@@ -253,6 +254,10 @@ public class DeliveryService {
 
     public int getSiteDeliveryArea(int site) {
         return dc.getSiteDeliveryArea(site);
+    }
+
+    public void chooseDateToCurrentTR(LocalDate chosen) {
+        dc.chooseDateToCurrentTR(chosen);
     }
 }
 
