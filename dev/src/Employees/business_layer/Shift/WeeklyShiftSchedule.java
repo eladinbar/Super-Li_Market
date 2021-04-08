@@ -49,6 +49,8 @@ public class WeeklyShiftSchedule {
     public void addEmployeeToShift(String role, String ID, LocalDate date, int shift) throws EmployeeException {
         if(shift > 2 || shift < 1 || checkDatesValidity ( this.date, date ))
             throw new EmployeeException ( "no such shift to add the employee." );
+        if(date.isBefore ( LocalDate.now () ))
+            throw new EmployeeException ( "Date is already passed." );
         getShift ( date, shift ).addEmployee ( role, ID );
         isMissing = isMissing();
     }
@@ -56,11 +58,15 @@ public class WeeklyShiftSchedule {
     public void deleteEmployeeFromShift(String role, String ID, LocalDate date, int shift) throws EmployeeException {
         if(shift > 2 || shift < 1 || checkDatesValidity ( this.date, date ))
             throw new EmployeeException ( "no such shift to delete the employee from." );
+        if(date.isBefore ( LocalDate.now () ))
+            throw new EmployeeException ( "Date is already passed." );
         getShift ( date, shift ).deleteEmployee ( role, ID );
         isMissing = isMissing();
     }
 
     public void changeShiftType(LocalDate date, int shift, String shiftType) throws EmployeeException {
+        if(date.isBefore ( LocalDate.now () ))
+            throw new EmployeeException ( "Date is already passed." );
         getShift ( date, shift ).changeShiftType(shiftType);
         isMissing = isMissing();
     }
@@ -78,16 +84,10 @@ public class WeeklyShiftSchedule {
     }
 
     public void changeShift(EmployeeController employeeController, LocalDate date, int shift, HashMap<String, List<String>> manning) throws EmployeeException {
+        if(date.isBefore ( LocalDate.now () ))
+            throw new EmployeeException ( "Date is already passed." );
         checkManningVallidity ( employeeController, manning );
         shifts[date.getDayOfWeek ().getValue ()][shift].changeManning( manning );
-        isMissing = isMissing();
-    }
-
-    public void addShift(EmployeeController employeeController, LocalDate date, int shift, HashMap<String, List<String>> manning) throws EmployeeException {
-        checkManningVallidity ( employeeController, manning );
-        if (getShift ( date, shift ).getManning () != null)
-            throw new EmployeeException ( "shift is already exists." );
-        changeShift (employeeController, date, shift, manning );
         isMissing = isMissing();
     }
 
@@ -110,13 +110,6 @@ public class WeeklyShiftSchedule {
             }
         }
     }
-
-//    public void addShift(int i, Shift shift) throws EmployeeException {
-//        if(i< 0 || i > 1)
-//            throw new EmployeeException ( "no such shift to add (0-1)." );
-//        shifts[shift.getDate ().getDayOfWeek ().getValue ()][i] = shift;
-//        isMissing = isMissing();
-//    }
 
     public void recommendShifts(EmployeeController employeeController, int i) throws EmployeeException {
         shifts[i][0].createManning ( employeeController );
