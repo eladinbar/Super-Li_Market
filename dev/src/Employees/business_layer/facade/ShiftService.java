@@ -159,6 +159,12 @@ public class ShiftService {
         }
     }
 
-    public void createData() throws EmployeeException{
+    public Response createData() {
+        try {
+            shiftController.createData ( );
+            return new Response (  );
+        } catch (EmployeeException e) {
+            return new Response ( e.getMessage ( ) );
+        }
     }
 }

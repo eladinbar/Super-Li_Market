@@ -104,4 +104,23 @@ public class ShiftController {
     public void deleteRoleFromShiftType(String shiftType, String role) throws EmployeeException {
         ShiftTypes.getInstance ().deleteRole(shiftType, role);
     }
+
+    public void createData() throws EmployeeException {
+        createShiftTypes ();
+        getRecommendation ( LocalDate.now ().plusDays ( 3 ) );
+        getRecommendation ( LocalDate.now ().plusDays ( 10 ) );
+    }
+
+    private void createShiftTypes() throws EmployeeException {
+        HashMap<String, Integer> manning = new HashMap<> (  );
+        manning.put ( "shiftManager", 1 );
+        manning.put ( "cashier", 2 );
+        manning.put ( "guard", 1 );
+        manning.put ( "usher", 2 );
+        manning.put ( "storeKeeper", 1 );
+        createShiftType ( "morningShift", manning );
+        createShiftType ( "eveningShift", manning );
+    }
+
+
 }

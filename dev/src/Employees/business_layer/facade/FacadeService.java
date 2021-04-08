@@ -135,13 +135,10 @@ public class FacadeService {
     }
 
     public Response createData() {
-        try {
-            employeeService.createData ( );
-            shiftService.createData ( );
-            return new Response (  );
-        }catch (EmployeeException e)
-        {
-            return new Response ( e.getMessage () );
-        }
+        Response response = employeeService.createData ( );
+        if(response.errorOccured ())
+            return response;
+        response = shiftService.createData ( );
+        return response;
     }
 }
