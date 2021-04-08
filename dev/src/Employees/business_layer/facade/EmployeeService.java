@@ -181,8 +181,9 @@ public class EmployeeService {
         }
     }
 
-    public void createData () throws EmployeeException {
-
+    public Response createData (){
+        employeeController.createData();
+        return new Response();
     }
 
     //private methods:
