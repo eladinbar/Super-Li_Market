@@ -5,6 +5,7 @@ import Business_Layer_Trucking.Delivery.DeliveryForm;
 import Business_Layer_Trucking.Facade.FacadeObject.*;
 import Business_Layer_Trucking.Resources.Driver;
 import javax.management.openmbean.KeyAlreadyExistsException;
+import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.LinkedList;
 import java.util.List;
@@ -148,8 +149,8 @@ public class FacadeService {
 
     }
 
-    public void addItem(int id, double weight, String name)throws KeyAlreadyExistsException {
-        deliveryService.addItem(id, weight,name);
+    public void addItem(int id, double weight, String name,int siteID)throws NoSuchElementException, KeyAlreadyExistsException {
+        deliveryService.addItem(id, weight,name,siteID);
     }
 
     public void displaySites() {
@@ -301,46 +302,8 @@ public class FacadeService {
         return deliveryService.getSiteDeliveryArea(site);
     }
 
-    public void removeSiteFromTruckReport(int siteID, int trID)throws NoSuchElementException{
-        deliveryService.removeSiteFromTruckReport(siteID,trID);
-    }
-
-    public boolean addDemandToTruckReport(int itemNumber, int amount, int siteID, int trID)throws IllegalStateException {
-        return deliveryService.addDemandToTruckReport(itemNumber,amount,siteID,trID);
-    }
-
-    public void replaceDriver(int trID, String driverID, int weight)throws IllegalStateException,NoSuchElementException{
-        LinkedList<FacadeDriver> lfds=resourcesService.getDrivers();
-        FacadeDriver fd=null;
-        for (FacadeDriver facadeDriver:lfds)
-        {
-            if (fd.getID().equals(driverID))
-            {
-                fd=facadeDriver;
-                break;
-            }
-        }
-        if (fd==null)
-        {
-            throw new NoSuchElementException("No such Driver with that id");
-        }
-        if (fd.getLicenseType().getSize()<weight)
-        {
-            throw new IllegalStateException("Driver cant handle this weight");
-        }
-        deliveryService.replaceDriver(trID,driverID);
-    }
-
-    public LinkedList<FacadeDemand> getItemOnReport(int trID) {
-        return deliveryService.getItemOnReport(trID);
-    }
-
-    public void removeItemFromTruckingReport(int trID, FacadeDemand demand) {
-        deliveryService.removeItemFromTruckingReport(trID,demand);
-    }
-
-    public boolean continueAddDemandToTruckReport(int itemNumber, int amount, int siteID, int truckId) {
-        return deliveryService.continueAddDemandToTruckReport(itemNumber,amount,siteID,truckId);
+    public void chooseDateToCurrentTR(LocalDate chosen) {
+        deliveryService.chooseDateToCurrentTR(chosen);
     }
 }
 

@@ -4,6 +4,7 @@ import Business_Layer_Trucking.Facade.FacadeObject.*;
 import Business_Layer_Trucking.Facade.FacadeService;
 import Business_Layer_Trucking.Resources.Driver;
 import javax.management.openmbean.KeyAlreadyExistsException;
+import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.*;
 
@@ -82,8 +83,8 @@ public class PresentationController {
         facadeService.addSite(city,  deliveryArea, phoneNumber, contactName,name );
     }
 
-    public void addItem(int id, double weight, String name) throws KeyAlreadyExistsException {
-        facadeService.addItem(id, weight,name);
+    public void addItem(int id, double weight, String name, int siteID) throws NoSuchElementException, KeyAlreadyExistsException {
+        facadeService.addItem(id, weight,name, siteID);
     }
 
 
@@ -215,8 +216,8 @@ public class PresentationController {
         facadeService.updateDeliveryFormRealWeight(trID,dfID,weight);
     }
 
-    public void removeSiteFromTruckReport(int siteID, int trID)throws NoSuchElementException {
-        facadeService.removeSiteFromTruckReport(siteID,trID);
+    public void removeSiteFromTruckReport(int siteID, int trID) {
+        //TODO- implement
     }
 
     public boolean addDemandToTruckReport(int itemNumber, int amount,int siteID, int trID)throws IllegalStateException {
@@ -247,7 +248,6 @@ public class PresentationController {
     }
 
     public boolean continueAddDemandToTruckReport(int itemNumber, int amount, int siteID, int truckId) {
-        return facadeService.continueAddDemandToTruckReport(itemNumber,amount,siteID,truckId);
     }
 
 
@@ -256,7 +256,6 @@ public class PresentationController {
     //   need to check all exception handle
     //   need to check truck max weight less then truck's Neto
     //   need to implement the initial state better
-    //   NTH-Add method show relevant drivers according to weight
 
 
 

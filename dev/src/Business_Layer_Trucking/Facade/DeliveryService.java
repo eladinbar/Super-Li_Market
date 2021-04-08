@@ -4,6 +4,7 @@ import Business_Layer_Trucking.Delivery.*;
 import Business_Layer_Trucking.Facade.FacadeObject.*;
 
 import javax.management.openmbean.KeyAlreadyExistsException;
+import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -129,7 +130,7 @@ public class DeliveryService {
         dc.addSite(city,  deliveryArea, phoneNumber, contactName,name );
     }
 
-    public void addItem(int id, double weight, String name) throws  KeyAlreadyExistsException {dc.addItem(id, weight,name);}
+    public void addItem(int id, double weight, String name, int siteID) throws NoSuchElementException, KeyAlreadyExistsException {dc.addItem(id, weight,name,siteID);}
 
     public void displaySites() {
         dc.displaySites();
@@ -255,34 +256,8 @@ public class DeliveryService {
         return dc.getSiteDeliveryArea(site);
     }
 
-    public void removeSiteFromTruckReport(int siteID, int trID) throws NoSuchElementException{
-         dc.removeSiteFromTruckReport(siteID,trID);
-    }
-
-    public boolean addDemandToTruckReport(int itemNumber, int amount, int siteID, int trID) throws IllegalStateException{
-        return dc.addDemandToTruckReport(itemNumber, amount,siteID,trID);
-    }
-
-    public void replaceDriver(int trID, String driverID) {
-        dc.replaceDriver(trID,driverID);
-    }
-
-    public LinkedList<FacadeDemand> getItemOnReport(int trID) {
-        LinkedList<Demand> demands=dc.getItemOnReport(trID);
-        LinkedList<FacadeDemand> result=new LinkedList<>();
-        for (Demand d:demands)
-        {
-            result.add(new FacadeDemand(d));
-        }
-        return result;
-    }
-
-    public void removeItemFromTruckingReport(int trID, FacadeDemand demand){
-        dc.removeItemFromTruckingReport(trID,demand.getItemID(),demand.getSite());
-    }
-
-    public boolean continueAddDemandToTruckReport(int itemNumber, int amount, int siteID, int truckId) {
-        return dc.continueAddDemandToTruckReport(itemNumber,amount,siteID,truckId);
+    public void chooseDateToCurrentTR(LocalDate chosen) {
+        dc.chooseDateToCurrentTR(chosen);
     }
 }
 
