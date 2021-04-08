@@ -38,9 +38,10 @@ public class Menu_Printer {
             System.out.println(spot + ".\tMake driver unavailable");spot++;
             System.out.println(spot + ".\tMake truck available");spot++;//12
             System.out.println(spot + ".\tMake driver available");spot++;
-            System.out.println(spot + "\tupdate a Trucking report and its Delivery Form's leaving weight");spot++;
-            System.out.println(spot + ".\tRemove item from the Pool"); spot++;
-            System.out.println(spot + ".\tGo back to Main Menu"); // 16
+            System.out.println(spot + "\tUpdate a Trucking report and its Delivery Form's leaving weight");spot++;
+            System.out.println(spot + ".\tRemove item from the system"); spot++;
+            System.out.println(spot+".\tRemove site from the system");spot++; // 16
+            System.out.println(spot + ".\tGo back to Main Menu");
 
 
             // TODO remove item/ site and whatever methods
@@ -170,6 +171,13 @@ public class Menu_Printer {
                         System.out.println(re.getMessage());}
                     break;
                 case 16:
+                    try{
+                        removeSiteFromPool(scanner);
+                    }catch (ReflectiveOperationException e){
+                        System.out.println(e.getMessage());
+                    }
+
+                case 17:
 
                     System.out.println("this option isn't supported yet. to be continue");
                     keepGoing = false;
@@ -181,6 +189,22 @@ public class Menu_Printer {
         }
     }
 
+    private void removeSiteFromPool(Scanner scanner) throws ReflectiveOperationException {
+        System.out.println("please choose the site you'd like to remove");
+        LinkedList<FacadeSite> sites = pc.getAllSites();
+        int spot =1;
+        for(FacadeSite site: sites){
+            System.out.println(spot +")" +site.getName());
+        }
+        int chose = getIntFromUser(scanner);
+        while (chose<1 ||chose>sites.size()){
+            System.out.println("option is out of bounds, please try again");
+            chose = getIntFromUser(scanner);
+        }
+        int siteID = sites.get(chose).getSiteID();
+        pc.removeSiteFromPool(siteID);
+
+    }
 
 
     private void addDemandToSystem(Scanner scanner) throws ReflectiveOperationException {

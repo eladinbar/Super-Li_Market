@@ -249,6 +249,10 @@ public class PresentationController {
     public boolean continueAddDemandToTruckReport(int itemNumber, int amount, int siteID, int truckId) {
     }
 
+    public void removeSiteFromPool(int siteID){
+
+    }
+
 
     // TODO
     //   need to check the exception go upwards always.
