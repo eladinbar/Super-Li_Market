@@ -21,6 +21,7 @@ public class FacadeItem implements FacadeObject{
         this.ID = item.getID();
         this.name = item.getName();
         this.weight = item.getWeight();
+        this.originId = item.getOriginSiteId();
     }
 
     public String getName() {
