@@ -312,6 +312,7 @@ public class EmployeeController {
             FacadeTermsOfEmployment termsOfEmployment = new FacadeTermsOfEmployment(salary+1, educationFund,sickDays, daysOff );
             FacadeEmployee usher = new FacadeEmployee("usher", "00000000"+i, LocalDate.now(), employeeAccountInfo, termsOfEmployment);
             try {
+                giveConstraint(LocalDate.now().plusWeeks(2),0,"wedding");
                 addEmployee(usher);
             }
             catch(EmployeeException e){}
@@ -324,7 +325,9 @@ public class EmployeeController {
             FacadeBankAccountInfo employeeAccountInfo = new FacadeBankAccountInfo(accountNum+i, bankBranch, bankName);
             FacadeTermsOfEmployment termsOfEmployment = new FacadeTermsOfEmployment(salary+1, educationFund,sickDays, daysOff );
             FacadeEmployee guard = new FacadeEmployee("guard", "011111111"+i, LocalDate.now(), employeeAccountInfo, termsOfEmployment);
+
             try {
+                giveConstraint(LocalDate.now().plusWeeks(2),0,"wedding");
                 addEmployee(guard);
             }
             catch(EmployeeException e){}
