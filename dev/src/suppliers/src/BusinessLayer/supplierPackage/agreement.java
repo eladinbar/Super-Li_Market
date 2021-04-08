@@ -1,5 +1,7 @@
 package BusinessLayer.supplierPackage;
 
+import BusinessLayer.orderPackage.product;
+
 import java.util.*;
 import java.util.Scanner;
 

@@ -66,7 +66,11 @@ public class order {
         delivered = true;
     }
 
-    public void addProductToOrder(int orderId, int productId, int amount) {
-
+    public void addProductToOrder(int orderId, int productId, int amount) throws Exception {
+        if (delivered)
+            throw new Exception("order already delivered");
+        if (amount<1)
+            throw new Exception("illegal amount");
+        products.put(productId, amount);
     }
 }

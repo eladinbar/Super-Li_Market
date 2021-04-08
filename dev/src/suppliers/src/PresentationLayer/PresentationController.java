@@ -21,48 +21,48 @@ public class PresentationController {
         return service.addSupplier(firstName, lastName, email, id, phone, companyNumber, isPernamentDays, selfDelivery, payment).toString();
     }
 
-    public void removeSupplier(String id) {
-        service.removeSupplier(id);
+    public String removeSupplier(String id) {
+        return service.removeSupplier(id).toString();
     }
 
-    public void updateFirstName(String id, String lirstName) {
-        service.updateFirstName(id, lirstName);
+    public String updateFirstName(String id, String lirstName) {
+        return service.updateFirstName(id, lirstName).toString();
     }
 
-    public void updateLastName(String id, String lastName) {
-        service.updateLastName(id, lastName);
+    public String updateLastName(String id, String lastName) {
+        return service.updateLastName(id, lastName).toString();
     }
 
-    public void updatePhone(String id, String phone) {
-        service.updatePhone(id, phone);
+    public String updatePhone(String id, String phone) {
+        return service.updatePhone(id, phone).toString();
     }
 
-    public void updateEmail(String id, String email) {
-        service.updateEmail(id, email);
+    public String updateEmail(String id, String email) {
+        return service.updateEmail(id, email).toString();
     }
 
-    public void updateCompanyNumber(String id, int companyNumber) {
-        service.updateCompanyNumber(id, companyNumber);
+    public String updateCompanyNumber(String id, int companyNumber) {
+        return service.updateCompanyNumber(id, companyNumber).toString();
     }
 
-    public void updateSelfDelivery(String id, boolean self) {
-        service.updateSelfDelivery(id, self);
+    public String updateSelfDelivery(String id, boolean self) {
+        return service.updateSelfDelivery(id, self).toString();
     }
 
-    public void updatePernamentDays(String id, boolean perm) {
-        service.updatePernamentDays(id, perm);
+    public String updatePernamentDays(String id, boolean perm) {
+        return service.updatePernamentDays(id, perm).toString();
     }
 
-    public void updatePayment(String id, String pay) {
-        service.updatePayment(id, pay);
+    public String updatePayment(String id, String pay) {
+        return service.updatePayment(id, pay).toString();
     }
 
-    public void addContactMember(String supplierId, String firstName, String lastName, String email, String memberID, String phone) {
-        service.addContactMember(supplierId, firstName, lastName, email, memberID, phone);
+    public String addContactMember(String supplierId, String firstName, String lastName, String email, String memberID, String phone) {
+        return service.addContactMember(supplierId, firstName, lastName, email, memberID, phone).toString();
     }
 
-    public void deleteContactMember(String supplierID, String memberID) {
-        service.deleteContactMember(supplierID, memberID);
+    public String deleteContactMember(String supplierID, String memberID) {
+        return service.deleteContactMember(supplierID, memberID).toString();
     }
 
     public String getSupplier(String id) {
@@ -71,58 +71,62 @@ public class PresentationController {
 
     //add quantityList
     //todo optional add lise of products id to supplier controller
-    public void addQuantityList(String supplierID) {
-        service.addQuantityList(supplierID);
+    public String addQuantityList(String supplierID) {
+        return service.addQuantityList(supplierID).toString();
     }
 
-    public void editQuantityListAmount(String supplierID, int productID, int amount) {
-        service.editQuantityListAmount(supplierID, productID, amount);
+    public String editQuantityListAmount(String supplierID, int productID, int amount) {
+        return service.editQuantityListAmount(supplierID, productID, amount).toString();
     }
 
-    public void editQuantityListDiscount(String supplierID, int productID, int discount) {
-        service.editQuantityListDiscount(supplierID, productID, discount);
+    public String editQuantityListDiscount(String supplierID, int productID, int discount) {
+        return service.editQuantityListDiscount(supplierID, productID, discount).toString();
     }
 
-    public void deleteQuantityList(String supplierID) {
-        service.deleteQuantityList(supplierID);
+    public String deleteQuantityList(String supplierID) {
+        return service.deleteQuantityList(supplierID).toString();
     }
 
-    public void addQuantityListItem(String supplierID, int productID, int amount, int discount) {
-        service.addQuantityListItem(supplierID, productID, amount, discount);
+    public String addQuantityListItem(String supplierID, int productID, int amount, int discount) {
+        return service.addQuantityListItem(supplierID, productID, amount, discount).toString();
     }
 
-    public void deleteQuantityListItem(String supplierID, int productID) {
-        service.deleteQuantityListItem(supplierID, productID);
+    public String getQuantityList(String supplierId){
+        return service.getQuantityList(supplierId).toString();
+    }
+
+    public String  deleteQuantityListItem(String supplierID, int productID) {
+        return service.deleteQuantityListItem(supplierID, productID).toString();
     }
 
     //orders
-    public ResponseT<order> createOrder(LocalDate date, String supplierID) {
-        return service.createOrder(date, supplierID);
+    public String createOrder(LocalDate date, String supplierID) {
+        return service.createOrder(date, supplierID).toString();
     }
 
-    public void createPernamentOrder(int day, String supplierID) {
-        service.createPernamentOrder(day, supplierID);
+    public String createPernamentOrder(int day, String supplierID) {
+        return service.createPernamentOrder(day, supplierID).toString();
     }
 
-    public void approveOrder(int orderID) {
-        service.approveOrder(orderID);
+    public String approveOrder(int orderID) {
+        return service.approveOrder(orderID).toString();
     }
 
-    public void getOrder(int orderID) {
-        service.getOrder(orderID);
+    public String getOrder(int orderID) {
+        return service.getOrder(orderID).toString();
     }
 
-    public void addProductToOrder(int orderId, int productId, int amount) {
-        service.addProductToOrder(orderId, productId, amount);
+    public String addProductToOrder(int orderId, int productId, int amount) {
+        return service.addProductToOrder(orderId, productId, amount).toString();
     }
     //todo check if nessesary Response<supplier> setOrders();
 
     //products
-    public void createProduct(String name, String manufacturer) {
-        service.createProduct(name, manufacturer);
+    public String createProduct(String name, String manufacturer) {
+        return service.createProduct(name, manufacturer).toString();
     }
 
-    public void getProduct(int productID) {
-        service.getProduct(productID);
+    public String getProduct(int productID) {
+        return service.getProduct(productID).toString();
     }
 }

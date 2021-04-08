@@ -1,5 +1,7 @@
 package BusinessLayer.supplierPackage;
 
+import BusinessLayer.orderPackage.product;
+
 import java.util.*;
 
 public class supplierController {
@@ -136,5 +138,10 @@ public class supplierController {
     public void deleteQuantityListItem(String supplierID, int productID) throws Exception {
         existSupplier(supplierID);
         suppliers.get(supplierID).deleteQuantityListItem(productID);
+    }
+
+    public quantityList getQuantityList(String supplierId) throws Exception {
+        existSupplier(supplierId);
+        return suppliers.get(supplierId).getQuantityList();
     }
 }

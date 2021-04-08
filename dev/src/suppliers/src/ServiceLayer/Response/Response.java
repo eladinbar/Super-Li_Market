@@ -18,4 +18,10 @@ public class Response {
     public String getErrorMessage() {
         return errorMessage;
     }
+
+    public String toString(){
+        if (errorOccured())
+            return getErrorMessage();
+        return "";
+    }
 }

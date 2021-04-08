@@ -1,7 +1,10 @@
 package ServiceLayer;
 
+import BusinessLayer.orderPackage.orderController;
 import BusinessLayer.supplierPackage.supplierController;
 import ServiceLayer.Response.*;
+import ServiceLayer.objects.product;
+import ServiceLayer.objects.quantityList;
 import ServiceLayer.objects.supplier;
 
 public class supplierService {
@@ -186,12 +189,13 @@ public class supplierService {
         return toReturn;
     }
 
-    public Response addQuantityListItem(String supplierID, int productID, int amount, int discount) {
-        Response toReturn = null;
+    public ResponseT<product> addQuantityListItem(String supplierID, int productID, int amount, int discount, orderService oc) {
+        ResponseT<product> toReturn;
         try {
             sp.addQuantityListItem(supplierID, productID, amount, discount);
+            toReturn = oc.getProduct(productID);
         } catch (Exception e) {
-            toReturn = new Response(e.getMessage());
+            toReturn = new ResponseT<>(e.getMessage());
         }
         return toReturn;
     }
@@ -202,6 +206,16 @@ public class supplierService {
             sp.deleteQuantityListItem(supplierID, productID);
         } catch (Exception e) {
             toReturn = new Response(e.getMessage());
+        }
+        return toReturn;
+    }
+
+    public ResponseT<quantityList> getQuantityList(String supplierId) {
+        ResponseT<quantityList> toReturn;
+        try {
+            toReturn = new ResponseT<>(new quantityList(sp.getQuantityList(supplierId)));
+        } catch (Exception e) {
+            toReturn = new ResponseT<>(e.getMessage());
         }
         return toReturn;
     }

@@ -5,6 +5,7 @@ import BusinessLayer.supplierPackage.supplierController;
 import ServiceLayer.Response.Response;
 import ServiceLayer.Response.ResponseT;
 import ServiceLayer.objects.order;
+import ServiceLayer.objects.product;
 import ServiceLayer.objects.supplier;
 
 import java.time.LocalDate;
@@ -48,7 +49,7 @@ public class orderService {
     }
 
     public Response getOrder(int orderID) {
-        Response toReturn = null;
+        Response toReturn = new Response();
         try {
             oc.getOrder(orderID);
         } catch (Exception e) {
@@ -58,7 +59,7 @@ public class orderService {
     }
 
     public Response createProduct(String name, String manufacturer) {
-        Response toReturn = null;
+        Response toReturn = new Response();
         try {
             oc.createProduct(name, manufacturer);
         } catch (Exception e) {
@@ -67,12 +68,12 @@ public class orderService {
         return toReturn;
     }
 
-    public Response getProduct(int productID) {
-        Response toReturn = null;
+    public ResponseT<product> getProduct(int productID) {
+        ResponseT<product> toReturn;
         try {
-            oc.getProduct(productID);
+            toReturn = new ResponseT<>(new product(oc.getProduct(productID)));
         } catch (Exception e) {
-            toReturn = new Response(e.getMessage());
+            toReturn = new ResponseT<>(e.getMessage());
         }
         return toReturn;
     }
@@ -88,7 +89,7 @@ public class orderService {
     }
 
     public Response addProductToOrder(int orderId, int productId, int amount) {
-        Response toReturn = null;
+        Response toReturn = new Response();
         try {
             oc.addProductToOrder(orderId, productId, amount);
         } catch (Exception e) {

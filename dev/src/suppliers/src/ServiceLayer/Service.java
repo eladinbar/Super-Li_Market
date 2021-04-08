@@ -3,6 +3,8 @@ package ServiceLayer;
 import ServiceLayer.Response.Response;
 import ServiceLayer.Response.ResponseT;
 import ServiceLayer.objects.order;
+import ServiceLayer.objects.product;
+import ServiceLayer.objects.quantityList;
 import ServiceLayer.objects.supplier;
 
 import java.time.LocalDate;
@@ -104,11 +106,16 @@ public class Service implements IService {
     }
 
     @Override
-    public Response addQuantityListItem(String supplierID, int productID, int amount, int discount) {
-        Response r = orderService.productExists(productID);
+    public ResponseT<product> addQuantityListItem(String supplierID, int productID, int amount, int discount) {
+        ResponseT<product> r = orderService.getProduct(productID);
         if (!r.errorOccured())
-            return supplierService.addQuantityListItem(supplierID, productID, amount, discount);
+            return supplierService.addQuantityListItem(supplierID, productID, amount, discount, orderService);
         return r;
+    }
+
+    @Override
+    public ResponseT<quantityList> getQuantityList(String supplierId) {
+        return supplierService.getQuantityList(supplierId);
     }
 
     @Override

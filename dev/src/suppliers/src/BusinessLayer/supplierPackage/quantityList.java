@@ -1,5 +1,7 @@
 package BusinessLayer.supplierPackage;
 
+import BusinessLayer.orderPackage.product;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -24,6 +26,8 @@ public class quantityList {
     public void addQuantityListItem(int productID, int amount, int discount) throws Exception {
         checkAmount(amount);
         checkDiscount(discount);
+        if (this.amount.containsKey(productID))
+            throw new Exception("product already exists in quantity list");
         this.amount.put(productID, amount);
         this.discount.put(productID, discount);
     }

@@ -27,7 +27,7 @@ public interface IService {
     Response editQuantityListAmount(String supplierID,int productID, int amount);
     Response editQuantityListDiscount(String supplierID,int productID, int discount);
     Response deleteQuantityList(String supplierID);
-    Response addQuantityListItem(String supplierID,int productID, int amount,int discount);
+    ResponseT<product> addQuantityListItem(String supplierID,int productID, int amount,int discount);
     Response deleteQuantityListItem(String supplierID,int productID);
 
     //orders
@@ -41,4 +41,6 @@ public interface IService {
     //products
     Response createProduct(String name, String manufacturer);
     Response getProduct(int productID);
+
+    ResponseT<quantityList> getQuantityList(String supplierId);
 }

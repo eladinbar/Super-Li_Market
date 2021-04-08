@@ -1,5 +1,7 @@
 package BusinessLayer.supplierPackage;
 
+import BusinessLayer.orderPackage.product;
+
 import java.util.regex.*;
 import java.util.*;
 
@@ -159,5 +161,11 @@ public class supplier {
 
     public void editQuantityListDiscount(int productID, int discount) throws Exception {
         ag.editQuantityListDiscount(productID, discount);
+    }
+
+    public quantityList getQuantityList() throws Exception {
+        if (ag.getQl()==null)
+            throw new Exception("supplier does not have a quantity list");
+        return ag.getQl();
     }
 }

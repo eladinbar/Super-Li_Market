@@ -66,8 +66,11 @@ public class orderController {
     public void addProductToOrder(int orderId, int companyId, int amount) throws Exception {
         //todo complete check if the product is in the agreement
         //todo check if the date is not approved
+        //todo check after agreement
         orderExist(orderId);
+        System.out.println("before");
         int productId = orders.get(orderId).getSupplier().getAg().getProducts().get(companyId);
+        System.out.println("after");
         productExist(productId);
         orders.get(orderId).addProductToOrder(orderId, productId, amount);
     }

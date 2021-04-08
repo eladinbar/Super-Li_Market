@@ -133,14 +133,15 @@ public class MenuPrinter {
             if (num == 2)
                 break;
             System.out.println("please enter the following details: ");
-            System.out.println("product id: ");
+            System.out.print("product id: ");
             int productId = scan.nextInt();
-            System.out.println("amount of products to get a discount: ");
+            System.out.print("amount of products to get a discount: ");
             int amount = scan.nextInt();
-            System.out.println("discount amount: ");
+            System.out.print("discount amount: ");
             int discount = scan.nextInt();
-            pc.addQuantityListItem(supplierId, productId, amount, discount);
+            System.out.println(pc.addQuantityListItem(supplierId, productId, amount, discount));
         }
+        System.out.println(pc.getQuantityList(supplierId));
     }
 
     private void editQuantityList() throws ReflectiveOperationException { //case 5
@@ -160,7 +161,7 @@ public class MenuPrinter {
                 int prodId = scan.nextInt();
                 System.out.println("new amount of products to get a discount: ");
                 int amount = scan.nextInt();
-                pc.editQuantityListAmount(supplierId, prodId, amount);
+                System.out.println(pc.editQuantityListAmount(supplierId, prodId, amount));
                 break;
             }
             case 2: {  //edit product discount
@@ -168,7 +169,7 @@ public class MenuPrinter {
                 int prodId = scan.nextInt();
                 System.out.println("new discount: ");
                 int discount = scan.nextInt();
-                pc.editQuantityListDiscount(supplierId, prodId, discount);
+                System.out.println(pc.editQuantityListDiscount(supplierId, prodId, discount));
                 break;
             }
             case 3: { //add new product
@@ -178,16 +179,16 @@ public class MenuPrinter {
                 int amount = scan.nextInt();
                 System.out.println("discount amount: ");
                 int discount = scan.nextInt();
-                pc.addQuantityListItem(supplierId, productId, amount, discount);
+                System.out.println(pc.addQuantityListItem(supplierId, productId, amount, discount));
                 break;
             }
             case 4: { //delete product
                 System.out.println("product id: ");
                 int productId = scan.nextInt();
-                pc.deleteQuantityListItem(supplierId, productId);
+                System.out.println(pc.deleteQuantityListItem(supplierId, productId));
             }
             case 5: { //delete quantity list
-                pc.deleteQuantityList(supplierId);
+                System.out.println(pc.deleteQuantityList(supplierId));
             }
         }
     }
@@ -199,20 +200,26 @@ public class MenuPrinter {
         String date = getStringFromUser();
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("d/MM/yyyy");
         LocalDate lclDate = LocalDate.parse(date, dateTimeFormatter);
-        ResponseT<order> order = pc.createOrder(lclDate, supplierId);
+        String order = pc.createOrder(lclDate, supplierId);
+        System.out.println(order);
+        int orderId=-1;
+        if (order.split(" ")[1].equals("details:")) {
+            orderId = Integer.parseInt(order.split(" ")[3]);
 
-        while (true) {
-            System.out.println("1. add new product");
-            System.out.println("2. exit");
-            int num = scan.nextInt();
-            if (num == 2)
-                break;
-            System.out.println("please enter the following details: ");
-            System.out.println("product id: ");
-            int productId = scan.nextInt();
-            System.out.println("amount of products: ");
-            int amount = scan.nextInt();
-            pc.addProductToOrder(order.value.getId(), productId, amount);
+            while (true) {
+                System.out.println("\nplease choose an option:");
+                System.out.println("1. add new product");
+                System.out.println("2. exit");
+                int num = scan.nextInt();
+                if (num == 2)
+                    break;
+                System.out.println("please enter the following details: ");
+                System.out.println("product id: ");
+                int productId = scan.nextInt();
+                System.out.println("amount of products: ");
+                int amount = scan.nextInt();
+                System.out.println(pc.addProductToOrder(orderId, productId, amount));
+            }
         }
     }
 
@@ -221,19 +228,24 @@ public class MenuPrinter {
         String supplierId = getStringFromUser();
         System.out.println("day (1-7) in a week to get the order");
         int day = scan.nextInt();
-        pc.createPernamentOrder(day, supplierId);
-        while (true) {
-            System.out.println("1. add new product");
-            System.out.println("2. exit");
-            int num = scan.nextInt();
-            if (num == 2)
-                break;
-            System.out.println("please enter the following details: ");
-            System.out.println("product id: ");
-            int productId = scan.nextInt();
-            System.out.println("amount of products: ");
-            int amount = scan.nextInt();
-
+        String order = pc.createPernamentOrder(day, supplierId);
+        System.out.println(order);
+        int orderId=-1;
+        if (order.split(" ")[1].equals("details")) {
+            orderId = Integer.parseInt(order.split(" ")[3]);
+            while (true) {
+                System.out.println("1. add new product");
+                System.out.println("2. exit");
+                int num = scan.nextInt();
+                if (num == 2)
+                    break;
+                System.out.println("please enter the following details: ");
+                System.out.println("product id: ");
+                int productId = scan.nextInt();
+                System.out.println("amount of products: ");
+                int amount = scan.nextInt();
+                System.out.println(pc.addProductToOrder(orderId, productId, amount));
+            }
         }
     }
 

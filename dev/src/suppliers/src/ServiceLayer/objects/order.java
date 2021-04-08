@@ -36,7 +36,7 @@ public class order {
             proToString+="\nproduct id : "+en.getKey()+"       amount: "+en.getValue();
         }
         return "order details: " +
-                "id:" + id +
+                "\nid: " + id +" "+
                 "\nproducts: " + proToString +
                 "\ndate: " + date.toString() +
                 "\ndelivered: " + delivered +
