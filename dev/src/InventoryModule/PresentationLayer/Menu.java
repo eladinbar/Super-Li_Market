@@ -28,9 +28,9 @@ public class Menu {
     //Setup Menu Strings
     private List<String> setupCategoryModList() {
         ArrayList<String> list = new ArrayList<>();
-        list.add("change category name");
-        list.add("change new parent category");
-        list.add("change sale dates");
+        list.add("Change category name");
+        list.add("Change new parent category");
+        list.add("Change sale dates");
 
         return list;
     }
@@ -38,20 +38,20 @@ public class Menu {
         ArrayList<String> list = new ArrayList<>();
         list.add("Change sale name");
         list.add("Change discount");
-        list.add("change sale dates");
+        list.add("Change sale dates");
 
         return list;
     }
     private List<String> setupItemModList() {
         ArrayList<String> list = new ArrayList<>();
-        list.add("change item name");
-        list.add("change item category");
-        list.add("change item cost price");
-        list.add("change item sell price");
-        list.add("change item storage location");
-        list.add("change item store location");
-        list.add("change item storage quantity");
-        list.add("change item store quantity");
+        list.add("Change item name");
+        list.add("Change item category");
+        list.add("Change item cost price");
+        list.add("Change item sell price");
+        list.add("Change item storage location");
+        list.add("Change item shelf location");
+        list.add("Change item storage quantity");
+        list.add("Change item shelf quantity");
         list.add("Add supplier");
         list.add("Remove supplier");
 
@@ -67,7 +67,7 @@ public class Menu {
         list.add("Add category");
         list.add("Edit category");
         list.add("Remove category");
-        list.add("show sale");
+        list.add("Show sale");
         list.add("Add Item Sale");
         list.add("Add Category Sale");
         list.add("Edit Sale");
@@ -99,14 +99,14 @@ public class Menu {
 
     //print Options
     public void printWelcomePrompt() {
-        System.out.println("Welcome to 'Super-Li' Inventory System!");
+        System.out.println("Welcome to the 'Super-Lee' Inventory System!");
     }
     public void printOperationMenu() {
         printMenu(operationsList);
-        System.out.println("\npress q to quit");
+        System.out.println("\nPress q to quit");
     }
     public void printMenu(List<String> menuElements) {
-        System.out.println("please enter the number of the desired Operation: ");
+        System.out.println("Please enter the number of the desired operation: ");
         int option = 1;
         for (String s : menuElements) {
             System.out.println(option + ". " + s);
