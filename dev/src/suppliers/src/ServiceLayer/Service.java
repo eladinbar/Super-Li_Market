@@ -113,6 +113,13 @@ public class Service implements IService {
         return r;
     }
 
+    public ResponseT<product> addItemToAgreement(String id, int productID, int companyProductID){
+        ResponseT<product> r = orderService.getProduct(productID);
+        if (!r.errorOccured())
+            return supplierService.addItemToAgreement(id,productID,companyProductID, orderService);
+        return r;
+    }
+
     @Override
     public ResponseT<quantityList> getQuantityList(String supplierId) {
         return supplierService.getQuantityList(supplierId);

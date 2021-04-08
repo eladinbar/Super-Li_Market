@@ -55,6 +55,7 @@ public class MenuPrinter {
         System.out.println("10. add product to order");
         System.out.println("11. add new product");
         System.out.println("12. get product");
+        System.out.println("13. add item to agreement");
         System.out.println("Please choose an option:");
         return scan.nextInt();
     }
@@ -114,6 +115,21 @@ public class MenuPrinter {
             } else System.out.println("\nwrong input please choose again\n");
         }
         System.out.println(pc.addSupplier(firstName, lName, email, ID, phone, companyNumber, perm, self, pay));
+        while(true){
+            System.out.println("please choose option:");
+            System.out.println("1. add item to agreement");
+            System.out.println("2. stop add items to agreement");
+            System.out.print("Option: ");
+            int opt=scan.nextInt();
+            if(opt==1) {
+                System.out.println("choose items to agreement: ");
+                System.out.print("enter product id: ");
+                int productID=scan.nextInt();
+                System.out.println("enter you company product id");
+                int companyProductID=scan.nextInt();
+                System.out.println(pc.addItemToagreement(ID,productID,companyProductID));
+            }
+        }
     }
 
     private void getSupplier() throws ReflectiveOperationException {

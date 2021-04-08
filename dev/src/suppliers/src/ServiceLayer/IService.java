@@ -43,4 +43,6 @@ public interface IService {
     Response getProduct(int productID);
 
     ResponseT<quantityList> getQuantityList(String supplierId);
+
+    ResponseT<product> addItemToAgreement(String id, int productID, int companyProductID);
 }

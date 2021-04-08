@@ -219,4 +219,15 @@ public class supplierService {
         }
         return toReturn;
     }
+
+    public ResponseT<product> addItemToAgreement(String id, int productID, int companyProductID, orderService oc) {
+        ResponseT<product> toReturn;
+        try {
+            sp.addItemToAgreement(id, productID, companyProductID);
+            toReturn = oc.getProduct(productID);
+        } catch (Exception e) {
+            toReturn = new ResponseT<>(e.getMessage());
+        }
+        return toReturn;
+    }
 }

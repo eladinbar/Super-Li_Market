@@ -129,4 +129,8 @@ public class PresentationController {
     public String getProduct(int productID) {
         return service.getProduct(productID).toString();
     }
+
+    public String addItemToagreement(String id, int productID, int companyProductID) {
+        return service.addItemToAgreement(id,productID,companyProductID).toString();
+    }
 }
