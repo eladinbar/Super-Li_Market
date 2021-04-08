@@ -1,12 +1,10 @@
-package InventoryModule.ControllerLayer;
+package InventoryModule.BusinessLayer;
 
-import InventoryModule.BusinessLayer.Category;
 import InventoryModule.BusinessLayer.DefectsPackage.DefectEntry;
 import InventoryModule.BusinessLayer.DefectsPackage.DefectsLogger;
 import InventoryModule.BusinessLayer.DiscountPackage.CategoryDiscount;
 import InventoryModule.BusinessLayer.DiscountPackage.Discount;
 import InventoryModule.BusinessLayer.DiscountPackage.ItemDiscount;
-import InventoryModule.BusinessLayer.Item;
 import InventoryModule.BusinessLayer.SalePackage.CategorySale;
 import InventoryModule.BusinessLayer.SalePackage.ItemSale;
 import InventoryModule.BusinessLayer.SalePackage.Sale;
@@ -16,14 +14,13 @@ import java.util.Calendar;
 import java.util.List;
 
 public class InventoryController {
-    private final Category baseCategory;
+    private final Category BASE_CATEGORY = new Category("Uncategorized");
     private final List<Category> categories;
-    private final DefectsLogger defectsLogger;
-    private final List<Discount> discounts;
     private final List<Sale> sales;
+    private final List<Discount> discounts;
+    private final DefectsLogger defectsLogger;
 
     public InventoryController() {
-        baseCategory = new Category("Uncategorized");
         categories = new ArrayList<>();
         defectsLogger = new DefectsLogger();
         discounts = new ArrayList<>();
@@ -38,7 +35,7 @@ public class InventoryController {
         if (categoryName == null || categoryName.trim().equals("")) {
             Item newItem = new Item(id, name, costPrice, sellingPrice, minAmount, manufacturerId, suppliersIds,
                     shelfQuantity, storageQuantity, shelfLocation, storageLocation);
-            baseCategory.addItem(newItem);
+            BASE_CATEGORY.addItem(newItem);
             return;
         }
 
@@ -71,7 +68,7 @@ public class InventoryController {
             }
         }
         //Check in base category as well
-        for (Item item : baseCategory.getItems()) {
+        for (Item item : BASE_CATEGORY.getItems()) {
             if (item.getID() == itemId)
                 return item;
         }
@@ -203,7 +200,7 @@ public class InventoryController {
             }
             else {
                 //If parent category is null or empty, add new category with "Uncategorized" as its parent category
-                newCategory = new Category(categoryName, new ArrayList<>(), baseCategory, new ArrayList<>());
+                newCategory = new Category(categoryName, new ArrayList<>(), BASE_CATEGORY, new ArrayList<>());
                 categories.add(newCategory);
             }
         }
@@ -233,7 +230,7 @@ public class InventoryController {
 
         //If newParentName is null or empty, set parent category as base category
         if (newParentName == null || newParentName.trim().equals(""))
-            category.setParentCategory(baseCategory);
+            category.setParentCategory(BASE_CATEGORY);
         //Else, check whether the given newParentName is a valid parent category to 'category'
         else {
             Category parentCategory = getCategory(newParentName);
@@ -400,7 +397,7 @@ public class InventoryController {
             inventoryReportList.addAll(category.getItems());
         }
         //Add all items in base category to the report
-        inventoryReportList.addAll(baseCategory.getItems());
+        inventoryReportList.addAll(BASE_CATEGORY.getItems());
         return inventoryReportList;
     }
 
@@ -419,7 +416,7 @@ public class InventoryController {
             }
         }
         //Check for under minimum amount items in base category
-        for (Item item : baseCategory.getItems()) {
+        for (Item item : BASE_CATEGORY.getItems()) {
             if (item.getQuantity() <= item.getMinAmount())
                 shortageReportList.add(item);
         }

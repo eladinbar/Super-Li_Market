@@ -2,6 +2,7 @@ package InventoryModule.ControllerLayer;
 
 import InventoryModule.BusinessLayer.DiscountPackage.CategoryDiscount;
 import InventoryModule.BusinessLayer.DiscountPackage.ItemDiscount;
+import InventoryModule.BusinessLayer.InventoryController;
 import InventoryModule.ControllerLayer.SimpleObjects.*;
 import InventoryModule.ControllerLayer.SimpleObjects.DefectEntry;
 
