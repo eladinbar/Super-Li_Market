@@ -597,8 +597,127 @@ public class DeliveryController {
         return sites.get(siteID).getDeliveryArea();
     }
 
-    public void chooseDateToCurrentTR(LocalDate chosen) {
-        currTR.setDate(chosen);
+    public void removeSiteFromTruckReport(int siteID, int trID)throws NoSuchElementException{
+        boolean removed=false;
+        TruckingReport tr=activeTruckingReports.get(trID);
+        LinkedList<DeliveryForm> ldfs=activeDeliveryForms.get(trID);
+        for (DeliveryForm df:ldfs)
+        {
+            if (df.getDestination()==siteID||df.getOrigin()==siteID)
+            {
+                ldfs.remove(df);
+                tr.getDestinations().remove(Integer.valueOf(siteID));//TODO-check if works!
+                removed=true;
+            }
+        }
+        if (!removed) {
+            throw new NoSuchElementException("site does not included in Truck Report");
+        }
+
+    }
+
+    public boolean addDemandToTruckReport(int itemNumber, int amount, int siteID, int trID)throws IllegalStateException {
+        TruckingReport tr=activeTruckingReports.get(trID);
+        LinkedList<DeliveryForm>ldfs=activeDeliveryForms.get(trID);
+        boolean added=false;
+
+        for (DeliveryForm df:ldfs)
+        {
+            if (sites.get(siteID).getDeliveryArea()!=sites.get(df.getDestination()).getDeliveryArea())
+            {
+                throw new IllegalStateException("Two different delivery areas");
+            }
+            if (df.getDestination()==siteID)
+            {
+                HashMap<Integer,Integer> items=df.getItems();
+                for (Map.Entry<Integer,Integer> entry:items.entrySet())
+                {
+                    if (entry.getKey()==itemNumber)
+                    {
+                        entry.setValue(entry.getValue()+amount);
+                        added=true;
+                        break;
+                    }
+                }
+                if (!added){
+                    items.put(itemNumber,amount);
+                    added=true;
+                }
+                else break;
+            }
+        }
+        return added;
+    }
+
+    public void replaceDriver(int trID, String driverID){
+        TruckingReport tr=activeTruckingReports.get(trID);
+        tr.setDriverID(driverID);
+
+    }
+
+    public LinkedList<Demand> getItemOnReport(int trID) {
+        TruckingReport truckingReport=activeTruckingReports.get(trID);
+        LinkedList<DeliveryForm> ldfs=activeDeliveryForms.get(trID);
+        LinkedList<Demand> result=new LinkedList<>();
+        for (DeliveryForm df:ldfs)
+        {
+            HashMap<Integer,Integer> items= df.getItems();
+            for (Map.Entry<Integer,Integer> item:items.entrySet())
+            {
+                //TODO change -1 to item.getOrigin after ido finishes!!!!
+                Demand demand=new Demand(item.getKey(),-1,item.getValue());
+                result.add(demand);
+            }
+        }
+        return result;
+    }
+
+    public void removeItemFromTruckingReport(int trID,int itemID,int siteID){
+        TruckingReport truckingReport=activeTruckingReports.get(trID);
+        LinkedList<DeliveryForm> deliveryForms=activeDeliveryForms.get(trID);
+        int origin=-1;//TODO- change to items.getOrigin
+        for (DeliveryForm df:deliveryForms)
+        {
+            if (df.getDestination()==siteID&&df.getOrigin()==origin&&df.getItems().containsKey(itemID))
+            {
+                df.getItems().remove(itemID);
+            }
+        }
+
+    }
+
+    public boolean continueAddDemandToTruckReport(int itemNumber, int amount, int siteID, int trId){
+        TruckingReport truckingReport=activeTruckingReports.get(trId);
+        LinkedList<DeliveryForm> ldfs=activeDeliveryForms.get(trId);
+        boolean added=false;
+        int origin=-1;//TODO change to item.getOrigin
+        for (DeliveryForm df:ldfs)
+        {
+            if (origin==df.getOrigin()&&df.getDestination()==siteID)
+            {
+                HashMap<Integer,Integer> items=df.getItems();
+                for (Map.Entry<Integer,Integer> item:items.entrySet())
+                {
+                    if (item.getKey()==itemNumber)
+                    {
+                        item.setValue(item.getValue()+amount);
+                        added=true;
+                        break;
+                    }
+                }
+            }
+        }
+        if (!added){
+            HashMap<Integer,Integer> itemsOnDF=new HashMap<>();
+            itemsOnDF.put(itemNumber,amount);
+            int leavingWeight= (int) (items.get(itemNumber).getWeight()*amount);
+            DeliveryForm newDF=new DeliveryForm(ldfs.size()+1,origin,siteID,itemsOnDF,leavingWeight,trId);
+            ldfs.add(newDF);
+        }
+        return true;
     }
 }
-
+//TODO:
+// 1. Add field origin in item- check in add item that site exist.
+// 2. change according to that all New DeliveryForms+TruckReport.
+// 3. in add item to report/delivery form - check item origin in delivery area.

@@ -972,7 +972,7 @@ public class Menu_Printer {
                     String driverID = drivers.get(chose - 1).getID();
 
                     try {
-                        pc.replaceDriver(tr.getID(), driverID);
+                        pc.replaceDriver(tr.getID(), driverID,weight);
                     } catch (Exception ex) {
                         System.out.println(ex.getMessage());
                         rePlanAfterWeight(scanner, tr, weight);

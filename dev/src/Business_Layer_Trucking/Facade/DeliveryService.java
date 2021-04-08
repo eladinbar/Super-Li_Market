@@ -256,8 +256,34 @@ public class DeliveryService {
         return dc.getSiteDeliveryArea(site);
     }
 
-    public void chooseDateToCurrentTR(LocalDate chosen) {
-        dc.chooseDateToCurrentTR(chosen);
+    public void removeSiteFromTruckReport(int siteID, int trID) throws NoSuchElementException{
+         dc.removeSiteFromTruckReport(siteID,trID);
+    }
+
+    public boolean addDemandToTruckReport(int itemNumber, int amount, int siteID, int trID) throws IllegalStateException{
+        return dc.addDemandToTruckReport(itemNumber, amount,siteID,trID);
+    }
+
+    public void replaceDriver(int trID, String driverID) {
+        dc.replaceDriver(trID,driverID);
+    }
+
+    public LinkedList<FacadeDemand> getItemOnReport(int trID) {
+        LinkedList<Demand> demands=dc.getItemOnReport(trID);
+        LinkedList<FacadeDemand> result=new LinkedList<>();
+        for (Demand d:demands)
+        {
+            result.add(new FacadeDemand(d));
+        }
+        return result;
+    }
+
+    public void removeItemFromTruckingReport(int trID, FacadeDemand demand){
+        dc.removeItemFromTruckingReport(trID,demand.getItemID(),demand.getSite());
+    }
+
+    public boolean continueAddDemandToTruckReport(int itemNumber, int amount, int siteID, int truckId) {
+        return dc.continueAddDemandToTruckReport(itemNumber,amount,siteID,truckId);
     }
 }
 

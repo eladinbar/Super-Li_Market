@@ -216,8 +216,8 @@ public class PresentationController {
         facadeService.updateDeliveryFormRealWeight(trID,dfID,weight);
     }
 
-    public void removeSiteFromTruckReport(int siteID, int trID) {
-        //TODO- implement
+    public void removeSiteFromTruckReport(int siteID, int trID)throws NoSuchElementException {
+        facadeService.removeSiteFromTruckReport(siteID,trID);
     }
 
     public boolean addDemandToTruckReport(int itemNumber, int amount,int siteID, int trID)throws IllegalStateException {
@@ -248,8 +248,14 @@ public class PresentationController {
     }
 
     public boolean continueAddDemandToTruckReport(int itemNumber, int amount, int siteID, int truckId) {
+        return facadeService.continueAddDemandToTruckReport(itemNumber,amount,siteID,truckId);
     }
+    public void chooseDateToCurrentTR(LocalDate chosen) {
+        facadeService.chooseDateToCurrentTR(chosen);
+    }
+    public void removeSiteFromPool(int siteID){
 
+    }
 
     // TODO
     //   need to check the exception go upwards always.
