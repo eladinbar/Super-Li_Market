@@ -48,12 +48,14 @@ class EmployeeControllerTest {
 
     }
 
-    @Test(expected = EmployeeException.class)
+    @Test
     public void login_LoggedInNotNull() {
         try {
             employeeController.login("315000000", "usher");
             employeeController.login("312000000", "usher");
-        } catch (EmployeeException e) {
+            fail("Exception not thrown");
+        }
+        catch (EmployeeException e) {
             assertEquals( "Two users cannot be logged in at the same time",e.getMessage());
         }
     }
@@ -61,6 +63,7 @@ class EmployeeControllerTest {
     public void login_IdNotExist() {
         try {
             employeeController.login("002000000", "usher");
+            fail("Exception not thrown");
         } catch (EmployeeException e) {
             assertEquals("There is no record of the super's employees",e.getMessage());
         }
@@ -69,6 +72,7 @@ class EmployeeControllerTest {
     public void login_RoleNotMatchId() {
         try {
             employeeController.login(employee.getID(), "guard");
+            fail("Exception not thrown");
         } catch (EmployeeException e) {
             assertEquals("Id does not match to the role",e.getMessage());
         }
@@ -78,6 +82,7 @@ class EmployeeControllerTest {
         try {
             employeeController.login(employee.getID(), employee.getRole());
             employeeController.getEmployee(employee.getID()).setEmployed(false);
+            fail("Exception not thrown");
         }
         catch (EmployeeException e) {
             assertEquals("The employee is not employed",e.getMessage());
@@ -86,6 +91,7 @@ class EmployeeControllerTest {
 @After public void setEmployedBack(){
     try {
         employeeController.getEmployee(employee.getID()).setEmployed(true);
+        fail("Exception not thrown");
     }
     catch (EmployeeException e){
         System.out.println(e.getMessage());
@@ -98,6 +104,7 @@ class EmployeeControllerTest {
             employeeController.login(manager.getID(), manager.getRole());
             employeeController.removeEmployee(manager.getID());
             assertNull(employeeController.getLoggedIn());
+            fail("Exception not thrown");
         }
         catch (EmployeeException e){
             System.out.println(e.getMessage());
@@ -107,6 +114,7 @@ class EmployeeControllerTest {
     public void removeEmployee_NotManager(){
         try {
             employeeController.login(employee.getID(),employee.getRole());
+            fail("Exception not thrown");
         }
         catch (EmployeeException e){
             assertEquals("Only an administrator can perform this operation", e.getMessage());
@@ -120,6 +128,7 @@ class EmployeeControllerTest {
         FacadeEmployee employee2 = new FacadeEmployee("shiftManager", "000000", LocalDate.now(), employeeAccountInfo, termsOfEmployment);
         try {
             employeeController.addEmployee(employee2);
+            fail("Exception not thrown");
         }
         catch (EmployeeException e){
             assertEquals("An invalid ID was entered" ,e.getMessage());
@@ -131,6 +140,7 @@ class EmployeeControllerTest {
         try{
             employeeController.addEmployee(employee);
             employeeController.addEmployee(employee);
+            fail("Exception not thrown");
         }
         catch (EmployeeException e){
             assertEquals("Employee already added to the system", e.getMessage());
@@ -142,6 +152,7 @@ class EmployeeControllerTest {
         try{
             employeeController.addEmployee(employee);
             employeeController.addEmployee(employee);
+            fail("Exception not thrown");
         }
         catch (EmployeeException e){
             assertEquals("Manager already added to the system", e.getMessage());
@@ -153,6 +164,7 @@ class EmployeeControllerTest {
         LocalDate invalidDate = LocalDate.now().plusWeeks(1);
         try {
             employeeController.giveConstraint(invalidDate, 0 , "doctor appointment");
+            fail("Exception not thrown");
         }
         catch (EmployeeException e){
             assertEquals("A constraint can be filed up to two weeks in advance",e.getMessage());
@@ -163,6 +175,7 @@ class EmployeeControllerTest {
     @Test
     public void isExist_failed(){
         assertFalse(employeeController.isExist("usher", "111111111"));
+
     }
 
     @Test void isExist_succeed(){
