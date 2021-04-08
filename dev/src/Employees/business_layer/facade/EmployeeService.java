@@ -182,8 +182,12 @@ public class EmployeeService {
     }
 
     public Response createData (){
-        employeeController.createData();
-        return new Response();
+        try {
+            employeeController.createData();
+            return new Response();
+        } catch (EmployeeException e) {
+            return new Response ( e.getMessage () );
+        }
     }
 
     //private methods:
