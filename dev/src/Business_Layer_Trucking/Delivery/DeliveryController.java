@@ -222,8 +222,6 @@ public class DeliveryController {
 
     {
 
-
-
         Site newSite = new Site(lastSiteID, city, deliveryArea, phoneNumber, contactName, name);
 
         sites.put(lastSiteID,newSite);
@@ -245,7 +243,6 @@ public class DeliveryController {
                 if (entry.getValue().getOriginSiteId() == siteID){
                     removeItemFromPool(entry.getKey());
                 }
-
             }
             return true;
         }
@@ -355,8 +352,38 @@ public class DeliveryController {
         {
             throw new NoSuchElementException("No item with that ID");
         }
-        // TODO need to delete demands from each DF, Demands, TR
+        // TODO need to delete demands from each DF, Demands, TR\
         else items.remove(item);
+        deleteItemsFromDFSAfterRemoveItem(item);
+        deleteDemandsAfterRemoveItem(item);
+    }
+
+    private void deleteDemandsAfterRemoveItem(int item) {
+        for (Demand d:demands)
+        {
+            if (d.getItemID()==item)
+                demands.remove(d);
+
+        }
+    }
+
+    private void deleteItemsFromDFSAfterRemoveItem(int item) {
+        for (Map.Entry<Integer,LinkedList<DeliveryForm>> entry:activeDeliveryForms.entrySet()){
+            LinkedList<DeliveryForm> deliveryFormsList=entry.getValue();
+            for (DeliveryForm df:deliveryFormsList)
+            {
+                df.getItems().remove(item);
+                if (df.getItems().size()==0) {
+                    deliveryFormsList.remove(df);
+                    if (entry.getValue().size() == 0)
+                    {
+                        activeTruckingReports.remove(entry.getKey());
+                        activeDeliveryForms.remove(entry);
+                    }
+                }
+
+            }
+        }
     }
 
     public void addItem(int id, double weight, String name, int siteID)throws NoSuchElementException,KeyAlreadyExistsException {

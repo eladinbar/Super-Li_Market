@@ -233,7 +233,7 @@ public class Menu_Printer {
             System.out.println("option is out of bounds, please try again");
             chose = getIntFromUser(scanner);
         }
-        int siteID = sites.get(chose).getSiteID();
+        int siteID = sites.get(chose-1).getSiteID();
         pc.removeSiteFromPool(siteID);
 
     }
@@ -381,14 +381,22 @@ public class Menu_Printer {
         if (drivers == null) System.out.println("no drivers in the system yet");
         else{
             System.out.println("drivers:");
-
+            int spot=1;
             for (FacadeDriver facadeDriver : drivers) {
-                System.out.println(facadeDriver.getName() + ":\n" + "Driver ID: " + facadeDriver.getID() +
+
+                System.out.println(spot+")"+facadeDriver.getName() + ":\n" + "Driver ID: " + facadeDriver.getID() +
                         " License Type: " + facadeDriver.getLicenseType() +
                         " Available: " + facadeDriver.isAvailable());
+                spot++;
             }
-            System.out.println("Choose Driver by id");
-            String driver= getStringFromUser(scanner);
+            System.out.println("Choose Driver");
+            int chose=getIntFromUser(scanner);
+            while (chose<1||chose>spot)
+            {
+                System.out.println("Option out of bounds, please choose again");
+                chose=getIntFromUser(scanner);
+            }
+            String driver= drivers.get(chose-1).getID();
             pc.makeAvailable_Driver(driver);
         }
     }
@@ -398,12 +406,20 @@ public class Menu_Printer {
         if (trucks == null) System.out.println("no trucks in the system yet");
         else{
             System.out.println("trucks:");
+            int spot=1;
             for(FacadeTruck truck : trucks){
-                System.out.println("Trucks License Number: " + truck.getLicenseNumber() +
-                        "\n model: " + truck.getModel() + " maxWeight: " + truck.getMaxWeight()  );
+                System.out.println(spot+")Trucks License Number: " + truck.getLicenseNumber() +
+                        "\n model: " + truck.getModel() + " maxWeight: " + truck.getMaxWeight()+"\tavailable:"+truck.isAvailable());
+                spot++;
             }
             System.out.println("Choose truck by License:");
-            String truck= getStringFromUser(scanner);
+            int chose= getIntFromUser(scanner);
+            while (chose<1||chose>spot)
+            {
+                System.out.println("Option out of bounds, please choose again");
+                chose=getIntFromUser(scanner);
+            }
+            String truck=trucks.get(chose-1).getLicenseNumber();
             pc.makeAvailable_Truck(truck) ;
         }
     }
@@ -413,14 +429,21 @@ public class Menu_Printer {
         if (drivers == null) System.out.println("no available drivers");
         else{
             System.out.println("available drivers:");
-
+            int spot=1;
             for (FacadeDriver facadeDriver : drivers) {
-                System.out.println(facadeDriver.getName() + ":\n" + "Driver ID: " + facadeDriver.getID() +
+                System.out.println(spot+")"+facadeDriver.getName() + ":\n" + "Driver ID: " + facadeDriver.getID() +
                         " License Type: " + facadeDriver.getLicenseType() +
                         " Available: " + facadeDriver.isAvailable());
+                spot++;
             }
             System.out.println("Choose Driver by id");
-            String driver= getStringFromUser(scanner);
+            int chose=getIntFromUser(scanner);
+            while (chose<1||chose>spot)
+            {
+                System.out.println("Option out of bounds, please choose again");
+                chose=getIntFromUser(scanner);
+            }
+            String driver= drivers.get(chose-1).getID();
             try {
                 pc.makeUnavailable_Driver(driver);
             }catch (NoSuchElementException e){
@@ -434,12 +457,20 @@ public class Menu_Printer {
         if (trucks == null) System.out.println("no available trucks");
         else{
             System.out.println("the available trucks:");
+            int spot=1;
             for(FacadeTruck truck : trucks){
-                System.out.println("Trucks License Number: " + truck.getLicenseNumber() +
-                        "\n model: " + truck.getModel() + " maxWeight: " + truck.getMaxWeight()  );
+                System.out.println(spot+")Trucks License Number: " + truck.getLicenseNumber() +
+                        "\n model: " + truck.getModel() + " maxWeight: " + truck.getMaxWeight()+"\tavailable:"+truck.isAvailable());
+                spot++;
             }
-            System.out.println("Choose truck by License:");
-            String truck= getStringFromUser(scanner);
+            System.out.println("Choose truck:");
+            int chose=getIntFromUser(scanner);
+            while (chose<1||chose>spot)
+            {
+                System.out.println("Option out of bounds, please choose again");
+                chose=getIntFromUser(scanner);
+            }
+            String truck= trucks.get(chose-1).getLicenseNumber();
             pc.makeUnavailable_Truck(truck);
         }
     }
@@ -791,6 +822,9 @@ public class Menu_Printer {
 
     void updateDeliveryForm(Scanner scanner) throws ReflectiveOperationException{
         LinkedList<FacadeTruckingReport> truckingReports =  pc.getActiveTruckingReports();
+        if (truckingReports.isEmpty()){
+            throw new ReflectiveOperationException("There is no active reports to update");
+        }
         System.out.println("please choose the report you'd like to advance");
         int spot = 1;
         for(FacadeTruckingReport ftr: truckingReports){
