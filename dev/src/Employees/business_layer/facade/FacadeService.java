@@ -84,7 +84,7 @@ public class FacadeService {
     }
 
     public Response giveConstraint(FacadeEmployee employee, LocalDate date, int shift, String reason) {
-        return employeeService.giveConstraint ( employee, date, shift, reason );
+        return employeeService.giveConstraint(employee, date, shift, reason);
     }
 
     public Response updateConstraint (FacadeEmployee employee, LocalDate date, int shift, String reason) {
