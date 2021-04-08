@@ -352,6 +352,10 @@ public class FacadeService {
     public void removeSiteFromPool(int siteID) {
         deliveryService.removeSiteFromPool(siteID);
     }
+
+    public void removeDemand(FacadeDemand d) {
+        deliveryService.removeDemand(d);
+    }
 }
 
 

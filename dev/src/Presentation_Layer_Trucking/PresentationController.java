@@ -259,8 +259,7 @@ public class PresentationController {
     }
 
 
-
-
-
-
+    public void removeDemand(FacadeDemand d) {
+        facadeService.removeDemand(d);
+    }
 }

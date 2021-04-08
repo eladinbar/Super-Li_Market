@@ -43,6 +43,7 @@ public class Menu_Printer {
             System.out.println(spot + "\tUpdate a Trucking report and its Delivery Form's leaving weight");spot++;
             System.out.println(spot + ".\tRemove item from the system"); spot++;
             System.out.println(spot+".\tRemove site from the system");spot++; // 16
+            System.out.println(spot+".\tRemove Demand from the system");spot++;
             System.out.println(spot + ".\tGo back to Main Menu");
 
 
@@ -188,6 +189,13 @@ public class Menu_Printer {
                     break;
 
                 case 17:
+                    try{
+                        removeDemandFromPool(scanner);
+                    }catch (ReflectiveOperationException e){
+                        System.out.println(e.getMessage());
+                    }
+                    break;
+                case 18:
 
                     System.out.println("this option isn't supported yet. to be continue");
                     keepGoing = false;
@@ -197,6 +205,19 @@ public class Menu_Printer {
 
             }
         }
+    }
+
+    private void removeDemandFromPool(Scanner scanner) throws ReflectiveOperationException{
+        LinkedList<FacadeDemand> demands = pc.showDemands();
+        demands = sortDemandsBySite(demands);
+        printDemands(demands);
+        int chose = getIntFromUser(scanner);
+        while (chose<1 ||chose>demands.size()){
+            chose = getIntFromUser(scanner);
+        }
+        FacadeDemand d = demands.get(chose-1);
+        pc.removeDemand(d);
+
     }
 
     private void chooseDate(Scanner scanner) throws IllegalArgumentException,ReflectiveOperationException {
@@ -540,7 +561,6 @@ public class Menu_Printer {
         while (con) {
             try {
                 LinkedList<FacadeDemand> demands = pc.showDemands();
-
                 demands = sortDemandsBySite(demands);
                 printDemands(demands);
                 try {
@@ -1045,11 +1065,16 @@ public class Menu_Printer {
         pc.addSite("Rahat" , 4 , "0502008214" , "Mohamad" , "MilkHere");
         pc.addSite("Nazareth" , 5,"0522002123" , "Esti" , "Suber-LNazerath");
         pc.addSite("Afula", 1,"0502008215" , "Raz" , "Tnuva");
+        pc.addSite("Geva" , 5, "0503988883", "ShirHayafa","Dubi");
+
         pc.addItem(1,1,"milk",3);
         pc.addItem(2 , 2 , "cream cheese",1);
         pc.addItem(10 , 4 , "cottage" ,1);
         pc.addItem(11 , 2 , "banana",2);
         pc.addItem(13 , 3 , "cucumber",4);
+        pc.addItem(3,0.1,"chocolate",5);
+
+        pc.addDemandToSystem(3,6,1000);
         pc.addDemandToSystem(1, 1, 100);
         pc.addDemandToSystem(2,2,1000);
         pc.addDemandToSystem(11, 4,500);
