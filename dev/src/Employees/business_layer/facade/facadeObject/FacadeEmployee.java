@@ -1,7 +1,11 @@
 package Employees.business_layer.facade.facadeObject;
 
+import Employees.business_layer.Employee.Constraint;
+import Employees.business_layer.Employee.Employee;
+
 import java.time.LocalDate;
 import java.util.HashMap;
+import java.util.Map;
 
 public class FacadeEmployee implements FacadeObject{
     private String role;
@@ -36,6 +40,19 @@ public class FacadeEmployee implements FacadeObject{
         this.facadeBankAccountInfo = facadeBankAccountInfo;
         this.facadeTermsOfEmployment = facadeTermsOfEmployment;
         this.constraints = new HashMap<>();
+    }
+
+    public FacadeEmployee(Employee employee){
+        role = employee.getRole ().name ();
+        ID = employee.getID ();
+        transactionDate = employee.getTransactionDate ();
+        facadeBankAccountInfo = new FacadeBankAccountInfo ( employee.getBank () );
+        facadeTermsOfEmployment = new FacadeTermsOfEmployment ( employee.getTerms () );
+        constraints = new HashMap<> (  );
+        for( Map.Entry<LocalDate, Constraint> entry : employee.getConstraints ().entrySet () )
+        {
+            constraints.put ( entry.getKey (), new FacadeConstraint ( entry.getValue () ) );
+        }
     }
 
     public LocalDate getTransactionDate() {
