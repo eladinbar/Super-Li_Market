@@ -2,6 +2,7 @@ package ServiceLayer;
 
 import ServiceLayer.Response.Response;
 import ServiceLayer.Response.ResponseT;
+import ServiceLayer.objects.order;
 import ServiceLayer.objects.supplier;
 
 import java.time.LocalDate;
@@ -116,7 +117,7 @@ public class Service implements IService {
     }
 
     @Override
-    public Response createOrder(LocalDate date, String supplierID) {
+    public ResponseT<order> createOrder(LocalDate date, String supplierID) {
         return orderService.createOrder(date, supplierID, supplierService.getSp());
     }
 
@@ -136,8 +137,8 @@ public class Service implements IService {
     }
 
     @Override
-    public Response addProductToOrder(int orderId, int productId) {
-        return orderService.addProductToOrder(orderId, productId);
+    public Response addProductToOrder(int orderId, int productId, int amount) {
+        return orderService.addProductToOrder(orderId, productId, amount);
     }
 
     @Override

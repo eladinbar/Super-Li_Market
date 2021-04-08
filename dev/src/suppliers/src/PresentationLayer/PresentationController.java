@@ -4,6 +4,7 @@ import ServiceLayer.IService;
 import ServiceLayer.Response.Response;
 import ServiceLayer.Response.ResponseT;
 import ServiceLayer.Service;
+import ServiceLayer.objects.order;
 import ServiceLayer.objects.supplier;
 
 import java.time.LocalDate;
@@ -99,8 +100,8 @@ public class PresentationController {
     }
 
     //orders
-    public void createOrder(LocalDate date, String supplierID) {
-        service.createOrder(date, supplierID);
+    public ResponseT<order> createOrder(LocalDate date, String supplierID) {
+        return service.createOrder(date, supplierID);
     }
 
     public void createPernamentOrder(int day, String supplierID) {
@@ -115,8 +116,8 @@ public class PresentationController {
         service.getOrder(orderID);
     }
 
-    public void addProductToOrder(int orderId, int productId) {
-        service.addProductToOrder(orderId, productId);
+    public void addProductToOrder(int orderId, int productId, int amount) {
+        service.addProductToOrder(orderId, productId, amount);
     }
     //todo check if nessesary Response<supplier> setOrders();
 

@@ -66,7 +66,7 @@ public class order {
         delivered = true;
     }
 
-    public void addProductToOrder(int orderId, int productId) {
+    public void addProductToOrder(int orderId, int productId, int amount) {
 
     }
 }

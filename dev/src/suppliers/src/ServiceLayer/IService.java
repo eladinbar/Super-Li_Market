@@ -31,11 +31,11 @@ public interface IService {
     Response deleteQuantityListItem(String supplierID,int productID);
 
     //orders
-    Response createOrder(LocalDate date, String supplierID);
+    ResponseT<order> createOrder(LocalDate date, String supplierID);
     Response createPernamentOrder(int day, String supplierID);
     Response approveOrder(int orderID);
     Response getOrder(int orderID);
-    Response addProductToOrder(int orderId , int productId);
+    Response addProductToOrder(int orderId , int productId, int amount);
     //todo check if nessesary Response<supplier> setOrders();
 
     //products

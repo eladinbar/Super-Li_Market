@@ -1,5 +1,9 @@
 package PresentationLayer;
 
+import ServiceLayer.Response.ResponseT;
+import ServiceLayer.objects.order;
+
+import java.time.LocalDate;
 import java.util.*;
 import java.util.Scanner;
 
@@ -24,17 +28,22 @@ public class MenuPrinter {
                     addSupplierFunc();
                     break;
                 case 2:
+                    getSupplier();
                     break;
                 case 3:
                     updateSupplierDetailFunc();
                     break;
                 case 4:
+                    addQuantityList();
                     break;
                 case 5:
+                    editQuantityList();
                     break;
                 case 6:
+                    createNewOrder();
                     break;
                 case 7:
+                    setPermanentOrder();
                     break;
                 case 8:
                     approveOrder();
@@ -95,6 +104,126 @@ public class MenuPrinter {
         System.out.print("how whould you like to pay?\n1. Cash\n2. Bank transfer\n3. check\nchoose number: ");
         int payment = scan.nextInt();
         pc.addSupplier(firstName, lName, email, ID, phone, companyNumber, true, true, "check");
+    }
+
+    private void getSupplier() throws ReflectiveOperationException {
+        System.out.printf("please enter supplier id: ");
+        String supplierId = getStringFromUser();
+        pc.getSupplier(supplierId);
+    }
+
+    private void addQuantityList() throws ReflectiveOperationException { //case 4
+        System.out.print("please enter supplier id: ");
+        String supplierId = getStringFromUser();
+        pc.addQuantityList(supplierId);
+        while (true){
+            System.out.println("1. add new product");
+            System.out.println("2. exit");
+            int num = scan.nextInt();
+            if (num==2)
+                break;
+            System.out.println("please enter the following details: ");
+            System.out.println("product id: ");
+            int productId = scan.nextInt();
+            System.out.println("amount of products to get a discount: ");
+            int amount = scan.nextInt();
+            System.out.println("discount amount: ");
+            int discount = scan.nextInt();
+            pc.addQuantityListItem(supplierId, productId, amount, discount);
+        }
+    }
+
+    private void editQuantityList() throws ReflectiveOperationException { //case 5
+        System.out.print("please enter supplier id: ");
+        String supplierId = getStringFromUser();
+        System.out.println("Please choose an option to Edit:");
+        System.out.println("1. edit product amount");
+        System.out.println("2. edit product discount");
+        System.out.println("3. add new product");
+        System.out.println("4. delete product");
+        System.out.println("5. delete quantity list");
+
+        int num = scan.nextInt();
+        switch(num){
+            case 1 :{ //edit product amount
+                System.out.println("product id: ");
+                int prodId = scan.nextInt();
+                System.out.println("new amount of products to get a discount: ");
+                int amount = scan.nextInt();
+                pc.editQuantityListAmount(supplierId, prodId, amount);
+                break;
+            }
+            case 2: {  //edit product discount
+                System.out.println("product id: ");
+                int prodId = scan.nextInt();
+                System.out.println("new discount: ");
+                int discount = scan.nextInt();
+                pc.editQuantityListDiscount(supplierId, prodId, discount);
+                break;
+            }
+            case 3:{ //add new product
+                System.out.println("product id: ");
+                int productId = scan.nextInt();
+                System.out.println("amount of products to get a discount: ");
+                int amount = scan.nextInt();
+                System.out.println("discount amount: ");
+                int discount = scan.nextInt();
+                pc.addQuantityListItem(supplierId, productId, amount, discount);
+                break;
+            }
+            case 4:{ //delete product
+                System.out.println("product id: ");
+                int productId = scan.nextInt();
+                pc.deleteQuantityListItem(supplierId, productId);
+            }
+            case 5:{ //delete quantity list
+                pc.deleteQuantityList(supplierId);
+            }
+        }
+    }
+
+    private void createNewOrder() throws ReflectiveOperationException { //case 6
+        System.out.print("please enter\nsupplier id: ");
+        String supplierId = getStringFromUser();
+        System.out.print("date (dd.mm.yy): ");
+        String date = getStringFromUser();
+        LocalDate lclDate = LocalDate.parse(date);
+        ResponseT<order> order = pc.createOrder(lclDate, supplierId);
+
+        while (true){
+            System.out.println("1. add new product");
+            System.out.println("2. exit");
+            int num = scan.nextInt();
+            if (num==2)
+                break;
+            System.out.println("please enter the following details: ");
+            System.out.println("product id: ");
+            int productId = scan.nextInt();
+            System.out.println("amount of products: ");
+            int amount = scan.nextInt();
+            pc.addProductToOrder(order.getDate().getId(), productId, amount);
+        }
+    }
+
+    private void setPermanentOrder() throws ReflectiveOperationException { //case 7
+        System.out.print("please enter\nsupplier id: ");
+        String supplierId = getStringFromUser();
+        System.out.println("day (1-7) in a week to get the order");
+        int day = scan.nextInt();
+        pc.createPernamentOrder(day, supplierId);
+        while (true){
+            System.out.println("1. add new product");
+            System.out.println("2. exit");
+            int num = scan.nextInt();
+            if (num==2)
+                break;
+            System.out.println("please enter the following details: ");
+            System.out.println("product id: ");
+            int productId = scan.nextInt();
+            System.out.println("amount of products: ");
+            int amount = scan.nextInt();
+
+        }
     }
 
     //a helper funtion that edit supplier details in the system
@@ -237,7 +366,9 @@ public class MenuPrinter {
         int orderID = scan.nextInt();
         System.out.println("enter a product company number ID");
         int productID = scan.nextInt();
-        pc.addProductToOrder(orderID, productID);
+        System.out.println("enter amount of products: ");
+        int amount = scan.nextInt();
+        pc.addProductToOrder(orderID, productID, amount);
     }
 
     //a helper function to get a product

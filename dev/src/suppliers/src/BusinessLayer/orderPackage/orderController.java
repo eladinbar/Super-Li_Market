@@ -63,13 +63,13 @@ public class orderController {
         return orders.get(orderID);
     }
 
-    public void addProductToOrder(int orderId, int companyId) throws Exception {
+    public void addProductToOrder(int orderId, int companyId, int amount) throws Exception {
         //todo complete check if the product is in the agreement
         //todo check if the date is not approved
         orderExist(orderId);
         int productId = orders.get(orderId).getSupplier().getAg().getProducts().get(companyId);
         productExist(productId);
-        orders.get(orderId).addProductToOrder(orderId, productId);
+        orders.get(orderId).addProductToOrder(orderId, productId, amount);
     }
 
     public void createProduct(String name, String manufacturer) throws Exception {

@@ -3,6 +3,8 @@ package ServiceLayer;
 import BusinessLayer.orderPackage.orderController;
 import BusinessLayer.supplierPackage.supplierController;
 import ServiceLayer.Response.Response;
+import ServiceLayer.Response.ResponseT;
+import ServiceLayer.objects.order;
 import ServiceLayer.objects.supplier;
 
 import java.time.LocalDate;
@@ -15,12 +17,12 @@ public class orderService {
         this.oc = new orderController();
     }
 
-    public Response createOrder(LocalDate date, String supplierID, supplierController sp) {
-        Response toReturn = null;
+    public ResponseT<order> createOrder(LocalDate date, String supplierID, supplierController sp) {
+        ResponseT<order> toReturn = null;
         try {
-            oc.createOrder(date, sp.getSupplier(supplierID));
+            toReturn = new ResponseT<>(false,"",new order(oc.createOrder(date, sp.getSupplier(supplierID))));
         } catch (Exception e) {
-            toReturn = new Response(true, e.getMessage());
+            toReturn = new ResponseT<>(true, e.getMessage(),null);
         }
         return toReturn;
     }
@@ -85,10 +87,10 @@ public class orderService {
         return toReturn;
     }
 
-    public Response addProductToOrder(int orderId, int productId) {
+    public Response addProductToOrder(int orderId, int productId, int amount) {
         Response toReturn = null;
         try {
-            oc.addProductToOrder(orderId, productId);
+            oc.addProductToOrder(orderId, productId, amount);
         } catch (Exception e) {
             toReturn = new Response(true, e.getMessage());
         }
