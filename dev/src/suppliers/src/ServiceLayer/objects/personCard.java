@@ -1,11 +1,11 @@
 package ServiceLayer.objects;
 
 public class personCard {
-    private String firstName;
-    private String lastName;
-    private String email;
-    private String id;
-    private String phone;
+    protected String firstName;
+    protected String lastName;
+    protected String email;
+    protected String id;
+    protected String phone;
 
     public personCard(String firstName, String lastName, String email, String id, String phone) {
         this.firstName = firstName;
@@ -13,5 +13,24 @@ public class personCard {
         this.email = email;
         this.id = id;
         this.phone = phone;
+    }
+
+    public personCard(BusinessLayer.supplierPackage.personCard pc){
+        this.email=pc.getEmail();
+        this.firstName=pc.getFirstName();
+        this.lastName=pc.getLastName();
+        this.id=pc.getId();
+        this.phone=pc.getPhone();
+    }
+
+    @Override
+    public String toString() {
+        return "personCard{" +
+                "firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", email='" + email + '\'' +
+                ", id='" + id + '\'' +
+                ", phone='" + phone + '\'' +
+                '}';
     }
 }

@@ -1,7 +1,7 @@
 package ServiceLayer;
 
 import BusinessLayer.supplierPackage.supplierController;
-import ServiceLayer.Response.Response;
+import ServiceLayer.Response.*;
 import ServiceLayer.objects.payment;
 import ServiceLayer.objects.supplier;
 
@@ -16,12 +16,12 @@ public class supplierService {
         return sp;
     }
 
-    public Response addSupplier(String firstName, String lastName, String email, String id, String phone, int companyNumber, boolean isPernamentDays, boolean selfDelivery, String payment) {
-        Response toReturn = null;
+    public ResponseT<supplier> addSupplier(String firstName, String lastName, String email, String id, String phone, int companyNumber, boolean isPernamentDays, boolean selfDelivery, String payment) {
+        ResponseT<supplier> toReturn = null;
         try {
-            sp.addSupplier(firstName, lastName, email, id, phone, companyNumber, isPernamentDays, selfDelivery, payment);
+            toReturn = new ResponseT<supplier>(false, "", new supplier(sp.addSupplier(firstName, lastName, email, id, phone, companyNumber, isPernamentDays, selfDelivery, payment)));
         } catch (Exception e) {
-            toReturn = new Response(true, e.getMessage());
+            toReturn = new ResponseT<supplier>(true, e.getMessage(), null);
         }
         return toReturn;
     }
@@ -137,12 +137,12 @@ public class supplierService {
         return toReturn;
     }
 
-    public Response getSupplier(String id) {
-        Response toReturn = null;
+    public ResponseT<supplier> getSupplier(String id) {
+        ResponseT<supplier> toReturn = null;
         try {
-            sp.getSupplier(id);
+            toReturn = new ResponseT<>(false, "", new supplier(sp.getSupplier(id)));
         } catch (Exception e) {
-            toReturn = new Response(true, e.getMessage());
+            toReturn = new ResponseT<>(true, e.getMessage(), null);
         }
         return toReturn;
     }

@@ -94,6 +94,7 @@ public class MenuPrinter {
         String selfDelivery = getStringFromUser();
         System.out.print("how whould you like to pay?\n1. Cash\n2. Bank transfer\n3. check\nchoose number: ");
         int payment = scan.nextInt();
+        pc.addSupplier(firstName, lName, email, ID, phone, companyNumber, true, true, "check");
     }
 
     //a helper funtion that edit supplier details in the system
@@ -275,11 +276,11 @@ public class MenuPrinter {
 
     public void createObjectsForTests() {
         int id = 333333333;
-        int phone = 0544444444;
-        for (int i = 0; i < 10; i++)
-            pc.addSupplier("Supplier" + i, "LastName" + i, "email" + i + "@gmail.com", "" + (id + i), "" + (phone + i), 1, true, true, "cash");
-        for (int i = 10; i < 20; i++)
-            pc.addSupplier("Supplier" + i, "LastName" + i, "email" + i + "@gmail.com", "" + (id + i), "" + (phone + i), 1, false, true, "check");
+        int phone = 544444444;
+        for (int i = 0; i < 10; i++, phone++, id++)
+            pc.addSupplier("Supplier", "LastName", "email" + i + "@gmail.com", "" + id, "0" + phone, 1, true, true, "cash");
+        for (int i = 10; i < 20; i++,phone++,id++)
+            pc.addSupplier("Supplier", "LastName", "email" + i + "@gmail.com", "" + id, "0" + phone, 1, false, true, "check");
         for (int i = 0; i < 10; i++)
             pc.createProduct("name" + i, "osem");
         for (int i = 10; i < 20; i++)

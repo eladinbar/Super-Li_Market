@@ -89,7 +89,7 @@ public class supplier {
         if (phone == null || phone.equals(""))
             throw new Exception("phone cannot be null or empty spaces");
         if (phone.length() != PhoneLength)
-            throw new Exception("phone must contain " + PhoneLength + " letters");
+            throw new Exception("phone must contain " + PhoneLength + " letters, given phone :" + phone);
         //check if contains only numbers
         char[] idArray = phone.toCharArray();
         for (char c : idArray) {

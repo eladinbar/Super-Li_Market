@@ -17,7 +17,7 @@ public class Service implements IService {
     }
 
     @Override
-    public Response addSupplier(String firstName, String lastName, String email, String id, String phone, int companyNumber, boolean isPernamentDays, boolean selfDelivery, String payment) {
+    public ResponseT<supplier> addSupplier(String firstName, String lastName, String email, String id, String phone, int companyNumber, boolean isPernamentDays, boolean selfDelivery, String payment) {
         return supplierService.addSupplier(firstName, lastName, email, id, phone, companyNumber, isPernamentDays, selfDelivery, payment);
     }
 
@@ -78,7 +78,7 @@ public class Service implements IService {
     }
 
     @Override
-    public Response getSupplier(String id) {
+    public ResponseT<supplier> getSupplier(String id) {
         return supplierService.getSupplier(id);
     }
 

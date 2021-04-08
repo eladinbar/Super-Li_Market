@@ -2,7 +2,9 @@ package PresentationLayer;
 
 import ServiceLayer.IService;
 import ServiceLayer.Response.Response;
+import ServiceLayer.Response.ResponseT;
 import ServiceLayer.Service;
+import ServiceLayer.objects.supplier;
 
 import java.time.LocalDate;
 
@@ -15,7 +17,11 @@ public class PresentationController {
 
     //add supplier and edit all supplier fields
     public void addSupplier(String firstName, String lastName, String email, String id, String phone, int companyNumber, boolean isPernamentDays, boolean selfDelivery, String payment) {
-        service.addSupplier(firstName, lastName, email, id, phone, companyNumber, isPernamentDays, selfDelivery, payment);
+        ResponseT<supplier> print = service.addSupplier(firstName, lastName, email, id, phone, companyNumber, isPernamentDays, selfDelivery, payment);
+        if (print.isErrorOccurred())
+            System.out.println(print.getMessage());
+        else
+            System.out.println(print.getDate().toString());
     }
 
     public void removeSupplier(String id) {

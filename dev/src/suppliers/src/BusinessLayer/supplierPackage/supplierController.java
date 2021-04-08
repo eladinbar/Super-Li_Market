@@ -18,7 +18,7 @@ public class supplierController {
     }
 
     //method that add new supplier to the system
-    public void addSupplier(String firstName, String lastName, String email, String id, String phone, int companyNumber, boolean isPernamentDays, boolean selfDelivery, String payment) throws Exception {
+    public supplier addSupplier(String firstName, String lastName, String email, String id, String phone, int companyNumber, boolean isPernamentDays, boolean selfDelivery, String payment) throws Exception {
         if (suppliers.containsKey(id)) //case that the supplier allready exists
             throw new Exception("supplier with the id : " + id + " already exists");
         supplier newSup = new supplier(firstName, lastName, email, id, phone, companyNumber, isPernamentDays, selfDelivery, payment);
@@ -26,6 +26,7 @@ public class supplierController {
         if (persons.containsKey(id))
             persons.remove(id);
         persons.put(id, newSup.getSc());
+        return newSup;
     }
 
     public void removeSupplier(String id) throws Exception {

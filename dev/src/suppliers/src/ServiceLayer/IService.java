@@ -1,14 +1,13 @@
 package ServiceLayer;
 
-import ServiceLayer.Response.Response;
+import ServiceLayer.Response.*;
 import ServiceLayer.objects.*;
 
 import java.time.LocalDate;
-import java.util.Date;
 
 public interface IService {
     //add supplier and edit all supplier fields
-    Response addSupplier(String firstName, String lastName, String email, String id, String phone, int companyNumber, boolean isPernamentDays, boolean selfDelivery, String payment);
+    ResponseT<supplier> addSupplier(String firstName, String lastName, String email, String id, String phone, int companyNumber, boolean isPernamentDays, boolean selfDelivery, String payment);
     Response removeSupplier(String id);
     Response updateFirstName(String id, String lirstName);
     Response updateLastName(String id, String lastName);
@@ -20,7 +19,7 @@ public interface IService {
     Response updatePayment(String id, String pay);
     Response addContactMember(String supplierId,String firstName, String lastName, String email, String memberID, String phone);
     Response deleteContactMember(String supplierID, String memberID);
-    Response getSupplier(String id);
+    ResponseT<supplier> getSupplier(String id);
 
     //add quantityList
     //todo optional add lise of products id to supplier controller
