@@ -77,7 +77,7 @@ public class FacadeService {
 
     //employee service responsibility
 
-    public Response login(String ID, Role role) {
+    public ResponseT<FacadeEmployee> login(String ID, Role role) {
         return employeeService.login ( ID, role );
     }
 
@@ -85,8 +85,8 @@ public class FacadeService {
         return employeeService.logout ();
     }
 
-    public Response giveConstraint(FacadeEmployee employee, LocalDate date, int shift, String reason) {
-        return employeeService.giveConstraint ( employee, date, shift, reason );
+    public Response giveConstraint(LocalDate date, int shift, String reason) {
+        return employeeService.giveConstraint (date, shift, reason );
     }
 
     public Response deleteConstraint (LocalDate date, int shift)  {
@@ -114,7 +114,7 @@ public class FacadeService {
     }
 
 
-    public ResponseT<List<FacadeConstraint>> getConstraints() {
+    public ResponseT<HashMap<LocalDate,FacadeConstraint>> getConstraints() {
         return employeeService.getConstraints();
     }
 
@@ -126,7 +126,7 @@ public class FacadeService {
         return employeeService.getEmployee ( ID );
     }
 
-    public ResponseT<List<FacadeConstraint>> getConstraints(String id) {
+    public ResponseT<HashMap<LocalDate,FacadeConstraint>> getConstraints(String id) {
         return  employeeService.getConstraints (id);
     }
 

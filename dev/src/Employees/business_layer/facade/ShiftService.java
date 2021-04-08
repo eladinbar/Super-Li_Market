@@ -158,4 +158,7 @@ public class ShiftService {
             return new Response ( e.getMessage () );
         }
     }
+
+    public void createData() throws EmployeeException{
+    }
 }
