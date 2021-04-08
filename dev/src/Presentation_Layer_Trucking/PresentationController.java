@@ -215,13 +215,14 @@ public class PresentationController {
         facadeService.updateDeliveryFormRealWeight(trID,dfID,weight);
     }
 
-    public void removeSiteFromTruckReport(int siteID, int trID) {
-        //TODO- implement
+    public void removeSiteFromTruckReport(int siteID, int trID)throws NoSuchElementException {
+        facadeService.removeSiteFromTruckReport(siteID,trID);
     }
 
-    public boolean addDemandToTruckReport(int itemNumber, int amount,int siteID, int trID) {
-        //TODO- implement
-        return false;
+    public boolean addDemandToTruckReport(int itemNumber, int amount,int siteID, int trID)throws IllegalStateException {
+        if (itemNumber==0)
+            return false;
+        else return facadeService.addDemandToTruckReport(itemNumber,amount,siteID,trID);
     }
 
     public void replaceTruck(int id, String truckNumber, int weight)throws IllegalStateException,IllegalArgumentException {
@@ -229,17 +230,16 @@ public class PresentationController {
         facadeService.replaceTruck(id,truckNumber,weight);
     }
 
-    public void replaceDriver(int trID, int driverID) {
-        // TODO need to implement
+    public void replaceDriver(int trID, String driverID, int weight)throws IllegalStateException,NoSuchElementException{
+       facadeService.replaceDriver(trID,driverID,weight);
     }
 
     public LinkedList<FacadeDemand> getItemOnReport(int trID) {
-        // TODO need to implement
-        return null;
+        return facadeService.getItemOnReport(trID);
     }
 
     public void removeItemFromTruckingReport(int trID, FacadeDemand demand) {
-        // TODO need to implement
+        facadeService.removeItemFromTruckingReport(trID,demand);
     }
 
     public int getSiteDeliveryArea(int site) {
@@ -247,6 +247,7 @@ public class PresentationController {
     }
 
     public boolean continueAddDemandToTruckReport(int itemNumber, int amount, int siteID, int truckId) {
+        return facadeService.continueAddDemandToTruckReport(itemNumber,amount,siteID,truckId);
     }
 
 
@@ -255,6 +256,7 @@ public class PresentationController {
     //   need to check all exception handle
     //   need to check truck max weight less then truck's Neto
     //   need to implement the initial state better
+    //   NTH-Add method show relevant drivers according to weight
 
 
 
