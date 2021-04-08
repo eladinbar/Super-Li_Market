@@ -9,9 +9,9 @@ public class Item {
     private double sellingPrice;
     private int minAmount;
     private int manufacturerID;
-    private List<Integer> supplierIDs;
-    private Quantity quantity;
-    private Location location;
+    private final List<Integer> supplierIDs;
+    private final Quantity quantity;
+    private final Location location;
 
     public Item(int ID, String name, double costPrice, double sellingPrice, int minAmount, int manufacturerID, List<Integer> supplierIDs,
                 int shelfQuantity, int storageQuantity, String shelfLocation, String storageLocation) {
@@ -125,10 +125,6 @@ public class Item {
 
     public void removeStorageQuantity(int storageQuantity) {
         this.quantity.removeStorageQuantity(storageQuantity);
-    }
-
-    public Location getLocation() {
-        return location;
     }
 
     public String getShelfLocation() {

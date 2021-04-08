@@ -5,9 +5,9 @@ import java.util.List;
 
 public class Category {
     private String name;
-    private List<Item> items;
+    private final List<Item> items;
     private Category parentCategory;
-    private List<Category> subCategories;
+    private final List<Category> subCategories;
 
     public Category(String name) {
         this.name = name;

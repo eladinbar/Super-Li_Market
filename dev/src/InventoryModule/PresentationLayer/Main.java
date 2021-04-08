@@ -1,6 +1,5 @@
 package InventoryModule.PresentationLayer;
 
-
 import InfrastructurePackage.SystemLogger;
 import org.apache.log4j.Logger;
 

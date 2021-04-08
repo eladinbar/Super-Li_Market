@@ -5,7 +5,7 @@ import java.util.Calendar;
 import java.util.List;
 
 public class DefectsLogger {
-    private List<DefectEntry> defectEntries;
+    private final List<DefectEntry> defectEntries;
 
     public DefectsLogger() {
         this.defectEntries = new ArrayList<>();
