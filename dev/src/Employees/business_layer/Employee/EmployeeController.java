@@ -1,7 +1,9 @@
 package Employees.business_layer.Employee;
 
 import Employees.EmployeeException;
+import Employees.business_layer.facade.facadeObject.FacadeBankAccountInfo;
 import Employees.business_layer.facade.facadeObject.FacadeEmployee;
+import Employees.business_layer.facade.facadeObject.FacadeTermsOfEmployment;
 
 import java.time.LocalDate;
 import java.util.HashMap;
@@ -270,10 +272,93 @@ public class EmployeeController {
         return employees.containsValue(Id) && employees.get(Id).isEmployed();
     }
 
-    public void createData (){}
+    public void createData (){
+            createUshers();
+            createguard();
+            creatCashier();
+            creatStoreKeeper();
+            createManagers();
+    }
+
+    private void createManagers() {
+        int accountNum = 546, bankBranch=11, salary=8000, educationFund=1232, sickDays=10, daysOff=40;
+        String bankName = "Hpoalim";
+        FacadeBankAccountInfo employeeAccountInfo1 = new FacadeBankAccountInfo(accountNum, bankBranch, bankName);
+        FacadeTermsOfEmployment termsOfEmployment1 = new FacadeTermsOfEmployment(salary, educationFund,sickDays, daysOff );
+        FacadeEmployee branchManager = new FacadeEmployee("branchManager", "12300000", LocalDate.now(), employeeAccountInfo1, termsOfEmployment1);
+
+        FacadeBankAccountInfo employeeAccountInfo2 = new FacadeBankAccountInfo(accountNum+2, bankBranch, bankName);
+        FacadeTermsOfEmployment termsOfEmployment2 = new FacadeTermsOfEmployment(salary+2, educationFund,sickDays, daysOff );
+        FacadeEmployee branchManagerAssistent = new FacadeEmployee("branchManagerAssistent", "45600000", LocalDate.now(), employeeAccountInfo2, termsOfEmployment2);
+
+        FacadeBankAccountInfo employeeAccountInfo3 = new FacadeBankAccountInfo(accountNum+#, bankBranch, bankName);
+        FacadeTermsOfEmployment termsOfEmployment3 = new FacadeTermsOfEmployment(salary+3, educationFund,sickDays, daysOff );
+        FacadeEmployee humanResourcesManager = new FacadeEmployee("humanResourcesManager", "78900000", LocalDate.now(), employeeAccountInfo1, termsOfEmployment1);
+
+        try {
+            addManager(branchManager);
+            addManager(branchManagerAssistent);
+            addManager(humanResourcesManager);
+        }
+        catch (EmployeeException e){}
+    }
 
 
-// private methods
+    private void createUshers() {
+        int accountNum = 456, bankBranch=11, salary=5000, educationFund=1232, sickDays=10, daysOff=30;
+        String bankName = "Hpoalim";
+        for(int i=0; i<4; i++){
+            FacadeBankAccountInfo employeeAccountInfo = new FacadeBankAccountInfo(accountNum+i, bankBranch, bankName);
+            FacadeTermsOfEmployment termsOfEmployment = new FacadeTermsOfEmployment(salary+1, educationFund,sickDays, daysOff );
+            FacadeEmployee usher = new FacadeEmployee("usher", "00000000"+i, LocalDate.now(), employeeAccountInfo, termsOfEmployment);
+            try {
+                addEmployee(usher);
+            }
+            catch(EmployeeException e){}
+        }
+    }
+    private void createguard() {
+        int accountNum = 356, bankBranch=10, salary=5500, educationFund=1232, sickDays=10, daysOff=30;
+        String bankName = "Leumi";
+        for(int i=0; i<2; i++){
+            FacadeBankAccountInfo employeeAccountInfo = new FacadeBankAccountInfo(accountNum+i, bankBranch, bankName);
+            FacadeTermsOfEmployment termsOfEmployment = new FacadeTermsOfEmployment(salary+1, educationFund,sickDays, daysOff );
+            FacadeEmployee guard = new FacadeEmployee("guard", "011111111"+i, LocalDate.now(), employeeAccountInfo, termsOfEmployment);
+            try {
+                addEmployee(guard);
+            }
+            catch(EmployeeException e){}
+        }
+    }
+
+    private void creatCashier() {
+        int accountNum = 256, bankBranch=13, salary=5500, educationFund=1232, sickDays=10, daysOff=30;
+        String bankName = "Leumi";
+        for(int i=0; i<4; i++){
+            FacadeBankAccountInfo employeeAccountInfo = new FacadeBankAccountInfo(accountNum+i, bankBranch, bankName);
+            FacadeTermsOfEmployment termsOfEmployment = new FacadeTermsOfEmployment(salary+1, educationFund,sickDays, daysOff );
+            FacadeEmployee cashier = new FacadeEmployee("cashier", "02222222"+i, LocalDate.now(), employeeAccountInfo, termsOfEmployment);
+            try {
+                addEmployee(cashier);
+            }
+            catch(EmployeeException e){}
+        }
+    }
+
+    private void creatStoreKeeper() {
+        int accountNum = 156, bankBranch=13, salary=6000, educationFund=1232, sickDays=10, daysOff=30;
+        String bankName = "Leumi";
+        for(int i=0; i<2; i++){
+            FacadeBankAccountInfo employeeAccountInfo = new FacadeBankAccountInfo(accountNum+i, bankBranch, bankName);
+            FacadeTermsOfEmployment termsOfEmployment = new FacadeTermsOfEmployment(salary+1, educationFund,sickDays, daysOff );
+            FacadeEmployee storeKeeper = new FacadeEmployee("storeKeeper", "03333333"+i, LocalDate.now(), employeeAccountInfo, termsOfEmployment);
+            try {
+                addEmployee(storeKeeper);
+            }
+            catch(EmployeeException e){}
+        }
+    }
+    // private methods
     private BankAccountInfo createAccount(int accountNum, int bankBranch, String bank) throws EmployeeException {
         if(accountNum<0 | bankBranch<0 ){
             throw new EmployeeException("One of the details entered is negative ");
