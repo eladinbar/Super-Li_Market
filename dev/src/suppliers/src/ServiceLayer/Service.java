@@ -106,7 +106,7 @@ public class Service implements IService {
     @Override
     public Response addQuantityListItem(String supplierID, int productID, int amount, int discount) {
         Response r = orderService.productExists(productID);
-        if (!r.isErrorOccurred())
+        if (!r.errorOccured())
             return supplierService.addQuantityListItem(supplierID, productID, amount, discount);
         return r;
     }

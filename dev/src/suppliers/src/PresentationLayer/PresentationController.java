@@ -17,12 +17,8 @@ public class PresentationController {
     }
 
     //add supplier and edit all supplier fields
-    public void addSupplier(String firstName, String lastName, String email, String id, String phone, int companyNumber, boolean isPernamentDays, boolean selfDelivery, String payment) {
-        ResponseT<supplier> print = service.addSupplier(firstName, lastName, email, id, phone, companyNumber, isPernamentDays, selfDelivery, payment);
-        if (print.isErrorOccurred())
-            System.out.println(print.getMessage());
-        else
-            System.out.println(print.getDate().toString());
+    public String addSupplier(String firstName, String lastName, String email, String id, String phone, int companyNumber, boolean isPernamentDays, boolean selfDelivery, String payment) {
+        return service.addSupplier(firstName, lastName, email, id, phone, companyNumber, isPernamentDays, selfDelivery, payment).toString();
     }
 
     public void removeSupplier(String id) {

@@ -28,4 +28,18 @@ public class order {
     public int getId() {
         return id;
     }
+
+    @Override
+    public String toString() {
+        String proToString="";
+        for (Map.Entry<Integer,Integer> en:products.entrySet()) {
+            proToString+="\nproduct id : "+en.getKey()+"       amount: "+en.getValue();
+        }
+        return "order details: " +
+                "id:" + id +
+                "\nproducts: " + proToString +
+                "\ndate: " + date.toString() +
+                "\ndelivered: " + delivered +
+                "\nsupplier: " + supplier.getName();
+    }
 }

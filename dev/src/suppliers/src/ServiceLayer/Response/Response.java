@@ -1,27 +1,21 @@
 package ServiceLayer.Response;
 
+
 public class Response {
-    protected boolean errorOccurred;
-    protected String message;
+    private String errorMessage;
 
-    public Response(boolean errorOccurred, String message) {
-        this.errorOccurred = errorOccurred;
-        this.message = message;
+    public Response(String errorMessage)
+    {
+        this.errorMessage = errorMessage;
+    }
+    public Response() {
+        this.errorMessage=null;
     }
 
-    public boolean isErrorOccurred() {
-        return errorOccurred;
-    }
+    public  boolean errorOccured()
+    {return errorMessage != null; }
 
-    public void setErrorOccurred(boolean errorOccurred) {
-        this.errorOccurred = errorOccurred;
-    }
-
-    public String getMessage() {
-        return message;
-    }
-
-    public void setMessage(String message) {
-        this.message = message;
+    public String getErrorMessage() {
+        return errorMessage;
     }
 }

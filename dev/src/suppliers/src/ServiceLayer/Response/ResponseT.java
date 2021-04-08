@@ -1,18 +1,26 @@
 package ServiceLayer.Response;
 
-public class ResponseT<T> extends Response {
-    private T date;
+public class ResponseT <T> extends Response{
+    public final T value;
 
-    public ResponseT(boolean errorOccurred, String message, T date) {
-        super(errorOccurred, message);
-        this.date = date;
+    //an exception message was sent
+    public ResponseT(String errorMessage)
+    {
+        super(errorMessage);
+        value = null;
     }
 
-    public T getDate() {
-        return date;
+    //no exception
+    public ResponseT(T value)
+    {
+        super();
+        this.value = value;
     }
 
-    public void setDate(T date) {
-        this.date = date;
+    @Override
+    public String toString() {
+        if(errorOccured())
+            return getErrorMessage();
+        return value.toString();
     }
 }

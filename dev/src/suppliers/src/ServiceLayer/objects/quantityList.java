@@ -11,4 +11,17 @@ public class quantityList {
         this.amount = amount;
         this.discount = discount;
     }
+    public quantityList(BusinessLayer.supplierPackage.quantityList ql){
+        this.amount=ql.getAmount();
+        this.discount=ql.getDiscount();
+    }
+
+    @Override
+    public String toString() {
+        String amounts="";
+        for (Map.Entry<Integer,Integer> entry: amount.entrySet()) {
+            amounts+="\nitem ID: "+entry.getKey()+"\nitem amount to get discount: "+entry.getValue()+"\nitem discount: "+discount.get(entry.getKey())+"\n";
+        }
+        return amounts;
+    }
 }

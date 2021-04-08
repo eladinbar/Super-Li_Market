@@ -4,6 +4,7 @@ import ServiceLayer.Response.ResponseT;
 import ServiceLayer.objects.order;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.Scanner;
 
@@ -24,42 +25,18 @@ public class MenuPrinter {
         while (choose > 0) {
             choose = PrintMenu();
             switch (choose) {
-                case 1:
-                    addSupplierFunc();
-                    break;
-                case 2:
-                    getSupplier();
-                    break;
-                case 3:
-                    updateSupplierDetailFunc();
-                    break;
-                case 4:
-                    addQuantityList();
-                    break;
-                case 5:
-                    editQuantityList();
-                    break;
-                case 6:
-                    createNewOrder();
-                    break;
-                case 7:
-                    setPermanentOrder();
-                    break;
-                case 8:
-                    approveOrder();
-                    break;
-                case 9:
-                    getOrder();
-                    break;
-                case 10:
-                    addProductToOrder();
-                    break;
-                case 11:
-                    createProduct();
-                    break;
-                case 12:
-                    getProduct();
-                    break;
+                case 1 -> addSupplierFunc();
+                case 2 -> getSupplier();
+                case 3 -> updateSupplierDetailFunc();
+                case 4 -> addQuantityList();
+                case 5 -> editQuantityList();
+                case 6 -> createNewOrder();
+                case 7 -> setPermanentOrder();
+                case 8 -> approveOrder();
+                case 9 -> getOrder();
+                case 10 -> addProductToOrder();
+                case 11 -> createProduct();
+                case 12 -> getProduct();
             }
         }
     }
@@ -103,11 +80,11 @@ public class MenuPrinter {
         String selfDelivery = getStringFromUser();
         System.out.print("how whould you like to pay?\n1. Cash\n2. Bank transfer\n3. check\nchoose number: ");
         int payment = scan.nextInt();
-        pc.addSupplier(firstName, lName, email, ID, phone, companyNumber, true, true, "check");
+        System.out.println(pc.addSupplier(firstName, lName, email, ID, phone, companyNumber, true, true, "check"));
     }
 
     private void getSupplier() throws ReflectiveOperationException {
-        System.out.printf("please enter supplier id: ");
+        System.out.print("please enter supplier id: ");
         String supplierId = getStringFromUser();
         pc.getSupplier(supplierId);
     }
@@ -185,9 +162,10 @@ public class MenuPrinter {
     private void createNewOrder() throws ReflectiveOperationException { //case 6
         System.out.print("please enter\nsupplier id: ");
         String supplierId = getStringFromUser();
-        System.out.print("date (dd.mm.yy): ");
+        System.out.print("date (dd/mm/yyyy): ");
         String date = getStringFromUser();
-        LocalDate lclDate = LocalDate.parse(date);
+        DateTimeFormatter dateTimeFormatter=DateTimeFormatter.ofPattern("d/MM/yyyy");
+        LocalDate lclDate = LocalDate.parse(date,dateTimeFormatter);
         ResponseT<order> order = pc.createOrder(lclDate, supplierId);
 
         while (true){
@@ -201,7 +179,7 @@ public class MenuPrinter {
             int productId = scan.nextInt();
             System.out.println("amount of products: ");
             int amount = scan.nextInt();
-            pc.addProductToOrder(order.getDate().getId(), productId, amount);
+            pc.addProductToOrder(order.value.getId(), productId, amount);
         }
     }
 

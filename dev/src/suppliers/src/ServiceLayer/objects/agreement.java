@@ -13,4 +13,9 @@ public class agreement {
         this.products = products;
         this.prices = prices;
     }
+    public agreement(BusinessLayer.supplierPackage.agreement ag){
+        this.prices=ag.getPrices();
+        this.products=ag.getProducts();
+        this.ql=new quantityList(ag.getQl());
+    }
 }

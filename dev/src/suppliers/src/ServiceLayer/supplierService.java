@@ -2,7 +2,6 @@ package ServiceLayer;
 
 import BusinessLayer.supplierPackage.supplierController;
 import ServiceLayer.Response.*;
-import ServiceLayer.objects.payment;
 import ServiceLayer.objects.supplier;
 
 public class supplierService {
@@ -17,11 +16,11 @@ public class supplierService {
     }
 
     public ResponseT<supplier> addSupplier(String firstName, String lastName, String email, String id, String phone, int companyNumber, boolean isPernamentDays, boolean selfDelivery, String payment) {
-        ResponseT<supplier> toReturn = null;
+        ResponseT<supplier> toReturn;
         try {
-            toReturn = new ResponseT<supplier>(false, "", new supplier(sp.addSupplier(firstName, lastName, email, id, phone, companyNumber, isPernamentDays, selfDelivery, payment)));
+            toReturn = new ResponseT<>(new supplier(sp.addSupplier(firstName, lastName, email, id, phone, companyNumber, isPernamentDays, selfDelivery, payment)));
         } catch (Exception e) {
-            toReturn = new ResponseT<supplier>(true, e.getMessage(), null);
+            toReturn = new ResponseT<>(e.getMessage());
         }
         return toReturn;
     }
@@ -32,7 +31,7 @@ public class supplierService {
         try {
             sp.removeSupplier(id);
         } catch (Exception e) {
-            toReturn = new Response(true, e.getMessage());
+            toReturn = new Response(e.getMessage());
         }
         return toReturn;
     }
@@ -42,7 +41,7 @@ public class supplierService {
         try {
             sp.updateCompanySupplier(id, companyNumber);
         } catch (Exception e) {
-            toReturn = new Response(true, e.getMessage());
+            toReturn = new Response(e.getMessage());
         }
         return toReturn;
     }
@@ -52,7 +51,7 @@ public class supplierService {
         try {
             sp.updateFirstName(id, firstName);
         } catch (Exception e) {
-            toReturn = new Response(true, e.getMessage());
+            toReturn = new Response(e.getMessage());
         }
         return toReturn;
     }
@@ -62,7 +61,7 @@ public class supplierService {
         try {
             sp.updateLastName(id, lastName);
         } catch (Exception e) {
-            toReturn = new Response(true, e.getMessage());
+            toReturn = new Response(e.getMessage());
         }
         return toReturn;
     }
@@ -72,7 +71,7 @@ public class supplierService {
         try {
             sp.updatePhone(id, phone);
         } catch (Exception e) {
-            toReturn = new Response(true, e.getMessage());
+            toReturn = new Response(e.getMessage());
         }
         return toReturn;
     }
@@ -82,7 +81,7 @@ public class supplierService {
         try {
             sp.updateEmail(id, email);
         } catch (Exception e) {
-            toReturn = new Response(true, e.getMessage());
+            toReturn = new Response(e.getMessage());
         }
         return toReturn;
     }
@@ -92,7 +91,7 @@ public class supplierService {
         try {
             sp.updateSelfDelivery(id, self);
         } catch (Exception e) {
-            toReturn = new Response(true, e.getMessage());
+            toReturn = new Response(e.getMessage());
         }
         return toReturn;
     }
@@ -102,7 +101,7 @@ public class supplierService {
         try {
             sp.updatePernamentDays(id, perm);
         } catch (Exception e) {
-            toReturn = new Response(true, e.getMessage());
+            toReturn = new Response(e.getMessage());
         }
         return toReturn;
     }
@@ -112,7 +111,7 @@ public class supplierService {
         try {
             sp.updatePayment(id, pay);
         } catch (Exception e) {
-            toReturn = new Response(true, e.getMessage());
+            toReturn = new Response(e.getMessage());
         }
         return toReturn;
     }
@@ -122,7 +121,7 @@ public class supplierService {
         try {
             sp.addContactMember(supplierId, firstName, lastName, email, memberID, phone);
         } catch (Exception e) {
-            toReturn = new Response(true, e.getMessage());
+            toReturn = new Response(e.getMessage());
         }
         return toReturn;
     }
@@ -132,17 +131,17 @@ public class supplierService {
         try {
             sp.deleteContactMember(supplierID, memberID);
         } catch (Exception e) {
-            toReturn = new Response(true, e.getMessage());
+            toReturn = new Response(e.getMessage());
         }
         return toReturn;
     }
 
     public ResponseT<supplier> getSupplier(String id) {
-        ResponseT<supplier> toReturn = null;
+        ResponseT<supplier> toReturn;
         try {
-            toReturn = new ResponseT<>(false, "", new supplier(sp.getSupplier(id)));
+            toReturn = new ResponseT<>(new supplier(sp.getSupplier(id)));
         } catch (Exception e) {
-            toReturn = new ResponseT<>(true, e.getMessage(), null);
+            toReturn = new ResponseT<>(e.getMessage());
         }
         return toReturn;
     }
@@ -152,7 +151,7 @@ public class supplierService {
         try {
             sp.addQuantityList(supplierID);
         } catch (Exception e) {
-            toReturn = new Response(true, e.getMessage());
+            toReturn = new Response(e.getMessage());
         }
         return toReturn;
     }
@@ -162,7 +161,7 @@ public class supplierService {
         try {
             sp.editQuantityListAmount(supplierID, productID, amount);
         } catch (Exception e) {
-            toReturn = new Response(true, e.getMessage());
+            toReturn = new Response(e.getMessage());
         }
         return toReturn;
     }
@@ -172,7 +171,7 @@ public class supplierService {
         try {
             sp.editQuantityListDiscount(supplierID, productID, discount);
         } catch (Exception e) {
-            toReturn = new Response(true, e.getMessage());
+            toReturn = new Response(e.getMessage());
         }
         return toReturn;
     }
@@ -182,7 +181,7 @@ public class supplierService {
         try {
             sp.deleteQuantityList(supplierID);
         } catch (Exception e) {
-            toReturn = new Response(true, e.getMessage());
+            toReturn = new Response(e.getMessage());
         }
         return toReturn;
     }
@@ -192,7 +191,7 @@ public class supplierService {
         try {
             sp.addQuantityListItem(supplierID, productID, amount, discount);
         } catch (Exception e) {
-            toReturn = new Response(true, e.getMessage());
+            toReturn = new Response(e.getMessage());
         }
         return toReturn;
     }
@@ -202,7 +201,7 @@ public class supplierService {
         try {
             sp.deleteQuantityListItem(supplierID, productID);
         } catch (Exception e) {
-            toReturn = new Response(true, e.getMessage());
+            toReturn = new Response(e.getMessage());
         }
         return toReturn;
     }

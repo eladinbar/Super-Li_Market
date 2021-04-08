@@ -18,11 +18,11 @@ public class orderService {
     }
 
     public ResponseT<order> createOrder(LocalDate date, String supplierID, supplierController sp) {
-        ResponseT<order> toReturn = null;
+        ResponseT<order> toReturn;
         try {
-            toReturn = new ResponseT<>(false,"",new order(oc.createOrder(date, sp.getSupplier(supplierID))));
+            toReturn = new ResponseT<>(new order(oc.createOrder(date, sp.getSupplier(supplierID))));
         } catch (Exception e) {
-            toReturn = new ResponseT<>(true, e.getMessage(),null);
+            toReturn = new ResponseT<>(e.getMessage());
         }
         return toReturn;
     }
@@ -32,7 +32,7 @@ public class orderService {
         try {
             oc.createPermOrder(day, sp.getSupplier(supplierID));
         } catch (Exception e) {
-            toReturn = new Response(true, e.getMessage());
+            toReturn = new Response(e.getMessage());
         }
         return toReturn;
     }
@@ -42,7 +42,7 @@ public class orderService {
         try {
             oc.approveOrder(orderID);
         } catch (Exception e) {
-            toReturn = new Response(true, e.getMessage());
+            toReturn = new Response(e.getMessage());
         }
         return toReturn;
     }
@@ -52,7 +52,7 @@ public class orderService {
         try {
             oc.getOrder(orderID);
         } catch (Exception e) {
-            toReturn = new Response(true, e.getMessage());
+            toReturn = new Response(e.getMessage());
         }
         return toReturn;
     }
@@ -62,7 +62,7 @@ public class orderService {
         try {
             oc.createProduct(name, manufacturer);
         } catch (Exception e) {
-            toReturn = new Response(true, e.getMessage());
+            toReturn = new Response(e.getMessage());
         }
         return toReturn;
     }
@@ -72,7 +72,7 @@ public class orderService {
         try {
             oc.getProduct(productID);
         } catch (Exception e) {
-            toReturn = new Response(true, e.getMessage());
+            toReturn = new Response(e.getMessage());
         }
         return toReturn;
     }
@@ -82,7 +82,7 @@ public class orderService {
         try {
             oc.removeSupplier(id);
         } catch (Exception e) {
-            toReturn = new Response(true, e.getMessage());
+            toReturn = new Response(e.getMessage());
         }
         return toReturn;
     }
@@ -92,7 +92,7 @@ public class orderService {
         try {
             oc.addProductToOrder(orderId, productId, amount);
         } catch (Exception e) {
-            toReturn = new Response(true, e.getMessage());
+            toReturn = new Response(e.getMessage());
         }
         return toReturn;
     }
@@ -102,7 +102,7 @@ public class orderService {
         try {
             oc.productExist(productID);
         } catch (Exception e) {
-            toReturn = new Response(true, e.getMessage());
+            toReturn = new Response(e.getMessage());
         }
         return toReturn;
     }
