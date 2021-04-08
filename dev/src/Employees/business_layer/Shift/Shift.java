@@ -113,28 +113,28 @@ public class Shift {
 
     public void createManning(EmployeeController employeeController) throws EmployeeException {
         HashMap<Role, Integer> manning = ShiftTypes.getInstance ().getShiftTypeManning ( type );
-        List<Integer> free;
-        List<Integer> work = new ArrayList<> (  );
+        List<String> free;
+        List<String> work = new ArrayList<> (  );
         for(Map.Entry<Role, Integer> entery: manning.entrySet ())
         {
             Role role = entery.getKey ();
             free = employeeController.getRoleInDate(date, role, mORe);
-            int[] stillFree;
-            int id;
+            String[] stillFree;
+            int rand;
             for(int i = 0; i < ShiftTypes.getInstance ( ).getRoleManning ( type, role ); i++)
             {
                 stillFree = getFree ( free, work );
-                id = getRandomEmployee ( stillFree );
-                if( id == -1 )
+                rand = getRandomEmployee ( stillFree );
+                if( rand == -1 )
                     break;
-                work.add ( id );
+                work.add ( stillFree[rand] );
             }
         }
     }
 
-    private int[] getFree(List<Integer> canWork, List<Integer> work)
+    private String[] getFree(List<String> canWork, List<String> work)
     {
-        int[] free = new int[canWork.size () - work.size ()];
+        String[] free = new String[canWork.size () - work.size ()];
         int index = 0;
         for(int i = 0; i < canWork.size (); i ++)
         {
@@ -144,7 +144,7 @@ public class Shift {
         return free;
     }
 
-    private int getRandomEmployee(int[] free)
+    private int getRandomEmployee(String[] free)
     {
         if(free.length == 0)
             return -1;
