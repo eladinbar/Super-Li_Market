@@ -98,7 +98,7 @@ public class orderService {
     }
 
     public Response productExists(int productID) {
-        Response toReturn = null;
+        Response toReturn = new Response();
         try {
             oc.productExist(productID);
         } catch (Exception e) {

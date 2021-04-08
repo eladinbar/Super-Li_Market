@@ -65,8 +65,8 @@ public class PresentationController {
         service.deleteContactMember(supplierID, memberID);
     }
 
-    public void getSupplier(String id) {
-        service.getSupplier(id);
+    public String getSupplier(String id) {
+        return service.getSupplier(id).toString();
     }
 
     //add quantityList
