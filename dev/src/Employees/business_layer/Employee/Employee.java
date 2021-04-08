@@ -15,11 +15,11 @@ public class Employee {
     private BankAccountInfo bank;
     private HashMap<LocalDate, Constraint> constraints;
 
-    public Employee (Role role, String ID, TermsOfEmployment terms, LocalDate transactionDate,  BankAccountInfo bank ) throws EmployeeException {
-        this.role = role;
+    public Employee (String role, String ID, TermsOfEmployment terms, LocalDate transactionDate,  BankAccountInfo bank ) throws EmployeeException {
+        this.role = Role.valueOf (role);
         if(!validId(ID)){throw new EmployeeException("An invalid ID was entered ");}
         this.ID = ID;
-        this.isManager = isManager(role);
+        this.isManager = isManager(this.role);
         employed = true;
         this.terms = terms;
         this.transactionDate = transactionDate;
@@ -54,10 +54,7 @@ public class Employee {
         return bank;
     }
 
-    public HashMap<LocalDate, Constraint> getConstraints() throws EmployeeException {
-        if(constraints==null){
-            throw new EmployeeException("No constraints was found");
-        }
+    public HashMap<LocalDate, Constraint> getConstraints(){
         return constraints;
     }
 
@@ -155,20 +152,20 @@ public void deleteConstraint(LocalDate date, int shift) throws EmployeeException
         char[] idChar = ID.toCharArray();
         boolean firstHalf = false;
         boolean secHalf = false;
-        for (int i = 0; i < 5; ++i){//Check first half
+        for (int i = 0; i < 5 || firstHalf; ++i){//Check first half
             if ((idChar[i] > 47 && idChar[i] < 58)){//Checks ascii vals to see if valid ID
                 firstHalf = true;
             }
         }
 
-        for (int i = 5; i < idChar.length; ++i){//Check second half
+        for (int i = 5; i < idChar.length || secHalf; ++i){//Check second half
             if ((idChar[i] > 47 && idChar[i] < 58)){//Checks ascii vals to see if valid ID
                 secHalf = true;
             }
         }
 
         //If all values are valid, returns true.
-        if (firstHalf == true && secHalf == true && idChar[4] == '-' && ID.length() == 9){
+        if (firstHalf && secHalf && idChar[4] == '-' && ID.length() == 9){
             return true;
         }
 
@@ -180,12 +177,12 @@ public void deleteConstraint(LocalDate date, int shift) throws EmployeeException
     }
 
     private HashMap<LocalDate, Constraint> sortConstraintsByDate(HashMap<LocalDate, Constraint> constraints) {
-        constraints.entrySet().stream().sorted(Map.Entry.comparingByKey()).collect(Collectors.toMap(
+        return constraints.entrySet().stream().sorted(Map.Entry.comparingByKey()).collect(Collectors.toMap(
                 Map.Entry::getKey,
                 Map.Entry::getValue,
                 (a,b)->{ throw new AssertionError();},
                 LinkedHashMap::new
         ));
-    return constraints;
+//    return constraints;
     }
 }

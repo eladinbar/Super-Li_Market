@@ -21,9 +21,9 @@ public class MenuPrinter {
         return getChar ();
     }
 
-    public int loginID(){
+    public String loginID(){
         System.out.println ("To login type you Id:\n" );
-        return getInt ();
+        return getString ();
     }
 
     public String roleMenu(){

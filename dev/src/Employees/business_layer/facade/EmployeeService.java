@@ -20,7 +20,7 @@ public class EmployeeService {
         this.employeeController = employeeController;
     }
 
-    public ResponseT<FacadeConstraint> login(String ID, Role role) {
+    public ResponseT<FacadeEmployee> login(String ID, Role role) {
         try{
             return new ResponseT(new FacadeEmployee(employeeController.login(ID,role.name())));
         }
@@ -181,7 +181,9 @@ public class EmployeeService {
         }
     }
 
-    public void createData (){}
+    public void createData () throws EmployeeException {
+
+    }
 
     //private methods:
     private HashMap<LocalDate, FacadeConstraint> convertConstrainToFacade(HashMap<LocalDate, Constraint> toConvert) {

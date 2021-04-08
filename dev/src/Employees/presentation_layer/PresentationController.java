@@ -426,11 +426,11 @@ public class PresentationController {
     }
 
     private boolean login(boolean first) {
-        int id = menuPrinter.loginID ( );
+        String id = menuPrinter.loginID ( );
         String role = menuPrinter.roleMenu ();
         int choice;
         if(role != null) {
-            ResponseT<FacadeEmployee> employee = facadeService.login ( id, role );
+            ResponseT<FacadeEmployee> employee = facadeService.login ( id, Role.valueOf (role) );
             if(employee.errorOccured ())
             {
                 menuPrinter.print ( employee.getErrorMessage () );
@@ -508,7 +508,7 @@ public class PresentationController {
     private void getConstraintsOfEmployee() {
         menuPrinter.print ( "ID of employee you would like to display: " );
         String id = menuPrinter.getString ();
-        ResponseT< HashMap <LocalDate, FacadeConstraint> > constraints = facadeService.getConstraints ( id );
+        ResponseT<HashMap<LocalDate,FacadeConstraint>> constraints = facadeService.getConstraints ( id );
         if(constraints.errorOccured ())
         {
             menuPrinter.print ( constraints.getErrorMessage () );
@@ -521,12 +521,12 @@ public class PresentationController {
     }
 
     private boolean logout()  {
-        ResponseT<FacadeEmployee> employee = facadeService.logout ().errorOccured ();
-        if(employee.errorOccured ()) {
-            menuPrinter.print ( employee.getErrorMessage ( ) );
+        Response response = facadeService.logout();
+        if(response.errorOccured ()) {
+            menuPrinter.print ( response.getErrorMessage ( ) );
             return false;
         }
-        menuPrinter.print ("ID " + employee.value.getID () + " logged out successfully.\n");
+        menuPrinter.print ( "logged out successfully.\n");
         return true;
     }
 
