@@ -1,0 +1,209 @@
+package ServiceLayer;
+
+import BusinessLayer.supplierPackage.supplierController;
+import ServiceLayer.Response.Response;
+import ServiceLayer.objects.payment;
+import ServiceLayer.objects.supplier;
+
+public class supplierService {
+    private supplierController sp;
+
+    public supplierService() {
+        sp = new supplierController();
+    }
+
+    protected supplierController getSp() {
+        return sp;
+    }
+
+    public Response addSupplier(String firstName, String lastName, String email, String id, String phone, int companyNumber, boolean isPernamentDays, boolean selfDelivery, String payment) {
+        Response toReturn = null;
+        try {
+            sp.addSupplier(firstName, lastName, email, id, phone, companyNumber, isPernamentDays, selfDelivery, payment);
+        } catch (Exception e) {
+            toReturn = new Response(true, e.getMessage());
+        }
+        return toReturn;
+    }
+
+
+    public Response removeSupplier(String id) {
+        Response toReturn = null;
+        try {
+            sp.removeSupplier(id);
+        } catch (Exception e) {
+            toReturn = new Response(true, e.getMessage());
+        }
+        return toReturn;
+    }
+
+    public Response updateCompanyNumber(String id, int companyNumber) {
+        Response toReturn = null;
+        try {
+            sp.updateCompanySupplier(id, companyNumber);
+        } catch (Exception e) {
+            toReturn = new Response(true, e.getMessage());
+        }
+        return toReturn;
+    }
+
+    public Response updateFirstName(String id, String firstName) {
+        Response toReturn = null;
+        try {
+            sp.updateFirstName(id, firstName);
+        } catch (Exception e) {
+            toReturn = new Response(true, e.getMessage());
+        }
+        return toReturn;
+    }
+
+    public Response updateLastName(String id, String lastName) {
+        Response toReturn = null;
+        try {
+            sp.updateLastName(id, lastName);
+        } catch (Exception e) {
+            toReturn = new Response(true, e.getMessage());
+        }
+        return toReturn;
+    }
+
+    public Response updatePhone(String id, String phone) {
+        Response toReturn = null;
+        try {
+            sp.updatePhone(id, phone);
+        } catch (Exception e) {
+            toReturn = new Response(true, e.getMessage());
+        }
+        return toReturn;
+    }
+
+    public Response updateEmail(String id, String email) {
+        Response toReturn = null;
+        try {
+            sp.updateEmail(id, email);
+        } catch (Exception e) {
+            toReturn = new Response(true, e.getMessage());
+        }
+        return toReturn;
+    }
+
+    public Response updateSelfDelivery(String id, boolean self) {
+        Response toReturn = null;
+        try {
+            sp.updateSelfDelivery(id, self);
+        } catch (Exception e) {
+            toReturn = new Response(true, e.getMessage());
+        }
+        return toReturn;
+    }
+
+    public Response updatePernamentDays(String id, boolean perm) {
+        Response toReturn = null;
+        try {
+            sp.updatePernamentDays(id, perm);
+        } catch (Exception e) {
+            toReturn = new Response(true, e.getMessage());
+        }
+        return toReturn;
+    }
+
+    public Response updatePayment(String id, String pay) {
+        Response toReturn = null;
+        try {
+            sp.updatePayment(id, pay);
+        } catch (Exception e) {
+            toReturn = new Response(true, e.getMessage());
+        }
+        return toReturn;
+    }
+
+    public Response addContactMember(String supplierId, String firstName, String lastName, String email, String memberID, String phone) {
+        Response toReturn = null;
+        try {
+            sp.addContactMember(supplierId, firstName, lastName, email, memberID, phone);
+        } catch (Exception e) {
+            toReturn = new Response(true, e.getMessage());
+        }
+        return toReturn;
+    }
+
+    public Response deleteContactMember(String supplierID, String memberID) {
+        Response toReturn = null;
+        try {
+            sp.deleteContactMember(supplierID, memberID);
+        } catch (Exception e) {
+            toReturn = new Response(true, e.getMessage());
+        }
+        return toReturn;
+    }
+
+    public Response getSupplier(String id) {
+        Response toReturn = null;
+        try {
+            sp.getSupplier(id);
+        } catch (Exception e) {
+            toReturn = new Response(true, e.getMessage());
+        }
+        return toReturn;
+    }
+
+    public Response addQuantityList(String supplierID) {
+        Response toReturn = null;
+        try {
+            sp.addQuantityList(supplierID);
+        } catch (Exception e) {
+            toReturn = new Response(true, e.getMessage());
+        }
+        return toReturn;
+    }
+
+    public Response editQuantityListAmount(String supplierID, int productID, int amount) {
+        Response toReturn = null;
+        try {
+            sp.editQuantityListAmount(supplierID, productID, amount);
+        } catch (Exception e) {
+            toReturn = new Response(true, e.getMessage());
+        }
+        return toReturn;
+    }
+
+    public Response editQuantityListDiscount(String supplierID, int productID, int discount) {
+        Response toReturn = null;
+        try {
+            sp.editQuantityListDiscount(supplierID, productID, discount);
+        } catch (Exception e) {
+            toReturn = new Response(true, e.getMessage());
+        }
+        return toReturn;
+    }
+
+    public Response deleteQuantityList(String supplierID) {
+        Response toReturn = null;
+        try {
+            sp.deleteQuantityList(supplierID);
+        } catch (Exception e) {
+            toReturn = new Response(true, e.getMessage());
+        }
+        return toReturn;
+    }
+
+    public Response addQuantityListItem(String supplierID, int productID, int amount, int discount) {
+        Response toReturn = null;
+        try {
+            sp.addQuantityListItem(supplierID, productID, amount, discount);
+        } catch (Exception e) {
+            toReturn = new Response(true, e.getMessage());
+        }
+        return toReturn;
+    }
+
+    public Response deleteQuantityListItem(String supplierID, int productID) {
+        Response toReturn = null;
+        try {
+            sp.deleteQuantityListItem(supplierID, productID);
+        } catch (Exception e) {
+            toReturn = new Response(true, e.getMessage());
+        }
+        return toReturn;
+    }
+}

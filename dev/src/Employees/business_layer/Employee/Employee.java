@@ -2,20 +2,24 @@ package Employees.business_layer.Employee;
 import Employees.EmployeeException;
 
 import java.time.LocalDate;
-import java.util.HashMap;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class Employee {
     private Role role;
-    private int ID;
-    boolean employed;
+    private String ID;
+    private boolean isManager;
+    private boolean employed;
     private  TermsOfEmployment terms;
     private LocalDate transactionDate;
     private BankAccountInfo bank;
     private HashMap<LocalDate, Constraint> constraints;
 
-    public Employee (Role role, int ID, TermsOfEmployment terms, LocalDate transactionDate,  BankAccountInfo bank ){
+    public Employee (Role role, String ID, TermsOfEmployment terms, LocalDate transactionDate,  BankAccountInfo bank ) throws EmployeeException {
         this.role = role;
+        if(!validId(ID)){throw new EmployeeException("An invalid ID was entered ");}
         this.ID = ID;
+        this.isManager = isManager(role);
         employed = true;
         this.terms = terms;
         this.transactionDate = transactionDate;
@@ -28,9 +32,11 @@ public class Employee {
         return role;
     }
 
-    public int getID() {
+    public String getID() {
         return ID;
     }
+
+    public boolean getIsManager() { return isManager; }
 
     public boolean isEmployed() {
         return employed;
@@ -48,7 +54,10 @@ public class Employee {
         return bank;
     }
 
-    public HashMap<LocalDate, Constraint> getConstraints() {
+    public HashMap<LocalDate, Constraint> getConstraints() throws EmployeeException {
+        if(constraints==null){
+            throw new EmployeeException("No constraints was found");
+        }
         return constraints;
     }
 
@@ -58,7 +67,8 @@ public class Employee {
         this.role = role;
     }
 
-    public void setID(int ID) {
+    public void setID(String ID) throws EmployeeException {
+        if(!validId(ID)){throw new EmployeeException("An invalid ID was entered ");}
         this.ID = ID;
     }
 
@@ -81,29 +91,32 @@ public class Employee {
 
 // functions:
     public void giveConstraint(LocalDate date, int shift, String reason) throws EmployeeException {
+        if(!validDate(date)){
+            throw new EmployeeException("A constraint can be filed up to two weeks in advance");
+        }
         if (constraints.containsKey(date)){ // if the employment already has a constraint on one of the shifts that day.
             Constraint exist = constraints.get(date);
             if( shift == 1){// morning shift
                 if(exist.isMorningShift()){
-                    throw new EmployeeException ("You already have a constraint on this shift");
+                    throw new EmployeeException ("You already have a constraint on this shift, if you want to update it please delete and enter a new one");
                 }
                 exist.setMorningShift(true);
             }
             else if (shift ==2){// evening shift
                 if(exist.isEveningShift()){
-                    throw new EmployeeException("You already have a constraint on this shift");
+                    throw new EmployeeException("You already have a constraint on this shift, if you want to update it please delete and enter a new one");
                 }
                 exist.setEveningShift(true);
             }
-            exist.setReason(exist.getReason()+"\n"+reason);// הסיבה החדשה דורסת את הקיימת? תלוי במימוש
+            exist.setReason(exist.getReason()+"\n"+reason);
         }
 
         else{ // if the employment has no constraint on that day.
             Constraint newConstraint;
-            if(shift == 1){ // morning shift
+            if(shift == 0){ // morning shift
                 newConstraint = new Constraint(date, true, false, reason );
             }
-            else if( shift == 2){
+            else if( shift == 1){
                 newConstraint = new Constraint(date, false, true, reason );
             }
             else{
@@ -111,27 +124,12 @@ public class Employee {
             }
             constraints.put(date, newConstraint);
         }
+
+        constraints = sortConstraintsByDate(constraints);
     }
 
-public void updateConstarint (LocalDate date, int shift, String reason) throws Exception {
-    if (!constraints.containsKey(date)){
-        throw new EmployeeException("There is no constraint to update on that day");
-    }
-    Constraint exist = constraints.get(date);
-    if( shift == 1){// morning shift
-        exist.setMorningShift(true);
-    }
-    else if (shift ==2){// evening shift
-        exist.setEveningShift(true);
-    }
-    else{
-        exist.setMorningShift(true);
-        exist.setEveningShift(true);
-    }
-    exist.setReason(exist.getReason()+"\n"+reason);// הסיבה החדשה דורסת את הקיימת? תלוי במימוש
-}
 
-public void deletConstraint(LocalDate date, int shift) throws Exception {
+public void deleteConstraint(LocalDate date, int shift) throws EmployeeException {
     if (!constraints.containsKey(date)){
         throw new EmployeeException("There is no constraint to delete on that day");
     }
@@ -146,4 +144,48 @@ public void deletConstraint(LocalDate date, int shift) throws Exception {
         exist.setEveningShift(false);
     }
 }
+
+//private methods
+
+    private boolean isManager(Role role){
+        return role == Role.branchManager | role == Role.branchManagerAssistent | role == Role.humanResourcesManager;
+    }
+
+    private boolean validId(String ID){
+        char[] idChar = ID.toCharArray();
+        boolean firstHalf = false;
+        boolean secHalf = false;
+        for (int i = 0; i < 5; ++i){//Check first half
+            if ((idChar[i] > 47 && idChar[i] < 58)){//Checks ascii vals to see if valid ID
+                firstHalf = true;
+            }
+        }
+
+        for (int i = 5; i < idChar.length; ++i){//Check second half
+            if ((idChar[i] > 47 && idChar[i] < 58)){//Checks ascii vals to see if valid ID
+                secHalf = true;
+            }
+        }
+
+        //If all values are valid, returns true.
+        if (firstHalf == true && secHalf == true && idChar[4] == '-' && ID.length() == 9){
+            return true;
+        }
+
+        return false;
+    }
+
+    private boolean validDate(LocalDate date) {
+        return (LocalDate.now().isBefore(date.minusWeeks(2)));
+    }
+
+    private HashMap<LocalDate, Constraint> sortConstraintsByDate(HashMap<LocalDate, Constraint> constraints) {
+        constraints.entrySet().stream().sorted(Map.Entry.comparingByKey()).collect(Collectors.toMap(
+                Map.Entry::getKey,
+                Map.Entry::getValue,
+                (a,b)->{ throw new AssertionError();},
+                LinkedHashMap::new
+        ));
+    return constraints;
+    }
 }
