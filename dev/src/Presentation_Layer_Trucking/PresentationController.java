@@ -215,10 +215,13 @@ public class PresentationController {
         facadeService.updateDeliveryFormRealWeight(trID,dfID,weight);
     }
 
-    public void removeSiteFromTruckReport(int siteID, int id) {
+    public void removeSiteFromTruckReport(int siteID, int trID) {
+        //TODO- implement
     }
 
-    public void addDemandToTruckReport(int id, int itemNumber, int amount) {
+    public boolean addDemandToTruckReport(int itemNumber, int amount,int siteID, int trID) {
+        //TODO- implement
+        return false;
     }
 
     public void replaceTruck(int id, String truckNumber, int weight)throws IllegalStateException,IllegalArgumentException {
@@ -226,21 +229,24 @@ public class PresentationController {
         facadeService.replaceTruck(id,truckNumber,weight);
     }
 
-    public void replaceDriver(int id, int driverID) {
+    public void replaceDriver(int trID, int driverID) {
         // TODO need to implement
     }
 
-    public LinkedList<FacadeDemand> getItemOnReport(int id) {
+    public LinkedList<FacadeDemand> getItemOnReport(int trID) {
         // TODO need to implement
         return null;
     }
 
-    public void removeItemFromTruckingReport(int id, FacadeDemand demand) {
-        // TODO need to impement
+    public void removeItemFromTruckingReport(int trID, FacadeDemand demand) {
+        // TODO need to implement
     }
 
     public int getSiteDeliveryArea(int site) {
         return facadeService.getSiteDeliveryArea( site);
+    }
+
+    public boolean continueAddDemandToTruckReport(int itemNumber, int amount, int siteID, int truckId) {
     }
 
 
