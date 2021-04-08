@@ -82,10 +82,27 @@ public class InventoryController {
 
     public void modifyItemCategory(int itemId, String newCategoryName) {
         Item modItem = null;
+        Category oldCategory = null;
         Category newCategory = null;
         int count = 0; //Counter to track 'foreach' loop iteration in order to throw appropriate exception
 
         //Search the categories for the appropriate category to add the item to
+        //Start the search from base category
+        if (newCategoryName.trim().equals("") | newCategoryName.trim().equals("Uncategorized"))
+            newCategory = BASE_CATEGORY;
+        for (Item item : BASE_CATEGORY.getItems()) {
+            if (item.getID() == itemId) {
+                if (newCategoryName.trim().equals("") | newCategoryName.trim().equals("Uncategorized"))
+                    return; //Item is already in the base category
+                else {
+                    BASE_CATEGORY.removeItem(item);
+                    oldCategory = BASE_CATEGORY; //Save old category in case new category does not exist for rollback
+                }
+                modItem = item;
+                break; //Item was removed
+            }
+        }
+        //Continue search in the rest of the categories
         for (Category category : categories) {
             count++;
             if (category.getName().equals(newCategoryName))
@@ -94,17 +111,32 @@ public class InventoryController {
                 if (item.getID() == itemId) {
                     if (category.getName().equals(newCategoryName))
                         return; //Item is already in the given category
-                    else
+                    else {
                         category.removeItem(item);
+                        oldCategory = category; //Save old category in case new category does not exist for rollback
+                    }
                     modItem = item;
+                    break; //Item was removed
                 }
             }
-            if (count == categories.size() & newCategory == null)
+            if (count == categories.size() & newCategory == null) {
+                if (oldCategory != null)
+                    oldCategory.addItem(modItem); //Rollback item category modification
                 throw new IllegalArgumentException("No category with name: " + newCategoryName + " was found in the system");
+            }
             if (modItem != null & newCategory != null) {
                 newCategory.addItem(modItem);
                 return; //Item was successfully modified
             }
+        }
+        if (count == categories.size() & newCategory == null) {
+            if (oldCategory != null)
+                oldCategory.addItem(modItem); //Rollback item category modification
+            throw new IllegalArgumentException("No category with name: " + newCategoryName + " was found in the system");
+        }
+        if (modItem != null & newCategory != null) {
+            newCategory.addItem(modItem);
+            return; //Item was successfully modified
         }
         throw new IllegalArgumentException("No item with ID: " + itemId + " was found in the system.");
     }
@@ -187,7 +219,7 @@ public class InventoryController {
                 throw ex; //Rethrow exception thrown in 'try' block (different error message)
 
             Category newCategory;
-            if (parentCategoryName != null && !parentCategoryName.trim().equals("")) {
+            if (parentCategoryName != null && !parentCategoryName.trim().equals("") & !parentCategoryName.trim().equals("Uncategorized")) {
                 for (Category parentCategory : categories) {
                     if (parentCategory.getName().equals(parentCategoryName)) {
                         newCategory = new Category(categoryName, new ArrayList<>(), parentCategory, new ArrayList<>());
@@ -207,6 +239,9 @@ public class InventoryController {
     }
 
     public Category getCategory(String categoryName) {
+        if (categoryName.equals("") | categoryName.equals("Uncategorized"))
+            return BASE_CATEGORY;
+
         for (Category category: categories) {
             if (category.getName().equals(categoryName))
                 return category;
@@ -229,7 +264,7 @@ public class InventoryController {
             return;
 
         //If newParentName is null or empty, set parent category as base category
-        if (newParentName == null || newParentName.trim().equals(""))
+        if (newParentName == null || newParentName.trim().equals("") | newParentName.trim().equals("Uncategorized"))
             category.setParentCategory(BASE_CATEGORY);
         //Else, check whether the given newParentName is a valid parent category to 'category'
         else {
@@ -254,6 +289,9 @@ public class InventoryController {
     when the category is removed all its sub categories move to the parent category.
      */
     public void removeCategory(String categoryName) {
+        if (categoryName == null || categoryName.trim().equals("") | categoryName.trim().equals("Uncategorized"))
+            throw new IllegalArgumentException("Base category cannot be removed.");
+
         Category oldCategory = getCategory(categoryName);
         Category parentCategory = oldCategory.getParentCategory();
         for (Item item : oldCategory.getItems()) {

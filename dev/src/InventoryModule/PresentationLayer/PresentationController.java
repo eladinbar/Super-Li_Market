@@ -33,7 +33,7 @@ public class PresentationController implements Runnable {
         String storageL = menu.instructAndReceive("Enter storage location: follow this format \"ST-A<number>-<L/R>-S<number>\"");
         String storeL = menu.instructAndReceive("Enter shelf location: follow this format \"SH-A<number>-<L/R>-S<number>\"");
         int idManf = Integer.parseInt(menu.instructAndReceive("Enter manufacturer ID: "));
-        String category = menu.instructAndReceive("Enter category name: ");
+        String category = menu.instructAndReceive("Enter category name (enter nothing to set category as 'uncategorized'): ");
 
         Response r = service.addItem(id, name, category, costP, sellP, minA, storeL, storageL, storageQ, storeQ, idManf, new ArrayList<>());
         if (r.isErrorOccurred()) {
@@ -137,7 +137,7 @@ public class PresentationController implements Runnable {
     //category related method
     private void addCategory() {
         String catName = menu.instructAndReceive("Enter category name: ");
-        String parentCategoryName = menu.instructAndReceive("Enter parent category: (enter nothing to set an item as 'uncategorized')");
+        String parentCategoryName = menu.instructAndReceive("Enter parent category: (enter nothing to set parent as 'uncategorized')");
         Response addR = service.addCategory(catName, parentCategoryName);
         if (addR.isErrorOccurred())
             System.out.println(addR.getMessage());

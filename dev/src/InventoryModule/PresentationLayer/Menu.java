@@ -106,7 +106,7 @@ public class Menu {
         System.out.println("\nPress q to quit");
     }
     public void printMenu(List<String> menuElements) {
-        System.out.println("Please enter the number of the desired operation: ");
+        System.out.println("\nPlease enter the number of the desired operation: ");
         int option = 1;
         for (String s : menuElements) {
             System.out.println(option + ". " + s);
