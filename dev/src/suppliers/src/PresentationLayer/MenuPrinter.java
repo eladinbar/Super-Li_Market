@@ -496,9 +496,6 @@ public class MenuPrinter {
                 }
 
                 case 4 -> {
-                    System.out.println("please enter the following details: ");
-                    System.out.print("supplier id: ");
-                    supplierId = getStringFromUser();
                     System.out.print("product id: ");
                     productId = scan.nextInt();
                     System.out.print("new price: ");
@@ -518,7 +515,6 @@ public class MenuPrinter {
         while (con) {
             try {
                 output = scan.next();
-                if (output.equals("-1")) throw new ReflectiveOperationException("by pressing -1 you chose to go back");
                 con = false;
             } catch (NoSuchElementException | IllegalStateException e) {
                 System.out.println("wrong input please try again");
@@ -536,7 +532,6 @@ public class MenuPrinter {
         while (scannerCon) {
             try {
                 choose = scan.nextInt();
-                if (choose == -1) throw new ReflectiveOperationException("by pressing -1 you chose to go back");
                 if (choose < 0) {
                     System.out.println("you must choose an none-negative number ");
                 } else {
