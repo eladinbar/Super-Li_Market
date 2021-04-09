@@ -93,5 +93,8 @@ public class DeliveryForm {
         this.trID = trID;
     }
 
+    public void setUncompleted() {
+        completed = false;
+    }
 }
 

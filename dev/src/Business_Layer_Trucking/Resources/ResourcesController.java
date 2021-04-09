@@ -189,4 +189,12 @@ public class ResourcesController {
         this.currTruckNumber=truckNumber;
         makeUnavailable_Truck(truckNumber);
     }
+
+    public Driver getDriver(String driverID) {
+        return drivers.get(driverID);
+    }
+
+    public Truck getTruck(String truckNumber) {
+        return trucks.get(truckNumber);
+    }
 }

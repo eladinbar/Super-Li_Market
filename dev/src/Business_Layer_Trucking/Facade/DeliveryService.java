@@ -8,6 +8,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.Map;
 import java.util.NoSuchElementException;
 
 public class DeliveryService {
@@ -92,8 +93,8 @@ public class DeliveryService {
         return fc;
     }
 
-    public TruckingReport getTruckReport(int trNumber) throws NoSuchElementException{
-        return dc.getTruckReport(trNumber);
+    public FacadeTruckingReport getTruckReport(int trNumber) throws NoSuchElementException{
+        return new FacadeTruckingReport(dc.getTruckReport(trNumber));
     }
 
     public FacadeDeliveryForm getDeliveryForm(int dfNumber, int trNumber)throws IllegalArgumentException,NoSuchElementException {
@@ -143,10 +144,52 @@ public class DeliveryService {
     }
 
     public LinkedList<FacadeDemand> showDemands() throws NoSuchElementException {
+        LinkedList<Demand> demands = new LinkedList<>();
+        LinkedList<DeliveryForm> dfs = new LinkedList<>();
+
+        demands = dc.getDemands();
+        dfs= dc.getCurrDF();
         LinkedList < FacadeDemand> output = new LinkedList<>();
-        LinkedList<Demand> demands=  dc.showDemands();
-        for ( Demand d : demands) output.add(new FacadeDemand(d));
-        return output;
+
+        if (!demands.isEmpty())
+        {
+            for(Demand d: demands)
+            {
+                boolean added =false;
+
+                if (demands.isEmpty()){
+                    for(Demand demand:demands){
+                        output.add((new FacadeDemand(demand)));
+                        return output;
+                    }
+                }
+                for (DeliveryForm df:dfs)
+                {
+                    if (!df.isCompleted()) {
+                        if (df.getItems().containsKey(d.getItemID()) && df.getDestination() == d.getSite()) {
+                            added = true;
+                            int newAmount = d.getAmount() - df.getItems().get(d.getItemID());
+                            if (newAmount > 0) {
+                                Demand toAdd = new Demand(d.getItemID(), d.getSite(), newAmount);
+                                output.add(new FacadeDemand(toAdd));
+
+                            }
+                        }
+                    }
+
+                }
+                if (!added)
+                    output.add(new FacadeDemand(d));
+            }
+            return output;
+        }
+
+        throw new NoSuchElementException("no more demands found yet");
+
+
+
+
+
     }
 
     public String getItemName(int itemID) {return  dc.getItemName(itemID);}
@@ -299,7 +342,7 @@ public class DeliveryService {
         dc.chooseDateToCurrentTR(chosen);
     }
 
-    public void removeSiteFromPool(int siteID) {
+    public void removeSiteFromPool(int siteID) throws NoSuchElementException, IllegalStateException{
         dc.removeSite(siteID);
     }
 
@@ -327,7 +370,75 @@ public class DeliveryService {
     }
 
     public FacadeTruckingReport getNewTruckReport(FacadeTruckingReport oldTr) {
-        return new FacadeTruckingReport(dc.getReplaceTruckingReport(oldTr.getID()));
+        TruckingReport old = dc.getReplaceTruckingReport(oldTr.getID());
+        if (old != null) {
+            return new FacadeTruckingReport(old);
+        }
+        else{
+            createTruckingReport();
+            FacadeTruckingReport toRet= new FacadeTruckingReport(dc.getCurrTR());
+
+            saveReportReplacedTruckReport();
+            return toRet;
+        }
+    }
+
+
+    public void saveReportReplacedTruckReport() {
+        dc.saveReplacedTruckReport();
+    }
+
+    /**
+     * this method transfers the new chosen demands into an active trucking report
+     * in case there is no replace active report, such as no demands left, creates a new one
+     * @param tr the Trucking report the active trucking report is replacing
+     * @return true if it could find an active trucking report, returns false otherwise.
+     */
+    public int moveDemandsFromCurrentToReport(FacadeTruckingReport tr) {
+        return dc.moveDemandsFromCurrentToReport(tr.getID());
+
+    }
+
+    public void setNewTruckToTR(int TRid, String truckNumber) {
+        dc.setNewTruckToTR(TRid,truckNumber);
+    }
+    public void setNewDriverToTR(int TRid, String driverID){
+        dc.setNewDriverToTR(TRid,driverID);
+    }
+
+    public LinkedList<FacadeDemand> getAllDemands() {
+
+        LinkedList<FacadeDemand> fd = new LinkedList<>();
+        LinkedList<Demand> demands = dc.getDemands();
+        for (Demand d:demands){
+            fd.add(new FacadeDemand(d));
+        }
+        return fd;
+
+    }
+
+    public void makeDeliveryFormUncompleted(int trID, int dfID) {
+        dc.makeDeliveryFormUncompleted(trID, dfID);
+    }
+
+    public LinkedList<FacadeDeliveryForm> getUncompletedDeliveryFormsFromOld(int old_id) {
+        LinkedList<DeliveryForm> deliveryForms = dc.getUncompletedDeliveryFormsFromOld(old_id);
+        LinkedList<FacadeDeliveryForm> fdf = new LinkedList<>();
+        for (DeliveryForm dfs: deliveryForms){
+            fdf.add(new FacadeDeliveryForm(dfs));
+        }
+        return fdf;
+    }
+
+    public LinkedList<FacadeDemand> getUnCompletedItemOnReportByOld(int id) {
+         LinkedList<DeliveryForm> fdf = dc.getUncompletedDeliveryFormsFromOld(id);
+         LinkedList<FacadeDemand> fd = new LinkedList<>();
+         for (DeliveryForm df:fdf){
+             for (Map.Entry<Integer,Integer> entry: df.getItems().entrySet()){
+                 fd.add(new FacadeDemand(entry.getKey(),df.getDestination(),entry.getValue()));
+             }
+         }
+         return fd;
     }
 }
 
