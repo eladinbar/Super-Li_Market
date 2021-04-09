@@ -19,7 +19,7 @@ public class MenuPrinter {
     }
 
     //the main function
-    public void startWork() throws ReflectiveOperationException {
+    public void startWork() {
         int choose = 1;
 /*        boolean logged = true;
         System.out.println("\nWelcome to Super-Lee, Please enter password: ");
@@ -48,12 +48,13 @@ public class MenuPrinter {
                 case 13 -> editAgrreement();
                 case 14 -> removeProductFromOrder();
                 case 15 -> getQuantityList();
+                case 16 -> getAgreement();
             }
         }
     }
 
     //a helper function to print the menu
-    public int PrintMenu() throws ReflectiveOperationException {
+    public int PrintMenu() {
         System.out.println("welcome to Super Lee");
         System.out.println("1. add supplier");
         System.out.println("2. get supplier");
@@ -75,7 +76,7 @@ public class MenuPrinter {
     }
 
     //a helper function that add supplier to the system
-    private void addSupplierFunc() throws ReflectiveOperationException {
+    private void addSupplierFunc() {
         System.out.print("please enter following details: ");
         System.out.print("\nfirst name: ");
         String firstName = getStringFromUser();
@@ -152,13 +153,13 @@ public class MenuPrinter {
         }
     }
 
-    private void getSupplier() throws ReflectiveOperationException {
+    private void getSupplier() {
         System.out.print("please enter supplier id: ");
         String supplierId = getStringFromUser();
         System.out.println(pc.getSupplier(supplierId));
     }
 
-    private void addQuantityList() throws ReflectiveOperationException { //case 4
+    private void addQuantityList() { //case 4
         System.out.print("please enter supplier id: ");
         String supplierId = getStringFromUser();
         System.out.println(pc.addQuantityList(supplierId));
@@ -182,7 +183,7 @@ public class MenuPrinter {
         System.out.println(pc.getQuantityList(supplierId));
     }
 
-    private void editQuantityList() throws ReflectiveOperationException { //case 5
+    private void editQuantityList() { //case 5
         System.out.print("please enter supplier id: ");
         String supplierId = getStringFromUser();
         System.out.println("Please choose an option to Edit:");
@@ -231,7 +232,7 @@ public class MenuPrinter {
         }
     }
 
-    private void createNewOrder() throws ReflectiveOperationException { //case 6
+    private void createNewOrder() { //case 6
         System.out.print("please enter\nsupplier id: ");
         String supplierId = getStringFromUser();
         System.out.print("date (dd/mm/yyyy): ");
@@ -261,7 +262,7 @@ public class MenuPrinter {
         }
     }
 
-    private void setPermanentOrder() throws ReflectiveOperationException { //case 7
+    private void setPermanentOrder() { //case 7
         System.out.print("please enter\nsupplier id: ");
         String supplierId = getStringFromUser();
         System.out.println("day (1-7) in a week to get the order");
@@ -288,7 +289,7 @@ public class MenuPrinter {
     }
 
     //a helper funtion that edit supplier details in the system
-    private void updateSupplierDetailFunc() throws ReflectiveOperationException {
+    private void updateSupplierDetailFunc() {
         int opt = -1;
         System.out.println("please enter supplier id");
         String supplierID = getStringFromUser();
@@ -410,18 +411,24 @@ public class MenuPrinter {
     }
 
     //a helper function that approve that the order arrived in the system
-    private void approveOrder() throws ReflectiveOperationException {
+    private void approveOrder() {
         System.out.println("please enter order ID");
         System.out.println(pc.approveOrder(getIntFromUser()));
     }
 
     //a helper function to get an order from the system
-    private void getOrder() throws ReflectiveOperationException {
+    private void getOrder() {
         System.out.print("please enter order ID: ");
         System.out.println(pc.getOrder(getIntFromUser()));
     }
 
-    private void getQuantityList() throws ReflectiveOperationException {
+    private void getQuantityList() {
+        System.out.print("please enter supplier ID: ");
+        String supplierID = getStringFromUser();
+        System.out.println(pc.getQuantityList(supplierID));
+    }
+
+    private void getAgreement() {
         System.out.print("please enter supplier ID: ");
         String supplierID = getStringFromUser();
         System.out.println(pc.getQuantityList(supplierID));
@@ -429,7 +436,7 @@ public class MenuPrinter {
 
 
     //a helper function to add a product to an order
-    private void addProductToOrder() throws ReflectiveOperationException {
+    private void addProductToOrder() {
         System.out.println("please enter order ID");
         int orderID = getIntFromUser();
         System.out.println("enter a product company number ID");
@@ -440,14 +447,14 @@ public class MenuPrinter {
     }
 
     //a helper function to get a product
-    private void getProduct() throws ReflectiveOperationException {
+    private void getProduct() {
         System.out.println("please enter product ID");
         System.out.println(pc.getProduct(getIntFromUser()));
     }
 
 
     //a helper function to add a new product to the system
-    private void createProduct() throws ReflectiveOperationException {
+    private void createProduct() {
         System.out.println("please enter product name");
         String name = getStringFromUser();
         System.out.println("please enter manufacturer name");
@@ -455,7 +462,7 @@ public class MenuPrinter {
         System.out.println(pc.createProduct(name, manufacturer));
     }
 
-    private void editAgrreement() throws ReflectiveOperationException {
+    private void editAgrreement() {
         System.out.print("Please enter supplier ID:");
         String supplierId = getStringFromUser();
         boolean flag = true;
@@ -509,7 +516,7 @@ public class MenuPrinter {
     }
 
     //a helper function to get a string from the user
-    private String getStringFromUser() throws ReflectiveOperationException {
+    private String getStringFromUser() {
         boolean con = true;
         String output = "";
         while (con) {
@@ -526,7 +533,7 @@ public class MenuPrinter {
     }
 
     //a helper function to get in from the user
-    private int getIntFromUser() throws ReflectiveOperationException {
+    private int getIntFromUser() {
         int choose = -1;
         boolean scannerCon = true;
         while (scannerCon) {
