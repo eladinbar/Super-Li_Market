@@ -26,8 +26,4 @@ public class DefectsLogger {
     public void addDefectEntry(DefectEntry defectEntry) {
         this.defectEntries.add(defectEntry);
     }
-
-    public void removeDefectEntry(DefectEntry defectEntry) {
-        this.defectEntries.remove(defectEntry);
-    }
 }

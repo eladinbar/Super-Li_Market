@@ -29,28 +29,8 @@ public abstract class Sale {
         this.name = name;
     }
 
-    public Calendar getStartDate(Calendar startDate) {
-        return saleDates.getFirst();
-    }
-
-    public Calendar getEndDate(Calendar endDate) {
-        return saleDates.getSecond();
-    }
-
-    public void setSaleDates(Pair<Calendar, Calendar> saleDates) {
-        this.saleDates = saleDates;
-    }
-
     public void setSaleDates(Calendar startDate, Calendar endDate) {
         this.saleDates.setFirst(startDate);
-        this.saleDates.setSecond(endDate);
-    }
-
-    public void setStartSaleDate(Calendar startDate) {
-        this.saleDates.setFirst(startDate);
-    }
-
-    public void setEndSaleDate(Calendar endDate) {
         this.saleDates.setSecond(endDate);
     }
 }

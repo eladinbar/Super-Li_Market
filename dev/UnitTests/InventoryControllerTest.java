@@ -29,62 +29,6 @@ public class InventoryControllerTest {
     }
 
     @Test
-    public void getItemTest() {
-    }
-
-    @Test
-    public void modifyItemNameTest() {
-    }
-
-    @Test
-    public void modifyItemCategoryTest() {
-    }
-
-    @Test
-    public void modifyItemCostPriceTest() {
-    }
-
-    @Test
-    public void modifyItemSellingPriceTest() {
-    }
-
-    @Test
-    public void changeItemLocationTest() {
-    }
-
-    @Test
-    public void changeItemShelfLocationTest() {
-    }
-
-    @Test
-    public void changeItemStorageLocationTest() {
-    }
-
-    @Test
-    public void modifyItemQuantityTest() {
-    }
-
-    @Test
-    public void modifyItemShelfQuantityTest() {
-    }
-
-    @Test
-    public void modifyItemStorageQuantityTest() {
-    }
-
-    @Test
-    public void addItemSupplierTest() {
-    }
-
-    @Test
-    public void removeItemSupplierTest() {
-    }
-
-    @Test
-    public void removeItemTest() {
-    }
-
-    @Test
     public void testAddCategory_NullParent() {
         //act
         inventoryController.addCategory("test", null);
@@ -205,54 +149,5 @@ public class InventoryControllerTest {
         } catch(IllegalArgumentException ex) {
             assertTrue(true); //Exception caught, function worked as intended
         }
-    }
-
-    @Test
-    public void addItemSaleTest() {
-    }
-
-    @Test
-    public void addCategorySaleTest() {
-
-    }
-
-    @Test
-    public void modifySaleNameTest() {
-    }
-
-    @Test
-    public void modifySaleDiscountTest() {
-    }
-
-    @Test
-    public void modifySaleDatesTest() {
-    }
-
-    @Test
-    public void addItemDiscountTest() {
-    }
-
-    @Test
-    public void addCategoryDiscountTest() {
-    }
-
-    @Test
-    public void recordDefectTest() {
-    }
-
-    @Test
-    public void inventoryReportTest() {
-    }
-
-    @Test
-    public void categoryReportTest() {
-    }
-
-    @Test
-    public void itemShortageReportTest() {
-    }
-
-    @Test
-    public void defectsReportTest() {
     }
 }

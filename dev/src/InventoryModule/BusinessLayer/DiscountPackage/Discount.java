@@ -12,10 +12,6 @@ public abstract class Discount {
         return supplierID;
     }
 
-    public void setSupplierID(int supplierID) {
-        this.supplierID = supplierID;
-    }
-
     public double getDiscount() {
         return discount;
     }
@@ -28,15 +24,7 @@ public abstract class Discount {
         return date;
     }
 
-    public void setDate(Calendar date) {
-        this.date = date;
-    }
-
     public int getItemCount() {
         return itemCount;
-    }
-
-    public void setItemCount(int itemCount) {
-        this.itemCount = itemCount;
     }
 }

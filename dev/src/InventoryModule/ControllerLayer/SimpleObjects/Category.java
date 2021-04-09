@@ -27,23 +27,11 @@ public class Category implements SimpleEntity {
         return items;
     }
 
-    public void setItems(List<Item> items) {
-        this.items = items;
-    }
-
     public String getParentCategory() {
         return parentCategory;
     }
 
-    public void setParentCategory(String parentCategory) {
-        this.parentCategory = parentCategory;
-    }
-
     public List<String> getSubCategories() {
         return subCategories;
-    }
-
-    public void setSubCategories(List<String> subCategories) {
-        this.subCategories = subCategories;
     }
 }

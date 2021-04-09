@@ -1,6 +1,5 @@
 package InventoryModule.ControllerLayer.SimpleObjects;
 
-
 public class Item implements SimpleEntity {
     private int ID;
     private String name;
@@ -74,46 +73,7 @@ public class Item implements SimpleEntity {
         return manufacturerID;
     }
 
-    public void setID(int ID) {
-        this.ID = ID;
-    }
-
     public void setName(String name) {
         this.name = name;
-    }
-
-    public void setCostPrice(double costPrice) {
-        this.costPrice = costPrice;
-    }
-
-    public void setSellingPrice(double sellingPrice) {
-        this.sellingPrice = sellingPrice;
-    }
-
-    public void setShelfQuantity(int shelfQuantity) {
-        this.shelfQuantity = shelfQuantity;
-        this.totalQuantity = storageQuantity + shelfQuantity;
-    }
-
-    public void setStorageQuantity(int storageQuantity) {
-        this.storageQuantity = storageQuantity;
-        this.totalQuantity = storageQuantity + shelfQuantity;
-    }
-
-    public void setMinAmount(int minAmount) {
-        this.minAmount = minAmount;
-    }
-
-    public void setShelfLocation(String shelfLocation) {
-        this.shelfLocation = shelfLocation;
-
-    }
-
-    public void setStorageLocation(String storageLocation) {
-        this.storageLocation = storageLocation;
-    }
-
-    public void setManufacturerID(int manufacturerID) {
-        this.manufacturerID = manufacturerID;
     }
 }

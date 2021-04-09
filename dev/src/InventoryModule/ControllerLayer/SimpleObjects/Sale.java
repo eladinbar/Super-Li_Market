@@ -3,7 +3,6 @@ package InventoryModule.ControllerLayer.SimpleObjects;
 import InfrastructurePackage.Pair;
 
 import java.util.Calendar;
-import java.util.Date;
 
 public class Sale<T extends SimpleEntity> {
     private String name;

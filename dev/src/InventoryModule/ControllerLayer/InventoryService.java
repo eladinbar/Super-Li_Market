@@ -17,15 +17,13 @@ public interface InventoryService {
     Response modifyItemCostPrice(int itemId, double newCostPrice);
     Response modifyItemSellingPrice(int itemId, double newSellingPrice);
     /*
-    if the locations are null, the location will stay the same.
+    if the locations are null or empty, display an appropriate error message.
      */
-    Response changeItemLocation(int itemId, String newStorageLocation, String newShelfLocation);
     Response changeItemShelfLocation(int itemId, String newShelfLocation);
     Response changeItemStorageLocation(int itemId, String newStorageLocation);
     /*
     If quantity is a negative number the quantity of the respective item will not be changed.
      */
-    Response modifyItemQuantity(int itemId, int newStorageQuantity, int newShelfQuantity);
     Response modifyItemShelfQuantity(int itemId, int newShelfQuantity);
     Response modifyItemStorageQuantity(int itemId, int newStorageQuantity);
     Response addItemSupplier(int itemId, int supplierId);
@@ -35,7 +33,7 @@ public interface InventoryService {
     //-------------------------------------------------------------------------Category functions
 
     /*
-    If parent category is null, the new category should be added as a main category.
+    If parent category is null or empty, the new category should be added as a main category.
      */
     Response addCategory(String categoryName, String parentCategoryName);
     ResponseT<Category> getCategory(String categoryName);

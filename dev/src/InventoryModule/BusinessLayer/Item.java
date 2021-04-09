@@ -30,10 +30,6 @@ public class Item {
         return ID;
     }
 
-    public void setID(int ID) {
-        this.ID = ID;
-    }
-
     public String getName() {
         return name;
     }
@@ -62,20 +58,8 @@ public class Item {
         return minAmount;
     }
 
-    public void setMinAmount(int minAmount) {
-        this.minAmount = minAmount;
-    }
-
     public int getManufacturerID() {
         return manufacturerID;
-    }
-
-    public void setManufacturerID(int manufacturerID) {
-        this.manufacturerID = manufacturerID;
-    }
-
-    public List<Integer> getSupplierIDs() {
-        return supplierIDs;
     }
 
     public void addSupplier(int supplierID) {
@@ -109,22 +93,6 @@ public class Item {
 
     public void setStorageQuantity(int storageQuantity) {
         this.quantity.setStorageQuantity(storageQuantity);
-    }
-
-    public void addShelfQuantity(int shelfQuantity) {
-        this.quantity.addShelfQuantity(shelfQuantity);
-    }
-
-    public void addStorageQuantity(int storageQuantity) {
-        this.quantity.addStorageQuantity(storageQuantity);
-    }
-
-    public void removeShelfQuantity(int shelfQuantity) {
-        this.quantity.removeShelfQuantity(shelfQuantity);
-    }
-
-    public void removeStorageQuantity(int storageQuantity) {
-        this.quantity.removeStorageQuantity(storageQuantity);
     }
 
     public String getShelfLocation() {

@@ -143,26 +143,6 @@ public class InventoryServiceImpl implements InventoryService {
     }
 
     @Override
-    public Response changeItemLocation(int itemId, String newShelfLocation, String newStorageLocation) {
-        Response response;
-        //Check basic argument constraints
-        if (itemId < 0 | newShelfLocation == null || newShelfLocation.trim().equals("") |
-                newStorageLocation == null || newStorageLocation.trim().equals("")) {
-            response = new Response(true, "One or more of the given arguments is invalid.");
-            return response;
-        }
-        //Call business layer function
-        try {
-            inventoryController.changeItemLocation(itemId, newShelfLocation, newStorageLocation);
-            response = new Response(false, "Item location changed successfully.");
-            return response;
-        } catch (Exception ex) {
-            response = new Response(true, ex.getMessage());
-            return response;
-        }
-    }
-
-    @Override
     public Response changeItemShelfLocation(int itemId, String newShelfLocation) {
         Response response;
         //Check basic argument constraints
@@ -193,25 +173,6 @@ public class InventoryServiceImpl implements InventoryService {
         try {
             inventoryController.changeItemStorageLocation(itemId, newStorageLocation);
             response = new Response(false, "Item storage location changed successfully.");
-            return response;
-        } catch (Exception ex) {
-            response = new Response(true, ex.getMessage());
-            return response;
-        }
-    }
-
-    @Override
-    public Response modifyItemQuantity(int itemId, int newShelfQuantity, int newStorageQuantity) {
-        Response response;
-        //Check basic argument constraints
-        if (itemId < 0 | newShelfQuantity <0  | newStorageQuantity < 0) {
-            response = new Response(true, "One or more of the given arguments is invalid.");
-            return response;
-        }
-        //Call business layer function
-        try {
-            inventoryController.modifyItemQuantity(itemId, newShelfQuantity, newStorageQuantity);
-            response = new Response(false, "Item quantity modified successfully.");
             return response;
         } catch (Exception ex) {
             response = new Response(true, ex.getMessage());

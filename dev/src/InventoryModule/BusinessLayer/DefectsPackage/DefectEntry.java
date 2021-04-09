@@ -26,42 +26,19 @@ public class DefectEntry {
         return entryDate;
     }
 
-    public void setEntryDate(Calendar entryDate) {
-        this.entryDate = entryDate;
-    }
-
     public int getItemID() {
         return itemID;
-    }
-
-    public void setItemID(int itemID) {
-        this.itemID = itemID;
     }
 
     public String getItemName() {
         return itemName;
     }
 
-    public void setItemName(String itemName) {
-        this.itemName = itemName;
-    }
-
     public int getQuantity() {
         return quantity;
     }
 
-    public void setQuantity(int quantity) {
-        this.quantity = quantity;
-    }
-
     public String getLocation() {
         return location.getShelfLocation() != null ? location.getShelfLocation() : location.getStorageLocation();
-    }
-
-    public void setLocation(String location) {
-        if (this.location.getShelfLocation() != null)
-            this.location.setShelfLocation(location);
-        else //if (this.location.getStorageLocation() != null)
-            this.location.setStorageLocation(location);
     }
 }
