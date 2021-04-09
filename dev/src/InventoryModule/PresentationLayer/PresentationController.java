@@ -407,7 +407,7 @@ public class PresentationController implements Runnable {
             return;
         }
         int suppId = Integer.parseInt(temp);
-        String[] disDateS = menu.instructAndReceive("Enter the date of the discount").split("-");
+        String[] disDateS = menu.instructAndReceive("Enter the date of the discount: ").split("-");
         ;
         Calendar date = Calendar.getInstance();
         date.set(Integer.parseInt(disDateS[0]), Integer.parseInt(disDateS[1]) - 1, Integer.parseInt(disDateS[2]));
