@@ -45,6 +45,7 @@ public class MenuPrinter {
                 case 11 -> createProduct();
                 case 12 -> getProduct();
                 case 13 -> editAgrreement();
+                case 14 -> removeProductFromOrder();
             }
         }
     }
@@ -448,7 +449,9 @@ public class MenuPrinter {
             System.out.println("please choose an option:");
             System.out.println("1. add product");
             System.out.println("2. remove product");
-            System.out.println("3. back to main menu");
+            System.out.println("3. edit company product id");
+            System.out.println("4. edit product price");
+            System.out.println("5. back to main menu");
             System.out.print("Option:");
             int opt = getIntFromUser();
             int productId = -1;
@@ -467,7 +470,28 @@ public class MenuPrinter {
                     productId = getIntFromUser();
                     System.out.println(pc.removeItemFromAgreement(supplierId, productId));
                 }
-                case 3 -> flag = false;
+                case 3 -> {
+                    System.out.println("please enter the following details: ");
+                    System.out.print("supplier id: ");
+                    supplierId = getStringFromUser();
+                    System.out.println("product id: ");
+                    productId = scan.nextInt();
+                    System.out.println("new company product id: ");
+                    int newCompId = scan.nextInt();
+                    System.out.println(pc.editAgreementItemCompanyProductID(supplierId, productId, newCompId));
+                }
+
+                case 4 -> {
+                    System.out.println("please enter the following details: ");
+                    System.out.print("supplier id: ");
+                    supplierId = getStringFromUser();
+                    System.out.print("product id: ");
+                    productId = scan.nextInt();
+                    System.out.print("new price: ");
+                    int price = scan.nextInt();
+                    System.out.println(pc.editAgreementItemPrice(supplierId, productId, price));
+                }
+                case 5 -> flag = false;
                 default -> System.out.println("wrong input try again");
             }
         }
@@ -475,7 +499,6 @@ public class MenuPrinter {
 
     //a helper function to get a string from the user
     private String getStringFromUser() throws ReflectiveOperationException {
-
         boolean con = true;
         String output = "";
         while (con) {
@@ -543,5 +566,14 @@ public class MenuPrinter {
             pc.createProduct("name" + i, "knor");
             products.add(i);
         }
+    }
+
+    private void removeProductFromOrder(){
+        System.out.println("please enter the following details: ");
+        System.out.println("order id: ");
+        int orderId = scan.nextInt();
+        System.out.println("product id: ");
+        int productId = scan.nextInt();
+        System.out.println(pc.removeProductFromOrder(orderId, productId));
     }
 }
