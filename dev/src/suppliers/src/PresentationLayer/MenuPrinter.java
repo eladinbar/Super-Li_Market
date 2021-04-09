@@ -261,9 +261,7 @@ public class MenuPrinter {
         System.out.print("please enter\nsupplier id: ");
         String supplierId = getStringFromUser();
         System.out.print("date (dd/mm/yyyy): ");
-        String date = getStringFromUser();
-        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("d/MM/yyyy");
-        LocalDate lclDate = LocalDate.parse(date, dateTimeFormatter);
+        LocalDate lclDate = getDateFromUser();
         String order = pc.createOrder(lclDate, supplierId);
         System.out.println(order);
         int orderId = -1;
@@ -557,6 +555,25 @@ public class MenuPrinter {
 
     }
 
+    //a helper function to get a Date from the user
+    private LocalDate getDateFromUser(){
+        boolean con = true;
+        String output = "";
+        LocalDate lclDate=LocalDate.now();
+        while (con) {
+            try {
+                output = scan.next();
+                DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("d/MM/yyyy");
+                lclDate = LocalDate.parse(output, dateTimeFormatter);
+                con=false;
+            }catch (Exception e){
+                System.out.print("invalid date input, please insert again (dd/mm/yyyy): ");
+            }
+        }
+        return lclDate;
+    }
+
+
     //a helper function to get in from the user
     private int getIntFromUser() {
         int choose = -1;
@@ -579,6 +596,8 @@ public class MenuPrinter {
         }
         return choose;
     }
+
+
 
     private void removeProductFromOrder() {
         System.out.println("please enter the following details: ");
