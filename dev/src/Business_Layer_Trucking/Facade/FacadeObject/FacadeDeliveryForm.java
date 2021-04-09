@@ -14,6 +14,8 @@ public class FacadeDeliveryForm implements FacadeObject{
     private HashMap<Integer, Integer> items;
     private int leavingWeight;
     private int trID;
+    private boolean completed;
+
 
     public FacadeDeliveryForm(int ID, int origin, int destination, HashMap<Integer,Integer> items,
                         int leavingWeight, int trID){
@@ -23,6 +25,7 @@ public class FacadeDeliveryForm implements FacadeObject{
         this.items = items;
         this.leavingWeight = leavingWeight;
         this.trID =trID;
+        completed = false;
     }
 
     public FacadeDeliveryForm(DeliveryForm df){
@@ -35,6 +38,7 @@ public class FacadeDeliveryForm implements FacadeObject{
         }
         leavingWeight = df.getLeavingWeight();
         trID = df.getTrID();
+        completed = df.isCompleted();
     }
 
     public HashMap<Integer, Integer> getItems() {
@@ -61,6 +65,9 @@ public class FacadeDeliveryForm implements FacadeObject{
         return trID;
     }
 
+    public boolean isCompleted() {
+        return completed;
+    }
 
     public void setDestination(int destination) {
         this.destination = destination;

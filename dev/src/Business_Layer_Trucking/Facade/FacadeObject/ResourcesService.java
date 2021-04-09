@@ -118,4 +118,13 @@ public class ResourcesService
     public void replaceTruck(String old_truck, String truckNumber) {
         rc.replaceTruck(old_truck,truckNumber);
     }
+
+    public FacadeDriver getDriver(String driverID) {
+        return new FacadeDriver(rc.getDriver(driverID));
+    }
+
+    public FacadeTruck getTruck(String truckNumber) {
+        return new FacadeTruck(rc.getTruck(truckNumber));
+
+    }
 }

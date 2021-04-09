@@ -1,14 +1,14 @@
 package Business_Layer_Trucking.Facade;
 
 
-import Business_Layer_Trucking.Delivery.DeliveryForm;
 import Business_Layer_Trucking.Facade.FacadeObject.*;
 import Business_Layer_Trucking.Resources.Driver;
 import javax.management.openmbean.KeyAlreadyExistsException;
+import java.nio.file.ProviderMismatchException;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.InputMismatchException;
 import java.util.LinkedList;
-import java.util.List;
 import java.util.NoSuchElementException;
 
 public class FacadeService {
@@ -41,7 +41,7 @@ public class FacadeService {
         FacadeTruck ft =  new FacadeTruck(resourcesService.chooseTruck(truck));
         if (weightToDeliver+ ft.getWeightNeto()>ft.getMaxWeight())
         {
-            throw new IllegalStateException("Total Weight is: "+weightToDeliver+ft.getWeightNeto()+"But Truck can carry: "+ft.getMaxWeight());
+            throw new IllegalStateException("Total Weight is: "+(weightToDeliver+ft.getWeightNeto())+" But Truck can carry: "+ft.getMaxWeight());
         }
         currTR.setTruckNumber(ft.getLicenseNumber());
         deliveryService.chooseTruck(truck);
@@ -92,7 +92,7 @@ public class FacadeService {
     }
 
     public FacadeTruckingReport getTruckReport(int trNumber) {
-        return new FacadeTruckingReport(deliveryService.getTruckReport(trNumber));
+        return deliveryService.getTruckReport(trNumber);
     }
 
     public FacadeDeliveryForm getDeliveryForm(int dfNumber, int trNumber)throws IllegalArgumentException,NoSuchElementException {
@@ -151,8 +151,8 @@ public class FacadeService {
 
     }
 
-    public void addItem(int id, double weight, String name,int siteID)throws NoSuchElementException, KeyAlreadyExistsException {
-        deliveryService.addItem(id, weight,name,siteID);
+    public void addItem( double weight, String name,int siteID)throws NoSuchElementException, KeyAlreadyExistsException {
+        deliveryService.addItem( weight,name,siteID);
     }
 
     public void displaySites() {
@@ -212,7 +212,7 @@ public class FacadeService {
     }
 
     public LinkedList<FacadeDemand> getCurrentDemandsBySite(FacadeSite site) {
-        return  deliveryService.getCurrentDemands();
+        return  deliveryService.getCurrentDemands(site);
 
     }
 
@@ -238,7 +238,7 @@ public class FacadeService {
 
     public void updateDeliveryFormRealWeight(int trID, int dfID, int weight) throws IllegalStateException{
 
-
+        deliveryService.updateDeliveryFormRealWeight(trID,dfID,weight);
         LinkedList<FacadeTruck>trucks=resourcesService.getTrucks();
         FacadeTruck ft=null;
         for (FacadeTruck facadeTruck:trucks)
@@ -250,18 +250,23 @@ public class FacadeService {
 
         if (weight> ft.getMaxWeight())
         {
+            deliveryService.makeDeliveryFormUncompleted(trID,dfID);
             deliveryService.archiveNotCompleted(trID);
             throw new IllegalStateException("Overweight related to Delivery Form Number:"+dfID+"  In TR number: "+trID);
+
         }
 
-        else deliveryService.updateDeliveryFormRealWeight(trID,dfID,weight);
          if (deliveryService.checkIfAllCompleted(trID)){
+             FacadeTruckingReport truckingReport = deliveryService.getTruckReport(trID);
+             resourcesService.makeAvailable_Driver(truckingReport.getDriverID());
+             resourcesService.makeAvailable_Truck(truckingReport.getTruckNumber());
              deliveryService.archive(trID);
+
          }
     }
 
 
-    public void replaceTruck(int trid, String truckNumber, int weight) throws IllegalStateException,IllegalArgumentException{
+    public void replaceTruck(int trid, String truckNumber, int weight) throws IllegalStateException,IllegalArgumentException,ProviderMismatchException{
         FacadeTruckingReport ftr=getTruckReport(trid);
         String old_truck=ftr.getTruckNumber();
         String curr_Driver=ftr.getDriverID();
@@ -275,7 +280,6 @@ public class FacadeService {
 
 
         FacadeTruck ft=null;
-        resourcesService.replaceTruck(old_truck,truckNumber);
         LinkedList<FacadeTruck> trucks=resourcesService.getTrucks();
         for (FacadeTruck f:trucks)
         {
@@ -293,10 +297,12 @@ public class FacadeService {
         if (fd!=null){
             if (weight>fd.getLicenseType().getSize())
             {
-                throw new IllegalStateException("Driver cant handle this weight");
+                throw new ProviderMismatchException("Driver cant handle this weight, choose a new driver first");
             }
         }
         else throw new IllegalArgumentException("Entered wrong driver ID");
+        resourcesService.replaceTruck(old_truck,truckNumber);
+
 
     }
 
@@ -306,6 +312,17 @@ public class FacadeService {
 
     public void removeSiteFromTruckReport(int siteID, int trID)throws NoSuchElementException{
         deliveryService.removeSiteFromTruckReport(siteID,trID);
+        if (deliveryService.getCurrTruckingReport().getDestinations().isEmpty()){
+            resourcesService.makeAvailable_Truck(deliveryService.getCurrTruckingReport().getTruckNumber());
+            resourcesService.makeAvailable_Driver(deliveryService.getCurrTruckingReport().getDriverID());
+        }
+        else{
+            saveReportReplacedTruckReport();
+        }
+    }
+
+    private void saveReportReplacedTruckReport() {
+        deliveryService.saveReportReplacedTruckReport();
     }
 
     public boolean addDemandToTruckReport(int itemNumber, int amount, int siteID, int trID)throws IllegalStateException {
@@ -349,12 +366,61 @@ public class FacadeService {
         deliveryService.chooseDateToCurrentTR(chosen);
     }
 
-    public void removeSiteFromPool(int siteID)throws NoSuchElementException,IllegalStateException {
+    public void removeSiteFromPool(int siteID)throws NoSuchElementException, IllegalStateException {
         deliveryService.removeSiteFromPool(siteID);
     }
 
     public void removeDemand(FacadeDemand d) {
         deliveryService.removeDemand(d);
+    }
+
+    public LinkedList<FacadeDeliveryForm> getUnComplitedDeliveryForms(int trId) {
+        return deliveryService.getUnComplitedDeliveryForms(trId);
+    }
+
+    public FacadeTruckingReport getNewTruckReport(FacadeTruckingReport oldTr) {
+        return deliveryService.getNewTruckReport(oldTr);
+    }
+
+
+    public void moveDemandsFromCurrentToReport(FacadeTruckingReport tr) {
+
+        int replacedId =  deliveryService.moveDemandsFromCurrentToReport(tr);
+        FacadeTruckingReport replaced = deliveryService.getTruckReport(replacedId);
+        resourcesService.makeUnavailable_Driver(replaced.getDriverID());
+        resourcesService.makeUnavailable_Truck(replaced.getTruckNumber());
+
+    }
+
+    public void replaceTruckAndDriver(String truckNumber, String driverID, FacadeTruckingReport tr, int weight) throws InputMismatchException{
+        FacadeDriver fd = resourcesService.getDriver(driverID);
+        FacadeTruck ft = resourcesService.getTruck(truckNumber);
+        if (ft.getMaxWeight()<(weight + ft.getWeightNeto()))
+            throw new InputMismatchException("the truck's cannot carry this weight");
+        if (fd.getLicenseType().getSize()<(weight + ft.getWeightNeto()))
+            throw new InputMismatchException("the driver cannot drive with this weight");
+        resourcesService.makeUnavailable_Truck(truckNumber);
+        resourcesService.makeUnavailable_Driver(driverID);
+
+        deliveryService.setNewTruckToTR(tr.getID(),truckNumber);
+        deliveryService.setNewDriverToTR(tr.getID(),driverID);
+        tr.setDriverID(driverID);
+        tr.setTruckNumber(truckNumber);
+        deliveryService.saveReportReplacedTruckReport();
+    }
+
+
+    public LinkedList<FacadeDemand> getAllDemands() {
+        return deliveryService.getAllDemands();
+    }
+
+    public LinkedList<FacadeDeliveryForm> getUncompletedDeliveryFormsFromOld(int old_id) {
+        return deliveryService.getUncompletedDeliveryFormsFromOld(old_id);
+
+    }
+
+    public LinkedList<FacadeDemand> getUnCompletedItemOnReportByOld(int id) {
+        return deliveryService.getUnCompletedItemOnReportByOld(id);
     }
 }
 

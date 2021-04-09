@@ -4,6 +4,7 @@ import Business_Layer_Trucking.Facade.FacadeObject.*;
 import Business_Layer_Trucking.Facade.FacadeService;
 import Business_Layer_Trucking.Resources.Driver;
 import javax.management.openmbean.KeyAlreadyExistsException;
+import java.nio.file.ProviderMismatchException;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.*;
@@ -83,8 +84,8 @@ public class PresentationController {
         facadeService.addSite(city,  deliveryArea, phoneNumber, contactName,name );
     }
 
-    public void addItem(int id, double weight, String name, int siteID) throws NoSuchElementException, KeyAlreadyExistsException {
-        facadeService.addItem(id, weight,name, siteID);
+    public void addItem( double weight, String name, int siteID) throws NoSuchElementException, KeyAlreadyExistsException {
+        facadeService.addItem( weight,name, siteID);
     }
 
 
@@ -156,12 +157,8 @@ public class PresentationController {
 
 
     public LinkedList<FacadeDemand> getCurrentDemandsBySite(FacadeSite site) {
-        LinkedList<FacadeDemand> demands = facadeService.getCurrentDemandsBySite(site);
-        LinkedList<FacadeDemand> output = new LinkedList<>();
-        for (FacadeDemand demand :  demands){
-            if (demand.getSite() == site.getSiteID()) output.add(demand);
-        }
-        return output;
+        return  facadeService.getCurrentDemandsBySite(site);
+
     }
     public int getWeightOfCurrReport(){
         return facadeService.getWeightOfCurrReport();
@@ -226,12 +223,12 @@ public class PresentationController {
         else return facadeService.addDemandToTruckReport(itemNumber,amount,siteID,trID);
     }
 
-    public void replaceTruck(int id, String truckNumber, int weight)throws IllegalStateException,IllegalArgumentException {
+    public void replaceTruck(int id, String truckNumber, int weight)throws IllegalStateException,IllegalArgumentException,ProviderMismatchException {
 
         facadeService.replaceTruck(id,truckNumber,weight);
     }
 
-    public void replaceDriver(int trID, String driverID, int weight)throws IllegalStateException,NoSuchElementException{
+    public void replaceDriver(int trID, String driverID, int weight)throws IllegalStateException,NoSuchElementException, ProviderMismatchException {
        facadeService.replaceDriver(trID,driverID,weight);
     }
 
@@ -253,7 +250,7 @@ public class PresentationController {
     public void chooseDateToCurrentTR(LocalDate chosen) {
         facadeService.chooseDateToCurrentTR(chosen);
     }
-    public void removeSiteFromPool(int siteID){
+    public void removeSiteFromPool(int siteID)throws NoSuchElementException, IllegalStateException{
         facadeService.removeSiteFromPool(siteID);
 
     }
@@ -261,5 +258,40 @@ public class PresentationController {
 
     public void removeDemand(FacadeDemand d) {
         facadeService.removeDemand(d);
+    }
+
+    public LinkedList<FacadeDeliveryForm> getUnComplitedDeliveryForms(int trId) {
+        return facadeService.getUnComplitedDeliveryForms(trId);
+    }
+
+    public FacadeTruckingReport getNewTruckReportID(FacadeTruckingReport oldTr) {
+
+        return facadeService.getNewTruckReport(oldTr);
+    }
+
+    public void moveDemandsFromCurrentToReport(FacadeTruckingReport tr) {
+        facadeService.moveDemandsFromCurrentToReport(tr);
+    }
+
+    public void replaceTruckAndDriver(String truckNumber, String driverID, FacadeTruckingReport tr, int weight) throws InputMismatchException {
+        facadeService.replaceTruckAndDriver(truckNumber,driverID,tr,weight);
+    }
+
+
+    public LinkedList<FacadeDemand> getAllDemands() {
+        return facadeService.getAllDemands();
+    }
+
+    public FacadeTruckingReport getCurrentTruckReport() {
+        return facadeService.getCurrTruckReport();
+
+    }
+
+    public LinkedList<FacadeDeliveryForm> getUncompletedDeliveryFormsFromOld(int old_id) {
+        return facadeService.getUncompletedDeliveryFormsFromOld(old_id);
+    }
+
+    public LinkedList<FacadeDemand> getUnCompletedItemOnReportByOld(int id) {
+        return facadeService.getUnCompletedItemOnReportByOld(id);
     }
 }

@@ -32,6 +32,19 @@ public class TruckingReport {
     }
     public TruckingReport(int ID){
         this.ID=ID;
+        this.destinations = new LinkedList<>();
+
+    }
+
+    public TruckingReport(int lastReportID, TruckingReport oldTr) {
+        this.ID = lastReportID;
+        this.date=oldTr.date;
+        this.leavingHour=oldTr.leavingHour;
+        this.truckNumber=oldTr.truckNumber;
+        this.driverID=oldTr.driverID;
+        this.origin=oldTr.origin;
+        this.destinations=oldTr.destinations;
+        this.TRReplace=oldTr;
     }
 
     public int getID() {

@@ -1,8 +1,6 @@
 package Business_Layer_Trucking.Delivery;
 
 
-import Business_Layer_Trucking.Facade.FacadeObject.FacadeDemand;
-
 import javax.management.openmbean.KeyAlreadyExistsException;
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -25,6 +23,7 @@ public class DeliveryController {
     private int lastDeliveryForms;
     private LinkedList<DeliveryForm> currDF;
     private TruckingReport currTR;
+    private int lastItemId ;
     private static DeliveryController instance=null;
 
     public static DeliveryController getInstance() {
@@ -50,14 +49,18 @@ public class DeliveryController {
         this.lastSiteID =1;
         this.currDF=new LinkedList<>();
         this.currTR=new TruckingReport(lastReportID);
+        lastReportID++;
         this.activeDeliveryForms=new HashMap<>();
+        this.lastItemId = 1;
     }
 
     public int createNewTruckingReport(){
+
         currDF =  new LinkedList<>();
         currTR =  new TruckingReport(lastReportID);
         currTR.setID(lastReportID);
-        return lastReportID ;
+        lastReportID++;
+        return lastReportID-1 ;
 
     }
 
@@ -211,6 +214,7 @@ public class DeliveryController {
                 DeliveryForm deliveryForm=new DeliveryForm(lastDeliveryForms,items.get(demand.getItemID()).getOriginSiteId(),siteID
                         ,itemsOnDF, (int) (demand.getAmount()*items.get(demand.getItemID()).getWeight()),currTR.getID());
                 currDF.add(deliveryForm);
+                lastDeliveryForms++;
             }
 
         }
@@ -238,7 +242,7 @@ public class DeliveryController {
 
 
     }
-    public boolean removeSite(int siteID) throws NoSuchElementException,IllegalStateException
+    public boolean removeSite(int siteID) throws NoSuchElementException, IllegalStateException
     {
         if (!sites.containsKey(siteID))
         {
@@ -268,14 +272,15 @@ public class DeliveryController {
      * Moving a TR that has been done from the active to the non active (old) zone.
      */
     public void saveReport(){
-
+        removeCurrTakenDemandsFromTotal();
         activeTruckingReports.put(currTR.getID(),currTR);
         activeDeliveryForms.put(currTR.getID(),currDF);
-        lastReportID++;
 
     }
 
     public TruckingReport getTruckReport(int trNumber) throws NoSuchElementException{
+        if (currTR.getID() == trNumber)
+            return currTR;
         if (oldTruckingReports.containsKey(trNumber))
         {
             return oldTruckingReports.get(trNumber);
@@ -324,11 +329,47 @@ public class DeliveryController {
      * @throws NoSuchElementException
      */
     public void removeDestination(int site) throws NoSuchElementException{
+        LinkedList<DeliveryForm> toRemove = new LinkedList();
         if (!currTR.getDestinations().contains(site))
         {
             throw new NoSuchElementException("Site does not exist");
         }
-        else currTR.getDestinations().remove(site);
+        else {
+
+            for (DeliveryForm df: currDF){
+
+                if (df.getDestination() == site || df.getOrigin() == site ) {
+
+
+                    for (Map.Entry<Integer, Integer> entry : df.getItems().entrySet()) {
+
+                        addDemandToSystem(entry.getKey(), df.getDestination(), entry.getValue());
+                    }
+                    toRemove.add(df);
+                }
+
+
+            }
+            int counter = 0;
+            int temp =0;
+            for (Integer id: currTR.getDestinations()){
+
+                if (id == site){
+                    counter = temp;
+                }
+                temp++;
+            }
+            currTR.getDestinations().remove(counter);
+
+        }
+        for (DeliveryForm df: toRemove){
+            if (currDF.contains(df)){
+                currDF.remove(df);
+            }
+            if (currDF.isEmpty())
+                throw new NoSuchElementException("no more demands left to deliver, aborting..");
+        }
+        updateTruckReportDestinations(currTR.getID());
     }
 
     /**
@@ -355,12 +396,14 @@ public class DeliveryController {
         updateTruckReportDestinations(currTR.getID());
     }
 
-    public void removeItemFromPool(int item)throws NoSuchElementException,IllegalStateException{
+    public void removeItemFromPool(int item)throws NoSuchElementException, IllegalStateException {
+
+
+
         if (!items.containsKey(item))
         {
             throw new NoSuchElementException("No item with that ID");
         }
-        // TODO ido needs to copy this to his branch
         for (Map.Entry<Integer,LinkedList<DeliveryForm>> entry:activeDeliveryForms.entrySet())
         {
             LinkedList<DeliveryForm> ldf=entry.getValue();
@@ -380,18 +423,19 @@ public class DeliveryController {
                 throw new IllegalStateException("Cant delete item when there is a demand with it");
         }
         items.remove(item);
-        //---------
-
     }
 
-    public void addItem(int id, double weight, String name, int siteID)throws NoSuchElementException,KeyAlreadyExistsException {
-        if (items.containsKey(id))
+
+
+    public void addItem( double weight, String name, int siteID)throws NoSuchElementException,KeyAlreadyExistsException {
+        if (items.containsKey(lastItemId))
             throw new KeyAlreadyExistsException("ID already taken");
         else if (!sites.containsKey(siteID))
             throw new NoSuchElementException("this site doesn't exist");
         else {
-            Item item=new Item(id, weight, name,siteID );
-            items.put(id,item);
+            Item item=new Item(lastItemId, weight, name,siteID );
+            items.put(lastItemId,item);
+            lastItemId++;
         }
     }
 
@@ -419,7 +463,6 @@ public class DeliveryController {
      */
     public LinkedList<Demand> showDemands() throws NoSuchElementException {
 
-        // TODO need to subtract the amount from current DF and current TR in order to show the relavent amount
         if (!demands.isEmpty())
         {
             LinkedList<Demand> result=new LinkedList<>();
@@ -432,13 +475,13 @@ public class DeliveryController {
                 }
                 for (DeliveryForm df:currDF)
                 {
-                    if(df.getItems().containsKey(d.getItemID())&&df.getDestination()==d.getSite()) // TODO need to check if *&&d.getAmount()>0* needed
+                    if(df.getItems().containsKey(d.getItemID())&&df.getDestination()==d.getSite())
                     {
+                        added = true;
                         int newAmount =d.getAmount()-df.getItems().get(d.getItemID());
                         if (newAmount>0){
                             Demand toAdd=new Demand(d.getItemID(),d.getSite(),newAmount);
                             result.add(toAdd);
-                            added = true;
                         }
                         //result.add(d);
                     }
@@ -472,9 +515,11 @@ public class DeliveryController {
      */
     public LinkedList<Site> getCurrentSites() {
         LinkedList<Site> result=new LinkedList<>();
-        for (Map.Entry<Integer,Site> entry:sites.entrySet())
+        LinkedList<Integer> sitesID = currTR.getDestinations();
+        for (Integer id: sitesID)
         {
-            result.add(entry.getValue());
+
+            result.add(sites.get((id)));
         }
         return result;
     }
@@ -534,6 +579,9 @@ public class DeliveryController {
         {
             throw new NoSuchElementException("Entered wrong site id");
         }
+        if (items.get(itemId).getOriginSiteId() == site){
+            throw new NoSuchElementException("Origin site and Deliver Site must be different");
+        }
         boolean inserted=false;
         for (Demand d:demands)
         {
@@ -580,7 +628,7 @@ public class DeliveryController {
         return currTR;
     }
 
-    public List<DeliveryForm> getCurrDF() {
+    public LinkedList<DeliveryForm> getCurrDF() {
         return currDF;
     }
 
@@ -634,14 +682,35 @@ public class DeliveryController {
     public void archive(int trID){
         oldTruckingReports.put(trID,activeTruckingReports.get(trID));
         oldDeliveryForms.put(trID,getDeliveryForms(trID));
+        activeTruckingReports.remove(trID);
+        activeDeliveryForms.remove(trID);
+        activeDeliveryForms.remove(getDeliveryForms(trID));
     }
 
     public void archiveNotCompleted(int trID) {
-        LinkedList<DeliveryForm> dfsToTranfer= activeDeliveryForms.get(trID);
-        oldTruckingReports.put(trID,activeTruckingReports.get(trID));
-        int new_TR_ID=createNewTruckingReport();
-        oldDeliveryForms.put(trID,dfsToTranfer);
-        activeDeliveryForms.put(new_TR_ID,dfsToTranfer);
+        TruckingReport truckReport = getTruckReport(trID);
+        int newTrID= createNewTruckingReport();
+        currTR.setDate(truckReport.getDate());
+        currTR.setLeavingHour(truckReport.getLeavingHour());
+        currTR.setTruckNumber(truckReport.getTruckNumber());
+        currTR.setDriverID(truckReport.getDriverID());
+        currTR.setOrigin(truckReport.getOrigin());
+        currTR.setDestinations(truckReport.getDestinations());
+        currTR.setTRReplace(truckReport);
+        // removing all Delivery forms
+        LinkedList<DeliveryForm> oldDfs =  activeDeliveryForms.get(truckReport.getID());
+
+        for (DeliveryForm df : oldDfs){
+            DeliveryForm nd = new DeliveryForm(df);
+            nd.setID(lastDeliveryForms);
+            lastDeliveryForms++;
+            currDF.add(nd);
+        }
+        activeDeliveryForms.remove(truckReport.getID());
+        oldDeliveryForms.put(truckReport.getID(),oldDfs);
+        //sets the old truck report and removes from active
+        oldTruckingReports.put(truckReport.getID(),truckReport);
+        activeTruckingReports.remove(truckReport.getID());
 
 
     }
@@ -651,22 +720,42 @@ public class DeliveryController {
     }
 
     public void removeSiteFromTruckReport(int siteID, int trID)throws NoSuchElementException{
-        boolean removed=false;
-        TruckingReport tr=activeTruckingReports.get(trID);
-        LinkedList<DeliveryForm> ldfs=activeDeliveryForms.get(trID);
-        for (DeliveryForm df:ldfs)
-        {
-            if (df.getDestination()==siteID||df.getOrigin()==siteID)
-            {
-                ldfs.remove(df);
-                tr.getDestinations().remove(Integer.valueOf(siteID));//TODO-check if works!
-                removed=true;
+        boolean removed =false;
+        LinkedList<DeliveryForm> ldfs= new LinkedList<>(currDF);
+        for (DeliveryForm df:ldfs) {
+            if (!df.isCompleted()){
+
+                for (Map.Entry<Integer, Integer> entry : df.getItems().entrySet()) {
+
+                    addDemandToSystem(entry.getKey(), df.getDestination(), entry.getValue());
+                }
+                if (df.getDestination() == siteID || df.getOrigin() == siteID) {
+
+                    currDF.remove(df);
+                    currTR.getDestinations().remove(Integer.valueOf(siteID));
+
+                    removed = true;
+                }
             }
         }
         if (!removed) {
             throw new NoSuchElementException("site does not included in Truck Report");
         }
 
+        updateTruckReportDestinations(currTR.getID());
+
+    }
+
+    public TruckingReport getReplaceTruckingReport(int trID) {
+        if (currTR.getTRReplace().getID() == trID)
+            return currTR;
+        for(Map.Entry<Integer,TruckingReport> act : activeTruckingReports.entrySet()){
+            if (act.getValue().getTRReplace().getID() == trID){
+                return act.getValue();
+            }
+        }
+
+        return null;
     }
 
     public boolean addDemandToTruckReport(int itemNumber, int amount, int siteID, int trID)throws IllegalStateException {
@@ -712,8 +801,7 @@ public class DeliveryController {
     }
 
     public LinkedList<Demand> getItemOnReport(int trID) {
-        TruckingReport truckingReport=activeTruckingReports.get(trID);
-        LinkedList<DeliveryForm> ldfs=activeDeliveryForms.get(trID);
+        LinkedList<DeliveryForm> ldfs= getDeliveryFormsFromOld(trID);
         LinkedList<Demand> result=new LinkedList<>();
         for (DeliveryForm df:ldfs)
         {
@@ -727,20 +815,33 @@ public class DeliveryController {
         return result;
     }
 
+    private LinkedList<DeliveryForm> getDeliveryFormsFromOld(int trID) {
+        if (currTR.getTRReplace().getID() == trID)
+            return currDF;
+        TruckingReport tr = getReplaceTruckingReport(trID);
+        return activeDeliveryForms.get(tr.getID());
+    }
+
     public void removeItemFromTruckingReport(int trID,int itemID,int siteID){
-        LinkedList<DeliveryForm> deliveryForms=activeDeliveryForms.get(trID);
+
+        LinkedList<DeliveryForm> deliveryForms=getUncompletedDeliveryFormsFromOld(trID);
         int origin=items.get(itemID).getOriginSiteId();
         for (DeliveryForm df:deliveryForms)
         {
             if (df.getDestination()==siteID&&df.getOrigin()==origin&&df.getItems().containsKey(itemID))
             {
+                addDemandToSystem(itemID,siteID,df.getItems().get(itemID));
                 df.getItems().remove(itemID);
-                if (df.getItems().isEmpty())
+
+                if (df.getItems().isEmpty()) {
+
                     deliveryForms.remove(df);
+                }
+
             }
         }
-        updateTruckReportDestinations(trID);
-
+        updateTruckReportDestinations(getReplaceTruckingReport(trID).getID());
+        saveReport();
     }
 
     public boolean continueAddDemandToTruckReport(int itemNumber, int amount, int siteID, int trId){
@@ -809,5 +910,134 @@ public class DeliveryController {
                 break;
             }
         }
+    }
+
+    public int getItemOrigin(int itemID) {
+        return items.get(itemID).getOriginSiteId();
+    }
+
+    public LinkedList<Demand> getCurrentDemands() {
+        LinkedList<Demand> result = new LinkedList<>();
+        for(DeliveryForm df: currDF){
+            for(Map.Entry<Integer,Integer> entry: df.getItems().entrySet()){
+                result.add(new Demand(entry.getKey(),df.getDestination(), entry.getValue()));
+            }
+        }
+        return result;
+    }
+
+
+    public void saveReplacedTruckReport() {
+
+        activeTruckingReports.put(currTR.getID(),currTR);
+        activeDeliveryForms.put(currTR.getID(),currDF);
+    }
+
+    public int moveDemandsFromCurrentToReport(int replaceId) {
+
+        /*TruckingReport replace = getReplaceTruckingReport(replaceId);
+        if (replace != null){
+            for(DeliveryForm df: currDF){
+                boolean found = false;
+                for (DeliveryForm rdf:activeDeliveryForms.get(replace.getID())){
+                    if (rdf.getOrigin() == df.getOrigin() && rdf.getDestination() == df.getDestination()){
+                        mergeDeliveryForms(df,rdf);
+                        found = true;
+                    }
+                }
+                if (!found){
+                    activeDeliveryForms.get(replace.getID()).add(df);
+                    activeTruckingReports.get(replace.getID()).getDestinations().add(df.getDestination());
+                }
+            }
+            return replace.getID();
+        }
+        else*/
+
+            currTR.setTRReplace(getTruckReport(replaceId));
+            int output = currTR.getID();
+            saveReport();
+            return output;
+
+
+
+
+
+
+    }
+
+    /**
+     * this method merges 2 delivery forms
+     * @param df
+     * @param rdf
+     */
+    private void mergeDeliveryForms(DeliveryForm df, DeliveryForm rdf) {
+        if (!(rdf.getOrigin() == df.getOrigin() && rdf.getDestination() == df.getDestination())){
+            throw new InputMismatchException("delivery forms do not has same origin or destination");
+        }
+        for (Map.Entry<Integer,Integer> dfItem: df.getItems().entrySet()){
+            boolean found =false;
+            for (Map.Entry<Integer,Integer> rdfItem: rdf.getItems().entrySet()){
+                if (dfItem.getKey().equals(rdfItem.getKey())) {
+                    rdfItem.setValue(rdfItem.getValue() + dfItem.getValue());
+                    found = true;
+                }
+            }
+            if (!found){
+                rdf.getItems().put(dfItem.getKey(),dfItem.getValue());
+            }
+
+        }
+        removeCurrTakenDemandsFromTotal();
+
+    }
+
+    private void removeCurrTakenDemandsFromTotal(){
+        for (DeliveryForm deliveryForm: currDF){
+            if(!deliveryForm.isCompleted()) {
+                HashMap<Integer, Integer> items = deliveryForm.getItems();
+                LinkedList<Demand> toRemove = new LinkedList<>();
+                for (Map.Entry<Integer, Integer> entry : items.entrySet()) {
+                    for (Demand demand : demands) {
+                        if (demand.getItemID() == entry.getKey() && demand.getSite() == deliveryForm.getDestination()) {
+                            demand.setAmount(demand.getAmount() - entry.getValue());
+                            if (demand.getAmount() == 0)
+                                toRemove.add(demand);
+                        }
+                    }
+                }
+                for (Demand d : toRemove) {
+                    demands.remove(d);
+                }
+            }
+        }
+
+    }
+
+    public void setNewTruckToTR(int tRid, String truckNumber) {
+        getTruckReport(tRid).setTruckNumber(truckNumber);
+    }
+    public void setNewDriverToTR(int tRid,String driverID){
+        getTruckReport(tRid).setDriverID(driverID);
+    }
+
+
+    public void makeDeliveryFormUncompleted(int trID, int dfID) {
+        LinkedList<DeliveryForm> deliveryForms = activeDeliveryForms.get(trID);
+        for (DeliveryForm df:deliveryForms){
+            if (df.getID() == dfID) {
+
+                df.setUncompleted();
+            }
+
+        }
+    }
+
+    public LinkedList<DeliveryForm> getUncompletedDeliveryFormsFromOld(int old_id) {
+        TruckingReport replace = getReplaceTruckingReport(old_id);
+        if (replace.getID() == currTR.getID())
+            return currDF;
+
+        return activeDeliveryForms.get(replace.getID());
     }
 }
