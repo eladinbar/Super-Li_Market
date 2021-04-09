@@ -56,6 +56,7 @@ public class MenuPrinter {
                     System.out.println("6. edit agreement");
                     System.out.println("7. get quantityList");
                     System.out.println("8. get agreement");
+                    System.out.println("9. remove supplier");
                     chooseInsideMenu = getIntFromUser();
                     switch (chooseInsideMenu) {
                         case 1 -> addSupplierFunc();
@@ -66,6 +67,7 @@ public class MenuPrinter {
                         case 6 -> editAgrreement();
                         case 7 -> getQuantityList();
                         case 8 -> getAgreement();
+                        case 9 -> removeSupplier();
                     }
                 }
                 case 2 -> {
@@ -98,6 +100,12 @@ public class MenuPrinter {
                 }
             }
         }
+    }
+
+    private void removeSupplier() {
+        System.out.print("please enter supplier id: ");
+        String id = getStringFromUser();
+        System.out.println(pc.removeSupplier(id));
     }
 
     //a helper function that add supplier to the system
