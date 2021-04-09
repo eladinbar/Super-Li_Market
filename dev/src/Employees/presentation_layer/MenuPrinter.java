@@ -13,6 +13,7 @@ public class MenuPrinter {
     Scanner sc = new Scanner ( System.in );
 
     public int uploadProgram(){
+        sc.useDelimiter ( "\n" );
         System.out.println ("choose the option you'd like:\n1.upload a program with an existing data.\n2.upload a program without an existing data." );
         return getInt ();
     }
@@ -212,14 +213,25 @@ public class MenuPrinter {
     }
 
     public int getInt(){
-        while(true)
-        {
-            try{
-                return sc.nextInt ();
-            }catch (Exception e){
-                System.out.println ("Not a number, please try again." );
+        boolean notAnumber = false;
+        int out;
+        try {
+            out =  sc.nextInt ( );
+        } catch (Exception e) {
+            notAnumber = true;
+            System.out.println ( "Not a number, please try again." );
+            out = -1;
+        }
+        while (notAnumber) {
+            try {
+                out = sc.nextInt ( );
+            } catch (Exception e) {
+                System.out.println ( "Not a number, please try again." );
+                notAnumber = true;
+                out =- 1;
             }
         }
+        return out;
     }
 
     public void printChoiceException() {
