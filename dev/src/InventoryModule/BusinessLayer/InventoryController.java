@@ -75,6 +75,21 @@ public class InventoryController {
         throw new IllegalArgumentException("No item with ID: " + itemId + " was found in the system.");
     }
 
+    public Category getItemCategory(int itemId) {
+        for (Category category : categories) {
+            for (Item item : category.getItems()) {
+                if (item.getID() == itemId)
+                    return category;
+            }
+        }
+        //Check in base category as well
+        for (Item item : BASE_CATEGORY.getItems()) {
+            if (item.getID() == itemId)
+                return BASE_CATEGORY;
+        }
+        throw new IllegalArgumentException("No item with ID: " + itemId + " was found in the system.");
+    }
+
     public void modifyItemName(int itemId, String newName) {
         Item item = getItem(itemId);
         item.setName(newName);
@@ -151,11 +166,6 @@ public class InventoryController {
         item.setSellingPrice(newSellingPrice);
     }
 
-    public void changeItemLocation(int itemId, String newShelfLocation, String newStorageLocation) {
-        Item item = getItem(itemId);
-        item.setLocation(newShelfLocation, newStorageLocation);
-    }
-
     public void changeItemShelfLocation(int itemId, String newShelfLocation) {
         Item item = getItem(itemId);
         item.setShelfLocation(newShelfLocation);
@@ -164,11 +174,6 @@ public class InventoryController {
     public void changeItemStorageLocation(int itemId, String newStorageLocation) {
         Item item = getItem(itemId);
         item.setStorageLocation(newStorageLocation);
-    }
-
-    public void modifyItemQuantity(int itemId, int newShelfQuantity, int newStorageQuantity) {
-        Item item = getItem(itemId);
-        item.setQuantity(newShelfQuantity, newStorageQuantity);
     }
 
     public void modifyItemShelfQuantity(int itemId, int newShelfQuantity) {
