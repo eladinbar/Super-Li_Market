@@ -45,8 +45,8 @@ public class TextFormatter {
     public <T extends SimpleEntity> void discountMenuFormat(Discount<T> discount) {
         System.out.println("Supplier ID: " + discount.getSupplierID() + "\n" +
                 "Discount: " + discount.getDiscount() + "\n" +
-                "Date: " + discount.getDate().toString() + "\n" +
-                "Count: " + discount.getItemCount() +
+                "Date: " + dateFormat(discount.getDate()) + "\n" +
+                "Count: " + discount.getItemCount() + "\n"+
                  "Applied On:");
     }
 

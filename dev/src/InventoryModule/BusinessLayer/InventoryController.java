@@ -398,7 +398,7 @@ public class InventoryController {
     public List<Discount> getDiscount(int supplierId, Calendar discountDate) {
         List<Discount> discountList = new ArrayList<>();
         for (Discount discount : discounts) {
-            if (discount.getSupplierID() == supplierId & discount.getDate().equals(discountDate))
+            if (discount.getSupplierID() == supplierId & discount.getDate().compareTo(discountDate) == 0)
                 discountList.add(discount);
         }
 

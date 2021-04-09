@@ -427,6 +427,7 @@ public class InventoryServiceImpl implements InventoryService {
 
     @Override
     public Response addItemSale(String saleName, int itemID, double saleDiscount, Calendar startDate, Calendar endDate) {
+        clearDate(startDate,endDate);
         Response response;
         //Check basic argument constraints
         if (saleName == null || saleName.trim().equals("") | itemID < 0 | saleDiscount < 0) {
@@ -446,6 +447,7 @@ public class InventoryServiceImpl implements InventoryService {
 
     @Override
     public Response addCategorySale(String saleName, String categoryName, double saleDiscount, Calendar startDate, Calendar endDate) {
+        clearDate(startDate,endDate);
         Response response;
         //Check basic argument constraints
         if (saleName == null || saleName.trim().equals("") | saleDiscount < 0) {
@@ -493,6 +495,7 @@ public class InventoryServiceImpl implements InventoryService {
 
     @Override
     public Response modifySaleDates(String saleName, Calendar startDate, Calendar endDate) {
+        clearDate(startDate,endDate);
         Response response;
         try{
             inventoryController.modifySaleDates(saleName, startDate, endDate);
@@ -510,6 +513,7 @@ public class InventoryServiceImpl implements InventoryService {
     @Override
     @SuppressWarnings("unchecked")
     public <T extends SimpleEntity> ResponseT<List<Discount<T>>> getDiscount(int supplierId, Calendar discountDate) {
+        clearDate(discountDate);
         //response to return created
         ResponseT<List<Discount<T>>> responseT;
         List<Discount<T>> simpleDiscs = new ArrayList<>();
@@ -564,6 +568,7 @@ public class InventoryServiceImpl implements InventoryService {
 
     @Override
     public Response addItemDiscount(int supplierId, double discount, Calendar discountDate, int itemCount, int itemId) {
+        clearDate(discountDate);
         Response response;
         if (supplierId <= 0 || (discount <= 0 || discount >= 1) || itemCount <= 0 || itemId <= 0) {
             response = new Response(true, "One oe more Arguments is invalid");
@@ -581,6 +586,7 @@ public class InventoryServiceImpl implements InventoryService {
 
     @Override
     public Response addCategoryDiscount(int supplierId, double discount, Calendar discountDate, int itemCount, String categoryName) {
+        clearDate(discountDate);
         Response response;
         if (supplierId <= 0 || (discount <= 0 || discount >= 1) || itemCount <= 0 || categoryName.isEmpty() || categoryName.isBlank()) {
             response = new Response(true, "One oe more Arguments is invalid");
@@ -600,6 +606,7 @@ public class InventoryServiceImpl implements InventoryService {
 
     @Override
     public Response recordDefect(int itemId, Calendar entryDate, int defectQuantity, String defectLocation) {
+        clearDate(entryDate);
         Response response;
         if (itemId <= 0 || defectQuantity <= 0 || defectLocation.isEmpty() || defectLocation.isBlank()) {
             response = new Response(true, "One oe more Arguments is invalid");
@@ -673,6 +680,7 @@ public class InventoryServiceImpl implements InventoryService {
 
     @Override
     public ResponseT<List<DefectEntry>> defectsReport(Calendar fromDate, Calendar toDate) {
+        clearDate(fromDate,toDate);
         ResponseT<List<DefectEntry>> defectResponse;
         List<DefectEntry> simpleEntries = new ArrayList<>();
         try {
@@ -686,5 +694,14 @@ public class InventoryServiceImpl implements InventoryService {
             defectResponse = new ResponseT<>(true, e.getMessage(), null);
         }
         return defectResponse;
+    }
+
+    private void clearDate(Calendar... calendars){
+        for (Calendar cl: calendars) {
+            cl.clear(Calendar.MILLISECOND);
+            cl.clear(Calendar.SECOND);
+            cl.clear(Calendar.MINUTE);
+            cl.clear(Calendar.HOUR);
+        }
     }
 }
