@@ -28,7 +28,7 @@ public class EmployeeController {
 
     public HashMap<String, Employee> getEmployees() throws EmployeeException {
         if(loggedIn==null){
-            throw new EmployeeException("No user is login");
+            throw new EmployeeException("No user is logged in");
         }
 
         if(!loggedIn.getIsManager()) {
@@ -70,7 +70,7 @@ public class EmployeeController {
 
     public Employee getEmployee(String Id) throws EmployeeException {
         if(loggedIn==null){
-            throw new EmployeeException("No user is login");
+            throw new EmployeeException("No user is logged in");
         }
 
         if(!loggedIn.getIsManager()) {
@@ -84,7 +84,7 @@ public class EmployeeController {
 
     public void giveConstraint(LocalDate date, int shift, String reason) throws EmployeeException {
         if(loggedIn==null){
-            throw new EmployeeException("No user is login");
+            throw new EmployeeException("No user is logged in");
         }
 
         if(loggedIn.getIsManager()){
@@ -101,7 +101,7 @@ public class EmployeeController {
 
     public void deleteConstraint (LocalDate date, int shift) throws EmployeeException {
         if(loggedIn==null){
-            throw new EmployeeException("No user is login");
+            throw new EmployeeException("No user is logged in");
         }
 
         if(loggedIn.getIsManager()){
@@ -131,7 +131,7 @@ public class EmployeeController {
     public Employee addEmployee(FacadeEmployee e) throws EmployeeException {
 
         if(loggedIn==null){
-            throw new EmployeeException("No user is login");
+            throw new EmployeeException("No user is logged in");
         }
 
         if(!loggedIn.getIsManager()) {
@@ -179,7 +179,7 @@ public class EmployeeController {
 
     public Employee removeEmployee(String Id) throws EmployeeException {
         if(loggedIn==null){
-            throw new EmployeeException("No user is login");
+            throw new EmployeeException("No user is logged in");
         }
 
         if(!loggedIn.getIsManager()){
@@ -196,7 +196,7 @@ public class EmployeeController {
 
     public void deleteBankAccount(String Id) throws EmployeeException {
         if(loggedIn==null){
-            throw new EmployeeException("No user is login");
+            throw new EmployeeException("No user is logged in");
         }
 
         if(!loggedIn.getIsManager()){
@@ -210,7 +210,7 @@ public class EmployeeController {
 
     public void updateBankAccount(String Id, int accountNum, int bankBranch, String bank) throws EmployeeException {
         if(loggedIn==null){
-            throw new EmployeeException("No user is login");
+            throw new EmployeeException("No user is logged in");
         }
 
         if(!loggedIn.getIsManager()){
@@ -227,7 +227,7 @@ public class EmployeeController {
 
     public void updateTermsOfemployee(String Id, int salary, int educationFund, int sickDays, int daysOff) throws EmployeeException {
         if(loggedIn==null){
-            throw new EmployeeException("No user is login");
+            throw new EmployeeException("No user is logged in");
         }
 
         if(!loggedIn.getIsManager()){
@@ -245,7 +245,7 @@ public class EmployeeController {
 
     public LinkedList<String> getRoleInDate(LocalDate date, Role roleName, int shift) throws EmployeeException {
         if(loggedIn==null){
-            throw new EmployeeException("No user is login");
+            throw new EmployeeException("No user is logged in");
         }
         if(!loggedIn.getIsManager()){
             throw new EmployeeException("Only an administrator can perform this operation");
@@ -277,7 +277,10 @@ public class EmployeeController {
     }
 
     public boolean isExist(String role, String Id){
-        return employees.containsValue(Id) && employees.get(Id).isEmployed() &&employees.get ( Id ).getRole ().name ().equals ( role );
+        boolean isExist = employees.containsKey(Id);
+        isExist = isExist && employees.get(Id).isEmployed();
+        isExist = isExist &&employees.get ( Id ).getRole ().name ().equals ( role );
+        return isExist &&employees.get ( Id ).getRole ().name ().equals ( role );
     }
 
     public void createData () throws EmployeeException {

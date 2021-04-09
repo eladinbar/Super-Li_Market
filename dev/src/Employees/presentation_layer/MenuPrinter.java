@@ -6,8 +6,6 @@ import Employees.business_layer.facade.facadeObject.FacadeEmployee;
 import Employees.business_layer.facade.facadeObject.FacadeTermsOfEmployment;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Scanner;
 
 public class MenuPrinter {
@@ -248,6 +246,11 @@ public class MenuPrinter {
 
     public String chooseShiftType(LocalDate date, int shiftNum) {
         System.out.println ("Choose the shift type you would like for " + date + "in " + shiftNum + " or type 0 to create a new one:\n");
+        return getShifTypes ();
+    }
+
+    public String getShifTypes()
+    {
         String[] shiftTypes = ShiftTypes.getInstance ().getShiftTypes();
         int i = 1;
         for ( String shift : shiftTypes )
@@ -259,7 +262,6 @@ public class MenuPrinter {
             return "new";
         if(choice > shiftTypes.length || choice < 0)
             return null;
-        return shiftTypes[i];
-
+        return shiftTypes[choice - 1];
     }
 }

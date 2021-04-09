@@ -50,7 +50,7 @@ public class StringConverter {
         }
         return "Shift type: " + facadeShift.getType()+"\n"
                 + "Shift staffing:\n "+manning
-                + "A fully staffed shift: " + isFull +"\n";
+                + "A fully staffed shift: " + isFull;
     }
 
     private String convertTermsOfEmployment(FacadeTermsOfEmployment facadeTermsOfEmployment){
@@ -74,7 +74,7 @@ public class StringConverter {
             else if(shifts[i][1] == null && shifts[i][0] != null)
             {
                 list+= "Day: "+shifts[i][0].getDate().getDayOfWeek()+"("+shifts[i][0].getDate().toString()+"):\n"
-                        + convertShift(shifts[i][0])+"\n";
+                        + convertShift(shifts[i][0]);
             }
             else if(shifts[i][0] != null)
                 list+= "Day: "+shifts[i][0].getDate().getDayOfWeek()+"("+shifts[i][0].getDate().toString()+"):\n"

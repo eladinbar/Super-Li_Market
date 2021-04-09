@@ -1,9 +1,12 @@
 package Employees.business_layer.facade;
 
-import Employees.EmployeeException;
-import Employees.business_layer.Employee.*;
+import Employees.business_layer.Employee.EmployeeController;
+import Employees.business_layer.Employee.Role;
 import Employees.business_layer.Shift.ShiftController;
-import Employees.business_layer.facade.facadeObject.*;
+import Employees.business_layer.facade.facadeObject.FacadeConstraint;
+import Employees.business_layer.facade.facadeObject.FacadeEmployee;
+import Employees.business_layer.facade.facadeObject.FacadeShift;
+import Employees.business_layer.facade.facadeObject.FacadeWeeklyShiftSchedule;
 
 import java.time.LocalDate;
 import java.util.HashMap;
@@ -134,15 +137,13 @@ public class FacadeService {
         return employeeService.getEmployees();
     }
 
-    public Response createData(boolean b) {
-        if(b)
-        {
-            return employeeService.createData ();
-        }
+    public Response createData() {
         Response response = employeeService.createData ( );
         if(response.errorOccured ())
             return response;
+        employeeService.login ( "789000000", Role.humanResourcesManager );
         response = shiftService.createData ( );
+        employeeService.logout ();
         return response;
     }
 }

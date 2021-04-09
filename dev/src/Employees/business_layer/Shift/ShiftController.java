@@ -5,8 +5,11 @@ import Employees.business_layer.Employee.EmployeeController;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
+import java.time.temporal.TemporalField;
+import java.time.temporal.WeekFields;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 
 public class ShiftController {
     private HashMap<LocalDate, WeeklyShiftSchedule> shifts;
@@ -56,10 +59,6 @@ public class ShiftController {
         return new WeeklyShiftSchedule ( startingDate );
     }
 
-//    public void addShift(LocalDate date, int shift, HashMap<String, List<String>> manning) throws EmployeeException {
-//        getWeeklyShiftSchedule ( date ).addShift(employeeController, date, shift, manning);
-//    }
-
     public void changeShift(LocalDate date, int shift, HashMap<String, List<String>> manning) throws EmployeeException {
         getWeeklyShiftSchedule ( date ).changeShift(employeeController, date, shift, manning);
     }
@@ -91,7 +90,16 @@ public class ShiftController {
     }
 
     public WeeklyShiftSchedule getWeeklyShiftSchedule(LocalDate date) throws EmployeeException {
-        WeeklyShiftSchedule output = shifts.get (date.minusDays ( date.getDayOfWeek ().getValue () % 7) );
+        WeeklyShiftSchedule output;
+        LocalDate sunday;
+        if(date.getDayOfWeek () == DayOfWeek.SUNDAY) {
+            sunday = date;
+        }
+        else {
+            TemporalField field = WeekFields.of ( Locale.US ).dayOfWeek ();
+            sunday = date.with ( field, 1 );
+        }
+        output = shifts.get (sunday);
         if(output == null)
             throw new EmployeeException ( "No such shift exists." );
         return output;
@@ -107,8 +115,14 @@ public class ShiftController {
 
     public void createData() throws EmployeeException {
         createShiftTypes ();
-        getRecommendation ( LocalDate.now ().plusDays ( 3 ) );
-        getRecommendation ( LocalDate.now ().plusDays ( 10 ) );
+        LocalDate temp = LocalDate.now ().plusDays ( 7 );
+        LocalDate sunday = temp;
+        if(temp.getDayOfWeek () != DayOfWeek.SUNDAY) {
+            TemporalField field = WeekFields.of ( Locale.US ).dayOfWeek ( );
+            sunday = temp.with ( field, 1 );
+        }
+        shifts.put (sunday, getRecommendation ( sunday ));
+        shifts.put (sunday.plusDays ( 7 ), getRecommendation ( sunday.plusDays ( 7 ) ));
     }
 
     private void createShiftTypes() throws EmployeeException {

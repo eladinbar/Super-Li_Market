@@ -47,7 +47,7 @@ public class WeeklyShiftSchedule {
     }
 
     public void addEmployeeToShift(String role, String ID, LocalDate date, int shift) throws EmployeeException {
-        if(shift > 2 || shift < 1 || checkDatesValidity ( this.date, date ))
+        if(shift > 2 || shift < 1 || !checkDatesValidity ( this.date, date ))
             throw new EmployeeException ( "no such shift to add the employee." );
         if(date.isBefore ( LocalDate.now () ))
             throw new EmployeeException ( "Date is already passed." );
@@ -56,7 +56,7 @@ public class WeeklyShiftSchedule {
     }
 
     public void deleteEmployeeFromShift(String role, String ID, LocalDate date, int shift) throws EmployeeException {
-        if(shift > 2 || shift < 1 || checkDatesValidity ( this.date, date ))
+        if(shift > 2 || shift < 1 || !checkDatesValidity ( this.date, date ))
             throw new EmployeeException ( "no such shift to delete the employee from." );
         if(date.isBefore ( LocalDate.now () ))
             throw new EmployeeException ( "Date is already passed." );
@@ -74,7 +74,9 @@ public class WeeklyShiftSchedule {
     private boolean checkDatesValidity(LocalDate start, LocalDate end) throws EmployeeException {
         if(end.isBefore ( LocalDate.now () ))
             throw new EmployeeException ( "The date of the shift already passed." );
-        return (end.isAfter ( start ) && end.minusDays ( 7 ).isBefore ( start ));
+        boolean isValid = end.isAfter ( start );
+        isValid = isValid & end.minusDays ( 7 ).isBefore ( start );
+        return isValid;
     }
 
     public Shift getShift(LocalDate date, int shift) throws EmployeeException {
@@ -113,13 +115,13 @@ public class WeeklyShiftSchedule {
 
     public void recommendShifts(EmployeeController employeeController, int i) throws EmployeeException {
         if(i<5) {
-            shifts[i][0].createManning ( employeeController );
-            shifts[i][1].createManning ( employeeController );
+            shifts[i][0].createManning ( employeeController, null );
+            shifts[i][1].createManning ( employeeController, shifts[i][0] );
         }
         if(i == 5)
-            shifts[i][0].createManning ( employeeController );
+            shifts[i][0].createManning ( employeeController, null );
         if(i == 6)
-            shifts[i][1].createManning ( employeeController );
+            shifts[i][1].createManning ( employeeController, null );
             isMissing = isMissing();
     }
 
