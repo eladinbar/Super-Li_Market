@@ -15,6 +15,11 @@ public class DefectEntry {
         this.itemID = itemID;
         this.itemName = itemName;
         this.entryDate = entryDate;
+        //Remove redundant time from dates
+        entryDate.clear(Calendar.MILLISECOND);
+        entryDate.clear(Calendar.SECOND);
+        entryDate.clear(Calendar.MINUTE);
+        entryDate.clear(Calendar.HOUR);
         this.quantity = quantity;
         if (location.startsWith("SH"))
             this.location = new Location(location, null);

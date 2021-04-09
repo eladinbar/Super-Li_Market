@@ -11,6 +11,11 @@ public class CategoryDiscount extends Discount{
         this.supplierID = supplierID;
         this.discount = discount;
         this.date = date;
+        //Remove redundant time from dates
+        date.clear(Calendar.MILLISECOND);
+        date.clear(Calendar.SECOND);
+        date.clear(Calendar.MINUTE);
+        date.clear(Calendar.HOUR);
         this.itemCount = itemCount;
         this.category = category;
     }
