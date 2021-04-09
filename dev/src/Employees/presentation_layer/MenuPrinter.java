@@ -207,31 +207,21 @@ public class MenuPrinter {
     public char getChar() {
         return sc.next ().charAt ( 0 );
     }
-
     public String getString() {
         return sc.next ();
     }
 
     public int getInt(){
-        boolean notAnumber = false;
         int out;
         try {
             out =  sc.nextInt ( );
-        } catch (Exception e) {
-            notAnumber = true;
+            return out;
+        }
+        catch (Exception e) {
             System.out.println ( "Not a number, please try again." );
-            out = -1;
+            sc.next();
+            return getInt();
         }
-        while (notAnumber) {
-            try {
-                out = sc.nextInt ( );
-            } catch (Exception e) {
-                System.out.println ( "Not a number, please try again." );
-                notAnumber = true;
-                out =- 1;
-            }
-        }
-        return out;
     }
 
     public void printChoiceException() {
