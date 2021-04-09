@@ -71,6 +71,7 @@ public class MenuPrinter {
         System.out.println("13. edit agreement");
         System.out.println("14. remove product from order");
         System.out.println("15. get quantityList");
+        System.out.println("16. get agreement");
         System.out.println("Please choose an option:");
         return getIntFromUser();
     }
@@ -242,8 +243,8 @@ public class MenuPrinter {
         String order = pc.createOrder(lclDate, supplierId);
         System.out.println(order);
         int orderId = -1;
-        if (order.split(" ")[1].equals("details:")) {
-            orderId = Integer.parseInt(order.split(" ")[3]);
+        if (order.split(" ")[0].equals("\nSuccess:")) {
+            orderId = Integer.parseInt(order.split(" ")[4]);
 
             while (true) {
                 System.out.println("\nplease choose an option:");
@@ -270,8 +271,8 @@ public class MenuPrinter {
         String order = pc.createPernamentOrder(day, supplierId);
         System.out.println(order);
         int orderId = -1;
-        if (order.split(" ")[1].equals("details")) {
-            orderId = Integer.parseInt(order.split(" ")[3]);
+        if (order.split(" ")[0].equals("\nSuccess:")) {
+            orderId = Integer.parseInt(order.split(" ")[4]);
             while (true) {
                 System.out.println("1. add new product");
                 System.out.println("2. exit");

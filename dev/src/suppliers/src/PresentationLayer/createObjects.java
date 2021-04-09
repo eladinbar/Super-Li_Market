@@ -1,5 +1,7 @@
 package PresentationLayer;
 
+import BusinessLayer.supplierPackage.supplier;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,16 +18,11 @@ public class createObjects {
     public void createObjectsForTests() {
         int id = 333333333;
         int phone = 544444444;
-        for (int i = 0; i < 10; i++, phone++, id++) {
-            pc.addSupplier("Supplier", "LastName", "email" + i + "@gmail.com", "" + id, "0" + phone, 1, true, true, "cash");
-            suppliers.add(id);
-        }for (int i = 10; i < 20; i++, phone++, id++) {
-            pc.addSupplier("Supplier", "LastName", "email" + i + "@gmail.com", "" + id, "0" + phone, 1, false, true, "check");
-            suppliers.add(id);
-        }for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < 10; i++) {
             pc.createProduct("name" + i, "osem");
             products.add(i);
-        }for (int i = 10; i < 20; i++) {
+        }
+        for (int i = 10; i < 20; i++) {
             pc.createProduct("name" + i, "elit");
             products.add(i);
         }for (int i = 10; i < 30; i++) {
@@ -38,6 +35,18 @@ public class createObjects {
             pc.createProduct("name" + i, "knor");
             products.add(i);
         }
+        for (int i = 0; i < 10; i++, phone++, id++) {
+            pc.addSupplier("Supplier", "LastName", "email" + i + "@gmail.com", "" + id, "0" + phone, 1, true, true, "cash");
+            suppliers.add(id);
+            pc.addQuantityList(""+id);
+            pc.addItemToagreement(""+id, i, i, i);
+            pc.addQuantityListItem(""+id, i, i, i+3);
+        }
+        for (int i = 10; i < 20; i++, phone++, id++) {
+            pc.addSupplier("Supplier", "LastName", "email" + i + "@gmail.com", "" + id, "0" + phone, 1, false, true, "check");
+            suppliers.add(id);
+        }
+
     }
 
 }
