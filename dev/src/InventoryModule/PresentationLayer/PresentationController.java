@@ -697,7 +697,7 @@ public class PresentationController implements Runnable {
         service.addCategory("Soft cheeses", "Cheese");
         service.addCategory("Snacks", "");
         service.addCategory("Chocolate", "Snacks");
-        service.addCategory("Potato Chips", "Snacks");
+        service.addCategory("Potato chips", "Snacks");
         service.addCategory("Drinks", "");
         service.addCategory("Soft drinks", "Drinks");
         service.addCategory("CocaCola products", "Soft drinks");
@@ -738,7 +738,7 @@ public class PresentationController implements Runnable {
         service.addItem(265, "Caramel milk", "Tnuva", 3.95, 6.99, 10,
                 "SH-A3-L-S16", "ST-A7-R-S17", 10, 0, 113, new ArrayList<>());
         //Gouda Cheese
-        service.addItem(78525, "Gouda Cheese 200g", "Hard Cheese", 3.95, 12.99, 350,
+        service.addItem(78525, "Gouda Cheese 200g", "Hard Cheeses", 3.95, 12.99, 350,
                 "SH-A4-R-S1", "ST-A6-R-S2", 400, 45, 124, new ArrayList<>());
         //Cream cheese
         service.addItem(88435, "cream cheese", "Soft cheeses", 3.95, 6.99, 10,
