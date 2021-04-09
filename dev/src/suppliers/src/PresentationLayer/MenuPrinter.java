@@ -14,8 +14,6 @@ public class MenuPrinter {
     public MenuPrinter() {
         scan = new Scanner(System.in);
         this.pc = new PresentationController();
-        createObjects c = new createObjects(pc);
-        c.createObjectsForTests();
     }
 
     //the main function
@@ -29,6 +27,11 @@ public class MenuPrinter {
             else
                 logged = false;
         }
+        createObjects c = new createObjects(pc);
+        System.out.println("do you want to load objects? (enter y to load)");
+        String choose=getStringFromUser();
+        if(choose.equals("y"))
+            c.createObjectsForTests();
         PrintMenu();
 }
 
