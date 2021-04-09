@@ -3,6 +3,8 @@ package InfrastructurePackage;
 import InventoryModule.ControllerLayer.SimpleObjects.*;
 
 import java.lang.reflect.Field;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 
 public class TextFormatter {
     private int paddingSize = 20;
@@ -38,7 +40,7 @@ public class TextFormatter {
     public <T extends SimpleEntity> void saleMenuFormat(Sale<T> sale) {
         System.out.println("Category Name: " + sale.getName() + "\n" +
                 "Discount: " + sale.getDiscount() + "\n" +
-                "Sale Dates: " + sale.getSaleDates().getFirst().toString() + " until " + sale.getSaleDates().getSecond().toString());
+                "Sale Dates: " + dateFormat(sale.getSaleDates().getFirst()) + " until " + dateFormat(sale.getSaleDates().getSecond()));
     }
     public <T extends SimpleEntity> void discountMenuFormat(Discount<T> discount) {
         System.out.println("Supplier ID: " + discount.getSupplierID() + "\n" +
@@ -56,5 +58,10 @@ public class TextFormatter {
 
     public int getPaddingSize() {
         return paddingSize;
+    }
+
+    private String dateFormat(Calendar date){
+        SimpleDateFormat format1 = new SimpleDateFormat("yyyy-MM-dd");
+        return format1.format(date.getTime());
     }
 }

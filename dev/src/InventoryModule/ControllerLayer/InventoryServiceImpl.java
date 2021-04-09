@@ -473,12 +473,12 @@ public class InventoryServiceImpl implements InventoryService {
         //Call business layer function
         try {
             inventoryController.addItemSale(saleName, itemID, saleDiscount, startDate, endDate);
-            response = new Response(false, "Item Sale added successfully.");
-            return response;
         } catch (Exception ex) {
             response = new Response(true, ex.getMessage());
             return response;
         }
+        response = new Response(false, "Item Sale added successfully.");
+        return response;
     }
 
     @Override

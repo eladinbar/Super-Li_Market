@@ -361,7 +361,7 @@ public class PresentationController implements Runnable {
     }
 
     private <T extends SimpleEntity> void modifySale() {
-        String saleName = menu.instructAndReceive("Enter category name: ");
+        String saleName = menu.instructAndReceive("Enter sale name: ");
         ResponseT<Sale<T>> saleR = service.getSale(saleName);
         if (saleR.isErrorOccurred()) {
             menu.errorPrompt(saleR.getMessage());
@@ -427,12 +427,12 @@ public class PresentationController implements Runnable {
         }
         int suppId = Integer.parseInt(temp);
         //item id
-        String temp2 = menu.instructAndReceive("Enter item ID that the discount applies on: ");
-        if(temp2.isEmpty()){
+        String tempID = menu.instructAndReceive("Enter item ID that the discount applies on: ");
+        if(tempID.isEmpty()){
             menu.errorPrompt("no id entered");
             return;
         }
-        int itemId = Integer.parseInt(temp);
+        int itemId = Integer.parseInt(tempID);
         //discount
         String tempDisc = menu.instructAndReceive("Enter discount received for the item: (e.g. for 10% enter 0.1)");
         if(tempDisc.isEmpty()){
@@ -460,7 +460,7 @@ public class PresentationController implements Runnable {
             menu.errorPrompt(r1.getMessage());
             return;
         }
-        System.out.println("Sale added successfully");
+        System.out.println("Discount added successfully");
 
 
     }
@@ -520,7 +520,7 @@ public class PresentationController implements Runnable {
             return;
         }
         int defectedAmount = Integer.parseInt(tempAmount);
-        //location
+        //location2
         String location = menu.instructAndReceive("Enter storage/shelf location: follow this format \"<ST/SH>-A<number>-<L/R>-S<number>\"");
 
         Response recorded = service.recordDefect(itemID, date, defectedAmount, location);

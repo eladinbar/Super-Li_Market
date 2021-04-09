@@ -309,7 +309,7 @@ public class InventoryController {
     //-------------------------------------------------------------------------Sale functions
 
     public void addItemSale(String saleName, int itemId, double saleDiscount, Calendar startDate, Calendar endDate) {
-        getItem(itemId); //Makes sure an item with 'itemId' exists in the system, throws an exception if not
+        Item item = getItem(itemId); //Makes sure an item with 'itemId' exists in the system, throws an exception if not
         try {
             getSale(saleName);
             throw new IllegalArgumentException("A sale with the name " + saleName + " already exists in the system.");
@@ -317,7 +317,7 @@ public class InventoryController {
             if (ex.getMessage().equals("A sale with the name " + saleName + " already exists in the system."))
                 throw ex; //Rethrow exception thrown in 'try' block (different error message)
 
-            ItemSale newSale = new ItemSale(saleName, saleDiscount, startDate, endDate, getItem(itemId));
+            ItemSale newSale = new ItemSale(saleName, saleDiscount, startDate, endDate, item);
             sales.add(newSale);
         }
     }
