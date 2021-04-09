@@ -402,7 +402,7 @@ public class PresentationController implements Runnable {
             return null;
         }
         Pair<Calendar, Calendar> dates = new Pair<>(start, end);
-        //checking that the date make sense
+        //checking that the date makes sense
         if (start.compareTo(end) > 0) {
             menu.errorPrompt("End date is before start date");
             return null;
@@ -440,6 +440,8 @@ public class PresentationController implements Runnable {
                 break;
             case "3":
                 Pair<Calendar, Calendar> dates = getStartEndDates();
+                if (dates == null)
+                    return;
                 modResp = service.modifySaleDates(saleR.getData().getName(), dates.getFirst(), dates.getSecond());
                 break;
             default:
@@ -647,6 +649,8 @@ public class PresentationController implements Runnable {
 
     private void defectsReport() {
         Pair<Calendar, Calendar> interval = getStartEndDates();
+        if (interval == null)
+            return;
         ResponseT<List<DefectEntry>> defects = service.defectsReport(interval.getFirst(), interval.getSecond());
         if (defects.isErrorOccurred()) {
             menu.errorPrompt(defects.getMessage());
