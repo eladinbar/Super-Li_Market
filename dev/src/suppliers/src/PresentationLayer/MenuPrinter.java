@@ -21,7 +21,7 @@ public class MenuPrinter {
     //the main function
     public void startWork() {
        boolean logged = true;
-        System.out.println("\nWelcome to Super-Lee, Please enter password: ");
+        System.out.println("Welcome to Super-Lee, Please enter password: ");
         while (logged) {
             String pass = getStringFromUser();
             if (!pass.equals("superlee7"))
@@ -589,7 +589,7 @@ public class MenuPrinter {
             } catch (InputMismatchException ie) {
                 System.out.println("wrong input - a number must be inserted please try again ");
                 scan.nextLine();
-            } catch (NoSuchElementException | IllegalStateException e) {
+            } catch (Exception e) {
                 System.out.println("wrong input - a number must be inserted please try again ");
                 scan.nextLine();
             }
