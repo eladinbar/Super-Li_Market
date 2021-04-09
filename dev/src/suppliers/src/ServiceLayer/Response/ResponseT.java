@@ -21,6 +21,6 @@ public class ResponseT <T> extends Response{
     public String toString() {
         if(errorOccured())
             return "\nError: "+getErrorMessage()+"\n";
-        return "\n"+value.toString();
+        return "\nSuccess:\n"+value.toString();
     }
 }
