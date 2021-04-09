@@ -91,8 +91,7 @@ public class PresentationController {
 
     public void RemoveItemFromPool(int item) throws NoSuchElementException
     {
-        // TODO need to check -  for some reason - it doesnot removed from the current demands if exist, maybe from DF as well.
-        //  also- when i want to create another demand, doesnt remove the right item
+
         facadeService.removeItemFromPool(item);
     }
 
@@ -293,5 +292,9 @@ public class PresentationController {
 
     public LinkedList<FacadeDemand> getUnCompletedItemOnReportByOld(int id) {
         return facadeService.getUnCompletedItemOnReportByOld(id);
+    }
+
+    public LinkedList<FacadeTruckingReport> getOldTruckingReport() {
+        return facadeService.getOldDTruckingReports();
     }
 }

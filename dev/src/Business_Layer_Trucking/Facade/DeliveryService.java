@@ -440,6 +440,15 @@ public class DeliveryService {
          }
          return fd;
     }
+
+    public LinkedList<FacadeTruckingReport> getOldDTruckingReports() {
+        HashMap<Integer,TruckingReport> oldTruckingReport = dc.getOldTruckingReports();
+        LinkedList<FacadeTruckingReport> output = new LinkedList<>();
+        for (Map.Entry<Integer,TruckingReport> tr: oldTruckingReport.entrySet()){
+            output.add(new FacadeTruckingReport(tr.getValue()));
+        }
+        return  output;
+    }
 }
 
 
