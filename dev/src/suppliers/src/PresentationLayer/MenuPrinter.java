@@ -54,7 +54,7 @@ public class MenuPrinter {
     }
 
     //a helper function to print the menu
-    public int PrintMenu() {
+    public int PrintMenu()  {
         System.out.println("welcome to Super Lee");
         System.out.println("1. add supplier");
         System.out.println("2. get supplier");
@@ -411,7 +411,7 @@ public class MenuPrinter {
     }
 
     //a helper function that approve that the order arrived in the system
-    private void approveOrder() {
+    private void approveOrder()  {
         System.out.println("please enter order ID");
         System.out.println(pc.approveOrder(getIntFromUser()));
     }
@@ -447,7 +447,7 @@ public class MenuPrinter {
     }
 
     //a helper function to get a product
-    private void getProduct() {
+    private void getProduct()  {
         System.out.println("please enter product ID");
         System.out.println(pc.getProduct(getIntFromUser()));
     }
@@ -462,7 +462,7 @@ public class MenuPrinter {
         System.out.println(pc.createProduct(name, manufacturer));
     }
 
-    private void editAgrreement() {
+    private void editAgrreement()  {
         System.out.print("Please enter supplier ID:");
         String supplierId = getStringFromUser();
         boolean flag = true;
@@ -516,7 +516,7 @@ public class MenuPrinter {
     }
 
     //a helper function to get a string from the user
-    private String getStringFromUser() {
+    private String getStringFromUser(){
         boolean con = true;
         String output = "";
         while (con) {
