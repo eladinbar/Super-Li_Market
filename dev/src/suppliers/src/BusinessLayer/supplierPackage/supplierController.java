@@ -109,9 +109,9 @@ public class supplierController {
         return suppliers.get(id);
     }
 
-    public void addQuantityList(String supplierID) throws Exception {
+    public quantityList addQuantityList(String supplierID) throws Exception {
         existSupplier(supplierID);
-        suppliers.get(supplierID).addQuantityList();
+        return suppliers.get(supplierID).addQuantityList();
     }
 
     public void editQuantityListAmount(String supplierID, int productID, int amount) throws Exception {
@@ -154,5 +154,15 @@ public class supplierController {
         existSupplier(supplierId);
         suppliers.get(supplierId).removeItemFromAgreement(productId);
 
+    }
+
+    public void editAgreementItemCompanyProductID(String supplierID, int productID, int companyProductID) throws Exception {
+        existSupplier(supplierID);
+        suppliers.get(supplierID).getAg().editAgreementItemCompanyProductID(productID,companyProductID);
+    }
+
+    public void editAgreementItemPrice(String supplierID, int productID, int price) throws Exception {
+        existSupplier(supplierID);
+        suppliers.get(supplierID).getAg().editAgreementItemPrice(productID,price);
     }
 }

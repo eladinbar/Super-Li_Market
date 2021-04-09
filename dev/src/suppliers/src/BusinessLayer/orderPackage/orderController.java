@@ -35,7 +35,7 @@ public class orderController {
     }
 
     public order createOrder(LocalDate date, supplier supplier) throws Exception {
-        if (date!=null && date.isBefore(LocalDate.now()))
+        if (date != null && date.isBefore(LocalDate.now()))
             throw new Exception("the date should be in the future");
         order o = new order(orderCounter, date, supplier);
         orders.put(orderCounter, o);
@@ -72,13 +72,15 @@ public class orderController {
         orders.get(orderId).addProductToOrder(orderId, productId, amount);
     }
 
-    public void createProduct(String name, String manufacturer) throws Exception {
+    public product createProduct(String name, String manufacturer) throws Exception {
         manufacturers manu = manufacturers.valueOf(manufacturer);
         for (product p : products.values())
             if (p.getName().equals(name) && p.getManu().name().equals(manufacturer))
                 throw new Exception("product already exists in the system");
-        products.put(productCounter, new product(name, productCounter, manu));
+        product p = new product(name, productCounter, manu);
+        products.put(productCounter, p);
         productCounter++;
+        return p;
     }
 
     public product getProduct(int productID) throws Exception {
@@ -90,5 +92,11 @@ public class orderController {
         order order = createOrder(null, supplier);
         pernamentOrders.get(day).add(order);
         return order;
+    }
+
+    public void removeProductFromOrder(int orderID, int productID) throws Exception {
+        productExist(productID);
+        orderExist(orderID);
+        orders.get(orderID).removeProductFromOrder(productID);
     }
 }

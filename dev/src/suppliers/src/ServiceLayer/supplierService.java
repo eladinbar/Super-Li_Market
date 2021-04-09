@@ -149,12 +149,12 @@ public class supplierService {
         return toReturn;
     }
 
-    public Response addQuantityList(String supplierID) {
-        Response toReturn = new Response();
+    public ResponseT<quantityList> addQuantityList(String supplierID) {
+        ResponseT<quantityList> toReturn;
         try {
-            sp.addQuantityList(supplierID);
+            toReturn=new ResponseT<>(new quantityList(sp.addQuantityList(supplierID)));
         } catch (Exception e) {
-            toReturn = new Response(e.getMessage());
+            toReturn = new ResponseT<>(e.getMessage());
         }
         return toReturn;
     }
@@ -235,6 +235,26 @@ public class supplierService {
         Response toReturn=new Response();
         try {
             sp.removeItemFromAgreement(supplierId,productId);
+        } catch (Exception e) {
+            toReturn = new Response(e.getMessage());
+        }
+        return toReturn;
+    }
+
+    public Response editAgreementItemCompanyProductID(String supplierID, int productID, int companyProductID) {
+        Response toReturn=new Response();
+        try {
+            sp.editAgreementItemCompanyProductID(supplierID,productID,companyProductID);
+        } catch (Exception e) {
+            toReturn = new Response(e.getMessage());
+        }
+        return toReturn;
+    }
+
+    public Response editAgreementItemPrice(String supplierID, int productID, int price) {
+        Response toReturn=new Response();
+        try {
+            sp.editAgreementItemPrice(supplierID,productID,price);
         } catch (Exception e) {
             toReturn = new Response(e.getMessage());
         }

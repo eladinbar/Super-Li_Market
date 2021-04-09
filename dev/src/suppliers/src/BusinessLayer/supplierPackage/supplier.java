@@ -153,8 +153,8 @@ public class supplier {
         ag.addQuantityListItem(productID, amount, discount);
     }
 
-    public void addQuantityList() throws Exception {
-        ag.addQuantityList();
+    public quantityList addQuantityList() throws Exception {
+        return ag.addQuantityList();
     }
 
     public void editQuantityListAmount(int productID, int amount) throws Exception {

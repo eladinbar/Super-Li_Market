@@ -62,10 +62,11 @@ public class agreement {
         ql.addQuantityListItem(productID, amount, discount);
     }
 
-    public void addQuantityList() throws Exception {
+    public quantityList addQuantityList() throws Exception {
         if (ql != null)
             throw new Exception("supplier already have a quantity list");
         ql = new quantityList();
+        return ql;
     }
 
     public void editQuantityListAmount(int productID, int amount) throws Exception {
@@ -83,6 +84,10 @@ public class agreement {
     public void addItemToAgreement(int productID, int companyProductID,int price) throws Exception {
         if(products.containsKey(productID))
             throw new Exception("agreement already have the item");
+        if(price<0)
+            throw new Exception("price must be positive number");
+        if(companyProductID<0)
+            throw new Exception("company product ID must be positive number");
         products.put(productID,companyProductID);
         prices.put(productID,price);
     }
@@ -91,5 +96,24 @@ public class agreement {
         if(!products.containsKey(productId))
             throw new Exception("item does not exists in agreement");
         products.remove(productId);
+        prices.remove(productId);
+    }
+
+    public void editAgreementItemCompanyProductID(int productID, int companyProductID) throws Exception {
+        if(!products.containsKey(productID))
+            throw new Exception("item does not exists in agreement");
+        if(companyProductID<0)
+            throw new Exception("company product ID must be positive number");
+        products.remove(productID);
+        products.put(productID,companyProductID);
+    }
+
+    public void editAgreementItemPrice(int productID, int price) throws Exception {
+        if(!products.containsKey(productID))
+            throw new Exception("item does not exists in agreement");
+        if(price<0)
+            throw new Exception("price must be positive number");
+        prices.remove(productID);
+        prices.put(productID,price);
     }
 }

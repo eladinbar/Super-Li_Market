@@ -22,6 +22,6 @@ public class Response {
     public String toString(){
         if (errorOccured())
             return "\nError: "+getErrorMessage()+"\n";
-        return "";
+        return "\nSuccess\n";
     }
 }

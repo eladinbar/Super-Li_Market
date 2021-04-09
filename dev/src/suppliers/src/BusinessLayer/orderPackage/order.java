@@ -69,8 +69,16 @@ public class order {
     public void addProductToOrder(int orderId, int productId, int amount) throws Exception {
         if (delivered)
             throw new Exception("order already delivered");
-        if (amount<1)
+        if (amount < 1)
             throw new Exception("illegal amount");
         products.put(productId, amount);
+    }
+
+    public void removeProductFromOrder(int productID) throws Exception {
+        if (delivered)
+            throw new Exception("order already delivered");
+        if (!products.containsKey(productID))
+            throw new Exception("order does not contain choosen product");
+        products.remove(productID);
     }
 }

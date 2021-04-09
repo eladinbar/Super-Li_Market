@@ -26,12 +26,12 @@ public class orderService {
         return toReturn;
     }
 
-    public Response createPernamentOrder(int day, String supplierID, supplierController sp) {
-        Response toReturn = new Response();
+    public ResponseT<order> createPernamentOrder(int day, String supplierID, supplierController sp) {
+        ResponseT<order> toReturn;
         try {
-            oc.createPermOrder(day, sp.getSupplier(supplierID));
+            toReturn= new ResponseT<>(new order(oc.createPermOrder(day, sp.getSupplier(supplierID))));
         } catch (Exception e) {
-            toReturn = new Response(e.getMessage());
+            toReturn = new ResponseT<>(e.getMessage());
         }
         return toReturn;
     }
@@ -56,12 +56,12 @@ public class orderService {
         return toReturn;
     }
 
-    public Response createProduct(String name, String manufacturer) {
-        Response toReturn = new Response();
+    public ResponseT<product> createProduct(String name, String manufacturer) {
+        ResponseT<product> toReturn;
         try {
-            oc.createProduct(name, manufacturer);
+            toReturn=new ResponseT<>(new product(oc.createProduct(name, manufacturer)));
         } catch (Exception e) {
-            toReturn = new Response(e.getMessage());
+            toReturn = new ResponseT<>(e.getMessage());
         }
         return toReturn;
     }
@@ -100,6 +100,16 @@ public class orderService {
         Response toReturn = new Response();
         try {
             oc.productExist(productID);
+        } catch (Exception e) {
+            toReturn = new Response(e.getMessage());
+        }
+        return toReturn;
+    }
+
+    public Response removeProductFromOrder(int orderID, int productID) {
+        Response toReturn = new Response();
+        try {
+            oc.removeProductFromOrder(orderID, productID);
         } catch (Exception e) {
             toReturn = new Response(e.getMessage());
         }

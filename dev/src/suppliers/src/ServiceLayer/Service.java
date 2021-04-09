@@ -86,7 +86,7 @@ public class Service implements IService {
     }
 
     @Override
-    public Response addQuantityList(String supplierID) {
+    public ResponseT<quantityList> addQuantityList(String supplierID) {
         return supplierService.addQuantityList(supplierID);
     }
 
@@ -126,6 +126,16 @@ public class Service implements IService {
     }
 
     @Override
+    public Response editAgreementItemCompanyProductID(String supplierID, int productID, int companyProductID) {
+        return supplierService.editAgreementItemCompanyProductID(supplierID,productID,companyProductID);
+    }
+
+    @Override
+    public Response editAgreementItemPrice(String supplierID, int productID, int price) {
+        return supplierService.editAgreementItemPrice(supplierID,productID,price);
+    }
+
+    @Override
     public ResponseT<quantityList> getQuantityList(String supplierId) {
         return supplierService.getQuantityList(supplierId);
     }
@@ -141,7 +151,7 @@ public class Service implements IService {
     }
 
     @Override
-    public Response createPernamentOrder(int day, String supplierID) {
+    public ResponseT<order> createPernamentOrder(int day, String supplierID) {
         return orderService.createPernamentOrder(day, supplierID, supplierService.getSp());
     }
 
@@ -161,12 +171,17 @@ public class Service implements IService {
     }
 
     @Override
-    public Response createProduct(String name, String manufacturer) {
+    public Response removeProductFromOrder(int orderID, int productID) {
+        return orderService.removeProductFromOrder(orderID, productID);
+    }
+
+    @Override
+    public ResponseT<product> createProduct(String name, String manufacturer) {
         return orderService.createProduct(name, manufacturer);
     }
 
     @Override
-    public Response getProduct(int productID) {
+    public ResponseT<product> getProduct(int productID) {
         return orderService.getProduct(productID);
     }
 }

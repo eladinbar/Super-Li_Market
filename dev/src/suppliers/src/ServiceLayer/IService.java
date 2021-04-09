@@ -4,6 +4,7 @@ import ServiceLayer.Response.*;
 import ServiceLayer.objects.*;
 
 import java.time.LocalDate;
+import java.util.List;
 
 public interface IService {
     //add supplier and edit all supplier fields
@@ -22,28 +23,35 @@ public interface IService {
     ResponseT<supplier> getSupplier(String id);
 
     //add quantityList
-    //todo optional add lise of products id to supplier controller
-    Response addQuantityList(String supplierID);
+    ResponseT<quantityList> addQuantityList(String supplierID);
     Response editQuantityListAmount(String supplierID,int productID, int amount);
     Response editQuantityListDiscount(String supplierID,int productID, int discount);
     Response deleteQuantityList(String supplierID);
     ResponseT<product> addQuantityListItem(String supplierID,int productID, int amount,int discount);
     Response deleteQuantityListItem(String supplierID,int productID);
+    ResponseT<quantityList> getQuantityList(String supplierId);
 
     //orders
     ResponseT<order> createOrder(LocalDate date, String supplierID);
-    Response createPernamentOrder(int day, String supplierID);
+    ResponseT<order> createPernamentOrder(int day, String supplierID);
     Response approveOrder(int orderID);
     ResponseT<order> getOrder(int orderID);
     Response addProductToOrder(int orderId , int productId, int amount);
+    Response removeProductFromOrder(int orderID,int productID);
+
+    //agreement
+    ResponseT<product> addItemToAgreement(String id, int productID, int companyProductID,int price);
+    Response removeItemFromAgreement(String supplierId, int productId);
+    Response editAgreementItemCompanyProductID(String supplierID,int productID,int companyProductID);
+    Response editAgreementItemPrice(String supplierID,int productID,int companyProductID);
+
 
     //products
-    Response createProduct(String name, String manufacturer);
-    Response getProduct(int productID);
+    ResponseT<product> createProduct(String name, String manufacturer);
+    ResponseT<product> getProduct(int productID);
 
-    ResponseT<quantityList> getQuantityList(String supplierId);
-
-    ResponseT<product> addItemToAgreement(String id, int productID, int companyProductID,int price);
-
-    Response removeItemFromAgreement(String supplierId, int productId);
+/*    //system
+    ResponseT<List<product>> getAllProducts();
+    ResponseT<List<order>> getAllOrders();
+    ResponseT<List<supplier>> getAllSuppliers();*/
 }
