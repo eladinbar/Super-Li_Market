@@ -1,7 +1,7 @@
 package PresentationLayer;
 
 public class main {
-    public static void main(String[] args) throws ReflectiveOperationException {
+    public static void main(String[] args){
         MenuPrinter m = new MenuPrinter();
         m.startWork();
     }

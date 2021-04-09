@@ -13,6 +13,14 @@ public class supplierController {
         this.persons = new HashMap<>();
     }
 
+    public Map<String, supplier> getSuppliers() {
+        return suppliers;
+    }
+
+    public Map<String, personCard> getPersons() {
+        return persons;
+    }
+
     //checks if the supplier exists in the system
     private void existSupplier(String id) throws Exception {
         if (!suppliers.containsKey(id))

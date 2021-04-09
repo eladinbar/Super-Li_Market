@@ -90,11 +90,11 @@ public class PresentationController {
         return service.addQuantityListItem(supplierID, productID, amount, discount).toString();
     }
 
-    public String getQuantityList(String supplierId){
+    public String getQuantityList(String supplierId) {
         return service.getQuantityList(supplierId).toString();
     }
 
-    public String  deleteQuantityListItem(String supplierID, int productID) {
+    public String deleteQuantityListItem(String supplierID, int productID) {
         return service.deleteQuantityListItem(supplierID, productID).toString();
     }
 
@@ -128,22 +128,24 @@ public class PresentationController {
         return service.getProduct(productID).toString();
     }
 
-    public String addItemToagreement(String id, int productID, int companyProductID,int price) {
-        return service.addItemToAgreement(id,productID,companyProductID,price).toString();
+    public String addItemToagreement(String id, int productID, int companyProductID, int price) {
+        return service.addItemToAgreement(id, productID, companyProductID, price).toString();
     }
 
     public String removeItemFromAgreement(String supplierId, int productId) {
-        return service.removeItemFromAgreement(supplierId,productId).toString();
+        return service.removeItemFromAgreement(supplierId, productId).toString();
     }
 
-    public String editAgreementItemCompanyProductID(String supplierID,int productID,int companyProductID){
+    public String editAgreementItemCompanyProductID(String supplierID, int productID, int companyProductID) {
         return service.editAgreementItemCompanyProductID(supplierID, productID, companyProductID).toString();
     }
-    public String editAgreementItemPrice(String supplierID,int productID,int companyProductID){
-        return service.editAgreementItemPrice(supplierID,productID,companyProductID).toString();
+
+    public String editAgreementItemPrice(String supplierID, int productID, int companyProductID) {
+        return service.editAgreementItemPrice(supplierID, productID, companyProductID).toString();
     }
-    public String removeProductFromOrder(int orderID,int productID){
-        return service.removeProductFromOrder(orderID,productID).toString();
+
+    public String removeProductFromOrder(int orderID, int productID) {
+        return service.removeProductFromOrder(orderID, productID).toString();
     }
 
     public String getAgreement(String supplierID) {
