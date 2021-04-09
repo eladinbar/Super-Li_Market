@@ -223,7 +223,7 @@ public class Menu_Printer {
     private void showOldDeliveryForm() {
         LinkedList<FacadeTruckingReport> truckingReports = pc.getOldTruckingReport();
         if (truckingReports.isEmpty())
-            System.out.println("No active Trucking Reports");
+            System.out.println("No Completed Trucking Reports has been found");
         else {
             int spot = 1;
             for (FacadeTruckingReport tr : truckingReports) {
@@ -1119,7 +1119,7 @@ public class Menu_Printer {
         pc.addTruck("Mercedes" , "62321323" , 2000, 12000);
         pc.addTruck("Man", "1231231", 1500, 8000);
         pc.addTruck("Volvo","123" ,1000, 10000);
-        pc.addTruck("asd","12121",1000,14000);
+        pc.addTruck("Volvo","12121",1000,14000);
 
         pc.addSite("Haifa", 1, "0502008216" , "Shimi", "SuperLee-Haifa");
         pc.addSite("Nazareth" , 1,"0522002123" , "Esti" , "Suber-LNazerath");
@@ -1127,8 +1127,8 @@ public class Menu_Printer {
         pc.addSite("Rahat" , 2 , "0502008214" , "Mohamad" , "MilkHere");
         pc.addSite("Afula", 3,"0502008215" , "Raz" , "Tnuva");
         pc.addSite("Geva" , 3, "0503988883", "ShirHayafa","Dubi");
-        pc.addSite("123" , 1, "0503988883", "213123","12");
-        pc.addSite("456" , 1, "0503988883", "asd","54");
+        pc.addSite("Tveria" , 1, "0503988883", "Yaron","Dagim");
+        pc.addSite("Qiryat Shemona" , 1, "0503988883", "Shimi","Macolet");
 
 
         pc.addItem(1,"milk",1);
@@ -1145,23 +1145,25 @@ public class Menu_Printer {
     }
 
     private int getIntFromUserMain(Scanner scanner){
+
         int choose = -1;
         boolean scannerCon = true;
-        while(scannerCon)
+        while(scannerCon) {
             try {
-                choose = scanner.nextInt();
+                String init = scanner.next();
 
-                if (choose < 0){
+                choose = Integer.parseInt(init);
+                //choose = scanner.nextInt();
+
+                if (choose < 0) {
                     System.out.println("you must choose an none-negative number ");
                 }
-                scannerCon =false;
-            } catch (InputMismatchException ie){
-                System.out.println("wrong input - a number must be inserted please try again ");
-                scanner.nextLine();
-            } catch (NoSuchElementException|IllegalStateException e){
+                scannerCon = false;
+            } catch (Exception n) {
                 System.out.println("wrong input - a number must be inserted please try again ");
                 scanner.nextLine();
             }
+        }
         return choose;
 
     }
@@ -1170,21 +1172,27 @@ public class Menu_Printer {
         boolean scannerCon = true;
         while(scannerCon) {
             try {
+                String init = scanner.next();
+                choose = Integer.parseInt(init);
+
+/*
                 choose = scanner.nextInt();
+*/
                 if (choose == -1) throw new ReflectiveOperationException("by pressing -1 you chose to go back");
                 if (choose < 0) {
                     System.out.println("you must choose an none-negative number ");
-                }
-                else {
+                } else {
                     scannerCon = false;
                 }
-            } catch (InputMismatchException ie) {
-                System.out.println("wrong input - a number must be inserted please try again ");
-                scanner.nextLine();
-            } catch (NoSuchElementException | IllegalStateException e) {
+            }catch (InputMismatchException i){
+                    System.out.println("wrong input - a number must be inserted please try again ");
+                    scanner.nextLine();}
+            catch (NoSuchElementException|IllegalStateException|NumberFormatException ie) {
+
                 System.out.println("wrong input - a number must be inserted please try again ");
                 scanner.nextLine();
             }
+
         }
         return choose;
     }
@@ -1193,11 +1201,18 @@ public class Menu_Printer {
 
     private double getDoubleFromUser(Scanner scanner) throws ReflectiveOperationException{
 
+
         double choose = -1;
         boolean scannerCon = true;
         while(scannerCon)
             try {
+                String init = scanner.next();
+
+                choose = Double.parseDouble(init);
+                scanner.nextLine();
+/*
                 choose = scanner.nextDouble();
+*/
                 if (choose == -1) throw new ReflectiveOperationException("by pressing -1 you chose to go back");
                 if (choose < 0){
                     System.out.println("you must choose an none-negative number ");
@@ -1206,7 +1221,7 @@ public class Menu_Printer {
             } catch (InputMismatchException ie){
                 System.out.println("wrong input - a number must be inserted please try again ");
                 scanner.nextLine();
-            } catch (NoSuchElementException|IllegalStateException e){
+            } catch (NoSuchElementException|IllegalStateException|NumberFormatException e){
                 System.out.println("wrong input - a number must be inserted please try again ");
                 scanner.nextLine();
             }
