@@ -2,8 +2,8 @@ package Employees.business_layer.Shift;
 
 import Employees.EmployeeException;
 import Employees.business_layer.Employee.EmployeeController;
-import Employees.business_layer.Employee.Role;
 
+import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
@@ -26,7 +26,7 @@ public class ShiftController {
     public WeeklyShiftSchedule getRecommendation(LocalDate startingDate) throws EmployeeException {
         if(startingDate.isBefore ( LocalDate.now () ))
             throw new EmployeeException ( "Starting date has already passed." );
-        if(startingDate.getDayOfWeek ().getValue () != 7)
+        if(startingDate.getDayOfWeek () != DayOfWeek.SUNDAY)
             throw new EmployeeException ( "Starting date is not Sunday." );
         WeeklyShiftSchedule output = createEmptyWeeklyShiftSchedule ( startingDate );
         for(int i = 0; i < 7; i ++)
@@ -36,10 +36,10 @@ public class ShiftController {
         return output;
     }
 
-    public WeeklyShiftSchedule createWeeklyshiftSchedule(LocalDate startingDate, Shift[][] shifts) throws EmployeeException {
+    public WeeklyShiftSchedule createWeeklyShiftSchedule(LocalDate startingDate, Shift[][] shifts) throws EmployeeException {
         if(startingDate.isBefore ( LocalDate.now () ))
             throw new EmployeeException ( "Starting date has already passed." );
-        if(startingDate.getDayOfWeek ().getValue () != 7)
+        if(startingDate.getDayOfWeek () != DayOfWeek.SUNDAY)
             throw new EmployeeException ( "Starting date is not sunday." );
         if(shifts == null)
             throw new EmployeeException ( "shifts are illegal." );

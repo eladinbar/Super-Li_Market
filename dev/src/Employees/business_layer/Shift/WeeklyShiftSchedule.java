@@ -34,15 +34,15 @@ public class WeeklyShiftSchedule {
             throw new EmployeeException ( "starting day has already passed." );
         this.date = date;
         this.shifts = new Shift[7][2];
-        for(int i = 0; i < 7; i++)
+        for(int i = 0; i < 5; i++)
         {
-            if(i != 7)
-                shifts[i][0] = new Shift(date.plusDays ( i ), "morningShift", 0 );
-            if(i != 6)
-                shifts[i][1] = new Shift ( date.plusDays ( i ), "eveningShift", 1 );
-            shifts[7][0] = null;
-            shifts[6][1] = null;
+            shifts[i][0] = new Shift(date.plusDays ( i ), "morningShift", 0 );
+            shifts[i][1] = new Shift ( date.plusDays ( i ), "eveningShift", 1 );
         }
+        shifts[5][0] = new Shift ( date.plusDays ( 5 ), "morningShift", 0 );
+        shifts[6][1] = new Shift ( date.plusDays ( 6 ), "eveningShift", 1 );
+        shifts[6][0] = null;
+        shifts[5][1] = null;
         isMissing = true;
     }
 
@@ -112,9 +112,15 @@ public class WeeklyShiftSchedule {
     }
 
     public void recommendShifts(EmployeeController employeeController, int i) throws EmployeeException {
-        shifts[i][0].createManning ( employeeController );
-        shifts[i][1].createManning ( employeeController );
-        isMissing = isMissing();
+        if(i<5) {
+            shifts[i][0].createManning ( employeeController );
+            shifts[i][1].createManning ( employeeController );
+        }
+        if(i == 5)
+            shifts[i][0].createManning ( employeeController );
+        if(i == 6)
+            shifts[i][1].createManning ( employeeController );
+            isMissing = isMissing();
     }
 
     public boolean isMissing()

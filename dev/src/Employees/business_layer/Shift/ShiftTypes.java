@@ -58,8 +58,8 @@ public class ShiftTypes {
     }
 
     public void addShiftType(String shiftType, HashMap<String, Integer> manning) throws EmployeeException {
-        if (shiftType.contains ( shiftType ))
-            throw new EmployeeException ( "this current shift type already exists." );
+        if (shiftTypes.containsKey ( shiftType ))
+            throw new EmployeeException ( "this current shift type is already exists." );
         HashMap<Role, Integer> newManning = new HashMap<> ( );
         for ( Map.Entry<String, Integer> entry : manning.entrySet ( ) ) {
             newManning.put ( Role.valueOf ( entry.getKey ( ) ), entry.getValue ( ) );
@@ -71,5 +71,13 @@ public class ShiftTypes {
         if(!shiftType.contains ( shiftType ))
             throw new EmployeeException ( "Illegal shift type." );
         shiftTypes.remove ( Role.valueOf ( role ) );
+    }
+
+    public String[] getShiftTypes() {
+        String[] shifts = new String[shiftTypes.size ()];
+        int i = 0;
+        for( Map.Entry<String, HashMap<Role, Integer>> shift : shiftTypes.entrySet ())
+            shifts[i++] = shift.getKey ();
+        return shifts;
     }
 }

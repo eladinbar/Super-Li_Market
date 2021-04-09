@@ -69,12 +69,12 @@ public class EmployeeService {
         }
     }
 
-    public Response addManager(FacadeEmployee manager) {
+    public ResponseT<FacadeEmployee> addManager(FacadeEmployee manager) {
         try{
-            return new ResponseT<>(new FacadeEmployee(employeeController.addManager(manager)));
+            return new ResponseT(new FacadeEmployee(employeeController.addManager(manager)));
         }
         catch (EmployeeException e){
-            return new ResponseT<>(e.getMessage());
+            return new ResponseT(e.getMessage());
         }
     }
 
@@ -107,7 +107,7 @@ public class EmployeeService {
         }
     }
 
-    public Response updateTermsOfemployee(String Id, int salary, int educationFund, int sickDays, int daysOff) {
+    public Response updateTermsOfEmployee(String Id, int salary, int educationFund, int sickDays, int daysOff) {
         try{
             employeeController.updateTermsOfemployee(Id,salary, educationFund, sickDays,daysOff);
             return new Response();
@@ -129,7 +129,7 @@ public class EmployeeService {
         }
     }
 
-    public ResponseT<FacadeEmployee> getLoggedin() {
+    public ResponseT<FacadeEmployee> getLoggedIn() {
         try{
             return new ResponseT<>(new FacadeEmployee(employeeController.getLoggedIn()));
         }

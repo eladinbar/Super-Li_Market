@@ -21,7 +21,7 @@ public class EmployeeController {
 
     public Employee getLoggedIn() throws EmployeeException {
         if(loggedIn==null){
-            throw new EmployeeException("No user is login");
+            throw new EmployeeException("No user is logged in");
         }
         return loggedIn;
     }
@@ -87,7 +87,7 @@ public class EmployeeController {
             throw new EmployeeException("No user is login");
         }
 
-        if(!loggedIn.getIsManager()){
+        if(loggedIn.getIsManager()){
             throw new EmployeeException("The method 'giveConstraint' was called from a user in a managerial position");
         }
 
@@ -161,7 +161,7 @@ public class EmployeeController {
     }
 
     public Employee addManager(FacadeEmployee e) throws EmployeeException {
-        if(e.isManager ()){
+        if(!e.isManager ()){
             throw new EmployeeException("Only an administrator can perform this operation");
         }
         if(!validId(e.getID())){
@@ -281,11 +281,25 @@ public class EmployeeController {
     }
 
     public void createData () throws EmployeeException {
+
             createUshers();
             createguard();
             creatCashier();
             creatStoreKeeper();
             createManagers();
+            createShiftManagers();
+    }
+
+    private void createShiftManagers() throws EmployeeException {
+        int accountNum = 476, bankBranch=11, salary=7000, educationFund=1232, sickDays=10, daysOff=30;
+        String bankName = "Otar hachayal";
+        for(int i=0; i<1; i++){
+            BankAccountInfo employeeAccountInfo = new BankAccountInfo(accountNum+i, bankBranch, bankName);
+            TermsOfEmployment termsOfEmployment = new TermsOfEmployment(salary+1, educationFund,sickDays, daysOff );
+            Employee shiftManager = new Employee("shiftManager", "66666666"+i, termsOfEmployment, LocalDate.now(), employeeAccountInfo);
+            giveConstraintFirst(shiftManager, LocalDate.now().plusWeeks(3).plusDays ( 3 ),0,"Bat-Mitzva");
+            addEmployeeFirst(shiftManager);
+        }
     }
 
     private void createManagers() throws EmployeeException {
@@ -293,17 +307,17 @@ public class EmployeeController {
         String bankName = "Hpoalim";
         FacadeBankAccountInfo employeeAccountInfo1 = new FacadeBankAccountInfo(accountNum, bankBranch, bankName);
         FacadeTermsOfEmployment termsOfEmployment1 = new FacadeTermsOfEmployment(salary, educationFund,sickDays, daysOff );
-        FacadeEmployee branchManager = new FacadeEmployee("branchManager", "12300000", LocalDate.now(), employeeAccountInfo1, termsOfEmployment1);
+        FacadeEmployee branchManager = new FacadeEmployee("branchManager", "123000000", LocalDate.now(), employeeAccountInfo1, termsOfEmployment1);
 
         FacadeBankAccountInfo employeeAccountInfo2 = new FacadeBankAccountInfo(accountNum+2, bankBranch, bankName);
         FacadeTermsOfEmployment termsOfEmployment2 = new FacadeTermsOfEmployment(salary+2, educationFund,sickDays, daysOff );
-        FacadeEmployee branchManagerAssistent = new FacadeEmployee("branchManagerAssistent", "45600000", LocalDate.now(), employeeAccountInfo2, termsOfEmployment2);
+        FacadeEmployee branchManagerAssistant = new FacadeEmployee("branchManagerAssistant", "456000000", LocalDate.now(), employeeAccountInfo2, termsOfEmployment2);
 
         FacadeBankAccountInfo employeeAccountInfo3 = new FacadeBankAccountInfo(accountNum+3, bankBranch, bankName);
         FacadeTermsOfEmployment termsOfEmployment3 = new FacadeTermsOfEmployment(salary+3, educationFund,sickDays, daysOff );
-        FacadeEmployee humanResourcesManager = new FacadeEmployee("humanResourcesManager", "78900000", LocalDate.now(), employeeAccountInfo3, termsOfEmployment3);
+        FacadeEmployee humanResourcesManager = new FacadeEmployee("humanResourcesManager", "789000000", LocalDate.now(), employeeAccountInfo3, termsOfEmployment3);
         addManager(branchManager);
-        addManager(branchManagerAssistent);
+        addManager(branchManagerAssistant);
         addManager(humanResourcesManager);
     }
 
@@ -315,12 +329,13 @@ public class EmployeeController {
             BankAccountInfo employeeAccountInfo = new BankAccountInfo(accountNum+i, bankBranch, bankName);
             TermsOfEmployment termsOfEmployment = new TermsOfEmployment(salary+1, educationFund,sickDays, daysOff );
             Employee usher = new Employee("usher", "00000000"+i, termsOfEmployment, LocalDate.now(), employeeAccountInfo);
-            try {
-                giveConstraint(LocalDate.now().plusWeeks(2),0,"wedding");
-                addEmployeeFirst(usher);
-            }
-            catch(EmployeeException e){}
+            giveConstraintFirst(usher, LocalDate.now().plusWeeks(2).plusDays ( 3 ),0,"wedding");
+            addEmployeeFirst(usher);
         }
+    }
+
+    private void giveConstraintFirst(Employee employee, LocalDate date, int shift, String reason) throws EmployeeException {
+        employee.giveConstraint(date, shift, reason);
     }
 
     private void createguard() throws EmployeeException {
@@ -329,10 +344,10 @@ public class EmployeeController {
         for(int i=0; i<2; i++){
             BankAccountInfo employeeAccountInfo = new BankAccountInfo(accountNum+i, bankBranch, bankName);
             TermsOfEmployment termsOfEmployment = new TermsOfEmployment(salary+1, educationFund,sickDays, daysOff );
-            Employee guard = new Employee("guard", "011111111"+i, termsOfEmployment, LocalDate.now(), employeeAccountInfo);
+            Employee guard = new Employee("guard", "01111111"+i, termsOfEmployment, LocalDate.now(), employeeAccountInfo);
 
             try {
-                giveConstraint(LocalDate.now().plusWeeks(2),0,"wedding");
+                giveConstraintFirst(guard, LocalDate.now().plusWeeks(2).plusDays ( 5 ),0,"wedding");
                 addEmployeeFirst(guard);
             }
             catch(EmployeeException e){}
@@ -360,10 +375,7 @@ public class EmployeeController {
             BankAccountInfo employeeAccountInfo = new BankAccountInfo(accountNum+i, bankBranch, bankName);
             TermsOfEmployment termsOfEmployment = new TermsOfEmployment(salary+1, educationFund,sickDays, daysOff );
             Employee storeKeeper = new Employee("storeKeeper", "03333333"+i, termsOfEmployment, LocalDate.now(), employeeAccountInfo);
-            try {
-                addEmployeeFirst (storeKeeper);
-            }
-            catch(EmployeeException e){}
+            addEmployeeFirst (storeKeeper);
         }
     }
     // private methods
@@ -382,27 +394,14 @@ public class EmployeeController {
     }
 
     private boolean validId(String ID){
-        char[] idChar = ID.toCharArray();
-        boolean firstHalf = false;
-        boolean secHalf = false;
-        for (int i = 0; i < 5; ++i){//Check first half
-            if ((idChar[i] > 47 && idChar[i] < 58)){//Checks ascii vals to see if valid ID
-                firstHalf = true;
-            }
-        }
-
-        for (int i = 5; i < idChar.length; ++i){//Check second half
-            if ((idChar[i] > 47 && idChar[i] < 58)){//Checks ascii vals to see if valid ID
-                secHalf = true;
-            }
-        }
-
-        //If all values are valid, returns true.
-        if (firstHalf == true && secHalf == true && idChar[4] == '-' && ID.length() == 9){
+        if(ID.length () != 9)
+            return false;
+        try{
+            Integer.parseInt ( ID );
             return true;
+        }catch (NumberFormatException n) {
+            return false;
         }
-
-        return false;
     }
 
     private boolean validDate(LocalDate date) {

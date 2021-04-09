@@ -26,9 +26,9 @@ public class FacadeService {
         return shiftService.getRecommendation ( startingDate );
     }
 
-    public ResponseT<FacadeWeeklyShiftSchedule> createWeeklyshiftSchedule(LocalDate startingDate, FacadeShift[][] shifts)
+    public ResponseT<FacadeWeeklyShiftSchedule> createWeeklyShiftSchedule(LocalDate startingDate, FacadeShift[][] shifts)
     {
-        return shiftService.createWeeklyshiftSchedule ( startingDate, shifts );
+        return shiftService.createWeeklyShiftSchedule ( startingDate, shifts );
     }
 
     public Response changeShift(LocalDate date, int shift, HashMap<String, List<String>> manning) {
@@ -47,8 +47,8 @@ public class FacadeService {
         return shiftService.changeShiftType ( date, shift, shiftType);
     }
 
-    public Response createShiftType(String shiftype, HashMap<String, Integer> manning){
-        return shiftService.createShiftType ( shiftype, manning );
+    public Response createShiftType(String shiftType, HashMap<String, Integer> manning){
+        return shiftService.createShiftType ( shiftType, manning );
     }
 
     public Response updateRoleManning(String shiftType, String role, int num) {
@@ -102,14 +102,14 @@ public class FacadeService {
     }
 
     public Response updateTermsOfEmployee(String Id, int salary, int educationFund, int sickDays, int daysOff) {
-        return employeeService.updateTermsOfemployee ( Id,salary,educationFund,sickDays,daysOff );
+        return employeeService.updateTermsOfEmployee ( Id,salary,educationFund,sickDays,daysOff );
     }
 
     public Response addEmployee(FacadeEmployee employee) {
         return employeeService.addEmployee ( employee );
     }
 
-    public Response addManager(FacadeEmployee manager) {
+    public ResponseT<FacadeEmployee> addManager(FacadeEmployee manager) {
         return employeeService.addManager ( manager );
     }
 
@@ -118,8 +118,8 @@ public class FacadeService {
         return employeeService.getConstraints();
     }
 
-    public ResponseT<FacadeEmployee> getLoggedin() {
-        return employeeService.getLoggedin();
+    public ResponseT<FacadeEmployee> getLoggedIn() {
+        return employeeService.getLoggedIn();
     }
 
     public ResponseT<FacadeEmployee> getEmployee(String ID){
@@ -134,7 +134,11 @@ public class FacadeService {
         return employeeService.getEmployees();
     }
 
-    public Response createData() {
+    public Response createData(boolean b) {
+        if(b)
+        {
+            return employeeService.createData ();
+        }
         Response response = employeeService.createData ( );
         if(response.errorOccured ())
             return response;

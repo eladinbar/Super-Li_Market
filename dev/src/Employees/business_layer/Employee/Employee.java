@@ -131,45 +131,34 @@ public void deleteConstraint(LocalDate date, int shift) throws EmployeeException
         throw new EmployeeException("There is no constraint to delete on that day");
     }
     Constraint exist = constraints.get(date);
-    if(!(exist.isMorningShift() & exist.isEveningShift())){
+    if(shift == 0 && exist.isMorningShift ())
+        exist.setMorningShift ( false );
+    else if(shift == 1 && exist.isEveningShift ())
+        exist.setEveningShift ( false );
+    else if(shift == 2 && exist.isEveningShift () && exist.isMorningShift ())
+        constraints.remove ( date );
+    else
+        throw new EmployeeException("There is no constraint to the specific shift to delete on that day");
+    if(!exist.isMorningShift() & !exist.isEveningShift()){
         constraints.remove(date);
-    }
-    else if(exist.isMorningShift()){
-        exist.setMorningShift(false);
-    }
-    else{
-        exist.setEveningShift(false);
     }
 }
 
 //private methods
 
     private boolean isManager(Role role){
-        return role == Role.branchManager | role == Role.branchManagerAssistent | role == Role.humanResourcesManager;
+        return role == Role.branchManager | role == Role.branchManagerAssistant | role == Role.humanResourcesManager;
     }
 
     private boolean validId(String ID){
-        char[] idChar = ID.toCharArray();
-        boolean firstHalf = false;
-        boolean secHalf = false;
-        for (int i = 0; i < 5 || firstHalf; ++i){//Check first half
-            if ((idChar[i] > 47 && idChar[i] < 58)){//Checks ascii vals to see if valid ID
-                firstHalf = true;
-            }
-        }
-
-        for (int i = 5; i < idChar.length || secHalf; ++i){//Check second half
-            if ((idChar[i] > 47 && idChar[i] < 58)){//Checks ascii vals to see if valid ID
-                secHalf = true;
-            }
-        }
-
-        //If all values are valid, returns true.
-        if (firstHalf && secHalf && idChar[4] == '-' && ID.length() == 9){
+        if(ID.length () != 9)
+            return false;
+        try{
+            Integer.parseInt ( ID );
             return true;
+        }catch (NumberFormatException n) {
+            return false;
         }
-
-        return false;
     }
 
     private boolean validDate(LocalDate date) {

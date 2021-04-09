@@ -25,7 +25,7 @@ public class FacadeEmployee implements FacadeObject{
         this.facadeBankAccountInfo = facadeBankAccountInfo;
         this.facadeTermsOfEmployment = facadeTermsOfEmployment;
         this.constraints = constraints;
-        if(role.equals ("humanResourcesManager") || role.equals ( "branchManager") || role.equals ( "branchManagerAssistent" ))
+        if(role.equals ("humanResourcesManager") || role.equals ( "branchManager") || role.equals ( "branchManagerAssistant" ))
             isManager = true;
         else
             isManager = false;
@@ -40,6 +40,10 @@ public class FacadeEmployee implements FacadeObject{
         this.facadeBankAccountInfo = facadeBankAccountInfo;
         this.facadeTermsOfEmployment = facadeTermsOfEmployment;
         this.constraints = new HashMap<>();
+        if(role.equals ("humanResourcesManager") || role.equals ( "branchManager") || role.equals ( "branchManagerAssistant" ))
+            isManager = true;
+        else
+            isManager = false;
     }
 
     public FacadeEmployee(Employee employee){
@@ -53,6 +57,10 @@ public class FacadeEmployee implements FacadeObject{
         {
             constraints.put ( entry.getKey (), new FacadeConstraint ( entry.getValue () ) );
         }
+        if(role.equals ("humanResourcesManager") || role.equals ( "branchManager") || role.equals ( "branchManagerAssistant" ))
+            isManager = true;
+        else
+            isManager = false;
     }
 
     public LocalDate getTransactionDate() {

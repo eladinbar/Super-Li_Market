@@ -1,10 +1,13 @@
 package Employees.presentation_layer;
 
+import Employees.business_layer.Shift.ShiftTypes;
 import Employees.business_layer.facade.facadeObject.FacadeBankAccountInfo;
 import Employees.business_layer.facade.facadeObject.FacadeEmployee;
 import Employees.business_layer.facade.facadeObject.FacadeTermsOfEmployment;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 public class MenuPrinter {
@@ -17,18 +20,18 @@ public class MenuPrinter {
     }
 
     public char uploadClean(){
-        System.out.println ("Are you a manager in Super-Lee? y/n\nyour answer:" );
+        System.out.print ("Are you a manager in Super-Lee? y/n\nyour answer:" );
         return getChar ();
     }
 
     public String loginID(){
-        System.out.println ("To login type you Id:\n" );
+        System.out.println ("To login type you Id:" );
         return getString ();
     }
 
     public String roleMenu(){
         System.out.println ("Choose role:\n1.branch manager\n2.branch manager assistant\n" +
-                "3.human resources manager\n4.cashier\n5.guard\n6.usher\n7.store keeper\n8.Back" );
+                "3.human resources manager\n4.cashier\n5.guard\n6.usher\n7.store keeper\n8.shift manager\n9.back" );
         int choice =  getInt ();
         switch (choice){
             case 1:
@@ -46,6 +49,8 @@ public class MenuPrinter {
             case 7:
                 return "storeKeeper";
             case 8:
+                return "shiftManager";
+            case 9:
                 return null;
             default:
                 System.out.println ("choice is illegal.");
@@ -63,7 +68,7 @@ public class MenuPrinter {
                 "6.Get employee information\n" +
                 "7.Get employee constraints\n" +
                 "8.Add a new employee to the system\n" +
-                "9.Logout\n" );
+                "9.Logout" );
         return getInt ();
     }
 
@@ -75,7 +80,7 @@ public class MenuPrinter {
                 "4.delete an existing constraint\n" +
                 "5.Show my employee card\n" +
                 "6.Show constraints\n" +
-                "7.Logout\n" );
+                "7.Logout" );
         return getInt ();
     }
 
@@ -83,7 +88,7 @@ public class MenuPrinter {
     public FacadeEmployee createManagerAccountMenu() {
         String role;
         System.out.println ( "Create account:\n" +
-                "choose role:\n1.branch manager\n2.branch manager assistant\n3.human resources manager\n" );
+                "choose role:\n1.branch manager\n2.branch manager assistant\n3.human resources manager" );
         int input = getInt ();
         if(input == 1)
             role = "branchManager";
@@ -106,23 +111,22 @@ public class MenuPrinter {
         LocalDate transactionDate;
         System.out.println ( "ID: " );
         ID = sc.next ( );
-        System.out.println ( "\n" );
-        System.out.println ( "transaction date:\n");
+        System.out.println ( "transaction date:");
         transactionDate = dateMenu ();
-        System.out.println ("\nbank account info:\nbank: " );
+        System.out.print ("bank account info:\nbank: " );
         bank = sc.next ();
-        System.out.println ("\nbank branch: " );
+        System.out.print ("bank branch: " );
         bankBranch = getInt ();
-        System.out.println ("\nbank account number: " );
+        System.out.print ("bank account number: " );
         accountNumber = getInt ();
         bankAccountInfo = new FacadeBankAccountInfo (accountNumber, bankBranch, bank );
-        System.out.println ("\nterms of employment:\nsalary: " );
+        System.out.print ("terms of employment:\nsalary: " );
         salary = getInt ();
-        System.out.println ("\neducation fund: " );
+        System.out.print ("education fund: " );
         educationFund = getInt ();
-        System.out.println ("\nsick days: " );
+        System.out.print ("sick days: " );
         sickDays = getInt ();
-        System.out.println ("\ndays off: " );
+        System.out.print ("days off: " );
         daysOff = getInt ();
         termsOfEmployment = new FacadeTermsOfEmployment ( salary, educationFund, sickDays, daysOff );
         return new FacadeEmployee ( role, ID, transactionDate, bankAccountInfo, termsOfEmployment );
@@ -131,8 +135,7 @@ public class MenuPrinter {
     public LocalDate dateMenu()
     {
         int input;
-        System.out.println ("Date:\n" );
-        System.out.println ( "day:" );
+        System.out.print ( "day:" );
         input = getInt ();
         int day, month;
         if (input > 31 || input < 1) {
@@ -140,14 +143,14 @@ public class MenuPrinter {
             return null;
         }
         day = input;
-        System.out.println ("\nmonth:" );
+        System.out.print ("month:" );
         input = sc.nextInt ( );
         if (input > 12 || input < 1) {
             System.out.println ( "month is illegal" );
             return null;
         }
         month = input;
-        System.out.println ("\nyear:" );
+        System.out.print ("year:" );
         input = getInt ();
         if (input > 2021 || input < 1961) {
             System.out.println ( "year is illegal" );
@@ -157,22 +160,22 @@ public class MenuPrinter {
     }
 
     public LocalDate schedule() {
-        System.out.println ("First date of the week:\n" );
+        System.out.println ("First date of the week:" );
         return dateMenu ();
     }
 
     public LocalDate getShiftDate() {
-        System.out.println ("Shift date:\n" );
+        System.out.println ("Shift date:" );
         return dateMenu ();
     }
 
     public int getShiftNum(){
-        System.out.println ( "Type 0 for morning shift, 1 for evening shift and 2 for both: " );
+        System.out.print ( "Type 0 for morning shift, 1 for evening shift and 2 for both: " );
         return getInt ();
     }
 
     public int getOneShiftNum(){
-        System.out.println ( "Type 0 for morning shift and 1 for evening shift: " );
+        System.out.print ( "Type 0 for morning shift and 1 for evening shift: " );
         return getInt ();
     }
 
@@ -196,7 +199,7 @@ public class MenuPrinter {
     }
 
     public int createWeeklyShiftSchedule() {
-        System.out.println ("Choose an option: /n" +
+        System.out.println ("Choose an option: \n" +
                 "1. Creating a shift schedule manually\n" +
                 "2. Getting a system recommendation." );
         return getInt ();
@@ -216,7 +219,7 @@ public class MenuPrinter {
             try{
                 return sc.nextInt ();
             }catch (Exception e){
-                System.out.println ("Not a number, p;ease try again.\n" );
+                System.out.println ("Not a number, please try again." );
             }
         }
     }
@@ -229,7 +232,7 @@ public class MenuPrinter {
         System.out.println ("Choose the option you would like:\n" +
                 "1.Delete employee\n" +
                 "2.Update employee bank account\n" +
-                "3.Update employee terms of employment" +
+                "3.Update employee terms of employment\n" +
                 "4.Back" );
         return getInt ();
     }
@@ -238,8 +241,25 @@ public class MenuPrinter {
         System.out.println ("Choose the option you would like:\n" +
                 "1.Update an existing role manning\n" +
                 "2.Add a new role manning\n" +
-                "3.Delete an existing role from shift" +
+                "3.Delete an existing role from shift\n" +
                 "4.Back" );
         return getInt ();
+    }
+
+    public String chooseShiftType(LocalDate date, int shiftNum) {
+        System.out.println ("Choose the shift type you would like for " + date + "in " + shiftNum + " or type 0 to create a new one:\n");
+        String[] shiftTypes = ShiftTypes.getInstance ().getShiftTypes();
+        int i = 1;
+        for ( String shift : shiftTypes )
+        {
+            System.out.println ("" + i++ +"." + shift );
+        }
+        int choice = sc.nextInt ();
+        if(choice == 0)
+            return "new";
+        if(choice > shiftTypes.length || choice < 0)
+            return null;
+        return shiftTypes[i];
+
     }
 }

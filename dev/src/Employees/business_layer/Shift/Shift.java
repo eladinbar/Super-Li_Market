@@ -129,6 +129,8 @@ public class Shift {
                     break;
                 work.add ( stillFree[rand] );
             }
+            this.manning.put ( role, new ArrayList<> ( work ) );
+            work.clear ();
         }
     }
 

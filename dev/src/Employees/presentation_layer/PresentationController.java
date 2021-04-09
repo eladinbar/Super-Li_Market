@@ -28,13 +28,14 @@ public class PresentationController {
 
     public void start(){
         int choice = menuPrinter.uploadProgram ();
-        if(choice == 0)
+        if(choice == 2)
             uploadClean ();
         else
             uploadData ();
     }
 
     private void uploadClean(){
+        facadeService.createData (true);
         char choice = menuPrinter.uploadClean ();
         FacadeEmployee manager;
         if(choice == 'y') {
@@ -43,7 +44,12 @@ public class PresentationController {
             {
                 manager = menuPrinter.createManagerAccountMenu ();
             }
-            facadeService.addManager ( manager );
+            ResponseT<FacadeEmployee> facadeEmployee = facadeService.addManager ( manager );
+            if(facadeEmployee.errorOccured ())
+            {
+                menuPrinter.print ( facadeEmployee.getErrorMessage () );
+                return;
+            }
             while(!login (true));
         }
         else
@@ -57,7 +63,7 @@ public class PresentationController {
     }
 
     private boolean createData() {
-        Response response = facadeService.createData();
+        Response response = facadeService.createData(false);
         if (response.errorOccured ())
         {
             menuPrinter.print ( response.getErrorMessage () );
@@ -201,7 +207,7 @@ public class PresentationController {
     }
 
     private void createShiftTypes() {
-        menuPrinter.print ( "For continuing the you have to create and characterize morning shift type and evening shift type.\n" +
+        menuPrinter.print ( "For continuing you have to create and characterize morning shift type and evening shift type.\n\n" +
                 "Create morning shift type:\n" );
         createShiftType(0);
         menuPrinter.print ( "Create evening shift type:" );
@@ -251,7 +257,6 @@ public class PresentationController {
             return;
         }
         menuPrinter.print ( stringConverter.convertWeeklyShiftSchedule ( weeklyShiftSchedule.value ) );
-        editSchedule ();
     }
 
     private void createWeeklyShiftSchedule()
@@ -263,7 +268,7 @@ public class PresentationController {
             return;
         }
         if(choice == 1) {
-            menuPrinter.print ( "Write the shift's details: \n" );
+            menuPrinter.print ( "Write the shift's details:" );
             LocalDate date = menuPrinter.schedule ( );
             FacadeShift[][] shifts = new FacadeShift[7][2];
             for ( int i = 0 ; i < 6 ; i++ ) {
@@ -272,12 +277,12 @@ public class PresentationController {
             }
             shifts[5][0] = createFirstShift ( date.plusDays ( 5 ) );
             shifts[6][1] = createSecondShift ( date.plusDays ( 6 ) );
-            ResponseT<FacadeWeeklyShiftSchedule> weeklyShiftSchedule = facadeService.createWeeklyshiftSchedule ( date, shifts );
+            ResponseT<FacadeWeeklyShiftSchedule> weeklyShiftSchedule = facadeService.createWeeklyShiftSchedule ( date, shifts );
             if (weeklyShiftSchedule.errorOccured ( )) {
                 menuPrinter.print ( weeklyShiftSchedule.getErrorMessage ( ) );
                 return;
             }
-            menuPrinter.print ( "Weekly shift schedule created successfully.\n" );
+            menuPrinter.print ( "Weekly shift schedule created successfully." );
         }
         else
             getRecommendation (  );
@@ -286,9 +291,15 @@ public class PresentationController {
 
     private FacadeShift createFirstShift(LocalDate date)
     {
-        menuPrinter.print( "Write the type of the first shift in date " + date );
-        String type = menuPrinter.getString ();
-        FacadeShift shift = new FacadeShift ( date, type, 0 );
+        String choice = menuPrinter.chooseShiftType(date, 1);
+        while (choice == null)
+        {
+            menuPrinter.printChoiceException ();
+            choice = menuPrinter.chooseShiftType ( date, 1 );
+        }
+        if(choice.equals ("new"))
+            choice = createShiftType (2);
+        FacadeShift shift = new FacadeShift ( date, choice, 0 );
         HashMap <String, List<String>> manning = createManning ();
         shift.setManning ( manning );
         return shift;
@@ -296,9 +307,15 @@ public class PresentationController {
 
     private FacadeShift createSecondShift(LocalDate date)
     {
-        menuPrinter.print( "Write the type of the first second in date " + date );
-        String type = menuPrinter.getString ();
-        FacadeShift shift = new FacadeShift ( date, type, 1 );
+        String choice = menuPrinter.chooseShiftType(date, 2);
+        while (choice == null)
+        {
+            menuPrinter.printChoiceException ();
+            choice = menuPrinter.chooseShiftType ( date, 2 );
+        }
+        if(choice.equals ("new"))
+            choice = createShiftType (2);
+        FacadeShift shift = new FacadeShift ( date, choice, 1 );
         HashMap <String, List<String>> manning = createManning ();
         shift.setManning ( manning );
         return shift;
@@ -314,6 +331,7 @@ public class PresentationController {
             while (!id.equals ("0"))
             {
                 roleManning.add ( id );
+                id = menuPrinter.idGetter();
             }
             manning.put ( role, roleManning.subList ( 0,roleManning.size () ) );
             roleManning.clear ();
@@ -368,7 +386,7 @@ public class PresentationController {
         menuPrinter.print ( "Shift type changed successfully.\n" );
     }
 
-    private void createShiftType(int type){
+    private String createShiftType(int type){
         String shiftType;
         if(type == 0)
             shiftType = "morningShift";
@@ -389,9 +407,10 @@ public class PresentationController {
         Response response = facadeService.createShiftType ( shiftType, manning );
         if (response.errorOccured ( )) {
             menuPrinter.print ( response.getErrorMessage ( ) );
-            return;
+            return null;
         }
         menuPrinter.print ( "Shift type added successfully.\n" );
+        return shiftType;
     }
 
     private void getShiftType() {
@@ -615,7 +634,7 @@ public class PresentationController {
     }
 
     private void getEmployee() {
-        ResponseT<FacadeEmployee> employee = facadeService.getLoggedin();
+        ResponseT<FacadeEmployee> employee = facadeService.getLoggedIn();
         if (employee.errorOccured ())
         {
             menuPrinter.print ( employee.getErrorMessage () );

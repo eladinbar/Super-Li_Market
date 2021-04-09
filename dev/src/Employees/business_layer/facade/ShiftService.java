@@ -32,7 +32,7 @@ public class ShiftService {
         }
     }
 
-    public ResponseT<FacadeWeeklyShiftSchedule> createWeeklyshiftSchedule(LocalDate startingDate, FacadeShift[][] shifts)
+    public ResponseT<FacadeWeeklyShiftSchedule> createWeeklyShiftSchedule(LocalDate startingDate, FacadeShift[][] shifts)
     {
         try{
             Shift[][] newShifts = new Shift[7][2];
@@ -45,7 +45,7 @@ public class ShiftService {
                 if(evening != null)
                     newShifts[i][1] = new Shift ( evening );
             }
-            FacadeWeeklyShiftSchedule facadeWeeklyShiftSchedule = new FacadeWeeklyShiftSchedule (shiftController.createWeeklyshiftSchedule ( startingDate, newShifts ));
+            FacadeWeeklyShiftSchedule facadeWeeklyShiftSchedule = new FacadeWeeklyShiftSchedule (shiftController.createWeeklyShiftSchedule ( startingDate, newShifts ));
             return new ResponseT ( facadeWeeklyShiftSchedule );
         }catch (EmployeeException e){
             return new ResponseT ( e.getMessage () );

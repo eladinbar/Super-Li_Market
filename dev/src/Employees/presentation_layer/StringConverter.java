@@ -9,9 +9,9 @@ import java.util.LinkedList;
 public class StringConverter {
 
     private String convertBankAccountInfo( FacadeBankAccountInfo facadeBankAccountInfo){
-         return new String  ("Account Number: " + facadeBankAccountInfo.getAccountNumber()+"\n"
+         return "Account Number: " + facadeBankAccountInfo.getAccountNumber()+"\n"
                 + "Bank branch: " + facadeBankAccountInfo.getBank()+"\n"
-                + "Bank name: " + facadeBankAccountInfo.getBank()+"\n");
+                + "Bank name: " + facadeBankAccountInfo.getBank()+"\n";
     }
 
     public String convertConstraint(FacadeConstraint facadeConstraint){
@@ -29,32 +29,35 @@ public class StringConverter {
     }
 
     public String convertEmployee(FacadeEmployee facadeEmployee){
-        return new String("ID: "+ facadeEmployee.getID()+"\n"
+        return "ID: "+ facadeEmployee.getID()+"\n"
                 + "Role: "+ facadeEmployee.getRole()+"\n"
-                + "Transaction date: " + facadeEmployee.getTransactionDate().toString() +"\n");
+                + "Transaction date: " + facadeEmployee.getTransactionDate().toString() +"\n" +
+                "Bank account info: " + convertBankAccountInfo ( facadeEmployee.getFacadeBankAccountInfo () ) + "\n" +
+                "Terms of employment: " + convertTermsOfEmployment ( facadeEmployee.getFacadeTermsOfEmployment () );
     }
 
     public String convertShift(FacadeShift facadeShift){
         String isFull;
-        if(facadeShift.isMissing()){isFull="Yes";}
-        else{isFull="No";}
+        if(facadeShift.isMissing()){isFull="No";}
+        else{isFull="Yes";}
         String manning="";
         for (String role: facadeShift.getManning().keySet()) {
             manning+= role+":\n ";
             for (String ID : facadeShift.getManning().get(role)) {
                 manning+=ID+"\n ";
             }
+            manning  += "\n";
         }
-        return new String("Shift type: " + facadeShift.getType()+"\n"
-                + "Shift staffing:\n "+manning+"\n"
-                + "A fully staffed shift: " + isFull);
+        return "Shift type: " + facadeShift.getType()+"\n"
+                + "Shift staffing:\n "+manning
+                + "A fully staffed shift: " + isFull +"\n";
     }
 
     private String convertTermsOfEmployment(FacadeTermsOfEmployment facadeTermsOfEmployment){
-        return new String("Salary: "+facadeTermsOfEmployment.getSalary()+"\n"
+        return "Salary: "+facadeTermsOfEmployment.getSalary()+"\n"
                 + "Education fund: "+ facadeTermsOfEmployment.getEducationFund()+"\n"
-                + "Sick days: "+ facadeTermsOfEmployment.getSickDays()
-                + "Days off: "+ facadeTermsOfEmployment.getDaysOff());
+                + "Sick days: "+ facadeTermsOfEmployment.getSickDays() +"\n"
+                + "Days off: "+ facadeTermsOfEmployment.getDaysOff();
     }
 
     public String convertWeeklyShiftSchedule(FacadeWeeklyShiftSchedule facadeWeeklyShiftSchedule){
@@ -63,10 +66,21 @@ public class StringConverter {
         FacadeShift [][]shifts = facadeWeeklyShiftSchedule.getShifts();
         String list="";
         for(int i =0 ; i<7; i++){
-            list+= "Day: "+shifts[i][0].getDate().getDayOfWeek()+"("+shifts[i][0].getDate().toString()+"): "
-                + convertShift(shifts[i][0])+"       "+convertShift(shifts[i][1]) +"      ";
+            if(shifts[i][0] == null && shifts[i][1] != null)
+            {
+                list+= "Day: "+shifts[i][1].getDate().getDayOfWeek()+"("+shifts[i][1].getDate().toString()+"):\n"
+                        + convertShift(shifts[i][1])+"\n";
+            }
+            else if(shifts[i][1] == null && shifts[i][0] != null)
+            {
+                list+= "Day: "+shifts[i][0].getDate().getDayOfWeek()+"("+shifts[i][0].getDate().toString()+"):\n"
+                        + convertShift(shifts[i][0])+"\n";
+            }
+            else if(shifts[i][0] != null)
+                list+= "Day: "+shifts[i][0].getDate().getDayOfWeek()+"("+shifts[i][0].getDate().toString()+"):\n"
+                    + convertShift(shifts[i][0])+"\n"+convertShift(shifts[i][1]) +"\n";
         }
 
-        return new String("Week: "+ startOfWeek+" - "+ endOfWeek+"\n" + list);
+        return "Week: "+ startOfWeek+" - "+ endOfWeek+"\n" + list;
     }
 }
