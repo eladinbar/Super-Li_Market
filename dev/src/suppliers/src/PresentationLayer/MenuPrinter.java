@@ -431,7 +431,7 @@ public class MenuPrinter {
     private void getAgreement() {
         System.out.print("please enter supplier ID: ");
         String supplierID = getStringFromUser();
-        System.out.println(pc.getQuantityList(supplierID));
+        System.out.println(pc.getAgreement(supplierID));
     }
 
 

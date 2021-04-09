@@ -113,26 +113,26 @@ public class Service implements IService {
         return r;
     }
 
-    public ResponseT<product> addItemToAgreement(String id, int productID, int companyProductID,int price){
+    public ResponseT<product> addItemToAgreement(String id, int productID, int companyProductID, int price) {
         ResponseT<product> r = orderService.getProduct(productID);
         if (!r.errorOccured())
-            return supplierService.addItemToAgreement(id,productID,companyProductID,price, orderService);
+            return supplierService.addItemToAgreement(id, productID, companyProductID, price, orderService);
         return r;
     }
 
     @Override
     public Response removeItemFromAgreement(String supplierId, int productId) {
-        return supplierService.removeItemFromAgreement(supplierId,productId);
+        return supplierService.removeItemFromAgreement(supplierId, productId);
     }
 
     @Override
     public Response editAgreementItemCompanyProductID(String supplierID, int productID, int companyProductID) {
-        return supplierService.editAgreementItemCompanyProductID(supplierID,productID,companyProductID);
+        return supplierService.editAgreementItemCompanyProductID(supplierID, productID, companyProductID);
     }
 
     @Override
     public Response editAgreementItemPrice(String supplierID, int productID, int price) {
-        return supplierService.editAgreementItemPrice(supplierID,productID,price);
+        return supplierService.editAgreementItemPrice(supplierID, productID, price);
     }
 
     @Override

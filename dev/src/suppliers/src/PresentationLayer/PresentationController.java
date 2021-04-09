@@ -136,13 +136,17 @@ public class PresentationController {
         return service.removeItemFromAgreement(supplierId,productId).toString();
     }
 
-    public Response editAgreementItemCompanyProductID(String supplierID,int productID,int companyProductID){
-        return service.editAgreementItemCompanyProductID(supplierID, productID, companyProductID);
+    public String editAgreementItemCompanyProductID(String supplierID,int productID,int companyProductID){
+        return service.editAgreementItemCompanyProductID(supplierID, productID, companyProductID).toString();
     }
-    public Response editAgreementItemPrice(String supplierID,int productID,int companyProductID){
-        return service.editAgreementItemPrice(supplierID,productID,companyProductID);
+    public String editAgreementItemPrice(String supplierID,int productID,int companyProductID){
+        return service.editAgreementItemPrice(supplierID,productID,companyProductID).toString();
     }
-    public Response removeProductFromOrder(int orderID,int productID){
-        return service.removeProductFromOrder(orderID,productID);
+    public String removeProductFromOrder(int orderID,int productID){
+        return service.removeProductFromOrder(orderID,productID).toString();
+    }
+
+    public String getAgreement(String supplierID) {
+        return null;
     }
 }
