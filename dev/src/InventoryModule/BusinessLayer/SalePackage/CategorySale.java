@@ -18,8 +18,7 @@ public class CategorySale extends Sale{
     public CategorySale(String name, double discount, Calendar startDate, Calendar endDate, Category category) {
         this.name = name;
         this.discount = discount;
-        this.saleDates.setFirst(startDate);
-        this.saleDates.setSecond(endDate);
+        this.saleDates = new Pair<>(startDate, endDate);
         this.category = category;
     }
 
