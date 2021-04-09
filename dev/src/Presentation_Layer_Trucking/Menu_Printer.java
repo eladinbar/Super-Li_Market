@@ -6,6 +6,7 @@ import java.time.DateTimeException;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.*;
+import java.util.Scanner;
 
 public class Menu_Printer {
     PresentationController pc;
@@ -48,11 +49,11 @@ public class Menu_Printer {
             System.out.println(spot+".\tRemove Demand from the system");spot++;
             System.out.println(spot + ".\tGo back to Main Menu");// 20
 
-
+            scanner.useDelimiter("[\\,\\n\\r]+");
 
             int choose =0;
-
-            choose = getIntFromUserMain(scanner);
+            choose =getIntFromUserMain(scanner);
+            //choose = getIntFromUserMain(scanner);
             switch (choose) {
 
                 case 1:
@@ -211,10 +212,11 @@ public class Menu_Printer {
                 case 20:
 
                     System.out.println("this option isn't supported yet. to be continue");
-                    keepGoing = false;
+
 
                     break;
                 default:
+                    System.out.println("option is out of bounds");
 
             }
         }
@@ -1150,16 +1152,15 @@ public class Menu_Printer {
         boolean scannerCon = true;
         while(scannerCon) {
             try {
-                String init = scanner.next();
 
-                choose = Integer.parseInt(init);
-                //choose = scanner.nextInt();
+                choose = scanner.nextInt();
 
                 if (choose < 0) {
                     System.out.println("you must choose an none-negative number ");
                 }
                 scannerCon = false;
             } catch (Exception n) {
+                System.out.println(n.getMessage());
                 System.out.println("wrong input - a number must be inserted please try again ");
                 scanner.nextLine();
             }
@@ -1172,12 +1173,9 @@ public class Menu_Printer {
         boolean scannerCon = true;
         while(scannerCon) {
             try {
-                String init = scanner.next();
-                choose = Integer.parseInt(init);
 
-/*
                 choose = scanner.nextInt();
-*/
+
                 if (choose == -1) throw new ReflectiveOperationException("by pressing -1 you chose to go back");
                 if (choose < 0) {
                     System.out.println("you must choose an none-negative number ");
@@ -1206,13 +1204,8 @@ public class Menu_Printer {
         boolean scannerCon = true;
         while(scannerCon)
             try {
-                String init = scanner.next();
 
-                choose = Double.parseDouble(init);
-                scanner.nextLine();
-/*
                 choose = scanner.nextDouble();
-*/
                 if (choose == -1) throw new ReflectiveOperationException("by pressing -1 you chose to go back");
                 if (choose < 0){
                     System.out.println("you must choose an none-negative number ");

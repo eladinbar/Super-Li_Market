@@ -1,6 +1,5 @@
 package Business_Layer_Trucking.Delivery;
 
-import java.util.Dictionary;
 import java.util.HashMap;
 
 public class DeliveryForm {
