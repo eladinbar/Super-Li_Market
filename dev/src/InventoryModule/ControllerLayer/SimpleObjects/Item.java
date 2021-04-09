@@ -12,6 +12,7 @@ public class Item implements SimpleEntity {
     private String shelfLocation;
     private String storageLocation;
     private int manufacturerID;
+    private String category;
 
     public Item(int ID, String name, double costPrice, double sellingPrice,
                 int minAmount, int shelfQuantity, int storageQuantity,
@@ -27,6 +28,24 @@ public class Item implements SimpleEntity {
         this.totalQuantity = storageQuantity + shelfQuantity;
         this.shelfLocation = shelfLocation;
         this.storageLocation = storageLocation;
+        this.category = "uncategorized";
+    }
+
+    public Item(int ID, String name, double costPrice, double sellingPrice,
+                int minAmount, int shelfQuantity, int storageQuantity,
+                String shelfLocation, String storageLocation, int manufacturerID, String category) {
+        this.ID = ID;
+        this.name = name;
+        this.costPrice = costPrice;
+        this.sellingPrice = sellingPrice;
+        this.minAmount = minAmount;
+        this.manufacturerID = manufacturerID;
+        this.shelfQuantity = shelfQuantity;
+        this.storageQuantity = storageQuantity;
+        this.totalQuantity = storageQuantity + shelfQuantity;
+        this.shelfLocation = shelfLocation;
+        this.storageLocation = storageLocation;
+        this.category = category;
     }
 
     public int getID() {
@@ -75,5 +94,13 @@ public class Item implements SimpleEntity {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
     }
 }

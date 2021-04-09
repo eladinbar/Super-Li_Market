@@ -57,7 +57,7 @@ public class InventoryServiceImpl implements InventoryService {
             InventoryModule.BusinessLayer.Item tempItem = inventoryController.getItem(itemId);
             Item simpleItem = new Item(itemId, tempItem.getName(), tempItem.getCostPrice(), tempItem.getSellingPrice(),
                     tempItem.getMinAmount(), tempItem.getShelfQuantity(), tempItem.getStorageQuantity(), tempItem.getShelfLocation(),
-                    tempItem.getStorageLocation(), tempItem.getManufacturerID());
+                    tempItem.getStorageLocation(), tempItem.getManufacturerID(),inventoryController.getItemCategory(itemId).getName());
             responseT = new ResponseT<>(false, "", simpleItem);
             return responseT;
         } catch (Exception ex) {
@@ -324,7 +324,7 @@ public class InventoryServiceImpl implements InventoryService {
         for (InventoryModule.BusinessLayer.Item item : items) {
             Item simpleItem = new Item(item.getID(), item.getName(), item.getCostPrice(), item.getSellingPrice(),
                                         item.getMinAmount(), item.getShelfQuantity(), item.getStorageQuantity(),
-                                        item.getShelfLocation(), item.getStorageLocation(), item.getManufacturerID());
+                                        item.getShelfLocation(), item.getStorageLocation(), item.getManufacturerID(),inventoryController.getItemCategory(item.getID()).getName());
             simpleItems.add(simpleItem);
         }
         return simpleItems;
@@ -398,7 +398,8 @@ public class InventoryServiceImpl implements InventoryService {
             if (sale.getClass() == InventoryModule.BusinessLayer.SalePackage.ItemSale.class) {
                 InventoryModule.BusinessLayer.Item i = ((InventoryModule.BusinessLayer.SalePackage.ItemSale) sale).getItem();
                 Item simpleItem = new Item(i.getID(), i.getName(), i.getCostPrice(), i.getSellingPrice(), i.getMinAmount(),
-                        i.getShelfQuantity(), i.getStorageQuantity(), i.getShelfLocation(), i.getStorageLocation(), i.getManufacturerID());
+                        i.getShelfQuantity(), i.getStorageQuantity(), i.getShelfLocation(), i.getStorageLocation(), i.getManufacturerID()
+                        ,inventoryController.getItemCategory(i.getID()).getName());
                 simple.setAppliesOn((T) simpleItem);
             } else { //Category Sale case
                 InventoryModule.BusinessLayer.Category c = ((InventoryModule.BusinessLayer.SalePackage.CategorySale) sale).getCategory();
@@ -406,7 +407,8 @@ public class InventoryServiceImpl implements InventoryService {
                 //converting Items of category
                 for (InventoryModule.BusinessLayer.Item i : c.getItems()) {
                     Item simpleCatItem = new Item(i.getID(), i.getName(), i.getCostPrice(), i.getSellingPrice(), i.getMinAmount(),
-                            i.getShelfQuantity(), i.getStorageQuantity(), i.getShelfLocation(), i.getStorageLocation(), i.getManufacturerID());
+                            i.getShelfQuantity(), i.getStorageQuantity(), i.getShelfLocation(), i.getStorageLocation(), i.getManufacturerID()
+                            ,inventoryController.getItemCategory(i.getID()).getName());
                     categoryItems.add(simpleCatItem);
                 }
                 //getting the sub categories names
@@ -531,7 +533,8 @@ public class InventoryServiceImpl implements InventoryService {
             if (disc.getClass() == ItemDiscount.class) {
                 InventoryModule.BusinessLayer.Item i = ((ItemDiscount) disc).getItem();
                 Item simpleItem = new Item(i.getID(), i.getName(), i.getCostPrice(), i.getSellingPrice(), i.getMinAmount(),
-                        i.getShelfQuantity(), i.getStorageQuantity(), i.getShelfLocation(), i.getStorageLocation(), i.getManufacturerID());
+                        i.getShelfQuantity(), i.getStorageQuantity(), i.getShelfLocation(), i.getStorageLocation(), i.getManufacturerID()
+                        ,inventoryController.getItemCategory(i.getID()).getName());
                 simple.setAppliesOn((T) simpleItem);
             } else { //Category Discount case
                 InventoryModule.BusinessLayer.Category c = ((CategoryDiscount) disc).getCategory();
@@ -539,7 +542,8 @@ public class InventoryServiceImpl implements InventoryService {
                 //converting Items of category
                 for (InventoryModule.BusinessLayer.Item i : c.getItems()) {
                     Item simpleCatItem = new Item(i.getID(), i.getName(), i.getCostPrice(), i.getSellingPrice(), i.getMinAmount(),
-                            i.getShelfQuantity(), i.getStorageQuantity(), i.getShelfLocation(), i.getStorageLocation(), i.getManufacturerID());
+                            i.getShelfQuantity(), i.getStorageQuantity(), i.getShelfLocation(), i.getStorageLocation(), i.getManufacturerID()
+                            ,inventoryController.getItemCategory(i.getID()).getName());
                     categoryItems.add(simpleCatItem);
                 }
                 //getting tre sub categories names
@@ -619,12 +623,7 @@ public class InventoryServiceImpl implements InventoryService {
         List<Item> simpleItemList = new ArrayList<>();
         try {
             List<InventoryModule.BusinessLayer.Item> shortageItems = inventoryController.inventoryReport();
-            for (InventoryModule.BusinessLayer.Item i : shortageItems) {
-                Item simpleItem = new Item(i.getID(), i.getName(), i.getCostPrice(), i.getSellingPrice(), i.getMinAmount(),
-                        i.getShelfQuantity(), i.getStorageQuantity(), i.getShelfLocation(), i.getStorageLocation(), i.getManufacturerID());
-                simpleItemList.add(simpleItem);
-            }
-            shortageResponse = new ResponseT<>(false, "", simpleItemList);
+            shortageResponse = getResponseListItem(simpleItemList, shortageItems);
 
         } catch (Exception e) {
             shortageResponse = new ResponseT<>(true, e.getMessage(), null);
@@ -638,16 +637,23 @@ public class InventoryServiceImpl implements InventoryService {
         List<Item> simpleItemList = new ArrayList<>();
         try {
             List<InventoryModule.BusinessLayer.Item> shortageItems = inventoryController.categoryReport(categoryName);
-            for (InventoryModule.BusinessLayer.Item i : shortageItems) {
-                Item simpleItem = new Item(i.getID(), i.getName(), i.getCostPrice(), i.getSellingPrice(), i.getMinAmount(),
-                        i.getShelfQuantity(), i.getStorageQuantity(), i.getShelfLocation(), i.getStorageLocation(), i.getManufacturerID());
-                simpleItemList.add(simpleItem);
-            }
-            shortageResponse = new ResponseT<>(false, "", simpleItemList);
+            shortageResponse = getResponseListItem(simpleItemList, shortageItems);
 
         } catch (Exception e) {
             shortageResponse = new ResponseT<>(true, e.getMessage(), null);
         }
+        return shortageResponse;
+    }
+
+    private ResponseT<List<Item>> getResponseListItem(List<Item> simpleItemList, List<InventoryModule.BusinessLayer.Item> shortageItems) {
+        ResponseT<List<Item>> shortageResponse;
+        for (InventoryModule.BusinessLayer.Item i : shortageItems) {
+            Item simpleItem = new Item(i.getID(), i.getName(), i.getCostPrice(), i.getSellingPrice(), i.getMinAmount(),
+                    i.getShelfQuantity(), i.getStorageQuantity(), i.getShelfLocation(), i.getStorageLocation(), i.getManufacturerID()
+                    ,inventoryController.getItemCategory(i.getID()).getName());
+            simpleItemList.add(simpleItem);
+        }
+        shortageResponse = new ResponseT<>(false, "", simpleItemList);
         return shortageResponse;
     }
 
@@ -657,12 +663,7 @@ public class InventoryServiceImpl implements InventoryService {
         List<Item> simpleItemList = new ArrayList<>();
         try {
             List<InventoryModule.BusinessLayer.Item> shortageItems = inventoryController.itemShortageReport();
-            for (InventoryModule.BusinessLayer.Item i : shortageItems) {
-                Item simpleItem = new Item(i.getID(), i.getName(), i.getCostPrice(), i.getSellingPrice(), i.getMinAmount(),
-                        i.getShelfQuantity(), i.getStorageQuantity(), i.getShelfLocation(), i.getStorageLocation(), i.getManufacturerID());
-                simpleItemList.add(simpleItem);
-            }
-            shortageResponse = new ResponseT<>(false, "", simpleItemList);
+            shortageResponse = getResponseListItem(simpleItemList, shortageItems);
 
         } catch (Exception e) {
             shortageResponse = new ResponseT<>(true, e.getMessage(), null);

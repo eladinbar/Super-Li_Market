@@ -185,7 +185,7 @@ public class Menu {
                 item.getClass().getMethod("getShelfQuantity"), item.getClass().getMethod("getStorageQuantity"),
                 item.getClass().getMethod("getTotalQuantity"), item.getClass().getMethod("getMinAmount"),
                 item.getClass().getMethod("getShelfLocation"), item.getClass().getMethod("getStorageLocation"),
-                item.getClass().getMethod("getManufacturerID")};
+                item.getClass().getMethod("getManufacturerID"), item.getClass().getMethod("getCategory")};
         handleEntityAliment(item, getMethods);
     }
 
