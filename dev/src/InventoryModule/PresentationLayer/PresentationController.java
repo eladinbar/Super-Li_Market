@@ -285,7 +285,12 @@ public class PresentationController implements Runnable {
 
     private void addItemSale() {
         String saleName = menu.instructAndReceive("Enter sale name: ");
-        double saleDiscount = Double.parseDouble(menu.instructAndReceive("Enter sale discount: (e.g. for 10% enter 0.1)"));
+        String tempDisc = menu.instructAndReceive("Enter sale discount: (e.g. for 10% enter 0.1)");
+        if(tempDisc.isEmpty()){
+            menu.errorPrompt("no price entered");
+            return;
+        }
+        double saleDiscount = Double.parseDouble(tempDisc);
         Pair<Calendar, Calendar> dates = getStartEndDates();
         if (dates == null) return;
         //getting the item to be applied on
@@ -313,7 +318,12 @@ public class PresentationController implements Runnable {
 
     private void addCategorySale() {
         String saleName = menu.instructAndReceive("Enter sale name: ");
-        double saleDiscount = Double.parseDouble(menu.instructAndReceive("Enter sale Discount: (e.g. for 10% enter 0.1)"));
+        String tempDisc = menu.instructAndReceive("Enter sale discount: (e.g. for 10% enter 0.1)");
+        if(tempDisc.isEmpty()){
+            menu.errorPrompt("no price entered");
+            return;
+        }
+        double saleDiscount = Double.parseDouble(tempDisc);
         //getting the dates
         Pair<Calendar, Calendar> dates = getStartEndDates();
         if (dates == null) return;
@@ -368,7 +378,12 @@ public class PresentationController implements Runnable {
                 modResp = service.modifySaleName(saleR.getData().getName(), newName);
                 break;
             case "2":
-                double newDisc = Double.parseDouble(menu.instructAndReceive("Enter sale discount: (e.g. for 10% enter 0.1)"));
+                String tempDisc = menu.instructAndReceive("Enter sale discount: (e.g. for 10% enter 0.1)");
+                if(tempDisc.isEmpty()){
+                    menu.errorPrompt("no price entered");
+                    return;
+                }
+                double newDisc = Double.parseDouble(tempDisc);
                 modResp = service.modifySaleDiscount(saleR.getData().getName(), newDisc);
                 break;
             case "3":
@@ -404,25 +419,38 @@ public class PresentationController implements Runnable {
     }
 
     private void addItemSupplierDiscount() {
-
+        //supplier Id
         String temp = menu.instructAndReceive("Enter supplier ID: ");
         if(temp.isEmpty()){
             menu.errorPrompt("no id entered");
             return;
         }
         int suppId = Integer.parseInt(temp);
+        //item id
         String temp2 = menu.instructAndReceive("Enter item ID that the discount applies on: ");
-        if(temp.isEmpty()){
+        if(temp2.isEmpty()){
             menu.errorPrompt("no id entered");
             return;
         }
         int itemId = Integer.parseInt(temp);
-        double discountGiven = Double.parseDouble(menu.instructAndReceive("Enter discount received for the item: (e.g. for 10% enter 0.1)"));
-
+        //discount
+        String tempDisc = menu.instructAndReceive("Enter discount received for the item: (e.g. for 10% enter 0.1)");
+        if(tempDisc.isEmpty()){
+            menu.errorPrompt("no price entered");
+            return;
+        }
+        double discountGiven = Double.parseDouble(tempDisc);
+        //dates
         String[] dateS = menu.instructAndReceive("Enter discount date: use this format <YYYY-MM-DD>").split("-");
         Calendar date = Calendar.getInstance();
         date.set(Integer.parseInt(dateS[0]), Integer.parseInt(dateS[1]) - 1, Integer.parseInt(dateS[2]));
-        int itemCount = Integer.parseInt(menu.instructAndReceive("Enter the amount the discount applied for: "));
+        //count
+        String tempAmount = menu.instructAndReceive("Enter the amount the discount applied for: ");
+        if(tempAmount.isEmpty()){
+            menu.errorPrompt("no price entered");
+            return;
+        }
+        int itemCount = Integer.parseInt(tempAmount);
         if (itemCount <= 0) {
             menu.errorPrompt("Item amount has to be at least 1.");
             return;
@@ -438,14 +466,31 @@ public class PresentationController implements Runnable {
     }
 
     private void addCategorySupplierDiscount() {
-        int suppId = Integer.parseInt(menu.instructAndReceive("Enter supplier ID: "));
+        //supplier Id
+        String temp = menu.instructAndReceive("Enter supplier ID: ");
+        if(temp.isEmpty()){
+            menu.errorPrompt("no id entered");
+            return;
+        }
+        int suppId = Integer.parseInt(temp);
         String catName = menu.instructAndReceive("Enter the category name that the discount applies on: ");
-        double discountGiven = Double.parseDouble(menu.instructAndReceive("Enter discount received for the item: (e.g. for 10% enter 0.1)"));
-
+        //discount
+        String tempDisc = menu.instructAndReceive("Enter discount received for the item: (e.g. for 10% enter 0.1)");
+        if(tempDisc.isEmpty()){
+            menu.errorPrompt("no price entered");
+            return;
+        }
+        double discountGiven = Double.parseDouble(tempDisc);
+        //date
         String[] dateS = menu.instructAndReceive("Enter discount date: use this format <YYYY-MM-DD>").split("-");
         Calendar date = Calendar.getInstance();
         date.set(Integer.parseInt(dateS[0]), Integer.parseInt(dateS[1]) - 1, Integer.parseInt(dateS[2]));
-        int itemCount = Integer.parseInt(menu.instructAndReceive("Enter the amount that the discount applied for: "));
+        String tempAmount = menu.instructAndReceive("Enter the amount the discount applied for: ");
+        if(tempAmount.isEmpty()){
+            menu.errorPrompt("no price entered");
+            return;
+        }
+        int itemCount = Integer.parseInt(tempAmount);
         if (itemCount <= 0) {
             menu.errorPrompt("Item amount has to be at least 1.");
             return;
@@ -461,8 +506,21 @@ public class PresentationController implements Runnable {
 
     private void recordDefect() {
         Calendar date = Calendar.getInstance();
-        int itemID = Integer.parseInt(menu.instructAndReceive("Enter item ID: "));
-        int defectedAmount = Integer.parseInt(menu.instructAndReceive("Enter the defect amount: "));
+        //item id
+        String temp = menu.instructAndReceive("Enter item ID: ");
+        if(temp.isEmpty()){
+            menu.errorPrompt("no id entered");
+            return;
+        }
+        int itemID = Integer.parseInt(temp);
+        //item amount
+        String tempAmount = menu.instructAndReceive("Enter the defect amount: ");
+        if(tempAmount.isEmpty()){
+            menu.errorPrompt("no id entered");
+            return;
+        }
+        int defectedAmount = Integer.parseInt(tempAmount);
+        //location
         String location = menu.instructAndReceive("Enter storage/shelf location: follow this format \"<ST/SH>-A<number>-<L/R>-S<number>\"");
 
         Response recorded = service.recordDefect(itemID, date, defectedAmount, location);
