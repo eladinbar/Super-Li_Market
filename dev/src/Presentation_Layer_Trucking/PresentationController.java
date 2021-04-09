@@ -83,8 +83,8 @@ public class PresentationController {
         facadeService.addSite(city,  deliveryArea, phoneNumber, contactName,name );
     }
 
-    public void addItem(int id, double weight, String name, int siteID) throws NoSuchElementException, KeyAlreadyExistsException {
-        facadeService.addItem(id, weight,name, siteID);
+    public void addItem( double weight, String name, int siteID) throws NoSuchElementException, KeyAlreadyExistsException {
+        facadeService.addItem( weight,name, siteID);
     }
 
 
@@ -156,12 +156,8 @@ public class PresentationController {
 
 
     public LinkedList<FacadeDemand> getCurrentDemandsBySite(FacadeSite site) {
-        LinkedList<FacadeDemand> demands = facadeService.getCurrentDemandsBySite(site);
-        LinkedList<FacadeDemand> output = new LinkedList<>();
-        for (FacadeDemand demand :  demands){
-            if (demand.getSite() == site.getSiteID()) output.add(demand);
-        }
-        return output;
+        return  facadeService.getCurrentDemandsBySite(site);
+
     }
     public int getWeightOfCurrReport(){
         return facadeService.getWeightOfCurrReport();
@@ -261,5 +257,14 @@ public class PresentationController {
 
     public void removeDemand(FacadeDemand d) {
         facadeService.removeDemand(d);
+    }
+
+    public LinkedList<FacadeDeliveryForm> getUnComplitedDeliveryForms(int trId) {
+        return facadeService.getUnComplitedDeliveryForms(trId);
+    }
+
+    public FacadeTruckingReport getNewTruckReportID(FacadeTruckingReport oldTr) {
+
+        return facadeService.getNewTruckReport(oldTr);
     }
 }

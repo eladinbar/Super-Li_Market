@@ -21,7 +21,21 @@ public class DeliveryForm {
         this.leavingWeight=leavingWeight;
         this.trID=trID;
         this.completed=false;
+
         }
+
+    public DeliveryForm(DeliveryForm df) {
+
+        this.ID = df.getID();
+        this.completed = df.isCompleted();
+        this.origin = df.getOrigin();
+        this.destination = df.getDestination();
+        this.items = df.getItems();
+        this.leavingWeight = df.getLeavingWeight();
+        this.trID = df.getTrID();
+
+
+    }
 
     public HashMap<Integer, Integer> getItems() {
         return items;

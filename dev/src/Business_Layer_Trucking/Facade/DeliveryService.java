@@ -74,6 +74,8 @@ public class DeliveryService {
         dc.saveReport();
     }
 
+
+
     public FacadeDemand continueAddDemandToReport(int itemID, int supplyAmount, int siteID){
         LinkedList<Demand> demands = dc.getDemands();
         Demand d=null;
@@ -130,7 +132,7 @@ public class DeliveryService {
         dc.addSite(city,  deliveryArea, phoneNumber, contactName,name );
     }
 
-    public void addItem(int id, double weight, String name, int siteID) throws NoSuchElementException, KeyAlreadyExistsException {dc.addItem(id, weight,name,siteID);}
+    public void addItem( double weight, String name, int siteID) throws NoSuchElementException, KeyAlreadyExistsException {dc.addItem( weight,name,siteID);}
 
     public void displaySites() {
         dc.displaySites();
@@ -172,11 +174,17 @@ public class DeliveryService {
         return output;
     }
 
-    public LinkedList<FacadeDemand> getCurrentDemands() {
-        LinkedList<Demand> demands =  dc.getDemands();
+    /**
+     *
+     * @param site
+     * @return returns only demands associated to this site
+     */
+    public LinkedList<FacadeDemand> getCurrentDemands(FacadeSite site) {
+        LinkedList<Demand> demands =  dc.getCurrentDemands();
         LinkedList<FacadeDemand> output =  new LinkedList<>();
         for (Demand d : demands){
-            output.add(new FacadeDemand(d));
+            if (d.getSite() == site.getSiteID() || dc.getItemOrigin(d.getItemID()) == site.getSiteID())
+                output.add(new FacadeDemand(d));
         }
         return output;
     }
@@ -305,6 +313,21 @@ public class DeliveryService {
 
     public void removeDemand(FacadeDemand d) {
         dc.removeDemand(d.getItemID(), d.getSite());
+    }
+
+    public LinkedList<FacadeDeliveryForm> getUnComplitedDeliveryForms(int trId) {
+        LinkedList<DeliveryForm> deliveryForms = dc.getDeliveryForms(trId);
+        LinkedList<FacadeDeliveryForm> facadeDeliveryForms = new LinkedList<>();
+        for (DeliveryForm d: deliveryForms){
+            if (!d.isCompleted()){
+                facadeDeliveryForms.add(new FacadeDeliveryForm(d));
+            }
+        }
+        return facadeDeliveryForms;
+    }
+
+    public FacadeTruckingReport getNewTruckReport(FacadeTruckingReport oldTr) {
+        return new FacadeTruckingReport(dc.getReplaceTruckingReport(oldTr.getID()));
     }
 }
 

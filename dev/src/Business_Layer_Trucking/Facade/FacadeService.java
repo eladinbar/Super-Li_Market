@@ -2,6 +2,7 @@ package Business_Layer_Trucking.Facade;
 
 
 import Business_Layer_Trucking.Delivery.DeliveryForm;
+import Business_Layer_Trucking.Delivery.TruckingReport;
 import Business_Layer_Trucking.Facade.FacadeObject.*;
 import Business_Layer_Trucking.Resources.Driver;
 import javax.management.openmbean.KeyAlreadyExistsException;
@@ -41,7 +42,7 @@ public class FacadeService {
         FacadeTruck ft =  new FacadeTruck(resourcesService.chooseTruck(truck));
         if (weightToDeliver+ ft.getWeightNeto()>ft.getMaxWeight())
         {
-            throw new IllegalStateException("Total Weight is: "+weightToDeliver+ft.getWeightNeto()+"But Truck can carry: "+ft.getMaxWeight());
+            throw new IllegalStateException("Total Weight is: "+(weightToDeliver+ft.getWeightNeto())+" But Truck can carry: "+ft.getMaxWeight());
         }
         currTR.setTruckNumber(ft.getLicenseNumber());
         deliveryService.chooseTruck(truck);
@@ -151,8 +152,8 @@ public class FacadeService {
 
     }
 
-    public void addItem(int id, double weight, String name,int siteID)throws NoSuchElementException, KeyAlreadyExistsException {
-        deliveryService.addItem(id, weight,name,siteID);
+    public void addItem( double weight, String name,int siteID)throws NoSuchElementException, KeyAlreadyExistsException {
+        deliveryService.addItem( weight,name,siteID);
     }
 
     public void displaySites() {
@@ -212,7 +213,7 @@ public class FacadeService {
     }
 
     public LinkedList<FacadeDemand> getCurrentDemandsBySite(FacadeSite site) {
-        return  deliveryService.getCurrentDemands();
+        return  deliveryService.getCurrentDemands(site);
 
     }
 
@@ -256,7 +257,11 @@ public class FacadeService {
 
         else deliveryService.updateDeliveryFormRealWeight(trID,dfID,weight);
          if (deliveryService.checkIfAllCompleted(trID)){
+             TruckingReport truckingReport = deliveryService.getTruckReport(trID);
+             resourcesService.makeAvailable_Driver(truckingReport.getDriverID());
+             resourcesService.makeAvailable_Truck(truckingReport.getTruckNumber());
              deliveryService.archive(trID);
+
          }
     }
 
@@ -355,6 +360,14 @@ public class FacadeService {
 
     public void removeDemand(FacadeDemand d) {
         deliveryService.removeDemand(d);
+    }
+
+    public LinkedList<FacadeDeliveryForm> getUnComplitedDeliveryForms(int trId) {
+        return deliveryService.getUnComplitedDeliveryForms(trId);
+    }
+
+    public FacadeTruckingReport getNewTruckReport(FacadeTruckingReport oldTr) {
+        return deliveryService.getNewTruckReport(oldTr);
     }
 }
 
