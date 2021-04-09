@@ -51,6 +51,9 @@ public class WeeklyShiftSchedule {
             throw new EmployeeException ( "no such shift to add the employee." );
         if(date.isBefore ( LocalDate.now () ))
             throw new EmployeeException ( "Date is already passed." );
+        if(getShift (date, shift).getManning ().get ( role ).contains ( ID )){
+            throw new EmployeeException ( "Employee already exists in the current shoft." );
+        }
         getShift ( date, shift ).addEmployee ( role, ID );
         isMissing = isMissing();
     }
