@@ -76,10 +76,10 @@ public class ShiftController {
             throw new EmployeeException ( "Id - " + ID + " and role - " + role + " does not exist in system." );
         if(employeeController.getEmployee ( ID ).getConstraints ().containsKey ( date ) &&
                 employeeController.getEmployee ( ID ).getConstraints ().get ( date ). isMorningShift () && shift == 0)
-            throw new EmployeeException ( "Employee is unavailable." )
+            throw new EmployeeException ( "Employee is unavailable." );
         if(employeeController.getEmployee ( ID ).getConstraints ().containsKey ( date ) &&
                 employeeController.getEmployee ( ID ).getConstraints ().get ( date ). isEveningShift () && shift == 1)
-            throw new EmployeeException ( "Employee is unavailable." )
+            throw new EmployeeException ( "Employee is unavailable." );
         getWeeklyShiftSchedule ( date ).addEmployeeToShift ( role, ID, date, shift );
     }
 
