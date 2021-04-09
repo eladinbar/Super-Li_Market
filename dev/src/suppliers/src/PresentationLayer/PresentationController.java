@@ -135,4 +135,14 @@ public class PresentationController {
     public String removeItemFromAgreement(String supplierId, int productId) {
         return service.removeItemFromAgreement(supplierId,productId).toString();
     }
+
+    public Response editAgreementItemCompanyProductID(String supplierID,int productID,int companyProductID){
+        return service.editAgreementItemCompanyProductID(supplierID, productID, companyProductID);
+    }
+    public Response editAgreementItemPrice(String supplierID,int productID,int companyProductID){
+        return service.editAgreementItemPrice(supplierID,productID,companyProductID);
+    }
+    public Response removeProductFromOrder(int orderID,int productID){
+        return service.removeProductFromOrder(orderID,productID);
+    }
 }
