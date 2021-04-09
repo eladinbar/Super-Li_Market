@@ -22,4 +22,15 @@ public class agreement {
         else
             this.ql = new quantityList(ag.getQl());
     }
+
+    @Override
+    public String toString() {
+        String p="";
+        for (Map.Entry<Integer,Integer> e:products.entrySet()) {
+            p+="product ID: "+e.getKey()+"\nproduct company id: "+e.getValue()+"\nproduct price: "+prices.get(e.getKey())+"\n";
+        }
+        return "agreement details:" +
+                "\nproducts: \n" + p +
+                "\n"+ql.toString();
+    }
 }

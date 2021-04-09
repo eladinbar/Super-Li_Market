@@ -14,7 +14,8 @@ public class MenuPrinter {
     public MenuPrinter() {
         scan = new Scanner(System.in);
         this.pc = new PresentationController();
-        createObjectsForTests();
+        createObjects c = new createObjects(pc);
+        c.createObjectsForTests();
     }
 
     //the main function
@@ -46,6 +47,7 @@ public class MenuPrinter {
                 case 12 -> getProduct();
                 case 13 -> editAgrreement();
                 case 14 -> removeProductFromOrder();
+                case 15 -> getQuantityList();
             }
         }
     }
@@ -66,6 +68,8 @@ public class MenuPrinter {
         System.out.println("11. add new product");
         System.out.println("12. get product");
         System.out.println("13. edit agreement");
+        System.out.println("14. remove product from order");
+        System.out.println("15. get quantityList");
         System.out.println("Please choose an option:");
         return getIntFromUser();
     }
@@ -159,8 +163,10 @@ public class MenuPrinter {
         String supplierId = getStringFromUser();
         System.out.println(pc.addQuantityList(supplierId));
         while (true) {
+            System.out.println("please choose an option");
             System.out.println("1. add new product");
             System.out.println("2. exit");
+            System.out.print("option: ");
             int num = getIntFromUser();
             if (num == 2)
                 break;
@@ -411,9 +417,16 @@ public class MenuPrinter {
 
     //a helper function to get an order from the system
     private void getOrder() throws ReflectiveOperationException {
-        System.out.println("please enter order ID");
+        System.out.print("please enter order ID: ");
         System.out.println(pc.getOrder(getIntFromUser()));
     }
+
+    private void getQuantityList() throws ReflectiveOperationException {
+        System.out.print("please enter supplier ID: ");
+        String supplierID = getStringFromUser();
+        System.out.println(pc.getQuantityList(supplierID));
+    }
+
 
     //a helper function to add a product to an order
     private void addProductToOrder() throws ReflectiveOperationException {
@@ -431,6 +444,7 @@ public class MenuPrinter {
         System.out.println("please enter product ID");
         System.out.println(pc.getProduct(getIntFromUser()));
     }
+
 
     //a helper function to add a new product to the system
     private void createProduct() throws ReflectiveOperationException {
@@ -539,36 +553,7 @@ public class MenuPrinter {
         return choose;
     }
 
-    public void createObjectsForTests() {
-        int id = 333333333;
-        int phone = 544444444;
-        List<Integer> suppliers=new ArrayList<>();
-        List<Integer> products=new ArrayList<>();
-        for (int i = 0; i < 10; i++, phone++, id++) {
-            pc.addSupplier("Supplier", "LastName", "email" + i + "@gmail.com", "" + id, "0" + phone, 1, true, true, "cash");
-            suppliers.add(id);
-        }for (int i = 10; i < 20; i++, phone++, id++) {
-            pc.addSupplier("Supplier", "LastName", "email" + i + "@gmail.com", "" + id, "0" + phone, 1, false, true, "check");
-            suppliers.add(id);
-        }for (int i = 0; i < 10; i++) {
-            pc.createProduct("name" + i, "osem");
-            products.add(i);
-        }for (int i = 10; i < 20; i++) {
-            pc.createProduct("name" + i, "elit");
-            products.add(i);
-        }for (int i = 10; i < 30; i++) {
-            pc.createProduct("name" + i, "tnuva");
-            products.add(i);
-        }for (int i = 30; i < 40; i++) {
-            pc.createProduct("name" + i, "gad");
-            products.add(i);
-        }for (int i = 40; i < 50; i++) {
-            pc.createProduct("name" + i, "knor");
-            products.add(i);
-        }
-    }
-
-    private void removeProductFromOrder(){
+    private void removeProductFromOrder() {
         System.out.println("please enter the following details: ");
         System.out.println("order id: ");
         int orderId = scan.nextInt();

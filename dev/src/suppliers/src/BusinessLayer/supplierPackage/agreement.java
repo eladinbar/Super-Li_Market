@@ -1,9 +1,6 @@
 package BusinessLayer.supplierPackage;
 
-import BusinessLayer.orderPackage.product;
-
 import java.util.*;
-import java.util.Scanner;
 
 public class agreement {
     private Map<Integer, Integer> products;
@@ -20,16 +17,8 @@ public class agreement {
         return products;
     }
 
-    public void setProducts(Map<Integer, Integer> products) {
-        this.products = products;
-    }
-
     public Map<Integer, Integer> getPrices() {
         return prices;
-    }
-
-    public void setPrices(Map<Integer, Integer> prices) {
-        this.prices = prices;
     }
 
     public quantityList getQl() {
@@ -58,6 +47,7 @@ public class agreement {
             throw new Exception("supplier does not have a quantity list");
         if (!ql.getAmount().containsKey(productID))
             throw new Exception("supplier quantity list does not contain item " + productID);
+        compID(productID);
         ql.getDiscount().remove(productID);
         ql.getAmount().remove(productID);
     }
@@ -65,6 +55,7 @@ public class agreement {
     public void addQuantityListItem(int productID, int amount, int discount) throws Exception {
         if (ql == null)
             throw new Exception("supplier does not have quantity list");
+        compID(productID);
         ql.addQuantityListItem(productID, amount, discount);
     }
 
@@ -78,12 +69,14 @@ public class agreement {
     public void editQuantityListAmount(int productID, int amount) throws Exception {
         if (ql == null)
             throw new Exception("supplier does not have quantity list");
+        compID(productID);
         ql.editQuantityListAmount(productID, amount);
     }
 
     public void editQuantityListDiscount(int productID, int discount) throws Exception {
         if (ql == null)
             throw new Exception("supplier does not have quantity list");
+        compID(productID);
         ql.editQuantityListDiscount(productID, discount);
     }
 
