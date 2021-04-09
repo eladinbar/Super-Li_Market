@@ -901,7 +901,7 @@ public class PresentationController implements Runnable {
                 terminate = true;
                 break;
             default:
-                menu.errorPrompt(choice);
+                menu.errorPrompt("invalid choice - " + choice);
                 break;
         }
     }
