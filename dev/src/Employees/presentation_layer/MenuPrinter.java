@@ -5,15 +5,21 @@ import Employees.business_layer.facade.facadeObject.FacadeBankAccountInfo;
 import Employees.business_layer.facade.facadeObject.FacadeEmployee;
 import Employees.business_layer.facade.facadeObject.FacadeTermsOfEmployment;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.io.Reader;
+import java.nio.Buffer;
 import java.time.LocalDate;
 import java.util.Scanner;
 
 public class MenuPrinter {
 
-    Scanner sc = new Scanner ( System.in );
+BufferedReader sc = new BufferedReader(new InputStreamReader(System.in));
+
+    //Scanner sc = new Scanner ( System.in );
 
     public int uploadProgram(){
-        sc.useDelimiter ( "\n" );
+        //sc.useDelimiter ( "\n" );
         System.out.println ("choose the option you'd like:\n1.upload a program with an existing data.\n2.upload a program without an existing data." );
         return getInt ();
     }
@@ -143,7 +149,9 @@ public class MenuPrinter {
         }
         day = input;
         System.out.print ("month:" );
-        input = sc.nextInt ( );
+        input = getInt();
+
+
         if (input > 12 || input < 1) {
             System.out.println ( "month is illegal" );
             return null;
@@ -184,7 +192,7 @@ public class MenuPrinter {
 
     public String idGetter() {
         System.out.println ("Write the ID of an employee you would like to add to the shift or 0 if you are done: ");
-        return sc.next ();
+        return getString();
     }
 
     public int scheduleManagerMenu() {
@@ -205,21 +213,31 @@ public class MenuPrinter {
     }
 
     public char getChar() {
-        return sc.next ().charAt ( 0 );
+        try{
+            return sc.readLine().charAt ( 0 );
+        }
+        catch (Exception e){
+            System.out.println("Something went wrong");
+            return ' ';
+        }
     }
     public String getString() {
-        return sc.next ();
+        try {
+            return sc.readLine();
+        } catch (Exception e) {
+            System.out.println("Something went wrong");
+            return "";
+        }
     }
 
     public int getInt(){
         int out;
         try {
-            out =  sc.nextInt ( );
+            out =  Integer.parseInt(sc.readLine ( ));
             return out;
         }
         catch (Exception e) {
             System.out.println ( "Not a number, please try again." );
-            sc.next();
             return getInt();
         }
     }
@@ -259,7 +277,7 @@ public class MenuPrinter {
         {
             System.out.println ("" + i++ +"." + shift );
         }
-        int choice = sc.nextInt ();
+        int choice = getInt();
         if(choice == 0)
             return "new";
         if(choice > shiftTypes.length || choice < 0)
