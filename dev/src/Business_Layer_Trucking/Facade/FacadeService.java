@@ -422,6 +422,11 @@ public class FacadeService {
     public LinkedList<FacadeDemand> getUnCompletedItemOnReportByOld(int id) {
         return deliveryService.getUnCompletedItemOnReportByOld(id);
     }
+
+
+    public LinkedList<FacadeTruckingReport> getOldDTruckingReports() {
+        return deliveryService.getOldDTruckingReports();
+    }
 }
 
 
