@@ -128,6 +128,8 @@ public class supplier {
         if (sc.getContactMembers().contains(memberID)) {
             throw new Exception("contact member with the id " + memberID + " already exists");
         }
+        if(memberID.equals(sc.getId()))
+            throw new Exception("cannot add supplier to his contact members");
         sc.getContactMembers().add(memberID);
     }
 
@@ -171,5 +173,9 @@ public class supplier {
 
     public void addItemToAgreement(int productID, int companyProductID,int price) throws Exception {
         ag.addItemToAgreement(productID,companyProductID,price);
+    }
+
+    public void removeItemFromAgreement(int productId) throws Exception {
+        ag.removeItemFromAgreement(productId);
     }
 }

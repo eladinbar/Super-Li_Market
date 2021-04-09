@@ -70,7 +70,6 @@ public class PresentationController {
     }
 
     //add quantityList
-    //todo optional add lise of products id to supplier controller
     public String addQuantityList(String supplierID) {
         return service.addQuantityList(supplierID).toString();
     }
@@ -119,7 +118,6 @@ public class PresentationController {
     public String addProductToOrder(int orderId, int productId, int amount) {
         return service.addProductToOrder(orderId, productId, amount).toString();
     }
-    //todo check if nessesary Response<supplier> setOrders();
 
     //products
     public String createProduct(String name, String manufacturer) {
@@ -132,5 +130,9 @@ public class PresentationController {
 
     public String addItemToagreement(String id, int productID, int companyProductID,int price) {
         return service.addItemToAgreement(id,productID,companyProductID,price).toString();
+    }
+
+    public String removeItemFromAgreement(String supplierId, int productId) {
+        return service.removeItemFromAgreement(supplierId,productId).toString();
     }
 }

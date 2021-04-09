@@ -63,14 +63,11 @@ public class orderController {
         return orders.get(orderID);
     }
 
-    public void addProductToOrder(int orderId, int companyId, int amount) throws Exception {
+    public void addProductToOrder(int orderId, int productId, int amount) throws Exception {
         //todo complete check if the product is in the agreement
         //todo check if the date is not approved
         //todo check after agreement
         orderExist(orderId);
-        System.out.println("before");
-        int productId = orders.get(orderId).getSupplier().getAg().getProducts().get(companyId);
-        System.out.println("after");
         productExist(productId);
         orders.get(orderId).addProductToOrder(orderId, productId, amount);
     }
@@ -78,7 +75,7 @@ public class orderController {
     public void createProduct(String name, String manufacturer) throws Exception {
         manufacturers manu = manufacturers.valueOf(manufacturer);
         for (product p : products.values())
-            if (p.getName().equals(name) && p.getManu().name().equals(manufacturer))//todo check the enum compare
+            if (p.getName().equals(name) && p.getManu().name().equals(manufacturer))
                 throw new Exception("product already exists in the system");
         products.put(productCounter, new product(name, productCounter, manu));
         productCounter++;

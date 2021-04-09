@@ -121,6 +121,11 @@ public class Service implements IService {
     }
 
     @Override
+    public Response removeItemFromAgreement(String supplierId, int productId) {
+        return supplierService.removeItemFromAgreement(supplierId,productId);
+    }
+
+    @Override
     public ResponseT<quantityList> getQuantityList(String supplierId) {
         return supplierService.getQuantityList(supplierId);
     }
@@ -146,7 +151,7 @@ public class Service implements IService {
     }
 
     @Override
-    public Response getOrder(int orderID) {
+    public ResponseT<order> getOrder(int orderID) {
         return orderService.getOrder(orderID);
     }
 

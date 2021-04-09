@@ -173,11 +173,11 @@ public class MenuPrinterTemp {
     public int PrintMenu(){
         System.out.println("1. add supplier");
         System.out.println("2. get supplier");
-        System.out.println("3. update supplier details");//todo add edit menu
+        System.out.println("3. update supplier details");
         System.out.println("4. add quantity List");
-        System.out.println("5. edit quantity List");//todo add edit menu
-        System.out.println("6. create new order");//todo add menu
-        System.out.println("7. set permanent order");//todo add menu
+        System.out.println("5. edit quantity List");
+        System.out.println("6. create new order");
+        System.out.println("7. set permanent order");
         System.out.println("8. approve order");
         System.out.println("9. get order");
         System.out.println("10. add product to order");

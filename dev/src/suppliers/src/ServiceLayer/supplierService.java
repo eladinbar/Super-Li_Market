@@ -30,7 +30,7 @@ public class supplierService {
 
 
     public Response removeSupplier(String id) {
-        Response toReturn = null;
+        Response toReturn = new Response();
         try {
             sp.removeSupplier(id);
         } catch (Exception e) {
@@ -40,7 +40,7 @@ public class supplierService {
     }
 
     public Response updateCompanyNumber(String id, int companyNumber) {
-        Response toReturn = null;
+        Response toReturn = new Response();
         try {
             sp.updateCompanySupplier(id, companyNumber);
         } catch (Exception e) {
@@ -50,7 +50,7 @@ public class supplierService {
     }
 
     public Response updateFirstName(String id, String firstName) {
-        Response toReturn = null;
+        Response toReturn = new Response();
         try {
             sp.updateFirstName(id, firstName);
         } catch (Exception e) {
@@ -60,7 +60,7 @@ public class supplierService {
     }
 
     public Response updateLastName(String id, String lastName) {
-        Response toReturn = null;
+        Response toReturn = new Response();
         try {
             sp.updateLastName(id, lastName);
         } catch (Exception e) {
@@ -70,7 +70,7 @@ public class supplierService {
     }
 
     public Response updatePhone(String id, String phone) {
-        Response toReturn = null;
+        Response toReturn = new Response();
         try {
             sp.updatePhone(id, phone);
         } catch (Exception e) {
@@ -80,7 +80,7 @@ public class supplierService {
     }
 
     public Response updateEmail(String id, String email) {
-        Response toReturn = null;
+        Response toReturn = new Response();
         try {
             sp.updateEmail(id, email);
         } catch (Exception e) {
@@ -90,7 +90,7 @@ public class supplierService {
     }
 
     public Response updateSelfDelivery(String id, boolean self) {
-        Response toReturn = null;
+        Response toReturn = new Response();
         try {
             sp.updateSelfDelivery(id, self);
         } catch (Exception e) {
@@ -100,7 +100,7 @@ public class supplierService {
     }
 
     public Response updatePernamentDays(String id, boolean perm) {
-        Response toReturn = null;
+        Response toReturn = new Response();
         try {
             sp.updatePernamentDays(id, perm);
         } catch (Exception e) {
@@ -110,7 +110,7 @@ public class supplierService {
     }
 
     public Response updatePayment(String id, String pay) {
-        Response toReturn = null;
+        Response toReturn = new Response();
         try {
             sp.updatePayment(id, pay);
         } catch (Exception e) {
@@ -120,7 +120,7 @@ public class supplierService {
     }
 
     public Response addContactMember(String supplierId, String firstName, String lastName, String email, String memberID, String phone) {
-        Response toReturn = null;
+        Response toReturn = new Response();
         try {
             sp.addContactMember(supplierId, firstName, lastName, email, memberID, phone);
         } catch (Exception e) {
@@ -130,7 +130,7 @@ public class supplierService {
     }
 
     public Response deleteContactMember(String supplierID, String memberID) {
-        Response toReturn = null;
+        Response toReturn = new Response();
         try {
             sp.deleteContactMember(supplierID, memberID);
         } catch (Exception e) {
@@ -150,7 +150,7 @@ public class supplierService {
     }
 
     public Response addQuantityList(String supplierID) {
-        Response toReturn = null;
+        Response toReturn = new Response();
         try {
             sp.addQuantityList(supplierID);
         } catch (Exception e) {
@@ -160,7 +160,7 @@ public class supplierService {
     }
 
     public Response editQuantityListAmount(String supplierID, int productID, int amount) {
-        Response toReturn = null;
+        Response toReturn = new Response();
         try {
             sp.editQuantityListAmount(supplierID, productID, amount);
         } catch (Exception e) {
@@ -170,7 +170,7 @@ public class supplierService {
     }
 
     public Response editQuantityListDiscount(String supplierID, int productID, int discount) {
-        Response toReturn = null;
+        Response toReturn = new Response();
         try {
             sp.editQuantityListDiscount(supplierID, productID, discount);
         } catch (Exception e) {
@@ -180,7 +180,7 @@ public class supplierService {
     }
 
     public Response deleteQuantityList(String supplierID) {
-        Response toReturn = null;
+        Response toReturn = new Response();
         try {
             sp.deleteQuantityList(supplierID);
         } catch (Exception e) {
@@ -201,7 +201,7 @@ public class supplierService {
     }
 
     public Response deleteQuantityListItem(String supplierID, int productID) {
-        Response toReturn = null;
+        Response toReturn = new Response();
         try {
             sp.deleteQuantityListItem(supplierID, productID);
         } catch (Exception e) {
@@ -227,6 +227,16 @@ public class supplierService {
             toReturn = oc.getProduct(productID);
         } catch (Exception e) {
             toReturn = new ResponseT<>(e.getMessage());
+        }
+        return toReturn;
+    }
+
+    public Response removeItemFromAgreement(String supplierId, int productId) {
+        Response toReturn=new Response();
+        try {
+            sp.removeItemFromAgreement(supplierId,productId);
+        } catch (Exception e) {
+            toReturn = new Response(e.getMessage());
         }
         return toReturn;
     }

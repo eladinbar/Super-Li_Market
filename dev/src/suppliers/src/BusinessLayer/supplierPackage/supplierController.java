@@ -149,4 +149,10 @@ public class supplierController {
         existSupplier(id);
         suppliers.get(id).addItemToAgreement(productID, companyProductID,price);
     }
+
+    public void removeItemFromAgreement(String supplierId, int productId) throws Exception {
+        existSupplier(supplierId);
+        suppliers.get(supplierId).removeItemFromAgreement(productId);
+
+    }
 }

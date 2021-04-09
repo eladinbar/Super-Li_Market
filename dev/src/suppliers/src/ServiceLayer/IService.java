@@ -34,9 +34,8 @@ public interface IService {
     ResponseT<order> createOrder(LocalDate date, String supplierID);
     Response createPernamentOrder(int day, String supplierID);
     Response approveOrder(int orderID);
-    Response getOrder(int orderID);
+    ResponseT<order> getOrder(int orderID);
     Response addProductToOrder(int orderId , int productId, int amount);
-    //todo check if nessesary Response<supplier> setOrders();
 
     //products
     Response createProduct(String name, String manufacturer);
@@ -45,4 +44,6 @@ public interface IService {
     ResponseT<quantityList> getQuantityList(String supplierId);
 
     ResponseT<product> addItemToAgreement(String id, int productID, int companyProductID,int price);
+
+    Response removeItemFromAgreement(String supplierId, int productId);
 }

@@ -40,6 +40,13 @@ public class agreement {
         this.ql = ql;
     }
 
+    public int compID(int id) throws Exception {
+        if(!products.containsKey(id))
+            throw new Exception("agreement does not have specific item included");
+        return products.get(id);
+
+    }
+
     public void deleteQuantityListItem(int productID) throws Exception {
         if (ql == null)
             throw new Exception("supplier does not have a quantity list");
@@ -78,5 +85,11 @@ public class agreement {
             throw new Exception("agreement already have the item");
         products.put(productID,companyProductID);
         prices.put(productID,price);
+    }
+
+    public void removeItemFromAgreement(int productId) throws Exception {
+        if(!products.containsKey(productId))
+            throw new Exception("item does not exists in agreement");
+        products.remove(productId);
     }
 }

@@ -1,7 +1,6 @@
 package PresentationLayer;
 
-import ServiceLayer.Response.ResponseT;
-import ServiceLayer.objects.order;
+import BusinessLayer.supplierPackage.supplier;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -20,8 +19,16 @@ public class MenuPrinter {
 
     //the main function
     public void startWork() throws ReflectiveOperationException {
-        System.out.println("welcome to Super Lee");
         int choose = 1;
+/*        boolean logged = true;
+        System.out.println("\nWelcome to Super-Lee, Please enter password: ");
+        while (logged) {
+            String pass = getStringFromUser();
+            if (!pass.equals("superlee7"))
+                System.out.print("Wrong Password, try again: ");
+            else
+                logged = false;
+        }*/
         while (choose > 0) {
             choose = PrintMenu();
             switch (choose) {
@@ -37,27 +44,29 @@ public class MenuPrinter {
                 case 10 -> addProductToOrder();
                 case 11 -> createProduct();
                 case 12 -> getProduct();
+                case 13 -> editAgrreement();
             }
         }
     }
 
     //a helper function to print the menu
-    public int PrintMenu() {
+    public int PrintMenu() throws ReflectiveOperationException {
+        System.out.println("welcome to Super Lee");
         System.out.println("1. add supplier");
         System.out.println("2. get supplier");
-        System.out.println("3. update supplier details");//todo add edit menu
+        System.out.println("3. update supplier details");
         System.out.println("4. add quantity List");
-        System.out.println("5. edit quantity List");//todo add edit menu
-        System.out.println("6. create new order");//todo add menu
-        System.out.println("7. set permanent order");//todo add menu
+        System.out.println("5. edit quantity List");
+        System.out.println("6. create new order");
+        System.out.println("7. set permanent order");
         System.out.println("8. approve order");
         System.out.println("9. get order");
         System.out.println("10. add product to order");
         System.out.println("11. add new product");
         System.out.println("12. get product");
-        System.out.println("13. add item to agreement");
+        System.out.println("13. edit agreement");
         System.out.println("Please choose an option:");
-        return scan.nextInt();
+        return getIntFromUser();
     }
 
     //a helper function that add supplier to the system
@@ -74,8 +83,8 @@ public class MenuPrinter {
         System.out.print("phone: ");
         String phone = getStringFromUser();
         System.out.print("companyNumber: ");
-        int companyNumber = scan.nextInt();
-        boolean perm = false;
+        int companyNumber = getIntFromUser();
+        boolean perm;
         while (true) {
             System.out.print("do you a permanent order days? y/n: ");
             String permanent = getStringFromUser();
@@ -87,7 +96,7 @@ public class MenuPrinter {
                 break;
             } else System.out.println("wrong input please choose again\n");
         }
-        boolean self = false;
+        boolean self;
         while (true) {
             System.out.print("do you deliver the orders by yourself? y/n: ");
             String selfD = getStringFromUser();
@@ -101,8 +110,8 @@ public class MenuPrinter {
         }
         String pay = "";
         while (true) {
-            System.out.print("how whould you like to pay?\n1. Cash\n2. Bank transfer\n3. check\nchoose number: ");
-            int payment = scan.nextInt();
+            System.out.print("how would you like to pay?\n1. Cash\n2. Bank transfer\n3. check\nchoose number: ");
+            int payment = getIntFromUser();
             if (payment == 1) {
                 pay = "cash";
                 break;
@@ -114,22 +123,26 @@ public class MenuPrinter {
                 break;
             } else System.out.println("\nwrong input please choose again\n");
         }
-        System.out.println(pc.addSupplier(firstName, lName, email, ID, phone, companyNumber, perm, self, pay));
-        while(true){
-            System.out.println("please choose option:");
-            System.out.println("1. add item to agreement");
-            System.out.println("2. stop add items to agreement");
-            System.out.print("Option: ");
-            int opt=scan.nextInt();
-            if(opt==1) {
-                System.out.println("choose items to agreement: ");
-                System.out.print("enter product id: ");
-                int productID=scan.nextInt();
-                System.out.print("enter you company product id: ");
-                int companyProductID=scan.nextInt();
-                System.out.print("enter price: ");
-                int price=scan.nextInt();
-                System.out.println(pc.addItemToagreement(ID,productID,companyProductID,price));
+        String print = pc.addSupplier(firstName, lName, email, ID, phone, companyNumber, perm, self, pay);
+        System.out.println(print);
+        if (!print.split(" ")[0].equals("\nError:")) {
+            while (true) {
+                System.out.println("please choose option:");
+                System.out.println("1. add item to agreement");
+                System.out.println("2. stop add items to agreement");
+                System.out.print("Option: ");
+                int opt = getIntFromUser();
+                if (opt == 1) {
+                    System.out.println("choose items to agreement: ");
+                    System.out.print("enter product id: ");
+                    int productID = getIntFromUser();
+                    System.out.print("enter your company product id: ");
+                    int companyProductID = getIntFromUser();
+                    System.out.print("enter price: ");
+                    int price = getIntFromUser();
+                    System.out.println(pc.addItemToagreement(ID, productID, companyProductID, price));
+                } else if (opt == 2) break;
+                else System.out.println("invalid option try again");
             }
         }
     }
@@ -143,20 +156,20 @@ public class MenuPrinter {
     private void addQuantityList() throws ReflectiveOperationException { //case 4
         System.out.print("please enter supplier id: ");
         String supplierId = getStringFromUser();
-        pc.addQuantityList(supplierId);
+        System.out.println(pc.addQuantityList(supplierId));
         while (true) {
             System.out.println("1. add new product");
             System.out.println("2. exit");
-            int num = scan.nextInt();
+            int num = getIntFromUser();
             if (num == 2)
                 break;
             System.out.println("please enter the following details: ");
             System.out.print("product id: ");
-            int productId = scan.nextInt();
+            int productId = getIntFromUser();
             System.out.print("amount of products to get a discount: ");
-            int amount = scan.nextInt();
+            int amount = getIntFromUser();
             System.out.print("discount amount: ");
-            int discount = scan.nextInt();
+            int discount = getIntFromUser();
             System.out.println(pc.addQuantityListItem(supplierId, productId, amount, discount));
         }
         System.out.println(pc.getQuantityList(supplierId));
@@ -172,37 +185,37 @@ public class MenuPrinter {
         System.out.println("4. delete product");
         System.out.println("5. delete quantity list");
 
-        int num = scan.nextInt();
+        int num = getIntFromUser();
         switch (num) {
             case 1: { //edit product amount
                 System.out.println("product id: ");
-                int prodId = scan.nextInt();
+                int prodId = getIntFromUser();
                 System.out.println("new amount of products to get a discount: ");
-                int amount = scan.nextInt();
+                int amount = getIntFromUser();
                 System.out.println(pc.editQuantityListAmount(supplierId, prodId, amount));
                 break;
             }
             case 2: {  //edit product discount
                 System.out.println("product id: ");
-                int prodId = scan.nextInt();
+                int prodId = getIntFromUser();
                 System.out.println("new discount: ");
-                int discount = scan.nextInt();
+                int discount = getIntFromUser();
                 System.out.println(pc.editQuantityListDiscount(supplierId, prodId, discount));
                 break;
             }
             case 3: { //add new product
                 System.out.println("product id: ");
-                int productId = scan.nextInt();
+                int productId = getIntFromUser();
                 System.out.println("amount of products to get a discount: ");
-                int amount = scan.nextInt();
+                int amount = getIntFromUser();
                 System.out.println("discount amount: ");
-                int discount = scan.nextInt();
+                int discount = getIntFromUser();
                 System.out.println(pc.addQuantityListItem(supplierId, productId, amount, discount));
                 break;
             }
             case 4: { //delete product
                 System.out.println("product id: ");
-                int productId = scan.nextInt();
+                int productId = getIntFromUser();
                 System.out.println(pc.deleteQuantityListItem(supplierId, productId));
             }
             case 5: { //delete quantity list
@@ -220,7 +233,7 @@ public class MenuPrinter {
         LocalDate lclDate = LocalDate.parse(date, dateTimeFormatter);
         String order = pc.createOrder(lclDate, supplierId);
         System.out.println(order);
-        int orderId=-1;
+        int orderId = -1;
         if (order.split(" ")[1].equals("details:")) {
             orderId = Integer.parseInt(order.split(" ")[3]);
 
@@ -228,14 +241,14 @@ public class MenuPrinter {
                 System.out.println("\nplease choose an option:");
                 System.out.println("1. add new product");
                 System.out.println("2. exit");
-                int num = scan.nextInt();
+                int num = getIntFromUser();
                 if (num == 2)
                     break;
                 System.out.println("please enter the following details: ");
-                System.out.println("product id: ");
-                int productId = scan.nextInt();
-                System.out.println("amount of products: ");
-                int amount = scan.nextInt();
+                System.out.print("product id: ");
+                int productId = getIntFromUser();
+                System.out.print("amount of products: ");
+                int amount = getIntFromUser();
                 System.out.println(pc.addProductToOrder(orderId, productId, amount));
             }
         }
@@ -245,23 +258,23 @@ public class MenuPrinter {
         System.out.print("please enter\nsupplier id: ");
         String supplierId = getStringFromUser();
         System.out.println("day (1-7) in a week to get the order");
-        int day = scan.nextInt();
+        int day = getIntFromUser();
         String order = pc.createPernamentOrder(day, supplierId);
         System.out.println(order);
-        int orderId=-1;
+        int orderId = -1;
         if (order.split(" ")[1].equals("details")) {
             orderId = Integer.parseInt(order.split(" ")[3]);
             while (true) {
                 System.out.println("1. add new product");
                 System.out.println("2. exit");
-                int num = scan.nextInt();
+                int num = getIntFromUser();
                 if (num == 2)
                     break;
                 System.out.println("please enter the following details: ");
                 System.out.println("product id: ");
-                int productId = scan.nextInt();
+                int productId = getIntFromUser();
                 System.out.println("amount of products: ");
-                int amount = scan.nextInt();
+                int amount = getIntFromUser();
                 System.out.println(pc.addProductToOrder(orderId, productId, amount));
             }
         }
@@ -287,37 +300,37 @@ public class MenuPrinter {
             System.out.println("10. remove contact person");
             System.out.println("for main menu choose any other option");
             System.out.print("option : ");
-            int choose = scan.nextInt();
+            int choose = getIntFromUser();
             switch (choose) {
                 case 1:
                     System.out.print("please enter first name: ");
-                    pc.updateFirstName(supplierID, getStringFromUser());
+                    System.out.println(pc.updateFirstName(supplierID, getStringFromUser()));
                     break;
                 case 2:
                     System.out.print("please enter last name: ");
-                    pc.updateLastName(supplierID, getStringFromUser());
+                    System.out.println(pc.updateLastName(supplierID, getStringFromUser()));
                     break;
                 case 3:
                     System.out.print("please enter phone number: ");
-                    pc.updatePhone(supplierID, getStringFromUser());
+                    System.out.println(pc.updatePhone(supplierID, getStringFromUser()));
                     break;
                 case 4:
                     System.out.print("please enter email: ");
-                    pc.updateEmail(supplierID, getStringFromUser());
+                    System.out.println(pc.updateEmail(supplierID, getStringFromUser()));
                     break;
                 case 5:
                     System.out.print("please enter company number: ");
-                    pc.updateCompanyNumber(supplierID, scan.nextInt());
+                    System.out.println(pc.updateCompanyNumber(supplierID, getIntFromUser()));
                     break;
                 case 6:
                     while (true) {
                         System.out.print("choose:\n1. permanent days\n2. non permanent days\n option number: ");
-                        opt = scan.nextInt();
+                        opt = getIntFromUser();
                         if (opt == 1) {
-                            //pc.updatePernamentDays(supplierID, true);
+                            System.out.println(pc.updatePernamentDays(supplierID, true));
                             break;
                         } else if (opt == 2) {
-                            //pc.updatePernamentDays(supplierID, false);
+                            System.out.println(pc.updatePernamentDays(supplierID, false));
                             break;
                         } else
                             System.out.println("invalid option please chose again");
@@ -326,12 +339,12 @@ public class MenuPrinter {
                 case 7:
                     while (true) {
                         System.out.print("choose:\n1. self delivery\n2. not self delivery\n option number: ");
-                        opt = scan.nextInt();
+                        opt = getIntFromUser();
                         if (opt == 1) {
-                            pc.updateSelfDelivery(supplierID, true);
+                            System.out.println(pc.updateSelfDelivery(supplierID, true));
                             break;
                         } else if (opt == 2) {
-                            pc.updateSelfDelivery(supplierID, false);
+                            System.out.println(pc.updateSelfDelivery(supplierID, false));
                             break;
                         } else
                             System.out.println("invalid option please chose again");
@@ -340,17 +353,17 @@ public class MenuPrinter {
                 case 8:
                     while (true) {
                         System.out.print("please choose a payment method\n1. Cash\n2. Bank transfer\n3. check\nchoose number: ");
-                        opt = scan.nextInt();
+                        opt = getIntFromUser();
                         if (opt == 1) {
-                            //pc.updatePayment(supplierID, "cash");
+                            System.out.println(pc.updatePayment(supplierID, "cash"));
                             break;
                         }
                         if (opt == 2) {
-                            //pc.updatePayment(supplierID, "bankTrasfer");
+                            System.out.println(pc.updatePayment(supplierID, "bankTrasfer"));
                             break;
                         }
                         if (opt == 3) {
-                            //pc.updatePayment(supplierID,"check");
+                            System.out.println(pc.updatePayment(supplierID, "check"));
                             break;
                         } else
                             System.out.println("invalid option please chose again");
@@ -358,7 +371,7 @@ public class MenuPrinter {
                 case 9:
                     while (true) {
                         System.out.println("Choose an option:\n1. add a contact person\n2. back to main menu");
-                        opt = scan.nextInt();
+                        opt = getIntFromUser();
                         if (opt == 2)
                             break;
                         else if (opt != 1)
@@ -375,13 +388,13 @@ public class MenuPrinter {
                             String ID = getStringFromUser();
                             System.out.print("phone: ");
                             String phone = getStringFromUser();
-                            pc.addContactMember(supplierID, firstName, lName, email, ID, phone);
+                            System.out.println(pc.addContactMember(supplierID, firstName, lName, email, ID, phone));
                         }
                     }
                     break;
                 case 10:
                     System.out.println("please enter a contact member id to remove:");
-                    pc.deleteContactMember(supplierID, getStringFromUser());
+                    System.out.println(pc.deleteContactMember(supplierID, getStringFromUser()));
                     break;
                 default:
                     flag = false;
@@ -390,32 +403,32 @@ public class MenuPrinter {
     }
 
     //a helper function that approve that the order arrived in the system
-    private void approveOrder() {
+    private void approveOrder() throws ReflectiveOperationException {
         System.out.println("please enter order ID");
-        pc.approveOrder(scan.nextInt());
+        System.out.println(pc.approveOrder(getIntFromUser()));
     }
 
     //a helper function to get an order from the system
-    private void getOrder() {
+    private void getOrder() throws ReflectiveOperationException {
         System.out.println("please enter order ID");
-        pc.getOrder(scan.nextInt());
+        System.out.println(pc.getOrder(getIntFromUser()));
     }
 
     //a helper function to add a product to an order
-    private void addProductToOrder() {
+    private void addProductToOrder() throws ReflectiveOperationException {
         System.out.println("please enter order ID");
-        int orderID = scan.nextInt();
+        int orderID = getIntFromUser();
         System.out.println("enter a product company number ID");
-        int productID = scan.nextInt();
+        int productID = getIntFromUser();
         System.out.println("enter amount of products: ");
-        int amount = scan.nextInt();
-        pc.addProductToOrder(orderID, productID, amount);
+        int amount = getIntFromUser();
+        System.out.println(pc.addProductToOrder(orderID, productID, amount));
     }
 
     //a helper function to get a product
-    private void getProduct() {
+    private void getProduct() throws ReflectiveOperationException {
         System.out.println("please enter product ID");
-        pc.getProduct(scan.nextInt());
+        System.out.println(pc.getProduct(getIntFromUser()));
     }
 
     //a helper function to add a new product to the system
@@ -424,7 +437,40 @@ public class MenuPrinter {
         String name = getStringFromUser();
         System.out.println("please enter manufacturer name");
         String manufacturer = getStringFromUser();
-        pc.createProduct(name, manufacturer);
+        System.out.println(pc.createProduct(name, manufacturer));
+    }
+
+    private void editAgrreement() throws ReflectiveOperationException {
+        System.out.print("Please enter supplier ID:");
+        String supplierId = getStringFromUser();
+        boolean flag = true;
+        while (flag) {
+            System.out.println("please choose an option:");
+            System.out.println("1. add product");
+            System.out.println("2. remove product");
+            System.out.println("3. back to main menu");
+            System.out.print("Option:");
+            int opt = getIntFromUser();
+            int productId = -1;
+            switch (opt) {
+                case 1 -> {//add new product
+                    System.out.print("please enter system product id: ");
+                    productId = getIntFromUser();
+                    System.out.print("please enter your company product id: ");
+                    int compNum = getIntFromUser();
+                    System.out.print("please enter price: ");
+                    int price = getIntFromUser();
+                    System.out.print(pc.addItemToagreement(supplierId, productId, compNum, price));
+                }
+                case 2 -> {//delete product
+                    System.out.print("product id: ");
+                    productId = getIntFromUser();
+                    System.out.println(pc.removeItemFromAgreement(supplierId, productId));
+                }
+                case 3 -> flag = false;
+                default -> System.out.println("wrong input try again");
+            }
+        }
     }
 
     //a helper function to get a string from the user
@@ -446,22 +492,56 @@ public class MenuPrinter {
 
     }
 
+    //a helper function to get in from the user
+    private int getIntFromUser() throws ReflectiveOperationException {
+        int choose = -1;
+        boolean scannerCon = true;
+        while (scannerCon) {
+            try {
+                choose = scan.nextInt();
+                if (choose == -1) throw new ReflectiveOperationException("by pressing -1 you chose to go back");
+                if (choose < 0) {
+                    System.out.println("you must choose an none-negative number ");
+                } else {
+                    scannerCon = false;
+                }
+            } catch (InputMismatchException ie) {
+                System.out.println("wrong input - a number must be inserted please try again ");
+                scan.nextLine();
+            } catch (NoSuchElementException | IllegalStateException e) {
+                System.out.println("wrong input - a number must be inserted please try again ");
+                scan.nextLine();
+            }
+        }
+        return choose;
+    }
+
     public void createObjectsForTests() {
         int id = 333333333;
         int phone = 544444444;
-        for (int i = 0; i < 10; i++, phone++, id++)
+        List<Integer> suppliers=new ArrayList<>();
+        List<Integer> products=new ArrayList<>();
+        for (int i = 0; i < 10; i++, phone++, id++) {
             pc.addSupplier("Supplier", "LastName", "email" + i + "@gmail.com", "" + id, "0" + phone, 1, true, true, "cash");
-        for (int i = 10; i < 20; i++, phone++, id++)
+            suppliers.add(id);
+        }for (int i = 10; i < 20; i++, phone++, id++) {
             pc.addSupplier("Supplier", "LastName", "email" + i + "@gmail.com", "" + id, "0" + phone, 1, false, true, "check");
-        for (int i = 0; i < 10; i++)
+            suppliers.add(id);
+        }for (int i = 0; i < 10; i++) {
             pc.createProduct("name" + i, "osem");
-        for (int i = 10; i < 20; i++)
+            products.add(i);
+        }for (int i = 10; i < 20; i++) {
             pc.createProduct("name" + i, "elit");
-        for (int i = 10; i < 30; i++)
+            products.add(i);
+        }for (int i = 10; i < 30; i++) {
             pc.createProduct("name" + i, "tnuva");
-        for (int i = 30; i < 40; i++)
+            products.add(i);
+        }for (int i = 30; i < 40; i++) {
             pc.createProduct("name" + i, "gad");
-        for (int i = 40; i < 50; i++)
+            products.add(i);
+        }for (int i = 40; i < 50; i++) {
             pc.createProduct("name" + i, "knor");
+            products.add(i);
+        }
     }
 }

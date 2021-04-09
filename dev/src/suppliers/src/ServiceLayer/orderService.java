@@ -6,10 +6,8 @@ import ServiceLayer.Response.Response;
 import ServiceLayer.Response.ResponseT;
 import ServiceLayer.objects.order;
 import ServiceLayer.objects.product;
-import ServiceLayer.objects.supplier;
 
 import java.time.LocalDate;
-import java.util.Date;
 
 public class orderService {
     private orderController oc;
@@ -29,7 +27,7 @@ public class orderService {
     }
 
     public Response createPernamentOrder(int day, String supplierID, supplierController sp) {
-        Response toReturn = null;
+        Response toReturn = new Response();
         try {
             oc.createPermOrder(day, sp.getSupplier(supplierID));
         } catch (Exception e) {
@@ -39,7 +37,7 @@ public class orderService {
     }
 
     public Response approveOrder(int orderID) {
-        Response toReturn = null;
+        Response toReturn = new Response();
         try {
             oc.approveOrder(orderID);
         } catch (Exception e) {
@@ -48,12 +46,12 @@ public class orderService {
         return toReturn;
     }
 
-    public Response getOrder(int orderID) {
-        Response toReturn = new Response();
+    public ResponseT<order> getOrder(int orderID) {
+        ResponseT<order> toReturn;
         try {
-            oc.getOrder(orderID);
+            toReturn=new ResponseT<>(new order(oc.getOrder(orderID)));
         } catch (Exception e) {
-            toReturn = new Response(e.getMessage());
+            toReturn = new ResponseT<>(e.getMessage());
         }
         return toReturn;
     }
@@ -79,7 +77,7 @@ public class orderService {
     }
 
     public Response removeSupplier(String id) {
-        Response toReturn = null;
+        Response toReturn = new Response();
         try {
             oc.removeSupplier(id);
         } catch (Exception e) {
