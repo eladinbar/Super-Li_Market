@@ -82,7 +82,7 @@ public class WeeklyShiftSchedule {
     public Shift getShift(LocalDate date, int shift) throws EmployeeException {
         if(shift < 0 || shift > 1)
             throw new EmployeeException ( "shift index is illegal." );
-        return shifts[date.getDayOfWeek ().getValue ()][shift];
+        return shifts[date.getDayOfWeek ().getValue () % 7][shift];
     }
 
     public void changeShift(EmployeeController employeeController, LocalDate date, int shift, HashMap<String, List<String>> manning) throws EmployeeException {
