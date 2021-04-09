@@ -23,19 +23,54 @@ public class PresentationController implements Runnable {
 
     //Item related method
     private void addItem() {
-        int id = Integer.parseInt(menu.instructAndReceive("Enter item ID: "));
+        String tempID = menu.instructAndReceive("Enter item ID: ");
+        if(tempID.isEmpty()){
+            menu.errorPrompt("no id entered");
+            return;
+        }
+        int itemID = Integer.parseInt(tempID);
         String name = menu.instructAndReceive("Enter name: ");
-        double costP = Double.parseDouble(menu.instructAndReceive("Enter cost price: "));
-        double sellP = Double.parseDouble(menu.instructAndReceive("Enter sell price: "));
-        int minA = Integer.parseInt(menu.instructAndReceive("Enter minimum amount: "));
-        int storageQ = Integer.parseInt(menu.instructAndReceive("Enter storage quantity: "));
-        int storeQ = Integer.parseInt(menu.instructAndReceive("Enter shelf quantity: "));
+        String tempCost = menu.instructAndReceive("Enter cost price: ");
+        if(tempCost.isEmpty()){
+            menu.errorPrompt("no price entered");
+            return;
+        }
+        double costP = Double.parseDouble(tempCost);
+        String tempSell = menu.instructAndReceive("Enter sell price: ");
+        if(tempSell.isEmpty()){
+            menu.errorPrompt("no price entered");
+            return;
+        }
+        double sellP = Double.parseDouble(tempSell);
+        String tempMin = menu.instructAndReceive("Enter minimum amount");
+        if(tempMin.isEmpty()){
+            menu.errorPrompt("no price entered");
+            return;
+        }
+        int minA = Integer.parseInt(tempMin);
+        String tempQuan = menu.instructAndReceive("Enter storage quantity: ");
+        if(tempQuan.isEmpty()){
+            menu.errorPrompt("no price entered");
+            return;
+        }
+        int storageQ = Integer.parseInt(tempQuan);
+        String tempQuan2 = menu.instructAndReceive("Enter shelf quantity: ");
+        if(tempQuan2.isEmpty()){
+            menu.errorPrompt("no price entered");
+            return;
+        }
+        int storeQ = Integer.parseInt(tempQuan2);
         String storageL = menu.instructAndReceive("Enter storage location: follow this format \"ST-A<number>-<L/R>-S<number>\"");
         String storeL = menu.instructAndReceive("Enter shelf location: follow this format \"SH-A<number>-<L/R>-S<number>\"");
-        int idManf = Integer.parseInt(menu.instructAndReceive("Enter manufacturer ID: "));
-        String category = menu.instructAndReceive("Enter category name (enter nothing to set category as 'uncategorized'): ");
+        String tempM = menu.instructAndReceive("Enter manufacturer ID: ");
+        if(tempM.isEmpty()){
+            menu.errorPrompt("no id entered");
+            return;
+        }
+        int idManf = Integer.parseInt(tempM);
+        String category = menu.instructAndReceive("Enter category name: ");
 
-        Response r = service.addItem(id, name, category, costP, sellP, minA, storeL, storageL, storageQ, storeQ, idManf, new ArrayList<>());
+        Response r = service.addItem(itemID, name, category, costP, sellP, minA, storeL, storageL, storageQ, storeQ, idManf, new ArrayList<>());
         if (r.isErrorOccurred()) {
             menu.errorPrompt(r.getMessage());
         } else {
@@ -44,7 +79,12 @@ public class PresentationController implements Runnable {
     }
 
     private void showItem() {
-        int itemID = Integer.parseInt(menu.instructAndReceive("Enter item ID: "));
+        String temp = menu.instructAndReceive("Enter item ID: ");
+        if(temp.isEmpty()){
+            menu.errorPrompt("no id entered");
+            return;
+        }
+        int itemID = Integer.parseInt(temp);
         ResponseT<Item> r = service.getItem(itemID);
         if (!r.isErrorOccurred()) {
             menu.printEntity(r.getData());
@@ -54,7 +94,12 @@ public class PresentationController implements Runnable {
     }
 
     private void editItem() {
-        int itemID = Integer.parseInt(menu.instructAndReceive("Enter item ID: "));
+        String temp = menu.instructAndReceive("Enter item ID: ");
+        if(temp.isEmpty()){
+            menu.errorPrompt("no id entered");
+            return;
+        }
+        int itemID = Integer.parseInt(temp);
         ResponseT<Item> r = service.getItem(itemID);
         try {
             menu.printEntity(r.getData());
@@ -85,11 +130,19 @@ public class PresentationController implements Runnable {
                 r = service.modifyItemCategory(itemId, newCategory);
                 break;
             case "3":
-                double newCPrice = Double.parseDouble(menu.instructAndReceive("Enter new item cost price"));
+                String tempCost = menu.instructAndReceive("Enter cost price: ");
+                if(tempCost.isEmpty()){
+                    return new Response(true, "no price entered");
+                }
+                double newCPrice = Double.parseDouble(tempCost);
                 r = service.modifyItemCostPrice(itemId, newCPrice);
                 break;
             case "4":
-                double newSPrice = Double.parseDouble(menu.instructAndReceive("Enter new item selling price"));
+                String tempSell = menu.instructAndReceive("Enter cost price: ");
+                if(tempSell.isEmpty()){
+                    return new Response(true, "no price entered");
+                }
+                double newSPrice = Double.parseDouble(tempSell);
                 r = service.modifyItemSellingPrice(itemId, newSPrice);
                 break;
             case "5":
@@ -101,20 +154,39 @@ public class PresentationController implements Runnable {
                 r = service.changeItemShelfLocation(itemId, newLocationSH);
                 break;
             case "7":
-                int newQuantityST = Integer.parseInt(menu.instructAndReceive("Enter new item storage quantity"));
+                String tempQuan = menu.instructAndReceive("Enter storage quantity: ");
+                if(tempQuan.isEmpty()){
+                    menu.errorPrompt("no price entered");
+                    return new Response(true, "no quantity entered");
+                }
+                int newQuantityST = Integer.parseInt(tempQuan);
                 r = service.modifyItemStorageQuantity(itemId, newQuantityST);
                 break;
             case "8":
-                int newQuantitySH = Integer.parseInt(menu.instructAndReceive("Enter new item shelf quantity"));
+                String tempQuan2 = menu.instructAndReceive("Enter shelf quantity: ");
+                if(tempQuan2.isEmpty()){
+                    menu.errorPrompt("no price entered");
+                    return new Response(true, "no quantity entered");
+                }
+                int newQuantitySH = Integer.parseInt(tempQuan2);
                 r = service.modifyItemShelfQuantity(itemId, newQuantitySH);
                 break;
             case "9":
-                int newSupplier = Integer.parseInt(menu.instructAndReceive("Add  new supplier for the item: (enter supplier ID)"));
+                String tempSup = menu.instructAndReceive("\"Add  new supplier for the item: (enter supplier ID)\"): ");
+                if(tempSup.isEmpty()){
+                    menu.errorPrompt("no price entered");
+                    return new Response(true, "no id entered");
+                }
+                int newSupplier = Integer.parseInt(tempSup);
                 r = service.addItemSupplier(itemId, newSupplier);
                 break;
             case "10":
-                System.out.println("Remove a supplier for the item: (enter supplier ID)");
-                int oldSupplier = scan.nextInt();
+                String tempRevSup = menu.instructAndReceive("Remove a supplier for the item: (enter supplier ID)");
+                if(tempRevSup.isEmpty()){
+                    menu.errorPrompt("no price entered");
+                    return new Response(true, "no id entered");
+                }
+                int oldSupplier = Integer.parseInt(tempRevSup);
                 r = service.removeItemSupplier(itemId, oldSupplier);
                 break;
             default:
@@ -125,7 +197,12 @@ public class PresentationController implements Runnable {
     }
 
     private void removeItem() {
-        int itemID = Integer.parseInt(menu.instructAndReceive("Enter item ID: "));
+        String temp = menu.instructAndReceive("Enter item ID: ");
+        if(temp.isEmpty()){
+            menu.errorPrompt("no id entered");
+            return;
+        }
+        int itemID = Integer.parseInt(temp);
         Response r = service.removeItem(itemID);
         if (r.isErrorOccurred()) {
             menu.errorPrompt(r.getMessage());
@@ -137,7 +214,7 @@ public class PresentationController implements Runnable {
     //category related method
     private void addCategory() {
         String catName = menu.instructAndReceive("Enter category name: ");
-        String parentCategoryName = menu.instructAndReceive("Enter parent category: (enter nothing to set parent as 'uncategorized')");
+        String parentCategoryName = menu.instructAndReceive("Enter parent category: (enter nothing to set an item as 'uncategorized')");
         Response addR = service.addCategory(catName, parentCategoryName);
         if (addR.isErrorOccurred())
             System.out.println(addR.getMessage());
@@ -212,7 +289,12 @@ public class PresentationController implements Runnable {
         Pair<Calendar, Calendar> dates = getStartEndDates();
         if (dates == null) return;
         //getting the item to be applied on
-        int applyOnItem = Integer.parseInt(menu.instructAndReceive("Enter item ID for the sale: "));
+        String temp = menu.instructAndReceive("Enter item ID for the sale: ");
+        if(temp.isEmpty()){
+            menu.errorPrompt("no id entered");
+            return;
+        }
+        int applyOnItem = Integer.parseInt(temp);
         //checking if exists
         ResponseT<Item> rExist = service.getItem(applyOnItem);
         if (rExist.isErrorOccurred()) {
@@ -304,7 +386,12 @@ public class PresentationController implements Runnable {
     }
 
     private <T extends SimpleEntity> void showSupplierDiscount() {
-        int suppId = Integer.parseInt(menu.instructAndReceive("Enter supplier ID:"));
+        String temp = menu.instructAndReceive("Enter supplier ID: ");
+        if(temp.isEmpty()){
+            menu.errorPrompt("no id entered");
+            return;
+        }
+        int suppId = Integer.parseInt(temp);
         String[] disDateS = menu.instructAndReceive("Enter the date of the discount").split("-");
         ;
         Calendar date = Calendar.getInstance();
@@ -317,8 +404,19 @@ public class PresentationController implements Runnable {
     }
 
     private void addItemSupplierDiscount() {
-        int suppId = Integer.parseInt(menu.instructAndReceive("Enter supplier ID:"));
-        int itemId = Integer.parseInt(menu.instructAndReceive("Enter item ID that the discount applies on: "));
+
+        String temp = menu.instructAndReceive("Enter supplier ID: ");
+        if(temp.isEmpty()){
+            menu.errorPrompt("no id entered");
+            return;
+        }
+        int suppId = Integer.parseInt(temp);
+        String temp2 = menu.instructAndReceive("Enter item ID that the discount applies on: ");
+        if(temp.isEmpty()){
+            menu.errorPrompt("no id entered");
+            return;
+        }
+        int itemId = Integer.parseInt(temp);
         double discountGiven = Double.parseDouble(menu.instructAndReceive("Enter discount received for the item: (e.g. for 10% enter 0.1)"));
 
         String[] dateS = menu.instructAndReceive("Enter discount date: use this format <YYYY-MM-DD>").split("-");
@@ -432,10 +530,15 @@ public class PresentationController implements Runnable {
     @Override
     public void run() {
         menu.printWelcomePrompt();
-        while (true) {
+        while (!terminate) {
+            setupSystem();
             menu.printOperationMenu();
             operationInput();
         }
+
+    }
+
+    private void setupSystem() {
 
     }
 
