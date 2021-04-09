@@ -1,11 +1,12 @@
 package Employees.business_layer.facade;
 
 import Employees.EmployeeException;
-import Employees.business_layer.Employee.*;
-import Employees.business_layer.facade.facadeObject.FacadeBankAccountInfo;
+import Employees.business_layer.Employee.Constraint;
+import Employees.business_layer.Employee.Employee;
+import Employees.business_layer.Employee.EmployeeController;
+import Employees.business_layer.Employee.Role;
 import Employees.business_layer.facade.facadeObject.FacadeConstraint;
 import Employees.business_layer.facade.facadeObject.FacadeEmployee;
-import Employees.business_layer.facade.facadeObject.FacadeTermsOfEmployment;
 
 import java.time.LocalDate;
 import java.util.HashMap;
@@ -15,9 +16,9 @@ import java.util.List;
 public class EmployeeService {
     EmployeeController employeeController;
 
-    public EmployeeService(EmployeeController employeeController)
+    public EmployeeService()
     {
-        this.employeeController = employeeController;
+        employeeController = EmployeeController.getInstance ();
     }
 
     public ResponseT<FacadeEmployee> login(String ID, Role role) {
@@ -80,20 +81,10 @@ public class EmployeeService {
 
     public ResponseT<FacadeEmployee> removeEmployee(String Id)  {
         try{
-            return new ResponseT<>(new FacadeEmployee(employeeController.removeEmployee(Id)));
+            return new ResponseT(new FacadeEmployee(employeeController.removeEmployee(Id)));
         }
         catch (EmployeeException e){
-            return new ResponseT<>(e.getMessage());
-        }
-    }
-
-    public Response deleteBankAccount(String Id) throws EmployeeException {
-        try{
-            employeeController.deleteBankAccount(Id);
-            return new Response();
-        }
-        catch (EmployeeException e){
-            return new Response(e.getMessage());
+            return new ResponseT(e.getMessage());
         }
     }
 
@@ -109,7 +100,7 @@ public class EmployeeService {
 
     public Response updateTermsOfEmployee(String Id, int salary, int educationFund, int sickDays, int daysOff) {
         try{
-            employeeController.updateTermsOfemployee(Id,salary, educationFund, sickDays,daysOff);
+            employeeController.updateTermsOfEmployee(Id,salary, educationFund, sickDays,daysOff);
             return new Response();
         }
         catch (EmployeeException e){

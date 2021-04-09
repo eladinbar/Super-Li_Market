@@ -12,18 +12,26 @@ import java.util.List;
 import java.util.Locale;
 
 public class ShiftController {
+    private static ShiftController instance = null;
+
     private HashMap<LocalDate, WeeklyShiftSchedule> shifts;
     EmployeeController employeeController;
 
-    public ShiftController(HashMap<LocalDate, WeeklyShiftSchedule> shifts, EmployeeController employeeController)
-    {
-        this.shifts = shifts;
-        this.employeeController = employeeController;
+//    public ShiftController(HashMap<LocalDate, WeeklyShiftSchedule> shifts, EmployeeController employeeController)
+//    {
+//        this.shifts = shifts;
+//        this.employeeController = employeeController;
+//    }
+
+    private ShiftController(){
+        shifts = new HashMap<> (  );
+        employeeController = EmployeeController.getInstance ();
     }
 
-    public ShiftController(EmployeeController employeeController){
-        shifts = new HashMap<> (  );
-        this.employeeController = employeeController;
+    public static ShiftController getInstance() {
+        if (instance == null)
+            instance = new ShiftController ();
+        return instance;
     }
 
     public WeeklyShiftSchedule getRecommendation(LocalDate startingDate) throws EmployeeException {

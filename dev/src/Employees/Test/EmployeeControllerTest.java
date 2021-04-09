@@ -22,7 +22,7 @@ class EmployeeControllerTest {
 
         @BeforeEach
         public void setEmployeeController() {
-            employeeController = new EmployeeController ( );
+            employeeController = EmployeeController.getInstance ();
             FacadeBankAccountInfo ManagerAccountInfo = new FacadeBankAccountInfo ( 123, 11, "Hpoalim" );
             FacadeTermsOfEmployment termsOfManager = new FacadeTermsOfEmployment ( 5500, 1212, 10, 30 );
             manager = new FacadeEmployee ( "humanResourcesManager", "315000000", LocalDate.now ( ), ManagerAccountInfo, termsOfManager );

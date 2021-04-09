@@ -68,9 +68,9 @@ public class ShiftTypes {
     }
 
     public void deleteRole(String shiftType, String role) throws EmployeeException {
-        if(!shiftType.contains ( shiftType ))
+        if(!shiftTypes.containsKey ( shiftType ))
             throw new EmployeeException ( "Illegal shift type." );
-        shiftTypes.remove ( Role.valueOf ( role ) );
+        shiftTypes.get (shiftType).remove ( Role.valueOf ( role ) );
     }
 
     public String[] getShiftTypes() {

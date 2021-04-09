@@ -18,9 +18,9 @@ public class FacadeService {
 
     public  FacadeService()
     {
-        EmployeeController employeeController = new EmployeeController ();
-        employeeService = new EmployeeService (employeeController);
-        shiftService = new ShiftService (new ShiftController ( employeeController ) );
+        EmployeeController employeeController = EmployeeController.getInstance ();
+        employeeService = new EmployeeService ();
+        shiftService = new ShiftService ();
     }
 
     //shift service responsibility

@@ -16,9 +16,9 @@ import java.util.List;
 public class ShiftService {
     private ShiftController shiftController;
 
-    public ShiftService(ShiftController shiftController)
+    public ShiftService()
     {
-        this.shiftController = shiftController;
+        shiftController = ShiftController.getInstance ();
     }
 
     public ResponseT<FacadeWeeklyShiftSchedule> getRecommendation(LocalDate startingDate) {

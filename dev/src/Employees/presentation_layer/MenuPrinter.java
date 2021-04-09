@@ -109,11 +109,11 @@ public class MenuPrinter {
         FacadeTermsOfEmployment termsOfEmployment;
         LocalDate transactionDate;
         System.out.println ( "ID: " );
-        ID = sc.next ( );
+        ID = getString ();
         System.out.println ( "transaction date:");
         transactionDate = dateMenu ();
         System.out.print ("bank account info:\nbank: " );
-        bank = sc.next ();
+        bank = getString ();
         System.out.print ("bank branch: " );
         bankBranch = getInt ();
         System.out.print ("bank account number: " );
