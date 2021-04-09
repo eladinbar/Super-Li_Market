@@ -60,7 +60,7 @@ public class TextFormatter {
         return paddingSize;
     }
 
-    private String dateFormat(Calendar date){
+    public String dateFormat(Calendar date){
         SimpleDateFormat format1 = new SimpleDateFormat("yyyy-MM-dd");
         return format1.format(date.getTime());
     }

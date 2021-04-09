@@ -6,6 +6,7 @@ import InventoryModule.ControllerLayer.SimpleObjects.*;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Scanner;
 
@@ -193,9 +194,23 @@ public class Menu {
         String output = "";
         for (int i = 0; i < getMethods.length - 1; i++) {
             Method currentMethod = getMethods[i];
-            output = output + tf.centerString(currentMethod.invoke(elem).toString(), tf.getPaddingSize()) + "|";
+            Object value = currentMethod.invoke(elem);
+            String stringRep = value.toString();
+            if(value instanceof Calendar){
+                stringRep = tf.dateFormat((Calendar) value);
+            }
+            output = output + tf.centerString(stringRep, tf.getPaddingSize()) + "|";
         }
-        System.out.println(output + tf.centerString(getMethods[getMethods.length - 1].invoke(elem).toString(), tf.getPaddingSize()));
+        Object value = getMethods[getMethods.length - 1].invoke(elem);
+        String stringRep = value.toString();
+        if(value instanceof Calendar){
+            stringRep = tf.dateFormat((Calendar) value);
+        }
+        System.out.println(output + tf.centerString(stringRep, tf.getPaddingSize()));
+    }
+
+    public void printDefectMenu(){
+        System.out.println(tf.DefectsMenuFormat());
     }
 
 
