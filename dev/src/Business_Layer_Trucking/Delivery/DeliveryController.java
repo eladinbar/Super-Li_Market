@@ -238,7 +238,7 @@ public class DeliveryController {
 
 
     }
-    public boolean removeSite(int siteID) throws NoSuchElementException
+    public boolean removeSite(int siteID) throws NoSuchElementException,IllegalStateException
     {
         if (!sites.containsKey(siteID))
         {
@@ -355,43 +355,33 @@ public class DeliveryController {
         updateTruckReportDestinations(currTR.getID());
     }
 
-    public void removeItemFromPool(int item)throws NoSuchElementException {
+    public void removeItemFromPool(int item)throws NoSuchElementException,IllegalStateException{
         if (!items.containsKey(item))
         {
             throw new NoSuchElementException("No item with that ID");
         }
-        // TODO need to delete demands from each DF, Demands, TR\
-        else items.remove(item);
-        deleteItemsFromDFSAfterRemoveItem(item);
-        deleteDemandsAfterRemoveItem(item);
-    }
-
-    private void deleteDemandsAfterRemoveItem(int item) {
+        // TODO ido needs to copy this to his branch
+        for (Map.Entry<Integer,LinkedList<DeliveryForm>> entry:activeDeliveryForms.entrySet())
+        {
+            LinkedList<DeliveryForm> ldf=entry.getValue();
+            for (DeliveryForm df:ldf)
+            {
+                HashMap<Integer,Integer> items= df.getItems();
+                for (Map.Entry<Integer,Integer> integerIntegerEntry:items.entrySet())
+                {
+                    if (integerIntegerEntry.getKey()==item)
+                        throw new IllegalStateException("Cant delete item when there is a delivery form with it");
+                }
+            }
+        }
         for (Demand d:demands)
         {
             if (d.getItemID()==item)
-                demands.remove(d);
-
+                throw new IllegalStateException("Cant delete item when there is a demand with it");
         }
-    }
+        items.remove(item);
+        //---------
 
-    private void deleteItemsFromDFSAfterRemoveItem(int item) {
-        for (Map.Entry<Integer,LinkedList<DeliveryForm>> entry:activeDeliveryForms.entrySet()){
-            LinkedList<DeliveryForm> deliveryFormsList=entry.getValue();
-            for (DeliveryForm df:deliveryFormsList)
-            {
-                df.getItems().remove(item);
-                if (df.getItems().size()==0) {
-                    deliveryFormsList.remove(df);
-                    if (entry.getValue().size() == 0)
-                    {
-                        activeTruckingReports.remove(entry.getKey());
-                        activeDeliveryForms.remove(entry);
-                    }
-                }
-
-            }
-        }
     }
 
     public void addItem(int id, double weight, String name, int siteID)throws NoSuchElementException,KeyAlreadyExistsException {

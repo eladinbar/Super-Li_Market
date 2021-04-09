@@ -291,7 +291,7 @@ public class DeliveryService {
         dc.chooseDateToCurrentTR(chosen);
     }
 
-    public void removeSiteFromPool(int siteID) {
+    public void removeSiteFromPool(int siteID)throws NoSuchElementException,IllegalStateException {
         dc.removeSite(siteID);
     }
 

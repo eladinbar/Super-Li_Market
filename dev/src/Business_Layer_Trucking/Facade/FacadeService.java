@@ -349,7 +349,7 @@ public class FacadeService {
         deliveryService.chooseDateToCurrentTR(chosen);
     }
 
-    public void removeSiteFromPool(int siteID) {
+    public void removeSiteFromPool(int siteID)throws NoSuchElementException,IllegalStateException {
         deliveryService.removeSiteFromPool(siteID);
     }
 
