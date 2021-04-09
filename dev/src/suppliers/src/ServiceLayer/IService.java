@@ -3,6 +3,7 @@ package ServiceLayer;
 import ServiceLayer.Response.*;
 import ServiceLayer.objects.*;
 import java.time.LocalDate;
+import java.util.List;
 
 public interface IService {
     //add supplier and edit all supplier fields
@@ -47,9 +48,10 @@ public interface IService {
     //products
     ResponseT<product> createProduct(String name, String manufacturer);
     ResponseT<product> getProduct(int productID);
-/*    //system
-    ResponseT<List<product>> getAllProducts();
+    ResponseT<agreement> getAgreement(String supplierID);
+    //system
+/*    ResponseT<List<product>> getAllSystemProducts();
+    ResponseT<List<product>> getAllSupplierProducts();
     ResponseT<List<order>> getAllOrders();
-    ResponseT<List<supplier>> getAllSuppliers();
-}*/
+    ResponseT<List<supplier>> getAllSuppliers();*/
 }

@@ -3,6 +3,7 @@ package ServiceLayer;
 import BusinessLayer.orderPackage.orderController;
 import BusinessLayer.supplierPackage.supplierController;
 import ServiceLayer.Response.*;
+import ServiceLayer.objects.agreement;
 import ServiceLayer.objects.product;
 import ServiceLayer.objects.quantityList;
 import ServiceLayer.objects.supplier;
@@ -257,6 +258,16 @@ public class supplierService {
             sp.editAgreementItemPrice(supplierID,productID,price);
         } catch (Exception e) {
             toReturn = new Response(e.getMessage());
+        }
+        return toReturn;
+    }
+
+    public ResponseT<agreement> getAgreement(String supplierID) {
+        ResponseT<agreement> toReturn;
+        try {
+            toReturn = new ResponseT<>(new agreement(sp.getAgreement(supplierID)));
+        } catch (Exception e) {
+            toReturn = new ResponseT<>(e.getMessage());
         }
         return toReturn;
     }

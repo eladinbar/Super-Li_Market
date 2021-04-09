@@ -165,4 +165,9 @@ public class supplierController {
         existSupplier(supplierID);
         suppliers.get(supplierID).getAg().editAgreementItemPrice(productID,price);
     }
+
+    public agreement getAgreement(String supplierID) throws Exception {
+        existSupplier(supplierID);
+        return suppliers.get(supplierID).getAg();
+    }
 }

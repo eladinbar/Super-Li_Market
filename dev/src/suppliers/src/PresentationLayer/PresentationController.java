@@ -147,6 +147,6 @@ public class PresentationController {
     }
 
     public String getAgreement(String supplierID) {
-        return null;
+        return service.getAgreement(supplierID).toString();
     }
 }
