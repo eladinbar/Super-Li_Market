@@ -47,6 +47,12 @@ public class agreement {
 
     }
 
+    private void companyNumberExists(int PID) throws Exception {
+        for (Map.Entry<Integer,Integer> a:products.entrySet()) {
+            if(PID==a.getValue())
+                throw new Exception("company number already exists in the system");
+        }
+    }
     public void deleteQuantityListItem(int productID) throws Exception {
         if (ql == null)
             throw new Exception("supplier does not have a quantity list");
@@ -82,6 +88,7 @@ public class agreement {
     }
 
     public void addItemToAgreement(int productID, int companyProductID,int price) throws Exception {
+        companyNumberExists(companyProductID);
         if(products.containsKey(productID))
             throw new Exception("agreement already have the item");
         if(price<0)
@@ -102,6 +109,7 @@ public class agreement {
     public void editAgreementItemCompanyProductID(int productID, int companyProductID) throws Exception {
         if(!products.containsKey(productID))
             throw new Exception("item does not exists in agreement");
+        companyNumberExists(companyProductID);
         if(companyProductID<0)
             throw new Exception("company product ID must be positive number");
         products.remove(productID);
