@@ -1119,7 +1119,7 @@ public class Menu_Printer {
         pc.addTruck("Mercedes" , "62321323" , 2000, 12000);
         pc.addTruck("Man", "1231231", 1500, 8000);
         pc.addTruck("Volvo","123" ,1000, 10000);
-        pc.addTruck("asd","12121",1000,14000);
+        pc.addTruck("Volvo","12121",1000,14000);
 
         pc.addSite("Haifa", 1, "0502008216" , "Shimi", "SuperLee-Haifa");
         pc.addSite("Nazareth" , 1,"0522002123" , "Esti" , "Suber-LNazerath");
@@ -1127,8 +1127,8 @@ public class Menu_Printer {
         pc.addSite("Rahat" , 2 , "0502008214" , "Mohamad" , "MilkHere");
         pc.addSite("Afula", 3,"0502008215" , "Raz" , "Tnuva");
         pc.addSite("Geva" , 3, "0503988883", "ShirHayafa","Dubi");
-        pc.addSite("123" , 1, "0503988883", "213123","12");
-        pc.addSite("456" , 1, "0503988883", "asd","54");
+        pc.addSite("Tveria" , 1, "0503988883", "Yaron","Dagim");
+        pc.addSite("Qiryat Shemona" , 1, "0503988883", "Shimi","Macolet");
 
 
         pc.addItem(1,"milk",1);
