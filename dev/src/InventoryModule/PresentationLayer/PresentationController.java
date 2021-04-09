@@ -96,11 +96,13 @@ public class PresentationController implements Runnable {
 
     private void editItem() {
         String temp = menu.instructAndReceive("Enter item ID: ");
-        if(temp.isEmpty()){
-            menu.errorPrompt("no id entered");
+        int itemID;
+        try {
+            itemID = Integer.parseInt(temp);
+        } catch(Exception ex) {
+            menu.errorPrompt("Invalid input");
             return;
         }
-        int itemID = Integer.parseInt(temp);
         ResponseT<Item> r = service.getItem(itemID);
         try {
             menu.printEntity(r.getData());
@@ -132,18 +134,24 @@ public class PresentationController implements Runnable {
                 break;
             case "3":
                 String tempCost = menu.instructAndReceive("Enter cost price: ");
-                if(tempCost.isEmpty()){
-                    return new Response(true, "no price entered");
+                double newCPrice;
+                try {
+                    newCPrice = Double.parseDouble(tempCost);
+                } catch(Exception ex) {
+                    menu.errorPrompt("Invalid input");
+                    return new Response(true, "Invalid input");
                 }
-                double newCPrice = Double.parseDouble(tempCost);
                 r = service.modifyItemCostPrice(itemId, newCPrice);
                 break;
             case "4":
                 String tempSell = menu.instructAndReceive("Enter cost price: ");
-                if(tempSell.isEmpty()){
-                    return new Response(true, "no price entered");
+                double newSPrice;
+                try {
+                    newSPrice = Double.parseDouble(tempSell);
+                } catch(Exception ex) {
+                    menu.errorPrompt("Invalid input");
+                    return new Response(true, "Invalid input");
                 }
-                double newSPrice = Double.parseDouble(tempSell);
                 r = service.modifyItemSellingPrice(itemId, newSPrice);
                 break;
             case "5":
@@ -156,38 +164,46 @@ public class PresentationController implements Runnable {
                 break;
             case "7":
                 String tempQuan = menu.instructAndReceive("Enter storage quantity: ");
-                if(tempQuan.isEmpty()){
-                    menu.errorPrompt("no price entered");
-                    return new Response(true, "no quantity entered");
+                int newQuantityST;
+                try {
+                    newQuantityST = Integer.parseInt(tempQuan);
+                } catch(Exception ex) {
+                    menu.errorPrompt("Invalid input");
+                    return new Response(true, "Invalid input");
                 }
-                int newQuantityST = Integer.parseInt(tempQuan);
                 r = service.modifyItemStorageQuantity(itemId, newQuantityST);
                 break;
             case "8":
                 String tempQuan2 = menu.instructAndReceive("Enter shelf quantity: ");
-                if(tempQuan2.isEmpty()){
-                    menu.errorPrompt("no price entered");
-                    return new Response(true, "no quantity entered");
+                int newQuantitySH;
+                try {
+                    newQuantitySH = Integer.parseInt(tempQuan2);
+                } catch(Exception ex) {
+                    menu.errorPrompt("Invalid input");
+                    return new Response(true, "Invalid input");
                 }
-                int newQuantitySH = Integer.parseInt(tempQuan2);
                 r = service.modifyItemShelfQuantity(itemId, newQuantitySH);
                 break;
             case "9":
                 String tempSup = menu.instructAndReceive("\"Add  new supplier for the item: (enter supplier ID)\"): ");
-                if(tempSup.isEmpty()){
-                    menu.errorPrompt("no price entered");
-                    return new Response(true, "no id entered");
+                int newSupplier;
+                try {
+                    newSupplier = Integer.parseInt(tempSup);
+                } catch(Exception ex) {
+                    menu.errorPrompt("Invalid input");
+                    return new Response(true, "Invalid input");
                 }
-                int newSupplier = Integer.parseInt(tempSup);
                 r = service.addItemSupplier(itemId, newSupplier);
                 break;
             case "10":
                 String tempRevSup = menu.instructAndReceive("Remove a supplier for the item: (enter supplier ID)");
-                if(tempRevSup.isEmpty()){
-                    menu.errorPrompt("no price entered");
-                    return new Response(true, "no id entered");
+                int oldSupplier;
+                try {
+                    oldSupplier = Integer.parseInt(tempRevSup);
+                } catch(Exception ex) {
+                    menu.errorPrompt("Invalid input");
+                    return new Response(true, "Invalid input");
                 }
-                int oldSupplier = Integer.parseInt(tempRevSup);
                 r = service.removeItemSupplier(itemId, oldSupplier);
                 break;
             default:
