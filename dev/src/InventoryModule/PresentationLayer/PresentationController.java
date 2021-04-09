@@ -804,17 +804,14 @@ public class PresentationController implements Runnable {
         //Adding suppliers discount
         Calendar discDate = Calendar.getInstance();
         discDate.set(2021, Month.MARCH.getValue() - 1, 3);
-        System.out.println(menu.getTextFormatter().dateFormat(discDate));
         service.addItemDiscount(111, 0.12, discDate, 3, 845);
 
         Calendar discDate2 = Calendar.getInstance();
         discDate2.set(2021, Month.MARCH.getValue() - 1, 4);
-        System.out.println(menu.getTextFormatter().dateFormat(discDate2));
         service.addItemDiscount(111, 0.12, discDate2, 10, 846);
 
         Calendar discDate3 = Calendar.getInstance();
         discDate3.set(2021, Month.MARCH.getValue() - 1, 5);
-        System.out.println(menu.getTextFormatter().dateFormat(discDate3));
         service.addItemDiscount(113, 0.10, discDate3, 20, 11111);
 
         Calendar defectTime = Calendar.getInstance();
