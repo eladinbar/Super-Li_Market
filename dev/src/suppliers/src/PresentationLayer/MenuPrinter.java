@@ -20,8 +20,7 @@ public class MenuPrinter {
 
     //the main function
     public void startWork() {
-        int choose = 1;
-/*        boolean logged = true;
+       boolean logged = true;
         System.out.println("\nWelcome to Super-Lee, Please enter password: ");
         while (logged) {
             String pass = getStringFromUser();
@@ -29,51 +28,76 @@ public class MenuPrinter {
                 System.out.print("Wrong Password, try again: ");
             else
                 logged = false;
-        }*/
-        while (choose > 0) {
-            choose = PrintMenu();
-            switch (choose) {
-                case 1 -> addSupplierFunc();
-                case 2 -> getSupplier();
-                case 3 -> updateSupplierDetailFunc();
-                case 4 -> addQuantityList();
-                case 5 -> editQuantityList();
-                case 6 -> createNewOrder();
-                case 7 -> setPermanentOrder();
-                case 8 -> approveOrder();
-                case 9 -> getOrder();
-                case 10 -> addProductToOrder();
-                case 11 -> createProduct();
-                case 12 -> getProduct();
-                case 13 -> editAgrreement();
-                case 14 -> removeProductFromOrder();
-                case 15 -> getQuantityList();
-                case 16 -> getAgreement();
-            }
         }
-    }
+        PrintMenu();
+}
 
     //a helper function to print the menu
-    public int PrintMenu()  {
+    public void PrintMenu()  {
+        int choose = 1;
+        while (choose>0) {
         System.out.println("welcome to Super Lee");
-        System.out.println("1. add supplier");
-        System.out.println("2. get supplier");
-        System.out.println("3. update supplier details");
-        System.out.println("4. add quantity List");
-        System.out.println("5. edit quantity List");
-        System.out.println("6. create new order");
-        System.out.println("7. set permanent order");
-        System.out.println("8. approve order");
-        System.out.println("9. get order");
-        System.out.println("10. add product to order");
-        System.out.println("11. add new product");
-        System.out.println("12. get product");
-        System.out.println("13. edit agreement");
-        System.out.println("14. remove product from order");
-        System.out.println("15. get quantityList");
-        System.out.println("16. get agreement");
-        System.out.println("Please choose an option:");
-        return getIntFromUser();
+        System.out.println("please choose a menu:");
+        System.out.println("1. supplier");
+        System.out.println("2. order");
+        System.out.println("3. product");
+
+        choose = getIntFromUser();
+        int chooseInsideMenu;
+
+            switch (choose) {
+                case 1 -> {
+                    System.out.println("supplier menu:");
+                    System.out.println("1. add supplier");
+                    System.out.println("2. get supplier");
+                    System.out.println("3. update supplier details");
+                    System.out.println("4. add quantity List");
+                    System.out.println("5. edit quantity List");
+                    System.out.println("6. edit agreement");
+                    System.out.println("7. get quantityList");
+                    System.out.println("8. get agreement");
+                    chooseInsideMenu = getIntFromUser();
+                    switch (chooseInsideMenu) {
+                        case 1 -> addSupplierFunc();
+                        case 2 -> getSupplier();
+                        case 3 -> updateSupplierDetailFunc();
+                        case 4 -> addQuantityList();
+                        case 5 -> editQuantityList();
+                        case 6 -> editAgrreement();
+                        case 7 -> getQuantityList();
+                        case 8 -> getAgreement();
+                    }
+                }
+                case 2 -> {
+                    System.out.println("order menu:");
+                    System.out.println("1. create new order");
+                    System.out.println("2. create permanent order");
+                    System.out.println("3. approve order");
+                    System.out.println("4. get order");
+                    System.out.println("5. add product to order");
+                    System.out.println("6. remove product from order");
+                    chooseInsideMenu = getIntFromUser();
+                    switch (chooseInsideMenu) {
+                        case 1 -> createNewOrder();
+                        case 2 -> setPermanentOrder();
+                        case 3 -> approveOrder();
+                        case 4 -> getOrder();
+                        case 5 -> addProductToOrder();
+                        case 6 -> removeProductFromOrder();
+                    }
+                }
+                case 3 -> {
+                    System.out.println("product menu:");
+                    System.out.println("1. add new product");
+                    System.out.println("2. get product");
+                    chooseInsideMenu = getIntFromUser();
+                    switch (chooseInsideMenu) {
+                        case 1 -> createProduct();
+                        case 2 -> getProduct();
+                    }
+                }
+            }
+        }
     }
 
     //a helper function that add supplier to the system
