@@ -1,6 +1,6 @@
 package InventoryModule.ControllerLayer.SimpleObjects;
 
-public class Item implements SimpleEntity {
+public class Item extends SimpleEntity {
     private int ID;
     private String name;
     private double costPrice;

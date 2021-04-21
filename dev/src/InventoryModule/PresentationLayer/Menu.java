@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Scanner;
+import java.util.regex.Pattern;
 
 public class Menu {
     private TextFormatter tf = new TextFormatter();
@@ -35,6 +36,7 @@ public class Menu {
 
         return list;
     }
+
     private List<String> setupSaleModList() {
         ArrayList<String> list = new ArrayList<>();
         list.add("Change sale name");
@@ -43,6 +45,7 @@ public class Menu {
 
         return list;
     }
+
     private List<String> setupItemModList() {
         ArrayList<String> list = new ArrayList<>();
         list.add("Change item name");
@@ -58,6 +61,7 @@ public class Menu {
 
         return list;
     }
+
     private List<String> setupOperationsList() {
         ArrayList<String> list = new ArrayList<>();
         list.add("Show item");
@@ -88,24 +92,29 @@ public class Menu {
     public List<String> getItemModificationList() {
         return itemModificationList;
     }
+
     public List<String> getCategoryModificationList() {
         return categoryModificationList;
     }
+
     public List<String> getSaleModificationList() {
         return saleModificationList;
     }
-    public TextFormatter getTextFormatter() {
-        return tf;
-    }
+
+//    public TextFormatter getTextFormatter() {
+//        return tf;
+//    }
 
     //print Options
     public void printWelcomePrompt() {
         System.out.println("Welcome to the 'Super-Lee' Inventory System!");
     }
+
     public void printOperationMenu() {
         printMenu(operationsList);
         System.out.println("\nPress q to quit");
     }
+
     public void printMenu(List<String> menuElements) {
         System.out.println("\nPlease enter the number of the desired operation: ");
         int option = 1;
@@ -114,44 +123,43 @@ public class Menu {
             option++;
         }
     }
+
     public void errorPrompt(String errorInput) {
         System.out.println("Error: " + errorInput);
     }
 
     //Entities print methods
-    public void printEntity(Item item) {
+    public void printEntity(SimpleEntity e) {
+        e.printMe(this);
+    }
+
+    public void itemHeader() {
         System.out.println(tf.formatItemMenuColumns());
+    }
+
+    public void printEntity(Item item) {
         try {
             printItem(item);
-        } catch (Exception e){
+        } catch (Exception e) {
             errorPrompt("Something went wrong...");
         }
     }
-    public void printEntity(List<Item> itemList)  {
-        System.out.println(tf.formatItemMenuColumns());
-        try {
-            for (Item i : itemList) {
-                printItem(i);
-            }
-        } catch (Exception e){
-            errorPrompt("Something went wrong...");
+
+    public void printEntity(List<Item> itemList) {
+        itemHeader();
+        for (Item i : itemList) {
+            printEntity(i);
         }
     }
+
     public void printEntity(Category category) {
         tf.CategoryMenuFormat(category);
-        System.out.println(tf.formatItemMenuColumns());
-        for (Item i : category.getItems()) {
-            try {
-                printItem(i);
-            } catch (Exception e) {
-                errorPrompt("Something went wrong...");
-            }
-        }
+        printEntity(category.getItems());
     }
 
     public <T extends SimpleEntity> void printEntity(Sale<T> sale) {
         tf.saleMenuFormat(sale);
-        if(sale.getAppliesOn().getClass() == Item.class)
+        if (sale.getAppliesOn().getClass() == Item.class)
             printEntity((Item) sale.getAppliesOn());
         else if (sale.getAppliesOn().getClass() == Category.class)
             printEntity((Category) sale.getAppliesOn());
@@ -159,10 +167,9 @@ public class Menu {
 
     public <T extends SimpleEntity> void printEntity(Discount<T> discount) {
         tf.discountMenuFormat(discount);
-        if(discount.getAppliesOn().getClass() == Category.class){
+        if (discount.getAppliesOn().getClass() == Category.class) {
             printEntity((Category) discount.getAppliesOn());
-        }
-        else if (discount.getAppliesOn().getClass() == Item.class)
+        } else if (discount.getAppliesOn().getClass() == Item.class)
             printEntity((Item) discount.getAppliesOn());
     }
 
@@ -170,13 +177,51 @@ public class Menu {
         Method[] getMethods = {entry.getClass().getMethod("getEntryDate"), entry.getClass().getMethod("getItemId"),
                 entry.getClass().getMethod("getItemName"), entry.getClass().getMethod("getQuantity"),
                 entry.getClass().getMethod("getLocation")};
-        handleEntityAliment(entry,getMethods);
+        handleEntityAliment(entry, getMethods);
     }
 
     //User Input methods
     public String instructAndReceive(String instruction) {
         System.out.println(instruction);
         return scan.nextLine();
+    }
+
+    public <T> T instructAndReceive(String instruction, Class<T> type) {
+        System.out.println(instruction);
+        String next = scan.nextLine();
+        if (type == Integer.class) {
+            Integer wantedInt;
+            try {
+                while (!Pattern.matches("(^[1-9][0-9]+$)|0", next)) {
+                    System.out.println("invalid input: " + next);
+                    System.out.println(instruction);
+                    next = scan.nextLine();
+                }
+                wantedInt = Integer.parseInt(next);
+                return (T) wantedInt;
+            } catch (Exception e) {
+                System.out.println("something went wrong");
+                return null;
+            }
+
+        }
+        if (type == Double.class) {
+            Double wantedDouble;
+            try {
+                while (!Pattern.matches("^\\d+(\\.\\d+)?", next)) {
+                    System.out.println("invalid input: " + next);
+                    System.out.println(instruction);
+                    next = scan.nextLine();
+                }
+                wantedDouble = Double.parseDouble(next);
+                return (T) wantedDouble;
+            } catch (Exception e) {
+                System.out.println("something went wrong");
+                return null;
+            }
+        }
+
+        return (T) next;
     }
 
     private void printItem(Item item) throws InvocationTargetException, IllegalAccessException, NoSuchMethodException {
@@ -196,20 +241,20 @@ public class Menu {
             Method currentMethod = getMethods[i];
             Object value = currentMethod.invoke(elem);
             String stringRep = value.toString();
-            if(value instanceof Calendar){
+            if (value instanceof Calendar) {
                 stringRep = tf.dateFormat((Calendar) value);
             }
             output = output + tf.centerString(stringRep, tf.getPaddingSize()) + "|";
         }
         Object value = getMethods[getMethods.length - 1].invoke(elem);
         String stringRep = value.toString();
-        if(value instanceof Calendar){
+        if (value instanceof Calendar) {
             stringRep = tf.dateFormat((Calendar) value);
         }
         System.out.println(output + tf.centerString(stringRep, tf.getPaddingSize()));
     }
 
-    public void printDefectMenu(){
+    public void printDefectMenu() {
         System.out.println(tf.DefectsMenuFormat());
     }
 

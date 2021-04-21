@@ -31,9 +31,11 @@ public class TextFormatter {
     }
 
     public void CategoryMenuFormat(Category category) {
+        String subCategories = category.getSubCategories().stream().reduce("", (acc, curr) -> acc + curr + ", ");
+        subCategories = subCategories.substring(0,subCategories.length() - 2);
         System.out.println("Category Name: " + category.getName() + "\n" +
                 "Parent Category: " + category.getParentCategory() + "\n" +
-                "Sub-categories: " + category.getSubCategories().stream().reduce("", (acc, curr) -> acc + ", " + curr)+
+                "Sub-categories: " + subCategories +
                 "\nCategory items: " );
     }
 

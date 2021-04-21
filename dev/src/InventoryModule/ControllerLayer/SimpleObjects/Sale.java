@@ -4,7 +4,7 @@ import InfrastructurePackage.Pair;
 
 import java.util.Calendar;
 
-public class Sale<T extends SimpleEntity> {
+public class Sale<T extends SimpleEntity> extends SimpleEntity {
     private String name;
     private double discount;
     private Pair<Calendar, Calendar> saleDates;

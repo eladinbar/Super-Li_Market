@@ -2,7 +2,7 @@ package InventoryModule.ControllerLayer.SimpleObjects;
 
 import java.util.List;
 
-public class Category implements SimpleEntity {
+public class Category extends SimpleEntity {
     private String name;
     private List<Item> items;
     private String parentCategory;

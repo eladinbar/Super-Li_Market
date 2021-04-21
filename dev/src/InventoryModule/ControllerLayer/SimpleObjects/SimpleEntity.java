@@ -1,4 +1,10 @@
 package InventoryModule.ControllerLayer.SimpleObjects;
 
-public interface SimpleEntity {
+import InventoryModule.PresentationLayer.Menu;
+
+public abstract class SimpleEntity {
+
+    public void printMe(Menu m){
+        m.printEntity(this);
+    }
 }

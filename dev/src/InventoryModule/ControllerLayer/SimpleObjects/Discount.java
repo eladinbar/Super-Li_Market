@@ -2,7 +2,7 @@ package InventoryModule.ControllerLayer.SimpleObjects;
 
 import java.util.Calendar;
 
-public class Discount<T extends SimpleEntity> {
+public class Discount<T extends SimpleEntity> extends SimpleEntity {
     private int supplierID;
     private double discount;
     private Calendar date;

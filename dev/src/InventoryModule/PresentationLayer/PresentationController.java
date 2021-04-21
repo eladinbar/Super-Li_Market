@@ -27,64 +27,17 @@ public class PresentationController implements Runnable {
 
     //Item related method
     private void addItem() {
-        int itemID;
-        try {
-            itemID = Integer.parseInt(menu.instructAndReceive("Enter item ID: "));
-        } catch (Exception e){
-            menu.errorPrompt("invalid input");
-            return;
-        }
+        int itemID  = menu.instructAndReceive("Enter item ID: ",Integer.class);
         String name = menu.instructAndReceive("Enter name: ");
-        double costP;
-        try {
-            costP = Double.parseDouble(menu.instructAndReceive("Enter cost price: "));
-        } catch (Exception e){
-            menu.errorPrompt("invalid input");
-            return;
-        }
-
-        double sellP;
-        try {
-            sellP = Double.parseDouble(menu.instructAndReceive("Enter sell price: "));
-        } catch (Exception e){
-            menu.errorPrompt("invalid input");
-            return;
-        }
-
-        int minA;
-        try {
-            minA = Integer.parseInt( menu.instructAndReceive("Enter minimum amount"));
-        } catch (Exception e){
-            menu.errorPrompt("invalid input");
-            return;
-        }
-
-        int storageQ;
-        try {
-            storageQ = Integer.parseInt(menu.instructAndReceive("Enter storage quantity: "));
-        } catch (Exception e){
-            menu.errorPrompt("invalid input");
-            return;
-        }
-        int storeQ;
-        try {
-            storeQ = Integer.parseInt(menu.instructAndReceive("Enter Shelf quantity: "));
-        } catch (Exception e){
-            menu.errorPrompt("invalid input");
-            return;
-        }
+        double costP = menu.instructAndReceive("Enter cost price: ",Double.class);
+        double sellP = menu.instructAndReceive("Enter sell price: ",Double.class);
+        int minA =  menu.instructAndReceive("Enter minimum amount: ",Integer.class);
+        int storageQ = menu.instructAndReceive("Enter storage quantity: ",Integer.class);
+        int storeQ =  menu.instructAndReceive("Enter shelf quantity: ",Integer.class);
         String storageL = menu.instructAndReceive("Enter storage location: follow this format \"ST-A<number>-<L/R>-S<number>\"");
         String storeL = menu.instructAndReceive("Enter shelf location: follow this format \"SH-A<number>-<L/R>-S<number>\"");
-        int intManfac;
-        try{
-            intManfac = Integer.parseInt(menu.instructAndReceive("Enter manufacturer ID: "));
-        } catch (Exception e){
-            menu.errorPrompt("Invalid Input");
-            return;
-        }
-
+        int intManfac = menu.instructAndReceive("Enter manufacturer ID: ",Integer.class);
         String category = menu.instructAndReceive("Enter category name: ");
-
         Response r = service.addItem(itemID, name, category, costP, sellP, minA, storeL, storageL, storageQ, storeQ, intManfac, new ArrayList<>());
         if (r.isErrorOccurred()) {
             menu.errorPrompt(r.getMessage());
@@ -94,15 +47,10 @@ public class PresentationController implements Runnable {
     }
 
     private void showItem() {
-        int itemID;
-        try {
-            itemID = Integer.parseInt(menu.instructAndReceive("Enter item ID: "));
-        } catch (Exception e){
-            menu.errorPrompt("invalid input");
-            return;
-        }
+        int itemID  = menu.instructAndReceive("Enter item ID: ",Integer.class);
         ResponseT<Item> r = service.getItem(itemID);
         if (!r.isErrorOccurred()) {
+            menu.itemHeader();
             menu.printEntity(r.getData());
         } else {
             menu.errorPrompt(r.getMessage());
@@ -110,22 +58,15 @@ public class PresentationController implements Runnable {
     }
 
     private void editItem() {
-        String temp = menu.instructAndReceive("Enter item ID: ");
-        int itemID;
-        try {
-            itemID = Integer.parseInt(temp);
-        } catch(Exception ex) {
-            menu.errorPrompt("Invalid input");
+        int itemID  = menu.instructAndReceive("Enter item ID: ",Integer.class);
+        ResponseT<Item> r = service.getItem(itemID);
+        if(r.isErrorOccurred()){
+            menu.errorPrompt("Could not get item. Make sure you entered the ID correctly.");
             return;
         }
-        ResponseT<Item> r = service.getItem(itemID);
-        try {
-            menu.printEntity(r.getData());
-        } catch (Exception e) {
-            menu.errorPrompt("Could not get item. Make sure you entered the ID correctly.");
-        }
+        menu.itemHeader();
+        menu.printEntity(r.getData());
         menu.printMenu(menu.getItemModificationList());
-
         Response modResp = editItemChoiceInput(itemID);
         if (modResp.isErrorOccurred())
             System.out.println(modResp.getMessage());
@@ -148,25 +89,11 @@ public class PresentationController implements Runnable {
                 r = service.modifyItemCategory(itemId, newCategory);
                 break;
             case "3":
-                String tempCost = menu.instructAndReceive("Enter cost price: ");
-                double newCPrice;
-                try {
-                    newCPrice = Double.parseDouble(tempCost);
-                } catch(Exception ex) {
-                    menu.errorPrompt("Invalid input");
-                    return new Response(true, "Invalid input");
-                }
+                double newCPrice = menu.instructAndReceive("Enter cost price: ",Double.class);
                 r = service.modifyItemCostPrice(itemId, newCPrice);
                 break;
             case "4":
-                String tempSell = menu.instructAndReceive("Enter cost price: ");
-                double newSPrice;
-                try {
-                    newSPrice = Double.parseDouble(tempSell);
-                } catch(Exception ex) {
-                    menu.errorPrompt("Invalid input");
-                    return new Response(true, "Invalid input");
-                }
+                double newSPrice = menu.instructAndReceive("Enter sell price: ",Double.class);
                 r = service.modifyItemSellingPrice(itemId, newSPrice);
                 break;
             case "5":
@@ -178,47 +105,19 @@ public class PresentationController implements Runnable {
                 r = service.changeItemShelfLocation(itemId, newLocationSH);
                 break;
             case "7":
-                String tempQuan = menu.instructAndReceive("Enter storage quantity: ");
-                int newQuantityST;
-                try {
-                    newQuantityST = Integer.parseInt(tempQuan);
-                } catch(Exception ex) {
-                    menu.errorPrompt("Invalid input");
-                    return new Response(true, "Invalid input");
-                }
+                int newQuantityST = menu.instructAndReceive("Enter storage quantity: ",Integer.class);
                 r = service.modifyItemStorageQuantity(itemId, newQuantityST);
                 break;
             case "8":
-                String tempQuan2 = menu.instructAndReceive("Enter shelf quantity: ");
-                int newQuantitySH;
-                try {
-                    newQuantitySH = Integer.parseInt(tempQuan2);
-                } catch(Exception ex) {
-                    menu.errorPrompt("Invalid input");
-                    return new Response(true, "Invalid input");
-                }
+                int newQuantitySH = menu.instructAndReceive("Enter storage quantity: ",Integer.class);
                 r = service.modifyItemShelfQuantity(itemId, newQuantitySH);
                 break;
             case "9":
-                String tempSup = menu.instructAndReceive("\"Add  new supplier for the item: (enter supplier ID)\"): ");
-                int newSupplier;
-                try {
-                    newSupplier = Integer.parseInt(tempSup);
-                } catch(Exception ex) {
-                    menu.errorPrompt("Invalid input");
-                    return new Response(true, "Invalid input");
-                }
+                int newSupplier = menu.instructAndReceive("\"Add new supplier for the item: (enter supplier ID)\"): ", Integer.class);
                 r = service.addItemSupplier(itemId, newSupplier);
                 break;
             case "10":
-                String tempRevSup = menu.instructAndReceive("Remove a supplier for the item: (enter supplier ID)");
-                int oldSupplier;
-                try {
-                    oldSupplier = Integer.parseInt(tempRevSup);
-                } catch(Exception ex) {
-                    menu.errorPrompt("Invalid input");
-                    return new Response(true, "Invalid input");
-                }
+                int oldSupplier =  menu.instructAndReceive("Remove a supplier for the item: (enter supplier ID)",Integer.class);
                 r = service.removeItemSupplier(itemId, oldSupplier);
                 break;
             default:
@@ -229,14 +128,7 @@ public class PresentationController implements Runnable {
     }
 
     private void removeItem() {
-        String temp = menu.instructAndReceive("Enter item ID: ");
-        int itemID;
-        try {
-            itemID = Integer.parseInt(temp);
-        } catch(Exception ex) {
-            menu.errorPrompt("Invalid input");
-            return;
-        }
+        int itemID  = menu.instructAndReceive("Enter item ID: ",Integer.class);
         Response r = service.removeItem(itemID);
         if (r.isErrorOccurred()) {
             menu.errorPrompt(r.getMessage());
@@ -319,25 +211,11 @@ public class PresentationController implements Runnable {
 
     private void addItemSale() {
         String saleName = menu.instructAndReceive("Enter sale name: ");
-        String tempDisc = menu.instructAndReceive("Enter sale discount: (e.g. for 10% enter 0.1)");
-        double saleDiscount;
-        try {
-            saleDiscount = Double.parseDouble(tempDisc);
-        } catch(Exception ex) {
-            menu.errorPrompt("Invalid input");
-            return;
-        }
+        double saleDiscount = menu.instructAndReceive("Enter sale discount: (e.g. for 10% enter 0.1)", Double.class);
         Pair<Calendar, Calendar> dates = getStartEndDates();
         if (dates == null) return;
         //getting the item to be applied on
-        String temp = menu.instructAndReceive("Enter item ID for the sale: ");
-        int applyOnItem;
-        try {
-            applyOnItem = Integer.parseInt(temp);
-        } catch(Exception ex) {
-            menu.errorPrompt("Invalid input");
-            return;
-        }
+        int applyOnItem = menu.instructAndReceive("Enter item ID for the sale: ", Integer.class);
         //checking if exists
         ResponseT<Item> rExist = service.getItem(applyOnItem);
         if (rExist.isErrorOccurred()) {
@@ -350,24 +228,14 @@ public class PresentationController implements Runnable {
             return;
         }
         System.out.println("Sale Added successfully");
-
-
     }
 
     private void addCategorySale() {
         String saleName = menu.instructAndReceive("Enter sale name: ");
-        String tempDisc = menu.instructAndReceive("Enter sale discount: (e.g. for 10% enter 0.1)");
-        double saleDiscount;
-        try {
-            saleDiscount = Double.parseDouble(tempDisc);
-        } catch(Exception ex) {
-            menu.errorPrompt("Invalid input");
-            return;
-        }
+        double saleDiscount = menu.instructAndReceive("Enter sale discount: (e.g. for 10% enter 0.1)", Double.class);
         //getting the dates
         Pair<Calendar, Calendar> dates = getStartEndDates();
         if (dates == null) return;
-
         //getting the item to be applied on
         String applyOnItem = menu.instructAndReceive("Enter category name for the sale: ");
         //checking if exists
@@ -428,14 +296,7 @@ public class PresentationController implements Runnable {
                 modResp = service.modifySaleName(saleR.getData().getName(), newName);
                 break;
             case "2":
-                String tempDisc = menu.instructAndReceive("Enter sale discount: (e.g. for 10% enter 0.1)");
-                double newDisc;
-                try {
-                    newDisc = Double.parseDouble(tempDisc);
-                } catch(Exception ex) {
-                    menu.errorPrompt("Invalid input");
-                    return;
-                }
+                double newDisc = menu.instructAndReceive("Enter sale discount: (e.g. for 10% enter 0.1)", Double.class);
                 modResp = service.modifySaleDiscount(saleR.getData().getName(), newDisc);
                 break;
             case "3":
@@ -455,14 +316,7 @@ public class PresentationController implements Runnable {
     }
 
     private <T extends SimpleEntity> void showSupplierDiscount() {
-        String temp = menu.instructAndReceive("Enter supplier ID: ");
-        int suppId;
-        try {
-            suppId = Integer.parseInt(temp);
-        } catch(Exception ex) {
-            menu.errorPrompt("Invalid input");
-            return;
-        }
+        int suppId = menu.instructAndReceive("Enter supplier ID: ", Integer.class);
         String[] disDateS = menu.instructAndReceive("Enter the date of the discount: ").split("-");
         Calendar date = Calendar.getInstance();
         try {
@@ -480,32 +334,11 @@ public class PresentationController implements Runnable {
 
     private void addItemSupplierDiscount() {
         //supplier Id
-        String temp = menu.instructAndReceive("Enter supplier ID: ");
-        int suppId;
-        try {
-            suppId = Integer.parseInt(temp);
-        } catch(Exception ex) {
-            menu.errorPrompt("Invalid input");
-            return;
-        }
+        int suppId = menu.instructAndReceive("Enter supplier ID: ", Integer.class);
         //item id
-        String tempID = menu.instructAndReceive("Enter item ID that the discount applies on: ");
-        int itemId;
-        try {
-            itemId = Integer.parseInt(tempID);
-        } catch(Exception ex) {
-            menu.errorPrompt("Invalid input");
-            return;
-        }
+        int itemId = menu.instructAndReceive("Enter item ID that the discount applies on: ", Integer.class);
         //discount
-        String tempDisc = menu.instructAndReceive("Enter discount received for the item: (e.g. for 10% enter 0.1)");
-        double discountGiven;
-        try {
-            discountGiven = Double.parseDouble(tempDisc);
-        } catch(Exception ex) {
-            menu.errorPrompt("Invalid input");
-            return;
-        }
+        double discountGiven = menu.instructAndReceive("Enter discount received for the item: (e.g. for 10% enter 0.1)", Double.class);
         //dates
         String[] dateS = menu.instructAndReceive("Enter discount date: use this format <YYYY-MM-DD>").split("-");
         Calendar date = Calendar.getInstance();
@@ -516,14 +349,7 @@ public class PresentationController implements Runnable {
             return;
         }
         //count
-        String tempAmount = menu.instructAndReceive("Enter the amount the discount applied for: ");
-        int itemCount;
-        try {
-            itemCount = Integer.parseInt(tempAmount);
-        } catch(Exception ex) {
-            menu.errorPrompt("Invalid input");
-            return;
-        }
+        int itemCount = menu.instructAndReceive("Enter the amount the discount applied for: ", Integer.class);
         if (itemCount <= 0) {
             menu.errorPrompt("Item amount has to be at least 1.");
             return;
@@ -548,26 +374,12 @@ public class PresentationController implements Runnable {
         }
         String catName = menu.instructAndReceive("Enter the category name that the discount applies on: ");
         //discount
-        String tempDisc = menu.instructAndReceive("Enter discount received for the item: (e.g. for 10% enter 0.1)");
-        double discountGiven;
-        try {
-            discountGiven = Double.parseDouble(tempDisc);
-        } catch(Exception ex) {
-            menu.errorPrompt("Invalid input");
-            return;
-        }
+        double discountGiven  = menu.instructAndReceive("Enter discount received for the item: (e.g. for 10% enter 0.1)", Double.class);
         //date
         String[] dateS = menu.instructAndReceive("Enter discount date: use this format <YYYY-MM-DD>").split("-");
         Calendar date = Calendar.getInstance();
         date.set(Integer.parseInt(dateS[0]), Integer.parseInt(dateS[1]) - 1, Integer.parseInt(dateS[2]));
-        String tempAmount = menu.instructAndReceive("Enter the amount the discount applied for: ");
-        int itemCount;
-        try {
-            itemCount = Integer.parseInt(tempAmount);
-        } catch(Exception ex) {
-            menu.errorPrompt("Invalid input");
-            return;
-        }
+        int itemCount = menu.instructAndReceive("Enter the amount the discount applied for: ",Integer.class);
         if (itemCount <= 0) {
             menu.errorPrompt("Item amount has to be at least 1.");
             return;
@@ -584,34 +396,17 @@ public class PresentationController implements Runnable {
     private void recordDefect() {
         Calendar date = Calendar.getInstance();
         //item id
-        int itemID;
-        String temp = menu.instructAndReceive("Enter item ID: ");
-        try {
-            itemID = Integer.parseInt(temp);
-        } catch(Exception ex) {
-            menu.errorPrompt("Invalid input");
-            return;
-        }
+        int itemID = menu.instructAndReceive("Enter item ID: ", Integer.class);
         //item amount
-        int defectedAmount;
-        String tempAmount = menu.instructAndReceive("Enter the defect amount: ");
-        try {
-            defectedAmount = Integer.parseInt(tempAmount);
-        } catch(Exception ex) {
-            menu.errorPrompt("Invalid input");
-            return;
-        }
+        int defectedAmount = menu.instructAndReceive("Enter the defect amount: ", Integer.class);
         //location2
         String location = menu.instructAndReceive("Enter storage/shelf location: follow this format \"<ST/SH>-A<number>-<L/R>-S<number>\"");
-
         Response recorded = service.recordDefect(itemID, date, defectedAmount, location);
         if (recorded.isErrorOccurred()) {
             menu.errorPrompt(recorded.getMessage());
             return;
         }
         System.out.println("Defect reported!");
-
-
     }
 
     private void inventoryReport() {
@@ -634,8 +429,7 @@ public class PresentationController implements Runnable {
         if (categoryItems.isErrorOccurred()) {
             menu.errorPrompt(categoryItems.getMessage());
         }
-        menu.getTextFormatter().CategoryMenuFormat(catR.getData());
-        menu.printEntity(categoryItems.getData());
+        menu.printEntity(catR.getData());
     }
 
     private void itemShortageReport() {
