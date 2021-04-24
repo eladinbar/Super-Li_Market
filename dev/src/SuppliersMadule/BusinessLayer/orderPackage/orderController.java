@@ -1,15 +1,18 @@
-package BusinessLayer.orderPackage;
+package SuppliersMadule.BusinessLayer.orderPackage;
 
 import BusinessLayer.supplierPackage.supplier;
 
 import java.time.LocalDate;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class orderController {
     private final int days = 7;
     private Map<Integer, order> orders;
     private Map<Integer, List<order>> pernamentOrders;
-    private Map<Integer, product> products;
+    private Map<Integer, BusinessLayer.orderPackage.product> products;
     private int productCounter;
     private int orderCounter;
 

@@ -1,4 +1,4 @@
-package BusinessLayer.orderPackage;
+package SuppliersMadule.BusinessLayer.orderPackage;
 
 public enum manufacturers {
         osem,
