@@ -4,6 +4,7 @@ import ServiceLayer.Response.*;
 import ServiceLayer.objects.*;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.function.Supplier;
 
 public interface IService {
     //add supplier and edit all supplier fields
@@ -26,7 +27,6 @@ public interface IService {
     Response editQuantityListAmount(String supplierID, int productID, int amount);
     Response editQuantityListDiscount(String supplierID, int productID, int discount);
     Response deleteQuantityList(String supplierID);
-
     ResponseT<product> addQuantityListItem(String supplierID, int productID, int amount, int discount);
     Response deleteQuantityListItem(String supplierID, int productID);
     ResponseT<quantityList> getQuantityList(String supplierId);
@@ -44,14 +44,29 @@ public interface IService {
     Response removeItemFromAgreement(String supplierId, int productId);
     Response editAgreementItemCompanyProductID(String supplierID, int productID, int companyProductID);
     Response editAgreementItemPrice(String supplierID, int productID, int companyProductID);
+    ResponseT<agreement> getAgreement(String supplierID);
 
     //products
     ResponseT<product> createProduct(String name, String manufacturer);
     ResponseT<product> getProduct(int productID);
-    ResponseT<agreement> getAgreement(String supplierID);
+
+    /*
+    ResponseT<order> createOrderFromShortage(LocalDate date,String supplier,List<Integer> productsID,List<Integer> amount);
+    ResponseT<Supplier> getCheapestSupplier(int productID,int amount);
+    ResponseT<Integer> getPrice(String supplierID,int amount, int productID);
+    ResponseT<Integer> getDiscountInPercent(String supplierID,int amount, int productID);
+    ResponseT<Integer> getTotalDiscount(String supplierID,int amount, int productID);
+    ResponseT<Integer> getSupplierCompanyProductID(String supplierID, int productID);
+    ResponseT<Integer> getOrderTotalPrice(int orderID);
+    ResponseT<order> getLastOrderOf(String supplierID);
+    */
+
+    /*
     //system
-/*    ResponseT<List<product>> getAllSystemProducts();
+    ResponseT<List<product>> getAllSystemProducts();
     ResponseT<List<product>> getAllSupplierProducts();
     ResponseT<List<order>> getAllOrders();
-    ResponseT<List<supplier>> getAllSuppliers();*/
+    ResponseT<List<supplier>> getAllSuppliers();
+    */
+
 }
