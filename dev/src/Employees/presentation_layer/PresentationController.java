@@ -245,8 +245,7 @@ public class PresentationController {
         Response response = facadeService.deleteRoleFromShiftType(shiftType, role);
         if (response.errorOccured ()) {
             menuPrinter.print ( response.getErrorMessage ( ) );
-            return;
-        }
+            return; }
         menuPrinter.print ( "Role manning updated successfully.\n" );
     }
 
