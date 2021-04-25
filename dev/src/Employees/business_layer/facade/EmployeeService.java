@@ -63,7 +63,8 @@ public class EmployeeService {
 
     public ResponseT<FacadeEmployee> addEmployee(FacadeEmployee employee) {
         try{
-            return new ResponseT<>(new FacadeEmployee(employeeController.addEmployee(employee)));
+            employeeController.addEmployee ( employee );
+            return new ResponseT<>(employee);
         }
         catch (EmployeeException e){
             return new ResponseT<>(e.getMessage());

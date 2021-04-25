@@ -18,7 +18,6 @@ public class FacadeService {
 
     public  FacadeService()
     {
-        EmployeeController employeeController = EmployeeController.getInstance ();
         employeeService = new EmployeeService ();
         shiftService = new ShiftService ();
     }
