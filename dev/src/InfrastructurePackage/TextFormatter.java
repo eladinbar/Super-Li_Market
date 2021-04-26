@@ -20,7 +20,7 @@ public class TextFormatter {
         return outPut + centerString(itemFields[itemFields.length - 1].getName(), paddingSize);
     }
 
-    public String DefectsMenuFormat(){
+    public String defectsMenuFormat(){
         Field[] defectFields = DefectEntry.class.getDeclaredFields();
         String output = "";
         for (int i = 0; i < defectFields.length - 1; i++) {
@@ -30,7 +30,7 @@ public class TextFormatter {
         return output + centerString(defectFields[defectFields.length - 1].getName(), paddingSize);
     }
 
-    public void CategoryMenuFormat(Category category) {
+    public void categoryMenuFormat(Category category) {
         String subCategories = category.getSubCategories().stream().reduce("", (acc, curr) -> acc + curr + ", ");
         subCategories = subCategories.substring(0,subCategories.length() - 2);
         System.out.println("Category Name: " + category.getName() + "\n" +

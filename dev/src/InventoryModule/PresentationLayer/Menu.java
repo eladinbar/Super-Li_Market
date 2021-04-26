@@ -153,7 +153,7 @@ public class Menu {
     }
 
     public void printEntity(Category category) {
-        tf.CategoryMenuFormat(category);
+        tf.categoryMenuFormat(category);
         printEntity(category.getItems());
     }
 
@@ -255,7 +255,7 @@ public class Menu {
     }
 
     public void printDefectMenu() {
-        System.out.println(tf.DefectsMenuFormat());
+        System.out.println(tf.defectsMenuFormat());
     }
 
 
