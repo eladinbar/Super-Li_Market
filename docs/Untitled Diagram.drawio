@@ -1,6 +1,6 @@
-<mxfile host="app.diagrams.net" modified="2021-04-25T20:43:15.251Z" agent="5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.128 Safari/537.36" etag="kCLD9eGkK8n4pacxDFxd" version="14.5.7" type="github">
+<mxfile host="app.diagrams.net" modified="2021-04-26T06:57:31.276Z" agent="5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.128 Safari/537.36" etag="wxjsMVWdhsgqSvk8mr0c" version="14.5.7" type="github">
   <diagram id="QsEkxKzfpSg2MEQ44GEc" name="Page-1">
-    <mxGraphModel dx="4264" dy="1183" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+    <mxGraphModel dx="1341" dy="335" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -477,7 +477,7 @@
             </Array>
           </mxGeometry>
         </mxCell>
-        <mxCell id="lreDrelpx_JOkLOI-1Du-1" value="loggedIn: Employee" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=1;collapsible=0;recursiveResize=0;outlineConnect=0;" vertex="1" parent="1">
+        <mxCell id="lreDrelpx_JOkLOI-1Du-1" value="DalController" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=1;collapsible=0;recursiveResize=0;outlineConnect=0;" vertex="1" parent="1">
           <mxGeometry x="2420" y="50" width="170" height="1880" as="geometry" />
         </mxCell>
       </root>
