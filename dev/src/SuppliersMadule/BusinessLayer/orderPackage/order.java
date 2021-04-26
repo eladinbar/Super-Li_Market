@@ -1,4 +1,4 @@
-package BusinessLayer.orderPackage;
+package SuppliersMadule.BusinessLayer.orderPackage;
 
 import BusinessLayer.supplierPackage.supplier;
 
