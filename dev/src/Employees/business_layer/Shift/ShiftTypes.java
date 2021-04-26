@@ -28,7 +28,7 @@ public class ShiftTypes {
         return shiftTypes.get ( shiftType ).get ( role );
     }
 
-    public void unpdateRoleManning(String shiftType, String role, int num) throws EmployeeException {
+    public void updateRoleManning(String shiftType, String role, int num) throws EmployeeException {
         if (!shiftTypes.containsKey ( shiftType ))
             throw new EmployeeException ( "no such shift type to update." );
         Role newRole = Role.valueOf ( role );
