@@ -8,8 +8,6 @@ import ServiceLayer.objects.product;
 import ServiceLayer.objects.quantityList;
 import ServiceLayer.objects.supplier;
 
-import java.util.function.Supplier;
-
 public class supplierService {
     private supplierController sp;
 
@@ -274,20 +272,10 @@ public class supplierService {
         return toReturn;
     }
 
-    public ResponseT<Double> getPrice(String supplierID, int amount, int productID) {
-        ResponseT<Double> toReturn;
+    public ResponseT<Integer> getPrice(String supplierID, int amount, int productID) {
+        ResponseT<Integer> toReturn;
         try {
-            toReturn = new ResponseT<>(sp.getPrice(supplierID, amount, productID));
-        } catch (Exception e) {
-            toReturn = new ResponseT<>(e.getMessage());
-        }
-        return toReturn;
-    }
-
-    public ResponseT<supplier> getCheapestSupplier(int productID, int amount) {
-        ResponseT<supplier> toReturn;
-        try {
-            toReturn = new ResponseT<>(new supplier(sp.getCheapestSupplier(productID,amount)));
+            toReturn = new ResponseT<>(new Integer(sp.getPrice(supplierID,amount,productID)));
         } catch (Exception e) {
             toReturn = new ResponseT<>(e.getMessage());
         }

@@ -6,7 +6,6 @@ import ServiceLayer.objects.*;
 
 import java.time.LocalDate;
 import java.util.Date;
-import java.util.function.Supplier;
 
 public class Service implements IService {
     private orderService orderService;
@@ -184,19 +183,13 @@ public class Service implements IService {
     }
 
     @Override
-    public ResponseT<Double> getPrice(String supplierID, int amount, int productID) {
-        //todo check bofore if product exists in inventory module
-        return supplierService.getPrice(supplierID,amount,productID);
-    }
-
-    @Override
-    public ResponseT<supplier> getCheapestSupplier(int productID, int amount) {
-        //todo check bofore if product exists in inventory module
-        return supplierService.getCheapestSupplier(productID,amount);
-    }
-
-    @Override
     public ResponseT<agreement> getAgreement(String supplierID) {
         return supplierService.getAgreement(supplierID);
+    }
+
+    @Override
+    public ResponseT<Integer> getPrice(String supplierID, int amount, int productID) {
+        //todo inventoryModule check if product exists
+        return supplierService.getPrice(supplierID,amount,productID);
     }
 }

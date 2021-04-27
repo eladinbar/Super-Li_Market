@@ -185,19 +185,4 @@ class supplierControllerTest {
         //assert
         assertFalse(sup2.getAg().getProducts().containsKey(1),"failed to remove item from the agreement");
     }
-
-    @Test
-    void getPrice() throws Exception {
-        //set
-
-        String id=sup2.getSc().getId();
-        sc.getSuppliers().put(id,sup2);
-        sup2.addItemToAgreement(1,1,100);
-        sup2.addQuantityList();
-        sup2.addQuantityListItem(1,100,10);
-        //act
-        Double price=sc.getPrice(id,90,1);
-        //assert
-        assertEquals(9000,price);
-    }
 }

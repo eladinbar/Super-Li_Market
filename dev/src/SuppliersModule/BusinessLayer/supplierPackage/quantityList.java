@@ -60,10 +60,4 @@ public class quantityList {
         this.discount.remove(productID);
         this.discount.put(productID, discount);
     }
-
-    public double getPrice(int productID, int amount, double price) {
-        if (this.amount.containsKey(productID) && amount >= this.amount.get(productID))
-            price = price - price * discount.get(productID) / 100;
-        return price;
-    }
 }

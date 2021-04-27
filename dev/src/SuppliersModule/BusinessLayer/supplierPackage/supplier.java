@@ -178,8 +178,4 @@ public class supplier {
     public void removeItemFromAgreement(int productId) throws Exception {
         ag.removeItemFromAgreement(productId);
     }
-
-    public double getPrice(int amount, int productID) throws Exception {
-        return ag.getPrice(amount,productID);
-    }
 }

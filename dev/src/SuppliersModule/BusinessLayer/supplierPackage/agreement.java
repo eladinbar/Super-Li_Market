@@ -15,7 +15,7 @@ public class agreement {
 
     public Map<Integer, Integer> getProducts() {
         return products;
-    }//todo check discount
+    }
 
     public Map<Integer, Integer> getPrices() {
         return prices;
@@ -30,19 +30,18 @@ public class agreement {
     }
 
     public int compID(int id) throws Exception {
-        if (!products.containsKey(id))
+        if(!products.containsKey(id))
             throw new Exception("agreement does not have specific item included");
         return products.get(id);
 
     }
 
     private void companyNumberExists(int PID) throws Exception {
-        for (Map.Entry<Integer, Integer> a : products.entrySet()) {
-            if (PID == a.getValue())
+        for (Map.Entry<Integer,Integer> a:products.entrySet()) {
+            if(PID==a.getValue())
                 throw new Exception("company number already exists in the system");
         }
     }
-
     public void deleteQuantityListItem(int productID) throws Exception {
         if (ql == null)
             throw new Exception("supplier does not have a quantity list");
@@ -81,52 +80,41 @@ public class agreement {
         ql.editQuantityListDiscount(productID, discount);
     }
 
-    public void addItemToAgreement(int productID, int companyProductID, int price) throws Exception {
+    public void addItemToAgreement(int productID, int companyProductID,int price) throws Exception {
         companyNumberExists(companyProductID);
-        if (products.containsKey(productID))
+        if(products.containsKey(productID))
             throw new Exception("agreement already have the item");
-        if (price < 0)
+        if(price<0)
             throw new Exception("price must be positive number");
-        if (companyProductID < 0)
+        if(companyProductID<0)
             throw new Exception("company product ID must be positive number");
-        products.put(productID, companyProductID);
-        prices.put(productID, price);
+        products.put(productID,companyProductID);
+        prices.put(productID,price);
     }
 
     public void removeItemFromAgreement(int productId) throws Exception {
-        if (!products.containsKey(productId))
+        if(!products.containsKey(productId))
             throw new Exception("item does not exists in agreement");
         products.remove(productId);
         prices.remove(productId);
     }
 
     public void editAgreementItemCompanyProductID(int productID, int companyProductID) throws Exception {
-        if (!products.containsKey(productID))
+        if(!products.containsKey(productID))
             throw new Exception("item does not exists in agreement");
         companyNumberExists(companyProductID);
-        if (companyProductID < 0)
+        if(companyProductID<0)
             throw new Exception("company product ID must be positive number");
         products.remove(productID);
-        products.put(productID, companyProductID);
+        products.put(productID,companyProductID);
     }
 
     public void editAgreementItemPrice(int productID, int price) throws Exception {
-        if (!products.containsKey(productID))
+        if(!products.containsKey(productID))
             throw new Exception("item does not exists in agreement");
-        if (price < 0)
+        if(price<0)
             throw new Exception("price must be positive number");
         prices.remove(productID);
-        prices.put(productID, price);
-    }
-
-    public double getPrice(int amount, int productID) throws Exception {
-        if (!products.containsKey(productID))
-            throw new Exception("item does not exists in agreement");
-        if (amount < 0)//todo check in presentation
-            throw new Exception("price must be positive number");
-        double price = prices.get(productID) * amount;
-        if (ql != null)
-            price = ql.getPrice(productID, amount, price);
-        return price;
+        prices.put(productID,price);
     }
 }

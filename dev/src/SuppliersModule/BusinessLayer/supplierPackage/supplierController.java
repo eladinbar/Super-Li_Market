@@ -153,9 +153,9 @@ public class supplierController {
         return suppliers.get(supplierId).getQuantityList();
     }
 
-    public void addItemToAgreement(String id, int productID, int companyProductID, int price) throws Exception {
+    public void addItemToAgreement(String id, int productID, int companyProductID,int price) throws Exception {
         existSupplier(id);
-        suppliers.get(id).addItemToAgreement(productID, companyProductID, price);
+        suppliers.get(id).addItemToAgreement(productID, companyProductID,price);
     }
 
     public void removeItemFromAgreement(String supplierId, int productId) throws Exception {
@@ -166,38 +166,16 @@ public class supplierController {
 
     public void editAgreementItemCompanyProductID(String supplierID, int productID, int companyProductID) throws Exception {
         existSupplier(supplierID);
-        suppliers.get(supplierID).getAg().editAgreementItemCompanyProductID(productID, companyProductID);
+        suppliers.get(supplierID).getAg().editAgreementItemCompanyProductID(productID,companyProductID);
     }
 
     public void editAgreementItemPrice(String supplierID, int productID, int price) throws Exception {
         existSupplier(supplierID);
-        suppliers.get(supplierID).getAg().editAgreementItemPrice(productID, price);
+        suppliers.get(supplierID).getAg().editAgreementItemPrice(productID,price);
     }
 
     public agreement getAgreement(String supplierID) throws Exception {
         existSupplier(supplierID);
         return suppliers.get(supplierID).getAg();
-    }
-
-    public double getPrice(String supplierID, int amount, int productID) throws Exception {
-        existSupplier((supplierID));
-        return suppliers.get(supplierID).getPrice(amount, productID);
-    }
-
-    public supplier getCheapestSupplier(int productID, int amount) throws Exception {
-        Double cheapestPrice = Double.POSITIVE_INFINITY;
-        supplier cheapestSup = null;
-        for (supplier sup : suppliers.values()) {
-            try {
-                if (sup.getPrice(productID, amount) < cheapestPrice) {
-                    cheapestPrice = sup.getPrice(productID, amount);
-                    cheapestSup = sup;
-                }
-            } catch (Exception e) {
-            }
-        }
-        if(cheapestSup==null)
-            throw new Exception("There is no supplier that supply the product: "+productID);
-        return cheapestSup;
     }
 }
