@@ -158,7 +158,7 @@ public class EmployeeController {
        return newEmployee;
     }
 
-    private void addEmployeeFirst(Employee e) throws EmployeeException {
+    private void addEmplForExistingData(Employee e) throws EmployeeException {
         if(!validId(e.getID())){
             throw new EmployeeException("An invalid ID was entered ");
         }
@@ -202,19 +202,6 @@ public class EmployeeController {
         return employees.get(Id);
     }
 
-    public void deleteBankAccount(String Id) throws EmployeeException {
-        if(loggedIn==null){
-            throw new EmployeeException("No user is logged in");
-        }
-
-        if(!loggedIn.getIsManager()){
-            throw new EmployeeException("Only an administrator can perform this operation");
-        }
-        if(!employees.containsKey(Id)){
-            throw new EmployeeException("Employee not found");
-        }
-        employees.get(Id).setBank(null);
-    }
 
     public void updateBankAccount(String Id, int accountNum, int bankBranch, String bank) throws EmployeeException {
         if(loggedIn==null){
@@ -308,8 +295,8 @@ public class EmployeeController {
             BankAccountInfo employeeAccountInfo = new BankAccountInfo(accountNum+i, bankBranch, bankName);
             TermsOfEmployment termsOfEmployment = new TermsOfEmployment(salary+1, educationFund,sickDays, daysOff );
             Employee shiftManager = new Employee("shiftManager", "66666666"+i, termsOfEmployment, LocalDate.now(), employeeAccountInfo);
-            giveConstraintFirst(shiftManager, LocalDate.now().plusWeeks(3).plusDays ( 3 ),0,"Bat-Mitzva");
-            addEmployeeFirst(shiftManager);
+            giveConstrForExistingData(shiftManager, LocalDate.now().plusWeeks(3).plusDays ( 3 ),0,"Bat-Mitzva");
+            addEmplForExistingData(shiftManager);
         }
     }
 
@@ -340,12 +327,12 @@ public class EmployeeController {
             BankAccountInfo employeeAccountInfo = new BankAccountInfo(accountNum+i, bankBranch, bankName);
             TermsOfEmployment termsOfEmployment = new TermsOfEmployment(salary, educationFund,sickDays, daysOff );
             Employee usher = new Employee("usher", "00000000"+i, termsOfEmployment, LocalDate.now(), employeeAccountInfo);
-            giveConstraintFirst(usher, LocalDate.now().plusWeeks(2).plusDays ( 3 ),0,"wedding");
-            addEmployeeFirst(usher);
+            giveConstrForExistingData(usher, LocalDate.now().plusWeeks(2).plusDays ( 3 ),0,"wedding");
+            addEmplForExistingData(usher);
         }
     }
 
-    private void giveConstraintFirst(Employee employee, LocalDate date, int shift, String reason) throws EmployeeException {
+    private void giveConstrForExistingData(Employee employee, LocalDate date, int shift, String reason) throws EmployeeException {
         employee.giveConstraint(date, shift, reason);
     }
 
@@ -358,8 +345,8 @@ public class EmployeeController {
             Employee guard = new Employee("guard", "01111111"+i, termsOfEmployment, LocalDate.now(), employeeAccountInfo);
 
             try {
-                giveConstraintFirst(guard, LocalDate.now().plusWeeks(2).plusDays(5), 1, "wedding");
-                addEmployeeFirst(guard);
+                giveConstrForExistingData(guard, LocalDate.now().plusWeeks(2).plusDays(5), 1, "wedding");
+                addEmplForExistingData(guard);
             }
             catch(EmployeeException e){}
         }
@@ -373,7 +360,7 @@ public class EmployeeController {
             TermsOfEmployment termsOfEmployment = new TermsOfEmployment(salary+1, educationFund,sickDays, daysOff );
             Employee cashier = new Employee("cashier", "02222222"+i, termsOfEmployment, LocalDate.now(), employeeAccountInfo);
             try {
-                addEmployeeFirst (cashier);
+                addEmplForExistingData(cashier);
             }
             catch(EmployeeException e){}
         }
@@ -386,7 +373,7 @@ public class EmployeeController {
             BankAccountInfo employeeAccountInfo = new BankAccountInfo(accountNum+i, bankBranch, bankName);
             TermsOfEmployment termsOfEmployment = new TermsOfEmployment(salary+1, educationFund,sickDays, daysOff );
             Employee storeKeeper = new Employee("storeKeeper", "03333333"+i, termsOfEmployment, LocalDate.now(), employeeAccountInfo);
-            addEmployeeFirst (storeKeeper);
+            addEmplForExistingData(storeKeeper);
         }
     }
     // private methods

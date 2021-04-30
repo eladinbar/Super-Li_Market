@@ -96,7 +96,7 @@ public class ShiftController {
     }
 
     public void updateRoleManning(String shiftType, String role, int num) throws EmployeeException {
-        ShiftTypes.getInstance ().unpdateRoleManning ( shiftType, role, num );
+        ShiftTypes.getInstance ().updateRoleManning( shiftType, role, num );
     }
 
     public void addRoleManning(String shiftType, String role, int num) throws EmployeeException {

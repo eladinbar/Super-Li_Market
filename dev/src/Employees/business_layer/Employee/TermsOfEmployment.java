@@ -15,7 +15,7 @@ public class TermsOfEmployment {
         this.sickDays = sickDays;
         this.daysOff = daysOff;
     }
-
+// getters
     public int getSalary() {
         return salary;
     }
