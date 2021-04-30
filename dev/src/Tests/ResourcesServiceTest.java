@@ -1,15 +1,12 @@
 package Tests;
 
-import Business_Layer_Trucking.Delivery.TruckingReport;
-import Business_Layer_Trucking.Facade.FacadeObject.ResourcesService;
-import Business_Layer_Trucking.Resources.Driver;
-import Business_Layer_Trucking.Resources.ResourcesController;
-import Business_Layer_Trucking.Resources.Truck;
+import Trucking.Business_Layer_Trucking.Facade.FacadeObject.ResourcesService;
+import Trucking.Business_Layer_Trucking.Resources.Driver;
+import Trucking.Business_Layer_Trucking.Resources.ResourcesController;
+import Trucking.Business_Layer_Trucking.Resources.Truck;
 import org.junit.jupiter.api.*;
 
-import javax.management.openmbean.KeyAlreadyExistsException;
 import java.util.HashMap;
-import java.util.NoSuchElementException;
 
 import static org.junit.jupiter.api.Assertions.*;
 

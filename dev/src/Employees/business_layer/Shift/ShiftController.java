@@ -23,6 +23,8 @@ public class ShiftController {
 //        this.employeeController = employeeController;
 //    }
 
+
+
     private ShiftController(){
         shifts = new HashMap<> (  );
         employeeController = EmployeeController.getInstance ();
@@ -148,6 +150,16 @@ public class ShiftController {
         manning.put ( "storeKeeper", 1 );
         createShiftType ( "morningShift", manning );
         createShiftType ( "eveningShift", manning );
+    }
+
+    public HashMap<LocalDate, HashMap<Integer, String>> getDaysAndDrivers(){
+        return null;
+    }
+
+    public void addDriverToShift(String id, LocalDate date, int shift){}
+
+    public boolean isDriverAssigned(String id, LocalDate date, int shift){
+        return true;
     }
 
 
