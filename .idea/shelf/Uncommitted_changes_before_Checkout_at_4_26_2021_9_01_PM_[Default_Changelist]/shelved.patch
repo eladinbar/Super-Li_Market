@@ -1,0 +1,20 @@
+Index: dev/src/Employees/business_layer/Employee/TermsOfEmployment.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package Employees.business_layer.Employee;\r\n\r\nimport Employees.EmployeeException;\r\n\r\npublic class TermsOfEmployment {\r\n    private int salary;\r\n    private int educationFund;\r\n    private int sickDays;\r\n    private int daysOff;\r\n\r\n    public TermsOfEmployment(int salary, int educationFund, int sickDays, int daysOff) throws EmployeeException {\r\n        if(salary<0 | educationFund<0 | sickDays<0 | daysOff<0){throw new EmployeeException(\"One of the entered employment conditions is invalid\"); }\r\n        this.salary = salary;\r\n        this.educationFund = educationFund;\r\n        this.sickDays = sickDays;\r\n        this.daysOff = daysOff;\r\n    }\r\n\r\n    public int getSalary() {\r\n        return salary;\r\n    }\r\n\r\n    public int getEducationFund() {\r\n        return educationFund;\r\n    }\r\n\r\n    public int getSickDays() {\r\n        return sickDays;\r\n    }\r\n\r\n    public int getDaysOff() {\r\n        return daysOff;\r\n    }\r\n//Setters\r\n\r\n\r\n    public void setSalary(int salary) throws EmployeeException {\r\n        if(salary<0){throw new EmployeeException(\"Invalid salary entered\");}\r\n        this.salary = salary;\r\n    }\r\n    public void setEducationFund(int educationFund) throws EmployeeException {\r\n        if(educationFund<0){throw new EmployeeException(\"Invalid education fund entered\");}\r\n        this.educationFund = educationFund;\r\n    }\r\n    public void setDaysOff(int daysOff) throws EmployeeException {\r\n        if(daysOff<0){throw new EmployeeException(\"Invalid days off entered\");}\r\n        this.daysOff = daysOff;\r\n    }\r\n\r\n    public void setSickDays(int sickDays) throws EmployeeException {\r\n        if(sickDays<0){throw new EmployeeException(\"Invalid sick days entered\");}\r\n        this.sickDays = sickDays;\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/dev/src/Employees/business_layer/Employee/TermsOfEmployment.java b/dev/src/Employees/business_layer/Employee/TermsOfEmployment.java
+--- a/dev/src/Employees/business_layer/Employee/TermsOfEmployment.java	(revision 3374e072ffa96ca587404f2d6cdcf17553e38637)
++++ b/dev/src/Employees/business_layer/Employee/TermsOfEmployment.java	(date 1619342141758)
+@@ -8,8 +8,7 @@
+     private int sickDays;
+     private int daysOff;
+ 
+-    public TermsOfEmployment(int salary, int educationFund, int sickDays, int daysOff) throws EmployeeException {
+-        if(salary<0 | educationFund<0 | sickDays<0 | daysOff<0){throw new EmployeeException("One of the entered employment conditions is invalid"); }
++    public TermsOfEmployment(int salary, int educationFund, int sickDays, int daysOff) {
+         this.salary = salary;
+         this.educationFund = educationFund;
+         this.sickDays = sickDays;
