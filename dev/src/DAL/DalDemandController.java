@@ -1,6 +1,15 @@
 package DAL;
 
 public class DalDemandController extends DalController{
+
+    public DalDemandController()
+    {//TODO - Check when tables created
+        super();
+        this.tableName="Demands";
+        this.columnNames=new String[3];
+        columnNames[0]="itemID";columnNames[1]="amount";columnNames[2]="siteID";
+    }
+
     public boolean insert(DalDemand dalDemand) {
         //TODO - implement
         return false;
@@ -15,9 +24,9 @@ public class DalDemandController extends DalController{
         //TODO - implement
         return false;
     }
-    public boolean load ()// Select From DB
+    public DalDemand load ()// Select From DB
     {
         //TODO- implement
-        return false;
+        return null;
     }
 }

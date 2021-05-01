@@ -1,6 +1,13 @@
 package DAL;
 
 public class DalItemsOnDFController extends DalController{
+
+    public DalItemsOnDFController(){//TODO - Check when tables created
+        super();
+        this.tableName="ItemsOnDF";
+        this.columnNames=new String[2];
+        columnNames[0]="itemID";columnNames[1]="amount";}
+
     public boolean insert(DalItemsOnDF items) {
         //TODO - implement
         return false;
@@ -15,9 +22,9 @@ public class DalItemsOnDFController extends DalController{
         //TODO - implement
         return false;
     }
-    public boolean load ()// Select From DB
+    public DalItemsOnDF load ()// Select From DB
     {
         //TODO- implement
-        return false;
+        return null;
     }
 }
