@@ -2,31 +2,44 @@ package Employees.business_layer.Shift;
 
 import Employees.EmployeeException;
 import Employees.business_layer.Employee.EmployeeController;
-import Employees.business_layer.Employee.Role;
 
+import java.time.DayOfWeek;
 import java.time.LocalDate;
+import java.time.temporal.TemporalField;
+import java.time.temporal.WeekFields;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 
 public class ShiftController {
+    private static ShiftController instance = null;
+
     private HashMap<LocalDate, WeeklyShiftSchedule> shifts;
     EmployeeController employeeController;
 
-    public ShiftController(HashMap<LocalDate, WeeklyShiftSchedule> shifts, EmployeeController employeeController)
-    {
-        this.shifts = shifts;
-        this.employeeController = employeeController;
+//    public ShiftController(HashMap<LocalDate, WeeklyShiftSchedule> shifts, EmployeeController employeeController)
+//    {
+//        this.shifts = shifts;
+//        this.employeeController = employeeController;
+//    }
+
+
+
+    private ShiftController(){
+        shifts = new HashMap<> (  );
+        employeeController = EmployeeController.getInstance ();
     }
 
-    public ShiftController(EmployeeController employeeController){
-        shifts = new HashMap<> (  );
-        this.employeeController = employeeController;
+    public static ShiftController getInstance() {
+        if (instance == null)
+            instance = new ShiftController ();
+        return instance;
     }
 
     public WeeklyShiftSchedule getRecommendation(LocalDate startingDate) throws EmployeeException {
         if(startingDate.isBefore ( LocalDate.now () ))
             throw new EmployeeException ( "Starting date has already passed." );
-        if(startingDate.getDayOfWeek ().getValue () != 7)
+        if(startingDate.getDayOfWeek () != DayOfWeek.SUNDAY)
             throw new EmployeeException ( "Starting date is not Sunday." );
         WeeklyShiftSchedule output = createEmptyWeeklyShiftSchedule ( startingDate );
         for(int i = 0; i < 7; i ++)
@@ -36,10 +49,10 @@ public class ShiftController {
         return output;
     }
 
-    public WeeklyShiftSchedule createWeeklyshiftSchedule(LocalDate startingDate, Shift[][] shifts) throws EmployeeException {
+    public WeeklyShiftSchedule createWeeklyShiftSchedule(LocalDate startingDate, Shift[][] shifts) throws EmployeeException {
         if(startingDate.isBefore ( LocalDate.now () ))
             throw new EmployeeException ( "Starting date has already passed." );
-        if(startingDate.getDayOfWeek ().getValue () != 7)
+        if(startingDate.getDayOfWeek () != DayOfWeek.SUNDAY)
             throw new EmployeeException ( "Starting date is not sunday." );
         if(shifts == null)
             throw new EmployeeException ( "shifts are illegal." );
@@ -56,10 +69,6 @@ public class ShiftController {
         return new WeeklyShiftSchedule ( startingDate );
     }
 
-//    public void addShift(LocalDate date, int shift, HashMap<String, List<String>> manning) throws EmployeeException {
-//        getWeeklyShiftSchedule ( date ).addShift(employeeController, date, shift, manning);
-//    }
-
     public void changeShift(LocalDate date, int shift, HashMap<String, List<String>> manning) throws EmployeeException {
         getWeeklyShiftSchedule ( date ).changeShift(employeeController, date, shift, manning);
     }
@@ -67,6 +76,12 @@ public class ShiftController {
     public void addEmployeeToShift(String role, String ID, LocalDate date, int shift) throws EmployeeException {
         if(!employeeController.isExist(role, ID))
             throw new EmployeeException ( "Id - " + ID + " and role - " + role + " does not exist in system." );
+        if(employeeController.getEmployee ( ID ).getConstraints ().containsKey ( date ) &&
+                employeeController.getEmployee ( ID ).getConstraints ().get ( date ). isMorningShift () && shift == 0)
+            throw new EmployeeException ( "Employee is unavailable." );
+        if(employeeController.getEmployee ( ID ).getConstraints ().containsKey ( date ) &&
+                employeeController.getEmployee ( ID ).getConstraints ().get ( date ). isEveningShift () && shift == 1)
+            throw new EmployeeException ( "Employee is unavailable." );
         getWeeklyShiftSchedule ( date ).addEmployeeToShift ( role, ID, date, shift );
     }
 
@@ -83,7 +98,7 @@ public class ShiftController {
     }
 
     public void updateRoleManning(String shiftType, String role, int num) throws EmployeeException {
-        ShiftTypes.getInstance ().unpdateRoleManning ( shiftType, role, num );
+        ShiftTypes.getInstance ().updateRoleManning( shiftType, role, num );
     }
 
     public void addRoleManning(String shiftType, String role, int num) throws EmployeeException {
@@ -91,7 +106,16 @@ public class ShiftController {
     }
 
     public WeeklyShiftSchedule getWeeklyShiftSchedule(LocalDate date) throws EmployeeException {
-        WeeklyShiftSchedule output = shifts.get (date.minusDays ( date.getDayOfWeek ().getValue () % 7) );
+        WeeklyShiftSchedule output;
+        LocalDate sunday;
+        if(date.getDayOfWeek () == DayOfWeek.SUNDAY) {
+            sunday = date;
+        }
+        else {
+            TemporalField field = WeekFields.of ( Locale.US ).dayOfWeek ();
+            sunday = date.with ( field, 1 );
+        }
+        output = shifts.get (sunday);
         if(output == null)
             throw new EmployeeException ( "No such shift exists." );
         return output;
@@ -104,4 +128,39 @@ public class ShiftController {
     public void deleteRoleFromShiftType(String shiftType, String role) throws EmployeeException {
         ShiftTypes.getInstance ().deleteRole(shiftType, role);
     }
+
+    public void createData() throws EmployeeException {
+        createShiftTypes ();
+        LocalDate temp = LocalDate.now ().plusDays ( 7 );
+        LocalDate sunday = temp;
+        if(temp.getDayOfWeek () != DayOfWeek.SUNDAY) {
+            TemporalField field = WeekFields.of ( Locale.US ).dayOfWeek ( );
+            sunday = temp.with ( field, 1 );
+        }
+        shifts.put (sunday, getRecommendation ( sunday ));
+        shifts.put (sunday.plusDays ( 7 ), getRecommendation ( sunday.plusDays ( 7 ) ));
+    }
+
+    private void createShiftTypes() throws EmployeeException {
+        HashMap<String, Integer> manning = new HashMap<> (  );
+        manning.put ( "shiftManager", 1 );
+        manning.put ( "cashier", 2 );
+        manning.put ( "guard", 1 );
+        manning.put ( "usher", 2 );
+        manning.put ( "storeKeeper", 1 );
+        createShiftType ( "morningShift", manning );
+        createShiftType ( "eveningShift", manning );
+    }
+
+    public HashMap<LocalDate, HashMap<Integer, String>> getDaysAndDrivers(){
+        return null;
+    }
+
+    public void addDriverToShift(String id, LocalDate date, int shift){}
+
+    public boolean isDriverAssigned(String id, LocalDate date, int shift){
+        return true;
+    }
+
+
 }

@@ -1,11 +1,12 @@
 package Employees.business_layer.facade;
 
 import Employees.EmployeeException;
-import Employees.business_layer.Employee.*;
-import Employees.business_layer.facade.facadeObject.FacadeBankAccountInfo;
+import Employees.business_layer.Employee.Constraint;
+import Employees.business_layer.Employee.Employee;
+import Employees.business_layer.Employee.EmployeeController;
+import Employees.business_layer.Employee.Role;
 import Employees.business_layer.facade.facadeObject.FacadeConstraint;
 import Employees.business_layer.facade.facadeObject.FacadeEmployee;
-import Employees.business_layer.facade.facadeObject.FacadeTermsOfEmployment;
 
 import java.time.LocalDate;
 import java.util.HashMap;
@@ -15,9 +16,9 @@ import java.util.List;
 public class EmployeeService {
     EmployeeController employeeController;
 
-    public EmployeeService(EmployeeController employeeController)
+    public EmployeeService()
     {
-        this.employeeController = employeeController;
+        employeeController = EmployeeController.getInstance ();
     }
 
     public ResponseT<FacadeEmployee> login(String ID, Role role) {
@@ -62,38 +63,29 @@ public class EmployeeService {
 
     public ResponseT<FacadeEmployee> addEmployee(FacadeEmployee employee) {
         try{
-            return new ResponseT<>(new FacadeEmployee(employeeController.addEmployee(employee)));
+            employeeController.addEmployee ( employee );
+            return new ResponseT<>(employee);
         }
         catch (EmployeeException e){
             return new ResponseT<>(e.getMessage());
         }
     }
 
-    public Response addManager(FacadeEmployee manager) {
+    public ResponseT<FacadeEmployee> addManager(FacadeEmployee manager) {
         try{
-            return new ResponseT<>(new FacadeEmployee(employeeController.addManager(manager)));
+            return new ResponseT(new FacadeEmployee(employeeController.addManager(manager)));
         }
         catch (EmployeeException e){
-            return new ResponseT<>(e.getMessage());
+            return new ResponseT(e.getMessage());
         }
     }
 
     public ResponseT<FacadeEmployee> removeEmployee(String Id)  {
         try{
-            return new ResponseT<>(new FacadeEmployee(employeeController.removeEmployee(Id)));
+            return new ResponseT(new FacadeEmployee(employeeController.removeEmployee(Id)));
         }
         catch (EmployeeException e){
-            return new ResponseT<>(e.getMessage());
-        }
-    }
-
-    public Response deleteBankAccount(String Id) throws EmployeeException {
-        try{
-            employeeController.deleteBankAccount(Id);
-            return new Response();
-        }
-        catch (EmployeeException e){
-            return new Response(e.getMessage());
+            return new ResponseT(e.getMessage());
         }
     }
 
@@ -107,9 +99,9 @@ public class EmployeeService {
         }
     }
 
-    public Response updateTermsOfemployee(String Id, int salary, int educationFund, int sickDays, int daysOff) {
+    public Response updateTermsOfEmployee(String Id, int salary, int educationFund, int sickDays, int daysOff) {
         try{
-            employeeController.updateTermsOfemployee(Id,salary, educationFund, sickDays,daysOff);
+            employeeController.updateTermsOfEmployee(Id,salary, educationFund, sickDays,daysOff);
             return new Response();
         }
         catch (EmployeeException e){
@@ -129,7 +121,7 @@ public class EmployeeService {
         }
     }
 
-    public ResponseT<FacadeEmployee> getLoggedin() {
+    public ResponseT<FacadeEmployee> getLoggedIn() {
         try{
             return new ResponseT<>(new FacadeEmployee(employeeController.getLoggedIn()));
         }
@@ -182,8 +174,12 @@ public class EmployeeService {
     }
 
     public Response createData (){
-        employeeController.createData();
-        return new Response();
+        try {
+            employeeController.createData();
+            return new Response();
+        } catch (EmployeeException e) {
+            return new Response ( e.getMessage () );
+        }
     }
 
     //private methods:

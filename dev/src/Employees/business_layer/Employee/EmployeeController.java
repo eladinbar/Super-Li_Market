@@ -11,24 +11,32 @@ import java.util.LinkedList;
 import java.util.Map;
 
 public class EmployeeController {
+    private static EmployeeController instance = null;
+
     private HashMap<String, Employee> employees;
     private Employee loggedIn;
 
-    public EmployeeController(){
+    private EmployeeController(){
         this.loggedIn = null;
         employees = new HashMap<>();
     }
 
+    public static EmployeeController getInstance() {
+        if (instance == null)
+            instance = new EmployeeController ();
+        return instance;
+    }
+
     public Employee getLoggedIn() throws EmployeeException {
         if(loggedIn==null){
-            throw new EmployeeException("No user is login");
+            throw new EmployeeException("No user is logged in");
         }
         return loggedIn;
     }
 
     public HashMap<String, Employee> getEmployees() throws EmployeeException {
         if(loggedIn==null){
-            throw new EmployeeException("No user is login");
+            throw new EmployeeException("No user is logged in");
         }
 
         if(!loggedIn.getIsManager()) {
@@ -70,7 +78,7 @@ public class EmployeeController {
 
     public Employee getEmployee(String Id) throws EmployeeException {
         if(loggedIn==null){
-            throw new EmployeeException("No user is login");
+            throw new EmployeeException("No user is logged in");
         }
 
         if(!loggedIn.getIsManager()) {
@@ -84,10 +92,10 @@ public class EmployeeController {
 
     public void giveConstraint(LocalDate date, int shift, String reason) throws EmployeeException {
         if(loggedIn==null){
-            throw new EmployeeException("No user is login");
+            throw new EmployeeException("No user is logged in");
         }
 
-        if(!loggedIn.getIsManager()){
+        if(loggedIn.getIsManager()){
             throw new EmployeeException("The method 'giveConstraint' was called from a user in a managerial position");
         }
 
@@ -101,7 +109,7 @@ public class EmployeeController {
 
     public void deleteConstraint (LocalDate date, int shift) throws EmployeeException {
         if(loggedIn==null){
-            throw new EmployeeException("No user is login");
+            throw new EmployeeException("No user is logged in");
         }
 
         if(loggedIn.getIsManager()){
@@ -131,7 +139,7 @@ public class EmployeeController {
     public Employee addEmployee(FacadeEmployee e) throws EmployeeException {
 
         if(loggedIn==null){
-            throw new EmployeeException("No user is login");
+            throw new EmployeeException("No user is logged in");
         }
 
         if(!loggedIn.getIsManager()) {
@@ -143,17 +151,25 @@ public class EmployeeController {
         if(employees.containsKey(e.getID())){
             throw new EmployeeException("Employee already added to the system");
         }
-       TermsOfEmployment terms = new TermsOfEmployment(e.getFacadeTermsOfEmployment().getSalary(), e.getFacadeTermsOfEmployment().getEducationFund(), e.getFacadeTermsOfEmployment().getSickDays(), e.getFacadeTermsOfEmployment().getDaysOff());
-       BankAccountInfo bank = new BankAccountInfo(e.getFacadeBankAccountInfo().getAccountNumber(), e.getFacadeBankAccountInfo().getBankBranch(), e.getFacadeBankAccountInfo().getBank());
+       TermsOfEmployment terms = creatTermsOfEmployment ( e.getFacadeTermsOfEmployment () );
+       BankAccountInfo bank = createAccount ( e.getFacadeBankAccountInfo () );
        Employee newEmployee = new Employee(e.getRole(), e.getID(),terms, e.getTransactionDate(), bank);
        employees.put(e.getID(), newEmployee);
        return newEmployee;
     }
 
-
+    private void addEmplForExistingData(Employee e) throws EmployeeException {
+        if(!validId(e.getID())){
+            throw new EmployeeException("An invalid ID was entered ");
+        }
+        if(employees.containsKey(e.getID())){
+            throw new EmployeeException("Employee already added to the system");
+        }
+        employees.put(e.getID(), e);
+    }
 
     public Employee addManager(FacadeEmployee e) throws EmployeeException {
-        if(!loggedIn.getIsManager()){
+        if(!e.isManager ()){
             throw new EmployeeException("Only an administrator can perform this operation");
         }
         if(!validId(e.getID())){
@@ -162,8 +178,8 @@ public class EmployeeController {
         if(employees.containsKey(e.getID())){
             throw new EmployeeException("Manager already added to the system");
         }
-        TermsOfEmployment terms = new TermsOfEmployment(e.getFacadeTermsOfEmployment().getSalary(), e.getFacadeTermsOfEmployment().getEducationFund(), e.getFacadeTermsOfEmployment().getSickDays(), e.getFacadeTermsOfEmployment().getDaysOff());
-        BankAccountInfo bank = new BankAccountInfo(e.getFacadeBankAccountInfo().getAccountNumber(), e.getFacadeBankAccountInfo().getBankBranch(), e.getFacadeBankAccountInfo().getBank());
+        TermsOfEmployment terms = creatTermsOfEmployment ( e.getFacadeTermsOfEmployment () );
+        BankAccountInfo bank =createAccount ( e.getFacadeBankAccountInfo () );
         Employee newEmployee = new Employee(e.getRole(), e.getID(),terms, e.getTransactionDate(), bank);
         employees.put(e.getID(), newEmployee);
         return newEmployee;
@@ -171,7 +187,7 @@ public class EmployeeController {
 
     public Employee removeEmployee(String Id) throws EmployeeException {
         if(loggedIn==null){
-            throw new EmployeeException("No user is login");
+            throw new EmployeeException("No user is logged in");
         }
 
         if(!loggedIn.getIsManager()){
@@ -179,30 +195,17 @@ public class EmployeeController {
         }
 
         if(!employees.containsKey(Id)){
-                throw new EmployeeException("Employee not found");
+                throw new EmployeeException("Employee is not in the system");
         }
         if(Id.equals(loggedIn.getID())){ logout();}
         employees.get(Id).setEmployed(false);
         return employees.get(Id);
     }
 
-    public void deleteBankAccount(String Id) throws EmployeeException {
-        if(loggedIn==null){
-            throw new EmployeeException("No user is login");
-        }
-
-        if(!loggedIn.getIsManager()){
-            throw new EmployeeException("Only an administrator can perform this operation");
-        }
-        if(!employees.containsKey(Id)){
-            throw new EmployeeException("Employee not found");
-        }
-        employees.get(Id).setBank(null);
-    }
 
     public void updateBankAccount(String Id, int accountNum, int bankBranch, String bank) throws EmployeeException {
         if(loggedIn==null){
-            throw new EmployeeException("No user is login");
+            throw new EmployeeException("No user is logged in");
         }
 
         if(!loggedIn.getIsManager()){
@@ -217,9 +220,9 @@ public class EmployeeController {
         toUpdate.setBank(bank);
     }
 
-    public void updateTermsOfemployee(String Id, int salary, int educationFund, int sickDays, int daysOff) throws EmployeeException {
+    public void updateTermsOfEmployee(String Id, int salary, int educationFund, int sickDays, int daysOff) throws EmployeeException {
         if(loggedIn==null){
-            throw new EmployeeException("No user is login");
+            throw new EmployeeException("No user is logged in");
         }
 
         if(!loggedIn.getIsManager()){
@@ -237,7 +240,7 @@ public class EmployeeController {
 
     public LinkedList<String> getRoleInDate(LocalDate date, Role roleName, int shift) throws EmployeeException {
         if(loggedIn==null){
-            throw new EmployeeException("No user is login");
+            throw new EmployeeException("No user is logged in");
         }
         if(!loggedIn.getIsManager()){
             throw new EmployeeException("Only an administrator can perform this operation");
@@ -269,139 +272,136 @@ public class EmployeeController {
     }
 
     public boolean isExist(String role, String Id){
-        return employees.containsValue(Id) && employees.get(Id).isEmployed();
+        boolean isExist = employees.containsKey(Id);
+        isExist = isExist && employees.get(Id).isEmployed();
+        isExist = isExist &&employees.get ( Id ).getRole ().name ().equals ( role );
+        return isExist &&employees.get ( Id ).getRole ().name ().equals ( role );
     }
 
-    public void createData (){
+    public void createData () throws EmployeeException {
+
             createUshers();
-            createguard();
+            createGuard();
             creatCashier();
             creatStoreKeeper();
             createManagers();
+            createShiftManagers();
     }
 
-    private void createManagers() {
+    private void createShiftManagers() throws EmployeeException {
+        int accountNum = 476, bankBranch=11, salary=7000, educationFund=1232, sickDays=10, daysOff=30;
+        String bankName = "Otzar hachayal";
+        for(int i=0; i<2; i++){
+            BankAccountInfo employeeAccountInfo = new BankAccountInfo(accountNum+i, bankBranch, bankName);
+            TermsOfEmployment termsOfEmployment = new TermsOfEmployment(salary+1, educationFund,sickDays, daysOff );
+            Employee shiftManager = new Employee("shiftManager", "66666666"+i, termsOfEmployment, LocalDate.now(), employeeAccountInfo);
+            giveConstrForExistingData(shiftManager, LocalDate.now().plusWeeks(3).plusDays ( 3 ),0,"Bat-Mitzva");
+            addEmplForExistingData(shiftManager);
+        }
+    }
+
+    private void createManagers() throws EmployeeException {
         int accountNum = 546, bankBranch=11, salary=8000, educationFund=1232, sickDays=10, daysOff=40;
         String bankName = "Hpoalim";
         FacadeBankAccountInfo employeeAccountInfo1 = new FacadeBankAccountInfo(accountNum, bankBranch, bankName);
         FacadeTermsOfEmployment termsOfEmployment1 = new FacadeTermsOfEmployment(salary, educationFund,sickDays, daysOff );
-        FacadeEmployee branchManager = new FacadeEmployee("branchManager", "12300000", LocalDate.now(), employeeAccountInfo1, termsOfEmployment1);
+        FacadeEmployee branchManager = new FacadeEmployee("branchManager", "123000000", LocalDate.now(), employeeAccountInfo1, termsOfEmployment1);
 
         FacadeBankAccountInfo employeeAccountInfo2 = new FacadeBankAccountInfo(accountNum+2, bankBranch, bankName);
-        FacadeTermsOfEmployment termsOfEmployment2 = new FacadeTermsOfEmployment(salary+2, educationFund,sickDays, daysOff );
-        FacadeEmployee branchManagerAssistent = new FacadeEmployee("branchManagerAssistent", "45600000", LocalDate.now(), employeeAccountInfo2, termsOfEmployment2);
+        FacadeTermsOfEmployment termsOfEmployment2 = new FacadeTermsOfEmployment(salary, educationFund,sickDays, daysOff );
+        FacadeEmployee branchManagerAssistant = new FacadeEmployee("branchManagerAssistant", "456000000", LocalDate.now(), employeeAccountInfo2, termsOfEmployment2);
 
-        FacadeBankAccountInfo employeeAccountInfo3 = new FacadeBankAccountInfo(accountNum+#, bankBranch, bankName);
-        FacadeTermsOfEmployment termsOfEmployment3 = new FacadeTermsOfEmployment(salary+3, educationFund,sickDays, daysOff );
-        FacadeEmployee humanResourcesManager = new FacadeEmployee("humanResourcesManager", "78900000", LocalDate.now(), employeeAccountInfo1, termsOfEmployment1);
-
-        try {
-            addManager(branchManager);
-            addManager(branchManagerAssistent);
-            addManager(humanResourcesManager);
-        }
-        catch (EmployeeException e){}
+        FacadeBankAccountInfo employeeAccountInfo3 = new FacadeBankAccountInfo(accountNum+3, bankBranch, bankName);
+        FacadeTermsOfEmployment termsOfEmployment3 = new FacadeTermsOfEmployment(salary, educationFund,sickDays, daysOff );
+        FacadeEmployee humanResourcesManager = new FacadeEmployee("humanResourcesManager", "789000000", LocalDate.now(), employeeAccountInfo3, termsOfEmployment3);
+        addManager(branchManager);
+        addManager(branchManagerAssistant);
+        addManager(humanResourcesManager);
     }
 
 
-    private void createUshers() {
+    private void createUshers() throws EmployeeException {
         int accountNum = 456, bankBranch=11, salary=5000, educationFund=1232, sickDays=10, daysOff=30;
         String bankName = "Hpoalim";
         for(int i=0; i<4; i++){
-            FacadeBankAccountInfo employeeAccountInfo = new FacadeBankAccountInfo(accountNum+i, bankBranch, bankName);
-            FacadeTermsOfEmployment termsOfEmployment = new FacadeTermsOfEmployment(salary+1, educationFund,sickDays, daysOff );
-            FacadeEmployee usher = new FacadeEmployee("usher", "00000000"+i, LocalDate.now(), employeeAccountInfo, termsOfEmployment);
-            try {
-                giveConstraint(LocalDate.now().plusWeeks(2),0,"wedding");
-                addEmployee(usher);
-            }
-            catch(EmployeeException e){}
+            BankAccountInfo employeeAccountInfo = new BankAccountInfo(accountNum+i, bankBranch, bankName);
+            TermsOfEmployment termsOfEmployment = new TermsOfEmployment(salary, educationFund,sickDays, daysOff );
+            Employee usher = new Employee("usher", "00000000"+i, termsOfEmployment, LocalDate.now(), employeeAccountInfo);
+            giveConstrForExistingData(usher, LocalDate.now().plusWeeks(2).plusDays ( 3 ),0,"wedding");
+            addEmplForExistingData(usher);
         }
     }
-    private void createguard() {
+
+    private void giveConstrForExistingData(Employee employee, LocalDate date, int shift, String reason) throws EmployeeException {
+        employee.giveConstraint(date, shift, reason);
+    }
+
+    private void createGuard() throws EmployeeException {
         int accountNum = 356, bankBranch=10, salary=5500, educationFund=1232, sickDays=10, daysOff=30;
         String bankName = "Leumi";
         for(int i=0; i<2; i++){
-            FacadeBankAccountInfo employeeAccountInfo = new FacadeBankAccountInfo(accountNum+i, bankBranch, bankName);
-            FacadeTermsOfEmployment termsOfEmployment = new FacadeTermsOfEmployment(salary+1, educationFund,sickDays, daysOff );
-            FacadeEmployee guard = new FacadeEmployee("guard", "011111111"+i, LocalDate.now(), employeeAccountInfo, termsOfEmployment);
+            BankAccountInfo employeeAccountInfo = new BankAccountInfo(accountNum+i, bankBranch, bankName);
+            TermsOfEmployment termsOfEmployment = new TermsOfEmployment(salary+1, educationFund,sickDays, daysOff );
+            Employee guard = new Employee("guard", "01111111"+i, termsOfEmployment, LocalDate.now(), employeeAccountInfo);
 
             try {
-                giveConstraint(LocalDate.now().plusWeeks(2),0,"wedding");
-                addEmployee(guard);
+                giveConstrForExistingData(guard, LocalDate.now().plusWeeks(2).plusDays(5), 1, "wedding");
+                addEmplForExistingData(guard);
             }
             catch(EmployeeException e){}
         }
     }
 
-    private void creatCashier() {
+    private void creatCashier() throws EmployeeException {
         int accountNum = 256, bankBranch=13, salary=5500, educationFund=1232, sickDays=10, daysOff=30;
         String bankName = "Leumi";
         for(int i=0; i<4; i++){
-            FacadeBankAccountInfo employeeAccountInfo = new FacadeBankAccountInfo(accountNum+i, bankBranch, bankName);
-            FacadeTermsOfEmployment termsOfEmployment = new FacadeTermsOfEmployment(salary+1, educationFund,sickDays, daysOff );
-            FacadeEmployee cashier = new FacadeEmployee("cashier", "02222222"+i, LocalDate.now(), employeeAccountInfo, termsOfEmployment);
+            BankAccountInfo employeeAccountInfo = new BankAccountInfo(accountNum+i, bankBranch, bankName);
+            TermsOfEmployment termsOfEmployment = new TermsOfEmployment(salary+1, educationFund,sickDays, daysOff );
+            Employee cashier = new Employee("cashier", "02222222"+i, termsOfEmployment, LocalDate.now(), employeeAccountInfo);
             try {
-                addEmployee(cashier);
+                addEmplForExistingData(cashier);
             }
             catch(EmployeeException e){}
         }
     }
 
-    private void creatStoreKeeper() {
+    private void creatStoreKeeper() throws EmployeeException {
         int accountNum = 156, bankBranch=13, salary=6000, educationFund=1232, sickDays=10, daysOff=30;
         String bankName = "Leumi";
         for(int i=0; i<2; i++){
-            FacadeBankAccountInfo employeeAccountInfo = new FacadeBankAccountInfo(accountNum+i, bankBranch, bankName);
-            FacadeTermsOfEmployment termsOfEmployment = new FacadeTermsOfEmployment(salary+1, educationFund,sickDays, daysOff );
-            FacadeEmployee storeKeeper = new FacadeEmployee("storeKeeper", "03333333"+i, LocalDate.now(), employeeAccountInfo, termsOfEmployment);
-            try {
-                addEmployee(storeKeeper);
-            }
-            catch(EmployeeException e){}
+            BankAccountInfo employeeAccountInfo = new BankAccountInfo(accountNum+i, bankBranch, bankName);
+            TermsOfEmployment termsOfEmployment = new TermsOfEmployment(salary+1, educationFund,sickDays, daysOff );
+            Employee storeKeeper = new Employee("storeKeeper", "03333333"+i, termsOfEmployment, LocalDate.now(), employeeAccountInfo);
+            addEmplForExistingData(storeKeeper);
         }
     }
     // private methods
-    private BankAccountInfo createAccount(int accountNum, int bankBranch, String bank) throws EmployeeException {
-        if(accountNum<0 | bankBranch<0 ){
+    private BankAccountInfo createAccount(FacadeBankAccountInfo f) throws EmployeeException {
+        if(f.getAccountNumber () < 0 | f.getBankBranch () < 0 ){
             throw new EmployeeException("One of the details entered is negative ");
         }
-        return new BankAccountInfo(accountNum, bankBranch, bank);
+        if(f.getBank () == null || Character.isDigit (f.getBank ().charAt ( 0 )))
+            throw new EmployeeException ( "Bank name is illegal." );
+        return new BankAccountInfo(f.getAccountNumber (), f.getBankBranch (), f.getBank ());
     }
 
-    private TermsOfEmployment creatTermsOfEmployment( int salary, int educationFund, int sickDays, int daysOff) throws EmployeeException {
-        if(salary<0 | educationFund<0 | sickDays<0 | daysOff<0){
+    private TermsOfEmployment creatTermsOfEmployment( FacadeTermsOfEmployment f) throws EmployeeException {
+        if(f.getSalary () < 0 | f.getEducationFund () < 0 | f.getSickDays () < 0 | f.getDaysOff () < 0){
             throw new EmployeeException("One of the details entered is negative ");
         }
-        return new TermsOfEmployment(salary, educationFund, sickDays, daysOff);
+        return new TermsOfEmployment(f.getSalary (), f.getEducationFund (), f.getSickDays (), f.getDaysOff ());
     }
 
     private boolean validId(String ID){
-        char[] idChar = ID.toCharArray();
-        boolean firstHalf = false;
-        boolean secHalf = false;
-        for (int i = 0; i < 5; ++i){//Check first half
-            if ((idChar[i] > 47 && idChar[i] < 58)){//Checks ascii vals to see if valid ID
-                firstHalf = true;
-            }
-        }
-
-        for (int i = 5; i < idChar.length; ++i){//Check second half
-            if ((idChar[i] > 47 && idChar[i] < 58)){//Checks ascii vals to see if valid ID
-                secHalf = true;
-            }
-        }
-
-        //If all values are valid, returns true.
-        if (firstHalf == true && secHalf == true && idChar[4] == '-' && ID.length() == 9){
+        if(ID.length () != 9)
+            return false;
+        try{
+            Integer.parseInt ( ID );
             return true;
+        }catch (NumberFormatException n) {
+            return false;
         }
-
-        return false;
-    }
-
-    private boolean validDate(LocalDate date) {
-        return (LocalDate.now().isBefore(date.minusWeeks(2)));
     }
 
 

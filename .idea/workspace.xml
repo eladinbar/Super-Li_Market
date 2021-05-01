@@ -2,8 +2,11 @@
 <project version="4">
   <component name="ArtifactsWorkspaceSettings">
     <artifacts-to-build>
-      <artifact name="adss2020_v01:jar" />
+      <artifact name="ADSS_Group_G:jar" />
     </artifacts-to-build>
+  </component>
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="BranchesTreeState">
     <expand>
@@ -24,7 +27,39 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="38ed8939-6b3f-4a4b-8721-3bfa8fd1f963" name="Default Changelist" comment="delete unused methods" />
+    <list default="true" id="05ca914f-9056-4de3-9869-7fdfaa880f2d" name="Default Changelist" comment="last update">
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_4_26_2021_9_01_PM__Default_Changelist_.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_4_26_2021_9_01_PM__Default_Changelist_.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_4_23_2021_3_54_PM__Default_Changelist_.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_4_23_2021_3_54_PM__Default_Changelist_.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dev/src/Business_Layer_Trucking/Delivery/DeliveryController.java" beforeDir="false" afterPath="$PROJECT_DIR$/dev/src/Trucking/Business_Layer_Trucking/Delivery/DeliveryController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dev/src/Business_Layer_Trucking/Delivery/DeliveryForm.java" beforeDir="false" afterPath="$PROJECT_DIR$/dev/src/Trucking/Business_Layer_Trucking/Delivery/DeliveryForm.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dev/src/Business_Layer_Trucking/Delivery/Demand.java" beforeDir="false" afterPath="$PROJECT_DIR$/dev/src/Trucking/Business_Layer_Trucking/Delivery/Demand.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dev/src/Business_Layer_Trucking/Delivery/Item.java" beforeDir="false" afterPath="$PROJECT_DIR$/dev/src/Trucking/Business_Layer_Trucking/Delivery/Item.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dev/src/Business_Layer_Trucking/Delivery/Site.java" beforeDir="false" afterPath="$PROJECT_DIR$/dev/src/Trucking/Business_Layer_Trucking/Delivery/Site.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dev/src/Business_Layer_Trucking/Delivery/TruckingReport.java" beforeDir="false" afterPath="$PROJECT_DIR$/dev/src/Trucking/Business_Layer_Trucking/Delivery/TruckingReport.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dev/src/Business_Layer_Trucking/Facade/DeliveryService.java" beforeDir="false" afterPath="$PROJECT_DIR$/dev/src/Trucking/Business_Layer_Trucking/Facade/DeliveryService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dev/src/Business_Layer_Trucking/Facade/FacadeObject/FacadeDeliveryForm.java" beforeDir="false" afterPath="$PROJECT_DIR$/dev/src/Trucking/Business_Layer_Trucking/Facade/FacadeObject/FacadeDeliveryForm.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dev/src/Business_Layer_Trucking/Facade/FacadeObject/FacadeDemand.java" beforeDir="false" afterPath="$PROJECT_DIR$/dev/src/Trucking/Business_Layer_Trucking/Facade/FacadeObject/FacadeDemand.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dev/src/Business_Layer_Trucking/Facade/FacadeObject/FacadeDriver.java" beforeDir="false" afterPath="$PROJECT_DIR$/dev/src/Trucking/Business_Layer_Trucking/Facade/FacadeObject/FacadeDriver.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dev/src/Business_Layer_Trucking/Facade/FacadeObject/FacadeItem.java" beforeDir="false" afterPath="$PROJECT_DIR$/dev/src/Trucking/Business_Layer_Trucking/Facade/FacadeObject/FacadeItem.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dev/src/Business_Layer_Trucking/Facade/FacadeObject/FacadeObject.java" beforeDir="false" afterPath="$PROJECT_DIR$/dev/src/Trucking/Business_Layer_Trucking/Facade/FacadeObject/FacadeObject.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dev/src/Business_Layer_Trucking/Facade/FacadeObject/FacadeSite.java" beforeDir="false" afterPath="$PROJECT_DIR$/dev/src/Trucking/Business_Layer_Trucking/Facade/FacadeObject/FacadeSite.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dev/src/Business_Layer_Trucking/Facade/FacadeObject/FacadeTruck.java" beforeDir="false" afterPath="$PROJECT_DIR$/dev/src/Trucking/Business_Layer_Trucking/Facade/FacadeObject/FacadeTruck.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dev/src/Business_Layer_Trucking/Facade/FacadeObject/FacadeTruckingReport.java" beforeDir="false" afterPath="$PROJECT_DIR$/dev/src/Trucking/Business_Layer_Trucking/Facade/FacadeObject/FacadeTruckingReport.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dev/src/Business_Layer_Trucking/Facade/FacadeObject/ResourcesService.java" beforeDir="false" afterPath="$PROJECT_DIR$/dev/src/Trucking/Business_Layer_Trucking/Facade/FacadeObject/ResourcesService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dev/src/Business_Layer_Trucking/Facade/FacadeService.java" beforeDir="false" afterPath="$PROJECT_DIR$/dev/src/Trucking/Business_Layer_Trucking/Facade/FacadeService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dev/src/Business_Layer_Trucking/Facade/Response.java" beforeDir="false" afterPath="$PROJECT_DIR$/dev/src/Trucking/Business_Layer_Trucking/Facade/Response.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dev/src/Business_Layer_Trucking/Facade/ResponseT.java" beforeDir="false" afterPath="$PROJECT_DIR$/dev/src/Trucking/Business_Layer_Trucking/Facade/ResponseT.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dev/src/Business_Layer_Trucking/Resources/Driver.java" beforeDir="false" afterPath="$PROJECT_DIR$/dev/src/Trucking/Business_Layer_Trucking/Resources/Driver.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dev/src/Business_Layer_Trucking/Resources/ResourcesController.java" beforeDir="false" afterPath="$PROJECT_DIR$/dev/src/Trucking/Business_Layer_Trucking/Resources/ResourcesController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dev/src/Business_Layer_Trucking/Resources/Truck.java" beforeDir="false" afterPath="$PROJECT_DIR$/dev/src/Trucking/Business_Layer_Trucking/Resources/Truck.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dev/src/Employees/business_layer/Shift/ShiftController.java" beforeDir="false" afterPath="$PROJECT_DIR$/dev/src/Employees/business_layer/Shift/ShiftController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dev/src/Presentation_Layer_Trucking/Main_Trucking.java" beforeDir="false" afterPath="$PROJECT_DIR$/dev/src/Trucking/Presentation_Layer_Trucking/Main_Trucking.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dev/src/Presentation_Layer_Trucking/Menu_Printer.java" beforeDir="false" afterPath="$PROJECT_DIR$/dev/src/Trucking/Presentation_Layer_Trucking/Menu_Printer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dev/src/Presentation_Layer_Trucking/PresentationController.java" beforeDir="false" afterPath="$PROJECT_DIR$/dev/src/Trucking/Presentation_Layer_Trucking/PresentationController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dev/src/Presentation_Layer_Trucking/StringConverter.java" beforeDir="false" afterPath="$PROJECT_DIR$/dev/src/Trucking/Presentation_Layer_Trucking/StringConverter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dev/src/Tests/ResourcesServiceTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/dev/src/Tests/ResourcesServiceTest.java" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -33,26 +68,31 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="JUnit5 Test Class" />
+        <option value="Interface" />
+        <option value="Class" />
       </list>
     </option>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="314978925_315994442" />
+        <entry key="$PROJECT_DIR$" value="203834734-206117400" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="MavenImportPreferences">
-    <option name="generalSettings">
-      <MavenGeneralSettings>
-        <option name="mavenHome" value="C:\Program Files\JetBrains\IntelliJ IDEA 2020.2.4\plugins\maven\lib\maven3" />
-      </MavenGeneralSettings>
-    </option>
+  <component name="GitSEFilterConfiguration">
+    <file-type-list>
+      <filtered-out-file-type name="LOCAL_BRANCH" />
+      <filtered-out-file-type name="REMOTE_BRANCH" />
+      <filtered-out-file-type name="TAG" />
+      <filtered-out-file-type name="COMMIT_BY_MESSAGE" />
+    </file-type-list>
   </component>
-  <component name="ProjectId" id="1pbQbmUJX97tcQVn3tODXUQaghL" />
+  <component name="ProblemsViewState">
+    <option name="selectedIndex" value="1" />
+  </component>
+  <component name="ProjectId" id="1pchlU42Bar4qov9F42Tsf9ACy9" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
@@ -64,32 +104,20 @@
     <property name="Repository.Attach.JavaDocs" value="false" />
     <property name="Repository.Attach.Sources" value="false" />
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary" value="JUnit5" />
-    <property name="com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5" value="" />
-    <property name="create.test.in.the.same.root" value="true" />
-    <property name="full.screen.before.presentation.mode" value="false" />
-    <property name="jdk.selected.JAVA_MODULE" value="13 (1)" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../../../שנה א/ObjectOriented/gamesOfThrones/src/Game/Level.java" />
+    <property name="extract.method.default.visibility" value="private" />
     <property name="nodejs_package_manager_path" value="npm" />
-    <property name="project.structure.last.edited" value="Modules" />
-    <property name="project.structure.proportion" value="0.15" />
+    <property name="project.structure.last.edited" value="Artifacts" />
+    <property name="project.structure.proportion" value="0.15332031" />
     <property name="project.structure.side.proportion" value="0.2" />
     <property name="settings.editor.selected.configurable" value="preferences.lookFeel" />
   </component>
-  <component name="RecentsManager">
-    <key name="CreateTestDialog.RecentsKey">
-      <recent name="Employees.business_layer.Employee" />
-    </key>
-    <key name="CreateTestDialog.Recents.Supers">
-      <recent name="" />
-    </key>
-  </component>
-  <component name="RunManager" selected="JUnit.EmployeeControllerTest.login_LoggedInNotNull">
+  <component name="RunManager" selected="Application.Main">
     <configuration name="Main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="Main" />
-      <module name="Supper_Lee" />
+      <module name="ADSS_Group_G" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -107,276 +135,354 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="EmployeeControllerTest.login_LoggedInNotNull" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="Supper_Lee" />
+    <configuration name="ResourcesServiceTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="ADSS_Group_G" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="Employees.business_layer.Employee.*" />
+          <option name="PATTERN" value="Tests.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
-      <option name="PACKAGE_NAME" value="Employees.business_layer.Employee" />
-      <option name="MAIN_CLASS_NAME" value="Employees.business_layer.Employee.EmployeeControllerTest" />
-      <option name="METHOD_NAME" value="login_LoggedInNotNull" />
-      <option name="TEST_OBJECT" value="method" />
+      <option name="PACKAGE_NAME" value="Tests" />
+      <option name="MAIN_CLASS_NAME" value="Tests.ResourcesServiceTest" />
+      <option name="TEST_OBJECT" value="class" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="adss2020_v01.jar" type="JarApplication" temporary="true">
-      <option name="JAR_PATH" value="$PROJECT_DIR$/release/adss2020_v01.jar" />
+    <configuration name="ADSS_Group_G.jar" type="JarApplication" temporary="true">
+      <option name="JAR_PATH" value="$PROJECT_DIR$/out/artifacts/ADSS_Group_G_jar/ADSS_Group_G.jar" />
       <method v="2" />
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="JUnit.EmployeeControllerTest.login_LoggedInNotNull" />
         <item itemvalue="Application.Main" />
-        <item itemvalue="JAR Application.adss2020_v01.jar" />
-        <item itemvalue="JUnit.EmployeeControllerTest.login_LoggedInNotNull" />
+        <item itemvalue="JUnit.ResourcesServiceTest" />
+        <item itemvalue="JAR Application.ADSS_Group_G.jar" />
+        <item itemvalue="Application.Main" />
+        <item itemvalue="Application.Main" />
       </list>
     </recent_temporary>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="38ed8939-6b3f-4a4b-8721-3bfa8fd1f963" name="Default Changelist" comment="" />
-      <created>1615449386574</created>
+      <changelist id="05ca914f-9056-4de3-9869-7fdfaa880f2d" name="Default Changelist" comment="" />
+      <created>1615488437162</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
-      <updated>1615449386574</updated>
-      <workItem from="1615449388623" duration="1011000" />
-      <workItem from="1616701674644" duration="791000" />
-      <workItem from="1617351025725" duration="24212000" />
-      <workItem from="1617523946920" duration="91118000" />
-      <workItem from="1619098552777" duration="2413000" />
-      <workItem from="1619263031684" duration="37279000" />
-      <workItem from="1619867417293" duration="2075000" />
+      <updated>1615488437162</updated>
+      <workItem from="1615488447919" duration="335000" />
+      <workItem from="1615658425420" duration="293000" />
+      <workItem from="1617021253314" duration="31710000" />
+      <workItem from="1617283946638" duration="32036000" />
+      <workItem from="1617441029503" duration="7267000" />
+      <workItem from="1617459116634" duration="79000" />
+      <workItem from="1617544285290" duration="6673000" />
+      <workItem from="1617559642726" duration="25025000" />
+      <workItem from="1617779133098" duration="119952000" />
+      <workItem from="1617992472850" duration="2656000" />
+      <workItem from="1618208518753" duration="178000" />
+      <workItem from="1618825989222" duration="904000" />
+      <workItem from="1619330774077" duration="12857000" />
+      <workItem from="1619792461374" duration="1895000" />
+      <workItem from="1619794411025" duration="473000" />
     </task>
-    <task id="LOCAL-00001" summary="Employee in Business layer">
-      <created>1617524157286</created>
+    <task id="LOCAL-00001" summary="ID text file has been added. team ido and raz :)">
+      <created>1615488571310</created>
       <option name="number" value="00001" />
       <option name="presentableId" value="LOCAL-00001" />
       <option name="project" value="LOCAL" />
-      <updated>1617524157286</updated>
+      <updated>1615488571310</updated>
     </task>
-    <task id="LOCAL-00002" summary="Fix EmployeeController constructor">
-      <created>1617532267791</created>
+    <task id="LOCAL-00002" summary="module name changed">
+      <created>1615658522886</created>
       <option name="number" value="00002" />
       <option name="presentableId" value="LOCAL-00002" />
       <option name="project" value="LOCAL" />
-      <updated>1617532267791</updated>
+      <updated>1615658522886</updated>
     </task>
-    <task id="LOCAL-00003" summary="Fix EmployeeController constructor">
-      <created>1617532596702</created>
+    <task id="LOCAL-00003" summary="Skeleton half made">
+      <created>1617044361731</created>
       <option name="number" value="00003" />
       <option name="presentableId" value="LOCAL-00003" />
       <option name="project" value="LOCAL" />
-      <updated>1617532596702</updated>
+      <updated>1617044361731</updated>
     </task>
-    <task id="LOCAL-00004" summary="Fix EmployeeController constructor">
-      <created>1617552411899</created>
+    <task id="LOCAL-00004" summary="3rd demand has been added">
+      <created>1617046716000</created>
       <option name="number" value="00004" />
       <option name="presentableId" value="LOCAL-00004" />
       <option name="project" value="LOCAL" />
-      <updated>1617552411899</updated>
+      <updated>1617046716000</updated>
     </task>
-    <task id="LOCAL-00005" summary="Delete &quot;employee&quot; from the signatures in EmployeeController">
-      <created>1617636906333</created>
+    <task id="LOCAL-00005" summary="skeleton has been fully completed, time to work :(">
+      <created>1617188946905</created>
       <option name="number" value="00005" />
       <option name="presentableId" value="LOCAL-00005" />
       <option name="project" value="LOCAL" />
-      <updated>1617636906333</updated>
+      <updated>1617188946905</updated>
     </task>
-    <task id="LOCAL-00006" summary="Ignore 2">
-      <created>1617640490234</created>
+    <task id="LOCAL-00006" summary="finished insert demand to report in menu printer">
+      <created>1617290764997</created>
       <option name="number" value="00006" />
       <option name="presentableId" value="LOCAL-00006" />
       <option name="project" value="LOCAL" />
-      <updated>1617640490234</updated>
+      <updated>1617290764997</updated>
     </task>
-    <task id="LOCAL-00007" summary="Update FacadeEmployee">
-      <created>1617640765948</created>
+    <task id="LOCAL-00007" summary="finished writing Menu_Printer - need to check with businessLayer">
+      <created>1617316526174</created>
       <option name="number" value="00007" />
       <option name="presentableId" value="LOCAL-00007" />
       <option name="project" value="LOCAL" />
-      <updated>1617640765948</updated>
+      <updated>1617316526174</updated>
     </task>
-    <task id="LOCAL-00008" summary="adding validDate() and validId() to EmployeeController">
-      <created>1617794467796</created>
+    <task id="LOCAL-00008" summary="done with PresentationController by now, new methods added to bussiness layer">
+      <created>1617355495108</created>
       <option name="number" value="00008" />
       <option name="presentableId" value="LOCAL-00008" />
       <option name="project" value="LOCAL" />
-      <updated>1617794467796</updated>
+      <updated>1617355495108</updated>
     </task>
-    <task id="LOCAL-00009" summary="Change signature of login in EmployeeController to (String Id, String role)">
-      <created>1617794716939</created>
+    <task id="LOCAL-00009" summary="some fixed in PresentationController, last methods has been made, TODO added to business layer">
+      <created>1617365080297</created>
       <option name="number" value="00009" />
       <option name="presentableId" value="LOCAL-00009" />
       <option name="project" value="LOCAL" />
-      <updated>1617794716939</updated>
+      <updated>1617365080298</updated>
     </task>
-    <task id="LOCAL-00010" summary="Delete updateConstraint() from project">
-      <created>1617796933409</created>
+    <task id="LOCAL-00010" summary="finished Facade layer and Presentation layer. waiting for combine with business layer to tests.&#10;&#10;** Unit test haven't done yet.&#10;** NTH didn't accomplished yet">
+      <created>1617379529536</created>
       <option name="number" value="00010" />
       <option name="presentableId" value="LOCAL-00010" />
       <option name="project" value="LOCAL" />
-      <updated>1617796933409</updated>
+      <updated>1617379529536</updated>
     </task>
-    <task id="LOCAL-00011" summary="Finish EmployeeService">
-      <created>1617799890001</created>
+    <task id="LOCAL-00011" summary="after combine meeting.">
+      <created>1617442640772</created>
       <option name="number" value="00011" />
       <option name="presentableId" value="LOCAL-00011" />
       <option name="project" value="LOCAL" />
-      <updated>1617799890001</updated>
+      <updated>1617442640772</updated>
     </task>
-    <task id="LOCAL-00012" summary="Checks valid arguments in BankAccountInfo, Constraint, Employee, TermsOfEmployment">
-      <created>1617806139564</created>
+    <task id="LOCAL-00012" summary="replan changed">
+      <created>1617448511041</created>
       <option name="number" value="00012" />
       <option name="presentableId" value="LOCAL-00012" />
       <option name="project" value="LOCAL" />
-      <updated>1617806139564</updated>
+      <updated>1617448511041</updated>
     </task>
-    <task id="LOCAL-00013" summary="Commit befor merge">
-      <created>1617854626720</created>
+    <task id="LOCAL-00013" summary="** compilation error exist. need to add getItems in Delivery service">
+      <created>1617449982865</created>
       <option name="number" value="00013" />
       <option name="presentableId" value="LOCAL-00013" />
       <option name="project" value="LOCAL" />
-      <updated>1617854626720</updated>
+      <updated>1617449982865</updated>
     </task>
-    <task id="LOCAL-00014" summary="Adding isExist() to EmployeeController">
-      <created>1617856078738</created>
+    <task id="LOCAL-00014" summary="Facade objects has been completed">
+      <created>1617549120191</created>
       <option name="number" value="00014" />
       <option name="presentableId" value="LOCAL-00014" />
       <option name="project" value="LOCAL" />
-      <updated>1617856078738</updated>
+      <updated>1617549120191</updated>
     </task>
-    <task id="LOCAL-00015" summary="Finish convertor">
-      <created>1617863345394</created>
+    <task id="LOCAL-00015" summary="merged before tests">
+      <created>1617557389459</created>
       <option name="number" value="00015" />
       <option name="presentableId" value="LOCAL-00015" />
       <option name="project" value="LOCAL" />
-      <updated>1617863345394</updated>
+      <updated>1617557389459</updated>
     </task>
-    <task id="LOCAL-00016" summary="Adding sortConstraintsByDate(HashMap&lt;LocalDate, Constraint&gt; constraints) to Employee">
-      <created>1617864981961</created>
+    <task id="LOCAL-00016" summary="First test has been done - ido left to do Menu test.&#10;Raz has left with everything else because he is such a dick&#10;Love you raz">
+      <created>1617566004636</created>
       <option name="number" value="00016" />
       <option name="presentableId" value="LOCAL-00016" />
       <option name="project" value="LOCAL" />
-      <updated>1617864981961</updated>
+      <updated>1617566004636</updated>
     </task>
-    <task id="LOCAL-00017" summary="Adding sortConstraintsByDate(HashMap&lt;LocalDate, Constraint&gt; constraints) to Employee">
-      <created>1617865031684</created>
+    <task id="LOCAL-00017" summary="fixed input exceptions">
+      <created>1617711142345</created>
       <option name="number" value="00017" />
       <option name="presentableId" value="LOCAL-00017" />
       <option name="project" value="LOCAL" />
-      <updated>1617865031684</updated>
+      <updated>1617711142345</updated>
     </task>
-    <task id="LOCAL-00018" summary="12 unitTest">
-      <created>1617889515352</created>
+    <task id="LOCAL-00018" summary="initalize test method has been improved. String scanner exception has been cought">
+      <created>1617715420665</created>
       <option name="number" value="00018" />
       <option name="presentableId" value="LOCAL-00018" />
       <option name="project" value="LOCAL" />
-      <updated>1617889515352</updated>
+      <updated>1617715420665</updated>
     </task>
-    <task id="LOCAL-00019" summary="fix exeptions in tests">
-      <created>1617890926229</created>
+    <task id="LOCAL-00019" summary="TODO has been added to both branche's job">
+      <created>1617715973615</created>
       <option name="number" value="00019" />
       <option name="presentableId" value="LOCAL-00019" />
       <option name="project" value="LOCAL" />
-      <updated>1617890926229</updated>
+      <updated>1617715973615</updated>
     </task>
-    <task id="LOCAL-00020" summary="createData in EmployeeController">
-      <created>1617893418580</created>
+    <task id="LOCAL-00020" summary="DF active has been added">
+      <created>1617782711922</created>
       <option name="number" value="00020" />
       <option name="presentableId" value="LOCAL-00020" />
       <option name="project" value="LOCAL" />
-      <updated>1617893418580</updated>
+      <updated>1617782711922</updated>
     </task>
-    <task id="LOCAL-00021" summary="createData in service">
-      <created>1617893686485</created>
+    <task id="LOCAL-00021" summary="DF active has been added">
+      <created>1617783487004</created>
       <option name="number" value="00021" />
       <option name="presentableId" value="LOCAL-00021" />
       <option name="project" value="LOCAL" />
-      <updated>1617893686485</updated>
+      <updated>1617783487004</updated>
     </task>
-    <task id="LOCAL-00022" summary="adding constraint on createData()">
-      <created>1617894104422</created>
+    <task id="LOCAL-00022" summary="updateDeliveryForm has been added">
+      <created>1617788487524</created>
       <option name="number" value="00022" />
       <option name="presentableId" value="LOCAL-00022" />
       <option name="project" value="LOCAL" />
-      <updated>1617894104422</updated>
+      <updated>1617788487524</updated>
     </task>
-    <task id="LOCAL-00023" summary="Pushing final priject">
-      <created>1617984036375</created>
+    <task id="LOCAL-00023" summary="updateDeliveryForm has been added">
+      <created>1617794617070</created>
       <option name="number" value="00023" />
       <option name="presentableId" value="LOCAL-00023" />
       <option name="project" value="LOCAL" />
-      <updated>1617984036375</updated>
+      <updated>1617794617070</updated>
     </task>
-    <task id="LOCAL-00024" summary="Finale project">
-      <created>1617997156598</created>
+    <task id="LOCAL-00024" summary="updateDeliveryForm has been added">
+      <created>1617797511295</created>
       <option name="number" value="00024" />
       <option name="presentableId" value="LOCAL-00024" />
       <option name="project" value="LOCAL" />
-      <updated>1617997156598</updated>
+      <updated>1617797511296</updated>
     </task>
-    <task id="LOCAL-00025" summary="Fix scanner">
-      <created>1617999088484</created>
+    <task id="LOCAL-00025" summary="menu printer has been updated, all exception catched">
+      <created>1617827344959</created>
       <option name="number" value="00025" />
       <option name="presentableId" value="LOCAL-00025" />
       <option name="project" value="LOCAL" />
-      <updated>1617999088484</updated>
+      <updated>1617827344959</updated>
     </task>
-    <task id="LOCAL-00026" summary="Done!!!!!!!">
-      <created>1617999759600</created>
+    <task id="LOCAL-00026" summary="menu printer has been updated, all exception catched">
+      <created>1617830902413</created>
       <option name="number" value="00026" />
       <option name="presentableId" value="LOCAL-00026" />
       <option name="project" value="LOCAL" />
-      <updated>1617999759600</updated>
+      <updated>1617830902413</updated>
     </task>
-    <task id="LOCAL-00027" summary="Upload the correct instructions.pdf file">
-      <created>1619100961120</created>
+    <task id="LOCAL-00027" summary="menu printer has been updated, all exception catched">
+      <created>1617865506806</created>
       <option name="number" value="00027" />
       <option name="presentableId" value="LOCAL-00027" />
       <option name="project" value="LOCAL" />
-      <updated>1619100961120</updated>
+      <updated>1617865506806</updated>
     </task>
-    <task id="LOCAL-00028" summary="most update project">
-      <created>1619293819858</created>
+    <task id="LOCAL-00028" summary="menu printer has been updated, all exception catched">
+      <created>1617866516208</created>
       <option name="number" value="00028" />
       <option name="presentableId" value="LOCAL-00028" />
       <option name="project" value="LOCAL" />
-      <updated>1619293819859</updated>
+      <updated>1617866516208</updated>
     </task>
-    <task id="LOCAL-00029" summary="delete unused methods">
-      <created>1619432800083</created>
+    <task id="LOCAL-00029" summary="menu printer method has been updated">
+      <created>1617867431184</created>
       <option name="number" value="00029" />
       <option name="presentableId" value="LOCAL-00029" />
       <option name="project" value="LOCAL" />
-      <updated>1619432800083</updated>
+      <updated>1617867431184</updated>
     </task>
-    <task id="LOCAL-00030" summary="delete unused methods">
-      <created>1619433046254</created>
+    <task id="LOCAL-00030" summary="remove site from pool option added">
+      <created>1617868967243</created>
       <option name="number" value="00030" />
       <option name="presentableId" value="LOCAL-00030" />
       <option name="project" value="LOCAL" />
-      <updated>1619433046254</updated>
+      <updated>1617868967243</updated>
     </task>
-    <option name="localTasksCounter" value="31" />
+    <task id="LOCAL-00031" summary="date added to AddDemand">
+      <created>1617873405041</created>
+      <option name="number" value="00031" />
+      <option name="presentableId" value="LOCAL-00031" />
+      <option name="project" value="LOCAL" />
+      <updated>1617873405041</updated>
+    </task>
+    <task id="LOCAL-00032" summary="Finnally merged, re testing">
+      <created>1617875911735</created>
+      <option name="number" value="00032" />
+      <option name="presentableId" value="LOCAL-00032" />
+      <option name="project" value="LOCAL" />
+      <updated>1617875911735</updated>
+    </task>
+    <task id="LOCAL-00033" summary="Finnally merged, re testing">
+      <created>1617888225427</created>
+      <option name="number" value="00033" />
+      <option name="presentableId" value="LOCAL-00033" />
+      <option name="project" value="LOCAL" />
+      <updated>1617888225427</updated>
+    </task>
+    <task id="LOCAL-00034" summary="first step test, passed">
+      <created>1617893615283</created>
+      <option name="number" value="00034" />
+      <option name="presentableId" value="LOCAL-00034" />
+      <option name="project" value="LOCAL" />
+      <updated>1617893615283</updated>
+    </task>
+    <task id="LOCAL-00035" summary="remove Demand has been added">
+      <created>1617899185018</created>
+      <option name="number" value="00035" />
+      <option name="presentableId" value="LOCAL-00035" />
+      <option name="project" value="LOCAL" />
+      <updated>1617899185018</updated>
+    </task>
+    <task id="LOCAL-00036" summary="remove Demand has been added">
+      <created>1617902532984</created>
+      <option name="number" value="00036" />
+      <option name="presentableId" value="LOCAL-00036" />
+      <option name="project" value="LOCAL" />
+      <updated>1617902532984</updated>
+    </task>
+    <task id="LOCAL-00037" summary="replan to be improved">
+      <created>1617930237681</created>
+      <option name="number" value="00037" />
+      <option name="presentableId" value="LOCAL-00037" />
+      <option name="project" value="LOCAL" />
+      <updated>1617930237681</updated>
+    </task>
+    <task id="LOCAL-00038" summary="all method save finnnalyyy">
+      <created>1617983734990</created>
+      <option name="number" value="00038" />
+      <option name="presentableId" value="LOCAL-00038" />
+      <option name="project" value="LOCAL" />
+      <updated>1617983734990</updated>
+    </task>
+    <task id="LOCAL-00039" summary="finished to upload">
+      <created>1617986325475</created>
+      <option name="number" value="00039" />
+      <option name="presentableId" value="LOCAL-00039" />
+      <option name="project" value="LOCAL" />
+      <updated>1617986325475</updated>
+    </task>
+    <task id="LOCAL-00040" summary="Fixed intiate method">
+      <created>1617987095296</created>
+      <option name="number" value="00040" />
+      <option name="presentableId" value="LOCAL-00040" />
+      <option name="project" value="LOCAL" />
+      <updated>1617987095296</updated>
+    </task>
+    <task id="LOCAL-00041" summary="last update">
+      <created>1617992627648</created>
+      <option name="number" value="00041" />
+      <option name="presentableId" value="LOCAL-00041" />
+      <option name="project" value="LOCAL" />
+      <updated>1617992627648</updated>
+    </task>
+    <option name="localTasksCounter" value="42" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
-  </component>
-  <component name="Vcs.Log.History.Properties">
-    <option name="COLUMN_ORDER">
-      <list>
-        <option value="0" />
-        <option value="2" />
-        <option value="3" />
-        <option value="1" />
-      </list>
-    </option>
   </component>
   <component name="Vcs.Log.Tabs.Properties">
     <option name="TAB_STATES">
@@ -388,193 +494,48 @@
         </entry>
       </map>
     </option>
+    <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Delete &quot;employee&quot; from the signatures in EmployeeController" />
-    <MESSAGE value="Ignore 2" />
-    <MESSAGE value="Update FacadeEmployee" />
-    <MESSAGE value="Finished EmployeeService" />
-    <MESSAGE value="adding validDate() and validId() to EmployeeController" />
-    <MESSAGE value="Change signature of login in EmployeeController to (String Id, String role)" />
-    <MESSAGE value="Delete updateConstraint() from project" />
-    <MESSAGE value="Finish EmployeeService" />
-    <MESSAGE value="Checks valid arguments in BankAccountInfo, Constraint, Employee, TermsOfEmployment" />
-    <MESSAGE value="Commit befor merge" />
-    <MESSAGE value="Adding isExist() to EmployeeController" />
-    <MESSAGE value="Finish convertor" />
-    <MESSAGE value="Adding sortConstraintsByDate(HashMap&lt;LocalDate, Constraint&gt; constraints) to Employee" />
-    <MESSAGE value="12 unitTest" />
-    <MESSAGE value="fix exeptions in tests" />
-    <MESSAGE value="createData in EmployeeController" />
-    <MESSAGE value="createData in service" />
-    <MESSAGE value="adding constraint on createData()" />
-    <MESSAGE value="Pushing final priject" />
-    <MESSAGE value="Finale project" />
-    <MESSAGE value="Fix scanner" />
-    <MESSAGE value="Done!!!!!!!" />
-    <MESSAGE value="Upload the correct instructions.pdf file" />
-    <MESSAGE value="most update project" />
-    <MESSAGE value="delete unused methods" />
-    <option name="LAST_COMMIT_MESSAGE" value="delete unused methods" />
-  </component>
-  <component name="WindowStateProjectService">
-    <state x="2360" y="99" key="#Project_Structure" timestamp="1617861345727">
-      <screen x="1920" y="0" width="1920" height="1050" />
-    </state>
-    <state x="2360" y="99" key="#Project_Structure/0.0.1280.689/1920.0.1920.1050@1920.0.1920.1050" timestamp="1617861345727" />
-    <state x="491" y="137" key="#com.intellij.ide.util.TreeClassChooserDialog" timestamp="1617993576351">
-      <screen x="0" y="0" width="1280" height="689" />
-    </state>
-    <state x="491" y="137" key="#com.intellij.ide.util.TreeClassChooserDialog/0.0.1280.689@0.0.1280.689" timestamp="1617993576351" />
-    <state x="2476" y="0" key="#com.intellij.refactoring.rename.AutomaticRenamingDialog" timestamp="1617358344253">
-      <screen x="1920" y="0" width="1920" height="1050" />
-    </state>
-    <state x="2476" y="0" key="#com.intellij.refactoring.rename.AutomaticRenamingDialog/0.0.1280.689/1920.0.1920.1050@1920.0.1920.1050" timestamp="1617358344253" />
-    <state x="60" y="0" width="1487" height="880" key="CommitChangelistDialog2" timestamp="1619433052968">
-      <screen x="0" y="0" width="1280" height="689" />
-    </state>
-    <state x="60" y="0" key="CommitChangelistDialog2/0.0.1280.689/1920.0.1920.1050@0.0.1280.689" timestamp="1619433052968" />
-    <state x="2010" y="93" width="1487" height="880" key="CommitChangelistDialog2/0.0.1280.689/1920.0.1920.1050@1920.0.1920.1050" timestamp="1619100959322" />
-    <state x="3" y="0" width="885" height="689" key="CommitChangelistDialog2/0.0.1280.689@0.0.1280.689" timestamp="1617999756533" />
-    <state x="544" y="93" key="CommitChangelistDialog2/0.0.1920.1050@0.0.1920.1050" timestamp="1617524156206" />
-    <state x="93" y="93" width="1095" height="504" key="DiffContextDialog" timestamp="1619432989137">
-      <screen x="0" y="0" width="1280" height="689" />
-    </state>
-    <state x="93" y="93" width="1095" height="504" key="DiffContextDialog/0.0.1280.689/1920.0.1920.1050@0.0.1280.689" timestamp="1619432989137" />
-    <state x="93" y="93" width="1095" height="504" key="DiffContextDialog/0.0.1280.689@0.0.1280.689" timestamp="1617793393931" />
-    <state x="2660" y="280" key="FileChooserDialogImpl" timestamp="1617861337039">
-      <screen x="1920" y="0" width="1920" height="1050" />
-    </state>
-    <state x="2660" y="280" key="FileChooserDialogImpl/0.0.1280.689/1920.0.1920.1050@1920.0.1920.1050" timestamp="1617861337039" />
-    <state width="1237" height="2" key="GridCell.Tab.0.bottom" timestamp="1619447755684">
-      <screen x="0" y="0" width="1280" height="689" />
-    </state>
-    <state width="1237" height="294" key="GridCell.Tab.0.bottom/0.0.1280.689/1920.0.1920.1050@0.0.1280.689" timestamp="1619329795743" />
-    <state width="1877" height="213" key="GridCell.Tab.0.bottom/0.0.1280.689/1920.0.1920.1050@1920.0.1920.1050" timestamp="1619101160413" />
-    <state width="1237" height="2" key="GridCell.Tab.0.bottom/0.0.1280.689@0.0.1280.689" timestamp="1619447755684" />
-    <state width="1237" height="273" key="GridCell.Tab.0.bottom/1920.0.1920.1050/0.0.1920.1050@0.0.1920.1050" timestamp="1618063102041" />
-    <state width="1237" height="2" key="GridCell.Tab.0.center" timestamp="1619447755683">
-      <screen x="0" y="0" width="1280" height="689" />
-    </state>
-    <state width="1237" height="294" key="GridCell.Tab.0.center/0.0.1280.689/1920.0.1920.1050@0.0.1280.689" timestamp="1619329795743" />
-    <state width="1877" height="213" key="GridCell.Tab.0.center/0.0.1280.689/1920.0.1920.1050@1920.0.1920.1050" timestamp="1619101160413" />
-    <state width="1237" height="2" key="GridCell.Tab.0.center/0.0.1280.689@0.0.1280.689" timestamp="1619447755683" />
-    <state width="1237" height="273" key="GridCell.Tab.0.center/1920.0.1920.1050/0.0.1920.1050@0.0.1920.1050" timestamp="1618063102040" />
-    <state width="1237" height="2" key="GridCell.Tab.0.left" timestamp="1619447755682">
-      <screen x="0" y="0" width="1280" height="689" />
-    </state>
-    <state width="1237" height="294" key="GridCell.Tab.0.left/0.0.1280.689/1920.0.1920.1050@0.0.1280.689" timestamp="1619329795742" />
-    <state width="1877" height="213" key="GridCell.Tab.0.left/0.0.1280.689/1920.0.1920.1050@1920.0.1920.1050" timestamp="1619101160412" />
-    <state width="1237" height="2" key="GridCell.Tab.0.left/0.0.1280.689@0.0.1280.689" timestamp="1619447755682" />
-    <state width="1237" height="273" key="GridCell.Tab.0.left/1920.0.1920.1050/0.0.1920.1050@0.0.1920.1050" timestamp="1618063102040" />
-    <state width="1237" height="2" key="GridCell.Tab.0.right" timestamp="1619447755683">
-      <screen x="0" y="0" width="1280" height="689" />
-    </state>
-    <state width="1237" height="294" key="GridCell.Tab.0.right/0.0.1280.689/1920.0.1920.1050@0.0.1280.689" timestamp="1619329795743" />
-    <state width="1877" height="213" key="GridCell.Tab.0.right/0.0.1280.689/1920.0.1920.1050@1920.0.1920.1050" timestamp="1619101160413" />
-    <state width="1237" height="2" key="GridCell.Tab.0.right/0.0.1280.689@0.0.1280.689" timestamp="1619447755683" />
-    <state width="1237" height="273" key="GridCell.Tab.0.right/1920.0.1920.1050/0.0.1920.1050@0.0.1920.1050" timestamp="1618063102040" />
-    <state width="1237" height="2" key="GridCell.Tab.1.bottom" timestamp="1619447755684">
-      <screen x="0" y="0" width="1280" height="689" />
-    </state>
-    <state width="1237" height="294" key="GridCell.Tab.1.bottom/0.0.1280.689/1920.0.1920.1050@0.0.1280.689" timestamp="1619329795743" />
-    <state width="1237" height="2" key="GridCell.Tab.1.bottom/0.0.1280.689@0.0.1280.689" timestamp="1619447755684" />
-    <state width="1237" height="129" key="GridCell.Tab.1.bottom/1920.0.1920.1050/0.0.1920.1050@0.0.1920.1050" timestamp="1618063101971" />
-    <state width="1237" height="2" key="GridCell.Tab.1.center" timestamp="1619447755684">
-      <screen x="0" y="0" width="1280" height="689" />
-    </state>
-    <state width="1237" height="294" key="GridCell.Tab.1.center/0.0.1280.689/1920.0.1920.1050@0.0.1280.689" timestamp="1619329795743" />
-    <state width="1237" height="2" key="GridCell.Tab.1.center/0.0.1280.689@0.0.1280.689" timestamp="1619447755684" />
-    <state width="1237" height="129" key="GridCell.Tab.1.center/1920.0.1920.1050/0.0.1920.1050@0.0.1920.1050" timestamp="1618063101971" />
-    <state width="1237" height="2" key="GridCell.Tab.1.left" timestamp="1619447755684">
-      <screen x="0" y="0" width="1280" height="689" />
-    </state>
-    <state width="1237" height="294" key="GridCell.Tab.1.left/0.0.1280.689/1920.0.1920.1050@0.0.1280.689" timestamp="1619329795743" />
-    <state width="1237" height="2" key="GridCell.Tab.1.left/0.0.1280.689@0.0.1280.689" timestamp="1619447755684" />
-    <state width="1237" height="129" key="GridCell.Tab.1.left/1920.0.1920.1050/0.0.1920.1050@0.0.1920.1050" timestamp="1618063101970" />
-    <state width="1237" height="2" key="GridCell.Tab.1.right" timestamp="1619447755684">
-      <screen x="0" y="0" width="1280" height="689" />
-    </state>
-    <state width="1237" height="294" key="GridCell.Tab.1.right/0.0.1280.689/1920.0.1920.1050@0.0.1280.689" timestamp="1619329795743" />
-    <state width="1237" height="2" key="GridCell.Tab.1.right/0.0.1280.689@0.0.1280.689" timestamp="1619447755684" />
-    <state width="1237" height="129" key="GridCell.Tab.1.right/1920.0.1920.1050/0.0.1920.1050@0.0.1920.1050" timestamp="1618063101971" />
-    <state x="-7" y="152" width="1751" height="587" key="MergeDialog" timestamp="1617889567912">
-      <screen x="0" y="0" width="1280" height="689" />
-    </state>
-    <state x="1910" y="231" width="1751" height="587" key="MergeDialog/0.0.1280.689/1920.0.1920.1050@1920.0.1920.1050" timestamp="1617865755715" />
-    <state x="-7" y="152" key="MergeDialog/0.0.1280.689@0.0.1280.689" timestamp="1617889567912" />
-    <state x="-9" y="95" width="1334" height="891" key="MultipleFileMergeDialog" timestamp="1617889567922">
-      <screen x="0" y="0" width="1280" height="689" />
-    </state>
-    <state x="1907" y="145" width="1334" height="891" key="MultipleFileMergeDialog/0.0.1280.689/1920.0.1920.1050@1920.0.1920.1050" timestamp="1617865772580" />
-    <state x="-9" y="95" key="MultipleFileMergeDialog/0.0.1280.689@0.0.1280.689" timestamp="1617889567922" />
-    <state x="361" y="48" key="RollbackChangesDialog" timestamp="1617792978075">
-      <screen x="0" y="0" width="1280" height="689" />
-    </state>
-    <state x="361" y="48" key="RollbackChangesDialog/0.0.1280.689@0.0.1280.689" timestamp="1617792978075" />
-    <state x="2381" y="170" key="SettingsEditor" timestamp="1619868979899">
-      <screen x="1920" y="0" width="1920" height="1050" />
-    </state>
-    <state x="2381" y="170" key="SettingsEditor/0.0.1280.689/1920.0.1920.1050@1920.0.1920.1050" timestamp="1619868979899" />
-    <state x="242" y="0" key="SettingsEditor/0.0.1280.689@0.0.1280.689" timestamp="1617993724653" />
-    <state x="93" y="93" width="1095" height="504" maximized="true" key="ShowDiffWithBranchDialog" timestamp="1619432989137">
-      <screen x="0" y="0" width="1280" height="689" />
-    </state>
-    <state x="93" y="93" width="1095" height="504" maximized="true" key="ShowDiffWithBranchDialog/0.0.1280.689/1920.0.1920.1050@0.0.1280.689" timestamp="1619432989137" />
-    <state x="93" y="93" width="1095" height="504" key="ShowDiffWithBranchDialog/0.0.1280.689@0.0.1280.689" timestamp="1617640383758" />
-    <state x="233" y="78" key="Vcs.Push.Dialog.v2" timestamp="1619433060295">
-      <screen x="0" y="0" width="1280" height="689" />
-    </state>
-    <state x="233" y="78" key="Vcs.Push.Dialog.v2/0.0.1280.689/1920.0.1920.1050@0.0.1280.689" timestamp="1619433060295" />
-    <state x="2270" y="119" key="Vcs.Push.Dialog.v2/0.0.1280.689/1920.0.1920.1050@1920.0.1920.1050" timestamp="1619100966086" />
-    <state x="233" y="78" key="Vcs.Push.Dialog.v2/0.0.1280.689@0.0.1280.689" timestamp="1617999762472" />
-    <state x="360" y="172" key="Vcs.Push.Dialog.v2/0.0.1920.1050@0.0.1920.1050" timestamp="1617524465184" />
-    <state x="307" y="79" key="VcsDiffUtil.ChangesDialog" timestamp="1617793165721">
-      <screen x="0" y="0" width="1280" height="689" />
-    </state>
-    <state x="307" y="79" key="VcsDiffUtil.ChangesDialog/0.0.1280.689@0.0.1280.689" timestamp="1617793165721" />
-    <state x="376" y="237" key="com.intellij.jarRepository.RepositoryAttachDialog-DOWNLOAD" timestamp="1617872069458">
-      <screen x="0" y="0" width="1280" height="689" />
-    </state>
-    <state x="376" y="237" key="com.intellij.jarRepository.RepositoryAttachDialog-DOWNLOAD/0.0.1280.689@0.0.1280.689" timestamp="1617872069458" />
-    <state x="2607" y="395" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1619869495578">
-      <screen x="1920" y="0" width="1920" height="1050" />
-    </state>
-    <state x="458" y="259" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/0.0.1280.689/1920.0.1920.1050@0.0.1280.689" timestamp="1617351240830" />
-    <state x="2607" y="395" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/0.0.1280.689/1920.0.1920.1050@1920.0.1920.1050" timestamp="1619869495578" />
-    <state x="458" y="259" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/0.0.1280.689@0.0.1280.689" timestamp="1617984098086" />
-    <state x="687" y="395" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/0.0.1920.1050@0.0.1920.1050" timestamp="1617524206368" />
-    <state x="340" y="21" key="com.intellij.testIntegration.createTest.CreateTestDialog" timestamp="1617872027181">
-      <screen x="0" y="0" width="1280" height="689" />
-    </state>
-    <state x="340" y="21" key="com.intellij.testIntegration.createTest.CreateTestDialog/0.0.1280.689@0.0.1280.689" timestamp="1617872027181" />
-    <state x="473" y="116" key="git4idea.branch.GitSmartOperationDialog" timestamp="1617890624047">
-      <screen x="0" y="0" width="1280" height="689" />
-    </state>
-    <state x="2629" y="238" key="git4idea.branch.GitSmartOperationDialog/0.0.1280.689/1920.0.1920.1050@1920.0.1920.1050" timestamp="1617532100831" />
-    <state x="473" y="116" key="git4idea.branch.GitSmartOperationDialog/0.0.1280.689@0.0.1280.689" timestamp="1617890624047" />
-    <state x="2289" y="247" key="new project wizard" timestamp="1619868960864">
-      <screen x="1920" y="0" width="1920" height="1050" />
-    </state>
-    <state x="2289" y="247" key="new project wizard/0.0.1280.689/1920.0.1920.1050@1920.0.1920.1050" timestamp="1619868960864" />
-    <state x="0" y="149" key="run.anything.popup.inPresentationMode" timestamp="1617878283945">
-      <screen x="0" y="0" width="1280" height="689" />
-    </state>
-    <state x="0" y="149" key="run.anything.popup.inPresentationMode/0.0.1280.689@0.0.1280.689" timestamp="1617878283945" />
-    <state x="303" y="10" width="672" height="678" key="search.everywhere.popup" timestamp="1617993898899">
-      <screen x="0" y="0" width="1280" height="689" />
-    </state>
-    <state x="303" y="10" width="672" height="678" key="search.everywhere.popup/0.0.1280.689@0.0.1280.689" timestamp="1617993898899" />
+    <MESSAGE value="some fixed in PresentationController, last methods has been made, TODO added to business layer" />
+    <MESSAGE value="finished Facade layer and Presentation layer. waiting for combine with business layer to tests.&#10;&#10;** Unit test haven't done yet.&#10;** NTH didn't accomplished yet" />
+    <MESSAGE value="after combine meeting." />
+    <MESSAGE value="replan changed" />
+    <MESSAGE value="** compilation error exist. need to add getItems in Delivery service" />
+    <MESSAGE value="Facade objects has been completed" />
+    <MESSAGE value="merged before tests" />
+    <MESSAGE value="First test has been done - ido left to do Menu test.&#10;Raz has left with everything else because he is such a dick&#10;Love you raz" />
+    <MESSAGE value="fixed input exceptions" />
+    <MESSAGE value="initalize test method has been improved. String scanner exception has been cought" />
+    <MESSAGE value="TODO has been added to both branche's job" />
+    <MESSAGE value="DF active has been added" />
+    <MESSAGE value="updateDeliveryForm has been added" />
+    <MESSAGE value="menu printer has been updated, all exception catched" />
+    <MESSAGE value="menu printer method has been updated" />
+    <MESSAGE value="remove site from pool option added" />
+    <MESSAGE value="date added to AddDemand" />
+    <MESSAGE value="Finnally merged, re testing" />
+    <MESSAGE value="first step test, passed" />
+    <MESSAGE value="remove Demand has been added" />
+    <MESSAGE value="replan to be improved" />
+    <MESSAGE value="all method save finnnalyyy" />
+    <MESSAGE value="finished to upload" />
+    <MESSAGE value="Fixed intiate method" />
+    <MESSAGE value="last update" />
+    <option name="LAST_COMMIT_MESSAGE" value="last update" />
   </component>
   <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/dev/src/Employees/business_layer/facade/facadeObject/FacadeConstraint.java</url>
-          <line>7</line>
-          <option name="timeStamp" value="1" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
+    <pin-to-top-manager>
+      <pinned-members>
+        <PinnedItemInfo parentTag="java.lang.Integer" memberName="value" />
+        <PinnedItemInfo parentTag="Business_Layer_Trucking.Delivery.DeliveryController" memberName="lastReportID" />
+        <PinnedItemInfo parentTag="java.util.HashMap$Node" memberName="value" />
+        <PinnedItemInfo parentTag="Business_Layer_Trucking.Delivery.DeliveryController" memberName="currDF" />
+        <PinnedItemInfo parentTag="Business_Layer_Trucking.Facade.DeliveryService" memberName="dc" />
+      </pinned-members>
+    </pin-to-top-manager>
+  </component>
+  <component name="com.intellij.coverage.CoverageDataManagerImpl">
+    <SUITE FILE_PATH="coverage/ADSS_Group_G$Main.ic" NAME="Main Coverage Results" MODIFIED="1617982326074" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
   </component>
 </project>

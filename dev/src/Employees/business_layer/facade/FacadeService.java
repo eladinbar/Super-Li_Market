@@ -1,9 +1,12 @@
 package Employees.business_layer.facade;
 
-import Employees.EmployeeException;
-import Employees.business_layer.Employee.*;
+import Employees.business_layer.Employee.EmployeeController;
+import Employees.business_layer.Employee.Role;
 import Employees.business_layer.Shift.ShiftController;
-import Employees.business_layer.facade.facadeObject.*;
+import Employees.business_layer.facade.facadeObject.FacadeConstraint;
+import Employees.business_layer.facade.facadeObject.FacadeEmployee;
+import Employees.business_layer.facade.facadeObject.FacadeShift;
+import Employees.business_layer.facade.facadeObject.FacadeWeeklyShiftSchedule;
 
 import java.time.LocalDate;
 import java.util.HashMap;
@@ -15,9 +18,8 @@ public class FacadeService {
 
     public  FacadeService()
     {
-        EmployeeController employeeController = new EmployeeController ();
-        employeeService = new EmployeeService (employeeController);
-        shiftService = new ShiftService (new ShiftController ( employeeController ) );
+        employeeService = new EmployeeService ();
+        shiftService = new ShiftService ();
     }
 
     //shift service responsibility
@@ -26,9 +28,9 @@ public class FacadeService {
         return shiftService.getRecommendation ( startingDate );
     }
 
-    public ResponseT<FacadeWeeklyShiftSchedule> createWeeklyshiftSchedule(LocalDate startingDate, FacadeShift[][] shifts)
+    public ResponseT<FacadeWeeklyShiftSchedule> createWeeklyShiftSchedule(LocalDate startingDate, FacadeShift[][] shifts)
     {
-        return shiftService.createWeeklyshiftSchedule ( startingDate, shifts );
+        return shiftService.createWeeklyShiftSchedule ( startingDate, shifts );
     }
 
     public Response changeShift(LocalDate date, int shift, HashMap<String, List<String>> manning) {
@@ -47,8 +49,8 @@ public class FacadeService {
         return shiftService.changeShiftType ( date, shift, shiftType);
     }
 
-    public Response createShiftType(String shiftype, HashMap<String, Integer> manning){
-        return shiftService.createShiftType ( shiftype, manning );
+    public Response createShiftType(String shiftType, HashMap<String, Integer> manning){
+        return shiftService.createShiftType ( shiftType, manning );
     }
 
     public Response updateRoleManning(String shiftType, String role, int num) {
@@ -102,14 +104,14 @@ public class FacadeService {
     }
 
     public Response updateTermsOfEmployee(String Id, int salary, int educationFund, int sickDays, int daysOff) {
-        return employeeService.updateTermsOfemployee ( Id,salary,educationFund,sickDays,daysOff );
+        return employeeService.updateTermsOfEmployee ( Id,salary,educationFund,sickDays,daysOff );
     }
 
     public Response addEmployee(FacadeEmployee employee) {
         return employeeService.addEmployee ( employee );
     }
 
-    public Response addManager(FacadeEmployee manager) {
+    public ResponseT<FacadeEmployee> addManager(FacadeEmployee manager) {
         return employeeService.addManager ( manager );
     }
 
@@ -118,8 +120,8 @@ public class FacadeService {
         return employeeService.getConstraints();
     }
 
-    public ResponseT<FacadeEmployee> getLoggedin() {
-        return employeeService.getLoggedin();
+    public ResponseT<FacadeEmployee> getLoggedIn() {
+        return employeeService.getLoggedIn();
     }
 
     public ResponseT<FacadeEmployee> getEmployee(String ID){
@@ -135,13 +137,12 @@ public class FacadeService {
     }
 
     public Response createData() {
-        try {
-            employeeService.createData ( );
-            shiftService.createData ( );
-            return new Response (  );
-        }catch (EmployeeException e)
-        {
-            return new Response ( e.getMessage () );
-        }
+        Response response = employeeService.createData ( );
+        if(response.errorOccured ())
+            return response;
+        employeeService.login ( "789000000", Role.humanResourcesManager );
+        response = shiftService.createData ( );
+        employeeService.logout ();
+        return response;
     }
 }
