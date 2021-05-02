@@ -25,4 +25,36 @@ public class DalTruckingReport implements DalObject{
         this.completed=completed;
         this.replaceTRID=replaceTRID;
     }
+
+    public int getID() {
+        return ID;
+    }
+
+    public int getOrigin() {
+        return origin;
+    }
+
+    public int getReplaceTRID() {
+        return replaceTRID;
+    }
+
+    public LocalDate getDate() {
+        return date;
+    }
+
+    public LocalTime getLeavingHour() {
+        return leavingHour;
+    }
+
+    public String getDriverID() {
+        return driverID;
+    }
+
+    public String getTruckNumber() {
+        return truckNumber;
+    }
+
+    public boolean isCompleted() {
+        return completed;
+    }
 }
