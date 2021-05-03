@@ -10,7 +10,7 @@ public class DalTruckingReport implements DalObject{
     private String truckNumber;
     private String driverID;
     private int origin;
-    private boolean completed;
+    private Boolean completed;
     private int replaceTRID;
 
     public DalTruckingReport(int ID,LocalTime leavingHour,LocalDate date,String truckNumber,String driverID
@@ -54,7 +54,7 @@ public class DalTruckingReport implements DalObject{
         return truckNumber;
     }
 
-    public boolean isCompleted() {
+    public Boolean isCompleted() {
         return completed;
     }
 }

@@ -27,10 +27,38 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="05ca914f-9056-4de3-9869-7fdfaa880f2d" name="Default Changelist" comment="Started DAL - Constructors , Load method signature changed.">
+    <list default="true" id="05ca914f-9056-4de3-9869-7fdfaa880f2d" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/sqlite-jdbc-3.32.3.2.jar" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ADSS_Group_G.iml" beforeDir="false" afterPath="$PROJECT_DIR$/ADSS_Group_G.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dev/src/DAL/DalDeliveryForm.java" beforeDir="false" afterPath="$PROJECT_DIR$/dev/src/DAL/DalDeliveryForm.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dev/src/DAL/DalDeliveryFormController.java" beforeDir="false" afterPath="$PROJECT_DIR$/dev/src/DAL/DalDeliveryFormController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dev/src/DAL/DalDemand.java" beforeDir="false" afterPath="$PROJECT_DIR$/dev/src/DAL/DalDemand.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dev/src/DAL/DalDemandController.java" beforeDir="false" afterPath="$PROJECT_DIR$/dev/src/DAL/DalDemandController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dev/src/DAL/DalDriver.java" beforeDir="false" afterPath="$PROJECT_DIR$/dev/src/DAL/DalDriver.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dev/src/DAL/DalDriverController.java" beforeDir="false" afterPath="$PROJECT_DIR$/dev/src/DAL/DalDriverController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dev/src/DAL/DalItem.java" beforeDir="false" afterPath="$PROJECT_DIR$/dev/src/DAL/DalItem.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dev/src/DAL/DalItemController.java" beforeDir="false" afterPath="$PROJECT_DIR$/dev/src/DAL/DalItemController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dev/src/DAL/DalItemsOnDF.java" beforeDir="false" afterPath="$PROJECT_DIR$/dev/src/DAL/DalItemsOnDF.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dev/src/DAL/DalItemsOnDFController.java" beforeDir="false" afterPath="$PROJECT_DIR$/dev/src/DAL/DalItemsOnDFController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dev/src/DAL/DalSite.java" beforeDir="false" afterPath="$PROJECT_DIR$/dev/src/DAL/DalSite.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dev/src/DAL/DalSiteController.java" beforeDir="false" afterPath="$PROJECT_DIR$/dev/src/DAL/DalSiteController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dev/src/DAL/DalTruck.java" beforeDir="false" afterPath="$PROJECT_DIR$/dev/src/DAL/DalTruck.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dev/src/DAL/DalTruckController.java" beforeDir="false" afterPath="$PROJECT_DIR$/dev/src/DAL/DalTruckController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/dev/src/DAL/DalTruckingReport.java" beforeDir="false" afterPath="$PROJECT_DIR$/dev/src/DAL/DalTruckingReport.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/dev/src/DAL/DalTruckingReportController.java" beforeDir="false" afterPath="$PROJECT_DIR$/dev/src/DAL/DalTruckingReportController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dev/src/Employees/Test/EmployeeControllerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/dev/src/Employees/Test/EmployeeControllerTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dev/src/InfrastructurePackage/SystemLogger.java" beforeDir="false" afterPath="$PROJECT_DIR$/dev/src/InfrastructurePackage/SystemLogger.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dev/src/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/dev/src/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dev/src/Tests/ResourcesServiceTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/dev/src/Tests/ResourcesServiceTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/ADSS_Group_G/Employees/Test/EmployeeControllerTest.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/ADSS_Group_G/Employees/business_layer/Employee/EmployeeController.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/ADSS_Group_G/Employees/business_layer/Employee/EmployeeController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/ADSS_Group_G/Employees/business_layer/Shift/ShiftTypes.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/ADSS_Group_G/Employees/business_layer/Shift/ShiftTypes.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/ADSS_Group_G/Employees/business_layer/facade/EmployeeService.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/ADSS_Group_G/Employees/business_layer/facade/EmployeeService.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/ADSS_Group_G/Employees/business_layer/facade/FacadeService.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/ADSS_Group_G/Employees/business_layer/facade/FacadeService.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/ADSS_Group_G/Employees/presentation_layer/MenuPrinter.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/ADSS_Group_G/Employees/presentation_layer/MenuPrinter.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/ADSS_Group_G/Employees/presentation_layer/PresentationController.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/ADSS_Group_G/Employees/presentation_layer/PresentationController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/ADSS_Group_G/Main.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/ADSS_Group_G/Main.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -77,11 +105,17 @@
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
     <property name="extract.method.default.visibility" value="private" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/sqlite-jdbc-3.32.3.2.jar" />
     <property name="nodejs_package_manager_path" value="npm" />
     <property name="project.structure.last.edited" value="Modules" />
     <property name="project.structure.proportion" value="0.15332031" />
     <property name="project.structure.side.proportion" value="0.2" />
     <property name="settings.editor.selected.configurable" value="preferences.lookFeel" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\razba\Desktop\ADSS_Group_G" />
+    </key>
   </component>
   <component name="RunManager" selected="Application.Main">
     <configuration default="true" type="ArquillianTestNG" factoryName="" nameIsGenerated="true">
@@ -125,9 +159,9 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Application.Main" />
         <item itemvalue="JUnit.ResourcesServiceTest" />
         <item itemvalue="JAR Application.ADSS_Group_G.jar" />
-        <item itemvalue="Application.Main" />
         <item itemvalue="Application.Main" />
         <item itemvalue="JUnit.ResourcesServiceTest" />
       </list>
@@ -461,7 +495,14 @@
       <option name="project" value="LOCAL" />
       <updated>1619887030042</updated>
     </task>
-    <option name="localTasksCounter" value="44" />
+    <task id="LOCAL-00044" summary="DalTruckingReportController insert method made.">
+      <created>1619971196521</created>
+      <option name="number" value="00044" />
+      <option name="presentableId" value="LOCAL-00044" />
+      <option name="project" value="LOCAL" />
+      <updated>1619971196521</updated>
+    </task>
+    <option name="localTasksCounter" value="45" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -480,7 +521,6 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="after combine meeting." />
     <MESSAGE value="replan changed" />
     <MESSAGE value="** compilation error exist. need to add getItems in Delivery service" />
     <MESSAGE value="Facade objects has been completed" />
@@ -505,9 +545,19 @@
     <MESSAGE value="last update" />
     <MESSAGE value="Started DAL" />
     <MESSAGE value="Started DAL - Constructors , Load method signature changed." />
-    <option name="LAST_COMMIT_MESSAGE" value="Started DAL - Constructors , Load method signature changed." />
+    <MESSAGE value="DalTruckingReportController insert method made." />
+    <option name="LAST_COMMIT_MESSAGE" value="DalTruckingReportController insert method made." />
   </component>
   <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/dev/src/DAL/DalTruckingReportController.java</url>
+          <line>22</line>
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
     <pin-to-top-manager>
       <pinned-members>
         <PinnedItemInfo parentTag="java.lang.Integer" memberName="value" />

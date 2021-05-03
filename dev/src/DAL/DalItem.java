@@ -6,14 +6,29 @@ public class DalItem implements DalObject{
     private String name;
     private int originSite;
 
-    public DalItem(int ID,double weight,String name,int originSite)
+    public DalItem(int ID,String name,double weight,int originSite)
     {
         this.ID=ID;
-        this.weight=weight;
         this.name=name;
+        this.weight=weight;
         this.originSite=originSite;
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public int getID() {
+        return ID;
+    }
+
+    public double getWeight() {
+        return weight;
+    }
+
+    public int getOriginSite() {
+        return originSite;
+    }
     //In business layer : constructor that gets (DalItem)
 
 }

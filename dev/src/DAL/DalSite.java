@@ -19,4 +19,28 @@ public class DalSite implements DalObject{
         this.phoneNumber=phoneNumber;
 
     }
+
+    public String getName() {
+        return name;
+    }
+
+    public int getSiteID() {
+        return siteID;
+    }
+
+    public int getDeliveryArea() {
+        return deliveryArea;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public String getContactName() {
+        return contactName;
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
 }
