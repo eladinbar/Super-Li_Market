@@ -1,15 +1,21 @@
 package PresentationLayer;
 
+import BusinessLayer.supplierPackage.payment;
 import BusinessLayer.supplierPackage.supplier;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.Scanner;
+import java.util.regex.Pattern;
 
 public class MenuPrinter {
     private PresentationController pc;
     private Scanner scan;
+    private final int MaxCompanyNumber = 100;
+    private final int MaxNamesLength = 20;
+    private final int PhoneLength = 10;
+    private final int idLength = 9;
 
     public MenuPrinter() {
         scan = new Scanner(System.in);
@@ -108,6 +114,10 @@ public class MenuPrinter {
     private void removeSupplier() {
         System.out.print("please enter supplier id: ");
         String id = getStringFromUser();
+        try{ idCheck(id); }
+        catch(Exception e){
+            System.out.println(e+"\ntry again:");
+            removeSupplier();}
         System.out.println(pc.removeSupplier(id));
     }
 
@@ -126,6 +136,18 @@ public class MenuPrinter {
         String phone = getStringFromUser();
         System.out.print("companyNumber: ");
         int companyNumber = getIntFromUser();
+        try{
+            nameCheck(firstName);
+            nameCheck(lName);
+            emailCheck(email);
+            idCheck(ID);
+            phoneCheck(phone);
+            companyNumberCheck(companyNumber);
+        }
+        catch(Exception e){
+            System.out.println(e.getMessage()+"\nPlease try again:");
+            addSupplierFunc();
+        }
         boolean perm;
         while (true) {
             System.out.print("do you a permanent order days? y/n: ");
@@ -192,12 +214,22 @@ public class MenuPrinter {
     private void getSupplier() {
         System.out.print("please enter supplier id: ");
         String supplierId = getStringFromUser();
+        try{idCheck(supplierId);}
+        catch (Exception e){
+            System.out.println(e.getMessage()+"\ntry again:");
+            getSupplier();
+        }
         System.out.println(pc.getSupplier(supplierId));
     }
 
     private void addQuantityList() { //case 4
         System.out.print("please enter supplier id: ");
         String supplierId = getStringFromUser();
+        try{idCheck(supplierId);}
+        catch (Exception e){
+            System.out.println(e.getMessage()+"\ntry again:");
+            addQuantityList();
+        }
         System.out.println(pc.addQuantityList(supplierId));
         while (true) {
             System.out.println("please choose an option");
@@ -222,6 +254,11 @@ public class MenuPrinter {
     private void editQuantityList() { //case 5
         System.out.print("please enter supplier id: ");
         String supplierId = getStringFromUser();
+        try{idCheck(supplierId);}
+        catch (Exception e){
+            System.out.println(e.getMessage()+"\ntry again:");
+            editQuantityList();
+        }
         System.out.println("Please choose an option to Edit:");
         System.out.println("1. edit product amount");
         System.out.println("2. edit product discount");
@@ -617,5 +654,66 @@ public class MenuPrinter {
         System.out.println("product id: ");
         int productId = scan.nextInt();
         System.out.println(pc.removeProductFromOrder(orderId, productId));
+    }
+
+    private void nameCheck(String name) throws Exception {
+        if (name == null || name.equals(""))
+            throw new Exception("name cannot be null or empty spaces");
+        //checks length of the name
+        if (name.length() > MaxNamesLength)
+            throw new Exception("name length is too long");
+        //check if contains only letters
+        char[] arrayName = name.toLowerCase().toCharArray();
+        for (char c : arrayName) {
+            if (c < 'a' || c > 'z')
+                throw new Exception("the name must contain letters only");
+        }
+    }
+
+    private void idCheck(String id) throws Exception {
+        if (id == null || id.equals(""))
+            throw new Exception("id cannot be null or empty spaces");
+        if (id.length() != idLength)
+            throw new Exception("id must contain " + idLength + " letters");
+        //check if contains only numbers
+        char[] idArray = id.toCharArray();
+        for (char c : idArray) {
+            if (c < '0' || c > '9')
+                throw new Exception("the id must contain numbers only");
+        }
+    }
+
+    private void phoneCheck(String phone) throws Exception {
+        if (phone == null || phone.equals(""))
+            throw new Exception("phone cannot be null or empty spaces");
+        if (phone.length() != PhoneLength)
+            throw new Exception("phone must contain " + PhoneLength + " letters, given phone :" + phone);
+        //check if contains only numbers
+        char[] idArray = phone.toCharArray();
+        for (char c : idArray) {
+            if (c < '0' || c > '9')
+                throw new Exception("the number must contain numbers only");
+        }
+        if (phone.charAt(0) != '0')
+            throw new Exception("phone number must begin with 0");
+    }
+
+    private void emailCheck(String email) throws Exception {
+        String emailRegex = "^[a-zA-Z0-9_+&*-]+(?:\\." +
+                "[a-zA-Z0-9_+&*-]+)*@" +
+                "(?:[a-zA-Z0-9-]+\\.)+[a-z" +
+                "A-Z]{2,7}$";
+
+        Pattern pat = Pattern.compile(emailRegex);
+        if (email == null)
+            throw new Exception("email cannot be null");
+        if (!pat.matcher(email).matches())
+            throw new Exception("invalid email");
+    }
+
+    //method that check if companyNumber is legal
+    protected void companyNumberCheck(int comanyNumber) throws Exception {
+        if (comanyNumber < 0 || comanyNumber > MaxCompanyNumber)
+            throw new Exception("invalid company number" + comanyNumber);
     }
 }

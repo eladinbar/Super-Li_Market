@@ -33,22 +33,6 @@ public class supplier {
         return ag;
     }
 
-    public int getMaxCompanyNumber() {
-        return MaxCompanyNumber;
-    }
-
-    public int getMaxNamesLength() {
-        return MaxNamesLength;
-    }
-
-    public int getPhoneLength() {
-        return PhoneLength;
-    }
-
-    public int getIdLength() {
-        return idLength;
-    }
-
     //method that check if companyNumber is legal
     protected void companyNumberCheck(int comanyNumber) throws Exception {
         if (comanyNumber < 0 || comanyNumber > MaxCompanyNumber)
@@ -181,5 +165,13 @@ public class supplier {
 
     public double getPrice(int amount, int productID) throws Exception {
         return ag.getPrice(amount,productID);
+    }
+
+    public Double getProductDiscount(int amount, int productID) throws Exception {
+        return ag.getProductDiscount(amount,productID);
+    }
+
+    public Integer getSupplierCompanyProductID(int productID) throws Exception {
+        return ag.getSupplierCompanyProductID(productID);
     }
 }

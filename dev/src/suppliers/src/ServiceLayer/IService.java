@@ -51,14 +51,13 @@ public interface IService {
     ResponseT<product> getProduct(int productID);
     ResponseT<Double> getPrice(String supplierID,int amount, int productID);
     ResponseT<supplier> getCheapestSupplier(int productID,int amount);
+    ResponseT<Double> getOrderTotalPrice(int orderID);
+    ResponseT<Double> getProductDiscount(String supplierID,int amount, int productID);
+    ResponseT<Integer> getSupplierCompanyProductID(String supplierID, int productID);
+    ResponseT<Double> getOrderTotalDiscount(int orderID);
 
     /*
     ResponseT<order> createOrderFromShortage(LocalDate date,String supplier,List<Integer> productsID,List<Integer> amount);
-    ResponseT<Integer> getDiscountInPercent(String supplierID,int amount, int productID);
-    ResponseT<Integer> getTotalDiscount(String supplierID,int amount, int productID);
-    ResponseT<Integer> getSupplierCompanyProductID(String supplierID, int productID);
-    ResponseT<Integer> getOrderTotalPrice(int orderID);
-    ResponseT<order> getLastOrderOf(String supplierID);
     */
 
     /*

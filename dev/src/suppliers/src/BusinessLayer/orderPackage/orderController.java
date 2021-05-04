@@ -99,4 +99,14 @@ public class orderController {
         orderExist(orderID);
         orders.get(orderID).removeProductFromOrder(productID);
     }
+
+    public Double getOrderTotalPrice(int orderID) throws Exception {
+        orderExist(orderID);
+        return orders.get(orderID).getOrderTotalPrice();
+    }
+
+    public Double getOrderTotalDiscount(int orderID) throws Exception {
+        orderExist(orderID);
+        return orders.get(orderID).getOrderTotalDiscount();
+    }
 }

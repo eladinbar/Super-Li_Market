@@ -200,4 +200,14 @@ public class supplierController {
             throw new Exception("There is no supplier that supply the product: "+productID);
         return cheapestSup;
     }
+
+    public Double getProductDiscount(String supplierID, int amount, int productID) throws Exception {
+        existSupplier(supplierID);
+        return suppliers.get(supplierID).getProductDiscount(amount,productID);
+    }
+
+    public Integer getSupplierCompanyProductID(String supplierID, int productID) throws Exception {
+        existSupplier(supplierID);
+        return suppliers.get(supplierID).getSupplierCompanyProductID(productID);
+    }
 }

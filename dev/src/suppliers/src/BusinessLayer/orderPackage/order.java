@@ -81,4 +81,20 @@ public class order {
             throw new Exception("order does not contain choosen product");
         products.remove(productID);
     }
+
+    public Double getOrderTotalPrice() throws Exception {
+        Double sum=0.0;
+        for (int productID:products.keySet()) {
+            sum+=supplier.getPrice(products.get(productID),productID);
+        }
+        return sum;
+    }
+
+    public Double getOrderTotalDiscount() throws Exception {
+        Double sum=0.0;
+        for (int productID:products.keySet()) {
+            sum+=supplier.getProductDiscount(products.get(productID),productID);
+        }
+        return sum;
+    }
 }

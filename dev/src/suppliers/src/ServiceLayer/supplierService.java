@@ -293,4 +293,24 @@ public class supplierService {
         }
         return toReturn;
     }
+
+    public ResponseT<Double> getProductDiscount(String supplierID, int amount, int productID) {
+        ResponseT<Double> toReturn;
+        try {
+            toReturn = new ResponseT<>(sp.getProductDiscount(supplierID, amount, productID));
+        } catch (Exception e) {
+            toReturn = new ResponseT<>(e.getMessage());
+        }
+        return toReturn;
+    }
+
+    public ResponseT<Integer> getSupplierCompanyProductID(String supplierID, int productID) {
+        ResponseT<Integer> toReturn;
+        try {
+            toReturn = new ResponseT<>(sp.getSupplierCompanyProductID(supplierID,productID));
+        } catch (Exception e) {
+            toReturn = new ResponseT<>(e.getMessage());
+        }
+        return toReturn;
+    }
 }

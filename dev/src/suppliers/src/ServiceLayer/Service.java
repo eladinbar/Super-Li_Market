@@ -196,6 +196,28 @@ public class Service implements IService {
     }
 
     @Override
+    public ResponseT<Double> getOrderTotalPrice(int orderID) {
+        return orderService.getOrderTotalPrice(orderID);
+    }
+
+    @Override
+    public ResponseT<Double> getProductDiscount(String supplierID, int amount, int productID) {
+        //todo check if product exists
+        return supplierService.getProductDiscount(supplierID, amount, productID);
+    }
+
+    @Override
+    public ResponseT<Integer> getSupplierCompanyProductID(String supplierID, int productID) {
+        //todo check if product exists
+        return supplierService.getSupplierCompanyProductID(supplierID,productID);
+    }
+
+    @Override
+    public ResponseT<Double> getOrderTotalDiscount(int orderID) {
+        return orderService.getOrderTotalDiscount(orderID);
+    }
+
+    @Override
     public ResponseT<agreement> getAgreement(String supplierID) {
         return supplierService.getAgreement(supplierID);
     }

@@ -129,4 +129,20 @@ public class agreement {
             price = ql.getPrice(productID, amount, price);
         return price;
     }
+
+    public Double getProductDiscount(int amount, int productID) throws Exception {
+        if (!products.containsKey(productID))
+            throw new Exception("item does not exists in agreement");
+        if (amount < 0)//todo check in presentation
+            throw new Exception("price must be positive number");
+        double agreementPrice=amount*prices.get(productID);
+        double afterDiscountPrice=getPrice(amount,productID);
+        return agreementPrice-afterDiscountPrice;
+    }
+
+    public Integer getSupplierCompanyProductID(int productID) throws Exception {
+        if (!products.containsKey(productID))
+            throw new Exception("item does not exists in agreement");
+        return products.get(productID);
+    }
 }

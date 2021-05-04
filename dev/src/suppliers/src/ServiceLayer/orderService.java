@@ -115,4 +115,25 @@ public class orderService {
         }
         return toReturn;
     }
+
+
+    public ResponseT<Double> getOrderTotalPrice(int orderID) {
+        ResponseT<Double> toReturn;
+        try {
+            toReturn = new ResponseT<>(oc.getOrderTotalPrice(orderID));
+        } catch (Exception e) {
+            toReturn = new ResponseT<>(e.getMessage());
+        }
+        return toReturn;
+    }
+
+    public ResponseT<Double> getOrderTotalDiscount(int orderID) {
+        ResponseT<Double> toReturn;
+        try {
+            toReturn = new ResponseT<>(oc.getOrderTotalDiscount(orderID));
+        } catch (Exception e) {
+            toReturn = new ResponseT<>(e.getMessage());
+        }
+        return toReturn;
+    }
 }
