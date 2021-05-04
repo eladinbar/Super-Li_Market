@@ -1,17 +1,16 @@
-package ServiceLayer.objects;
+package SuppliersMadule.ServiceLayer.objects;
 
 import java.time.LocalDate;
-import java.util.HashMap;
 import java.util.Map;
 
-public class order {
+public class Order {
     private int id;
     private Map<Integer, Integer> products;
     private LocalDate date;
     private boolean delivered;
-    private supplier supplier;
+    private Supplier supplier;
 
-    public order(int id, LocalDate date, supplier supplier, Map<Integer, Integer> products, boolean delivered) {
+    public Order(int id, LocalDate date, Supplier supplier, Map<Integer, Integer> products, boolean delivered) {
         this.id = id;
         this.products = products;
         this.date = date;
@@ -19,12 +18,12 @@ public class order {
         this.supplier = supplier;
     }
 
-    public order(BusinessLayer.orderPackage.order order) {
+    public Order(SuppliersMadule.BusinessLayer.orderPackage.Order order) {
         this.id = order.getId();
         this.products = order.getProducts();
         this.date = order.getDate();
         this.delivered = order.isDelivered();
-        this.supplier = new ServiceLayer.objects.supplier(order.getSupplier());
+        this.supplier = new SuppliersMadule.ServiceLayer.objects.Supplier(order.getSupplier());
     }
 
     public int getId() {

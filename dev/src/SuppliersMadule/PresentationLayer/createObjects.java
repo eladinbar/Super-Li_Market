@@ -1,6 +1,6 @@
-package PresentationLayer;
+package SuppliersMadule.PresentationLayer;
 
-import BusinessLayer.supplierPackage.supplier;
+import SuppliersMadule.BusinessLayer.supplierPackage.Supplier;
 
 import java.util.ArrayList;
 import java.util.List;

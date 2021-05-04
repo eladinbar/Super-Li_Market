@@ -1,35 +1,35 @@
-package ServiceLayer;
+package SuppliersMadule.ServiceLayer;
 
-import BusinessLayer.orderPackage.orderController;
-import BusinessLayer.supplierPackage.supplierController;
-import ServiceLayer.Response.Response;
-import ServiceLayer.Response.ResponseT;
-import ServiceLayer.objects.order;
-import ServiceLayer.objects.product;
+import SuppliersMadule.BusinessLayer.orderPackage.OrderController;
+import SuppliersMadule.BusinessLayer.supplierPackage.SupplierController;
+import SuppliersMadule.ServiceLayer.Response.Response;
+import SuppliersMadule.ServiceLayer.Response.ResponseT;
+import SuppliersMadule.ServiceLayer.objects.Order;
+import SuppliersMadule.ServiceLayer.objects.Product;
 
 import java.time.LocalDate;
 
-public class orderService {
-    private orderController oc;
+public class OrderService {
+    private OrderController oc;
 
-    public orderService() {
-        this.oc = new orderController();
+    public OrderService() {
+        this.oc = new OrderController();
     }
 
-    public ResponseT<order> createOrder(LocalDate date, String supplierID, supplierController sp) {
-        ResponseT<order> toReturn;
+    public ResponseT<Order> createOrder(LocalDate date, String supplierID, SupplierController sp) {
+        ResponseT<Order> toReturn;
         try {
-            toReturn = new ResponseT<>(new order(oc.createOrder(date, sp.getSupplier(supplierID))));
+            toReturn = new ResponseT<>(new Order(oc.createOrder(date, sp.getSupplier(supplierID))));
         } catch (Exception e) {
             toReturn = new ResponseT<>(e.getMessage());
         }
         return toReturn;
     }
 
-    public ResponseT<order> createPernamentOrder(int day, String supplierID, supplierController sp) {
-        ResponseT<order> toReturn;
+    public ResponseT<Order> createPermanentOrder(int day, String supplierID, SupplierController sp) {
+        ResponseT<Order> toReturn;
         try {
-            toReturn= new ResponseT<>(new order(oc.createPermOrder(day, sp.getSupplier(supplierID))));
+            toReturn= new ResponseT<>(new Order(oc.createPermOrder(day, sp.getSupplier(supplierID))));
         } catch (Exception e) {
             toReturn = new ResponseT<>(e.getMessage());
         }
@@ -46,30 +46,30 @@ public class orderService {
         return toReturn;
     }
 
-    public ResponseT<order> getOrder(int orderID) {
-        ResponseT<order> toReturn;
+    public ResponseT<Order> getOrder(int orderID) {
+        ResponseT<Order> toReturn;
         try {
-            toReturn=new ResponseT<>(new order(oc.getOrder(orderID)));
+            toReturn=new ResponseT<>(new Order(oc.getOrder(orderID)));
         } catch (Exception e) {
             toReturn = new ResponseT<>(e.getMessage());
         }
         return toReturn;
     }
 
-    public ResponseT<product> createProduct(String name, String manufacturer) {
-        ResponseT<product> toReturn;
+    public ResponseT<Product> createProduct(String name, String manufacturer) {
+        ResponseT<Product> toReturn;
         try {
-            toReturn=new ResponseT<>(new product(oc.createProduct(name, manufacturer)));
+            toReturn=new ResponseT<>(new Product(oc.createProduct(name, manufacturer)));
         } catch (Exception e) {
             toReturn = new ResponseT<>(e.getMessage());
         }
         return toReturn;
     }
 
-    public ResponseT<product> getProduct(int productID) {
-        ResponseT<product> toReturn;
+    public ResponseT<Product> getProduct(int productID) {
+        ResponseT<Product> toReturn;
         try {
-            toReturn = new ResponseT<>(new product(oc.getProduct(productID)));
+            toReturn = new ResponseT<>(new Product(oc.getProduct(productID)));
         } catch (Exception e) {
             toReturn = new ResponseT<>(e.getMessage());
         }

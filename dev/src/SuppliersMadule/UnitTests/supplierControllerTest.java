@@ -1,8 +1,8 @@
-package UnitTests;
+package SuppliersMadule.UnitTests;
 
-import BusinessLayer.supplierPackage.quantityList;
-import BusinessLayer.supplierPackage.supplier;
-import BusinessLayer.supplierPackage.supplierController;
+import SuppliersMadule.BusinessLayer.supplierPackage.QuantityList;
+import SuppliersMadule.BusinessLayer.supplierPackage.Supplier;
+import SuppliersMadule.BusinessLayer.supplierPackage.SupplierController;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -10,20 +10,20 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 class supplierControllerTest {
-    private supplierController sc;
-    private supplier sup;
-    private supplier sup2;
+    private SupplierController sc;
+    private Supplier sup;
+    private Supplier sup2;
 
     @BeforeEach
     void setUp() throws Exception {
-        sc = new supplierController();
-        sup = new supplier("shaked", "dollberg", "shaked@gmail.com", "316415551", "0542570330", 1, false, false, "check");
-        sup2=new supplier("gal", "brown", "galbrown@gmail.com", "316415553", "0542570330", 1, false, false, "check");
+        sc = new SupplierController();
+        sup = new Supplier("shaked", "dollberg", "shaked@gmail.com", "316415551", "0542570330", 1, false, false, "check");
+        sup2=new Supplier("gal", "brown", "galbrown@gmail.com", "316415553", "0542570330", 1, false, false, "check");
     }
 
     @AfterEach
     void tearDown() {
-        sc = new supplierController();
+        sc = new SupplierController();
     }
 
     @Test
@@ -96,7 +96,7 @@ class supplierControllerTest {
         String id=sup2.getSc().getId();
         sc.getSuppliers().put(id,sup2);
         //act
-        quantityList ql=sc.addQuantityList(id);
+        QuantityList ql=sc.addQuantityList(id);
         //assert
         assertNotNull(sup2.getAg().getQl(),"failed to add quantityList");
         assertEquals(ql,sup2.getAg().getQl(),"added wrong quantity list to supplier");

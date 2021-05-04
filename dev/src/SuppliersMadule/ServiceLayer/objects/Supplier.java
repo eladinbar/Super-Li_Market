@@ -1,17 +1,17 @@
-package ServiceLayer.objects;
+package SuppliersMadule.ServiceLayer.objects;
 
-public class supplier {
+public class Supplier {
     private supplierCard sc;
-    private agreement ag;
+    private Agreement ag;
 
-    public supplier(supplierCard sc, agreement ag) throws Exception {
+    public Supplier(supplierCard sc, Agreement ag) throws Exception {
         this.sc = sc;
         this.ag = ag;
     }
 
-    public supplier(BusinessLayer.supplierPackage.supplier supplier) {
+    public Supplier(SuppliersMadule.BusinessLayer.supplierPackage.Supplier supplier) {
         this.sc = new supplierCard(supplier.getSc());
-        this.ag = new agreement(supplier.getAg());
+        this.ag = new Agreement(supplier.getAg());
     }
 
     @Override

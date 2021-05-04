@@ -1,13 +1,13 @@
-package ServiceLayer.objects;
+package SuppliersMadule.ServiceLayer.objects;
 
-public class personCard {
+public class PersonCard {
     protected String firstName;
     protected String lastName;
     protected String email;
     protected String id;
     protected String phone;
 
-    public personCard(String firstName, String lastName, String email, String id, String phone) {
+    public PersonCard(String firstName, String lastName, String email, String id, String phone) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
@@ -15,7 +15,7 @@ public class personCard {
         this.phone = phone;
     }
 
-    public personCard(BusinessLayer.supplierPackage.personCard pc){
+    public PersonCard(SuppliersMadule.BusinessLayer.supplierPackage.PersonCard pc){
         this.email=pc.getEmail();
         this.firstName=pc.getFirstName();
         this.lastName=pc.getLastName();

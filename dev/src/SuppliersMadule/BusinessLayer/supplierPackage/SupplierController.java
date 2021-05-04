@@ -1,23 +1,21 @@
-package BusinessLayer.supplierPackage;
-
-import BusinessLayer.orderPackage.product;
+package SuppliersMadule.BusinessLayer.supplierPackage;
 
 import java.util.*;
 
-public class supplierController {
-    private Map<String, supplier> suppliers;
-    private Map<String, personCard> persons;
+public class SupplierController {
+    private Map<String, Supplier> suppliers;
+    private Map<String, PersonCard> persons;
 
-    public supplierController() {
+    public SupplierController() {
         this.suppliers = new HashMap<>();
         this.persons = new HashMap<>();
     }
 
-    public Map<String, supplier> getSuppliers() {
+    public Map<String, Supplier> getSuppliers() {
         return suppliers;
     }
 
-    public Map<String, personCard> getPersons() {
+    public Map<String, PersonCard> getPersons() {
         return persons;
     }
 
@@ -28,10 +26,10 @@ public class supplierController {
     }
 
     //method that add new supplier to the system
-    public supplier addSupplier(String firstName, String lastName, String email, String id, String phone, int companyNumber, boolean isPernamentDays, boolean selfDelivery, String payment) throws Exception {
+    public Supplier addSupplier(String firstName, String lastName, String email, String id, String phone, int companyNumber, boolean isPernamentDays, boolean selfDelivery, String payment) throws Exception {
         if (suppliers.containsKey(id)) //case that the supplier allready exists
             throw new Exception("supplier with the id : " + id + " already exists");
-        supplier newSup = new supplier(firstName, lastName, email, id, phone, companyNumber, isPernamentDays, selfDelivery, payment);
+        Supplier newSup = new Supplier(firstName, lastName, email, id, phone, companyNumber, isPernamentDays, selfDelivery, payment);
         suppliers.put(id, newSup);
         if (persons.containsKey(id))
             persons.remove(id);
@@ -46,62 +44,62 @@ public class supplierController {
 
     public void updateCompanySupplier(String id, int companyNumber) throws Exception {
         existSupplier(id);
-        supplier supplier = suppliers.get(id);
+        Supplier supplier = suppliers.get(id);
         supplier.companyNumberCheck(companyNumber);
         supplier.getSc().setCompanyNumber(companyNumber);
     }
 
     public void updateFirstName(String id, String firstName) throws Exception {
         existSupplier(id);
-        supplier supplier = suppliers.get(id);
+        Supplier supplier = suppliers.get(id);
         supplier.NameCheck(firstName);
         supplier.getSc().setFirstName(firstName);
     }
 
     public void updateLastName(String id, String lastName) throws Exception {
         existSupplier(id);
-        supplier supplier = suppliers.get(id);
+        Supplier supplier = suppliers.get(id);
         supplier.NameCheck(lastName);
         supplier.getSc().setLastName(lastName);
     }
 
     public void updatePhone(String id, String phone) throws Exception {
         existSupplier(id);
-        supplier supplier = suppliers.get(id);
+       Supplier supplier = suppliers.get(id);
         supplier.phoneCheck(phone);
         supplier.getSc().setPhone(phone);
     }
 
     public void updateEmail(String id, String email) throws Exception {
         existSupplier(id);
-        supplier supplier = suppliers.get(id);
+        Supplier supplier = suppliers.get(id);
         supplier.emailCheck(email);
         supplier.getSc().setEmail(email);
     }
 
     public void updateSelfDelivery(String id, boolean self) throws Exception {
         existSupplier(id);
-        supplier supplier = suppliers.get(id);
+       Supplier supplier = suppliers.get(id);
         supplier.getSc().setSelfDelivery(self);
     }
 
     public void updatePernamentDays(String id, boolean perm) throws Exception {
         existSupplier(id);
-        supplier supplier = suppliers.get(id);
+        Supplier supplier = suppliers.get(id);
         supplier.getSc().setPernamentDays(perm);
     }
 
     public void updatePayment(String id, String pay) throws Exception {
         existSupplier(id);
-        supplier supplier = suppliers.get(id);
-        payment enumPay = supplier.paymentCheck(pay);
+        Supplier supplier = suppliers.get(id);
+        Payment enumPay = supplier.paymentCheck(pay);
         supplier.getSc().setPayment(enumPay);
     }
 
     public void addContactMember(String supplierId, String firstName, String lastName, String email, String memberID, String phone) throws Exception {
         existSupplier(supplierId);
         if (!persons.containsKey(memberID)) {
-            personCard newPerson = suppliers.get(supplierId).createPersonCard(firstName, lastName, email, memberID, phone);
+            SuppliersMadule.BusinessLayer.supplierPackage.PersonCard newPerson = suppliers.get(supplierId).createPersonCard(firstName, lastName, email, memberID, phone);
             persons.put(memberID, newPerson);
         }
         suppliers.get(supplierId).addContactMember(memberID);
@@ -112,12 +110,12 @@ public class supplierController {
         suppliers.get(supplierID).deleteContactMember(memberID);
     }
 
-    public supplier getSupplier(String id) throws Exception {
+    public Supplier getSupplier(String id) throws Exception {
         existSupplier(id);
         return suppliers.get(id);
     }
 
-    public quantityList addQuantityList(String supplierID) throws Exception {
+    public QuantityList addQuantityList(String supplierID) throws Exception {
         existSupplier(supplierID);
         return suppliers.get(supplierID).addQuantityList();
     }
@@ -148,7 +146,7 @@ public class supplierController {
         suppliers.get(supplierID).deleteQuantityListItem(productID);
     }
 
-    public quantityList getQuantityList(String supplierId) throws Exception {
+    public QuantityList getQuantityList(String supplierId) throws Exception {
         existSupplier(supplierId);
         return suppliers.get(supplierId).getQuantityList();
     }
@@ -174,7 +172,7 @@ public class supplierController {
         suppliers.get(supplierID).getAg().editAgreementItemPrice(productID,price);
     }
 
-    public agreement getAgreement(String supplierID) throws Exception {
+    public Agreement getAgreement(String supplierID) throws Exception {
         existSupplier(supplierID);
         return suppliers.get(supplierID).getAg();
     }

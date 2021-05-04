@@ -1,35 +1,32 @@
-package BusinessLayer.supplierPackage;
+package SuppliersMadule.BusinessLayer.supplierPackage;
 
-import BusinessLayer.orderPackage.product;
+import java.util.regex.Pattern;
 
-import java.util.regex.*;
-import java.util.*;
-
-public class supplier {
-    private supplierCard sc;
-    private agreement ag;
+public class Supplier {
+    private SupplierCard sc;
+    private Agreement ag;
     private final int MaxCompanyNumber = 100;
     private final int MaxNamesLength = 20;
     private final int PhoneLength = 10;
     private final int idLength = 9;
 
-    public supplier(String firstName, String lastName, String email, String id, String phone, int companyNumber, boolean isPernamentDays, boolean selfDelivery, String payment) throws Exception {
+    public Supplier(String firstName, String lastName, String email, String id, String phone, int companyNumber, boolean isPernamentDays, boolean selfDelivery, String payment) throws Exception {
         companyNumberCheck(companyNumber);
-        payment pay = paymentCheck(payment);
+        Payment pay = paymentCheck(payment);
         NameCheck(firstName);
         NameCheck(lastName);
         idCheck(id);
         phoneCheck(phone);
         emailCheck(email);
-        this.sc = new supplierCard(firstName, lastName, email, id, phone, companyNumber, isPernamentDays, selfDelivery, pay);
-        this.ag = new agreement();
+        this.sc = new SupplierCard(firstName, lastName, email, id, phone, companyNumber, isPernamentDays, selfDelivery, pay);
+        this.ag = new Agreement();
     }
 
-    public supplierCard getSc() {
+    public SupplierCard getSc() {
         return sc;
     }
 
-    public agreement getAg() {
+    public Agreement getAg() {
         return ag;
     }
 
@@ -56,8 +53,8 @@ public class supplier {
     }
 
     //method that checks if payment is legal
-    protected payment paymentCheck(String pay) {
-        return payment.valueOf(pay);//checks if pay belongs to enum
+    protected Payment paymentCheck(String pay) {
+        return Payment.valueOf(pay);//checks if pay belongs to enum
     }
 
     protected void NameCheck(String name) throws Exception {
@@ -115,13 +112,13 @@ public class supplier {
             throw new Exception("invalid email");
     }
 
-    protected personCard createPersonCard(String firstName, String lastName, String email, String id, String phone) throws Exception {
+    protected PersonCard createPersonCard(String firstName, String lastName, String email, String id, String phone) throws Exception {
         NameCheck(firstName);
         NameCheck(lastName);
         idCheck(id);
         phoneCheck(phone);
         emailCheck(email);
-        return new personCard(firstName, lastName, email, id, phone);
+        return new PersonCard(firstName, lastName, email, id, phone);
     }
 
     public void addContactMember(String memberID) throws Exception {
@@ -153,7 +150,7 @@ public class supplier {
         ag.addQuantityListItem(productID, amount, discount);
     }
 
-    public quantityList addQuantityList() throws Exception {
+    public QuantityList addQuantityList() throws Exception {
         return ag.addQuantityList();
     }
 
@@ -165,7 +162,7 @@ public class supplier {
         ag.editQuantityListDiscount(productID, discount);
     }
 
-    public quantityList getQuantityList() throws Exception {
+    public QuantityList getQuantityList() throws Exception {
         if (ag.getQl()==null)
             throw new Exception("supplier does not have a quantity list");
         return ag.getQl();

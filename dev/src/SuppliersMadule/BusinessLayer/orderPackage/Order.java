@@ -1,18 +1,18 @@
 package SuppliersMadule.BusinessLayer.orderPackage;
 
-import BusinessLayer.supplierPackage.supplier;
+import SuppliersMadule.BusinessLayer.supplierPackage.Supplier;
 
 import java.time.LocalDate;
 import java.util.*;
 
-public class order {
+public class Order {
     private int id;
     private Map<Integer, Integer> products;
     private LocalDate date;
     private boolean delivered;
-    private supplier supplier;
+    private Supplier supplier;
 
-    public order(int id, LocalDate date, supplier supplier) {
+    public Order(int id, LocalDate date, Supplier supplier) {
         this.id = id;
         this.products = new HashMap<>();
         this.date = date;
@@ -52,11 +52,11 @@ public class order {
         this.delivered = delivered;
     }
 
-    public BusinessLayer.supplierPackage.supplier getSupplier() {
+    public SuppliersMadule.BusinessLayer.supplierPackage.Supplier getSupplier() {
         return supplier;
     }
 
-    public void setSupplier(BusinessLayer.supplierPackage.supplier supplier) {
+    public void setSupplier(SuppliersMadule.BusinessLayer.supplierPackage.Supplier supplier) {
         this.supplier = supplier;
     }
 

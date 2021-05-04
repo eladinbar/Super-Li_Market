@@ -1,23 +1,22 @@
-package ServiceLayer;
+package SuppliersMadule.ServiceLayer;
 
-import ServiceLayer.Response.Response;
-import ServiceLayer.Response.ResponseT;
-import ServiceLayer.objects.*;
+import SuppliersMadule.ServiceLayer.Response.Response;
+import SuppliersMadule.ServiceLayer.Response.ResponseT;
+import SuppliersMadule.ServiceLayer.objects.*;
 
 import java.time.LocalDate;
-import java.util.Date;
 
 public class Service implements IService {
-    private orderService orderService;
-    private supplierService supplierService;
+    private OrderService orderService;
+    private SupplierService supplierService;
 
     public Service() {
-        this.supplierService = new supplierService();
-        this.orderService = new orderService();
+        this.supplierService = new SupplierService();
+        this.orderService = new OrderService();
     }
 
     @Override
-    public ResponseT<supplier> addSupplier(String firstName, String lastName, String email, String id, String phone, int companyNumber, boolean isPernamentDays, boolean selfDelivery, String payment) {
+    public ResponseT<Supplier> addSupplier(String firstName, String lastName, String email, String id, String phone, int companyNumber, boolean isPernamentDays, boolean selfDelivery, String payment) {
         return supplierService.addSupplier(firstName, lastName, email, id, phone, companyNumber, isPernamentDays, selfDelivery, payment);
     }
 
@@ -78,12 +77,12 @@ public class Service implements IService {
     }
 
     @Override
-    public ResponseT<supplier> getSupplier(String id) {
+    public ResponseT<Supplier> getSupplier(String id) {
         return supplierService.getSupplier(id);
     }
 
     @Override
-    public ResponseT<quantityList> addQuantityList(String supplierID) {
+    public ResponseT<QuantityList> addQuantityList(String supplierID) {
         return supplierService.addQuantityList(supplierID);
     }
 
@@ -103,15 +102,15 @@ public class Service implements IService {
     }
 
     @Override
-    public ResponseT<product> addQuantityListItem(String supplierID, int productID, int amount, int discount) {
-        ResponseT<product> r = orderService.getProduct(productID);
+    public ResponseT<Product> addQuantityListItem(String supplierID, int productID, int amount, int discount) {
+        ResponseT<Product> r = orderService.getProduct(productID);
         if (!r.errorOccured())
             return supplierService.addQuantityListItem(supplierID, productID, amount, discount, orderService);
         return r;
     }
 
-    public ResponseT<product> addItemToAgreement(String id, int productID, int companyProductID, int price) {
-        ResponseT<product> r = orderService.getProduct(productID);
+    public ResponseT<Product> addItemToAgreement(String id, int productID, int companyProductID, int price) {
+        ResponseT<Product> r = orderService.getProduct(productID);
         if (!r.errorOccured())
             return supplierService.addItemToAgreement(id, productID, companyProductID, price, orderService);
         return r;
@@ -133,7 +132,7 @@ public class Service implements IService {
     }
 
     @Override
-    public ResponseT<quantityList> getQuantityList(String supplierId) {
+    public ResponseT<QuantityList> getQuantityList(String supplierId) {
         return supplierService.getQuantityList(supplierId);
     }
 
@@ -143,13 +142,13 @@ public class Service implements IService {
     }
 
     @Override
-    public ResponseT<order> createOrder(LocalDate date, String supplierID) {
+    public ResponseT<Order> createOrder(LocalDate date, String supplierID) {
         return orderService.createOrder(date, supplierID, supplierService.getSp());
     }
 
     @Override
-    public ResponseT<order> createPernamentOrder(int day, String supplierID) {
-        return orderService.createPernamentOrder(day, supplierID, supplierService.getSp());
+    public ResponseT<Order> createPernamentOrder(int day, String supplierID) {
+        return orderService.createPermanentOrder(day, supplierID, supplierService.getSp());
     }
 
     @Override
@@ -158,7 +157,7 @@ public class Service implements IService {
     }
 
     @Override
-    public ResponseT<order> getOrder(int orderID) {
+    public ResponseT<Order> getOrder(int orderID) {
         return orderService.getOrder(orderID);
     }
 
@@ -173,17 +172,17 @@ public class Service implements IService {
     }
 
     @Override
-    public ResponseT<product> createProduct(String name, String manufacturer) {
+    public ResponseT<Product> createProduct(String name, String manufacturer) {
         return orderService.createProduct(name, manufacturer);
     }
 
     @Override
-    public ResponseT<product> getProduct(int productID) {
+    public ResponseT<Product> getProduct(int productID) {
         return orderService.getProduct(productID);
     }
 
     @Override
-    public ResponseT<agreement> getAgreement(String supplierID) {
+    public ResponseT<Agreement> getAgreement(String supplierID) {
         return supplierService.getAgreement(supplierID);
     }
 }

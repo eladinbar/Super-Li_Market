@@ -1,17 +1,16 @@
-package BusinessLayer.supplierPackage;
+package SuppliersMadule.BusinessLayer.supplierPackage;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
-public class supplierCard extends personCard {
+public class SupplierCard extends PersonCard {
     private int companyNumber;
     private boolean isPernamentDays;
     private boolean selfDelivery;
-    private payment payment;
+    private Payment payment;
     private List<String> contactMembers;
 
-    public supplierCard(String firstName, String lastName, String email, String id, String phone, int companyNumber, boolean isPernamentDays, boolean selfDelivery, payment payment) {
+    public SupplierCard(String firstName, String lastName, String email, String id, String phone, int companyNumber, boolean isPernamentDays, boolean selfDelivery, Payment payment) {
         super(firstName, lastName, email, id, phone);
         this.companyNumber = companyNumber;
         this.isPernamentDays = isPernamentDays;
@@ -32,7 +31,7 @@ public class supplierCard extends personCard {
         return selfDelivery;
     }
 
-    public BusinessLayer.supplierPackage.payment getPayment() {
+    public Payment getPayment() {
         return payment;
     }
 
@@ -52,7 +51,7 @@ public class supplierCard extends personCard {
         this.selfDelivery = selfDelivery;
     }
 
-    public void setPayment(BusinessLayer.supplierPackage.payment payment) {
+    public void setPayment(Payment payment) {
         this.payment = payment;
     }
 

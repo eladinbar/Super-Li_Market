@@ -1,16 +1,16 @@
-package BusinessLayer.supplierPackage;
+package SuppliersMadule.BusinessLayer.supplierPackage;
 
-import BusinessLayer.orderPackage.product;
+import SuppliersMadule.BusinessLayer.orderPackage.product;
 
 import java.util.HashMap;
 import java.util.Map;
 
-public class quantityList {
+public class QuantityList {
     private final int maxDiscount = 100;
     private Map<Integer, Integer> amount;
     private Map<Integer, Integer> discount;
 
-    public quantityList() {
+    public QuantityList() {
         amount = new HashMap<>();
         discount = new HashMap<>();
     }

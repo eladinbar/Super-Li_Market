@@ -1,11 +1,10 @@
-package PresentationLayer;
+package SuppliersMadule.PresentationLayer;
 
-import ServiceLayer.IService;
-import ServiceLayer.Response.Response;
-import ServiceLayer.Response.ResponseT;
-import ServiceLayer.Service;
-import ServiceLayer.objects.order;
-import ServiceLayer.objects.supplier;
+import SuppliersMadule.ServiceLayer.IService;
+import SuppliersMadule.ServiceLayer.Response.Response;
+import SuppliersMadule.ServiceLayer.Response.ResponseT;
+import SuppliersMadule.ServiceLayer.Service;
+import SuppliersMadule.ServiceLayer.objects.Order;
 
 import java.time.LocalDate;
 

@@ -1,13 +1,13 @@
-package BusinessLayer.supplierPackage;
+package SuppliersMadule.BusinessLayer.supplierPackage;
 
-public class personCard {
+public class PersonCard {
     private String firstName;
     private String lastName;
     private String email;
     private String id;
     private String phone;
 
-    public personCard(String firstName, String lastName, String email, String id, String phone) {
+    public PersonCard(String firstName, String lastName, String email, String id, String phone) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;

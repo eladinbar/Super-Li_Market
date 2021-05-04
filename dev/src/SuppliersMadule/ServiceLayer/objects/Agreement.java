@@ -1,26 +1,25 @@
-package ServiceLayer.objects;
+package SuppliersMadule.ServiceLayer.objects;
 
-import java.util.HashMap;
 import java.util.Map;
 
-public class agreement {
+public class Agreement {
     private Map<Integer, Integer> products;
     private Map<Integer, Integer> prices;
-    private quantityList ql;
+    private QuantityList ql;
 
-    public agreement(Map<Integer, Integer> products, Map<Integer, Integer> prices, ServiceLayer.objects.quantityList ql) {
+    public Agreement(Map<Integer, Integer> products, Map<Integer, Integer> prices, QuantityList ql) {
         this.ql = ql;
         this.products = products;
         this.prices = prices;
     }
 
-    public agreement(BusinessLayer.supplierPackage.agreement ag) {
+    public Agreement(SuppliersMadule.BusinessLayer.supplierPackage.Agreement ag) {
         this.prices = ag.getPrices();
         this.products = ag.getProducts();
         if (ag.getQl() == null)
             this.ql = null;
         else
-            this.ql = new quantityList(ag.getQl());
+            this.ql = new QuantityList(ag.getQl());
     }
 
     @Override

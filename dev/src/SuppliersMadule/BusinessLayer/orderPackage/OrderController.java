@@ -1,6 +1,6 @@
 package SuppliersMadule.BusinessLayer.orderPackage;
 
-import BusinessLayer.supplierPackage.supplier;
+import SuppliersMadule.BusinessLayer.supplierPackage.Supplier;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -8,16 +8,16 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class orderController {
+public class OrderController {
     private final int days = 7;
-    private Map<Integer, order> orders;
-    private Map<Integer, List<order>> pernamentOrders;
-    private Map<Integer, BusinessLayer.orderPackage.product> products;
+    private Map<Integer, Order> orders;
+    private Map<Integer, List<Order>> pernamentOrders;
+    private Map<Integer, product> products;
     private int productCounter;
     private int orderCounter;
 
 
-    public orderController() {
+    public OrderController() {
         pernamentOrders = new HashMap<>();
         for (int i = 1; i <= days; i++) {
             pernamentOrders.put(i, new ArrayList<>());
@@ -30,17 +30,17 @@ public class orderController {
 
     public void removeSupplier(String id) {
         for (int i = 1; i <= days; i++) {
-            for (order o : pernamentOrders.get(i)) {
+            for (Order o : pernamentOrders.get(i)) {
                 if (o.getSupplier().getSc().getId().equals(id))
                     pernamentOrders.get(i).remove(o);
             }
         }
     }
 
-    public order createOrder(LocalDate date, supplier supplier) throws Exception {
+    public Order createOrder(LocalDate date, Supplier supplier) throws Exception {
         if (date != null && date.isBefore(LocalDate.now()))
             throw new Exception("the date should be in the future");
-        order o = new order(orderCounter, date, supplier);
+        Order o = new Order(orderCounter, date, supplier);
         orders.put(orderCounter, o);
         orderCounter++;
         return o;
@@ -61,7 +61,7 @@ public class orderController {
             throw new Exception("product " + productId + " does not exist");
     }
 
-    public order getOrder(int orderID) throws Exception {
+    public Order getOrder(int orderID) throws Exception {
         orderExist(orderID);
         return orders.get(orderID);
     }
@@ -91,8 +91,8 @@ public class orderController {
         return products.get(productID);
     }
 
-    public order createPermOrder(int day, supplier supplier) throws Exception {
-        order order = createOrder(null, supplier);
+    public Order createPermOrder(int day, Supplier supplier) throws Exception {
+        Order order = createOrder(null, supplier);
         pernamentOrders.get(day).add(order);
         return order;
     }

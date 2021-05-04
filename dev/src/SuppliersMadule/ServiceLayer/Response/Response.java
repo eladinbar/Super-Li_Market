@@ -1,4 +1,4 @@
-package ServiceLayer.Response;
+package SuppliersMadule.ServiceLayer.Response;
 
 
 public class Response {

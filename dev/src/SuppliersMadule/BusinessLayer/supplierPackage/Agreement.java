@@ -1,13 +1,13 @@
-package BusinessLayer.supplierPackage;
+package SuppliersMadule.BusinessLayer.supplierPackage;
 
 import java.util.*;
 
-public class agreement {
+public class Agreement {
     private Map<Integer, Integer> products;
     private Map<Integer, Integer> prices;
-    private quantityList ql;
+    private QuantityList ql;
 
-    public agreement() {
+    public Agreement() {
         this.ql = null;
         products = new HashMap<>();
         prices = new HashMap<>();
@@ -21,11 +21,11 @@ public class agreement {
         return prices;
     }
 
-    public quantityList getQl() {
+    public QuantityList getQl() {
         return ql;
     }
 
-    public void setQl(quantityList ql) {
+    public void setQl(QuantityList ql) {
         this.ql = ql;
     }
 
@@ -59,10 +59,10 @@ public class agreement {
         ql.addQuantityListItem(productID, amount, discount);
     }
 
-    public quantityList addQuantityList() throws Exception {
+    public QuantityList addQuantityList() throws Exception {
         if (ql != null)
             throw new Exception("supplier already have a quantity list");
-        ql = new quantityList();
+        ql = new QuantityList();
         return ql;
     }
 

@@ -1,28 +1,26 @@
-package ServiceLayer;
+package SuppliersMadule.ServiceLayer;
 
-import BusinessLayer.orderPackage.orderController;
-import BusinessLayer.supplierPackage.supplierController;
-import ServiceLayer.Response.*;
-import ServiceLayer.objects.agreement;
-import ServiceLayer.objects.product;
-import ServiceLayer.objects.quantityList;
-import ServiceLayer.objects.supplier;
+import SuppliersMadule.BusinessLayer.supplierPackage.SupplierController;
+import SuppliersMadule.ServiceLayer.Response.*;
+import SuppliersMadule.ServiceLayer.objects.Agreement;
+import SuppliersMadule.ServiceLayer.objects.Product;
+import SuppliersMadule.ServiceLayer.objects.QuantityList;
 
-public class supplierService {
-    private supplierController sp;
+public class SupplierService {
+    private SupplierController sp;
 
-    public supplierService() {
-        sp = new supplierController();
+    public SupplierService() {
+        sp = new SupplierController();
     }
 
-    protected supplierController getSp() {
+    protected SupplierController getSp() {
         return sp;
     }
 
-    public ResponseT<supplier> addSupplier(String firstName, String lastName, String email, String id, String phone, int companyNumber, boolean isPernamentDays, boolean selfDelivery, String payment) {
-        ResponseT<supplier> toReturn;
+    public ResponseT<SuppliersMadule.ServiceLayer.objects.Supplier> addSupplier(String firstName, String lastName, String email, String id, String phone, int companyNumber, boolean isPernamentDays, boolean selfDelivery, String payment) {
+        ResponseT<SuppliersMadule.ServiceLayer.objects.Supplier> toReturn;
         try {
-            toReturn = new ResponseT<>(new supplier(sp.addSupplier(firstName, lastName, email, id, phone, companyNumber, isPernamentDays, selfDelivery, payment)));
+            toReturn = new ResponseT<>(new SuppliersMadule.ServiceLayer.objects.Supplier(sp.addSupplier(firstName, lastName, email, id, phone, companyNumber, isPernamentDays, selfDelivery, payment)));
         } catch (Exception e) {
             toReturn = new ResponseT<>(e.getMessage());
         }
@@ -140,20 +138,20 @@ public class supplierService {
         return toReturn;
     }
 
-    public ResponseT<supplier> getSupplier(String id) {
-        ResponseT<supplier> toReturn;
+    public ResponseT<SuppliersMadule.ServiceLayer.objects.Supplier> getSupplier(String id) {
+        ResponseT<SuppliersMadule.ServiceLayer.objects.Supplier> toReturn;
         try {
-            toReturn = new ResponseT<>(new supplier(sp.getSupplier(id)));
+            toReturn = new ResponseT<>(new SuppliersMadule.ServiceLayer.objects.Supplier(sp.getSupplier(id)));
         } catch (Exception e) {
             toReturn = new ResponseT<>(e.getMessage());
         }
         return toReturn;
     }
 
-    public ResponseT<quantityList> addQuantityList(String supplierID) {
-        ResponseT<quantityList> toReturn;
+    public ResponseT<QuantityList> addQuantityList(String supplierID) {
+        ResponseT<QuantityList> toReturn;
         try {
-            toReturn=new ResponseT<>(new quantityList(sp.addQuantityList(supplierID)));
+            toReturn=new ResponseT<>(new QuantityList(sp.addQuantityList(supplierID)));
         } catch (Exception e) {
             toReturn = new ResponseT<>(e.getMessage());
         }
@@ -190,8 +188,8 @@ public class supplierService {
         return toReturn;
     }
 
-    public ResponseT<product> addQuantityListItem(String supplierID, int productID, int amount, int discount, orderService oc) {
-        ResponseT<product> toReturn;
+    public ResponseT<Product> addQuantityListItem(String supplierID, int productID, int amount, int discount, OrderService oc) {
+        ResponseT<Product> toReturn;
         try {
             sp.addQuantityListItem(supplierID, productID, amount, discount);
             toReturn = oc.getProduct(productID);
@@ -211,18 +209,18 @@ public class supplierService {
         return toReturn;
     }
 
-    public ResponseT<quantityList> getQuantityList(String supplierId) {
-        ResponseT<quantityList> toReturn;
+    public ResponseT<QuantityList> getQuantityList(String supplierId) {
+        ResponseT<QuantityList> toReturn;
         try {
-            toReturn = new ResponseT<>(new quantityList(sp.getQuantityList(supplierId)));
+            toReturn = new ResponseT<>(new QuantityList(sp.getQuantityList(supplierId)));
         } catch (Exception e) {
             toReturn = new ResponseT<>(e.getMessage());
         }
         return toReturn;
     }
 
-    public ResponseT<product> addItemToAgreement(String id, int productID, int companyProductID,int price, orderService oc) {
-        ResponseT<product> toReturn;
+    public ResponseT<Product> addItemToAgreement(String id, int productID, int companyProductID, int price, OrderService oc) {
+        ResponseT<Product> toReturn;
         try {
             sp.addItemToAgreement(id, productID, companyProductID,price);
             toReturn = oc.getProduct(productID);
@@ -262,10 +260,10 @@ public class supplierService {
         return toReturn;
     }
 
-    public ResponseT<agreement> getAgreement(String supplierID) {
-        ResponseT<agreement> toReturn;
+    public ResponseT<Agreement> getAgreement(String supplierID) {
+        ResponseT<Agreement> toReturn;
         try {
-            toReturn = new ResponseT<>(new agreement(sp.getAgreement(supplierID)));
+            toReturn = new ResponseT<>(new Agreement(sp.getAgreement(supplierID)));
         } catch (Exception e) {
             toReturn = new ResponseT<>(e.getMessage());
         }

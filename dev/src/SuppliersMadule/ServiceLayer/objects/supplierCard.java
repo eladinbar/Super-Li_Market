@@ -1,9 +1,10 @@
-package ServiceLayer.objects;
+package SuppliersMadule.ServiceLayer.objects;
 
-import java.util.ArrayList;
+import SuppliersMadule.BusinessLayer.supplierPackage.SupplierCard;
+
 import java.util.List;
 
-public class supplierCard extends personCard {
+public class supplierCard extends PersonCard {
     private int companyNumber;
     private boolean isPernamentDays;
     private boolean selfDelivery;
@@ -19,7 +20,7 @@ public class supplierCard extends personCard {
         this.contactMembers = contactMembers;
     }
 
-    public supplierCard(BusinessLayer.supplierPackage.supplierCard sc) {
+    public supplierCard(SupplierCard sc) {
         super(sc);
         this.companyNumber = sc.getCompanyNumber();
         this.isPernamentDays = sc.isPernamentDays();
