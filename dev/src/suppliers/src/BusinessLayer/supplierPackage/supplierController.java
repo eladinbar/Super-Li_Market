@@ -1,7 +1,5 @@
 package BusinessLayer.supplierPackage;
 
-import BusinessLayer.orderPackage.product;
-
 import java.util.*;
 
 public class supplierController {
@@ -31,6 +29,8 @@ public class supplierController {
     public supplier addSupplier(String firstName, String lastName, String email, String id, String phone, int companyNumber, boolean isPernamentDays, boolean selfDelivery, String payment) throws Exception {
         if (suppliers.containsKey(id)) //case that the supplier allready exists
             throw new Exception("supplier with the id : " + id + " already exists");
+        emailCheck(email);
+        phoneCheck(phone);
         supplier newSup = new supplier(firstName, lastName, email, id, phone, companyNumber, isPernamentDays, selfDelivery, payment);
         suppliers.put(id, newSup);
         if (persons.containsKey(id))
@@ -47,35 +47,32 @@ public class supplierController {
     public void updateCompanySupplier(String id, int companyNumber) throws Exception {
         existSupplier(id);
         supplier supplier = suppliers.get(id);
-        supplier.companyNumberCheck(companyNumber);
         supplier.getSc().setCompanyNumber(companyNumber);
     }
 
     public void updateFirstName(String id, String firstName) throws Exception {
         existSupplier(id);
         supplier supplier = suppliers.get(id);
-        supplier.NameCheck(firstName);
         supplier.getSc().setFirstName(firstName);
     }
 
     public void updateLastName(String id, String lastName) throws Exception {
         existSupplier(id);
         supplier supplier = suppliers.get(id);
-        supplier.NameCheck(lastName);
         supplier.getSc().setLastName(lastName);
     }
 
     public void updatePhone(String id, String phone) throws Exception {
         existSupplier(id);
         supplier supplier = suppliers.get(id);
-        supplier.phoneCheck(phone);
+        phoneCheck(phone);
         supplier.getSc().setPhone(phone);
     }
 
     public void updateEmail(String id, String email) throws Exception {
         existSupplier(id);
         supplier supplier = suppliers.get(id);
-        supplier.emailCheck(email);
+        emailCheck(email);
         supplier.getSc().setEmail(email);
     }
 
@@ -196,18 +193,32 @@ public class supplierController {
             } catch (Exception e) {
             }
         }
-        if(cheapestSup==null)
-            throw new Exception("There is no supplier that supply the product: "+productID);
+        if (cheapestSup == null)
+            throw new Exception("There is no supplier that supply the product: " + productID);
         return cheapestSup;
     }
 
     public Double getProductDiscount(String supplierID, int amount, int productID) throws Exception {
         existSupplier(supplierID);
-        return suppliers.get(supplierID).getProductDiscount(amount,productID);
+        return suppliers.get(supplierID).getProductDiscount(amount, productID);
     }
 
     public Integer getSupplierCompanyProductID(String supplierID, int productID) throws Exception {
         existSupplier(supplierID);
         return suppliers.get(supplierID).getSupplierCompanyProductID(productID);
+    }
+
+    private void phoneCheck(String phone) throws Exception {
+        for (supplier s : suppliers.values()) {
+            if (s.getSc().getEmail().equals(phone))
+                throw new Exception("phone already exists in the system");
+        }
+    }
+
+    private void emailCheck(String email) throws Exception {
+        for (supplier s : suppliers.values()) {
+            if (s.getSc().getEmail().equals(email))
+                throw new Exception("email already exists in the system");
+        }
     }
 }

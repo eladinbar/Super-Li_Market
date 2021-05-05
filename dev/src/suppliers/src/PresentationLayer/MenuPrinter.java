@@ -24,7 +24,7 @@ public class MenuPrinter {
 
     //the main function
     public void startWork() {
-       boolean logged = true;
+        boolean logged = true;
         System.out.println("Welcome to Super-Lee, Please enter password: ");
         while (logged) {
             String pass = getStringFromUser();
@@ -35,24 +35,24 @@ public class MenuPrinter {
         }
         createObjects c = new createObjects(pc);
         System.out.println("do you want to load objects? (enter y to load)");
-        String choose=getStringFromUser();
-        if(choose.equals("y"))
+        String choose = getStringFromUser();
+        if (choose.equals("y"))
             c.createObjectsForTests();
         PrintMenu();
-}
+    }
 
     //a helper function to print the menu
-    public void PrintMenu()  {
+    public void PrintMenu() {
         int choose = 1;
-        while (choose>0) {
-        System.out.println("welcome to Super Lee");
-        System.out.println("please choose a menu:");
-        System.out.println("1. supplier");
-        System.out.println("2. order");
-        System.out.println("3. product");
+        while (choose > 0) {
+            System.out.println("welcome to Super Lee");
+            System.out.println("please choose a menu:");
+            System.out.println("1. supplier");
+            System.out.println("2. order");
+            System.out.println("3. product");
 
-        choose = getIntFromUser();
-        int chooseInsideMenu;
+            choose = getIntFromUser();
+            int chooseInsideMenu;
 
             switch (choose) {
                 case 1 -> {
@@ -113,11 +113,7 @@ public class MenuPrinter {
 
     private void removeSupplier() {
         System.out.print("please enter supplier id: ");
-        String id = getStringFromUser();
-        try{ idCheck(id); }
-        catch(Exception e){
-            System.out.println(e+"\ntry again:");
-            removeSupplier();}
+        String id = readID();
         System.out.println(pc.removeSupplier(id));
     }
 
@@ -125,29 +121,17 @@ public class MenuPrinter {
     private void addSupplierFunc() {
         System.out.print("please enter following details: ");
         System.out.print("\nfirst name: ");
-        String firstName = getStringFromUser();
+        String firstName = readName();
         System.out.print("last name: ");
-        String lName = getStringFromUser();
+        String lName = readName();
         System.out.print("email: ");
-        String email = getStringFromUser();
+        String email = readEmail();
         System.out.print("ID: ");
-        String ID = getStringFromUser();
+        String ID = readID();
         System.out.print("phone: ");
-        String phone = getStringFromUser();
+        String phone = readPhone();
         System.out.print("companyNumber: ");
-        int companyNumber = getIntFromUser();
-        try{
-            nameCheck(firstName);
-            nameCheck(lName);
-            emailCheck(email);
-            idCheck(ID);
-            phoneCheck(phone);
-            companyNumberCheck(companyNumber);
-        }
-        catch(Exception e){
-            System.out.println(e.getMessage()+"\nPlease try again:");
-            addSupplierFunc();
-        }
+        int companyNumber = readCompanyNumber();
         boolean perm;
         while (true) {
             System.out.print("do you a permanent order days? y/n: ");
@@ -213,23 +197,13 @@ public class MenuPrinter {
 
     private void getSupplier() {
         System.out.print("please enter supplier id: ");
-        String supplierId = getStringFromUser();
-        try{idCheck(supplierId);}
-        catch (Exception e){
-            System.out.println(e.getMessage()+"\ntry again:");
-            getSupplier();
-        }
+        String supplierId = readID();
         System.out.println(pc.getSupplier(supplierId));
     }
 
     private void addQuantityList() { //case 4
         System.out.print("please enter supplier id: ");
-        String supplierId = getStringFromUser();
-        try{idCheck(supplierId);}
-        catch (Exception e){
-            System.out.println(e.getMessage()+"\ntry again:");
-            addQuantityList();
-        }
+        String supplierId = readID();
         System.out.println(pc.addQuantityList(supplierId));
         while (true) {
             System.out.println("please choose an option");
@@ -253,12 +227,7 @@ public class MenuPrinter {
 
     private void editQuantityList() { //case 5
         System.out.print("please enter supplier id: ");
-        String supplierId = getStringFromUser();
-        try{idCheck(supplierId);}
-        catch (Exception e){
-            System.out.println(e.getMessage()+"\ntry again:");
-            editQuantityList();
-        }
+        String supplierId = readID();
         System.out.println("Please choose an option to Edit:");
         System.out.println("1. edit product amount");
         System.out.println("2. edit product discount");
@@ -307,7 +276,7 @@ public class MenuPrinter {
 
     private void createNewOrder() { //case 6
         System.out.print("please enter\nsupplier id: ");
-        String supplierId = getStringFromUser();
+        String supplierId = readID();
         System.out.print("date (dd/mm/yyyy): ");
         LocalDate lclDate = getDateFromUser();
         String order = pc.createOrder(lclDate, supplierId);
@@ -335,7 +304,7 @@ public class MenuPrinter {
 
     private void setPermanentOrder() { //case 7
         System.out.print("please enter\nsupplier id: ");
-        String supplierId = getStringFromUser();
+        String supplierId = readID();
         System.out.println("day (1-7) in a week to get the order");
         int day = getIntFromUser();
         String order = pc.createPernamentOrder(day, supplierId);
@@ -363,7 +332,7 @@ public class MenuPrinter {
     private void updateSupplierDetailFunc() {
         int opt = -1;
         System.out.println("please enter supplier id");
-        String supplierID = getStringFromUser();
+        String supplierID = readID();
         boolean flag = true;
         while (flag) {
             System.out.println("Please choose an option to Edit:");
@@ -383,23 +352,28 @@ public class MenuPrinter {
             switch (choose) {
                 case 1:
                     System.out.print("please enter first name: ");
-                    System.out.println(pc.updateFirstName(supplierID, getStringFromUser()));
+                    String firstName = readName();
+                    System.out.println(pc.updateFirstName(supplierID, firstName));
                     break;
                 case 2:
                     System.out.print("please enter last name: ");
-                    System.out.println(pc.updateLastName(supplierID, getStringFromUser()));
+                    String lastName = readName();
+                    System.out.println(pc.updateLastName(supplierID, lastName));
                     break;
                 case 3:
                     System.out.print("please enter phone number: ");
-                    System.out.println(pc.updatePhone(supplierID, getStringFromUser()));
+                    String phoneNum = readPhone();
+                    System.out.println(pc.updatePhone(supplierID, phoneNum));
                     break;
                 case 4:
                     System.out.print("please enter email: ");
-                    System.out.println(pc.updateEmail(supplierID, getStringFromUser()));
+                    String emailAddr = readEmail();
+                    System.out.println(pc.updateEmail(supplierID, emailAddr));
                     break;
                 case 5:
                     System.out.print("please enter company number: ");
-                    System.out.println(pc.updateCompanyNumber(supplierID, getIntFromUser()));
+                    int cn = readCompanyNumber();
+                    System.out.println(pc.updateCompanyNumber(supplierID, cn));
                     break;
                 case 6:
                     while (true) {
@@ -458,22 +432,23 @@ public class MenuPrinter {
                         else if (opt == 1) {
                             System.out.print("please enter following details: ");
                             System.out.print("\nfirst name: ");
-                            String firstName = getStringFromUser();
+                            String fName = readName();
                             System.out.print("last name: ");
-                            String lName = getStringFromUser();
+                            String lName = readName();
                             System.out.print("email: ");
-                            String email = getStringFromUser();
+                            String email = readEmail();
                             System.out.print("ID: ");
-                            String ID = getStringFromUser();
+                            String ID = readID();
                             System.out.print("phone: ");
-                            String phone = getStringFromUser();
-                            System.out.println(pc.addContactMember(supplierID, firstName, lName, email, ID, phone));
+                            String phone = readPhone();
+                            System.out.println(pc.addContactMember(supplierID, fName, lName, email, ID, phone));
                         }
                     }
                     break;
                 case 10:
                     System.out.println("please enter a contact member id to remove:");
-                    System.out.println(pc.deleteContactMember(supplierID, getStringFromUser()));
+                    String memberID = readID();
+                    System.out.println(pc.deleteContactMember(supplierID, memberID));
                     break;
                 default:
                     flag = false;
@@ -482,7 +457,7 @@ public class MenuPrinter {
     }
 
     //a helper function that approve that the order arrived in the system
-    private void approveOrder()  {
+    private void approveOrder() {
         System.out.println("please enter order ID");
         System.out.println(pc.approveOrder(getIntFromUser()));
     }
@@ -495,16 +470,15 @@ public class MenuPrinter {
 
     private void getQuantityList() {
         System.out.print("please enter supplier ID: ");
-        String supplierID = getStringFromUser();
+        String supplierID = readID();
         System.out.println(pc.getQuantityList(supplierID));
     }
 
     private void getAgreement() {
         System.out.print("please enter supplier ID: ");
-        String supplierID = getStringFromUser();
+        String supplierID = readID();
         System.out.println(pc.getAgreement(supplierID));
     }
-
 
     //a helper function to add a product to an order
     private void addProductToOrder() {
@@ -518,11 +492,10 @@ public class MenuPrinter {
     }
 
     //a helper function to get a product
-    private void getProduct()  {
+    private void getProduct() {
         System.out.println("please enter product ID");
         System.out.println(pc.getProduct(getIntFromUser()));
     }
-
 
     //a helper function to add a new product to the system
     private void createProduct() {
@@ -533,9 +506,9 @@ public class MenuPrinter {
         System.out.println(pc.createProduct(name, manufacturer));
     }
 
-    private void editAgrreement()  {
+    private void editAgrreement() {
         System.out.print("Please enter supplier ID:");
-        String supplierId = getStringFromUser();
+        String supplierId = readID();
         boolean flag = true;
         while (flag) {
             System.out.println("please choose an option:");
@@ -565,7 +538,7 @@ public class MenuPrinter {
                 case 3 -> {
                     System.out.println("please enter the following details: ");
                     System.out.print("supplier id: ");
-                    supplierId = getStringFromUser();
+                    supplierId = readID();
                     System.out.println("product id: ");
                     productId = scan.nextInt();
                     System.out.println("new company product id: ");
@@ -587,7 +560,7 @@ public class MenuPrinter {
     }
 
     //a helper function to get a string from the user
-    private String getStringFromUser(){
+    private String getStringFromUser() {
         boolean con = true;
         String output = "";
         while (con) {
@@ -604,23 +577,22 @@ public class MenuPrinter {
     }
 
     //a helper function to get a Date from the user
-    private LocalDate getDateFromUser(){
+    private LocalDate getDateFromUser() {
         boolean con = true;
         String output = "";
-        LocalDate lclDate=LocalDate.now();
+        LocalDate lclDate = LocalDate.now();
         while (con) {
             try {
                 output = scan.next();
                 DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("d/MM/yyyy");
                 lclDate = LocalDate.parse(output, dateTimeFormatter);
-                con=false;
-            }catch (Exception e){
+                con = false;
+            } catch (Exception e) {
                 System.out.print("invalid date input, please insert again (dd/mm/yyyy): ");
             }
         }
         return lclDate;
     }
-
 
     //a helper function to get in from the user
     private int getIntFromUser() {
@@ -644,8 +616,6 @@ public class MenuPrinter {
         }
         return choose;
     }
-
-
 
     private void removeProductFromOrder() {
         System.out.println("please enter the following details: ");
@@ -712,8 +682,68 @@ public class MenuPrinter {
     }
 
     //method that check if companyNumber is legal
-    protected void companyNumberCheck(int comanyNumber) throws Exception {
+    private void companyNumberCheck(int comanyNumber) throws Exception {
         if (comanyNumber < 0 || comanyNumber > MaxCompanyNumber)
             throw new Exception("invalid company number" + comanyNumber);
+    }
+
+    private String readID() {
+        while (true) {
+            String id = getStringFromUser();
+            try {
+                idCheck(id);
+                return id;
+            } catch (Exception e) {
+                System.out.print(e.getMessage() + "\ntry again: ");
+            }
+        }
+    }
+
+    private String readName() {
+        while (true) {
+            String name = getStringFromUser();
+            try {
+                nameCheck(name);
+                return name;
+            } catch (Exception e) {
+                System.out.print(e.getMessage() + "\ntry again: ");
+            }
+        }
+    }
+
+    private String readPhone() {
+        while (true) {
+            String phone = getStringFromUser();
+            try {
+                phoneCheck(phone);
+                return phone;
+            } catch (Exception e) {
+                System.out.print(e.getMessage() + "\ntry again: ");
+            }
+        }
+    }
+
+    private String readEmail() {
+        while (true) {
+            String email = getStringFromUser();
+            try {
+                emailCheck(email);
+                return email;
+            } catch (Exception e) {
+                System.out.print(e.getMessage() + "\ntry again: ");
+            }
+        }
+    }
+
+    private int readCompanyNumber() {
+        while (true) {
+            int cn = getIntFromUser();
+            try {
+                companyNumberCheck(cn);
+                return cn;
+            } catch (Exception e) {
+                System.out.print(e.getMessage() + "\ntry again: ");
+            }
+        }
     }
 }
