@@ -1,5 +1,5 @@
-import InventoryModule.BusinessLayer.Category;
-import InventoryModule.BusinessLayer.InventoryController;
+import BusinessLayer.InventoryPackage.Category;
+import BusinessLayer.InventoryPackage.InventoryController;
 import org.junit.After;
 import org.junit.BeforeClass;
 import org.junit.Test;

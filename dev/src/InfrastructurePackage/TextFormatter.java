@@ -1,6 +1,6 @@
 package InfrastructurePackage;
 
-import InventoryModule.ControllerLayer.SimpleObjects.*;
+import SerciveLayer.SimpleObjects.*;
 
 import java.lang.reflect.Field;
 import java.text.SimpleDateFormat;
