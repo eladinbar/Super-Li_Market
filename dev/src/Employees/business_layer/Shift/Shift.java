@@ -32,7 +32,7 @@ public class Shift {
         this.mORe = mORe;
     }
 
-    public Shift(FacadeShift facadeShift) throws EmployeeException {
+    public Shift(FacadeShift facadeShift){
         date = facadeShift.getDate();
         manning = new HashMap<> (  );
         for( Map.Entry <String, List<String>> entry: facadeShift.getManning ().entrySet ())

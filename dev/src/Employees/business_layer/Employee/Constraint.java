@@ -11,8 +11,7 @@ public class Constraint {
     private String reason;
 
     public Constraint(LocalDate date, boolean morningShift, boolean evningShift, String reason) throws EmployeeException {
-        if(!validDate(date)){throw new EmployeeException("A constraint can be filed up to two weeks in advance");
-        }
+
         this.date = date;
         this.morningShift = morningShift;
         this.eveningShift = evningShift;

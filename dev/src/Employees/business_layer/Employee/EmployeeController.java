@@ -153,6 +153,7 @@ public class EmployeeController {
         }
        TermsOfEmployment terms = creatTermsOfEmployment ( e.getFacadeTermsOfEmployment () );
        BankAccountInfo bank = createAccount ( e.getFacadeBankAccountInfo () );
+       if(!validId(e.getID())){throw new EmployeeException("An invalid ID was entered ");}
        Employee newEmployee = new Employee(e.getRole(), e.getID(),terms, e.getTransactionDate(), bank);
        employees.put(e.getID(), newEmployee);
        return newEmployee;
@@ -180,6 +181,7 @@ public class EmployeeController {
         }
         TermsOfEmployment terms = creatTermsOfEmployment ( e.getFacadeTermsOfEmployment () );
         BankAccountInfo bank =createAccount ( e.getFacadeBankAccountInfo () );
+        if(!validId(e.getID())){ throw new EmployeeException("An invalid ID was entered "); }
         Employee newEmployee = new Employee(e.getRole(), e.getID(),terms, e.getTransactionDate(), bank);
         employees.put(e.getID(), newEmployee);
         return newEmployee;
@@ -253,15 +255,14 @@ public class EmployeeController {
             Employee employee = entry.getValue();
             if(employee.getRole()== roleName){
                 if(employee.getConstraints().containsKey(date)) {//Checks if the employee has a constraint on this day
-                  if(shift==0) {//Checks on morning shift
-                      if (!employee.getConstraints().get(date).isMorningShift())// If the employee is free on this shift
-                          specificRole.add(employee.getID());
-                  }
-                  if(shift==1) {//Checks on evening shift
-                      if (!employee.getConstraints().get(date).isEveningShift())// If the employee is free on this shift
-                          specificRole.add(employee.getID());
+                    if(shift==0) {//Checks on morning shift
+                        if (!employee.getConstraints().get(date).isMorningShift())// If the employee is free on this shift
+                            specificRole.add(employee.getID());
                     }
-                  if (shift == 2) {}
+                    else if(shift==1) {//Checks on evening shift
+                        if (!employee.getConstraints().get(date).isEveningShift())// If the employee is free on this shift
+                            specificRole.add(employee.getID());
+                    }
                 }
                 else{ // If the employee is free on this day
                     specificRole.add(employee.getID());
@@ -336,7 +337,7 @@ public class EmployeeController {
         employee.giveConstraint(date, shift, reason);
     }
 
-    private void createGuard() throws EmployeeException {
+    private void createGuard()  {
         int accountNum = 356, bankBranch=10, salary=5500, educationFund=1232, sickDays=10, daysOff=30;
         String bankName = "Leumi";
         for(int i=0; i<2; i++){
@@ -352,7 +353,7 @@ public class EmployeeController {
         }
     }
 
-    private void creatCashier() throws EmployeeException {
+    private void creatCashier() {
         int accountNum = 256, bankBranch=13, salary=5500, educationFund=1232, sickDays=10, daysOff=30;
         String bankName = "Leumi";
         for(int i=0; i<4; i++){

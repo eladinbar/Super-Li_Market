@@ -11,6 +11,7 @@ import java.time.temporal.WeekFields;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 public class ShiftController {
     private static ShiftController instance = null;
@@ -51,22 +52,45 @@ public class ShiftController {
             throw new EmployeeException ( "shifts are illegal." );
         if(this.shifts.containsKey ( startingDate ))
             throw new EmployeeException ( "Weekly shift schedule is already exists in the system. \nYou can watch it and edit if you would like." );
-        WeeklyShiftSchedule weeklyShiftSchedule = new WeeklyShiftSchedule (employeeController, startingDate, shifts );
+        for(int i = 0; i < 5; i ++)
+        {
+            checkManningVallidity2 (shifts[i][0].getManning () );
+            checkManningVallidity2 (shifts[i][1].getManning () );
+        }
+        checkManningVallidity2 (shifts[5][0].getManning () );
+        checkManningVallidity2 (shifts[6][1].getManning () );
+        WeeklyShiftSchedule weeklyShiftSchedule = new WeeklyShiftSchedule (startingDate, shifts );
         this.shifts.put ( startingDate, weeklyShiftSchedule );
         return weeklyShiftSchedule;
+    }
+
+    private void checkManningVallidity2(HashMap<Role, List<String>> manning) throws EmployeeException {
+        for( Map.Entry<Role, List<String>> entry : manning.entrySet () )
+        {
+            for(String employee : entry.getValue ()) {
+                if (!employeeController.isExist ( entry.getKey ( ).name (), employee ))
+                    throw new EmployeeException ( "Id - " + employee + " and role - " + entry.getKey () + " does not exist in system.");
+            }
+        }
     }
 
     public WeeklyShiftSchedule createEmptyWeeklyShiftSchedule(LocalDate startingDate) throws EmployeeException {
         if(startingDate.isBefore ( LocalDate.now () ))
             throw new EmployeeException ( "starting day has already passed." );
+        if(startingDate.getDayOfWeek () != DayOfWeek.SUNDAY)
+            throw new EmployeeException ( "Starting date is not sunday." );
         return new WeeklyShiftSchedule ( startingDate );
     }
 
     public void changeShift(LocalDate date, int shift, HashMap<String, List<String>> manning) throws EmployeeException {
+        if(date.isBefore ( LocalDate.now () ))
+            throw new EmployeeException ( "the date has already passed." );
         getWeeklyShiftSchedule ( date ).changeShift(employeeController, date, shift, manning);
     }
 
     public void addEmployeeToShift(String role, String ID, LocalDate date, int shift) throws EmployeeException {
+        if(date.isBefore ( LocalDate.now () ))
+            throw new EmployeeException ( "the date has already passed." );
         if(!employeeController.isExist(role, ID))
             throw new EmployeeException ( "Id - " + ID + " and role - " + role + " does not exist in system." );
         if(employeeController.getEmployee ( ID ).getConstraints ().containsKey ( date ) &&
@@ -75,14 +99,20 @@ public class ShiftController {
         if(employeeController.getEmployee ( ID ).getConstraints ().containsKey ( date ) &&
                 employeeController.getEmployee ( ID ).getConstraints ().get ( date ). isEveningShift () && shift == 1)
             throw new EmployeeException ( "Employee is unavailable." );
+        if(getWeeklyShiftSchedule ( date ).getShift ( date, 1-shift ).isWorking ( role, ID ))
+            throw new EmployeeException ( "Employee is already manning the other shift of the day." );
         getWeeklyShiftSchedule ( date ).addEmployeeToShift ( role, ID, date, shift );
     }
 
     public void deleteEmployeeFromShift(String role, String ID, LocalDate date, int shift) throws EmployeeException {
+        if(date.isBefore ( LocalDate.now () ))
+            throw new EmployeeException ( "the date has already passed." );
         getWeeklyShiftSchedule ( date ).deleteEmployeeFromShift (role, ID, date, shift );
     }
 
     public void changeShiftType(LocalDate date, int shift, String shiftType) throws EmployeeException {
+        if(date.isBefore ( LocalDate.now () ))
+            throw new EmployeeException ( "the date has already passed." );
         getWeeklyShiftSchedule ( date ).changeShiftType ( date, shift, shiftType );
     }
 

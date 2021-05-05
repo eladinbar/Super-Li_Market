@@ -17,20 +17,13 @@ public class WeeklyShiftSchedule {
 
 
     //an existing schedule with given shifts
-    public WeeklyShiftSchedule(EmployeeController employeeController, LocalDate date, Shift[][] shifts) throws EmployeeException {
-        if(date.getDayOfWeek ().equals ( DayOfWeek.SUNDAY ))
+    public WeeklyShiftSchedule(LocalDate date, Shift[][] shifts) {
         this.date = date;
-        for(int i = 0; i < 7; i ++)
-        {
-            checkManningVallidity2 ( employeeController, shifts[i][0].getManning () );
-        }
         this.shifts = shifts;
     }
 
     //a new schedule with no shifts
-    public WeeklyShiftSchedule(LocalDate date) throws EmployeeException {
-        if(date.isBefore ( LocalDate.now () ))
-            throw new EmployeeException ( "starting day has already passed." );
+    public WeeklyShiftSchedule(LocalDate date) {
         this.date = date;
         this.shifts = new Shift[7][2];
         for(int i = 0; i < 5; i++)
