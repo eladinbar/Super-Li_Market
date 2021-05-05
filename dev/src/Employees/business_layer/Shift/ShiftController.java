@@ -17,13 +17,6 @@ public class ShiftController {
     private HashMap<LocalDate, WeeklyShiftSchedule> shifts;
     EmployeeController employeeController;
 
-//    public ShiftController(HashMap<LocalDate, WeeklyShiftSchedule> shifts, EmployeeController employeeController)
-//    {
-//        this.shifts = shifts;
-//        this.employeeController = employeeController;
-//    }
-
-
     private ShiftController(){
         shifts = new HashMap<> (  );
         employeeController = EmployeeController.getInstance ();
