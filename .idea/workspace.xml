@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="81ce0887-8b24-4737-8b90-9f78e7d4770c" name="Default Changelist" comment="merging tests">
+      <change afterPath="$PROJECT_DIR$/.idea/artifacts/adss2020_v01_jar.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/adss_v0.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_4_23_2021_3_54_PM_[Default_Changelist]/shelved.patch" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_4_23_2021_3_54_PM__Default_Changelist_.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/uiDesigner.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ADSS_Group_G.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assignment2.pdf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Supper_Lee.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/dev/src/Employees/EmployeeException.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/dev/src/Employees/business_layer/Employee/BankAccountInfo.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/dev/src/Employees/business_layer/Employee/Constraint.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/dev/src/Employees/business_layer/Employee/Employee.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/dev/src/Employees/business_layer/Employee/EmployeeController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/dev/src/Employees/business_layer/Employee/Role.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/dev/src/Employees/business_layer/Employee/TermsOfEmployment.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/dev/src/Employees/business_layer/Shift/Shift.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/dev/src/Employees/business_layer/Shift/ShiftController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/dev/src/Employees/business_layer/Shift/ShiftTypes.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/dev/src/Employees/business_layer/Shift/WeeklyShiftSchedule.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/dev/src/Employees/business_layer/facade/EmployeeService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/dev/src/Employees/business_layer/facade/FacadeService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/dev/src/Employees/business_layer/facade/Response.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/dev/src/Employees/business_layer/facade/ResponseT.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/dev/src/Employees/business_layer/facade/ShiftService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/dev/src/Employees/business_layer/facade/facadeObject/FacadeBankAccountInfo.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/dev/src/Employees/business_layer/facade/facadeObject/FacadeConstraint.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/dev/src/Employees/business_layer/facade/facadeObject/FacadeEmployee.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/dev/src/Employees/business_layer/facade/facadeObject/FacadeObject.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/dev/src/Employees/business_layer/facade/facadeObject/FacadeShift.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/dev/src/Employees/business_layer/facade/facadeObject/FacadeTermsOfEmployment.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/dev/src/Employees/business_layer/facade/facadeObject/FacadeWeeklyShiftSchedule.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/dev/src/Employees/presentation_layer/MenuPrinter.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/dev/src/Employees/presentation_layer/PresentationController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/dev/src/Employees/presentation_layer/StringConverter.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/dev/src/Tests/EmployeeControllerTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/dev/src/Tests/ResourcesServiceTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/dev/src/Trucking/Business_Layer_Trucking/Delivery/DeliveryController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/dev/src/Trucking/Business_Layer_Trucking/Delivery/DeliveryForm.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/dev/src/Trucking/Business_Layer_Trucking/Delivery/Demand.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/dev/src/Trucking/Business_Layer_Trucking/Delivery/Item.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/dev/src/Trucking/Business_Layer_Trucking/Delivery/Site.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/dev/src/Trucking/Business_Layer_Trucking/Delivery/TruckingReport.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/dev/src/Trucking/Business_Layer_Trucking/Facade/DeliveryService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/dev/src/Trucking/Business_Layer_Trucking/Facade/FacadeObject/FacadeDeliveryForm.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/dev/src/Trucking/Business_Layer_Trucking/Facade/FacadeObject/FacadeDemand.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/dev/src/Trucking/Business_Layer_Trucking/Facade/FacadeObject/FacadeDriver.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/dev/src/Trucking/Business_Layer_Trucking/Facade/FacadeObject/FacadeItem.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/dev/src/Trucking/Business_Layer_Trucking/Facade/FacadeObject/FacadeObject.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/dev/src/Trucking/Business_Layer_Trucking/Facade/FacadeObject/FacadeSite.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/dev/src/Trucking/Business_Layer_Trucking/Facade/FacadeObject/FacadeTruck.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/dev/src/Trucking/Business_Layer_Trucking/Facade/FacadeObject/FacadeTruckingReport.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/dev/src/Trucking/Business_Layer_Trucking/Facade/FacadeObject/ResourcesService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/dev/src/Trucking/Business_Layer_Trucking/Facade/FacadeService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/dev/src/Trucking/Business_Layer_Trucking/Facade/Response.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/dev/src/Trucking/Business_Layer_Trucking/Facade/ResponseT.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/dev/src/Trucking/Business_Layer_Trucking/Resources/Driver.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/dev/src/Trucking/Business_Layer_Trucking/Resources/ResourcesController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/dev/src/Trucking/Business_Layer_Trucking/Resources/Truck.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/dev/src/Trucking/Presentation_Layer_Trucking/Main_Trucking.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/dev/src/Trucking/Presentation_Layer_Trucking/Menu_Printer.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/dev/src/Trucking/Presentation_Layer_Trucking/PresentationController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/dev/src/Trucking/Presentation_Layer_Trucking/StringConverter.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/docs/203834734_206117400 .pdf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/docs/ERD.drawio" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/docs/ERD.pdf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/docs/Instructions-Trucking.pdf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/docs/OD1.drawio" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/docs/Scenario1.drawio" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/docs/Scenario2.drawio" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/docs/Untitled Diagram.drawio" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/docs/classDiagram_Employee_trucking.drawio" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/docs/collaboration Diagram.drawio" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/docs/collaboration Diagram.pdf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/docs/instructions.pdf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/docs/sequence Diagram add Employee.pdf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/artifacts/ADSS_Group_G_jar/adss2020_v01.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/ADSS_Group_G/Employees/EmployeeException.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/ADSS_Group_G/Employees/Test/EmployeeControllerTest.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/ADSS_Group_G/Employees/business_layer/Employee/BankAccountInfo.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/ADSS_Group_G/Employees/business_layer/Employee/Constraint.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/ADSS_Group_G/Employees/business_layer/Employee/Employee.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/ADSS_Group_G/Employees/business_layer/Employee/EmployeeController.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/ADSS_Group_G/Employees/business_layer/Employee/Role.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/ADSS_Group_G/Employees/business_layer/Employee/TermsOfEmployment.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/ADSS_Group_G/Employees/business_layer/Shift/Shift.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/ADSS_Group_G/Employees/business_layer/Shift/ShiftTypes.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/ADSS_Group_G/Employees/business_layer/facade/EmployeeService.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/ADSS_Group_G/Employees/business_layer/facade/FacadeService.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/ADSS_Group_G/Employees/business_layer/facade/Response.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/ADSS_Group_G/Employees/business_layer/facade/ResponseT.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/ADSS_Group_G/Employees/business_layer/facade/facadeObject/FacadeBankAccountInfo.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/ADSS_Group_G/Employees/business_layer/facade/facadeObject/FacadeConstraint.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/ADSS_Group_G/Employees/business_layer/facade/facadeObject/FacadeEmployee.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/ADSS_Group_G/Employees/business_layer/facade/facadeObject/FacadeObject.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/ADSS_Group_G/Employees/business_layer/facade/facadeObject/FacadeShift.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/ADSS_Group_G/Employees/business_layer/facade/facadeObject/FacadeTermsOfEmployment.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/ADSS_Group_G/Employees/business_layer/facade/facadeObject/FacadeWeeklyShiftSchedule.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/ADSS_Group_G/Employees/presentation_layer/MenuPrinter.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/ADSS_Group_G/Employees/presentation_layer/PresentationController.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/ADSS_Group_G/Employees/presentation_layer/StringConverter.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/ADSS_Group_G/Main.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/Supper_Lee/Employees/EmployeeException.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/Supper_Lee/Employees/Test/EmployeeControllerTest.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/Supper_Lee/Employees/business_layer/Employee/BankAccountInfo.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/Supper_Lee/Employees/business_layer/Employee/Constraint.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/Supper_Lee/Employees/business_layer/Employee/Employee.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/Supper_Lee/Employees/business_layer/Employee/EmployeeController.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/Supper_Lee/Employees/business_layer/Employee/Role.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/Supper_Lee/Employees/business_layer/Employee/TermsOfEmployment.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/Supper_Lee/Employees/business_layer/Shift/Shift.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/Supper_Lee/Employees/business_layer/Shift/ShiftController.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/Supper_Lee/Employees/business_layer/Shift/ShiftTypes.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/Supper_Lee/Employees/business_layer/Shift/WeeklyShiftSchedule.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/Supper_Lee/Employees/business_layer/facade/EmployeeService.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/Supper_Lee/Employees/business_layer/facade/FacadeService.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/Supper_Lee/Employees/business_layer/facade/Response.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/Supper_Lee/Employees/business_layer/facade/ResponseT.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/Supper_Lee/Employees/business_layer/facade/ShiftService.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/Supper_Lee/Employees/business_layer/facade/facadeObject/FacadeBankAccountInfo.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/Supper_Lee/Employees/business_layer/facade/facadeObject/FacadeConstraint.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/Supper_Lee/Employees/business_layer/facade/facadeObject/FacadeEmployee.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/Supper_Lee/Employees/business_layer/facade/facadeObject/FacadeObject.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/Supper_Lee/Employees/business_layer/facade/facadeObject/FacadeShift.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/Supper_Lee/Employees/business_layer/facade/facadeObject/FacadeTermsOfEmployment.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/Supper_Lee/Employees/business_layer/facade/facadeObject/FacadeWeeklyShiftSchedule.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/Supper_Lee/Employees/presentation_layer/MenuPrinter.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/Supper_Lee/Employees/presentation_layer/PresentationController.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/Supper_Lee/Employees/presentation_layer/StringConverter.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/Supper_Lee/META-INF/MANIFEST.MF" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/Supper_Lee/Main.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/release/adss2020_v01.jar" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dev/src/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/dev/src/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/Employee module UML.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/Employee module.drawio" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/ID - Shaked and Gal" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/object diagram1.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/objectDiagram.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/table1.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/table2.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/table3.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/workers module" beforeDir="false" afterPath="$PROJECT_DIR$/docs/workers module" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="HighlightingSettingsPerFile">
+    <setting file="file://$PROJECT_DIR$/dev/src/Main.java" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/dev/src/InfrastructurePackage/SystemLogger.java" root0="FORCE_HIGHLIGHTING" />
+  </component>
+  <component name="ProjectId" id="1s7aVbJPf0UZ0ZsEfDnwNZEoJHQ" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="aspect.path.notification.shown" value="true" />
+    <property name="node.js.detected.package.eslint" value="true" />
+    <property name="node.js.detected.package.tslint" value="true" />
+    <property name="node.js.selected.package.eslint" value="(autodetect)" />
+    <property name="node.js.selected.package.tslint" value="(autodetect)" />
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="81ce0887-8b24-4737-8b90-9f78e7d4770c" name="Default Changelist" comment="" />
+      <created>1620226113349</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1620226113349</updated>
+      <workItem from="1620226115138" duration="12000" />
+      <workItem from="1620226295678" duration="874000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="oldMeFiltersMigrated" value="true" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Merge branch '203834734_206117400_314978925_315994442' into 2.2Employees&#10;&#10;# Conflicts:&#10;#&#9;.idea/.gitignore&#10;#&#9;.idea/misc.xml&#10;#&#9;.idea/vcs.xml" />
+    <MESSAGE value="merging tests" />
+    <option name="LAST_COMMIT_MESSAGE" value="merging tests" />
+  </component>
+  <component name="XDebuggerManager">
+    <pin-to-top-manager>
+      <pinned-members>
+        <PinnedItemInfo parentTag="java.lang.Integer" memberName="value" />
+        <PinnedItemInfo parentTag="Business_Layer_Trucking.Delivery.DeliveryController" memberName="lastReportID" />
+        <PinnedItemInfo parentTag="java.util.HashMap$Node" memberName="value" />
+        <PinnedItemInfo parentTag="Business_Layer_Trucking.Delivery.DeliveryController" memberName="currDF" />
+        <PinnedItemInfo parentTag="Business_Layer_Trucking.Facade.DeliveryService" memberName="dc" />
+      </pinned-members>
+    </pin-to-top-manager>
+  </component>
+  <component name="com.intellij.coverage.CoverageDataManagerImpl">
+    <SUITE FILE_PATH="coverage/ADSS_Group_G$Main.ic" NAME="Main Coverage Results" MODIFIED="1617982326074" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
+  </component>
+</project>
