@@ -85,12 +85,16 @@ public class ShiftController {
     public void changeShift(LocalDate date, int shift, HashMap<String, List<String>> manning) throws EmployeeException {
         if(date.isBefore ( LocalDate.now () ))
             throw new EmployeeException ( "the date has already passed." );
+        if((date.getDayOfWeek ().getValue ()== 5 && shift == 1 )| (date.getDayOfWeek ().getValue ()== 6 && shift == 0 ))
+            throw new EmployeeException ( "Super-Lee does not work at Shabbat." );
         getWeeklyShiftSchedule ( date ).changeShift(employeeController, date, shift, manning);
     }
 
     public void addEmployeeToShift(String role, String ID, LocalDate date, int shift) throws EmployeeException {
         if(date.isBefore ( LocalDate.now () ))
             throw new EmployeeException ( "the date has already passed." );
+        if((date.getDayOfWeek ().getValue ()== 5 && shift == 1 )| (date.getDayOfWeek ().getValue ()== 6 && shift == 0 ))
+            throw new EmployeeException ( "Super-Lee does not work at Shabbat." );
         if(!employeeController.isExist(role, ID))
             throw new EmployeeException ( "Id - " + ID + " and role - " + role + " does not exist in system." );
         if(employeeController.getEmployee ( ID ).getConstraints ().containsKey ( date ) &&
@@ -107,12 +111,16 @@ public class ShiftController {
     public void deleteEmployeeFromShift(String role, String ID, LocalDate date, int shift) throws EmployeeException {
         if(date.isBefore ( LocalDate.now () ))
             throw new EmployeeException ( "the date has already passed." );
+        if((date.getDayOfWeek ().getValue ()== 5 && shift == 1 )| (date.getDayOfWeek ().getValue ()== 6 && shift == 0 ))
+            throw new EmployeeException ( "Super-Lee does not work at Shabbat." );
         getWeeklyShiftSchedule ( date ).deleteEmployeeFromShift (role, ID, date, shift );
     }
 
     public void changeShiftType(LocalDate date, int shift, String shiftType) throws EmployeeException {
         if(date.isBefore ( LocalDate.now () ))
             throw new EmployeeException ( "the date has already passed." );
+        if((date.getDayOfWeek ().getValue ()== 5 && shift == 1 )| (date.getDayOfWeek ().getValue ()== 6 && shift == 0 ))
+            throw new EmployeeException ( "Super-Lee does not work at Shabbat." );
         getWeeklyShiftSchedule ( date ).changeShiftType ( date, shift, shiftType );
     }
 
