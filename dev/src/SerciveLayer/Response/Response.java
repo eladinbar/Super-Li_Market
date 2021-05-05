@@ -3,6 +3,7 @@ package SerciveLayer.Response;
 
 public class Response {
     private String errorMessage;
+    private String message;
 
     public Response(String errorMessage)
     {
