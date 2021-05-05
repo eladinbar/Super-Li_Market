@@ -27,37 +27,19 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="05ca914f-9056-4de3-9869-7fdfaa880f2d" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/sqlite-jdbc-3.32.3.2.jar" afterDir="false" />
+    <list default="true" id="05ca914f-9056-4de3-9869-7fdfaa880f2d" name="Default Changelist" comment="DAL Trucking classes almost done!">
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_4_26_2021_9_01_PM_[Default_Changelist]/shelved.patch" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_4_26_2021_9_01_PM__Default_Changelist_.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ADSS_Group_G.iml" beforeDir="false" afterPath="$PROJECT_DIR$/ADSS_Group_G.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dev/src/DAL/DalDeliveryForm.java" beforeDir="false" afterPath="$PROJECT_DIR$/dev/src/DAL/DalDeliveryForm.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/dev/src/DAL/DalDeliveryFormController.java" beforeDir="false" afterPath="$PROJECT_DIR$/dev/src/DAL/DalDeliveryFormController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dev/src/DAL/DalDemand.java" beforeDir="false" afterPath="$PROJECT_DIR$/dev/src/DAL/DalDemand.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/dev/src/DAL/DalDemandController.java" beforeDir="false" afterPath="$PROJECT_DIR$/dev/src/DAL/DalDemandController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dev/src/DAL/DalDriver.java" beforeDir="false" afterPath="$PROJECT_DIR$/dev/src/DAL/DalDriver.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/dev/src/DAL/DalDriverController.java" beforeDir="false" afterPath="$PROJECT_DIR$/dev/src/DAL/DalDriverController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dev/src/DAL/DalItem.java" beforeDir="false" afterPath="$PROJECT_DIR$/dev/src/DAL/DalItem.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/dev/src/DAL/DalItemController.java" beforeDir="false" afterPath="$PROJECT_DIR$/dev/src/DAL/DalItemController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dev/src/DAL/DalItemsOnDF.java" beforeDir="false" afterPath="$PROJECT_DIR$/dev/src/DAL/DalItemsOnDF.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/dev/src/DAL/DalItemsOnDFController.java" beforeDir="false" afterPath="$PROJECT_DIR$/dev/src/DAL/DalItemsOnDFController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dev/src/DAL/DalSite.java" beforeDir="false" afterPath="$PROJECT_DIR$/dev/src/DAL/DalSite.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/dev/src/DAL/DalSiteController.java" beforeDir="false" afterPath="$PROJECT_DIR$/dev/src/DAL/DalSiteController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dev/src/DAL/DalTruck.java" beforeDir="false" afterPath="$PROJECT_DIR$/dev/src/DAL/DalTruck.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/dev/src/DAL/DalTruckController.java" beforeDir="false" afterPath="$PROJECT_DIR$/dev/src/DAL/DalTruckController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dev/src/DAL/DalTruckingReport.java" beforeDir="false" afterPath="$PROJECT_DIR$/dev/src/DAL/DalTruckingReport.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/dev/src/DAL/DalTruckingReportController.java" beforeDir="false" afterPath="$PROJECT_DIR$/dev/src/DAL/DalTruckingReportController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dev/src/Employees/Test/EmployeeControllerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/dev/src/Employees/Test/EmployeeControllerTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dev/src/InfrastructurePackage/SystemLogger.java" beforeDir="false" afterPath="$PROJECT_DIR$/dev/src/InfrastructurePackage/SystemLogger.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/dev/src/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/dev/src/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dev/src/Tests/ResourcesServiceTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/dev/src/Tests/ResourcesServiceTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/ADSS_Group_G/Employees/Test/EmployeeControllerTest.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/ADSS_Group_G/Employees/business_layer/Employee/EmployeeController.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/ADSS_Group_G/Employees/business_layer/Employee/EmployeeController.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/ADSS_Group_G/Employees/business_layer/Shift/ShiftTypes.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/ADSS_Group_G/Employees/business_layer/Shift/ShiftTypes.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/ADSS_Group_G/Employees/business_layer/facade/EmployeeService.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/ADSS_Group_G/Employees/business_layer/facade/EmployeeService.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/ADSS_Group_G/Employees/business_layer/facade/FacadeService.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/ADSS_Group_G/Employees/business_layer/facade/FacadeService.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/ADSS_Group_G/Employees/presentation_layer/MenuPrinter.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/ADSS_Group_G/Employees/presentation_layer/MenuPrinter.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/ADSS_Group_G/Employees/presentation_layer/PresentationController.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/ADSS_Group_G/Employees/presentation_layer/PresentationController.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/ADSS_Group_G/Main.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/ADSS_Group_G/Main.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -502,7 +484,14 @@
       <option name="project" value="LOCAL" />
       <updated>1619971196521</updated>
     </task>
-    <option name="localTasksCounter" value="45" />
+    <task id="LOCAL-00045" summary="DAL Trucking classes almost done!">
+      <created>1620068815332</created>
+      <option name="number" value="00045" />
+      <option name="presentableId" value="LOCAL-00045" />
+      <option name="project" value="LOCAL" />
+      <updated>1620068815332</updated>
+    </task>
+    <option name="localTasksCounter" value="46" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -521,7 +510,6 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="replan changed" />
     <MESSAGE value="** compilation error exist. need to add getItems in Delivery service" />
     <MESSAGE value="Facade objects has been completed" />
     <MESSAGE value="merged before tests" />
@@ -546,7 +534,8 @@
     <MESSAGE value="Started DAL" />
     <MESSAGE value="Started DAL - Constructors , Load method signature changed." />
     <MESSAGE value="DalTruckingReportController insert method made." />
-    <option name="LAST_COMMIT_MESSAGE" value="DalTruckingReportController insert method made." />
+    <MESSAGE value="DAL Trucking classes almost done!" />
+    <option name="LAST_COMMIT_MESSAGE" value="DAL Trucking classes almost done!" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -555,6 +544,21 @@
           <url>file://$PROJECT_DIR$/dev/src/DAL/DalTruckingReportController.java</url>
           <line>22</line>
           <option name="timeStamp" value="1" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/dev/src/DAL/DalTruckingReportController.java</url>
+          <line>41</line>
+          <option name="timeStamp" value="2" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/dev/src/DAL/DalTruckingReportController.java</url>
+          <line>107</line>
+          <option name="timeStamp" value="7" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/dev/src/Main.java</url>
+          <line>22</line>
+          <option name="timeStamp" value="9" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

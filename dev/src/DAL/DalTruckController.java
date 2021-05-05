@@ -44,28 +44,25 @@ public class DalTruckController extends DalController{
     }
 
     public boolean update(DalTruck dalTruck) throws SQLException {
-        int res=-1;
-        boolean done=false;
         Connection conn=DriverManager.getConnection("jdbc:sqlite:/D:\\Year2\\ניתוצ\\עבודה 2\\database.db");
-        String query="UPDATE ? SET ?=?,?=?,?=? WHERE ?= ? ";
+        String query="UPDATE "+tableName+" SET ?=?,?=?,?=? WHERE ?= ? ";
         try{
             PreparedStatement st=conn.prepareStatement(query);
-            st.setString(1,tableName);
 
-            st.setString(2,columnNames[1]);
-            st.setString(3,dalTruck.getModel());
+            st.setString(1,columnNames[1]);
+            st.setString(2,dalTruck.getModel());
 
-            st.setString(4,columnNames[2]);
-            st.setInt(5,dalTruck.getWeightNeto());
+            st.setString(3,columnNames[2]);
+            st.setInt(4,dalTruck.getWeightNeto());
 
-            st.setString(6,columnNames[3]);
-            st.setInt(7,dalTruck.getMaxWeight());
+            st.setString(5,columnNames[3]);
+            st.setInt(6,dalTruck.getMaxWeight());
 
-            st.setString(8,columnNames[0]);
-            st.setString(9,dalTruck.getLicenseNumber());
+            st.setString(7,columnNames[0]);
+            st.setString(8,dalTruck.getLicenseNumber());
 
             System.out.println("executing insert");
-            done=st.execute();
+            st.executeUpdate();
 
 
         }
@@ -75,34 +72,31 @@ public class DalTruckController extends DalController{
         finally {
             conn.close();
         }
-        return done;
+        return true;
     }
 
     public boolean delete(DalTruck dalTruck) throws SQLException {
-        boolean done=false;
         Connection conn=DriverManager.getConnection("jdbc:sqlite:/D:\\Year2\\ניתוצ\\עבודה 2\\database.db");
-        String query="DELETE FROM ? WHERE ?=? ";
+        String query="DELETE FROM "+tableName+" WHERE ?=? ";
         try {
             PreparedStatement st=conn.prepareStatement(query);
-            st.setString(1,tableName);
-            st.setString(2,columnNames[0]);
-            st.setString(3,dalTruck.getLicenseNumber());
-            done=st.execute();
+            st.setString(1,columnNames[0]);
+            st.setString(2,dalTruck.getLicenseNumber());
+            st.executeUpdate();
         }
         catch (SQLException e)
         {
             throw new SQLException(e.getMessage());
         }
-        return done;
+        return true;
     }
     public LinkedList<DalTruck> load () throws SQLException// Select From DB
     {
         LinkedList<DalTruck> trucks = new LinkedList<>();
         Connection conn = DriverManager.getConnection("jdbc:sqlite:/D:\\Year2\\ניתוצ\\עבודה 2\\database.db");
-        String query = "SELECT * FROM ?";
+        String query = "SELECT * FROM "+tableName;
         try {
             PreparedStatement st = conn.prepareStatement(query);
-            st.setString(1, tableName);
             ResultSet resultSet = st.executeQuery(query);
             while (resultSet.next()) {
                 boolean completed = resultSet.getString(4).equals("true");

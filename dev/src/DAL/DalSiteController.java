@@ -15,22 +15,20 @@ public class DalSiteController extends DalController{
 
     public boolean insert(DalSite dalSite) throws SQLException {
         //TODO - change URL
-        boolean done=false;
         System.out.println("starting insert");
         Connection conn= DriverManager.getConnection("jdbc:sqlite:/D:\\Year2\\ניתוצ\\עבודה 2\\database.db");
-        String query= "INSERT INTO ? VALUES ? ? ? ? ? ? ";
+        String query= "INSERT INTO "+tableName+" VALUES ? ? ? ? ? ? ";
         try{
             PreparedStatement st=conn.prepareStatement(query);
-            st.setString(1,tableName);
-            st.setInt(2,dalSite.getSiteID());
-            st.setString(3,dalSite.getName());
-            st.setString(4,dalSite.getCity());
-            st.setInt(5,dalSite.getDeliveryArea());
-            st.setString(6,dalSite.getContactName());
-            st.setString(7,dalSite.getPhoneNumber());
+            st.setInt(1,dalSite.getSiteID());
+            st.setString(2,dalSite.getName());
+            st.setString(3,dalSite.getCity());
+            st.setInt(4,dalSite.getDeliveryArea());
+            st.setString(5,dalSite.getContactName());
+            st.setString(6,dalSite.getPhoneNumber());
 
-            System.out.println("executing insert");
-            done=st.execute();
+            System.out.println("executing update");
+            st.executeUpdate();
 
         }
         catch (SQLException e){
@@ -40,41 +38,38 @@ public class DalSiteController extends DalController{
             conn.close();
         }
 
-        return done;
+        return true;
 
 
     }
 
     public boolean update(DalSite dalSite) throws SQLException {
-        int res=-1;
-        boolean done=false;
         Connection conn=DriverManager.getConnection("jdbc:sqlite:/D:\\Year2\\ניתוצ\\עבודה 2\\database.db");
-        String query="UPDATE ? SET ?=?,?=?,?=?,?=?,?=? WHERE ?= ? ";
+        String query="UPDATE "+tableName+" SET ?=?,?=?,?=?,?=?,?=? WHERE ?= ? ";
         try{
             PreparedStatement st=conn.prepareStatement(query);
-            st.setString(1,tableName);
 
-            st.setString(2,columnNames[1]);
-            st.setString(3,dalSite.getName());
+            st.setString(1,columnNames[1]);
+            st.setString(2,dalSite.getName());
 
-            st.setString(4,columnNames[2]);
-            st.setString(5,dalSite.getCity());
+            st.setString(3,columnNames[2]);
+            st.setString(4,dalSite.getCity());
 
-            st.setString(6,columnNames[3]);
-            st.setInt(7,dalSite.getDeliveryArea());
+            st.setString(5,columnNames[3]);
+            st.setInt(6,dalSite.getDeliveryArea());
 
-            st.setString(8,columnNames[4]);
-            st.setString(9,dalSite.getContactName());
+            st.setString(7,columnNames[4]);
+            st.setString(8,dalSite.getContactName());
 
 
-            st.setString(10,columnNames[5]);
-            st.setString(11,dalSite.getPhoneNumber());
+            st.setString(9,columnNames[5]);
+            st.setString(10,dalSite.getPhoneNumber());
 
-            st.setString(12,columnNames[0]);
-            st.setInt(13,dalSite.getSiteID());
+            st.setString(11,columnNames[0]);
+            st.setInt(12,dalSite.getSiteID());
 
             System.out.println("executing insert");
-            done=st.execute();
+            st.executeUpdate();
 
 
         }
@@ -84,34 +79,31 @@ public class DalSiteController extends DalController{
         finally {
             conn.close();
         }
-        return done;
+        return true;
     }
 
     public boolean delete(DalSite dalSite) throws SQLException {
-        boolean done=false;
         Connection conn=DriverManager.getConnection("jdbc:sqlite:/D:\\Year2\\ניתוצ\\עבודה 2\\database.db");
-        String query="DELETE FROM ? WHERE ?=? ";
+        String query="DELETE FROM "+tableName+" WHERE ?=? ";
         try {
             PreparedStatement st=conn.prepareStatement(query);
-            st.setString(1,tableName);
-            st.setString(2,columnNames[0]);
-            st.setInt(3,dalSite.getSiteID());
-            done=st.execute();
+            st.setString(1,columnNames[0]);
+            st.setInt(2,dalSite.getSiteID());
+            st.executeUpdate();
         }
         catch (SQLException e)
         {
             throw new SQLException(e.getMessage());
         }
-        return done;
+        return true;
     }
     public LinkedList<DalSite> load () throws SQLException// Select From DB
     {
         LinkedList<DalSite> sites = new LinkedList<>();
         Connection conn = DriverManager.getConnection("jdbc:sqlite:/D:\\Year2\\ניתוצ\\עבודה 2\\database.db");
-        String query = "SELECT * FROM ?";
+        String query = "SELECT * FROM "+tableName;
         try {
             PreparedStatement st = conn.prepareStatement(query);
-            st.setString(1, tableName);
             ResultSet resultSet = st.executeQuery(query);
             while (resultSet.next()) {
                 boolean completed = resultSet.getString(4).equals("true");

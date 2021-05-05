@@ -4,11 +4,12 @@ package DAL;
 import java.sql.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.LinkedList;
 
 public class DalTruckingReportController extends DalController {
 
-    public DalTruckingReportController(){//TODO - Check when tables created
+    public DalTruckingReportController(){
         super();
         this.tableName="TruckingReports";
         this.columnNames=new String[8];
@@ -19,26 +20,26 @@ public class DalTruckingReportController extends DalController {
 
     public boolean insert(DalTruckingReport truckingReport) throws SQLException {
         //TODO - change URL
-        boolean done=false;
         System.out.println("starting insert");
         Connection conn= DriverManager.getConnection("jdbc:sqlite:/D:\\Year2\\ניתוצ\\עבודה 2\\database.db");
-        String query= "INSERT INTO ? VALUES ? ? ? ? ? ? ? ?";
+        String query= "INSERT INTO "+tableName+"("+columnNames[0]+columnNames[1]+columnNames[2]+columnNames[3]
+                +columnNames[4]+columnNames[5]+columnNames[6]+columnNames[7]+") VALUES (? ? ? ? ? ? ? ?)";
+        //String query="INSERT INTO "+tableName+" VALUES "+"? ? ? ? ? ? ? ?";
         try{
             PreparedStatement st=conn.prepareStatement(query);
-            st.setString(1,tableName);
-            st.setInt(2,truckingReport.getID());
-            st.setString(3,new Time(truckingReport.getLeavingHour().getHour(),truckingReport.getLeavingHour().getMinute(),
+            st.setInt(1,truckingReport.getID());
+            st.setString(2,new Time(truckingReport.getLeavingHour().getHour(),truckingReport.getLeavingHour().getMinute(),
                     truckingReport.getLeavingHour().getSecond()).toString());
-            st.setString(4,new Date(truckingReport.getDate().getYear(),truckingReport.getDate().getMonth().getValue()
+            st.setString(3,new Date(truckingReport.getDate().getYear(),truckingReport.getDate().getMonth().getValue()
                     ,truckingReport.getDate().getDayOfYear()).toString());
-            st.setString(5,truckingReport.getTruckNumber());
-            st.setString(6,truckingReport.getDriverID());
-            st.setInt(7,truckingReport.getOrigin());
-            st.setString(8,truckingReport.isCompleted().toString());
-            st.setInt(9,truckingReport.getReplaceTRID());
+            st.setString(4,truckingReport.getTruckNumber());
+            st.setString(5,truckingReport.getDriverID());
+            st.setInt(6,truckingReport.getOrigin());
+            st.setString(7,truckingReport.isCompleted().toString());
+            st.setInt(8,truckingReport.getReplaceTRID());
 
             System.out.println("executing insert");
-            done=st.execute();
+            st.executeUpdate();
 
         }
         catch (SQLException e){
@@ -48,48 +49,45 @@ public class DalTruckingReportController extends DalController {
             conn.close();
         }
 
-        return done;
+        return true;
 
 
     }
 
     public boolean update(DalTruckingReport truckingReport) throws SQLException {
-        int res=-1;
-        boolean done=false;
         Connection conn=DriverManager.getConnection("jdbc:sqlite:/D:\\Year2\\ניתוצ\\עבודה 2\\database.db");
-        String query="UPDATE ? SET ?=?,?=?,?=?,?=?,?=?,?=?,?=?  WHERE ?= ?";
+        String query="UPDATE "+tableName +" SET ?=?,?=?,?=?,?=?,?=?,?=?,?=?  WHERE ?= ?";
         try{
             PreparedStatement st=conn.prepareStatement(query);
-            st.setString(1,tableName);
 
-            st.setString(2,columnNames[1]);
-            st.setString(3,new Time(truckingReport.getLeavingHour().getHour(),truckingReport.getLeavingHour().getMinute(),
+            st.setString(1,columnNames[1]);
+            st.setString(2,new Time(truckingReport.getLeavingHour().getHour(),truckingReport.getLeavingHour().getMinute(),
                     truckingReport.getLeavingHour().getSecond()).toString());
 
-            st.setString(4,columnNames[2]);
-            st.setString(5,new Date(truckingReport.getDate().getYear(),truckingReport.getDate().getMonth().getValue()
+            st.setString(3,columnNames[2]);
+            st.setString(4,new Date(truckingReport.getDate().getYear(),truckingReport.getDate().getMonth().getValue()
                     ,truckingReport.getDate().getDayOfYear()).toString());
 
-            st.setString(6,columnNames[3]);
-            st.setString(7,truckingReport.getTruckNumber());
+            st.setString(5,columnNames[3]);
+            st.setString(6,truckingReport.getTruckNumber());
 
-            st.setString(8,columnNames[4]);
-            st.setString(9,truckingReport.getDriverID());
+            st.setString(7,columnNames[4]);
+            st.setString(8,truckingReport.getDriverID());
 
-            st.setString(10,columnNames[5]);
-            st.setInt(11,truckingReport.getOrigin());
+            st.setString(9,columnNames[5]);
+            st.setInt(10,truckingReport.getOrigin());
 
-            st.setString(12,columnNames[6]);
-            st.setString(13,truckingReport.isCompleted().toString());
+            st.setString(11,columnNames[6]);
+            st.setString(12,truckingReport.isCompleted().toString());
 
-            st.setString(14,columnNames[7]);
-            st.setInt(15,truckingReport.getReplaceTRID());
+            st.setString(13,columnNames[7]);
+            st.setInt(14,truckingReport.getReplaceTRID());
 
-            st.setString(16,columnNames[0]);
-            st.setInt(17,truckingReport.getID());
+            st.setString(15,columnNames[0]);
+            st.setInt(16,truckingReport.getID());
             System.out.println("executing insert");
 
-            done=st.execute();
+            st.executeUpdate();
 
 
         }
@@ -99,40 +97,45 @@ public class DalTruckingReportController extends DalController {
         finally {
             conn.close();
         }
-        return done;
+        return true;
     }
 
     public boolean delete(DalTruckingReport truckingReport) throws SQLException {
-        boolean done=false;
+        ResultSet resultSet;
         Connection conn=DriverManager.getConnection("jdbc:sqlite:/D:\\Year2\\ניתוצ\\עבודה 2\\database.db");
-        String query="DELETE FROM ? WHERE ?=?";
+        String query="DELETE FROM "+tableName+ " WHERE ID=1";
         try {
             PreparedStatement st=conn.prepareStatement(query);
-            st.setString(1,tableName);
-            st.setString(2,columnNames[0]);
-            st.setInt(3,truckingReport.getID());
-            done=st.execute();
+            //st.setString(1,columnNames[0]);
+            //st.setInt(2,truckingReport.getID());
+            st.executeUpdate();
         }
         catch (SQLException e)
         {
             throw new SQLException(e.getMessage());
         }
-        return done;
+        finally {
+            conn.close();
+        }
+        return true;
     }
     public LinkedList<DalTruckingReport> load () throws SQLException// Select From DB
     {
         LinkedList<DalTruckingReport> reports=new LinkedList<>();
         Connection conn=DriverManager.getConnection("jdbc:sqlite:/D:\\Year2\\ניתוצ\\עבודה 2\\database.db");
-        String query="SELECT * FROM ?";
+        String query="SELECT * FROM "+tableName;
         try {
             PreparedStatement st=conn.prepareStatement(query);
-            st.setString(1,tableName);
-            ResultSet resultSet=st.executeQuery(query);
+
+            ResultSet resultSet=st.executeQuery();
             while (resultSet.next())
             {
+                String s=resultSet.getString(2);
                 LocalTime lt=LocalTime.parse(resultSet.getString(2));
-                LocalDate ld=LocalDate.parse(resultSet.getString(3));
-                boolean completed=resultSet.getString(7).equals("true");
+                String s1=resultSet.getString(3);
+                DateTimeFormatter formatter=DateTimeFormatter.ofPattern("dd/MM/yyyy");
+                LocalDate ld=LocalDate.parse(s1,formatter);
+                boolean completed=resultSet.getString(7).equals("1");
                 reports.add(new DalTruckingReport(resultSet.getInt(1),lt,ld,resultSet.getString(4),
                         resultSet.getString(5),resultSet.getInt(6),completed,resultSet.getInt(7)));
             }
@@ -143,4 +146,5 @@ public class DalTruckingReportController extends DalController {
         }
         return reports;
     }
+
 }
