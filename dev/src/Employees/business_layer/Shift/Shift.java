@@ -9,20 +9,18 @@ import java.time.LocalDate;
 import java.util.*;
 
 public class Shift {
-    private LocalDate date;
+    private final LocalDate date;
     private HashMap<Role, List<String>> manning;
     private String type;
-    private int mORe;
-    private boolean isMissing;
+    private final int mORe;
 
-    //an existing shift with a given maning
+    //an existing shift with a given manning
     public Shift(LocalDate date, HashMap<Role, List<String>> manning, String type, int mORe)
     {
         this.date = date;
         this.manning = manning;
         this.type = type;
         this.mORe = mORe;
-        isMissing = isMissing ();
     }
 
     //a new shift without an existing manning
@@ -32,7 +30,6 @@ public class Shift {
         this.manning = new HashMap<> ();
         this.type = type;
         this.mORe = mORe;
-        isMissing = isMissing ();
     }
 
     public Shift(FacadeShift facadeShift) throws EmployeeException {
@@ -72,13 +69,9 @@ public class Shift {
     {
         int needed = ShiftTypes.getInstance ().getRoleManning ( type, role );
         if(!manning.containsKey ( role )) {
-            if (needed == 0)
-                return false;
-            return true;
+            return  (needed != 0);
         }
-        if(needed > manning.get ( role ).size ())
-            return true;
-        return false;
+        return (needed > manning.get ( role ).size ());
     }
 
     public void deleteEmployee(String role, String ID) throws EmployeeException {
@@ -115,9 +108,9 @@ public class Shift {
         HashMap<Role, Integer> manning = ShiftTypes.getInstance ().getShiftTypeManning ( type );
         List<String> free;
         List<String> work = new ArrayList<> (  );
-        for(Map.Entry<Role, Integer> entery: manning.entrySet ())
+        for(Map.Entry<Role, Integer> entry: manning.entrySet ())
         {
-            Role role = entery.getKey ();
+            Role role = entry.getKey ();
             free = employeeController.getRoleInDate(date, role, mORe);
             if(shift != null)
                 free = updateFree(free, shift.getManning ().get ( role ));
@@ -168,5 +161,15 @@ public class Shift {
 
     public int getmORe() {
         return mORe;
+    }
+
+    public boolean isWorking(String role, String id) {
+        if(manning.containsKey ( Role.valueOf ( role ) ))
+            return (manning.get ( Role.valueOf ( role ) ).contains ( id ) );
+        return false;
+    }
+
+    public List<String> getDrivers() {
+        return getManning ().getOrDefault ( Role.driver, null );
     }
 }

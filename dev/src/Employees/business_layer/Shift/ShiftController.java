@@ -2,6 +2,7 @@ package Employees.business_layer.Shift;
 
 import Employees.EmployeeException;
 import Employees.business_layer.Employee.EmployeeController;
+import Employees.business_layer.Employee.Role;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
@@ -144,15 +145,40 @@ public class ShiftController {
         createShiftType ( "eveningShift", manning );
     }
 
-    public HashMap<LocalDate, HashMap<Integer, String>> getDaysAndDrivers(){
-        return null;
+    public HashMap<LocalDate, HashMap<Integer, List<String>>> getDaysAndDrivers() throws EmployeeException {
+         LocalDate date = LocalDate.now ();
+         HashMap<LocalDate, HashMap<Integer, List<String>>> daysAndDrivers = new HashMap<> (  );
+         WeeklyShiftSchedule cur;
+         while (isExist ( date )){
+             cur = getWeeklyShiftSchedule ( date );
+             cur.getDaysAndDrivers(date, daysAndDrivers);
+             date = date.plusDays ( 7-(date.getDayOfWeek ().getValue () % 7) );
+         }
+         return daysAndDrivers;
     }
 
-    public void addDriverToShift(String id, LocalDate date, int shift){}
-
-    public boolean isDriverAssigned(String id, LocalDate date, int shift){
-        return true;
+    public void addDriverToShift(String id, LocalDate date, int shift) throws EmployeeException {
+        if (shift == 1) {
+            if (getShift ( date, 0 ).isWorking ( "driver", id ))
+                throw new EmployeeException ( "the driver is already manning the morning shift." );
+        } else {
+            if (getShift ( date, 1 ).isWorking ( "driver", id ))
+                throw new EmployeeException ( "the driver is already manning the evening shift." );
+        }
+        getShift ( date, shift ).addEmployee ( "driver", id );
     }
 
+    public boolean isDriverAssigned(String id, LocalDate date, int shift) throws EmployeeException {
+        return getShift ( date, shift ).isWorking ( "driver", id );
+    }
+
+    private boolean isExist(LocalDate date){
+        try {
+            getWeeklyShiftSchedule ( date );
+            return true;
+        }catch (EmployeeException e){
+            return false;
+        }
+    }
 
 }

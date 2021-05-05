@@ -1,9 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="81ce0887-8b24-4737-8b90-9f78e7d4770c" name="Default Changelist" comment="">
+    <list default="true" id="81ce0887-8b24-4737-8b90-9f78e7d4770c" name="Default Changelist" comment="getDaysAndDrivers&#10;addDriverToShift&#10;isDriverAssigned&#10;driver  and truckingManager in role">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dev/src/Employees/business_layer/Employee/Role.java" beforeDir="false" afterPath="$PROJECT_DIR$/dev/src/Employees/business_layer/Employee/Role.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dev/src/Employees/business_layer/Shift/Shift.java" beforeDir="false" afterPath="$PROJECT_DIR$/dev/src/Employees/business_layer/Shift/Shift.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/dev/src/Employees/business_layer/Shift/ShiftController.java" beforeDir="false" afterPath="$PROJECT_DIR$/dev/src/Employees/business_layer/Shift/ShiftController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dev/src/Employees/business_layer/Shift/WeeklyShiftSchedule.java" beforeDir="false" afterPath="$PROJECT_DIR$/dev/src/Employees/business_layer/Shift/WeeklyShiftSchedule.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dev/src/InfrastructurePackage/SystemLogger.java" beforeDir="false" afterPath="$PROJECT_DIR$/dev/src/InfrastructurePackage/SystemLogger.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -11,12 +15,35 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="Git.Settings">
+    <favorite-branches>
+      <branch-storage>
+        <map>
+          <entry type="REMOTE">
+            <value>
+              <list>
+                <branch-info repo="$PROJECT_DIR$" source="origin/2.2Employees" />
+                <branch-info repo="$PROJECT_DIR$" source="origin/ayala-businassL" />
+                <branch-info repo="$PROJECT_DIR$" source="origin/ayala-presentation" />
+              </list>
+            </value>
+          </entry>
+        </map>
+      </branch-storage>
+    </favorite-branches>
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="2.2Employees" />
+        <entry key="$PROJECT_DIR$" value="ayala-presentation" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GitSEFilterConfiguration">
+    <file-type-list>
+      <filtered-out-file-type name="LOCAL_BRANCH" />
+      <filtered-out-file-type name="REMOTE_BRANCH" />
+      <filtered-out-file-type name="TAG" />
+      <filtered-out-file-type name="COMMIT_BY_MESSAGE" />
+    </file-type-list>
   </component>
   <component name="HighlightingSettingsPerFile">
     <setting file="file://$PROJECT_DIR$/dev/src/Main.java" root0="FORCE_HIGHLIGHTING" />
@@ -28,6 +55,7 @@
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent">
+    <property name="Git.Branch.Popup.ShowAllRemotes" value="true" />
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
@@ -67,7 +95,8 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Merge branch '203834734_206117400_314978925_315994442' into 2.2Employees&#10;&#10;# Conflicts:&#10;#&#9;.idea/.gitignore&#10;#&#9;.idea/misc.xml&#10;#&#9;.idea/vcs.xml" />
     <MESSAGE value="merging tests" />
-    <option name="LAST_COMMIT_MESSAGE" value="merging tests" />
+    <MESSAGE value="getDaysAndDrivers&#10;addDriverToShift&#10;isDriverAssigned&#10;driver  and truckingManager in role" />
+    <option name="LAST_COMMIT_MESSAGE" value="getDaysAndDrivers&#10;addDriverToShift&#10;isDriverAssigned&#10;driver  and truckingManager in role" />
   </component>
   <component name="XDebuggerManager">
     <pin-to-top-manager>
