@@ -308,13 +308,15 @@ public class EmployeeController {
     }
 
     public void createData () throws EmployeeException {
-
             createUshers();
             createGuard();
             creatCashier();
             creatStoreKeeper();
             createManagers();
             createShiftManagers();
+            creatDriverC ();
+            creatDriverC1 ();
+            creatTruckingManager ();
     }
 
     private void createShiftManagers() throws EmployeeException {
@@ -361,10 +363,6 @@ public class EmployeeController {
         }
     }
 
-    private void giveConstrForExistingData(Employee employee, LocalDate date, int shift, String reason) throws EmployeeException {
-        employee.giveConstraint(date, shift, reason);
-    }
-
     private void createGuard()  {
         int accountNum = 356, bankBranch=10, salary=5500, educationFund=1232, sickDays=10, daysOff=30;
         String bankName = "Leumi";
@@ -405,6 +403,42 @@ public class EmployeeController {
             addEmplForExistingData(storeKeeper);
         }
     }
+
+    private void creatDriverC() throws EmployeeException {
+        int accountNum = 589, bankBranch=27, salary=6000, educationFund=1000, sickDays=21, daysOff=15;
+        String bankName = "Diskont";
+        for(int i=0; i<3; i++){
+            BankAccountInfo employeeAccountInfo = new BankAccountInfo(accountNum+i, bankBranch, bankName);
+            TermsOfEmployment termsOfEmployment = new TermsOfEmployment(salary+1, educationFund,sickDays, daysOff );
+            Employee storeKeeper = new Employee("driverC", "04444444"+i, termsOfEmployment, LocalDate.now(), employeeAccountInfo);
+            addEmplForExistingData(storeKeeper);
+        }
+    }
+
+    private void creatDriverC1() throws EmployeeException {
+        int accountNum = 663, bankBranch=54, salary=7000, educationFund=1000, sickDays=21, daysOff=15;
+        String bankName = "Diskont";
+        for(int i=0; i<3; i++){
+            BankAccountInfo employeeAccountInfo = new BankAccountInfo(accountNum+i, bankBranch, bankName);
+            TermsOfEmployment termsOfEmployment = new TermsOfEmployment(salary+1, educationFund,sickDays, daysOff );
+            Employee storeKeeper = new Employee("driverC1", "05555555"+i, termsOfEmployment, LocalDate.now(), employeeAccountInfo);
+            addEmplForExistingData(storeKeeper);
+        }
+    }
+
+    private void creatTruckingManager() throws EmployeeException {
+        int accountNum = 729, bankBranch = 27, salary = 9000, educationFund = 1000, sickDays = 21, daysOff = 15;
+        String bankName = "Diskont";
+        BankAccountInfo employeeAccountInfo = new BankAccountInfo ( accountNum, bankBranch, bankName );
+        TermsOfEmployment termsOfEmployment = new TermsOfEmployment ( salary + 1, educationFund, sickDays, daysOff );
+        Employee truckingManager = new Employee ( "truckingManager", "066666666", termsOfEmployment, LocalDate.now ( ), employeeAccountInfo );
+        addEmplForExistingData ( truckingManager );
+    }
+
+    private void giveConstrForExistingData(Employee employee, LocalDate date, int shift, String reason) throws EmployeeException {
+        employee.giveConstraint(date, shift, reason);
+    }
+
     // private methods
     private BankAccountInfo createAccount(FacadeBankAccountInfo f) throws EmployeeException {
         if(f.getAccountNumber () < 0 | f.getBankBranch () < 0 ){

@@ -76,10 +76,9 @@ public class WeeklyShiftSchedule {
         return shifts[date.getDayOfWeek ().getValue () % 7][shift];
     }
 
-    public void changeShift(EmployeeController employeeController, LocalDate date, int shift, HashMap<String, List<String>> manning) throws EmployeeException {
+    public void changeShift(LocalDate date, int shift, HashMap<String, List<String>> manning) throws EmployeeException {
         if(date.isBefore ( LocalDate.now () ))
             throw new EmployeeException ( "Date is already passed." );
-        checkManningVallidity ( employeeController, manning );
         shifts[date.getDayOfWeek ().getValue ()][shift].changeManning( manning );
     }
 

@@ -114,7 +114,7 @@ public class ShiftController {
             throw new EmployeeException ( "Super-Lee does not work at Shabbat." );
         checkDriverVallidity2 ( manning );
         checkManningVallidity ( manning );
-        getWeeklyShiftSchedule ( date ).changeShift(employeeController, date, shift, manning);
+        getWeeklyShiftSchedule ( date ).changeShift(date, shift, manning);
     }
 
     public void addEmployeeToShift(String role, String ID, LocalDate date, int shift) throws EmployeeException {
@@ -206,6 +206,8 @@ public class ShiftController {
         manning.put ( "guard", 1 );
         manning.put ( "usher", 2 );
         manning.put ( "storeKeeper", 1 );
+        manning.put ( "driverC", 1 );
+        manning.put ( "driverC1", 1 );
         createShiftType ( "morningShift", manning );
         createShiftType ( "eveningShift", manning );
     }
