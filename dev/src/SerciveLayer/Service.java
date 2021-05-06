@@ -153,9 +153,21 @@ public class Service implements IService {
     }
 
     @Override
-    public ResponseT<List<Order>> createScheduledOrder(int day, int itemID, int amount) {
+    public ResponseT<Order> createScheduledOrder(int day, int itemID, int amount) {
         ResponseT<Supplier> cheap = supplierService.getCheapestSupplier(itemID,amount,true);
-        return null;
+        if(cheap.errorOccured())
+            return new ResponseT<>(cheap.getErrorMessage());
+        Supplier s = cheap.value;
+        ResponseT<Order> scheduledOrder = orderService.createPernamentOrder(day,s.getSc().getId(), supplierService.getSp());
+        if(scheduledOrder.errorOccured())
+            return new ResponseT<>(cheap.getErrorMessage());
+        Response addItemResp = orderService.addProductToOrder(scheduledOrder.value.getId(),itemID,amount);
+        //todo: check the case if the item already exists in the order and handle it accordingly
+        if(addItemResp.errorOccured())
+            return new ResponseT<>(true, "Supplier already has the item in the order, check if you want to edit the amount." +
+                    "\nOrder ID to edit : " + scheduledOrder.value.getId(),null);
+
+        return getOrder(scheduledOrder.value.getId());
     }
 
     @Override

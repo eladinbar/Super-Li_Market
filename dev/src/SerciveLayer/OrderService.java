@@ -29,7 +29,7 @@ public class OrderService {
         return toReturn;
     }
 
-    public ResponseT<Order> createPernamentOrder(int day, String supplierID, SupplierController sp) {
+    public ResponseT<Order> createPernamentOrder(int day, String supplierID, SupplierController sp) {//todo: check if order exists
         ResponseT<Order> toReturn;
         try {
             toReturn= new ResponseT<>(new Order(oc.createPermOrder(day, sp.getSupplier(supplierID))));

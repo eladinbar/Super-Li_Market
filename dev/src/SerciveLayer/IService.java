@@ -32,7 +32,7 @@ public interface IService {
 
     //orders
     ResponseT<List<Order>> createShortageOrder(LocalDate date);
-    ResponseT<List<Order>> createScheduledOrder(int day, int itemID, int amount);
+    ResponseT<Order> createScheduledOrder(int day, int itemID, int amount);
     ResponseT<Order> createOrder(LocalDate date, String supplierID);
     ResponseT<Order> createPernamentOrder(int day, String supplierID);
     Response approveOrder(int orderID);

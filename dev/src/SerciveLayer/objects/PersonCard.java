@@ -23,6 +23,10 @@ public class PersonCard {
         this.phone=pc.getPhone();
     }
 
+    public String getId() {
+        return id;
+    }
+
     @Override
     public String toString() {
         return "personCard{" +

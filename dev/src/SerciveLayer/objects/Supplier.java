@@ -14,6 +14,10 @@ public class Supplier {
         this.ag = new Agreement(supplier.getAg());
     }
 
+    public supplierCard getSc() {
+        return sc;
+    }
+
     @Override
     public String toString() {
         return sc.toString();
