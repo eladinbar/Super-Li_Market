@@ -4,6 +4,7 @@ import Employees.EmployeeException;
 import Employees.business_layer.facade.facadeObject.FacadeBankAccountInfo;
 import Employees.business_layer.facade.facadeObject.FacadeEmployee;
 import Employees.business_layer.facade.facadeObject.FacadeTermsOfEmployment;
+import Trucking.Business_Layer_Trucking.Resources.Driver;
 import Trucking.Business_Layer_Trucking.Resources.ResourcesController;
 
 import java.time.LocalDate;
@@ -178,6 +179,12 @@ public class EmployeeController {
        Employee newEmployee = new Employee(e.getRole(), e.getID(),terms, e.getTransactionDate(), bank);
        employees.put(e.getID(), newEmployee);
        return newEmployee;
+    }
+
+    public Employee addDriver(FacadeEmployee e, String name) throws EmployeeException {
+        Employee driver = addEmployee ( e );
+        ResourcesController.getInstance ().addDriver ( e.getID (), name, Driver.License.valueOf ( (e.getRole ().equals ( "driverC" )) ? "120000" : "200000" ) );
+        return driver;
     }
 
     private void addEmplForExistingData(Employee e) throws EmployeeException {

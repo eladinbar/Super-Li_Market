@@ -111,6 +111,10 @@ public class FacadeService {
         return employeeService.addEmployee ( employee );
     }
 
+    public Response addDriver(FacadeEmployee employee, String name) {
+        return employeeService.addDriver ( employee, name );
+    }
+
     public ResponseT<FacadeEmployee> addManager(FacadeEmployee manager) {
         return employeeService.addManager ( manager );
     }

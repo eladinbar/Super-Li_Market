@@ -623,7 +623,15 @@ public class PresentationController {
         if(role == null)
             return;
         FacadeEmployee facadeEmployee = menuPrinter.getEmployeeDetails ( role );
-        Response response = facadeService.addEmployee ( facadeEmployee );
+        Response response;
+        if(role.equals ( "driverC" ) || role.equals ( "driverC1" ))
+        {
+            menuPrinter.print ( "name:" );
+            String name = menuPrinter.getString ();
+            response = facadeService.addDriver ( facadeEmployee, name );
+        }
+        else
+            response = facadeService.addEmployee ( facadeEmployee );
         if(response.errorOccured ())
         {
             menuPrinter.print ( response.getErrorMessage () );
