@@ -8,6 +8,8 @@ import SerciveLayer.objects.Order;
 import SerciveLayer.objects.Product;
 
 import java.time.LocalDate;
+import java.util.List;
+import java.util.Map;
 
 public class OrderService {
     private OrderController oc;
@@ -135,5 +137,13 @@ public class OrderService {
             toReturn = new ResponseT<>(e.getMessage());
         }
         return toReturn;
+    }
+
+    public ResponseT<List<Order>> createShortageOrders(Map<Integer, Integer> itemToOrder) {
+
+        for (Integer itemId : itemToOrder.keySet()) {
+
+        }
+        return null;
     }
 }

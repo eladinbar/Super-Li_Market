@@ -30,6 +30,11 @@ public class Menu {
     //menu lists for report
     private final List<String> reportsOperationMenuList;
 
+
+
+    //menu lists suppliers
+    private final List<String> suppliersMainMenuList;
+
     private Scanner scan;
 
     public Menu() {
@@ -46,6 +51,22 @@ public class Menu {
         saleOperationMenuList = setupSaleMenu();
         discountOperationMenuList = setupDiscountMenuList();
         reportsOperationMenuList = setupReportMenuList();
+        suppliersMainMenuList = setupSupplierMainList();
+    }
+
+    private List<String> setupSupplierMainList() {
+        ArrayList<String> list = new ArrayList<>();
+        list.add("add supplier");
+        list.add("get supplier");
+        list.add("update supplier details");
+        list.add("add quantity List");
+        list.add("edit quantity List");
+        list.add("edit agreement");
+        list.add("get quantityList");
+        list.add("get agreement");
+        list.add("remove supplier");
+
+        return list;
     }
 
     private List<String> setupMainMenuSelectionList(){
@@ -87,32 +108,6 @@ public class Menu {
         list.add("Change item shelf quantity");
         list.add("Add supplier");
         list.add("Remove supplier");
-
-        return list;
-    }
-
-    private List<String> setupOperationsList() {
-        ArrayList<String> list = new ArrayList<>();
-        list.add("Show item");
-        list.add("Add item");
-        list.add("Edit item");
-        list.add("Remove item");
-        list.add("Show category");
-        list.add("Add category");
-        list.add("Edit category");
-        list.add("Remove category");
-        list.add("Show sale");
-        list.add("Add Item Sale");
-        list.add("Add Category Sale");
-        list.add("Edit Sale");
-        list.add("Show supplier discount");
-        list.add("Add supplier Item discount");
-        list.add("Add supplier Category discount");
-        list.add("Report defects");
-        list.add("Inventory Report");
-        list.add("Category Report");
-        list.add("Item Shortage Report");
-        list.add("Defects Report");
 
         return list;
     }

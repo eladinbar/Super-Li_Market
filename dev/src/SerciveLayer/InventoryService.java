@@ -1,9 +1,11 @@
 package SerciveLayer;
 
+import SerciveLayer.Response.ResponseT;
 import SerciveLayer.SimpleObjects.*;
 
 import java.util.Calendar;
 import java.util.List;
+import java.util.Map;
 
 public interface InventoryService {
 
@@ -70,4 +72,6 @@ public interface InventoryService {
     InResponseT<List<Item>> categoryReport(String categoryName);
     InResponseT<List<Item>> itemShortageReport();
     InResponseT<List<DefectEntry>> defectsReport(Calendar fromDate, Calendar toDate);
+
+    ResponseT<Map<Integer, Integer>> getItemsInShortAndQuantities();
 }

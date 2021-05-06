@@ -5,6 +5,8 @@ import SerciveLayer.Response.ResponseT;
 import SerciveLayer.objects.*;
 
 import java.time.LocalDate;
+import java.util.List;
+import java.util.Map;
 
 public class Service implements IService {
     private OrderService orderService;
@@ -14,6 +16,7 @@ public class Service implements IService {
     public Service() {
         this.supplierService = new SupplierService();
         this.orderService = new OrderService();
+        this.inventoryService = new InventoryServiceImpl();
     }
 
     @Override
@@ -135,6 +138,17 @@ public class Service implements IService {
     @Override
     public ResponseT<QuantityList> getQuantityList(String supplierId) {
         return supplierService.getQuantityList(supplierId);
+    }
+
+    @Override
+    public ResponseT<List<Order>> createShortageOrder() {
+        ResponseT<Map<Integer,Integer>> itemInShort = inventoryService.getItemsInShortAndQuantities();
+        if(itemInShort.errorOccured()){
+            return new ResponseT<>("shortage order failed");
+        }
+        ResponseT<Map<String,Map<Integer,Integer>>> r = supplierService.createShortageOrders(itemInShort.value);
+        ResponseT<List<Order>> orderR = orderService.createShortageOrders(itemInShort.value);
+        return orderR;
     }
 
     @Override

@@ -7,6 +7,9 @@ import SerciveLayer.objects.Product;
 import SerciveLayer.objects.QuantityList;
 import SerciveLayer.objects.Supplier;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class SupplierService {
     private SupplierController sp;
 
@@ -309,5 +312,22 @@ public class SupplierService {
             toReturn = new ResponseT<>(e.getMessage());
         }
         return toReturn;
+    }
+
+    public ResponseT<Map<String, Map<Integer, Integer>>> createShortageOrders(Map<Integer, Integer> items) {
+        Map<String, Map<Integer, Integer>> orders = new HashMap<>();
+        try {
+            for (Integer itemId : items.keySet()) {
+                String suppId = sp.getCheapestSupplier(itemId, items.get(itemId)).getSc().getId();
+                if (!orders.containsKey(suppId)) {
+                    orders.put(suppId, new HashMap<>());
+                }
+                orders.get(suppId).put(itemId, items.get(itemId));
+            }
+        } catch(Exception e){
+            return new ResponseT<>(e.getMessage());
+        }
+
+        return null;
     }
 }

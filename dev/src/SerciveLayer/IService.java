@@ -3,6 +3,7 @@ package SerciveLayer;
 import SerciveLayer.Response.*;
 import SerciveLayer.objects.*;
 import java.time.LocalDate;
+import java.util.List;
 
 public interface IService {
     //add supplier and edit all supplier fields
@@ -30,6 +31,7 @@ public interface IService {
     ResponseT<QuantityList> getQuantityList(String supplierId);
 
     //orders
+    ResponseT<List<Order>> createShortageOrder();
     ResponseT<Order> createOrder(LocalDate date, String supplierID);
     ResponseT<Order> createPernamentOrder(int day, String supplierID);
     Response approveOrder(int orderID);
