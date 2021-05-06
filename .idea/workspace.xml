@@ -1,17 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="81ce0887-8b24-4737-8b90-9f78e7d4770c" name="Default Changelist" comment="shift options - only 0,1,2&#10;date - checking if it is sunday&#10;login - trucking manager&#10;logout and login right after">
+    <list default="true" id="81ce0887-8b24-4737-8b90-9f78e7d4770c" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dev/src/Employees/presentation_layer/MenuPrinter.java" beforeDir="false" afterPath="$PROJECT_DIR$/dev/src/Employees/presentation_layer/MenuPrinter.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dev/src/InfrastructurePackage/SystemLogger.java" beforeDir="false" afterPath="$PROJECT_DIR$/dev/src/InfrastructurePackage/SystemLogger.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/ADSS_Group_G/Employees/business_layer/Employee/Employee.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/ADSS_Group_G/Employees/business_layer/Employee/Employee.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/ADSS_Group_G/Employees/business_layer/Employee/EmployeeController.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/ADSS_Group_G/Employees/business_layer/Employee/EmployeeController.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/ADSS_Group_G/Employees/business_layer/Shift/ShiftTypes.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/ADSS_Group_G/Employees/business_layer/Shift/ShiftTypes.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/ADSS_Group_G/Employees/business_layer/facade/EmployeeService.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/ADSS_Group_G/Employees/business_layer/facade/EmployeeService.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/ADSS_Group_G/Employees/business_layer/facade/FacadeService.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/ADSS_Group_G/Employees/business_layer/facade/FacadeService.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/ADSS_Group_G/Employees/presentation_layer/MenuPrinter.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/ADSS_Group_G/Employees/presentation_layer/MenuPrinter.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/ADSS_Group_G/Employees/presentation_layer/PresentationController.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/ADSS_Group_G/Employees/presentation_layer/PresentationController.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -187,7 +178,14 @@
       <option name="project" value="LOCAL" />
       <updated>1620306858187</updated>
     </task>
-    <option name="localTasksCounter" value="11" />
+    <task id="LOCAL-00011" summary="\n">
+      <created>1620307883965</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1620307883965</updated>
+    </task>
+    <option name="localTasksCounter" value="12" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -208,7 +206,8 @@
     <MESSAGE value="shift creating - no drivers without store keeper" />
     <MESSAGE value="create data - add driver" />
     <MESSAGE value="shift options - only 0,1,2&#10;date - checking if it is sunday&#10;login - trucking manager&#10;logout and login right after" />
-    <option name="LAST_COMMIT_MESSAGE" value="shift options - only 0,1,2&#10;date - checking if it is sunday&#10;login - trucking manager&#10;logout and login right after" />
+    <MESSAGE value="\n" />
+    <option name="LAST_COMMIT_MESSAGE" value="\n" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
