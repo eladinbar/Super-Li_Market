@@ -27,8 +27,9 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="05ca914f-9056-4de3-9869-7fdfaa880f2d" name="Default Changelist" comment="delete and add Constraints has been added">
+    <list default="true" id="05ca914f-9056-4de3-9869-7fdfaa880f2d" name="Default Changelist" comment="splitted menu has been made">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dev/src/Tests/ResourcesServiceTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/dev/src/Tests/ResourcesServiceTest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/dev/src/Trucking/Business_Layer_Trucking/Facade/FacadeObject/ResourcesService.java" beforeDir="false" afterPath="$PROJECT_DIR$/dev/src/Trucking/Business_Layer_Trucking/Facade/FacadeObject/ResourcesService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/dev/src/Trucking/Business_Layer_Trucking/Facade/FacadeService.java" beforeDir="false" afterPath="$PROJECT_DIR$/dev/src/Trucking/Business_Layer_Trucking/Facade/FacadeService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/dev/src/Trucking/Business_Layer_Trucking/Resources/ResourcesController.java" beforeDir="false" afterPath="$PROJECT_DIR$/dev/src/Trucking/Business_Layer_Trucking/Resources/ResourcesController.java" afterDir="false" />
@@ -155,7 +156,7 @@
       <workItem from="1619869834303" duration="159000" />
       <workItem from="1620152768828" duration="444000" />
       <workItem from="1620153288961" duration="9929000" />
-      <workItem from="1620228347458" duration="20199000" />
+      <workItem from="1620228347458" duration="24201000" />
     </task>
     <task id="LOCAL-00001" summary="ID text file has been added. team ido and raz :)">
       <created>1615488571310</created>
@@ -465,7 +466,14 @@
       <option name="project" value="LOCAL" />
       <updated>1620305528593</updated>
     </task>
-    <option name="localTasksCounter" value="45" />
+    <task id="LOCAL-00045" summary="splitted menu has been made">
+      <created>1620321358632</created>
+      <option name="number" value="00045" />
+      <option name="presentableId" value="LOCAL-00045" />
+      <option name="project" value="LOCAL" />
+      <updated>1620321358632</updated>
+    </task>
+    <option name="localTasksCounter" value="46" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -484,7 +492,6 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="replan changed" />
     <MESSAGE value="** compilation error exist. need to add getItems in Delivery service" />
     <MESSAGE value="Facade objects has been completed" />
     <MESSAGE value="merged before tests" />
@@ -509,7 +516,8 @@
     <MESSAGE value="modules has been merged. Workers and Trucking" />
     <MESSAGE value="getDaysAndDrivers has been updated" />
     <MESSAGE value="delete and add Constraints has been added" />
-    <option name="LAST_COMMIT_MESSAGE" value="delete and add Constraints has been added" />
+    <MESSAGE value="splitted menu has been made" />
+    <option name="LAST_COMMIT_MESSAGE" value="splitted menu has been made" />
   </component>
   <component name="XDebuggerManager">
     <pin-to-top-manager>

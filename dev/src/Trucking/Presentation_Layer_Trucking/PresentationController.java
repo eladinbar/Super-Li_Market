@@ -305,4 +305,8 @@ public class PresentationController {
     public FacadeDriver getDriver(String id) {
         return facadeService.getDriver(id);
     }
+
+    public LinkedList<FacadeTruck> getAvailableTrucksCurrTr() {
+        return facadeService.getAvailableTrucks();
+    }
 }

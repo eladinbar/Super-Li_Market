@@ -60,7 +60,7 @@ public class ResourcesService
         rc.makeAvailable_Truck(truck);
     }
 
-    public LinkedList<FacadeTruck> getAvailableTrucks() {
+  /*  public LinkedList<FacadeTruck> getAvailableTrucks() {
         LinkedList<FacadeTruck> output =  new LinkedList<>();
         HashMap<String , Truck> trucks =  rc.getAvailableTrucks();
         for (Map.Entry<String ,Truck> entry:trucks.entrySet())
@@ -68,7 +68,7 @@ public class ResourcesService
             output.add(new FacadeTruck( entry.getValue()));
         }
         return output;
-    }
+    }*/
 
 
     public void addTruck(String model, String  licenseNumber, int weightNeto, int maxWeight) throws KeyAlreadyExistsException {
@@ -112,8 +112,8 @@ public class ResourcesService
         return output;
     }
 
-    public void saveReport() {
-        rc.saveReport();
+    public void saveReport(LocalDate date, int shift) {
+        rc.saveReport(date, shift);
     }
 
     public void replaceTruck(String old_truck, String truckNumber) {
@@ -131,5 +131,22 @@ public class ResourcesService
 
     public HashMap<LocalDate, HashMap<Integer, LinkedList<String>>> getDayAndDrivers() {
         return rc.getDaysAndDrivers();
+    }
+
+    public LinkedList<FacadeTruck> getAvailableTrucks(LocalDate date, int shift) {
+        LinkedList<Truck> trucks = rc.getAvailableTrucks(date, shift);
+        LinkedList<FacadeTruck> output =  new LinkedList<>();
+        for (Truck t: trucks) {
+            output.add(new FacadeTruck(t));
+        }
+        return output;
+    }
+    public LinkedList<FacadeDriver> getAvailableDrivers(LocalDate date, int shift) {
+        LinkedList<Driver> trucks = rc.getAvailableDrivers(date, shift);
+        LinkedList<FacadeDriver> output =  new LinkedList<>();
+        for (Driver t: trucks) {
+            output.add(new FacadeDriver(t));
+        }
+        return output;
     }
 }

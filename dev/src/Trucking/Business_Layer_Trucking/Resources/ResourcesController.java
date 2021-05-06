@@ -120,7 +120,6 @@ public class ResourcesController {
 
     }
 
-
     private void addConstraint(String id, LocalDate date, Integer shift, HashMap<String, HashMap<LocalDate, Integer>> constraint_hash) {
         String name;
         String obj;
@@ -177,10 +176,11 @@ public class ResourcesController {
                 }
             }
 
-            return output;
 
 
         }
+        return output;
+
 
     }
 
@@ -232,14 +232,14 @@ public class ResourcesController {
         return result;
     }
 
-    public HashMap<String, Truck> getAvailableTrucks() {
+   /* public HashMap<String, Truck> getAvailableTrucks() {
         HashMap<String, Truck> result = new HashMap<>();
         for (Map.Entry<String, Truck> entry : trucks.entrySet()) {
             if (entry.getValue().isAvailable())
                 result.put(entry.getKey(), entry.getValue());
         }
         return result;
-    }
+    }*/
 
     public Truck chooseTruck(String truck) throws IllegalStateException, NoSuchElementException {
 
@@ -281,8 +281,9 @@ public class ResourcesController {
         trucks.get(truck).makeAvailable();
     }
 
-    public void saveReport() {
-        drivers.get(currDriverID).setUnavailable();
+    public void saveReport(LocalDate date, int shift) {
+        addDriverConstraint(currDriverID, date, shift);
+        addTruckConstraint(currTruckNumber,date,shift);
         trucks.get(currTruckNumber).setUnavailable();
     }
 
@@ -349,4 +350,31 @@ public class ResourcesController {
             return LocalTime.of(14, 0);
     }
 
+    public LinkedList<Driver> getAvailableDrivers(LocalDate date , int shift){
+        LinkedList<Driver> output = new LinkedList<>();
+        for (Map.Entry<String, HashMap<LocalDate,Integer> >entry: drivers_constraints.entrySet()  ){
+            if (!entry.getValue().containsKey(date))
+                output.add(getDriver(entry.getKey() ));
+            else{
+                if(!entry.getValue().get(date).equals(2) && !entry.getValue().get(date).equals(shift)){
+                    output.add(getDriver(entry.getKey()));
+                }
+            }
+        }
+        return output;
+    }
+
+    public LinkedList<Truck> getAvailableTrucks(LocalDate date, int shift) {
+        LinkedList<Truck> output = new LinkedList<>();
+        for (Map.Entry<String, HashMap<LocalDate,Integer> >entry: trucks_constraints.entrySet()  ){
+            if (!entry.getValue().containsKey(date))
+                output.add(getTruck(entry.getKey() ));
+            else{
+                if(!entry.getValue().get(date).equals(2) && !entry.getValue().get(date).equals(shift)){
+                    output.add(getTruck(entry.getKey()));
+                }
+            }
+        }
+        return output;
+    }
 }

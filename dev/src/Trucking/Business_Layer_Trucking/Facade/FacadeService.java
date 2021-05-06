@@ -1,6 +1,7 @@
 package Trucking.Business_Layer_Trucking.Facade;
 
 
+import Trucking.Business_Layer_Trucking.Delivery.TruckingReport;
 import Trucking.Business_Layer_Trucking.Facade.FacadeObject.*;
 import Trucking.Business_Layer_Trucking.Resources.Driver;
 import javax.management.openmbean.KeyAlreadyExistsException;
@@ -44,6 +45,7 @@ public class FacadeService {
         {
             throw new IllegalStateException("Total Weight is: "+(weightToDeliver+ft.getWeightNeto())+" But Truck can carry: "+ft.getMaxWeight());
         }
+
         currTR.setTruckNumber(ft.getLicenseNumber());
         deliveryService.chooseTruck(truck);
         return ft;
@@ -58,6 +60,7 @@ public class FacadeService {
 
     public FacadeDriver chooseDriver(String driver) throws IllegalStateException,NoSuchElementException{
         FacadeDriver fd  = resourcesService.chooseDriver(driver);
+
         FacadeTruck ft  = null;
         for (FacadeTruck ft2 : resourcesService.getTrucks()){
             if (ft2.getLicenseNumber().equals(currTR.getTruckNumber()))
@@ -84,7 +87,9 @@ public class FacadeService {
     public void saveReport() {
 
         deliveryService.saveReport();
-        resourcesService.saveReport();
+        FacadeTruckingReport tr = deliveryService.getCurrTruckingReport();
+
+        resourcesService.saveReport(tr.getDate(), turnTimeToShift(tr.getLeavingHour()));
 
     }
 
@@ -131,9 +136,6 @@ public class FacadeService {
     }
 
 
-    public LinkedList<FacadeTruck> getAvailableTrucks() {
-        return resourcesService.getAvailableTrucks();
-    }
 
     public LinkedList<FacadeDemand> getItemsOnTruck() {
         return deliveryService.getItemsOnTruck();
@@ -435,6 +437,25 @@ public class FacadeService {
 
     public FacadeDriver getDriver(String id) {
         return resourcesService.getDriver(id);
+    }
+
+    public LinkedList<FacadeTruck> getAvailableTrucks() {
+        FacadeTruckingReport tr =  deliveryService.getCurrTruckingReport();
+        LocalDate date = tr.getDate();
+        int shift ;
+        if (tr.getLeavingHour().isBefore(LocalTime.of(14,0)))
+            shift = 0;
+        else
+            shift =1;
+
+        return resourcesService.getAvailableTrucks(date, shift);
+    }
+
+    private int turnTimeToShift(LocalTime shift){
+        if (shift.isBefore(LocalTime.of(14,0)))
+            return 0;
+        else
+            return 1;
     }
 }
 

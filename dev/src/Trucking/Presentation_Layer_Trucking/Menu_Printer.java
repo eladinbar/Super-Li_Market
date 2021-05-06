@@ -220,19 +220,11 @@ public class Menu_Printer {
             case 1:
                 try {
                     pc.CreateReport();
+
                     chooseDate(scanner);
                     chooseDemands(scanner);
                     chooseTruckAndDriver(scanner);
-                    boolean timeCon = true;
-                    while (timeCon) {
-                        try {
-                            chooseLeavingHour(scanner);
-                            chooseDate(scanner);
-                            timeCon = false;
-                        } catch (IllegalArgumentException e) {
-                            System.out.println(e.getMessage());
-                        }
-                    }
+
                     pc.saveReport();
 
 
@@ -291,6 +283,7 @@ public class Menu_Printer {
         if (drivers == null) System.out.println("no Drivers in the system yet");
         else {
             for (FacadeDriver facadeDriver : drivers) {
+                System.out.print("\t");
                 printDriverDetails(facadeDriver);
             }
         }
@@ -312,7 +305,7 @@ public class Menu_Printer {
     }
 
     private void printDriverDetails(FacadeDriver driver){
-        System.out.println("\t" + driver.getName() + ":\n\t" + "Driver ID: " + driver.getID() +
+        System.out.println(driver.getName() + ":\n\t" + "Driver ID: " + driver.getID() +
                 "\tLicense Type: " + driver.getLicenseType());
     }
 
@@ -388,7 +381,7 @@ public class Menu_Printer {
 
     }
 
-    private void chooseDate(Scanner scanner) throws IllegalArgumentException, ReflectiveOperationException {
+    private LinkedList<String> chooseDate(Scanner scanner) throws IllegalArgumentException, ReflectiveOperationException {
 
         HashMap<LocalDate, HashMap<Integer, LinkedList<String>>> daysAndDrivers = pc.getDaysAndDrivers();
         int spot =1;
@@ -409,9 +402,10 @@ public class Menu_Printer {
             if (spot == chose) {
                 System.out.println("The date you choose: " + entry.getKey());
                 LocalTime time = null;
+                int c;
                 if (entry.getValue().size()>1){
                     System.out.print("please choose the shift for this date:\n1.\tmorning shift\n2.\tafter-noon shift");
-                    int c = getIntFromUser(scanner);
+                    c = getIntFromUser(scanner);
                     while (c<1 || c> 2) {
                         c = getIntFromUser(scanner);
                     }
@@ -421,17 +415,24 @@ public class Menu_Printer {
 
 
                 }
+                else{
+                    c =0;
+                    for (Map.Entry<Integer,LinkedList<String >> shift: entry.getValue().entrySet()){
+                        c= shift.getKey();
+                    }
+                    time = turnShiftToTimes(c);
+                }
                 toInsert = entry.getKey();
                 pc.chooseDateToCurrentTR(toInsert);
                 pc.chooseLeavingHour(time);
+                return entry.getValue().get(c);
 
-                break;
+
             }
 
         }
 
-
-
+        return null;
 
     }
 
@@ -888,6 +889,7 @@ public class Menu_Printer {
     private void chooseTruckAndDriver(Scanner scanner) throws ReflectiveOperationException {
         System.out.println("please choose the Truck you'd like to deliver it with:");
         String truckNumber = chooseTruck(scanner);
+
         pc.chooseTruck(truckNumber);
         String driverID = chooseDriver(scanner);
         pc.chooseDriver(driverID);
@@ -1189,8 +1191,11 @@ public class Menu_Printer {
         LinkedList<FacadeDriver> drivers = pc.getAvailableDrivers();
         System.out.println("available Drivers:");
         int spot = 1;
-        for (FacadeDriver driver : drivers) {
-            System.out.println(spot + ") Driver ID:" + driver.getID() + " License degree: " + driver.getLicenseType() + " =" + driver.getLicenseType().getSize());
+        for (FacadeDriver d : drivers) {
+            FacadeDriver driver  = pc.getDriver(d.getID());
+            System.out.print(spot+".\t");
+            printDriverDetails(driver);
+
             spot++;
         }
         int chose = getIntFromUser(scanner);
@@ -1203,7 +1208,7 @@ public class Menu_Printer {
     }
 
     private String chooseTruck(Scanner scanner) throws ReflectiveOperationException {
-        LinkedList<FacadeTruck> trucks = pc.getAvailableTrucks();
+        LinkedList<FacadeTruck> trucks = pc.getAvailableTrucksCurrTr();
 
         System.out.println("available trucks:");
         int spot = 1;
