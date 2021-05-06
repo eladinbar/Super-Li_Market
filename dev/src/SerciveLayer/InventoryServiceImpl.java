@@ -3,12 +3,15 @@ package SerciveLayer;
 import BusinessLayer.InventoryPackage.DiscountPackage.CategoryDiscount;
 import BusinessLayer.InventoryPackage.DiscountPackage.ItemDiscount;
 import BusinessLayer.InventoryPackage.InventoryController;
+import SerciveLayer.Response.*;
+import SerciveLayer.Response.ResponseT;
 import SerciveLayer.SimpleObjects.*;
 import SerciveLayer.SimpleObjects.DefectEntry;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Map;
 
 public class InventoryServiceImpl implements InventoryService {
     private final InventoryController inventoryController;
@@ -20,15 +23,15 @@ public class InventoryServiceImpl implements InventoryService {
     //-------------------------------------------------------------------------Item functions
 
     @Override
-    public InResponse addItem(int id, String name, String categoryName, double costPrice, double sellingPrice,
-                              int minAmount, String shelfLocation, String storageLocation, int shelfQuantity,
-                              int storageQuantity, int manufacturerId, List<Integer> suppliersIds) {
-        InResponse response;
+    public Response addItem(int id, String name, String categoryName, double costPrice, double sellingPrice,
+                            int minAmount, String shelfLocation, String storageLocation, int shelfQuantity,
+                            int storageQuantity, int manufacturerId, List<Integer> suppliersIds) {
+        Response response;
         //Check basic argument constraints
         if (id < 0 | name == null || name.trim().isEmpty() | costPrice < 0 | sellingPrice < 0 | minAmount < 0 |
                 shelfLocation == null || shelfLocation.trim().isEmpty() | storageLocation == null || storageLocation.trim().isEmpty() |
                 shelfQuantity < 0 | storageQuantity < 0 | manufacturerId < 0) {
-            response = new InResponse(true, "One or more of the given arguments is invalid.");
+            response = new Response(true, "One or more of the given arguments is invalid.");
             return response;
         }
         //Call business layer function
@@ -36,20 +39,20 @@ public class InventoryServiceImpl implements InventoryService {
             inventoryController.addItem(id, name, categoryName, costPrice, sellingPrice,
                     minAmount, shelfLocation, storageLocation,
                     shelfQuantity, storageQuantity, manufacturerId, suppliersIds);
-            response = new InResponse(false, "Item added successfully.");
+            response = new Response(false, "Item added successfully.");
             return response;
         } catch (Exception ex) {
-            response = new InResponse(true, ex.getMessage());
+            response = new Response(true, ex.getMessage());
             return response;
         }
     }
 
     @Override
-    public InResponseT<Item> getItem(int itemId) {
-        InResponseT<Item> responseT;
+    public ResponseT<Item> getItem(int itemId) {
+        ResponseT<Item> responseT;
         //Check basic argument constraints
         if (itemId < 0) {
-            responseT = new InResponseT<>(true, "Item ID can only be represented as a non-negative number.", null);
+            responseT = new ResponseT<>(true, "Item ID can only be represented as a non-negative number.", null);
             return responseT;
         }
         //Call business layer function
@@ -58,219 +61,219 @@ public class InventoryServiceImpl implements InventoryService {
             Item simpleItem = new Item(itemId, tempItem.getName(), tempItem.getCostPrice(), tempItem.getSellingPrice(),
                     tempItem.getMinAmount(), tempItem.getShelfQuantity(), tempItem.getStorageQuantity(), tempItem.getShelfLocation(),
                     tempItem.getStorageLocation(), tempItem.getManufacturerID(),inventoryController.getItemCategory(itemId).getName());
-            responseT = new InResponseT<>(false, "", simpleItem);
+            responseT = new ResponseT<>(false, "", simpleItem);
             return responseT;
         } catch (Exception ex) {
-            responseT = new InResponseT<>(true, ex.getMessage(), null);
+            responseT = new ResponseT<>(true, ex.getMessage(), null);
             return responseT;
         }
     }
 
     @Override
-    public InResponse modifyItemName(int itemId, String newName) {
-        InResponse response;
+    public Response modifyItemName(int itemId, String newName) {
+        Response response;
         //Check basic argument constraints
         if (itemId < 0 | newName == null || newName.trim().isEmpty()) {
-            response = new InResponse(true, "One or more of the given arguments is invalid.");
+            response = new Response(true, "One or more of the given arguments is invalid.");
             return response;
         }
         //Call business layer function
         try {
             inventoryController.modifyItemName(itemId, newName);
-            response = new InResponse(false, "Item name modified successfully.");
+            response = new Response(false, "Item name modified successfully.");
             return response;
         } catch (Exception ex) {
-            response = new InResponse(true, ex.getMessage());
+            response = new Response(true, ex.getMessage());
             return response;
         }
     }
 
     @Override
-    public InResponse modifyItemCategory(int itemId, String newCategoryName) {
-        InResponse response;
+    public Response modifyItemCategory(int itemId, String newCategoryName) {
+        Response response;
         //Check basic argument constraints
         if (itemId < 0) {
-            response = new InResponse(true, "Item ID can only be represented as a non-negative number.");
+            response = new Response(true, "Item ID can only be represented as a non-negative number.");
             return response;
         }
         //Call business layer function
         try {
             inventoryController.modifyItemCategory(itemId, newCategoryName);
-            response = new InResponse(false, "Item category modified successfully.");
+            response = new Response(false, "Item category modified successfully.");
             return response;
         } catch (Exception ex) {
-            response = new InResponse(true, ex.getMessage());
+            response = new Response(true, ex.getMessage());
             return response;
         }
     }
 
     @Override
-    public InResponse modifyItemCostPrice(int itemId, double newCostPrice) {
-        InResponse response;
+    public Response modifyItemCostPrice(int itemId, double newCostPrice) {
+        Response response;
         //Check basic argument constraints
         if (itemId < 0 | newCostPrice < 0) {
-            response = new InResponse(true, "One or more of the given arguments is invalid.");
+            response = new Response(true, "One or more of the given arguments is invalid.");
             return response;
         }
         //Call business layer function
         try {
             inventoryController.modifyItemCostPrice(itemId, newCostPrice);
-            response = new InResponse(false, "Item cost price modified successfully.");
+            response = new Response(false, "Item cost price modified successfully.");
             return response;
         } catch (Exception ex) {
-            response = new InResponse(true, ex.getMessage());
+            response = new Response(true, ex.getMessage());
             return response;
         }
     }
 
     @Override
-    public InResponse modifyItemSellingPrice(int itemId, double newSellingPrice) {
-        InResponse response;
+    public Response modifyItemSellingPrice(int itemId, double newSellingPrice) {
+        Response response;
         //Check basic argument constraints
         if (itemId < 0 | newSellingPrice < 0) {
-            response = new InResponse(true, "One or more of the given arguments is invalid.");
+            response = new Response(true, "One or more of the given arguments is invalid.");
             return response;
         }
         //Call business layer function
         try {
             inventoryController.modifyItemSellingPrice(itemId, newSellingPrice);
-            response = new InResponse(false, "Item selling price modified successfully.");
+            response = new Response(false, "Item selling price modified successfully.");
             return response;
         } catch (Exception ex) {
-            response = new InResponse(true, ex.getMessage());
+            response = new Response(true, ex.getMessage());
             return response;
         }
     }
 
     @Override
-    public InResponse changeItemShelfLocation(int itemId, String newShelfLocation) {
-        InResponse response;
+    public Response changeItemShelfLocation(int itemId, String newShelfLocation) {
+        Response response;
         //Check basic argument constraints
         if (itemId < 0 | newShelfLocation == null || newShelfLocation.trim().equals("")) {
-            response = new InResponse(true, "One or more of the given arguments is invalid.");
+            response = new Response(true, "One or more of the given arguments is invalid.");
             return response;
         }
         //Call business layer function
         try {
             inventoryController.changeItemShelfLocation(itemId, newShelfLocation);
-            response = new InResponse(false, "Item shelf location changed successfully.");
+            response = new Response(false, "Item shelf location changed successfully.");
             return response;
         } catch (Exception ex) {
-            response = new InResponse(true, ex.getMessage());
+            response = new Response(true, ex.getMessage());
             return response;
         }
     }
 
     @Override
-    public InResponse changeItemStorageLocation(int itemId, String newStorageLocation) {
-        InResponse response;
+    public Response changeItemStorageLocation(int itemId, String newStorageLocation) {
+        Response response;
         //Check basic argument constraints
         if (itemId < 0 | newStorageLocation == null || newStorageLocation.trim().equals("")) {
-            response = new InResponse(true, "One or more of the given arguments is invalid.");
+            response = new Response(true, "One or more of the given arguments is invalid.");
             return response;
         }
         //Call business layer function
         try {
             inventoryController.changeItemStorageLocation(itemId, newStorageLocation);
-            response = new InResponse(false, "Item storage location changed successfully.");
+            response = new Response(false, "Item storage location changed successfully.");
             return response;
         } catch (Exception ex) {
-            response = new InResponse(true, ex.getMessage());
+            response = new Response(true, ex.getMessage());
             return response;
         }
     }
 
     @Override
-    public InResponse modifyItemShelfQuantity(int itemId, int newShelfQuantity) {
-        InResponse response;
+    public Response modifyItemShelfQuantity(int itemId, int newShelfQuantity) {
+        Response response;
         //Check basic argument constraints
         if (itemId < 0 | newShelfQuantity <0) {
-            response = new InResponse(true, "One or more of the given arguments is invalid.");
+            response = new Response(true, "One or more of the given arguments is invalid.");
             return response;
         }
         //Call business layer function
         try {
             inventoryController.modifyItemShelfQuantity(itemId, newShelfQuantity);
-            response = new InResponse(false, "Item shelf quantity modified successfully.");
+            response = new Response(false, "Item shelf quantity modified successfully.");
             return response;
         } catch (Exception ex) {
-            response = new InResponse(true, ex.getMessage());
+            response = new Response(true, ex.getMessage());
             return response;
         }
     }
 
     @Override
-    public InResponse modifyItemStorageQuantity(int itemId, int newStorageQuantity) {
-        InResponse response;
+    public Response modifyItemStorageQuantity(int itemId, int newStorageQuantity) {
+        Response response;
         //Check basic argument constraints
         if (itemId < 0 | newStorageQuantity < 0) {
-            response = new InResponse(true, "One or more of the given arguments is invalid.");
+            response = new Response(true, "One or more of the given arguments is invalid.");
             return response;
         }
         //Call business layer function
         try {
             inventoryController.modifyItemStorageQuantity(itemId, newStorageQuantity);
-            response = new InResponse(false, "Item storage quantity modified successfully.");
+            response = new Response(false, "Item storage quantity modified successfully.");
             return response;
         } catch (Exception ex) {
-            response = new InResponse(true, ex.getMessage());
+            response = new Response(true, ex.getMessage());
             return response;
         }
     }
 
     @Override
-    public InResponse addItemSupplier(int itemId, int supplierId) {
-        InResponse response;
+    public Response addItemSupplier(int itemId, int supplierId) {
+        Response response;
         //Check basic argument constraints
         if (itemId < 0 | supplierId < 0) {
-            response = new InResponse(true, "One or more of the given arguments is invalid.");
+            response = new Response(true, "One or more of the given arguments is invalid.");
             return response;
         }
         //Call business layer function
         try {
             inventoryController.addItemSupplier(itemId, supplierId);
-            response = new InResponse(false, "Item supplier added successfully.");
+            response = new Response(false, "Item supplier added successfully.");
             return response;
         } catch (Exception ex) {
-            response = new InResponse(true, ex.getMessage());
+            response = new Response(true, ex.getMessage());
             return response;
         }
     }
 
     @Override
-    public InResponse removeItemSupplier(int itemId, int supplierId) {
-        InResponse response;
+    public Response removeItemSupplier(int itemId, int supplierId) {
+        Response response;
         //Check basic argument constraints
         if (itemId < 0 | supplierId < 0) {
-            response = new InResponse(true, "One or more of the given arguments is invalid.");
+            response = new Response(true, "One or more of the given arguments is invalid.");
             return response;
         }
         //Call business layer function
         try {
             inventoryController.removeItemSupplier(itemId, supplierId);
-            response = new InResponse(false, "Item supplier removed successfully.");
+            response = new Response(false, "Item supplier removed successfully.");
             return response;
         } catch (Exception ex) {
-            response = new InResponse(true, ex.getMessage());
+            response = new Response(true, ex.getMessage());
             return response;
         }
     }
 
     @Override
-    public InResponse removeItem(int itemId) {
-        InResponse response;
+    public Response removeItem(int itemId) {
+        Response response;
         //Check basic argument constraints
         if (itemId < 0) {
-            response = new InResponse(true, "Item ID can only be represented as a non-negative number.");
+            response = new Response(true, "Item ID can only be represented as a non-negative number.");
             return response;
         }
         //Call business layer function
         try {
             inventoryController.removeItem(itemId);
-            response = new InResponse(false, "Item removed successfully.");
+            response = new Response(false, "Item removed successfully.");
             return response;
         } catch (Exception ex) {
-            response = new InResponse(true, ex.getMessage());
+            response = new Response(true, ex.getMessage());
             return response;
         }
     }
@@ -278,22 +281,22 @@ public class InventoryServiceImpl implements InventoryService {
     //-------------------------------------------------------------------------Category functions
 
     @Override
-    public InResponse addCategory(String categoryName, String parentCategoryName) {
-        InResponse response;
+    public Response addCategory(String categoryName, String parentCategoryName) {
+        Response response;
         //Call business layer function
         try {
             inventoryController.addCategory(categoryName, parentCategoryName);
-            response = new InResponse(false, "Category added successfully.");
+            response = new Response(false, "Category added successfully.");
             return response;
         } catch (Exception ex) {
-            response = new InResponse(true, ex.getMessage());
+            response = new Response(true, ex.getMessage());
             return response;
         }
     }
 
     @Override
-    public InResponseT<Category> getCategory(String categoryName) {
-        InResponseT<Category> responseT;
+    public ResponseT<Category> getCategory(String categoryName) {
+        ResponseT<Category> responseT;
         //Call business layer function
         try {
             BusinessLayer.InventoryPackage.Category tempCategory = inventoryController.getCategory(categoryName);
@@ -303,10 +306,10 @@ public class InventoryServiceImpl implements InventoryService {
             //Create simple category
             Category simpleCategory = new Category(categoryName, simpleItems, tempCategory.getParentCategory().getName(),
                                                     simpleSubCategories);
-            responseT = new InResponseT<>(false, "", simpleCategory);
+            responseT = new ResponseT<>(false, "", simpleCategory);
             return responseT;
         } catch (Exception ex) {
-            responseT = new InResponseT<>(true, ex.getMessage(), null);
+            responseT = new ResponseT<>(true, ex.getMessage(), null);
             return responseT;
         }
     }
@@ -331,43 +334,43 @@ public class InventoryServiceImpl implements InventoryService {
     }
 
     @Override
-    public InResponse modifyCategoryName(String oldName, String newName) {
-        InResponse response;
+    public Response modifyCategoryName(String oldName, String newName) {
+        Response response;
         //Call business layer function
         try {
             inventoryController.modifyCategoryName(oldName, newName);
-            response = new InResponse(false, "Category name modified successfully.");
+            response = new Response(false, "Category name modified successfully.");
             return response;
         } catch (Exception ex) {
-            response = new InResponse(true, ex.getMessage());
+            response = new Response(true, ex.getMessage());
             return response;
         }
     }
 
     @Override
-    public InResponse removeCategory(String categoryName) {
-        InResponse response;
+    public Response removeCategory(String categoryName) {
+        Response response;
         //Call business layer function
         try {
             inventoryController.removeCategory(categoryName);
-            response = new InResponse(false, "Category removed successfully.");
+            response = new Response(false, "Category removed successfully.");
             return response;
         } catch (Exception ex) {
-            response = new InResponse(true, ex.getMessage());
+            response = new Response(true, ex.getMessage());
             return response;
         }
     }
 
     @Override
-    public InResponse changeParentCategory(String categoryName, String newParentName) {
-        InResponse response;
+    public Response changeParentCategory(String categoryName, String newParentName) {
+        Response response;
         //Call business layer function
         try {
             inventoryController.changeParentCategory(categoryName, newParentName);
-            response = new InResponse(false, "Parent category changed successfully.");
+            response = new Response(false, "Parent category changed successfully.");
             return response;
         } catch (Exception ex) {
-            response = new InResponse(true, ex.getMessage());
+            response = new Response(true, ex.getMessage());
             return response;
         }
     }
@@ -376,11 +379,11 @@ public class InventoryServiceImpl implements InventoryService {
 
     @Override
     @SuppressWarnings("unchecked")
-    public <T extends SimpleEntity> InResponseT<Sale<T>> getSale(String saleName) {
+    public <T extends SimpleEntity> ResponseT<Sale<T>> getSale(String saleName) {
         //response to return created
-        InResponseT<Sale<T>> responseT;
+        ResponseT<Sale<T>> responseT;
         if (saleName.trim().isEmpty()) {
-            responseT = new InResponseT<>(true, "One or more arguments is invalid", null);
+            responseT = new ResponseT<>(true, "One or more arguments is invalid", null);
             return responseT;
         }
         BusinessLayer.InventoryPackage.SalePackage.Sale sale;
@@ -388,7 +391,7 @@ public class InventoryServiceImpl implements InventoryService {
             sale = inventoryController.getSale(saleName);
 
         } catch (Exception e) {
-            responseT = new InResponseT<>(true, e.getMessage(), null);
+            responseT = new ResponseT<>(true, e.getMessage(), null);
             return responseT;
         }
 
@@ -421,90 +424,90 @@ public class InventoryServiceImpl implements InventoryService {
                 simple.setAppliesOn((T) simpleCategory);
             }
 
-        responseT = new InResponseT<>(false, "", simple);
+        responseT = new ResponseT<>(false, "", simple);
         return responseT;
     }
 
     @Override
-    public InResponse addItemSale(String saleName, int itemID, double saleDiscount, Calendar startDate, Calendar endDate) {
+    public Response addItemSale(String saleName, int itemID, double saleDiscount, Calendar startDate, Calendar endDate) {
         clearDate(startDate,endDate);
-        InResponse response;
+        Response response;
         //Check basic argument constraints
         if (saleName == null || saleName.trim().equals("") | itemID < 0 | saleDiscount < 0) {
-            response = new InResponse(true, "One or more of the given arguments is invalid.");
+            response = new Response(true, "One or more of the given arguments is invalid.");
             return response;
         }
         //Call business layer function
         try {
             inventoryController.addItemSale(saleName, itemID, saleDiscount, startDate, endDate);
         } catch (Exception ex) {
-            response = new InResponse(true, ex.getMessage());
+            response = new Response(true, ex.getMessage());
             return response;
         }
-        response = new InResponse(false, "Item Sale added successfully.");
+        response = new Response(false, "Item Sale added successfully.");
         return response;
     }
 
     @Override
-    public InResponse addCategorySale(String saleName, String categoryName, double saleDiscount, Calendar startDate, Calendar endDate) {
+    public Response addCategorySale(String saleName, String categoryName, double saleDiscount, Calendar startDate, Calendar endDate) {
         clearDate(startDate,endDate);
-        InResponse response;
+        Response response;
         //Check basic argument constraints
         if (saleName == null || saleName.trim().equals("") | saleDiscount < 0) {
-            response = new InResponse(true, "One or more of the given arguments is invalid.");
+            response = new Response(true, "One or more of the given arguments is invalid.");
             return response;
         }
         //Call business layer function
         try {
             inventoryController.addCategorySale(saleName, categoryName, saleDiscount, startDate, endDate);
-            response = new InResponse(false, "Category Sale added successfully.");
+            response = new Response(false, "Category Sale added successfully.");
             return response;
         } catch (Exception ex) {
-            response = new InResponse(true, ex.getMessage());
+            response = new Response(true, ex.getMessage());
             return response;
         }
     }
 
     @Override
-    public InResponse modifySaleName(String oldName, String newName) {
-        InResponse response;
+    public Response modifySaleName(String oldName, String newName) {
+        Response response;
         try{
             inventoryController.modifySaleName(oldName, newName);
 
         } catch (Exception e){
-            response = new InResponse(true, e.getMessage());
+            response = new Response(true, e.getMessage());
             return  response;
         }
-        response = new InResponse(false,"");
+        response = new Response(false,"");
         return response;
     }
 
     @Override
-    public InResponse modifySaleDiscount(String saleName, double newDiscount) {
-        InResponse response;
+    public Response modifySaleDiscount(String saleName, double newDiscount) {
+        Response response;
         try{
             inventoryController.modifySaleDiscount(saleName, newDiscount);
 
         } catch (Exception e){
-            response = new InResponse(true, e.getMessage());
+            response = new Response(true, e.getMessage());
             return  response;
         }
-        response = new InResponse(false,"");
+        response = new Response(false,"");
         return response;
     }
 
     @Override
-    public InResponse modifySaleDates(String saleName, Calendar startDate, Calendar endDate) {
+    public Response modifySaleDates(String saleName, Calendar startDate, Calendar endDate) {
         clearDate(startDate,endDate);
-        InResponse response;
+        Response response;
         try{
             inventoryController.modifySaleDates(saleName, startDate, endDate);
 
         } catch (Exception e){
-            response = new InResponse(true, e.getMessage());
+            response = new Response(true, e.getMessage());
             return  response;
         }
-        response = new InResponse(false,"");
+        response = new Response(false,"");
         return response;
     }
 
@@ -512,13 +515,13 @@ public class InventoryServiceImpl implements InventoryService {
 
     @Override
     @SuppressWarnings("unchecked")
-    public <T extends SimpleEntity> InResponseT<List<Discount<T>>> getDiscount(int supplierId, Calendar discountDate) {
+    public <T extends SimpleEntity> ResponseT<List<Discount<T>>> getDiscount(int supplierId, Calendar discountDate) {
         clearDate(discountDate);
         //response to return created
-        InResponseT<List<Discount<T>>> responseT;
+        ResponseT<List<Discount<T>>> responseT;
         List<Discount<T>> simpleDiscs = new ArrayList<>();
         if (supplierId <= 0) {
-            responseT = new InResponseT<>(true, "One oe more Arguments is invalid", null);
+            responseT = new ResponseT<>(true, "One oe more Arguments is invalid", null);
             return responseT;
         }
         List<BusinessLayer.InventoryPackage.DiscountPackage.Discount> discountList;
@@ -526,7 +529,7 @@ public class InventoryServiceImpl implements InventoryService {
             discountList = inventoryController.getDiscount(supplierId, discountDate);
 
         } catch (Exception e) {
-            responseT = new InResponseT<>(true, e.getMessage(), null);
+            responseT = new ResponseT<>(true, e.getMessage(), null);
             return responseT;
         }
 
@@ -561,127 +564,127 @@ public class InventoryServiceImpl implements InventoryService {
             }
             simpleDiscs.add(simple);
         }
-        responseT = new InResponseT<>(false,"",simpleDiscs);
+        responseT = new ResponseT<>(false,"",simpleDiscs);
         return responseT;
     }
 
 
     @Override
-    public InResponse addItemDiscount(int supplierId, double discount, Calendar discountDate, int itemCount, int itemId) {
+    public Response addItemDiscount(int supplierId, double discount, Calendar discountDate, int itemCount, int itemId) {
         clearDate(discountDate);
-        InResponse response;
+        Response response;
         if (supplierId <= 0 || (discount <= 0 || discount >= 1) || itemCount <= 0 || itemId <= 0) {
-            response = new InResponse(true, "One oe more Arguments is invalid");
+            response = new Response(true, "One oe more Arguments is invalid");
             return response;
         }
         try {
             inventoryController.addItemDiscount(supplierId, discount, discountDate, itemCount, itemId);
         } catch (Exception e) {
-            response = new InResponse(true, e.getMessage());
+            response = new Response(true, e.getMessage());
             return response;
         }
-        response = new InResponse(false, "");
+        response = new Response(false, "");
         return response;
     }
 
     @Override
-    public InResponse addCategoryDiscount(int supplierId, double discount, Calendar discountDate, int itemCount, String categoryName) {
+    public Response addCategoryDiscount(int supplierId, double discount, Calendar discountDate, int itemCount, String categoryName) {
         clearDate(discountDate);
-        InResponse response;
+        Response response;
         if (supplierId <= 0 || (discount <= 0 || discount >= 1) || itemCount <= 0 || categoryName.isEmpty() || categoryName.isBlank()) {
-            response = new InResponse(true, "One oe more Arguments is invalid");
+            response = new Response(true, "One oe more Arguments is invalid");
             return response;
         }
         try {
             inventoryController.addCategoryDiscount(supplierId, discount, discountDate, itemCount, categoryName);
         } catch (Exception e) {
-            response = new InResponse(true, e.getMessage());
+            response = new Response(true, e.getMessage());
             return response;
         }
-        response = new InResponse(false, "");
+        response = new Response(false, "");
         return response;
     }
 
     //-------------------------------------------------------------------------Defect Functions
 
     @Override
-    public InResponse recordDefect(int itemId, Calendar entryDate, int defectQuantity, String defectLocation) {
+    public Response recordDefect(int itemId, Calendar entryDate, int defectQuantity, String defectLocation) {
         clearDate(entryDate);
-        InResponse response;
+        Response response;
         if (itemId <= 0 || defectQuantity <= 0 || defectLocation.isEmpty() || defectLocation.isBlank()) {
-            response = new InResponse(true, "One oe more Arguments is invalid");
+            response = new Response(true, "One oe more Arguments is invalid");
             return response;
         }
         try {
             inventoryController.recordDefect(itemId, entryDate, defectQuantity, defectLocation);
         } catch (Exception e) {
-            response = new InResponse(true, e.getMessage());
+            response = new Response(true, e.getMessage());
             return response;
         }
-        response = new InResponse(false, "");
+        response = new Response(false, "");
         return response;
     }
 
     //-------------------------------------------------------------------------Report functions
 
     @Override
-    public InResponseT<List<Item>> inventoryReport() {
-        InResponseT<List<Item>> shortageResponse;
+    public ResponseT<List<Item>> inventoryReport() {
+        ResponseT<List<Item>> shortageResponse;
         List<Item> simpleItemList = new ArrayList<>();
         try {
             List<BusinessLayer.InventoryPackage.Item> shortageItems = inventoryController.inventoryReport();
             shortageResponse = getResponseListItem(simpleItemList, shortageItems);
 
         } catch (Exception e) {
-            shortageResponse = new InResponseT<>(true, e.getMessage(), null);
+            shortageResponse = new ResponseT<>(true, e.getMessage(), null);
         }
         return shortageResponse;
     }
 
     @Override
-    public InResponseT<List<Item>> categoryReport(String categoryName) {
-        InResponseT<List<Item>> shortageResponse;
+    public ResponseT<List<Item>> categoryReport(String categoryName) {
+        ResponseT<List<Item>> shortageResponse;
         List<Item> simpleItemList = new ArrayList<>();
         try {
             List<BusinessLayer.InventoryPackage.Item> shortageItems = inventoryController.categoryReport(categoryName);
             shortageResponse = getResponseListItem(simpleItemList, shortageItems);
 
         } catch (Exception e) {
-            shortageResponse = new InResponseT<>(true, e.getMessage(), null);
+            shortageResponse = new ResponseT<>(true, e.getMessage(), null);
         }
         return shortageResponse;
     }
 
-    private InResponseT<List<Item>> getResponseListItem(List<Item> simpleItemList, List<BusinessLayer.InventoryPackage.Item> shortageItems) {
-        InResponseT<List<Item>> shortageResponse;
+    private ResponseT<List<Item>> getResponseListItem(List<Item> simpleItemList, List<BusinessLayer.InventoryPackage.Item> shortageItems) {
+        ResponseT<List<Item>> shortageResponse;
         for (BusinessLayer.InventoryPackage.Item i : shortageItems) {
             Item simpleItem = new Item(i.getID(), i.getName(), i.getCostPrice(), i.getSellingPrice(), i.getMinAmount(),
                     i.getShelfQuantity(), i.getStorageQuantity(), i.getShelfLocation(), i.getStorageLocation(), i.getManufacturerID()
                     ,inventoryController.getItemCategory(i.getID()).getName());
             simpleItemList.add(simpleItem);
         }
-        shortageResponse = new InResponseT<>(false, "", simpleItemList);
+        shortageResponse = new ResponseT<>(false, "", simpleItemList);
         return shortageResponse;
     }
 
     @Override
-    public InResponseT<List<Item>> itemShortageReport() {
-        InResponseT<List<Item>> shortageResponse;
+    public ResponseT<List<Item>> itemShortageReport() {
+        ResponseT<List<Item>> shortageResponse;
         List<Item> simpleItemList = new ArrayList<>();
         try {
             List<BusinessLayer.InventoryPackage.Item> shortageItems = inventoryController.itemShortageReport();
             shortageResponse = getResponseListItem(simpleItemList, shortageItems);
 
         } catch (Exception e) {
-            shortageResponse = new InResponseT<>(true, e.getMessage(), null);
+            shortageResponse = new ResponseT<>(true, e.getMessage(), null);
         }
         return shortageResponse;
     }
 
     @Override
-    public InResponseT<List<DefectEntry>> defectsReport(Calendar fromDate, Calendar toDate) {
+    public ResponseT<List<DefectEntry>> defectsReport(Calendar fromDate, Calendar toDate) {
         clearDate(fromDate,toDate);
-        InResponseT<List<DefectEntry>> defectResponse;
+        ResponseT<List<DefectEntry>> defectResponse;
         List<DefectEntry> simpleEntries = new ArrayList<>();
         try {
             List<BusinessLayer.InventoryPackage.DefectsPackage.DefectEntry> defectsReport = inventoryController.defectsReport(fromDate, toDate);
@@ -689,11 +692,16 @@ public class InventoryServiceImpl implements InventoryService {
                 DefectEntry simple = new DefectEntry(entry.getEntryDate(), entry.getItemID(), entry.getItemName(), entry.getQuantity(), entry.getLocation());
                 simpleEntries.add(simple);
             }
-            defectResponse = new InResponseT<>(false, "", simpleEntries);
+            defectResponse = new ResponseT<>(false, "", simpleEntries);
         } catch (Exception e) {
-            defectResponse = new InResponseT<>(true, e.getMessage(), null);
+            defectResponse = new ResponseT<>(true, e.getMessage(), null);
         }
         return defectResponse;
+    }
+
+    @Override
+    public ResponseT<Map<Integer, Integer>> getItemsInShortAndQuantities() {
+        ResponseT<List<Item>> itemsInShort = itemShortageReport();
     }
 
     private void clearDate(Calendar... calendars){

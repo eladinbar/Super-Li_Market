@@ -1,14 +1,14 @@
 package SerciveLayer;
 
 public class InResponseT<T> extends InResponse {
-    private final T data;
+    private final T value;
 
     public InResponseT(boolean errorOccurred, String message, T data) {
         super(errorOccurred,message);
-        this.data = data;
+        this.value = data;
     }
 
-    public T getData() {
-        return data;
+    public T getValue() {
+        return value;
     }
 }

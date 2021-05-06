@@ -3,8 +3,8 @@ package PresentationLayer.InventoryP;
 import InfrastructurePackage.Pair;
 import SerciveLayer.InventoryService;
 import SerciveLayer.InventoryServiceImpl;
-import SerciveLayer.InResponse;
-import SerciveLayer.InResponseT;
+import SerciveLayer.Response.*;
+import SerciveLayer.Response.Response;
 import SerciveLayer.SimpleObjects.*;
 
 import java.time.Month;
@@ -39,7 +39,7 @@ public class PresentationController implements Runnable {
         String storeL = menu.instructAndReceive("Enter shelf location: follow this format \"SH-A<number>-<L/R>-S<number>\"");
         int intManfac = menu.instructAndReceive("Enter manufacturer ID: ", Integer.class);
         String category = menu.instructAndReceive("Enter category name: ");
-        InResponse r = service.addItem(itemID, name, category, costP, sellP, minA, storeL, storageL, storageQ, storeQ, intManfac, new ArrayList<>());
+        Response r = service.addItem(itemID, name, category, costP, sellP, minA, storeL, storageL, storageQ, storeQ, intManfac, new ArrayList<>());
         if (r.isErrorOccurred()) {
             menu.errorPrompt(r.getMessage());
         } else {
@@ -49,10 +49,10 @@ public class PresentationController implements Runnable {
 
     private void showItem() {
         int itemID = menu.instructAndReceive("Enter item ID: ", Integer.class);
-        InResponseT<Item> r = service.getItem(itemID);
+        ResponseT<Item> r = service.getItem(itemID);
         if (!r.isErrorOccurred()) {
             menu.itemHeader();
-            menu.printEntity(r.getData());
+            menu.printEntity(r.getValue());
         } else {
             menu.errorPrompt(r.getMessage());
         }
@@ -60,15 +60,15 @@ public class PresentationController implements Runnable {
 
     private void editItem() {
         int itemID = menu.instructAndReceive("Enter item ID: ", Integer.class);
-        InResponseT<Item> r = service.getItem(itemID);
+        ResponseT<Item> r = service.getItem(itemID);
         if (r.isErrorOccurred()) {
             menu.errorPrompt("Could not get item. Make sure you entered the ID correctly.");
             return;
         }
         menu.itemHeader();
-        menu.printEntity(r.getData());
+        menu.printEntity(r.getValue());
         menu.printItemModMenu();
-        InResponse modResp = editItemChoiceInput(itemID);
+        Response modResp = editItemChoiceInput(itemID);
         if (modResp.isErrorOccurred())
             System.out.println(modResp.getMessage());
         else
@@ -76,10 +76,10 @@ public class PresentationController implements Runnable {
 
     }
 
-    private InResponse editItemChoiceInput(int itemId) {
+    private Response editItemChoiceInput(int itemId) {
         Scanner scan = new Scanner(System.in);
         String choice = scan.next();
-        InResponse r;
+        Response r;
         switch (choice) {
             case "1":
                 String newName = menu.instructAndReceive("Enter new item name");
@@ -122,7 +122,7 @@ public class PresentationController implements Runnable {
                 r = service.removeItemSupplier(itemId, oldSupplier);
                 break;
             default:
-                r = new InResponse(true, "Invalid choice");
+                r = new Response(true, "Invalid choice");
                 break;
         }
         return r;
@@ -130,7 +130,7 @@ public class PresentationController implements Runnable {
 
     private void removeItem() {
         int itemID = menu.instructAndReceive("Enter item ID: ", Integer.class);
-        InResponse r = service.removeItem(itemID);
+        Response r = service.removeItem(itemID);
         if (r.isErrorOccurred()) {
             menu.errorPrompt(r.getMessage());
         } else {
@@ -142,7 +142,7 @@ public class PresentationController implements Runnable {
     private void addCategory() {
         String catName = menu.instructAndReceive("Enter category name: ");
         String parentCategoryName = menu.instructAndReceive("Enter parent category: (enter nothing to set an item as 'uncategorized')");
-        InResponse addR = service.addCategory(catName, parentCategoryName);
+        Response addR = service.addCategory(catName, parentCategoryName);
         if (addR.isErrorOccurred())
             System.out.println(addR.getMessage());
         else
@@ -152,35 +152,35 @@ public class PresentationController implements Runnable {
 
     private void showCategory() {
         String catName = menu.instructAndReceive("Enter category name: ");
-        InResponseT<Category> rCategory = service.getCategory(catName);
+        ResponseT<Category> rCategory = service.getCategory(catName);
         if (rCategory.isErrorOccurred())
             System.out.println(rCategory.getMessage());
         else
-            menu.printEntity(rCategory.getData());
+            menu.printEntity(rCategory.getValue());
     }
 
     private void editCategory() {
         String catName = menu.instructAndReceive("Enter category name: ");
-        InResponseT<Category> catR = service.getCategory(catName);
+        ResponseT<Category> catR = service.getCategory(catName);
         if (catR.isErrorOccurred()) {
             menu.errorPrompt(catR.getMessage());
             return;
         } else
-            menu.printEntity(catR.getData());
+            menu.printEntity(catR.getValue());
         menu.printCategoryModList();
         String userInput = menu.instructAndReceive("Enter choice: ");
-        InResponse modResp;
+        Response modResp;
         switch (userInput) {
             case "1":
                 String newName = menu.instructAndReceive("Enter new name: ");
-                modResp = service.modifyCategoryName(catR.getData().getName(), newName);
+                modResp = service.modifyCategoryName(catR.getValue().getName(), newName);
                 break;
             case "2":
                 String newParent = menu.instructAndReceive("Enter new parent category name: (keep in mind not to use a subcategory!)");
-                modResp = service.changeParentCategory(catR.getData().getName(), newParent);
+                modResp = service.changeParentCategory(catR.getValue().getName(), newParent);
                 break;
             default:
-                modResp = new InResponse(true, "Invalid choice");
+                modResp = new Response(true, "Invalid choice");
                 break;
         }
 
@@ -193,7 +193,7 @@ public class PresentationController implements Runnable {
 
     private void removeCategory() {
         String catName = menu.instructAndReceive("Enter category name: ");
-        InResponse catR = service.removeCategory(catName);
+        Response catR = service.removeCategory(catName);
         if (catR.isErrorOccurred())
             menu.errorPrompt(catR.getMessage());
         else
@@ -202,11 +202,11 @@ public class PresentationController implements Runnable {
 
     private <T extends SimpleEntity> void showSale() {
         String saleName = menu.instructAndReceive("Enter sale name: ");
-        InResponseT<Sale<T>> saleR = service.getSale(saleName);
+        ResponseT<Sale<T>> saleR = service.getSale(saleName);
         if (saleR.isErrorOccurred()) {
             menu.errorPrompt(saleR.getMessage());
         } else {
-            menu.printEntity(saleR.getData());
+            menu.printEntity(saleR.getValue());
         }
     }
 
@@ -218,12 +218,12 @@ public class PresentationController implements Runnable {
         //getting the item to be applied on
         int applyOnItem = menu.instructAndReceive("Enter item ID for the sale: ", Integer.class);
         //checking if exists
-        InResponseT<Item> rExist = service.getItem(applyOnItem);
+        ResponseT<Item> rExist = service.getItem(applyOnItem);
         if (rExist.isErrorOccurred()) {
             menu.errorPrompt(rExist.getMessage());
             return;
         }
-        InResponse r1 = service.addItemSale(saleName, applyOnItem, saleDiscount, dates.getFirst(), dates.getSecond());
+        Response r1 = service.addItemSale(saleName, applyOnItem, saleDiscount, dates.getFirst(), dates.getSecond());
         if (r1.isErrorOccurred()) {
             menu.errorPrompt(r1.getMessage());
             return;
@@ -240,12 +240,12 @@ public class PresentationController implements Runnable {
         //getting the item to be applied on
         String applyOnItem = menu.instructAndReceive("Enter category name for the sale: ");
         //checking if exists
-        InResponseT<Category> rExist = service.getCategory(applyOnItem);
+        ResponseT<Category> rExist = service.getCategory(applyOnItem);
         if (rExist.isErrorOccurred()) {
             menu.errorPrompt(rExist.getMessage());
             return;
         }
-        InResponse r1 = service.addCategorySale(saleName, applyOnItem, saleDiscount, dates.getFirst(), dates.getSecond());
+        Response r1 = service.addCategorySale(saleName, applyOnItem, saleDiscount, dates.getFirst(), dates.getSecond());
         if (r1.isErrorOccurred()) {
             menu.errorPrompt(r1.getMessage());
             return;
@@ -281,33 +281,33 @@ public class PresentationController implements Runnable {
 
     private <T extends SimpleEntity> void modifySale() {
         String saleName = menu.instructAndReceive("Enter sale name: ");
-        InResponseT<Sale<T>> saleR = service.getSale(saleName);
+        ResponseT<Sale<T>> saleR = service.getSale(saleName);
         if (saleR.isErrorOccurred()) {
             menu.errorPrompt(saleR.getMessage());
             return;
         } else
-            menu.printEntity(saleR.getData());
+            menu.printEntity(saleR.getValue());
 
         menu.printSaleModList();
         String userInput = menu.instructAndReceive("Enter choice: ");
-        InResponse modResp;
+        Response modResp;
         switch (userInput) {
             case "1":
                 String newName = menu.instructAndReceive("Enter new name: ");
-                modResp = service.modifySaleName(saleR.getData().getName(), newName);
+                modResp = service.modifySaleName(saleR.getValue().getName(), newName);
                 break;
             case "2":
                 double newDisc = menu.instructAndReceive("Enter sale discount: (e.g. for 10% enter 0.1)", Double.class);
-                modResp = service.modifySaleDiscount(saleR.getData().getName(), newDisc);
+                modResp = service.modifySaleDiscount(saleR.getValue().getName(), newDisc);
                 break;
             case "3":
                 Pair<Calendar, Calendar> dates = getStartEndDates();
                 if (dates == null)
                     return;
-                modResp = service.modifySaleDates(saleR.getData().getName(), dates.getFirst(), dates.getSecond());
+                modResp = service.modifySaleDates(saleR.getValue().getName(), dates.getFirst(), dates.getSecond());
                 break;
             default:
-                modResp = new InResponse(true, "Invalid choice");
+                modResp = new Response(true, "Invalid choice");
                 break;
         }
         if (modResp.isErrorOccurred())
@@ -326,8 +326,8 @@ public class PresentationController implements Runnable {
             menu.errorPrompt("Invalid input");
             return;
         }
-        InResponseT<List<Discount<T>>> discR = service.getDiscount(suppId, date);
-        for (Discount<T> d : discR.getData()) {
+        ResponseT<List<Discount<T>>> discR = service.getDiscount(suppId, date);
+        for (Discount<T> d : discR.getValue()) {
             menu.printEntity(d);
         }
 
@@ -355,7 +355,7 @@ public class PresentationController implements Runnable {
             menu.errorPrompt("Item amount has to be at least 1.");
             return;
         }
-        InResponse r1 = service.addItemDiscount(suppId, discountGiven, date, itemCount, itemId);
+        Response r1 = service.addItemDiscount(suppId, discountGiven, date, itemCount, itemId);
         if (r1.isErrorOccurred()) {
             menu.errorPrompt(r1.getMessage());
             return;
@@ -385,7 +385,7 @@ public class PresentationController implements Runnable {
             menu.errorPrompt("Item amount has to be at least 1.");
             return;
         }
-        InResponse r1 = service.addCategoryDiscount(suppId, discountGiven, date, itemCount, catName);
+        Response r1 = service.addCategoryDiscount(suppId, discountGiven, date, itemCount, catName);
         if (r1.isErrorOccurred()) {
             menu.errorPrompt(r1.getMessage());
             return;
@@ -402,7 +402,7 @@ public class PresentationController implements Runnable {
         int defectedAmount = menu.instructAndReceive("Enter the defect amount: ", Integer.class);
         //location2
         String location = menu.instructAndReceive("Enter storage/shelf location: follow this format \"<ST/SH>-A<number>-<L/R>-S<number>\"");
-        InResponse recorded = service.recordDefect(itemID, date, defectedAmount, location);
+        Response recorded = service.recordDefect(itemID, date, defectedAmount, location);
         if (recorded.isErrorOccurred()) {
             menu.errorPrompt(recorded.getMessage());
             return;
@@ -411,49 +411,49 @@ public class PresentationController implements Runnable {
     }
 
     private void inventoryReport() {
-        InResponseT<List<Item>> reportResp = service.inventoryReport();
+        ResponseT<List<Item>> reportResp = service.inventoryReport();
         if (reportResp.isErrorOccurred()) {
             menu.errorPrompt(reportResp.getMessage());
             return;
         }
-        menu.printEntity(reportResp.getData());
+        menu.printEntity(reportResp.getValue());
     }
 
     private void categoryReport() {
         String catName = menu.instructAndReceive("Enter category name: ");
-        InResponseT<Category> catR = service.getCategory(catName);
+        ResponseT<Category> catR = service.getCategory(catName);
         if (catR.isErrorOccurred()) {
             menu.errorPrompt(catR.getMessage());
             return;
         }
-        InResponseT<List<Item>> categoryItems = service.categoryReport(catName);
+        ResponseT<List<Item>> categoryItems = service.categoryReport(catName);
         if (categoryItems.isErrorOccurred()) {
             menu.errorPrompt(categoryItems.getMessage());
         }
-        menu.printEntity(catR.getData());
+        menu.printEntity(catR.getValue());
     }
 
     private void itemShortageReport() {
-        InResponseT<List<Item>> shortage = service.itemShortageReport();
+        ResponseT<List<Item>> shortage = service.itemShortageReport();
         if (shortage.isErrorOccurred()) {
             menu.errorPrompt(shortage.getMessage());
             return;
         }
-        menu.printEntity(shortage.getData());
+        menu.printEntity(shortage.getValue());
     }
 
     private void defectsReport() {
         Pair<Calendar, Calendar> interval = getStartEndDates();
         if (interval == null)
             return;
-        InResponseT<List<DefectEntry>> defects = service.defectsReport(interval.getFirst(), interval.getSecond());
+        ResponseT<List<DefectEntry>> defects = service.defectsReport(interval.getFirst(), interval.getSecond());
         if (defects.isErrorOccurred()) {
             menu.errorPrompt(defects.getMessage());
             return;
         }
         menu.printDefectMenu();
         try {
-            for (DefectEntry entry : defects.getData()) {
+            for (DefectEntry entry : defects.getValue()) {
                 menu.printEntity(entry);
             }
         } catch (Exception e) {

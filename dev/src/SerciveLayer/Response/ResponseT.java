@@ -9,6 +9,10 @@ public class ResponseT <T> extends Response{
         super(errorMessage);
         value = null;
     }
+    public ResponseT(boolean errorOccurred, String message, T data) {
+        super(errorOccurred,message);
+        this.value = data;
+    }
 
     //no exception
     public ResponseT(T value)
@@ -22,5 +26,8 @@ public class ResponseT <T> extends Response{
         if(errorOccured())
             return "\nError: "+getErrorMessage()+"\n";
         return "\nSuccess: \n"+value.toString();
+    }
+    public T getValue() {
+        return value;
     }
 }

@@ -1,5 +1,6 @@
 package SerciveLayer;
 
+import SerciveLayer.Response.Response;
 import SerciveLayer.Response.ResponseT;
 import SerciveLayer.SimpleObjects.*;
 
@@ -11,67 +12,67 @@ public interface InventoryService {
 
     //-------------------------------------------------------------------------Item functions
 
-    InResponse addItem(int id, String name, String categoryName, double costPrice, double sellingPrice, int minAmount,
-                       String shelfLocation, String storageLocation, int shelfQuantity, int storageQuantity, int manufacturerId, List<Integer> suppliersIds);
-    InResponseT<Item> getItem(int itemId);
-    InResponse modifyItemName(int itemId, String newName);
-    InResponse modifyItemCategory(int itemId, String newCategoryName);
-    InResponse modifyItemCostPrice(int itemId, double newCostPrice);
-    InResponse modifyItemSellingPrice(int itemId, double newSellingPrice);
+    Response addItem(int id, String name, String categoryName, double costPrice, double sellingPrice, int minAmount,
+                     String shelfLocation, String storageLocation, int shelfQuantity, int storageQuantity, int manufacturerId, List<Integer> suppliersIds);
+    ResponseT<Item> getItem(int itemId);
+    Response modifyItemName(int itemId, String newName);
+    Response modifyItemCategory(int itemId, String newCategoryName);
+    Response modifyItemCostPrice(int itemId, double newCostPrice);
+    Response modifyItemSellingPrice(int itemId, double newSellingPrice);
     /*
     if the locations are null or empty, display an appropriate error message.
      */
-    InResponse changeItemShelfLocation(int itemId, String newShelfLocation);
-    InResponse changeItemStorageLocation(int itemId, String newStorageLocation);
+    Response changeItemShelfLocation(int itemId, String newShelfLocation);
+    Response changeItemStorageLocation(int itemId, String newStorageLocation);
     /*
     If quantity is a negative number the quantity of the respective item will not be changed.
      */
-    InResponse modifyItemShelfQuantity(int itemId, int newShelfQuantity);
-    InResponse modifyItemStorageQuantity(int itemId, int newStorageQuantity);
-    InResponse addItemSupplier(int itemId, int supplierId);
-    InResponse removeItemSupplier(int itemId, int supplierId);
-    InResponse removeItem(int itemId);
+    Response modifyItemShelfQuantity(int itemId, int newShelfQuantity);
+    Response modifyItemStorageQuantity(int itemId, int newStorageQuantity);
+    Response addItemSupplier(int itemId, int supplierId);
+    Response removeItemSupplier(int itemId, int supplierId);
+    Response removeItem(int itemId);
 
     //-------------------------------------------------------------------------Category functions
 
     /*
     If parent category is null or empty, the new category should be added as a main category.
      */
-    InResponse addCategory(String categoryName, String parentCategoryName);
-    InResponseT<Category> getCategory(String categoryName);
-    InResponse modifyCategoryName(String oldName, String newName);
+    Response addCategory(String categoryName, String parentCategoryName);
+    ResponseT<Category> getCategory(String categoryName);
+    Response modifyCategoryName(String oldName, String newName);
     /*
     when the category is deleted all its sub categories move to the parent category.
      */
-    InResponse removeCategory(String categoryName);
-    InResponse changeParentCategory(String categoryName, String newParentName);
+    Response removeCategory(String categoryName);
+    Response changeParentCategory(String categoryName, String newParentName);
     //-------------------------------------------------------------------------Sale functions
-    <T extends SimpleEntity> InResponseT<Sale<T>> getSale(String saleName);
-    InResponse addItemSale(String saleName, int itemID, double saleDiscount, Calendar startDate, Calendar endDate);
-    InResponse addCategorySale(String saleName, String categoryName, double saleDiscount, Calendar startDate, Calendar endDate);
+    <T extends SimpleEntity> ResponseT<Sale<T>> getSale(String saleName);
+    Response addItemSale(String saleName, int itemID, double saleDiscount, Calendar startDate, Calendar endDate);
+    Response addCategorySale(String saleName, String categoryName, double saleDiscount, Calendar startDate, Calendar endDate);
 
 
 
-    InResponse modifySaleName(String oldName, String newName);
-    InResponse modifySaleDiscount(String saleName, double newDiscount);
-    InResponse modifySaleDates(String saleName, Calendar startDate, Calendar endDate);
+    Response modifySaleName(String oldName, String newName);
+    Response modifySaleDiscount(String saleName, double newDiscount);
+    Response modifySaleDates(String saleName, Calendar startDate, Calendar endDate);
 
     //-------------------------------------------------------------------------Discount functions
 
-    <T extends SimpleEntity> InResponseT<List<Discount<T>>> getDiscount(int supplierId, Calendar discountDate);
-    InResponse addItemDiscount(int supplierId, double discount, Calendar discountDate, int itemCount, int itemId);
-    InResponse addCategoryDiscount(int supplierId, double discount, Calendar discountDate, int itemCount, String categoryName);
+    <T extends SimpleEntity> ResponseT<List<Discount<T>>> getDiscount(int supplierId, Calendar discountDate);
+    Response addItemDiscount(int supplierId, double discount, Calendar discountDate, int itemCount, int itemId);
+    Response addCategoryDiscount(int supplierId, double discount, Calendar discountDate, int itemCount, String categoryName);
 
     //-------------------------------------------------------------------------Defect functions
 
-    InResponse recordDefect(int itemId, Calendar entryDate, int defectQuantity, String defectLocation);
+    Response recordDefect(int itemId, Calendar entryDate, int defectQuantity, String defectLocation);
 
     //-------------------------------------------------------------------------Report functions
 
-    InResponseT<List<Item>> inventoryReport();
-    InResponseT<List<Item>> categoryReport(String categoryName);
-    InResponseT<List<Item>> itemShortageReport();
-    InResponseT<List<DefectEntry>> defectsReport(Calendar fromDate, Calendar toDate);
+    ResponseT<List<Item>> inventoryReport();
+    ResponseT<List<Item>> categoryReport(String categoryName);
+    ResponseT<List<Item>> itemShortageReport();
+    ResponseT<List<DefectEntry>> defectsReport(Calendar fromDate, Calendar toDate);
 
     ResponseT<Map<Integer, Integer>> getItemsInShortAndQuantities();
 }
