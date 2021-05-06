@@ -181,14 +181,16 @@ public class SupplierController {
         return suppliers.get(supplierID).getPrice(amount, productID);
     }
 
-    public Supplier getCheapestSupplier(int productID, int amount) throws Exception {
+    public Supplier getCheapestSupplier(int productID, int amount, boolean scheduled) throws Exception {
         Double cheapestPrice = Double.POSITIVE_INFINITY;
         Supplier cheapestSup = null;
         for (Supplier sup : suppliers.values()) {
             try {
-                if (sup.getPrice(productID, amount) < cheapestPrice) {
-                    cheapestPrice = sup.getPrice(productID, amount);
-                    cheapestSup = sup;
+                if (!scheduled || sup.getSc().isPernamentDays()) {
+                    if (sup.getPrice(productID, amount) < cheapestPrice) {
+                        cheapestPrice = sup.getPrice(productID, amount);
+                        cheapestSup = sup;
+                    }
                 }
             } catch (Exception e) {
             }

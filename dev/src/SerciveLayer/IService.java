@@ -32,6 +32,7 @@ public interface IService {
 
     //orders
     ResponseT<List<Order>> createShortageOrder(LocalDate date);
+    ResponseT<List<Order>> createScheduledOrder(int day, int itemID, int amount);
     ResponseT<Order> createOrder(LocalDate date, String supplierID);
     ResponseT<Order> createPernamentOrder(int day, String supplierID);
     Response approveOrder(int orderID);
@@ -50,7 +51,7 @@ public interface IService {
     ResponseT<Product> createProduct(String name, String manufacturer);
     ResponseT<Product> getProduct(int productID);
     ResponseT<Double> getPrice(String supplierID,int amount, int productID);
-    ResponseT<Supplier> getCheapestSupplier(int productID, int amount);
+    ResponseT<Supplier> getCheapestSupplier(int productID, int amount, boolean scheduled);
     ResponseT<Double> getOrderTotalPrice(int orderID);
     ResponseT<Double> getProductDiscount(String supplierID,int amount, int productID);
     ResponseT<Integer> getSupplierCompanyProductID(String supplierID, int productID);

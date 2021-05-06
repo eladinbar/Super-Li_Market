@@ -284,10 +284,10 @@ public class SupplierService {
         return toReturn;
     }
 
-    public ResponseT<Supplier> getCheapestSupplier(int productID, int amount) {
+    public ResponseT<Supplier> getCheapestSupplier(int productID, int amount, boolean scheduled) {
         ResponseT<Supplier> toReturn;
         try {
-            toReturn = new ResponseT<>(new Supplier(sp.getCheapestSupplier(productID,amount)));
+            toReturn = new ResponseT<>(new Supplier(sp.getCheapestSupplier(productID,amount, scheduled)));
         } catch (Exception e) {
             toReturn = new ResponseT<>(e.getMessage());
         }
@@ -318,7 +318,7 @@ public class SupplierService {
         Map<String, Map<Integer, Integer>> orders = new HashMap<>();
         try {
             for (Integer itemId : items.keySet()) {
-                String suppId = sp.getCheapestSupplier(itemId, items.get(itemId)).getSc().getId();
+                String suppId = sp.getCheapestSupplier(itemId, items.get(itemId), false).getSc().getId();
                 if (!orders.containsKey(suppId)) {
                     orders.put(suppId, new HashMap<>());
                 }

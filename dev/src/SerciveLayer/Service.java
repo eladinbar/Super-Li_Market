@@ -153,6 +153,12 @@ public class Service implements IService {
     }
 
     @Override
+    public ResponseT<List<Order>> createScheduledOrder(int day, int itemID, int amount) {
+        ResponseT<Supplier> cheap = supplierService.getCheapestSupplier(itemID,amount,true);
+        return null;
+    }
+
+    @Override
     public Response deleteQuantityListItem(String supplierID, int productID) {
         return supplierService.deleteQuantityListItem(supplierID, productID);
     }
@@ -204,9 +210,9 @@ public class Service implements IService {
     }
 
     @Override
-    public ResponseT<Supplier> getCheapestSupplier(int productID, int amount) {
+    public ResponseT<Supplier> getCheapestSupplier(int productID, int amount, boolean scheduled) {
         //todo check bofore if product exists in inventory module
-        return supplierService.getCheapestSupplier(productID,amount);
+        return supplierService.getCheapestSupplier(productID,amount, scheduled);
     }
 
     @Override
