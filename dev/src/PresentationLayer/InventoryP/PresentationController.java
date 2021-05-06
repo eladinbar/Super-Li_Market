@@ -15,6 +15,7 @@ import java.util.Scanner;
 
 public class PresentationController implements Runnable {
     private final InventoryService service;
+    //servicecontroller
     private final Menu menu;
     private boolean terminate;
 
@@ -27,16 +28,16 @@ public class PresentationController implements Runnable {
 
     //Item related method
     private void addItem() {
-        int itemID  = menu.instructAndReceive("Enter item ID: ",Integer.class);
+        int itemID = menu.instructAndReceive("Enter item ID: ", Integer.class);
         String name = menu.instructAndReceive("Enter name: ");
-        double costP = menu.instructAndReceive("Enter cost price: ",Double.class);
-        double sellP = menu.instructAndReceive("Enter sell price: ",Double.class);
-        int minA =  menu.instructAndReceive("Enter minimum amount: ",Integer.class);
-        int storageQ = menu.instructAndReceive("Enter storage quantity: ",Integer.class);
-        int storeQ =  menu.instructAndReceive("Enter shelf quantity: ",Integer.class);
+        double costP = menu.instructAndReceive("Enter cost price: ", Double.class);
+        double sellP = menu.instructAndReceive("Enter sell price: ", Double.class);
+        int minA = menu.instructAndReceive("Enter minimum amount: ", Integer.class);
+        int storageQ = menu.instructAndReceive("Enter storage quantity: ", Integer.class);
+        int storeQ = menu.instructAndReceive("Enter shelf quantity: ", Integer.class);
         String storageL = menu.instructAndReceive("Enter storage location: follow this format \"ST-A<number>-<L/R>-S<number>\"");
         String storeL = menu.instructAndReceive("Enter shelf location: follow this format \"SH-A<number>-<L/R>-S<number>\"");
-        int intManfac = menu.instructAndReceive("Enter manufacturer ID: ",Integer.class);
+        int intManfac = menu.instructAndReceive("Enter manufacturer ID: ", Integer.class);
         String category = menu.instructAndReceive("Enter category name: ");
         InResponse r = service.addItem(itemID, name, category, costP, sellP, minA, storeL, storageL, storageQ, storeQ, intManfac, new ArrayList<>());
         if (r.isErrorOccurred()) {
@@ -47,7 +48,7 @@ public class PresentationController implements Runnable {
     }
 
     private void showItem() {
-        int itemID  = menu.instructAndReceive("Enter item ID: ",Integer.class);
+        int itemID = menu.instructAndReceive("Enter item ID: ", Integer.class);
         InResponseT<Item> r = service.getItem(itemID);
         if (!r.isErrorOccurred()) {
             menu.itemHeader();
@@ -58,15 +59,15 @@ public class PresentationController implements Runnable {
     }
 
     private void editItem() {
-        int itemID  = menu.instructAndReceive("Enter item ID: ",Integer.class);
+        int itemID = menu.instructAndReceive("Enter item ID: ", Integer.class);
         InResponseT<Item> r = service.getItem(itemID);
-        if(r.isErrorOccurred()){
+        if (r.isErrorOccurred()) {
             menu.errorPrompt("Could not get item. Make sure you entered the ID correctly.");
             return;
         }
         menu.itemHeader();
         menu.printEntity(r.getData());
-        menu.printMenu(menu.getItemModificationList());
+        menu.printItemModMenu();
         InResponse modResp = editItemChoiceInput(itemID);
         if (modResp.isErrorOccurred())
             System.out.println(modResp.getMessage());
@@ -89,11 +90,11 @@ public class PresentationController implements Runnable {
                 r = service.modifyItemCategory(itemId, newCategory);
                 break;
             case "3":
-                double newCPrice = menu.instructAndReceive("Enter cost price: ",Double.class);
+                double newCPrice = menu.instructAndReceive("Enter cost price: ", Double.class);
                 r = service.modifyItemCostPrice(itemId, newCPrice);
                 break;
             case "4":
-                double newSPrice = menu.instructAndReceive("Enter sell price: ",Double.class);
+                double newSPrice = menu.instructAndReceive("Enter sell price: ", Double.class);
                 r = service.modifyItemSellingPrice(itemId, newSPrice);
                 break;
             case "5":
@@ -105,11 +106,11 @@ public class PresentationController implements Runnable {
                 r = service.changeItemShelfLocation(itemId, newLocationSH);
                 break;
             case "7":
-                int newQuantityST = menu.instructAndReceive("Enter storage quantity: ",Integer.class);
+                int newQuantityST = menu.instructAndReceive("Enter storage quantity: ", Integer.class);
                 r = service.modifyItemStorageQuantity(itemId, newQuantityST);
                 break;
             case "8":
-                int newQuantitySH = menu.instructAndReceive("Enter storage quantity: ",Integer.class);
+                int newQuantitySH = menu.instructAndReceive("Enter storage quantity: ", Integer.class);
                 r = service.modifyItemShelfQuantity(itemId, newQuantitySH);
                 break;
             case "9":
@@ -117,7 +118,7 @@ public class PresentationController implements Runnable {
                 r = service.addItemSupplier(itemId, newSupplier);
                 break;
             case "10":
-                int oldSupplier =  menu.instructAndReceive("Remove a supplier for the item: (enter supplier ID)",Integer.class);
+                int oldSupplier = menu.instructAndReceive("Remove a supplier for the item: (enter supplier ID)", Integer.class);
                 r = service.removeItemSupplier(itemId, oldSupplier);
                 break;
             default:
@@ -128,7 +129,7 @@ public class PresentationController implements Runnable {
     }
 
     private void removeItem() {
-        int itemID  = menu.instructAndReceive("Enter item ID: ",Integer.class);
+        int itemID = menu.instructAndReceive("Enter item ID: ", Integer.class);
         InResponse r = service.removeItem(itemID);
         if (r.isErrorOccurred()) {
             menu.errorPrompt(r.getMessage());
@@ -166,7 +167,7 @@ public class PresentationController implements Runnable {
             return;
         } else
             menu.printEntity(catR.getData());
-        menu.printMenu(menu.getCategoryModificationList());
+        menu.printCategoryModList();
         String userInput = menu.instructAndReceive("Enter choice: ");
         InResponse modResp;
         switch (userInput) {
@@ -257,7 +258,7 @@ public class PresentationController implements Runnable {
         Calendar start = Calendar.getInstance();
         try {
             start.set(Integer.parseInt(startDate[0]), Integer.parseInt(startDate[1]) - 1, Integer.parseInt(startDate[2]));
-        } catch(Exception ex) {
+        } catch (Exception ex) {
             menu.errorPrompt("Invalid input");
             return null;
         }
@@ -265,7 +266,7 @@ public class PresentationController implements Runnable {
         Calendar end = Calendar.getInstance();
         try {
             end.set(Integer.parseInt(endDate[0]), Integer.parseInt(endDate[1]) - 1, Integer.parseInt(endDate[2]));
-        } catch(Exception ex) {
+        } catch (Exception ex) {
             menu.errorPrompt("Invalid input");
             return null;
         }
@@ -287,7 +288,7 @@ public class PresentationController implements Runnable {
         } else
             menu.printEntity(saleR.getData());
 
-        menu.printMenu(menu.getSaleModificationList());
+        menu.printSaleModList();
         String userInput = menu.instructAndReceive("Enter choice: ");
         InResponse modResp;
         switch (userInput) {
@@ -321,7 +322,7 @@ public class PresentationController implements Runnable {
         Calendar date = Calendar.getInstance();
         try {
             date.set(Integer.parseInt(disDateS[0]), Integer.parseInt(disDateS[1]) - 1, Integer.parseInt(disDateS[2]));
-        } catch(Exception ex) {
+        } catch (Exception ex) {
             menu.errorPrompt("Invalid input");
             return;
         }
@@ -344,7 +345,7 @@ public class PresentationController implements Runnable {
         Calendar date = Calendar.getInstance();
         try {
             date.set(Integer.parseInt(dateS[0]), Integer.parseInt(dateS[1]) - 1, Integer.parseInt(dateS[2]));
-        } catch(Exception ex) {
+        } catch (Exception ex) {
             menu.errorPrompt("Invalid input");
             return;
         }
@@ -368,18 +369,18 @@ public class PresentationController implements Runnable {
         int suppId;
         try {
             suppId = Integer.parseInt(temp);
-        } catch(Exception ex) {
+        } catch (Exception ex) {
             menu.errorPrompt("Invalid input");
             return;
         }
         String catName = menu.instructAndReceive("Enter the category name that the discount applies on: ");
         //discount
-        double discountGiven  = menu.instructAndReceive("Enter discount received for the item: (e.g. for 10% enter 0.1)", Double.class);
+        double discountGiven = menu.instructAndReceive("Enter discount received for the item: (e.g. for 10% enter 0.1)", Double.class);
         //date
         String[] dateS = menu.instructAndReceive("Enter discount date: use this format <YYYY-MM-DD>").split("-");
         Calendar date = Calendar.getInstance();
         date.set(Integer.parseInt(dateS[0]), Integer.parseInt(dateS[1]) - 1, Integer.parseInt(dateS[2]));
-        int itemCount = menu.instructAndReceive("Enter the amount the discount applied for: ",Integer.class);
+        int itemCount = menu.instructAndReceive("Enter the amount the discount applied for: ", Integer.class);
         if (itemCount <= 0) {
             menu.errorPrompt("Item amount has to be at least 1.");
             return;
@@ -468,7 +469,7 @@ public class PresentationController implements Runnable {
         setupSystem();
         while (!terminate) {
             menu.printOperationMenu();
-            operationInput();
+            inventoryMainMenu();
         }
 
     }
@@ -628,9 +629,39 @@ public class PresentationController implements Runnable {
 
     }
 
-    private void operationInput() {
-        Scanner scan = new Scanner(System.in);
-        String choice = scan.next();
+    private void inventoryMainMenu() {
+        menu.printInventoryMainMenu();
+        String choice = menu.instructAndReceive("Select a menu");
+
+        switch (choice) {
+            case "1":
+                itemMenuOperations();
+                break;
+            case "2":
+                categoryMenuOperations();
+                break;
+            case "3":
+                saleMenuOperations();
+                break;
+            case "4":
+                discountMenuOperations();
+                break;
+            case "5":
+                recordDefect();
+                break;
+            case "6":
+                reportMenuOperations();
+            default:
+                menu.errorPrompt("invalid choice - " + choice);
+                break;
+        }
+
+
+    }
+
+    private void itemMenuOperations() {
+        menu.printItemMenu();
+        String choice = menu.instructAndReceive("Select item option");
         switch (choice) {
             case "1":
                 showItem();
@@ -644,61 +675,96 @@ public class PresentationController implements Runnable {
             case "4":
                 removeItem();
                 break;
-            case "5":
+            default:
+                menu.errorPrompt("invalid choice - " + choice);
+                break;
+        }
+    }
+
+    private void categoryMenuOperations() {
+        menu.printCategoryMenu();
+        String choice = menu.instructAndReceive("Select category option");
+        switch (choice) {
+            case "1":
                 showCategory();
                 break;
-            case "6":
+            case "2":
                 addCategory();
                 break;
-            case "7":
+            case "3":
                 editCategory();
                 break;
-            case "8":
+            case "4":
                 removeCategory();
-                break;
-            case "9":
-                showSale();
-                break;
-            case "10":
-                addItemSale();
-                break;
-            case "11":
-                addCategorySale();
-                break;
-            case "12":
-                modifySale();
-                break;
-            case "13":
-                showSupplierDiscount();
-                break;
-            case "14":
-                addItemSupplierDiscount();
-                break;
-            case "15":
-                addCategorySupplierDiscount();
-                break;
-            case "16":
-                recordDefect();
-                break;
-            case "17":
-                inventoryReport();
-                break;
-            case "18":
-                categoryReport();
-                break;
-            case "19":
-                itemShortageReport();
-                break;
-            case "20":
-                defectsReport();
-                break;
-            case "q":
-                terminate = true;
                 break;
             default:
                 menu.errorPrompt("invalid choice - " + choice);
                 break;
         }
+    }
+
+    private void saleMenuOperations() {
+        menu.printSaleMenu();
+        String choice = menu.instructAndReceive("Select Sale option");
+        switch (choice) {
+            case "1":
+                showSale();
+                break;
+            case "2":
+                addItemSale();
+                break;
+            case "3":
+                addCategorySale();
+                break;
+            case "4":
+                modifySale();
+                break;
+            default:
+                menu.errorPrompt("invalid choice - " + choice);
+                break;
+        }
+    }
+
+    private void discountMenuOperations() {
+        menu.printDiscountMenu();
+        String choice = menu.instructAndReceive("Select supplier discount option");
+        switch (choice) {
+            case "1":
+                showSupplierDiscount();
+                break;
+            case "2":
+                addItemSupplierDiscount();
+                break;
+            case "3":
+                addCategorySupplierDiscount();
+                break;
+            default:
+                menu.errorPrompt("invalid choice - " + choice);
+                break;
+        }
+    }
+
+    private void reportMenuOperations() {
+        menu.printReportMenu();
+        String choice = menu.instructAndReceive("Select Report option");
+        switch (choice) {
+            case "1":
+                inventoryReport();
+                break;
+            case "2":
+                categoryReport();
+                break;
+            case "3":
+                itemShortageReport();
+                break;
+            case "4":
+                defectsReport();
+                break;
+            default:
+                menu.errorPrompt("invalid choice - " + choice);
+                break;
+        }
+
     }
 
 

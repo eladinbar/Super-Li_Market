@@ -9,6 +9,7 @@ import java.time.LocalDate;
 public class Service implements IService {
     private OrderService orderService;
     private SupplierService supplierService;
+    private InventoryService inventoryService;
 
     public Service() {
         this.supplierService = new SupplierService();

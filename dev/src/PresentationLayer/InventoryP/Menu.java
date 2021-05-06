@@ -14,9 +14,21 @@ import java.util.regex.Pattern;
 public class Menu {
     private TextFormatter tf = new TextFormatter();
     private final List<String> operationsList;
+    private final List<String> inventoryMainMenuList;
+    //menu lists for items
+    private final List<String> itemOperationMenuList;
     private final List<String> itemModificationList;
+    //menu lists for category
     private final List<String> categoryModificationList;
+    private final List<String> categoryOperationMenuList;
+    //menu lists for sale
+    private final List<String> saleOperationMenuList;
     private final List<String> saleModificationList;
+    //menu lists for discount
+    private final List<String> discountOperationMenuList;
+    //menu lists for report
+    private final List<String> reportsOperationMenuList;
+
     private Scanner scan;
 
     public Menu() {
@@ -25,14 +37,21 @@ public class Menu {
         categoryModificationList = setupCategoryModList();
         saleModificationList = setupSaleModList();
         scan = new Scanner(System.in);
+        inventoryMainMenuList = setupInventoryMainMenuList();
+        itemOperationMenuList = setupItemMenu();
+        categoryOperationMenuList = setupCategoryMenu();
+        saleOperationMenuList = setupSaleMenu();
+        discountOperationMenuList = setupDiscountMenuList();
+        reportsOperationMenuList = setupReportMenuList();
     }
+
+
 
     //Setup Menu Strings
     private List<String> setupCategoryModList() {
         ArrayList<String> list = new ArrayList<>();
         list.add("Change category name");
         list.add("Change new parent category");
-        list.add("Change sale dates");
 
         return list;
     }
@@ -88,31 +107,102 @@ public class Menu {
         return list;
     }
 
-    //Getters
-    public List<String> getItemModificationList() {
-        return itemModificationList;
+    private List<String> setupDiscountMenuList() {
+        ArrayList<String> list = new ArrayList<>();
+        list.add("Show supplier discount");
+        list.add("Add item discount");
+        list.add("Add category discount");
+
+        return list;
     }
 
-    public List<String> getCategoryModificationList() {
-        return categoryModificationList;
+    private List<String> setupSaleMenu() {
+        ArrayList<String> list = new ArrayList<>();
+        list.add("Show sale");
+        list.add("Add item sale");
+        list.add("Add category sale");
+        list.add("Modify sale");
+
+        return list;
     }
 
-    public List<String> getSaleModificationList() {
-        return saleModificationList;
+    private List<String> setupCategoryMenu() {
+        ArrayList<String> list = new ArrayList<>();
+        list.add("Show category");
+        list.add("Add category");
+        list.add("Modify category");
+        list.add("Remove category");
+
+        return list;
     }
 
-//    public TextFormatter getTextFormatter() {
-//        return tf;
-//    }
+    private List<String> setupItemMenu() {
+        ArrayList<String> list = new ArrayList<>();
+        list.add("Show item");
+        list.add("Add item");
+        list.add("Modify item");
+        list.add("Remove item");
+
+        return list;
+    }
+
+    private List<String> setupInventoryMainMenuList() {
+        ArrayList<String> list = new ArrayList<>();
+        list.add("Item menu");
+        list.add("Category menu");
+        list.add("Sale menu");
+        list.add("Supplier discount menu");
+        list.add("Report defect");
+        list.add("Reports menu");
+
+        return list;
+    }
+
+    private List<String> setupReportMenuList(){
+        ArrayList<String> list = new ArrayList<>();
+        list.add("Inventory report");
+        list.add("Category report");
+        list.add("Item shortage Report");
+        list.add("Defect Report");
+
+        return list;
+    }
 
     //print Options
     public void printWelcomePrompt() {
         System.out.println("Welcome to the 'Super-Lee' Inventory System!");
     }
-
     public void printOperationMenu() {
         printMenu(operationsList);
         System.out.println("\nPress q to quit");
+    }
+    public void printInventoryMainMenu(){
+        printMenu(inventoryMainMenuList);
+    }
+    public void printItemMenu(){
+        printMenu(itemOperationMenuList);
+    }
+    public void printCategoryMenu(){
+        printMenu(categoryOperationMenuList);
+    }
+    public void printSaleMenu(){
+        printMenu(saleOperationMenuList);
+    }
+    public void printDiscountMenu(){
+        printMenu(discountOperationMenuList);
+    }
+    public void printReportMenu(){
+        printMenu(reportsOperationMenuList);
+    }
+    public void printItemModMenu(){
+        printMenu(itemModificationList);
+    }
+    public void printCategoryModList(){
+        printMenu(categoryModificationList);
+    }
+
+    public void printSaleModList(){
+        printMenu(saleModificationList);
     }
 
     public void printMenu(List<String> menuElements) {
