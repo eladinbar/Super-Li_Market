@@ -30,6 +30,10 @@ public class Order {
         return id;
     }
 
+    public Map<Integer, Integer> getProducts() {
+        return products;
+    }
+
     @Override
     public String toString() {
         String proToString = "";

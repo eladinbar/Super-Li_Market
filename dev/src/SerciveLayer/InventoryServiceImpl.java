@@ -58,7 +58,7 @@ public class InventoryServiceImpl implements InventoryService {
             BusinessLayer.InventoryPackage.Item tempItem = inventoryController.getItem(itemId);
             Item simpleItem = new Item(itemId, tempItem.getName(), tempItem.getCostPrice(), tempItem.getSellingPrice(),
                     tempItem.getMinAmount(), tempItem.getShelfQuantity(), tempItem.getStorageQuantity(), tempItem.getShelfLocation(),
-                    tempItem.getStorageLocation(), tempItem.getManufacturerID(),inventoryController.getItemCategory(itemId).getName());
+                    tempItem.getStorageLocation(), tempItem.getManufacturerID(), inventoryController.getItemCategory(itemId).getName());
             responseT = new ResponseT<>(false, "", simpleItem);
             return responseT;
         } catch (Exception ex) {
@@ -185,19 +185,15 @@ public class InventoryServiceImpl implements InventoryService {
     public Response modifyItemShelfQuantity(int itemId, int newShelfQuantity) {
         Response response;
         //Check basic argument constraints
-        if (itemId < 0 | newShelfQuantity <0) {
+        if (itemId < 0 | newShelfQuantity < 0) {
             response = new Response(true, "One or more of the given arguments is invalid.");
             return response;
         }
         //Call business layer function
-        try {
-            inventoryController.modifyItemShelfQuantity(itemId, newShelfQuantity);
-            response = new Response(false, "Item shelf quantity modified successfully.");
-            return response;
-        } catch (Exception ex) {
-            response = new Response(true, ex.getMessage());
-            return response;
-        }
+        inventoryController.modifyItemShelfQuantity(itemId, newShelfQuantity);
+        response = new Response(false, "Item shelf quantity modified successfully.");
+        return response;
+
     }
 
     @Override
@@ -209,14 +205,9 @@ public class InventoryServiceImpl implements InventoryService {
             return response;
         }
         //Call business layer function
-        try {
             inventoryController.modifyItemStorageQuantity(itemId, newStorageQuantity);
             response = new Response(false, "Item storage quantity modified successfully.");
             return response;
-        } catch (Exception ex) {
-            response = new Response(true, ex.getMessage());
-            return response;
-        }
     }
 
     @Override
@@ -303,7 +294,7 @@ public class InventoryServiceImpl implements InventoryService {
             List<String> simpleSubCategories = getSimpleCategories(tempCategory.getSubCategories());
             //Create simple category
             Category simpleCategory = new Category(categoryName, simpleItems, tempCategory.getParentCategory().getName(),
-                                                    simpleSubCategories);
+                    simpleSubCategories);
             responseT = new ResponseT<>(false, "", simpleCategory);
             return responseT;
         } catch (Exception ex) {
@@ -324,8 +315,8 @@ public class InventoryServiceImpl implements InventoryService {
         List<Item> simpleItems = new ArrayList<>();
         for (BusinessLayer.InventoryPackage.Item item : items) {
             Item simpleItem = new Item(item.getID(), item.getName(), item.getCostPrice(), item.getSellingPrice(),
-                                        item.getMinAmount(), item.getShelfQuantity(), item.getStorageQuantity(),
-                                        item.getShelfLocation(), item.getStorageLocation(), item.getManufacturerID(),inventoryController.getItemCategory(item.getID()).getName());
+                    item.getMinAmount(), item.getShelfQuantity(), item.getStorageQuantity(),
+                    item.getShelfLocation(), item.getStorageLocation(), item.getManufacturerID(), inventoryController.getItemCategory(item.getID()).getName());
             simpleItems.add(simpleItem);
         }
         return simpleItems;
@@ -393,34 +384,34 @@ public class InventoryServiceImpl implements InventoryService {
             return responseT;
         }
 
-            //simple sale created
-            Sale<T> simple = new Sale<>(sale.getName(), sale.getDiscount(), sale.getSaleDates(), null);
-            //Item Sale case
-            if (sale.getClass() == BusinessLayer.InventoryPackage.SalePackage.ItemSale.class) {
-                BusinessLayer.InventoryPackage.Item i = ((BusinessLayer.InventoryPackage.SalePackage.ItemSale) sale).getItem();
-                Item simpleItem = new Item(i.getID(), i.getName(), i.getCostPrice(), i.getSellingPrice(), i.getMinAmount(),
+        //simple sale created
+        Sale<T> simple = new Sale<>(sale.getName(), sale.getDiscount(), sale.getSaleDates(), null);
+        //Item Sale case
+        if (sale.getClass() == BusinessLayer.InventoryPackage.SalePackage.ItemSale.class) {
+            BusinessLayer.InventoryPackage.Item i = ((BusinessLayer.InventoryPackage.SalePackage.ItemSale) sale).getItem();
+            Item simpleItem = new Item(i.getID(), i.getName(), i.getCostPrice(), i.getSellingPrice(), i.getMinAmount(),
+                    i.getShelfQuantity(), i.getStorageQuantity(), i.getShelfLocation(), i.getStorageLocation(), i.getManufacturerID()
+                    , inventoryController.getItemCategory(i.getID()).getName());
+            simple.setAppliesOn((T) simpleItem);
+        } else { //Category Sale case
+            BusinessLayer.InventoryPackage.Category c = ((BusinessLayer.InventoryPackage.SalePackage.CategorySale) sale).getCategory();
+            List<Item> categoryItems = new ArrayList<>();
+            //converting Items of category
+            for (BusinessLayer.InventoryPackage.Item i : c.getItems()) {
+                Item simpleCatItem = new Item(i.getID(), i.getName(), i.getCostPrice(), i.getSellingPrice(), i.getMinAmount(),
                         i.getShelfQuantity(), i.getStorageQuantity(), i.getShelfLocation(), i.getStorageLocation(), i.getManufacturerID()
-                        ,inventoryController.getItemCategory(i.getID()).getName());
-                simple.setAppliesOn((T) simpleItem);
-            } else { //Category Sale case
-                BusinessLayer.InventoryPackage.Category c = ((BusinessLayer.InventoryPackage.SalePackage.CategorySale) sale).getCategory();
-                List<Item> categoryItems = new ArrayList<>();
-                //converting Items of category
-                for (BusinessLayer.InventoryPackage.Item i : c.getItems()) {
-                    Item simpleCatItem = new Item(i.getID(), i.getName(), i.getCostPrice(), i.getSellingPrice(), i.getMinAmount(),
-                            i.getShelfQuantity(), i.getStorageQuantity(), i.getShelfLocation(), i.getStorageLocation(), i.getManufacturerID()
-                            ,inventoryController.getItemCategory(i.getID()).getName());
-                    categoryItems.add(simpleCatItem);
-                }
-                //getting the sub categories names
-                List<String> subCategories = new ArrayList<>();
-                for (BusinessLayer.InventoryPackage.Category subC : c.getSubCategories()) {
-                    subCategories.add(subC.getName());
-                }
-                //creating simple category
-                Category simpleCategory = new Category(c.getName(), categoryItems, c.getParentCategory().getName(), subCategories);
-                simple.setAppliesOn((T) simpleCategory);
+                        , inventoryController.getItemCategory(i.getID()).getName());
+                categoryItems.add(simpleCatItem);
             }
+            //getting the sub categories names
+            List<String> subCategories = new ArrayList<>();
+            for (BusinessLayer.InventoryPackage.Category subC : c.getSubCategories()) {
+                subCategories.add(subC.getName());
+            }
+            //creating simple category
+            Category simpleCategory = new Category(c.getName(), categoryItems, c.getParentCategory().getName(), subCategories);
+            simple.setAppliesOn((T) simpleCategory);
+        }
 
         responseT = new ResponseT<>(false, "", simple);
         return responseT;
@@ -428,7 +419,7 @@ public class InventoryServiceImpl implements InventoryService {
 
     @Override
     public Response addItemSale(String saleName, int itemID, double saleDiscount, Calendar startDate, Calendar endDate) {
-        clearDate(startDate,endDate);
+        clearDate(startDate, endDate);
         Response response;
         //Check basic argument constraints
         if (saleName == null || saleName.trim().equals("") | itemID < 0 | saleDiscount < 0) {
@@ -448,7 +439,7 @@ public class InventoryServiceImpl implements InventoryService {
 
     @Override
     public Response addCategorySale(String saleName, String categoryName, double saleDiscount, Calendar startDate, Calendar endDate) {
-        clearDate(startDate,endDate);
+        clearDate(startDate, endDate);
         Response response;
         //Check basic argument constraints
         if (saleName == null || saleName.trim().equals("") | saleDiscount < 0) {
@@ -469,43 +460,43 @@ public class InventoryServiceImpl implements InventoryService {
     @Override
     public Response modifySaleName(String oldName, String newName) {
         Response response;
-        try{
+        try {
             inventoryController.modifySaleName(oldName, newName);
 
-        } catch (Exception e){
+        } catch (Exception e) {
             response = new Response(true, e.getMessage());
-            return  response;
+            return response;
         }
-        response = new Response(false,"");
+        response = new Response(false, "");
         return response;
     }
 
     @Override
     public Response modifySaleDiscount(String saleName, double newDiscount) {
         Response response;
-        try{
+        try {
             inventoryController.modifySaleDiscount(saleName, newDiscount);
 
-        } catch (Exception e){
+        } catch (Exception e) {
             response = new Response(true, e.getMessage());
-            return  response;
+            return response;
         }
-        response = new Response(false,"");
+        response = new Response(false, "");
         return response;
     }
 
     @Override
     public Response modifySaleDates(String saleName, Calendar startDate, Calendar endDate) {
-        clearDate(startDate,endDate);
+        clearDate(startDate, endDate);
         Response response;
-        try{
+        try {
             inventoryController.modifySaleDates(saleName, startDate, endDate);
 
-        } catch (Exception e){
+        } catch (Exception e) {
             response = new Response(true, e.getMessage());
-            return  response;
+            return response;
         }
-        response = new Response(false,"");
+        response = new Response(false, "");
         return response;
     }
 
@@ -539,7 +530,7 @@ public class InventoryServiceImpl implements InventoryService {
                 BusinessLayer.InventoryPackage.Item i = ((ItemDiscount) disc).getItem();
                 Item simpleItem = new Item(i.getID(), i.getName(), i.getCostPrice(), i.getSellingPrice(), i.getMinAmount(),
                         i.getShelfQuantity(), i.getStorageQuantity(), i.getShelfLocation(), i.getStorageLocation(), i.getManufacturerID()
-                        ,inventoryController.getItemCategory(i.getID()).getName());
+                        , inventoryController.getItemCategory(i.getID()).getName());
                 simple.setAppliesOn((T) simpleItem);
             } else { //Category Discount case
                 BusinessLayer.InventoryPackage.Category c = ((CategoryDiscount) disc).getCategory();
@@ -548,7 +539,7 @@ public class InventoryServiceImpl implements InventoryService {
                 for (BusinessLayer.InventoryPackage.Item i : c.getItems()) {
                     Item simpleCatItem = new Item(i.getID(), i.getName(), i.getCostPrice(), i.getSellingPrice(), i.getMinAmount(),
                             i.getShelfQuantity(), i.getStorageQuantity(), i.getShelfLocation(), i.getStorageLocation(), i.getManufacturerID()
-                            ,inventoryController.getItemCategory(i.getID()).getName());
+                            , inventoryController.getItemCategory(i.getID()).getName());
                     categoryItems.add(simpleCatItem);
                 }
                 //getting tre sub categories names
@@ -562,7 +553,7 @@ public class InventoryServiceImpl implements InventoryService {
             }
             simpleDiscs.add(simple);
         }
-        responseT = new ResponseT<>(false,"",simpleDiscs);
+        responseT = new ResponseT<>(false, "", simpleDiscs);
         return responseT;
     }
 
@@ -658,7 +649,7 @@ public class InventoryServiceImpl implements InventoryService {
         for (BusinessLayer.InventoryPackage.Item i : shortageItems) {
             Item simpleItem = new Item(i.getID(), i.getName(), i.getCostPrice(), i.getSellingPrice(), i.getMinAmount(),
                     i.getShelfQuantity(), i.getStorageQuantity(), i.getShelfLocation(), i.getStorageLocation(), i.getManufacturerID()
-                    ,inventoryController.getItemCategory(i.getID()).getName());
+                    , inventoryController.getItemCategory(i.getID()).getName());
             simpleItemList.add(simpleItem);
         }
         shortageResponse = new ResponseT<>(false, "", simpleItemList);
@@ -681,7 +672,7 @@ public class InventoryServiceImpl implements InventoryService {
 
     @Override
     public ResponseT<List<DefectEntry>> defectsReport(Calendar fromDate, Calendar toDate) {
-        clearDate(fromDate,toDate);
+        clearDate(fromDate, toDate);
         ResponseT<List<DefectEntry>> defectResponse;
         List<DefectEntry> simpleEntries = new ArrayList<>();
         try {
@@ -700,18 +691,27 @@ public class InventoryServiceImpl implements InventoryService {
     @Override
     public ResponseT<Map<Integer, Integer>> getItemsInShortAndQuantities() {
         ResponseT<List<Item>> itemsInShort = itemShortageReport();
-        if(itemsInShort.isErrorOccurred()){
-            return new ResponseT<>(false,itemsInShort.getMessage(), null);
+        if (itemsInShort.isErrorOccurred()) {
+            return new ResponseT<>(false, itemsInShort.getMessage(), null);
         }
-        Map<Integer,Integer> itemQuantityMap = new HashMap<>();
-        for (Item i: itemsInShort.value) {
-            itemQuantityMap.put(i.getID(),i.getMinAmount()*MIN_AMOUNT_MULTIPIER - i.getShelfQuantity() - i.getStorageQuantity());
+        Map<Integer, Integer> itemQuantityMap = new HashMap<>();
+        for (Item i : itemsInShort.value) {
+            itemQuantityMap.put(i.getID(), i.getMinAmount() * MIN_AMOUNT_MULTIPIER - i.getShelfQuantity() - i.getStorageQuantity());
         }
         return new ResponseT<>(itemQuantityMap);
     }
 
-    private void clearDate(Calendar... calendars){
-        for (Calendar cl: calendars) {
+    @Override
+    public Response updateQuantityInventory(Map<Integer, Integer> items) {
+        for (int itemId: items.keySet()) {
+            inventoryController.modifyItemShelfQuantity(itemId,
+                    items.get(itemId) + inventoryController.getItem(itemId).getStorageQuantity());
+        }
+        return new Response(true, "inventory updated");
+    }
+
+    private void clearDate(Calendar... calendars) {
+        for (Calendar cl : calendars) {
             cl.clear(Calendar.MILLISECOND);
             cl.clear(Calendar.SECOND);
             cl.clear(Calendar.MINUTE);

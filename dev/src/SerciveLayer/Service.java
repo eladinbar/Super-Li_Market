@@ -187,7 +187,15 @@ public class Service implements IService {
 
     @Override
     public Response approveOrder(int orderID) {
-        return orderService.approveOrder(orderID);
+        Response r = orderService.approveOrder(orderID);
+        if(r.errorOccured())
+            return r;
+        ResponseT<Order> orderR = orderService.getOrder(orderID);
+        if(orderR.errorOccured())
+            return orderR;
+        inventoryService.updateQuantityInventory(orderR.value.getProducts());
+
+        return r;
     }
 
     @Override

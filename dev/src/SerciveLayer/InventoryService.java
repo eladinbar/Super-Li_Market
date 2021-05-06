@@ -75,4 +75,6 @@ public interface InventoryService {
     ResponseT<List<DefectEntry>> defectsReport(Calendar fromDate, Calendar toDate);
 
     ResponseT<Map<Integer, Integer>> getItemsInShortAndQuantities();
+
+    Response updateQuantityInventory(Map<Integer, Integer> items);
 }
