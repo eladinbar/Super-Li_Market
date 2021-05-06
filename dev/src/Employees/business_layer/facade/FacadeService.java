@@ -101,7 +101,7 @@ public class FacadeService {
 
     public Response updateBankAccount(String Id, int accountNum, int bankBranch, String bank) {
         return employeeService.updateBankAccount ( Id,accountNum,bankBranch,bank );
-    }
+}
 
     public Response updateTermsOfEmployee(String Id, int salary, int educationFund, int sickDays, int daysOff) {
         return employeeService.updateTermsOfEmployee ( Id,salary,educationFund,sickDays,daysOff );

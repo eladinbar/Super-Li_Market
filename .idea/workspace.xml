@@ -27,38 +27,14 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="05ca914f-9056-4de3-9869-7fdfaa880f2d" name="Default Changelist" comment="last update">
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_4_26_2021_9_01_PM__Default_Changelist_.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_4_26_2021_9_01_PM__Default_Changelist_.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_4_23_2021_3_54_PM__Default_Changelist_.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_4_23_2021_3_54_PM__Default_Changelist_.xml" afterDir="false" />
+    <list default="true" id="05ca914f-9056-4de3-9869-7fdfaa880f2d" name="Default Changelist" comment="modules has been merged. Workers and Trucking">
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_4_26_2021_9_01_PM_[Default_Changelist]/shelved.patch" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_4_26_2021_9_01_PM__Default_Changelist_.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dev/src/Business_Layer_Trucking/Delivery/DeliveryController.java" beforeDir="false" afterPath="$PROJECT_DIR$/dev/src/Trucking/Business_Layer_Trucking/Delivery/DeliveryController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dev/src/Business_Layer_Trucking/Delivery/DeliveryForm.java" beforeDir="false" afterPath="$PROJECT_DIR$/dev/src/Trucking/Business_Layer_Trucking/Delivery/DeliveryForm.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dev/src/Business_Layer_Trucking/Delivery/Demand.java" beforeDir="false" afterPath="$PROJECT_DIR$/dev/src/Trucking/Business_Layer_Trucking/Delivery/Demand.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dev/src/Business_Layer_Trucking/Delivery/Item.java" beforeDir="false" afterPath="$PROJECT_DIR$/dev/src/Trucking/Business_Layer_Trucking/Delivery/Item.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dev/src/Business_Layer_Trucking/Delivery/Site.java" beforeDir="false" afterPath="$PROJECT_DIR$/dev/src/Trucking/Business_Layer_Trucking/Delivery/Site.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dev/src/Business_Layer_Trucking/Delivery/TruckingReport.java" beforeDir="false" afterPath="$PROJECT_DIR$/dev/src/Trucking/Business_Layer_Trucking/Delivery/TruckingReport.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dev/src/Business_Layer_Trucking/Facade/DeliveryService.java" beforeDir="false" afterPath="$PROJECT_DIR$/dev/src/Trucking/Business_Layer_Trucking/Facade/DeliveryService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dev/src/Business_Layer_Trucking/Facade/FacadeObject/FacadeDeliveryForm.java" beforeDir="false" afterPath="$PROJECT_DIR$/dev/src/Trucking/Business_Layer_Trucking/Facade/FacadeObject/FacadeDeliveryForm.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dev/src/Business_Layer_Trucking/Facade/FacadeObject/FacadeDemand.java" beforeDir="false" afterPath="$PROJECT_DIR$/dev/src/Trucking/Business_Layer_Trucking/Facade/FacadeObject/FacadeDemand.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dev/src/Business_Layer_Trucking/Facade/FacadeObject/FacadeDriver.java" beforeDir="false" afterPath="$PROJECT_DIR$/dev/src/Trucking/Business_Layer_Trucking/Facade/FacadeObject/FacadeDriver.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dev/src/Business_Layer_Trucking/Facade/FacadeObject/FacadeItem.java" beforeDir="false" afterPath="$PROJECT_DIR$/dev/src/Trucking/Business_Layer_Trucking/Facade/FacadeObject/FacadeItem.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dev/src/Business_Layer_Trucking/Facade/FacadeObject/FacadeObject.java" beforeDir="false" afterPath="$PROJECT_DIR$/dev/src/Trucking/Business_Layer_Trucking/Facade/FacadeObject/FacadeObject.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dev/src/Business_Layer_Trucking/Facade/FacadeObject/FacadeSite.java" beforeDir="false" afterPath="$PROJECT_DIR$/dev/src/Trucking/Business_Layer_Trucking/Facade/FacadeObject/FacadeSite.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dev/src/Business_Layer_Trucking/Facade/FacadeObject/FacadeTruck.java" beforeDir="false" afterPath="$PROJECT_DIR$/dev/src/Trucking/Business_Layer_Trucking/Facade/FacadeObject/FacadeTruck.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dev/src/Business_Layer_Trucking/Facade/FacadeObject/FacadeTruckingReport.java" beforeDir="false" afterPath="$PROJECT_DIR$/dev/src/Trucking/Business_Layer_Trucking/Facade/FacadeObject/FacadeTruckingReport.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dev/src/Business_Layer_Trucking/Facade/FacadeObject/ResourcesService.java" beforeDir="false" afterPath="$PROJECT_DIR$/dev/src/Trucking/Business_Layer_Trucking/Facade/FacadeObject/ResourcesService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dev/src/Business_Layer_Trucking/Facade/FacadeService.java" beforeDir="false" afterPath="$PROJECT_DIR$/dev/src/Trucking/Business_Layer_Trucking/Facade/FacadeService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dev/src/Business_Layer_Trucking/Facade/Response.java" beforeDir="false" afterPath="$PROJECT_DIR$/dev/src/Trucking/Business_Layer_Trucking/Facade/Response.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dev/src/Business_Layer_Trucking/Facade/ResponseT.java" beforeDir="false" afterPath="$PROJECT_DIR$/dev/src/Trucking/Business_Layer_Trucking/Facade/ResponseT.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dev/src/Business_Layer_Trucking/Resources/Driver.java" beforeDir="false" afterPath="$PROJECT_DIR$/dev/src/Trucking/Business_Layer_Trucking/Resources/Driver.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dev/src/Business_Layer_Trucking/Resources/ResourcesController.java" beforeDir="false" afterPath="$PROJECT_DIR$/dev/src/Trucking/Business_Layer_Trucking/Resources/ResourcesController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dev/src/Business_Layer_Trucking/Resources/Truck.java" beforeDir="false" afterPath="$PROJECT_DIR$/dev/src/Trucking/Business_Layer_Trucking/Resources/Truck.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dev/src/Employees/business_layer/Shift/ShiftController.java" beforeDir="false" afterPath="$PROJECT_DIR$/dev/src/Employees/business_layer/Shift/ShiftController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dev/src/Presentation_Layer_Trucking/Main_Trucking.java" beforeDir="false" afterPath="$PROJECT_DIR$/dev/src/Trucking/Presentation_Layer_Trucking/Main_Trucking.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dev/src/Presentation_Layer_Trucking/Menu_Printer.java" beforeDir="false" afterPath="$PROJECT_DIR$/dev/src/Trucking/Presentation_Layer_Trucking/Menu_Printer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dev/src/Presentation_Layer_Trucking/PresentationController.java" beforeDir="false" afterPath="$PROJECT_DIR$/dev/src/Trucking/Presentation_Layer_Trucking/PresentationController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dev/src/Presentation_Layer_Trucking/StringConverter.java" beforeDir="false" afterPath="$PROJECT_DIR$/dev/src/Trucking/Presentation_Layer_Trucking/StringConverter.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dev/src/Tests/ResourcesServiceTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/dev/src/Tests/ResourcesServiceTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dev/src/Employees/business_layer/facade/FacadeService.java" beforeDir="false" afterPath="$PROJECT_DIR$/dev/src/Employees/business_layer/facade/FacadeService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dev/src/InfrastructurePackage/SystemLogger.java" beforeDir="false" afterPath="$PROJECT_DIR$/dev/src/InfrastructurePackage/SystemLogger.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dev/src/Trucking/Business_Layer_Trucking/Resources/ResourcesController.java" beforeDir="false" afterPath="$PROJECT_DIR$/dev/src/Trucking/Business_Layer_Trucking/Resources/ResourcesController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dev/src/Trucking/Presentation_Layer_Trucking/Menu_Printer.java" beforeDir="false" afterPath="$PROJECT_DIR$/dev/src/Trucking/Presentation_Layer_Trucking/Menu_Printer.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -76,7 +52,7 @@
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="203834734-206117400" />
+        <entry key="$PROJECT_DIR$" value="2.1_Trucking" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -118,19 +94,6 @@
     <configuration name="Main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="Main" />
       <module name="ADSS_Group_G" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration default="true" type="ArquillianTestNG" factoryName="" nameIsGenerated="true">
-      <option name="arquillianRunConfiguration">
-        <value>
-          <option name="containerStateName" value="" />
-        </value>
-      </option>
-      <option name="TEST_OBJECT" value="CLASS" />
-      <properties />
-      <listeners />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -189,7 +152,11 @@
       <workItem from="1618825989222" duration="904000" />
       <workItem from="1619330774077" duration="12857000" />
       <workItem from="1619792461374" duration="1895000" />
-      <workItem from="1619794411025" duration="473000" />
+      <workItem from="1619794411025" duration="1033000" />
+      <workItem from="1619869834303" duration="159000" />
+      <workItem from="1620152768828" duration="444000" />
+      <workItem from="1620153288961" duration="9929000" />
+      <workItem from="1620228347458" duration="9606000" />
     </task>
     <task id="LOCAL-00001" summary="ID text file has been added. team ido and raz :)">
       <created>1615488571310</created>
@@ -478,7 +445,14 @@
       <option name="project" value="LOCAL" />
       <updated>1617992627648</updated>
     </task>
-    <option name="localTasksCounter" value="42" />
+    <task id="LOCAL-00042" summary="modules has been merged. Workers and Trucking">
+      <created>1619795143227</created>
+      <option name="number" value="00042" />
+      <option name="presentableId" value="LOCAL-00042" />
+      <option name="project" value="LOCAL" />
+      <updated>1619795143227</updated>
+    </task>
+    <option name="localTasksCounter" value="43" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -497,7 +471,6 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="some fixed in PresentationController, last methods has been made, TODO added to business layer" />
     <MESSAGE value="finished Facade layer and Presentation layer. waiting for combine with business layer to tests.&#10;&#10;** Unit test haven't done yet.&#10;** NTH didn't accomplished yet" />
     <MESSAGE value="after combine meeting." />
     <MESSAGE value="replan changed" />
@@ -522,9 +495,19 @@
     <MESSAGE value="finished to upload" />
     <MESSAGE value="Fixed intiate method" />
     <MESSAGE value="last update" />
-    <option name="LAST_COMMIT_MESSAGE" value="last update" />
+    <MESSAGE value="modules has been merged. Workers and Trucking" />
+    <option name="LAST_COMMIT_MESSAGE" value="modules has been merged. Workers and Trucking" />
   </component>
   <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/dev/src/Trucking/Business_Layer_Trucking/Resources/ResourcesController.java</url>
+          <line>132</line>
+          <option name="timeStamp" value="2" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
     <pin-to-top-manager>
       <pinned-members>
         <PinnedItemInfo parentTag="java.lang.Integer" memberName="value" />

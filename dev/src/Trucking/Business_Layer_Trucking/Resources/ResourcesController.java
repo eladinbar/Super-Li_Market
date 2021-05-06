@@ -1,127 +1,224 @@
 package Trucking.Business_Layer_Trucking.Resources;
 
+import Employees.business_layer.Shift.ShiftController;
+
 import javax.management.openmbean.KeyAlreadyExistsException;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
 import java.util.NoSuchElementException;
 
 public class ResourcesController {
-    private HashMap<String,Driver> drivers;
-    private HashMap<String,Truck> trucks;
+    private HashMap<String, Driver> drivers;
+    private HashMap<String, Truck> trucks;
     private LinkedList<Driver> driversByLicense;
-    private static ResourcesController instance=null;
+    private static ResourcesController instance = null;
     private String currDriverID;
     private String currTruckNumber;
 
-    private ResourcesController()
-    {
-        drivers=new HashMap<>();
-        trucks=new HashMap<>();
-        driversByLicense=new LinkedList<>();
-        this.currDriverID="-1";
-        this.currTruckNumber="-1";
+    private HashMap<String, HashMap<LocalDate, Integer>> drivers_constraints;
+    private HashMap<String, HashMap<LocalDate, Integer>> trucks_constraints;
+
+    private ResourcesController() {
+        drivers = new HashMap<>();
+        trucks = new HashMap<>();
+        driversByLicense = new LinkedList<>();
+        this.currDriverID = "-1";
+        this.currTruckNumber = "-1";
+
+        drivers_constraints = new HashMap<>();
+        trucks_constraints = new HashMap<>();
+
     }
 
     public static ResourcesController getInstance() {
-        if (instance==null)
-            instance=new ResourcesController();
+        if (instance == null)
+            instance = new ResourcesController();
         return instance;
     }
-    public void addDriver(String id , String name, Driver.License licenseType) throws KeyAlreadyExistsException
-    {
+
+    public void addDriver(String id, String name, Driver.License licenseType) throws KeyAlreadyExistsException {
         if (!drivers.containsKey(id)) {
-            Driver driver=new Driver(id,name,licenseType);
-            drivers.put(id,driver);
+            Driver driver = new Driver(id, name, licenseType);
+            drivers.put(id, driver);
             if (licenseType == Driver.License.C1)
                 driversByLicense.addLast(driver);
             else driversByLicense.addFirst(driver);
-        }
-        else {
+            drivers_constraints.put(id, new HashMap<>());
+
+        } else {
             throw new KeyAlreadyExistsException("Driver already works here");
         }
 
     }
 
 
-    public void addTruck(String model,String licenseNumber,int weightNeto,int maxWeight) throws KeyAlreadyExistsException
-    {
-        if (!trucks.containsKey(licenseNumber))
-        {
-            Truck truck=new Truck(model, licenseNumber, weightNeto, maxWeight);
-            trucks.put(licenseNumber,truck);
+    public void addDriverConstraint(String driver_id, LocalDate date, Integer shift) throws IllegalArgumentException {
+        if (date.isBefore(LocalDate.now())) {
+            throw new IllegalArgumentException("the constraint's date is invalid");
         }
+        if (drivers_constraints.isEmpty()) {
+            throw new IllegalArgumentException("no drivers in the system");
+        }
+        /*boolean found =false;
+        for(Map.Entry<String,HashMap<LocalDate, Integer>> entry: drivers_constraints.entrySet()){
+            if (entry.getKey().equals(driver_id)){
+                found = true;
+                entry.getValue().put(date,shift);
+            }
+        }
+        if (!found){
+            throw new IllegalArgumentException("couldnt find driver with such ID");
+        }*/
+        if (drivers_constraints.containsKey(driver_id)) { // TODO need to check if contains works with Strings
+            HashMap<LocalDate, Integer> cons = drivers_constraints.get(driver_id);
+            if (cons.get(date) == null){
+                cons.put(date, shift);
+            }
+            else if (cons.get(date) == 2 || cons.get(date).equals(shift)) {
+                throw new IllegalArgumentException("Driver's constraint is already exist");
+            }
+            else {
+                cons.put(date,2);
+
+            }
+
+        } else
+            throw new IllegalArgumentException("couldn't find driver with such ID");
+    }
+
+    public void addTruckConstraint(String licenseNumber, LocalDate date, Integer shift) throws IllegalArgumentException {
+        if (date.isBefore(LocalDate.now())) {
+            throw new IllegalArgumentException("the constraint's date is invalid");
+        }
+        if (trucks_constraints.isEmpty()) {
+            throw new IllegalArgumentException("no trucks in the system");
+        }
+
+        if (trucks_constraints.containsKey(licenseNumber)) { // TODO need to check if contains works with Strings
+            HashMap<LocalDate, Integer> cons = trucks_constraints.get(licenseNumber);
+            if (cons.get(date) == null) {
+                cons.put(date, shift);
+            } else if (cons.get(date) == 2 || cons.get(date).equals(shift)) {
+                throw new IllegalArgumentException("Driver's constraint is already exist");
+            } else {
+                cons.put(date, 2);
+
+            }
+
+
+        } else
+            throw new IllegalArgumentException("couldn't find truck with such license Number");
+    }
+
+
+    public HashMap<LocalDate, HashMap<Integer, LinkedList<String>>> getDaysAndDrivers() throws IllegalArgumentException {
+        HashMap<LocalDate, HashMap<Integer, LinkedList<String>>> received = ShiftController.getInstance().getDaysAndDrivers();
+        HashMap<LocalDate, HashMap<Integer, LinkedList<String>>> output = new HashMap<>();
+        for (Map.Entry<LocalDate, HashMap<Integer, LinkedList<String>>> entry : received.entrySet()) {     // loop for each date
+            LocalDate date = entry.getKey();
+            output.put(date, new HashMap<>());
+            for (Map.Entry<Integer, LinkedList<String>> shift : entry.getValue().entrySet()) {     // loop for each shift
+                for (String id : shift.getValue()) {                                               // runs through drivers
+                    if (isDriverAvailable(id, date, shift.getKey())) {
+                        HashMap<Integer, LinkedList<String>> hash = output.get(date);
+                        if (hash.get(shift) == null) {
+                            hash.put(shift.getKey(), new LinkedList<>());
+                        }
+                        hash.get(shift.getKey()).add(id);
+                    }
+                }
+            }
+
+            return output;
+
+
+        }
+
+    }
+
+
+    private boolean isDriverAvailable(String id, LocalDate date, Integer shift) {
+        if (!drivers_constraints.containsKey(id))
+            throw new IllegalArgumentException("cannot find this driver");
+        HashMap<LocalDate, Integer> driverConst = drivers_constraints.get(id);
+        if (!driverConst.containsKey(date))
+            return true;
         else {
+            Integer workingShift = driverConst.get(date);
+            return ((workingShift.equals(2)) || workingShift.equals(shift));
+        }
+
+    }
+
+    public void addTruck(String model, String licenseNumber, int weightNeto, int maxWeight) throws KeyAlreadyExistsException {
+        if (!trucks.containsKey(licenseNumber)) {
+            Truck truck = new Truck(model, licenseNumber, weightNeto, maxWeight);
+            trucks.put(licenseNumber, truck);
+            trucks_constraints.put(licenseNumber, new HashMap<>());
+        } else {
             throw new KeyAlreadyExistsException("Truck already added");
         }
     }
-    public void deleteDriver(int id)throws NoSuchElementException
-    {
-        if (drivers.containsKey(id))
-        {
-            Driver removed=drivers.remove(id);
+
+    public void deleteDriver(int id) throws NoSuchElementException {
+        if (drivers.containsKey(id)) {
+            Driver removed = drivers.remove(id);
             driversByLicense.remove(removed);
-        }
-        else throw new NoSuchElementException("We do not hiring that person");
+            drivers_constraints.remove(id);
+        } else throw new NoSuchElementException("We do not hiring that person");
     }
-    public void deleteTruck(int licenseNumber)throws NoSuchElementException
-    {
-        if (trucks.containsKey(licenseNumber))
-        {
+
+    public void deleteTruck(int licenseNumber) throws NoSuchElementException {
+        if (trucks.containsKey(licenseNumber)) {
             trucks.remove(licenseNumber);
-        }
-        else throw new NoSuchElementException("No such truck found");
+            trucks_constraints.remove(licenseNumber);
+        } else throw new NoSuchElementException("No such truck found");
     }
-    public HashMap<String,Driver> getAvailableDrivers()
-    {
-        HashMap<String,Driver> result=new HashMap<>();
-        for (Map.Entry<String,Driver> entry:drivers.entrySet())
-        {
-            if (entry.getValue().isAvailable())
-                result.put(entry.getKey(), entry.getValue());
-        }
-        return result;
-    }
-    public HashMap<String,Truck> getAvailableTrucks()
-    {
-        HashMap<String,Truck> result=new HashMap<>();
-        for (Map.Entry<String,Truck> entry:trucks.entrySet())
-        {
+
+    public HashMap<String, Driver> getAvailableDrivers() {
+        HashMap<String, Driver> result = new HashMap<>();
+        for (Map.Entry<String, Driver> entry : drivers.entrySet()) {
             if (entry.getValue().isAvailable())
                 result.put(entry.getKey(), entry.getValue());
         }
         return result;
     }
 
-    public Truck chooseTruck(String truck) throws IllegalStateException,NoSuchElementException{
+    public HashMap<String, Truck> getAvailableTrucks() {
+        HashMap<String, Truck> result = new HashMap<>();
+        for (Map.Entry<String, Truck> entry : trucks.entrySet()) {
+            if (entry.getValue().isAvailable())
+                result.put(entry.getKey(), entry.getValue());
+        }
+        return result;
+    }
 
-        if (trucks.containsKey(truck)){
-            if (trucks.get(truck).isAvailable())
-            {
-                currTruckNumber=truck;
+    public Truck chooseTruck(String truck) throws IllegalStateException, NoSuchElementException {
+
+        if (trucks.containsKey(truck)) {
+            if (trucks.get(truck).isAvailable()) {
+                currTruckNumber = truck;
                 return trucks.get(truck);
-            }
-            else throw new IllegalStateException("Truck already taken");
-        }
-        else throw new NoSuchElementException("No such truck");
+            } else throw new IllegalStateException("Truck already taken");
+        } else throw new NoSuchElementException("No such truck");
     }
 
-    public Driver chooseDriver(String driver) throws IllegalStateException , NoSuchElementException{
+    public Driver chooseDriver(String driver) throws IllegalStateException, NoSuchElementException {
 
-        if (drivers.containsKey(driver)){
-            if (drivers.get(driver).isAvailable())
-            {
-                currDriverID=driver;
+        if (drivers.containsKey(driver)) {
+            if (drivers.get(driver).isAvailable()) {
+                currDriverID = driver;
                 return drivers.get(driver);
-            }
-            else throw new IllegalStateException("Driver already taken");
-        }
-        else throw new NoSuchElementException("No such Driver");
+            } else throw new IllegalStateException("Driver already taken");
+        } else throw new NoSuchElementException("No such Driver");
 
     }
 
 
-    public void makeUnavailable_Driver(String driver)throws NoSuchElementException {
+    public void makeUnavailable_Driver(String driver) throws NoSuchElementException {
         if (!drivers.containsKey(driver))
             throw new NoSuchElementException("Driver does not exist");
         drivers.get(driver).setUnavailable();
@@ -138,8 +235,8 @@ public class ResourcesController {
     public void makeAvailable_Truck(String truck) {
         trucks.get(truck).makeAvailable();
     }
-    public void saveReport()
-    {
+
+    public void saveReport() {
         drivers.get(currDriverID).setUnavailable();
         trucks.get(currTruckNumber).setUnavailable();
     }
@@ -150,7 +247,7 @@ public class ResourcesController {
         return drivers;
     }
 
-    public HashMap<String , Truck> getTrucks() {
+    public HashMap<String, Truck> getTrucks() {
         return trucks;
     }
 
@@ -188,7 +285,7 @@ public class ResourcesController {
 
     public void replaceTruck(String old_truck, String truckNumber) {
         makeAvailable_Truck(currTruckNumber);
-        this.currTruckNumber=truckNumber;
+        this.currTruckNumber = truckNumber;
         makeUnavailable_Truck(truckNumber);
     }
 
@@ -199,4 +296,12 @@ public class ResourcesController {
     public Truck getTruck(String truckNumber) {
         return trucks.get(truckNumber);
     }
+
+    private LocalTime turnShiftToTime(Integer shift) {
+        if (shift == 0)
+            return LocalTime.of(6, 0);
+        else
+            return LocalTime.of(14, 0);
+    }
+
 }

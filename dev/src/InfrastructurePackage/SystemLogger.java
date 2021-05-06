@@ -1,3 +1,4 @@
+/*
 package InfrastructurePackage;
 
 import org.apache.log4j.*;
@@ -33,3 +34,4 @@ public class SystemLogger {
         return logger;
     }
 }
+*/
