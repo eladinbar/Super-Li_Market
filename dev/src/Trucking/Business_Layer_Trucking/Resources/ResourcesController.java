@@ -56,37 +56,7 @@ public class ResourcesController {
 
 
     public void addDriverConstraint(String driver_id, LocalDate date, Integer shift) throws IllegalArgumentException {
-        if (date.isBefore(LocalDate.now())) {
-            throw new IllegalArgumentException("the constraint's date is invalid");
-        }
-        if (drivers_constraints.isEmpty()) {
-            throw new IllegalArgumentException("no drivers in the system");
-        }
-        /*boolean found =false;
-        for(Map.Entry<String,HashMap<LocalDate, Integer>> entry: drivers_constraints.entrySet()){
-            if (entry.getKey().equals(driver_id)){
-                found = true;
-                entry.getValue().put(date,shift);
-            }
-        }
-        if (!found){
-            throw new IllegalArgumentException("couldnt find driver with such ID");
-        }*/
-        if (drivers_constraints.containsKey(driver_id)) { // TODO need to check if contains works with Strings
-            HashMap<LocalDate, Integer> cons = drivers_constraints.get(driver_id);
-            if (cons.get(date) == null){
-                cons.put(date, shift);
-            }
-            else if (cons.get(date) == 2 || cons.get(date).equals(shift)) {
-                throw new IllegalArgumentException("Driver's constraint is already exist");
-            }
-            else {
-                cons.put(date,2);
-
-            }
-
-        } else
-            throw new IllegalArgumentException("couldn't find driver with such ID");
+        addConstraint(driver_id,date,shift,drivers_constraints);
     }
 
     public void addTruckConstraint(String licenseNumber, LocalDate date, Integer shift) throws IllegalArgumentException {
@@ -98,11 +68,79 @@ public class ResourcesController {
         }
 
         if (trucks_constraints.containsKey(licenseNumber)) { // TODO need to check if contains works with Strings
-            HashMap<LocalDate, Integer> cons = trucks_constraints.get(licenseNumber);
+            addConstraint(licenseNumber, date, shift, trucks_constraints);
+
+
+        } else
+            throw new IllegalArgumentException("couldn't find truck with such license Number");
+    }
+
+    public void deleteConstraint(String id, LocalDate date, Integer shift, HashMap<String, HashMap<LocalDate, Integer>> constraints){
+        String name;
+        String obj;
+        String idn;
+        if (constraints == trucks_constraints) {
+            name = "trucks";
+            obj = "Truck";
+            idn = "id";
+        }
+        else{
+            name = "drivers";
+            idn = "license Number";
+            obj = "Driver";
+        }
+        if (date.isBefore(LocalDate.now())) {
+            throw new IllegalArgumentException("the constraint's date is invalid");
+        }
+        if (constraints.isEmpty()) {
+            throw new IllegalArgumentException("no " + name + " in the system");
+        }
+        if (constraints.containsKey(id)){
+            HashMap<LocalDate, Integer> cons = constraints.get(id); // TODO need to check it deletes it
+            Integer sh = cons.get(date);
+            if (sh != null){
+                if (sh.equals(shift))
+                    cons.remove(date);
+                else if (shift.equals(1))
+                    cons.put(date,0);
+                else
+                    cons.put(date,1);
+
+            }
+
+        }
+        throw new IllegalArgumentException("couldn't find " + obj +" with such "+idn);
+
+    }
+
+
+    private void addConstraint(String id, LocalDate date, Integer shift, HashMap<String, HashMap<LocalDate, Integer>> constraint_hash) {
+        String name;
+        String obj;
+        String idn;
+        if (constraint_hash == trucks_constraints) {
+            name = "trucks";
+            obj = "Truck";
+            idn = "id";
+        }
+        else{
+            name = "drivers";
+            idn = "license Number";
+            obj = "Driver";
+        }
+        if (date.isBefore(LocalDate.now())) {
+            throw new IllegalArgumentException("the constraint's date is invalid");
+        }
+        if (constraint_hash.isEmpty()) {
+            throw new IllegalArgumentException("no " + name + " in the system");
+        }
+
+        if (constraint_hash.containsKey(id)) { // TODO need to check if contains works with Strings
+            HashMap<LocalDate, Integer> cons = constraint_hash.get(id);
             if (cons.get(date) == null) {
                 cons.put(date, shift);
             } else if (cons.get(date) == 2 || cons.get(date).equals(shift)) {
-                throw new IllegalArgumentException("Driver's constraint is already exist");
+                throw new IllegalArgumentException(obj + "'s constraint is already exist");
             } else {
                 cons.put(date, 2);
 
@@ -110,7 +148,7 @@ public class ResourcesController {
 
 
         } else
-            throw new IllegalArgumentException("couldn't find truck with such license Number");
+            throw new IllegalArgumentException("couldn't find " + obj +" with such "+idn);
     }
 
 
