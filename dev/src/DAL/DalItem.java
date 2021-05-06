@@ -6,7 +6,7 @@ public class DalItem implements DalObject{
     private String name;
     private int originSite;
 
-    public DalItem(int ID,String name,double weight,int originSite)
+    public DalItem(int ID,double weight,String name,int originSite)
     {
         this.ID=ID;
         this.name=name;

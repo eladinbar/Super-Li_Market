@@ -21,7 +21,7 @@ public class DalDeliveryFormController extends DalController {
         //TODO - change URL
         System.out.println("starting insert");
         Connection conn= DriverManager.getConnection("jdbc:sqlite:/D:\\Year2\\ניתוצ\\עבודה 2\\database.db");
-        String query= "INSERT INTO "+tableName+" VALUES ? ? ? ? ? ?";
+        String query= "INSERT INTO "+tableName+" VALUES (?,?,?,?,?,?)";
         try{
             PreparedStatement st=conn.prepareStatement(query);
             st.setInt(1,deliveryForm.getID());
@@ -48,33 +48,19 @@ public class DalDeliveryFormController extends DalController {
     }
 
     public boolean update(DalDeliveryForm deliveryForm) throws SQLException {
-        int res=-1;
-        boolean done=false;
         Connection conn=DriverManager.getConnection("jdbc:sqlite:/D:\\Year2\\ניתוצ\\עבודה 2\\database.db");
-        String query="UPDATE "+tableName+" SET ?=?,?=?,?=?,?=?,?=? WHERE ?= ?";
+        String query="UPDATE "+tableName+" SET "+columnNames[1]+"=?,"+columnNames[2]+"=?,"+columnNames[3]+"=?,"+columnNames[4]+"=?,"+
+                columnNames[5]+"=? WHERE ("+columnNames[0]+"= ?)";
         try{
             PreparedStatement st=conn.prepareStatement(query);
 
-            st.setString(1,columnNames[1]);
-            st.setInt(2,deliveryForm.getOrigin());
-
-            st.setString(3,columnNames[2]);
-            st.setInt(4,deliveryForm.getDestination());
-
-            st.setString(5,columnNames[3]);
-            st.setString(6,deliveryForm.getCompleted().toString());
-
-            st.setString(7,columnNames[4]);
-            st.setInt(8,deliveryForm.getLeavingWeight());
-
-            st.setString(9,columnNames[5]);
-            st.setInt(10,deliveryForm.getTRID());
-
-            st.setString(11,columnNames[0]);
-            st.setInt(12,deliveryForm.getID());
-            System.out.println("executing insert");
-
-            done=st.execute();
+            st.setInt(1,deliveryForm.getOrigin());
+            st.setInt(2,deliveryForm.getDestination());
+            st.setString(3,deliveryForm.getCompleted().toString());
+            st.setInt(4,deliveryForm.getLeavingWeight());
+            st.setInt(5,deliveryForm.getTRID());
+            st.setInt(6,deliveryForm.getID());
+            st.executeUpdate();
 
 
         }
@@ -84,24 +70,23 @@ public class DalDeliveryFormController extends DalController {
         finally {
             conn.close();
         }
-        return done;
+        return true;
     }
 
     public boolean delete(DalDeliveryForm deliveryForm) throws SQLException {
-        boolean done=false;
         Connection conn=DriverManager.getConnection("jdbc:sqlite:/D:\\Year2\\ניתוצ\\עבודה 2\\database.db");
         String query="DELETE FROM "+tableName+" WHERE ?=?";
         try {
             PreparedStatement st=conn.prepareStatement(query);
             st.setString(1,columnNames[0]);
             st.setInt(2,deliveryForm.getID());
-            done=st.execute();
+            st.executeUpdate();
         }
         catch (SQLException e)
         {
             throw new SQLException(e.getMessage());
         }
-        return done;
+        return true;
     }
     public LinkedList<DalDeliveryForm> load () throws SQLException// Select From DB
     {

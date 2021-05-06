@@ -8,10 +8,9 @@ public class DalDriverController extends DalController{
     public DalDriverController(){
         //TODO - Check when tables created
         super();
-        this.tableName="DeliveryForms";
+        this.tableName="Drivers";
         this.columnNames=new String[6];
-        columnNames[0]="ID";columnNames[1]="origin";columnNames[2]="destination";
-        columnNames[3]="completed";columnNames[4]="leavingWeight";columnNames[5]="TRID";
+        columnNames[0]="ID";columnNames[1]="name";columnNames[2]="license";
     }
 
 
@@ -19,7 +18,7 @@ public class DalDriverController extends DalController{
         //TODO - change URL
         System.out.println("starting insert");
         Connection conn= DriverManager.getConnection("jdbc:sqlite:/D:\\Year2\\ניתוצ\\עבודה 2\\database.db");
-        String query= "INSERT INTO "+tableName+" VALUES ? ? ? ";
+        String query= "INSERT INTO "+tableName+" VALUES (?,?,?)";
         try{
             PreparedStatement st=conn.prepareStatement(query);
             st.setString(1,dalDriver.getID());
@@ -44,21 +43,12 @@ public class DalDriverController extends DalController{
 
     public boolean update(DalDriver dalDriver) throws SQLException {
         Connection conn=DriverManager.getConnection("jdbc:sqlite:/D:\\Year2\\ניתוצ\\עבודה 2\\database.db");
-        String query="UPDATE "+tableName+" SET ?=?,?=? WHERE ?= ? ";
+        String query="UPDATE "+tableName+" SET "+columnNames[1]+"=?,"+columnNames[2]+"=? WHERE ("+columnNames[0]+"= ?)";
         try{
             PreparedStatement st=conn.prepareStatement(query);
-            st.setString(1,tableName);
-
-            st.setString(2,columnNames[1]);
-            st.setString(3,dalDriver.getName());
-
-            st.setString(4,columnNames[0]);
-            st.setString(5,dalDriver.getLicense());
-
-            st.setString(6,columnNames[2]);
-            st.setString(7,dalDriver.getID());
-            System.out.println("executing insert");
-
+            st.setString(1,dalDriver.getName());
+            st.setString(2,dalDriver.getLicense());
+            st.setString(3,dalDriver.getID());
             st.executeUpdate();
 
 

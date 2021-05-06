@@ -22,9 +22,9 @@ public class DalTruckingReportController extends DalController {
         //TODO - change URL
         System.out.println("starting insert");
         Connection conn= DriverManager.getConnection("jdbc:sqlite:/D:\\Year2\\ניתוצ\\עבודה 2\\database.db");
-        String query= "INSERT INTO "+tableName+"("+columnNames[0]+columnNames[1]+columnNames[2]+columnNames[3]
-                +columnNames[4]+columnNames[5]+columnNames[6]+columnNames[7]+") VALUES (? ? ? ? ? ? ? ?)";
-        //String query="INSERT INTO "+tableName+" VALUES "+"? ? ? ? ? ? ? ?";
+        //String query= "INSERT INTO "+tableName+"("+columnNames[0]+columnNames[1]+columnNames[2]+columnNames[3]
+        //        +columnNames[4]+columnNames[5]+columnNames[6]+columnNames[7]+") VALUES (? ? ? ? ? ? ? ?)";
+        String query="INSERT INTO "+tableName+" VALUES "+"(?,?,?,?,?,?,?,?)";
         try{
             PreparedStatement st=conn.prepareStatement(query);
             st.setInt(1,truckingReport.getID());
@@ -56,37 +56,21 @@ public class DalTruckingReportController extends DalController {
 
     public boolean update(DalTruckingReport truckingReport) throws SQLException {
         Connection conn=DriverManager.getConnection("jdbc:sqlite:/D:\\Year2\\ניתוצ\\עבודה 2\\database.db");
-        String query="UPDATE "+tableName +" SET ?=?,?=?,?=?,?=?,?=?,?=?,?=?  WHERE ?= ?";
+        String query="UPDATE "+tableName +" SET "+columnNames[1]+"=?,"+
+                columnNames[2]+"=?,"+columnNames[3]+"=?,"+columnNames[4]+"=?,"+columnNames[5]+"=?,"+columnNames[6]+"=?,"+
+                columnNames[7]+"=?  WHERE ("+columnNames[0]+"=?)";
         try{
             PreparedStatement st=conn.prepareStatement(query);
-
-            st.setString(1,columnNames[1]);
-            st.setString(2,new Time(truckingReport.getLeavingHour().getHour(),truckingReport.getLeavingHour().getMinute(),
+            st.setString(1,new Time(truckingReport.getLeavingHour().getHour(),truckingReport.getLeavingHour().getMinute(),
                     truckingReport.getLeavingHour().getSecond()).toString());
-
-            st.setString(3,columnNames[2]);
-            st.setString(4,new Date(truckingReport.getDate().getYear(),truckingReport.getDate().getMonth().getValue()
+            st.setString(2,new Date(truckingReport.getDate().getYear(),truckingReport.getDate().getMonth().getValue()
                     ,truckingReport.getDate().getDayOfYear()).toString());
-
-            st.setString(5,columnNames[3]);
-            st.setString(6,truckingReport.getTruckNumber());
-
-            st.setString(7,columnNames[4]);
-            st.setString(8,truckingReport.getDriverID());
-
-            st.setString(9,columnNames[5]);
-            st.setInt(10,truckingReport.getOrigin());
-
-            st.setString(11,columnNames[6]);
-            st.setString(12,truckingReport.isCompleted().toString());
-
-            st.setString(13,columnNames[7]);
-            st.setInt(14,truckingReport.getReplaceTRID());
-
-            st.setString(15,columnNames[0]);
-            st.setInt(16,truckingReport.getID());
-            System.out.println("executing insert");
-
+            st.setString(3,truckingReport.getTruckNumber());
+            st.setString(4,truckingReport.getDriverID());
+            st.setInt(5,truckingReport.getOrigin());
+            st.setString(6,truckingReport.isCompleted().toString());
+            st.setInt(7,truckingReport.getReplaceTRID());
+            st.setInt(8,truckingReport.getID());
             st.executeUpdate();
 
 

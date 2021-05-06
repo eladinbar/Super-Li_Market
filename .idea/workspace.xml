@@ -27,13 +27,12 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="05ca914f-9056-4de3-9869-7fdfaa880f2d" name="Default Changelist" comment="DAL Trucking classes almost done!">
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_4_26_2021_9_01_PM_[Default_Changelist]/shelved.patch" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_4_26_2021_9_01_PM__Default_Changelist_.xml" beforeDir="false" />
+    <list default="true" id="05ca914f-9056-4de3-9869-7fdfaa880f2d" name="Default Changelist" comment="DAL Load &amp; delete methods working">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/dev/src/DAL/DalDeliveryFormController.java" beforeDir="false" afterPath="$PROJECT_DIR$/dev/src/DAL/DalDeliveryFormController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/dev/src/DAL/DalDemandController.java" beforeDir="false" afterPath="$PROJECT_DIR$/dev/src/DAL/DalDemandController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/dev/src/DAL/DalDriverController.java" beforeDir="false" afterPath="$PROJECT_DIR$/dev/src/DAL/DalDriverController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dev/src/DAL/DalItem.java" beforeDir="false" afterPath="$PROJECT_DIR$/dev/src/DAL/DalItem.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/dev/src/DAL/DalItemController.java" beforeDir="false" afterPath="$PROJECT_DIR$/dev/src/DAL/DalItemController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/dev/src/DAL/DalItemsOnDFController.java" beforeDir="false" afterPath="$PROJECT_DIR$/dev/src/DAL/DalItemsOnDFController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/dev/src/DAL/DalSiteController.java" beforeDir="false" afterPath="$PROJECT_DIR$/dev/src/DAL/DalSiteController.java" afterDir="false" />
@@ -491,7 +490,14 @@
       <option name="project" value="LOCAL" />
       <updated>1620068815332</updated>
     </task>
-    <option name="localTasksCounter" value="46" />
+    <task id="LOCAL-00046" summary="DAL Load &amp; delete methods working">
+      <created>1620238888479</created>
+      <option name="number" value="00046" />
+      <option name="presentableId" value="LOCAL-00046" />
+      <option name="project" value="LOCAL" />
+      <updated>1620238888480</updated>
+    </task>
+    <option name="localTasksCounter" value="47" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -510,7 +516,6 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="** compilation error exist. need to add getItems in Delivery service" />
     <MESSAGE value="Facade objects has been completed" />
     <MESSAGE value="merged before tests" />
     <MESSAGE value="First test has been done - ido left to do Menu test.&#10;Raz has left with everything else because he is such a dick&#10;Love you raz" />
@@ -535,7 +540,8 @@
     <MESSAGE value="Started DAL - Constructors , Load method signature changed." />
     <MESSAGE value="DalTruckingReportController insert method made." />
     <MESSAGE value="DAL Trucking classes almost done!" />
-    <option name="LAST_COMMIT_MESSAGE" value="DAL Trucking classes almost done!" />
+    <MESSAGE value="DAL Load &amp; delete methods working" />
+    <option name="LAST_COMMIT_MESSAGE" value="DAL Load &amp; delete methods working" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -552,13 +558,23 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/dev/src/DAL/DalTruckingReportController.java</url>
-          <line>107</line>
+          <line>91</line>
           <option name="timeStamp" value="7" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/dev/src/DAL/DalItemController.java</url>
+          <line>19</line>
+          <option name="timeStamp" value="13" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/dev/src/DAL/DalItemController.java</url>
+          <line>45</line>
+          <option name="timeStamp" value="14" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/dev/src/Main.java</url>
-          <line>22</line>
-          <option name="timeStamp" value="9" />
+          <line>33</line>
+          <option name="timeStamp" value="15" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
@@ -573,6 +589,7 @@
     </pin-to-top-manager>
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
+    <SUITE FILE_PATH="coverage/Main_java$Main.ic" NAME="Main Coverage Results" MODIFIED="1620284345160" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
     <SUITE FILE_PATH="coverage/ADSS_Group_G$Main.ic" NAME="Main Coverage Results" MODIFIED="1617982326074" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
   </component>
 </project>

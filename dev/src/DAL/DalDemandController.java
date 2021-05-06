@@ -18,7 +18,7 @@ public class DalDemandController extends DalController{
         //TODO - change URL
         System.out.println("starting insert");
         Connection conn= DriverManager.getConnection("jdbc:sqlite:/D:\\Year2\\ניתוצ\\עבודה 2\\database.db");
-        String query= "INSERT INTO "+tableName+" VALUES ? ? ? ";
+        String query= "INSERT INTO "+tableName+" VALUES (?,?,?)";
         try{
             PreparedStatement st=conn.prepareStatement(query);
             st.setInt(1,dalDemand.getItemID());
@@ -43,20 +43,13 @@ public class DalDemandController extends DalController{
 
     public boolean update(DalDemand dalDemand) throws SQLException {
         Connection conn=DriverManager.getConnection("jdbc:sqlite:/D:\\Year2\\ניתוצ\\עבודה 2\\database.db");
-        String query="UPDATE "+tableName+" SET ?=? WHERE ?= ? AND ?=?";
+        String query="UPDATE "+tableName+" SET "+columnNames[1]+"=? WHERE "+columnNames[0]+"=? AND"+columnNames[2]+"=?";
         try{
             PreparedStatement st=conn.prepareStatement(query);
 
-            st.setString(1,columnNames[1]);
-            st.setInt(2,dalDemand.getAmount());
-
-            st.setString(3,columnNames[0]);
-            st.setInt(4,dalDemand.getItemID());
-
-            st.setString(5,columnNames[2]);
-            st.setInt(6,dalDemand.getSiteID());
-            System.out.println("executing insert");
-
+            st.setInt(1,dalDemand.getAmount());
+            st.setInt(2,dalDemand.getItemID());
+            st.setInt(3,dalDemand.getSiteID());
             st.executeUpdate();
 
 

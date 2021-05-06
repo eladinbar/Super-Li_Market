@@ -16,7 +16,7 @@ public class DalItemsOnDFController extends DalController{
         //TODO - change URL
         System.out.println("starting insert");
         Connection conn= DriverManager.getConnection("jdbc:sqlite:/D:\\Year2\\ניתוצ\\עבודה 2\\database.db");
-        String query= "INSERT INTO"+tableName+" VALUES ? ?  ";
+        String query= "INSERT INTO "+tableName+" VALUES (?,?)";
         try{
             PreparedStatement st=conn.prepareStatement(query);
             st.setInt(1,dalItemsOnDF.getItemID());
@@ -40,19 +40,12 @@ public class DalItemsOnDFController extends DalController{
 
     public boolean update(DalItemsOnDF dalItemsOnDF) throws SQLException {
         Connection conn=DriverManager.getConnection("jdbc:sqlite:/D:\\Year2\\ניתוצ\\עבודה 2\\database.db");
-        String query="UPDATE "+tableName+" SET ?=? WHERE ?= ? ";
+        String query="UPDATE "+tableName+" SET "+columnNames[1]+"=? WHERE ("+columnNames[0]+"= ?) ";
         try{
             PreparedStatement st=conn.prepareStatement(query);
-
-            st.setString(1,columnNames[1]);
             st.setInt(2,dalItemsOnDF.getAmount());
-
-            st.setString(3,columnNames[0]);
             st.setInt(4,dalItemsOnDF.getItemID());
-
             st.executeUpdate();
-
-
         }
         catch (SQLException e){
             throw new SQLException(e.getMessage());

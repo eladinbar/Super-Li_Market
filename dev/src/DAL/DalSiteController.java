@@ -17,7 +17,7 @@ public class DalSiteController extends DalController{
         //TODO - change URL
         System.out.println("starting insert");
         Connection conn= DriverManager.getConnection("jdbc:sqlite:/D:\\Year2\\ניתוצ\\עבודה 2\\database.db");
-        String query= "INSERT INTO "+tableName+" VALUES ? ? ? ? ? ? ";
+        String query= "INSERT INTO "+tableName+" VALUES (?,?,?,?,?,?)";
         try{
             PreparedStatement st=conn.prepareStatement(query);
             st.setInt(1,dalSite.getSiteID());
@@ -45,30 +45,19 @@ public class DalSiteController extends DalController{
 
     public boolean update(DalSite dalSite) throws SQLException {
         Connection conn=DriverManager.getConnection("jdbc:sqlite:/D:\\Year2\\ניתוצ\\עבודה 2\\database.db");
-        String query="UPDATE "+tableName+" SET ?=?,?=?,?=?,?=?,?=? WHERE ?= ? ";
+        String query="UPDATE "+tableName+" SET "+columnNames[1]+"=?, "+columnNames[2]+"=?, "+columnNames[3]+"=? " +
+                columnNames[4]+"=?,"+columnNames[5]+"WHERE ("+columnNames[0]+"=?)";
+
         try{
             PreparedStatement st=conn.prepareStatement(query);
 
-            st.setString(1,columnNames[1]);
-            st.setString(2,dalSite.getName());
+            st.setString(1,dalSite.getName());
+            st.setString(2,dalSite.getCity());
+            st.setInt(3,dalSite.getDeliveryArea());
+            st.setString(4,dalSite.getContactName());
+            st.setString(5,dalSite.getPhoneNumber());
+            st.setInt(6,dalSite.getSiteID());
 
-            st.setString(3,columnNames[2]);
-            st.setString(4,dalSite.getCity());
-
-            st.setString(5,columnNames[3]);
-            st.setInt(6,dalSite.getDeliveryArea());
-
-            st.setString(7,columnNames[4]);
-            st.setString(8,dalSite.getContactName());
-
-
-            st.setString(9,columnNames[5]);
-            st.setString(10,dalSite.getPhoneNumber());
-
-            st.setString(11,columnNames[0]);
-            st.setInt(12,dalSite.getSiteID());
-
-            System.out.println("executing insert");
             st.executeUpdate();
 
 
@@ -106,7 +95,6 @@ public class DalSiteController extends DalController{
             PreparedStatement st = conn.prepareStatement(query);
             ResultSet resultSet = st.executeQuery(query);
             while (resultSet.next()) {
-                boolean completed = resultSet.getString(4).equals("true");
                 sites.add(new DalSite(resultSet.getInt(1),resultSet.getString(2),
                         resultSet.getString(3),resultSet.getInt(4),resultSet.getString(5)
                         ,resultSet.getString(6))
