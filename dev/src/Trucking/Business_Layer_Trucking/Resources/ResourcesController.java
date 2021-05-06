@@ -160,6 +160,7 @@ public class ResourcesController {
 
     public HashMap<LocalDate, HashMap<Integer, LinkedList<String>>> getDaysAndDrivers() throws IllegalArgumentException {
         HashMap<LocalDate, HashMap<Integer, LinkedList<String>>> received = ShiftController.getInstance().getDaysAndDrivers();
+
         HashMap<LocalDate, HashMap<Integer, LinkedList<String>>> output = new HashMap<>();
         for (Map.Entry<LocalDate, HashMap<Integer, LinkedList<String>>> entry : received.entrySet()) {     // loop for each date
             LocalDate date = entry.getKey();
