@@ -10,5 +10,6 @@ public enum Role {
     usher,
     storeKeeper,
     truckingManager,
-    driver
+    driverC,
+    driverC1
 }

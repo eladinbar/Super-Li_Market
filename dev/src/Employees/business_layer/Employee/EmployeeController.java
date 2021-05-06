@@ -4,6 +4,7 @@ import Employees.EmployeeException;
 import Employees.business_layer.facade.facadeObject.FacadeBankAccountInfo;
 import Employees.business_layer.facade.facadeObject.FacadeEmployee;
 import Employees.business_layer.facade.facadeObject.FacadeTermsOfEmployment;
+import Trucking.Business_Layer_Trucking.Resources.ResourcesController;
 
 import java.time.LocalDate;
 import java.util.HashMap;
@@ -102,24 +103,44 @@ public class EmployeeController {
         if(!loggedIn.isEmployed()) {
             throw new EmployeeException("The employee is not employed ");
         }
+        try {
+            loggedIn.giveConstraint(date, shift, reason);
+            if(loggedIn.getRole ().equals ( Role.driverC) || loggedIn.getRole ().equals ( Role.driverC1))
+            {
+                try {
+                    ResourcesController.getInstance ( ).addDriverConstraint ( loggedIn.getID ( ), date, shift );
+                } catch (IllegalArgumentException e){
+                    deleteConstraint ( date,shift );
+                }
+            }
+        }catch (EmployeeException e){
+            if(loggedIn.getRole ().equals ( Role.driverC) || loggedIn.getRole ().equals ( Role.driverC1))
+                throw e;
+        }
 
-        loggedIn.giveConstraint(date, shift, reason);
     }
 
 
     public void deleteConstraint (LocalDate date, int shift) throws EmployeeException {
-        if(loggedIn==null){
-            throw new EmployeeException("No user is logged in");
+        if (loggedIn == null) {
+            throw new EmployeeException ( "No user is logged in" );
         }
 
-        if(loggedIn.getIsManager()){
-            throw new EmployeeException("The method 'giveConstraint' was called from a user in a managerial position");
+        if (loggedIn.getIsManager ( )) {
+            throw new EmployeeException ( "The method 'giveConstraint' was called from a user in a managerial position" );
         }
-        if(!loggedIn.isEmployed()){
-            throw new EmployeeException("The employee is not employed ");
+        if (!loggedIn.isEmployed ( )) {
+            throw new EmployeeException ( "The employee is not employed " );
         }
-
-        loggedIn.deleteConstraint(date, shift);
+        String reason = loggedIn.getConstraints ( ).get ( date ).getReason ( );
+        loggedIn.deleteConstraint ( date, shift );
+        if (loggedIn.getRole ( ).equals ( Role.driverC ) || loggedIn.getRole ( ).equals ( Role.driverC1 )) {
+            try {
+                ResourcesController.getInstance ( ).deleteDriverConstraint ( loggedIn.getID ( ), date, shift );
+            } catch (IllegalArgumentException e) {
+                giveConstraint ( date, shift, reason );
+            }
+        }
     }
 
     public HashMap<LocalDate, Constraint> getConstraints() throws EmployeeException {

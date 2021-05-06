@@ -170,6 +170,15 @@ public class Shift {
     }
 
     public List<String> getDrivers() {
-        return getManning ().getOrDefault ( Role.driver, null );
+        List<String> driversC = getManning ().getOrDefault ( Role.driverC, null );
+        List<String> driversC1 = getManning ().getOrDefault ( Role.driverC1, null );
+        if(driversC != null && driversC1 != null) {
+            driversC.addAll ( driversC1 );
+            return driversC;
+        }
+        else if(driversC != null)
+            return driversC;
+        else
+            return driversC1;
     }
 }
