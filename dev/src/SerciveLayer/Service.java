@@ -141,13 +141,14 @@ public class Service implements IService {
     }
 
     @Override
-    public ResponseT<List<Order>> createShortageOrder() {
+    public ResponseT<List<Order>> createShortageOrder(LocalDate date) {
         ResponseT<Map<Integer,Integer>> itemInShort = inventoryService.getItemsInShortAndQuantities();
-        if(itemInShort.errorOccured()){
-            return new ResponseT<>("shortage order failed");
-        }
+        if(itemInShort.errorOccured())
+            return new ResponseT<>(itemInShort.getErrorMessage());
         ResponseT<Map<String,Map<Integer,Integer>>> r = supplierService.createShortageOrders(itemInShort.value);
-        ResponseT<List<Order>> orderR = orderService.createShortageOrders(itemInShort.value);
+        if(r.errorOccured())
+            return new ResponseT<>(r.getErrorMessage());
+        ResponseT<List<Order>> orderR = orderService.createShortageOrders(r.value,date,supplierService.getSp());
         return orderR;
     }
 

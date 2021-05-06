@@ -327,7 +327,6 @@ public class SupplierService {
         } catch(Exception e){
             return new ResponseT<>(e.getMessage());
         }
-
-        return null;
+        return new ResponseT<>(orders);
     }
 }

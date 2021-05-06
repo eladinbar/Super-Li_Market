@@ -31,7 +31,7 @@ public interface IService {
     ResponseT<QuantityList> getQuantityList(String supplierId);
 
     //orders
-    ResponseT<List<Order>> createShortageOrder();
+    ResponseT<List<Order>> createShortageOrder(LocalDate date);
     ResponseT<Order> createOrder(LocalDate date, String supplierID);
     ResponseT<Order> createPernamentOrder(int day, String supplierID);
     Response approveOrder(int orderID);

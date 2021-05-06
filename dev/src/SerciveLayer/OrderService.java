@@ -8,6 +8,7 @@ import SerciveLayer.objects.Order;
 import SerciveLayer.objects.Product;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -139,11 +140,17 @@ public class OrderService {
         return toReturn;
     }
 
-    public ResponseT<List<Order>> createShortageOrders(Map<Integer, Integer> itemToOrder) {
-
-        for (Integer itemId : itemToOrder.keySet()) {
-
+    public ResponseT<List<Order>> createShortageOrders(Map<String,Map<Integer, Integer>> itemToOrder,LocalDate orderDate,SupplierController sp) {
+        List<Order> orderList = new ArrayList<>();
+        for (String suppID : itemToOrder.keySet()) {
+            Map<Integer,Integer> tempMap = itemToOrder.get(suppID);
+            ResponseT<Order> order = createOrder(orderDate,suppID,sp);
+            if(order.errorOccured()) return new ResponseT<>(order.getErrorMessage());
+            for (int itemID: tempMap.keySet()) {
+                addProductToOrder(order.value.getId(),itemID,tempMap.get(itemID));
+            }
+            orderList.add(order.value);
         }
-        return null;
+        return new ResponseT<>(orderList);
     }
 }
