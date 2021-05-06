@@ -35,6 +35,8 @@ public class ShiftController {
             throw new EmployeeException ( "Starting date has already passed." );
         if(startingDate.getDayOfWeek () != DayOfWeek.SUNDAY)
             throw new EmployeeException ( "Starting date is not Sunday." );
+        if(this.shifts.containsKey ( startingDate ))
+            throw new EmployeeException ( "Weekly shift schedule is already exists in the system. \nYou can watch it and edit if you would like." );
         WeeklyShiftSchedule output = createEmptyWeeklyShiftSchedule ( startingDate );
         for(int i = 0; i < 7; i ++)
         {
@@ -48,10 +50,10 @@ public class ShiftController {
             throw new EmployeeException ( "Starting date has already passed." );
         if(startingDate.getDayOfWeek () != DayOfWeek.SUNDAY)
             throw new EmployeeException ( "Starting date is not sunday." );
-        if(shifts == null)
-            throw new EmployeeException ( "shifts are illegal." );
         if(this.shifts.containsKey ( startingDate ))
             throw new EmployeeException ( "Weekly shift schedule is already exists in the system. \nYou can watch it and edit if you would like." );
+        if(shifts == null)
+            throw new EmployeeException ( "shifts are illegal." );
         for(int i = 0; i < 5; i ++)
         {
             checkManningVallidity2 (shifts[i][0].getManning () );

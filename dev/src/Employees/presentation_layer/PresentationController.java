@@ -315,6 +315,7 @@ public class PresentationController {
                 return;
             }
             menuPrinter.print ( "Weekly shift schedule created successfully." );
+            menuPrinter.print ( stringConverter.convertWeeklyShiftSchedule ( weeklyShiftSchedule.value ) );
             editSchedule ();
         }
         else

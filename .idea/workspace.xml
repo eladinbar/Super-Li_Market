@@ -3,15 +3,21 @@
   <component name="ChangeListManager">
     <list default="true" id="81ce0887-8b24-4737-8b90-9f78e7d4770c" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dev/src/Employees/business_layer/Employee/EmployeeController.java" beforeDir="false" afterPath="$PROJECT_DIR$/dev/src/Employees/business_layer/Employee/EmployeeController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dev/src/Employees/business_layer/facade/EmployeeService.java" beforeDir="false" afterPath="$PROJECT_DIR$/dev/src/Employees/business_layer/facade/EmployeeService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dev/src/Employees/business_layer/facade/FacadeService.java" beforeDir="false" afterPath="$PROJECT_DIR$/dev/src/Employees/business_layer/facade/FacadeService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dev/src/Employees/business_layer/Shift/ShiftController.java" beforeDir="false" afterPath="$PROJECT_DIR$/dev/src/Employees/business_layer/Shift/ShiftController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/dev/src/Employees/presentation_layer/PresentationController.java" beforeDir="false" afterPath="$PROJECT_DIR$/dev/src/Employees/presentation_layer/PresentationController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dev/src/Employees/presentation_layer/StringConverter.java" beforeDir="false" afterPath="$PROJECT_DIR$/dev/src/Employees/presentation_layer/StringConverter.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Class" />
+      </list>
+    </option>
   </component>
   <component name="Git.Settings">
     <favorite-branches>
@@ -48,6 +54,9 @@
     <setting file="file://$PROJECT_DIR$/dev/src/Main.java" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/dev/src/InfrastructurePackage/SystemLogger.java" root0="FORCE_HIGHLIGHTING" />
   </component>
+  <component name="ProblemsViewState">
+    <option name="selectedIndex" value="1" />
+  </component>
   <component name="ProjectId" id="1s7aVbJPf0UZ0ZsEfDnwNZEoJHQ" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
@@ -63,6 +72,11 @@
     <property name="node.js.detected.package.tslint" value="true" />
     <property name="node.js.selected.package.eslint" value="(autodetect)" />
     <property name="node.js.selected.package.tslint" value="(autodetect)" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CreateClassDialog.RecentsKey">
+      <recent name="Employees" />
+    </key>
   </component>
   <component name="RunManager">
     <configuration default="true" type="ArquillianJUnit" factoryName="" nameIsGenerated="true">
@@ -123,7 +137,14 @@
       <option name="project" value="LOCAL" />
       <updated>1620281038048</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="adding a driver - get a name and send details to Raz&amp;Ido">
+      <created>1620281794164</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1620281794164</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -139,7 +160,8 @@
     <MESSAGE value="make sure no exceptions in the constructors" />
     <MESSAGE value="kosher super - cannot edit shifts in friday evening and saturday morning" />
     <MESSAGE value="when employee gives constraint - if it is a driver sends the details to Raz&amp;Ido" />
-    <option name="LAST_COMMIT_MESSAGE" value="when employee gives constraint - if it is a driver sends the details to Raz&amp;Ido" />
+    <MESSAGE value="adding a driver - get a name and send details to Raz&amp;Ido" />
+    <option name="LAST_COMMIT_MESSAGE" value="adding a driver - get a name and send details to Raz&amp;Ido" />
   </component>
   <component name="XDebuggerManager">
     <pin-to-top-manager>
