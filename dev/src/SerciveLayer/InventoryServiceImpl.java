@@ -8,13 +8,11 @@ import SerciveLayer.Response.ResponseT;
 import SerciveLayer.SimpleObjects.*;
 import SerciveLayer.SimpleObjects.DefectEntry;
 
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class InventoryServiceImpl implements InventoryService {
     private final InventoryController inventoryController;
+    private final int MIN_AMOUNT_MULTIPIER = 2;
 
     public InventoryServiceImpl() {
         inventoryController = new InventoryController();
@@ -702,6 +700,14 @@ public class InventoryServiceImpl implements InventoryService {
     @Override
     public ResponseT<Map<Integer, Integer>> getItemsInShortAndQuantities() {
         ResponseT<List<Item>> itemsInShort = itemShortageReport();
+        if(itemsInShort.isErrorOccurred()){
+            return new ResponseT<>(false,itemsInShort.getMessage(), null);
+        }
+        Map<Integer,Integer> itemQuantityMap = new HashMap<>();
+        for (Item i: itemsInShort.value) {
+            itemQuantityMap.put(i.getID(),i.getMinAmount()*MIN_AMOUNT_MULTIPIER - i.getShelfQuantity() - i.getStorageQuantity());
+        }
+        return new ResponseT<>(itemQuantityMap);
     }
 
     private void clearDate(Calendar... calendars){
