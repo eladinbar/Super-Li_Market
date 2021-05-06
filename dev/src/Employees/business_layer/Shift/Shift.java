@@ -98,6 +98,7 @@ public class Shift {
     }
 
     public void changeManning(HashMap<String,List<String>> manning) {
+
         this.manning = new HashMap<> (  );
         for( Map.Entry<String, List<String >> entry : manning.entrySet () ){
             this.manning.put ( Role.valueOf ( entry.getKey () ), entry.getValue () );
@@ -126,6 +127,11 @@ public class Shift {
             }
             this.manning.put ( role, new ArrayList<> ( work ) );
             work.clear ();
+        }
+        if(!manning.containsKey ( Role.storeKeeper ))
+        {
+            manning.remove ( Role.driverC1 );
+            manning.remove ( Role.driverC );
         }
     }
 

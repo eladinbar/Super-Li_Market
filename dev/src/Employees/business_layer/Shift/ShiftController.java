@@ -19,61 +19,84 @@ public class ShiftController {
     private HashMap<LocalDate, WeeklyShiftSchedule> shifts;
     EmployeeController employeeController;
 
-    private ShiftController(){
-        shifts = new HashMap<> (  );
-        employeeController = EmployeeController.getInstance ();
+    private ShiftController() {
+        shifts = new HashMap<> ( );
+        employeeController = EmployeeController.getInstance ( );
     }
 
     public static ShiftController getInstance() {
         if (instance == null)
-            instance = new ShiftController ();
+            instance = new ShiftController ( );
         return instance;
     }
 
     public WeeklyShiftSchedule getRecommendation(LocalDate startingDate) throws EmployeeException {
-        if(startingDate.isBefore ( LocalDate.now () ))
+        if (startingDate.isBefore ( LocalDate.now ( ) ))
             throw new EmployeeException ( "Starting date has already passed." );
-        if(startingDate.getDayOfWeek () != DayOfWeek.SUNDAY)
+        if (startingDate.getDayOfWeek ( ) != DayOfWeek.SUNDAY)
             throw new EmployeeException ( "Starting date is not Sunday." );
-        if(this.shifts.containsKey ( startingDate ))
+        if (this.shifts.containsKey ( startingDate ))
             throw new EmployeeException ( "Weekly shift schedule is already exists in the system. \nYou can watch it and edit if you would like." );
         WeeklyShiftSchedule output = createEmptyWeeklyShiftSchedule ( startingDate );
-        for(int i = 0; i < 7; i ++)
-        {
-            output.recommendShifts(employeeController, i);
+        for ( int i = 0 ; i < 7 ; i++ ) {
+            output.recommendShifts ( employeeController, i );
         }
         return output;
     }
 
     public WeeklyShiftSchedule createWeeklyShiftSchedule(LocalDate startingDate, Shift[][] shifts) throws EmployeeException {
-        if(startingDate.isBefore ( LocalDate.now () ))
+        if (startingDate.isBefore ( LocalDate.now ( ) ))
             throw new EmployeeException ( "Starting date has already passed." );
-        if(startingDate.getDayOfWeek () != DayOfWeek.SUNDAY)
+        if (startingDate.getDayOfWeek ( ) != DayOfWeek.SUNDAY)
             throw new EmployeeException ( "Starting date is not sunday." );
-        if(this.shifts.containsKey ( startingDate ))
+        if (this.shifts.containsKey ( startingDate ))
             throw new EmployeeException ( "Weekly shift schedule is already exists in the system. \nYou can watch it and edit if you would like." );
-        if(shifts == null)
+        if (shifts == null)
             throw new EmployeeException ( "shifts are illegal." );
-        for(int i = 0; i < 5; i ++)
-        {
-            checkManningVallidity2 (shifts[i][0].getManning () );
-            checkManningVallidity2 (shifts[i][1].getManning () );
+        for ( int i = 0 ; i < 5 ; i++ ) {
+            checkManningVallidity2 ( shifts[i][0].getManning ( ) );
+            checkDriverVallidity ( shifts[i][0].getManning () );
+            checkManningVallidity2 ( shifts[i][1].getManning ( ) );
+            checkDriverVallidity ( shifts[i][1].getManning () );
         }
-        checkManningVallidity2 (shifts[5][0].getManning () );
-        checkManningVallidity2 (shifts[6][1].getManning () );
-        WeeklyShiftSchedule weeklyShiftSchedule = new WeeklyShiftSchedule (startingDate, shifts );
+        checkManningVallidity2 ( shifts[5][0].getManning ( ) );
+        checkDriverVallidity ( shifts[5][0].getManning () );
+        checkManningVallidity2 ( shifts[6][1].getManning ( ) );
+        checkDriverVallidity ( shifts[6][1].getManning () );
+        WeeklyShiftSchedule weeklyShiftSchedule = new WeeklyShiftSchedule ( startingDate, shifts );
         this.shifts.put ( startingDate, weeklyShiftSchedule );
         return weeklyShiftSchedule;
     }
 
-    private void checkManningVallidity2(HashMap<Role, List<String>> manning) throws EmployeeException {
-        for( Map.Entry<Role, List<String>> entry : manning.entrySet () )
+    private void checkManningVallidity(HashMap<String, List<String>> manning) throws EmployeeException {
+        for( Map.Entry<String, List<String>> entry : manning.entrySet () )
         {
             for(String employee : entry.getValue ()) {
-                if (!employeeController.isExist ( entry.getKey ( ).name (), employee ))
+                if (!employeeController.isExist ( entry.getKey ( ), employee ))
                     throw new EmployeeException ( "Id - " + employee + " and role - " + entry.getKey () + " does not exist in system.");
             }
         }
+    }
+
+    private void checkManningVallidity2(HashMap<Role, List<String>> manning) throws EmployeeException {
+        for ( Map.Entry<Role, List<String>> entry : manning.entrySet ( ) ) {
+            for ( String employee : entry.getValue ( ) ) {
+                if (!employeeController.isExist ( entry.getKey ( ).name ( ), employee ))
+                    throw new EmployeeException ( "Id - " + employee + " and role - " + entry.getKey ( ) + " does not exist in system." );
+            }
+        }
+    }
+
+    private void checkDriverVallidity(HashMap<Role, List<String>> manning) throws EmployeeException {
+        if(manning.containsKey ( Role.driverC ) || manning.containsKey ( Role.driverC1 ))
+            if(!manning.containsKey ( Role.storeKeeper ))
+                throw new EmployeeException ( "Shift has driver/s without having a store keeper." );
+    }
+
+    private void checkDriverVallidity2(HashMap<String , List<String>> manning) throws EmployeeException {
+        if(manning.containsKey ( Role.valueOf ( "driverC" ) ) || manning.containsKey (Role.valueOf ( "driverC1" ) ))
+            if(!manning.containsKey ( Role.valueOf ( "storeKeeper" ) ))
+                throw new EmployeeException ( "Shift has driver/s without having a store keeper." );
     }
 
     public WeeklyShiftSchedule createEmptyWeeklyShiftSchedule(LocalDate startingDate) throws EmployeeException {
@@ -89,6 +112,8 @@ public class ShiftController {
             throw new EmployeeException ( "the date has already passed." );
         if((date.getDayOfWeek ().getValue ()== 5 && shift == 1 )| (date.getDayOfWeek ().getValue ()== 6 && shift == 0 ))
             throw new EmployeeException ( "Super-Lee does not work at Shabbat." );
+        checkDriverVallidity2 ( manning );
+        checkManningVallidity ( manning );
         getWeeklyShiftSchedule ( date ).changeShift(employeeController, date, shift, manning);
     }
 

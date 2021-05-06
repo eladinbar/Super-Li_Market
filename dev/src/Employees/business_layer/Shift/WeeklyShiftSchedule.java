@@ -83,26 +83,6 @@ public class WeeklyShiftSchedule {
         shifts[date.getDayOfWeek ().getValue ()][shift].changeManning( manning );
     }
 
-    private void checkManningVallidity(EmployeeController employeeController, HashMap<String, List<String>> manning) throws EmployeeException {
-        for( Map.Entry<String, List<String>> entry : manning.entrySet () )
-        {
-            for(String employee : entry.getValue ()) {
-                if (!employeeController.isExist ( entry.getKey ( ), employee ))
-                    throw new EmployeeException ( "Id - " + employee + " and role - " + entry.getKey () + " does not exist in system.");
-            }
-        }
-    }
-
-    private void checkManningVallidity2(EmployeeController employeeController, HashMap<Role, List<String>> manning) throws EmployeeException {
-        for( Map.Entry<Role, List<String>> entry : manning.entrySet () )
-        {
-            for(String employee : entry.getValue ()) {
-                if (!employeeController.isExist ( entry.getKey ( ).name (), employee ))
-                    throw new EmployeeException ( "Id - " + employee + " and role - " + entry.getKey () + " does not exist in system.");
-            }
-        }
-    }
-
     public void recommendShifts(EmployeeController employeeController, int i) throws EmployeeException {
         if(i<5) {
             shifts[i][0].createManning ( employeeController, null );
