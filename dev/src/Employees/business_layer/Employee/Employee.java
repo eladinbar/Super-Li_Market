@@ -93,13 +93,13 @@ public class Employee {
         }
         if (constraints.containsKey(date)){ // if the employment already has a constraint on one of the shifts that day.
             Constraint exist = constraints.get(date);
-            if( shift == 1){// morning shift
+            if( shift == 0 || shift == 2){// morning shift
                 if(exist.isMorningShift()){
                     throw new EmployeeException ("You already have a constraint on this shift, if you want to update it please delete and enter a new one");
                 }
                 exist.setMorningShift(true);
             }
-            else if (shift ==2){// evening shift
+            else if (shift ==1 || shift == 2){// evening shift
                 if(exist.isEveningShift()){
                     throw new EmployeeException("You already have a constraint on this shift, if you want to update it please delete and enter a new one");
                 }

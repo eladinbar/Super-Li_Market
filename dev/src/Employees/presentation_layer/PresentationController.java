@@ -9,6 +9,7 @@ import Employees.business_layer.facade.facadeObject.FacadeEmployee;
 import Employees.business_layer.facade.facadeObject.FacadeShift;
 import Employees.business_layer.facade.facadeObject.FacadeWeeklyShiftSchedule;
 
+import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -49,7 +50,8 @@ public class PresentationController {
                 menuPrinter.print ( facadeEmployee.getErrorMessage () );
                 return;
             }
-            while(!login (true));
+            login ( true );
+            while(!login (false));
         }
         else
             menuPrinter.print ("Only a manager can start a clean program." );
@@ -298,10 +300,19 @@ public class PresentationController {
             return;
         }
         if(choice == 1) {
+            boolean  dateLegal = false;
             menuPrinter.print ( "Write the shifts details:" );
             LocalDate date = menuPrinter.schedule ( );
-            if(date == null)
-                return;
+            while (!dateLegal) {
+                if (date == null)
+                    return;
+                if(!date.getDayOfWeek ().equals ( DayOfWeek.SUNDAY )){
+                    menuPrinter.print ( "The selected date is not sunday.\n try again." );
+                    date = menuPrinter.schedule ();
+                }
+                else
+                    dateLegal = true;
+            }
             FacadeShift[][] shifts = new FacadeShift[7][2];
             for ( int i = 0 ; i < 6 ; i++ ) {
                 shifts[i][0] = createFirstShift ( date.plusDays ( i ) );
@@ -412,7 +423,7 @@ public class PresentationController {
     }
 
     private void changeShiftType(LocalDate date, int shift) {
-        menuPrinter.print ( "choose shift type you woud like to change: " );
+        menuPrinter.print ( "choose shift type you would like to change: " );
         String shiftType = menuPrinter.getShifTypes ();
         Response response = facadeService.changeShiftType ( date, shift, shiftType );
         if (response.errorOccured ( )) {
@@ -469,9 +480,18 @@ public class PresentationController {
 
 
     private boolean getWeeklyShiftSchedule() {
+        boolean  dateLegal = false;
         LocalDate date = menuPrinter.schedule();
-        if(date == null)
-            return false;
+        while (!dateLegal) {
+            if (date == null)
+                return false;
+            if(!date.getDayOfWeek ().equals ( DayOfWeek.SUNDAY )){
+                menuPrinter.print ( "The selected date is not sunday.\n try again." );
+                date = menuPrinter.schedule ();
+            }
+            else
+                dateLegal = true;
+        }
         ResponseT<FacadeWeeklyShiftSchedule> schedule = facadeService.getWeeklyShiftSchedule ( date );
         if(schedule.errorOccured ())
         {
@@ -494,18 +514,20 @@ public class PresentationController {
                 menuPrinter.print ( employee.getErrorMessage () );
                 return false;
             }
-            if(first)
-                createShiftTypes();
             if(employee.value.isManager ()) {
+                if(first)
+                    createShiftTypes();
                 choice = menuPrinter.managerMenu ( );
                 handleManagerChoice ( choice );
-                return true;
-            }
-            else {
+            } else if(role.equals ( "truckingManager" )){
+                //TODO - menu of trucking
+                logout ();
+                while(!login (false));
+            } else {
                 choice = menuPrinter.simpleEmployeeMenu ();
                 handleSimpleEmployeeChoice ( choice );
-                return true;
             }
+            return true;
         }
         else
             return false;
@@ -594,6 +616,10 @@ public class PresentationController {
         if(date == null)
             return;
         int shift = menuPrinter.getShiftNum ();
+        if(shift > 2 || shift < 0) {
+            menuPrinter.printChoiceException ( );
+            return;
+        }
         menuPrinter.print ( "reason: " );
         String reason = menuPrinter.getString();
         Response r = facadeService.giveConstraint ( date, shift, reason );
