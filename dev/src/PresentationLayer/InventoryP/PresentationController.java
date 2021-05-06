@@ -468,7 +468,7 @@ public class PresentationController implements Runnable {
         menu.printWelcomePrompt();
         setupSystem();
         while (!terminate) {
-            menu.printOperationMenu();
+            mainMenu();
             inventoryMainMenu();
         }
 
@@ -629,9 +629,37 @@ public class PresentationController implements Runnable {
 
     }
 
+    private void mainMenu() {
+        menu.printMainMenu();
+        String choice = menu.instructAndReceive("select a menu to open");
+        switch (choice) {
+            case "1":
+                inventoryMainMenu();
+                break;
+            case "2":
+                orderMainMenu();
+                break;
+            case "3":
+                suppliersMainMenu();
+                break;
+            default:
+                menu.errorPrompt("invalid choice - " + choice);
+                break;
+        }
+
+    }
+
+    private void orderMainMenu() {
+
+    }
+
+    private void suppliersMainMenu() {
+
+    }
+
     private void inventoryMainMenu() {
         menu.printInventoryMainMenu();
-        String choice = menu.instructAndReceive("Select a menu");
+        String choice = menu.instructAndReceive("Select a sub menu");
 
         switch (choice) {
             case "1":

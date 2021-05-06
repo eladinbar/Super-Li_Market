@@ -13,9 +13,10 @@ import java.util.regex.Pattern;
 
 public class Menu {
     private TextFormatter tf = new TextFormatter();
-    private final List<String> operationsList;
-    private final List<String> inventoryMainMenuList;
+    private final List<String> mainMenuSelectionList;
     //menu lists for items
+    private final List<String> inventoryMainMenuList;
+
     private final List<String> itemOperationMenuList;
     private final List<String> itemModificationList;
     //menu lists for category
@@ -33,10 +34,12 @@ public class Menu {
 
     public Menu() {
         itemModificationList = setupItemModList();
-        this.operationsList = setupOperationsList();
+        mainMenuSelectionList = setupMainMenuSelectionList();
         categoryModificationList = setupCategoryModList();
         saleModificationList = setupSaleModList();
         scan = new Scanner(System.in);
+
+
         inventoryMainMenuList = setupInventoryMainMenuList();
         itemOperationMenuList = setupItemMenu();
         categoryOperationMenuList = setupCategoryMenu();
@@ -45,7 +48,14 @@ public class Menu {
         reportsOperationMenuList = setupReportMenuList();
     }
 
+    private List<String> setupMainMenuSelectionList(){
+        ArrayList<String> list = new ArrayList<>();
+        list.add("Inventory Menu");
+        list.add("Suppliers Menu");
+        list.add("Orders Menu");
 
+        return list;
+    }
 
     //Setup Menu Strings
     private List<String> setupCategoryModList() {
@@ -172,9 +182,9 @@ public class Menu {
     public void printWelcomePrompt() {
         System.out.println("Welcome to the 'Super-Lee' Inventory System!");
     }
-    public void printOperationMenu() {
-        printMenu(operationsList);
-        System.out.println("\nPress q to quit");
+    public void printMainMenu() {
+        printMenu(mainMenuSelectionList);
+
     }
     public void printInventoryMainMenu(){
         printMenu(inventoryMainMenuList);
