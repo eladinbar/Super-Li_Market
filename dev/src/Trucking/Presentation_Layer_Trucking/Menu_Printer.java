@@ -223,7 +223,9 @@ public class Menu_Printer {
 
                     chooseDate(scanner);
                     chooseDemands(scanner);
-                    chooseTruckAndDriver(scanner);
+                    LocalDate date = pc.getCurrentTruckReport().getDate();
+                    LocalTime shift = pc.getCurrTruckReport().getLeavingHour();
+                    chooseTruckAndDriver(scanner, date,shift);
 
                     pc.saveReport();
 
@@ -259,8 +261,8 @@ public class Menu_Printer {
         LinkedList<FacadeTruck> trucks = pc.getTrucks();
         for (FacadeTruck truck : trucks) {
             System.out.println("Trucks License Number: " + truck.getLicenseNumber() +
-                    "\nmodel: " + truck.getModel() + " maxWeight: " + truck.getMaxWeight()
-                    + " Available: " + truck.isAvailable());
+                    "\nmodel: " + truck.getModel() + " maxWeight: " + truck.getMaxWeight());
+
         }
     }
 
@@ -361,10 +363,10 @@ public class Menu_Printer {
         }
     }
 
-    private void checkAvailableTrucksAndDrivers() throws ReflectiveOperationException {
-        if (pc.getAvailableTrucks().isEmpty())
+    private void checkAvailableTrucksAndDrivers(LocalDate date,  LocalTime shift) throws ReflectiveOperationException {
+        if (pc.getAvailableTrucks(date,shift).isEmpty())
             throw new ReflectiveOperationException("no trucks left to deliver with, please try later");
-        if (pc.getAvailableDrivers().isEmpty())
+        if (pc.getAvailableDrivers(date, shift).isEmpty())
             throw new ReflectiveOperationException("no drivers left to deliver with, please try later");
     }
 
@@ -775,13 +777,13 @@ public class Menu_Printer {
         }
     }
 
-    private void chooseTruckAndDriver(Scanner scanner) throws ReflectiveOperationException {
+    private void chooseTruckAndDriver(Scanner scanner, LocalDate date , LocalTime shift) throws ReflectiveOperationException {
         System.out.println("please choose the Truck you'd like to deliver it with:");
-        String truckNumber = chooseTruck(scanner);
+        String truckNumber = chooseTruck(scanner, date, shift);
 
-        pc.chooseTruck(truckNumber);
-        String driverID = chooseDriver(scanner);
-        pc.chooseDriver(driverID);
+        pc.chooseTruck(truckNumber,date,shift);
+        String driverID = chooseDriver(scanner,date,shift);
+        pc.chooseDriver(driverID,date,shift);
 
 
        /* LinkedList<FacadeTruck> trucks =  pc.getAvailableTrucks();
@@ -841,70 +843,7 @@ public class Menu_Printer {
 
     }
 
-    private FacadeTruckingReport rePlan(Scanner scanner) throws ReflectiveOperationException {
 
-        System.out.println("Welcome to replan menu! please choose the option you'd like to re plan the report with:");
-        int spot = 1;
-        System.out.println(spot + ") remove a site (all the products from this site and to it will be removed)");
-        spot++;
-        System.out.println(spot + ") switch demands  - removes a site and adds a new demand to add by choose");
-        spot++;
-        System.out.println(spot + ") change a truck");
-        spot++;
-        System.out.println(spot + ") remove item");
-        System.out.println("choose different number to quit");
-        System.out.print("place your option: ");
-        int option = getIntFromUser(scanner);
-        switch (option) {
-            case 1://remove site
-
-                removeSite(scanner);
-                return pc.getCurrTruckReport();
-
-            case 2://switch demand(=site)
-
-                removeSite(scanner);
-                chooseDemands(scanner);
-                return pc.getCurrTruckReport();
-
-            case 3://replace truck
-
-                System.out.println("choose new truck");
-                LinkedList<FacadeTruck> trucks = pc.getAvailableTrucks();
-                for (FacadeTruck ft : trucks) {
-                    System.out.println("Truck number: " + ft.getLicenseNumber() + "\tWeight neto: " + ft.getWeightNeto()
-                            + "\tMax weight: " + ft.getMaxWeight());
-                }
-                chooseTruckAndDriver(scanner);
-                return pc.getCurrTruckReport();
-
-            case 4://remove items
-
-                System.out.println("choose item to remove");
-                LinkedList<FacadeDemand> items = pc.getItemsOnTruck();
-                int counter = 1;
-                for (FacadeDemand demand : items) {
-                    System.out.println(counter + ") " +
-                            "amount: " + demand.getAmount() + " wight per unit: " + pc.getWeight(demand.getItemID())
-                            + "delivery site: " + pc.getSiteName(demand.getSite()));
-                }
-                System.out.print("your choice: ");
-                int itemId = getIntFromUser(scanner);
-                while (itemId > items.size() - 1 || itemId < 1) {
-                    System.out.println("your option is out of bounds, please choose again");
-                    itemId = getIntFromUser(scanner);
-                }
-                FacadeDemand demand = items.get(itemId - 1);
-                System.out.println("amount: ");
-                int amount = getIntFromUser(scanner);
-                pc.removeItemFromReport(demand, amount);
-                return pc.getCurrTruckReport();
-
-
-            default:
-                return null;
-        }
-    }
 
     private LinkedList<FacadeDemand> sortDemandsBySite(LinkedList<FacadeDemand> demands) {
         return pc.sortDemandsBySite(demands);
@@ -1040,8 +979,8 @@ public class Menu_Printer {
                     pc.deleteDriverConstarint(oldD, tr.getDate(), tr.getLeavingHour());
                     pc.deleteTruckConstarint(oldT, tr.getDate(), tr.getLeavingHour());
 
-                    String truckNumber = chooseTruck(scanner);
-                    String DriverID = chooseDriver(scanner);
+                    String truckNumber = chooseTruck(scanner,tr.getDate(),tr.getLeavingHour());
+                    String DriverID = chooseDriver(scanner,tr.getDate(),tr.getLeavingHour());
                     pc.replaceTruckAndDriver(truckNumber, DriverID, tr, weight);
                     pc.updateDeliveryFormRealWeight(fdf.getTrID(), fdf.getID(), weight);
                 } catch (InputMismatchException e) {
@@ -1077,8 +1016,8 @@ public class Menu_Printer {
 
     }
 
-    private String chooseDriver(Scanner scanner) throws ReflectiveOperationException {
-        LinkedList<FacadeDriver> drivers = pc.getAvailableDrivers();
+    private String chooseDriver(Scanner scanner, LocalDate date,  LocalTime shift) throws ReflectiveOperationException {
+        LinkedList<FacadeDriver> drivers = pc.getAvailableDrivers(date, shift);
         System.out.println("available Drivers:");
         int spot = 1;
         for (FacadeDriver d : drivers) {
@@ -1097,8 +1036,8 @@ public class Menu_Printer {
         return drivers.get(chose - 1).getID();
     }
 
-    private String chooseTruck(Scanner scanner) throws ReflectiveOperationException {
-        LinkedList<FacadeTruck> trucks = pc.getAvailableTrucksCurrTr();
+    private String chooseTruck(Scanner scanner, LocalDate date, LocalTime shift) throws ReflectiveOperationException {
+        LinkedList<FacadeTruck> trucks = pc.getAvailableTrucks(date, shift);
 
         System.out.println("available trucks:");
         int spot = 1;
@@ -1393,6 +1332,71 @@ public class Menu_Printer {
             }
             String truck = trucks.get(chose - 1).getLicenseNumber();
             pc.makeUnavailable_Truck(truck);
+        }
+    }*/
+
+    /*private FacadeTruckingReport rePlan(Scanner scanner) throws ReflectiveOperationException {
+
+        System.out.println("Welcome to replan menu! please choose the option you'd like to re plan the report with:");
+        int spot = 1;
+        System.out.println(spot + ") remove a site (all the products from this site and to it will be removed)");
+        spot++;
+        System.out.println(spot + ") switch demands  - removes a site and adds a new demand to add by choose");
+        spot++;
+        System.out.println(spot + ") change a truck");
+        spot++;
+        System.out.println(spot + ") remove item");
+        System.out.println("choose different number to quit");
+        System.out.print("place your option: ");
+        int option = getIntFromUser(scanner);
+        switch (option) {
+            case 1://remove site
+
+                removeSite(scanner);
+                return pc.getCurrTruckReport();
+
+            case 2://switch demand(=site)
+
+                removeSite(scanner);
+                chooseDemands(scanner);
+                return pc.getCurrTruckReport();
+
+            case 3://replace truck
+
+                System.out.println("choose new truck");
+                LinkedList<FacadeTruck> trucks = pc.getAvailableTrucks();
+                for (FacadeTruck ft : trucks) {
+                    System.out.println("Truck number: " + ft.getLicenseNumber() + "\tWeight neto: " + ft.getWeightNeto()
+                            + "\tMax weight: " + ft.getMaxWeight());
+                }
+                chooseTruckAndDriver(scanner);
+                return pc.getCurrTruckReport();
+
+            case 4://remove items
+
+                System.out.println("choose item to remove");
+                LinkedList<FacadeDemand> items = pc.getItemsOnTruck();
+                int counter = 1;
+                for (FacadeDemand demand : items) {
+                    System.out.println(counter + ") " +
+                            "amount: " + demand.getAmount() + " wight per unit: " + pc.getWeight(demand.getItemID())
+                            + "delivery site: " + pc.getSiteName(demand.getSite()));
+                }
+                System.out.print("your choice: ");
+                int itemId = getIntFromUser(scanner);
+                while (itemId > items.size() - 1 || itemId < 1) {
+                    System.out.println("your option is out of bounds, please choose again");
+                    itemId = getIntFromUser(scanner);
+                }
+                FacadeDemand demand = items.get(itemId - 1);
+                System.out.println("amount: ");
+                int amount = getIntFromUser(scanner);
+                pc.removeItemFromReport(demand, amount);
+                return pc.getCurrTruckReport();
+
+
+            default:
+                return null;
         }
     }*/
 

@@ -7,11 +7,9 @@ public class FacadeTruck implements FacadeObject{
     private  String licenseNumber;
     private int weightNeto;
     private  int maxWeight;
-    private boolean available;
 
     public FacadeTruck(String model,String licenseNumber,int weightNeto,int maxWeight)
     {
-        available=true;
         this.model = model;
         this.licenseNumber = licenseNumber;
         this.weightNeto = weightNeto;
@@ -24,13 +22,9 @@ public class FacadeTruck implements FacadeObject{
         this.licenseNumber = truck.getLicenseNumber();
         this.weightNeto = truck.getWeightNeto();
         this. maxWeight = truck.getMaxWeight();
-        this.available = truck.isAvailable();
     }
 
 
-    public boolean isAvailable() {
-        return available;
-    }
 
     public String  getLicenseNumber() {
         return licenseNumber;
@@ -47,13 +41,6 @@ public class FacadeTruck implements FacadeObject{
     public String getModel() {
         return model;
     }
-    public void setUnavailable()
-    {
-        this.available = false;
-    }
-    public void makeAvailable()
-    {
-       this.available = true;
-    }
+
 
 }

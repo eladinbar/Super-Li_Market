@@ -29,45 +29,19 @@ public class ResourcesService {
     }
 
 
-    public Truck chooseTruck(String truck) throws NoSuchElementException, IllegalStateException {
+    public Truck chooseTruck(String truck,LocalDate date, int shift) throws NoSuchElementException, IllegalStateException {
 
-        return rc.chooseTruck(truck);
-
-    }
-
-    public FacadeDriver chooseDriver(String driver) throws IllegalStateException, NoSuchElementException {
-
-        return new FacadeDriver(rc.chooseDriver(driver));
-
+        return rc.chooseTruck(truck,date,shift);
 
     }
 
+    public FacadeDriver chooseDriver(String driver,LocalDate date,  int shift) throws IllegalStateException, NoSuchElementException {
 
-    public void makeUnavailable_Driver(String driver) throws NoSuchElementException {
-        rc.makeUnavailable_Driver(driver);
+        return new FacadeDriver(rc.chooseDriver(driver,date,shift));
+
+
     }
 
-    public void makeAvailable_Driver(String driver) {
-        rc.makeAvailable_Driver(driver);
-    }
-
-    public void makeUnavailable_Truck(String truck) {
-        rc.makeUnavailable_Truck(truck);
-    }
-
-    public void makeAvailable_Truck(String truck) {
-        rc.makeAvailable_Truck(truck);
-    }
-
-  /*  public LinkedList<FacadeTruck> getAvailableTrucks() {
-        LinkedList<FacadeTruck> output =  new LinkedList<>();
-        HashMap<String , Truck> trucks =  rc.getAvailableTrucks();
-        for (Map.Entry<String ,Truck> entry:trucks.entrySet())
-        {
-            output.add(new FacadeTruck( entry.getValue()));
-        }
-        return output;
-    }*/
 
 
     public void addTruck(String model, String licenseNumber, int weightNeto, int maxWeight) throws KeyAlreadyExistsException {
@@ -81,15 +55,7 @@ public class ResourcesService {
     }
 
 
-    public LinkedList<FacadeDriver> getAvailableDrivers() {
-        HashMap<String, Driver> drivers = rc.getAvailableDrivers();
-        LinkedList<FacadeDriver> output = new LinkedList<>();
-        for (Map.Entry<String, Driver> entry : drivers.entrySet()) {
-            output.add(new FacadeDriver(entry.getValue()));
-        }
-        return output;
 
-    }
 
     public LinkedList<FacadeDriver> getDrivers() {
         HashMap<String, Driver> drivers = rc.getDrivers();
@@ -114,9 +80,6 @@ public class ResourcesService {
         rc.saveReport(date, shift);
     }
 
-    public void replaceTruck(String old_truck, String truckNumber) {
-        rc.replaceTruck(old_truck, truckNumber);
-    }
 
     public FacadeDriver getDriver(String driverID) {
         return new FacadeDriver(rc.getDriver(driverID));
@@ -165,3 +128,38 @@ public class ResourcesService {
         rc.addTruckConstraint(id,date,leavingHour);
     }
 }
+
+/*
+    public void replaceTruck(String old_truck, String truckNumber) {
+        rc.replaceTruck(old_truck, truckNumber);
+    }
+*/
+
+
+/*
+    public void makeUnavailable_Driver(String driver) throws NoSuchElementException {
+        rc.makeUnavailable_Driver(driver);
+    }
+
+    public void makeAvailable_Driver(String driver) {
+        rc.makeAvailable_Driver(driver);
+    }
+
+    public void makeUnavailable_Truck(String truck) {
+        rc.makeUnavailable_Truck(truck);
+    }
+
+    public void makeAvailable_Truck(String truck) {
+        rc.makeAvailable_Truck(truck);
+    }
+*/
+
+  /*  public LinkedList<FacadeTruck> getAvailableTrucks() {
+        LinkedList<FacadeTruck> output =  new LinkedList<>();
+        HashMap<String , Truck> trucks =  rc.getAvailableTrucks();
+        for (Map.Entry<String ,Truck> entry:trucks.entrySet())
+        {
+            output.add(new FacadeTruck( entry.getValue()));
+        }
+        return output;
+    }*/

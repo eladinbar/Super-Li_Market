@@ -239,38 +239,20 @@ public class ResourcesController {
         } else throw new NoSuchElementException("No such truck found");
     }
 
-    public HashMap<String, Driver> getAvailableDrivers() {
-        HashMap<String, Driver> result = new HashMap<>();
-        for (Map.Entry<String, Driver> entry : drivers.entrySet()) {
-            if (entry.getValue().isAvailable())
-                result.put(entry.getKey(), entry.getValue());
-        }
-        return result;
-    }
-
-   /* public HashMap<String, Truck> getAvailableTrucks() {
-        HashMap<String, Truck> result = new HashMap<>();
-        for (Map.Entry<String, Truck> entry : trucks.entrySet()) {
-            if (entry.getValue().isAvailable())
-                result.put(entry.getKey(), entry.getValue());
-        }
-        return result;
-    }*/
-
-    public Truck chooseTruck(String truck) throws IllegalStateException, NoSuchElementException {
+    public Truck chooseTruck(String truck, LocalDate date, int shift) throws IllegalStateException, NoSuchElementException {
 
         if (trucks.containsKey(truck)) {
-            if (trucks.get(truck).isAvailable()) {
+            if (isTruckAvailable(truck,date,shift)) {
                 currTruckNumber = truck;
                 return trucks.get(truck);
             } else throw new IllegalStateException("Truck already taken");
         } else throw new NoSuchElementException("No such truck");
     }
 
-    public Driver chooseDriver(String driver) throws IllegalStateException, NoSuchElementException {
+    public Driver chooseDriver(String driver,LocalDate date,  int shift) throws IllegalStateException, NoSuchElementException {
 
         if (drivers.containsKey(driver)) {
-            if (drivers.get(driver).isAvailable()) {
+            if (isDriverAvailable(driver,date,shift)) {
                 currDriverID = driver;
                 return drivers.get(driver);
             } else throw new IllegalStateException("Driver already taken");
@@ -279,28 +261,10 @@ public class ResourcesController {
     }
 
 
-    public void makeUnavailable_Driver(String driver) throws NoSuchElementException {
-        if (!drivers.containsKey(driver))
-            throw new NoSuchElementException("Driver does not exist");
-        drivers.get(driver).setUnavailable();
-    }
-
-    public void makeAvailable_Driver(String driver) {
-        drivers.get(driver).makeAvailable();
-    }
-
-    public void makeUnavailable_Truck(String truck) {
-        trucks.get(truck).setUnavailable();
-    }
-
-    public void makeAvailable_Truck(String truck) {
-        trucks.get(truck).makeAvailable();
-    }
 
     public void saveReport(LocalDate date, int shift) {
         addDriverConstraint(currDriverID, date, shift);
         addTruckConstraint(currTruckNumber,date,shift);
-        trucks.get(currTruckNumber).setUnavailable();
     }
 
     //<<<<<<<<<<<<<<<<<<<<<<<<<<<< getters setters >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
@@ -345,11 +309,7 @@ public class ResourcesController {
         ResourcesController.instance = instance;
     }
 
-    public void replaceTruck(String old_truck, String truckNumber) {
-        makeAvailable_Truck(currTruckNumber);
-        this.currTruckNumber = truckNumber;
-        makeUnavailable_Truck(truckNumber);
-    }
+
 
     public Driver getDriver(String driverID) {
         return drivers.get(driverID);
@@ -393,4 +353,73 @@ public class ResourcesController {
         }
         return output;
     }
+
+    private boolean isDriverAvailable(String driver, LocalDate date, int shift){
+
+        Integer cons =  drivers_constraints.get(driver).get(date);
+        if (cons ==  null)
+            return true;
+        else {
+            if ((cons.equals(shift)) || cons.equals(2))
+                return false;
+            else return true;
+        }
+    }
+
+    private  boolean isTruckAvailable(String truck, LocalDate date, int shift){
+        Integer cons =  trucks_constraints.get(truck).get(date);
+        if (cons ==  null)
+            return true;
+        else {
+            if ((cons.equals(shift)) || cons.equals(2))
+                return false;
+            else return true;
+        }
+    }
+
+    /*   public void replaceTruck(String old_truck, String truckNumber) {
+        deleteTruckConstraint(currTruckNumber);
+        this.currTruckNumber = truckNumber;
+        makeUnavailable_Truck(truckNumber);
+    }*/
+
+      /*  public void makeUnavailable_Driver(String driver) throws NoSuchElementException {
+        if (!drivers.containsKey(driver))
+            throw new NoSuchElementException("Driver does not exist");
+        drivers.get(driver).setUnavailable();
+    }
+
+    public void makeAvailable_Driver(String driver) {
+        drivers.get(driver).makeAvailable();
+    }
+
+    public void makeUnavailable_Truck(String truck) {
+        trucks.get(truck).setUnavailable();
+    }
+
+    public void makeAvailable_Truck(String truck) {
+        trucks.get(truck).makeAvailable();
+    }
+*/
+
+
+/*    public HashMap<String, Driver> getAvailableDrivers() {
+        HashMap<String, Driver> result = new HashMap<>();
+        for (Map.Entry<String, Driver> entry : drivers.entrySet()) {
+            if (entry.getValue().isAvailable())
+                result.put(entry.getKey(), entry.getValue());
+        }
+        return result;
+    }*/
+
+   /* public HashMap<String, Truck> getAvailableTrucks() {
+        HashMap<String, Truck> result = new HashMap<>();
+        for (Map.Entry<String, Truck> entry : trucks.entrySet()) {
+            if (entry.getValue().isAvailable())
+                result.put(entry.getKey(), entry.getValue());
+        }
+        return result;
+    }*/
+
+
 }

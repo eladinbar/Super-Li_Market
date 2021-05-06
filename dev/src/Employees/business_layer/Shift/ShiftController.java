@@ -8,6 +8,7 @@ import java.time.LocalDate;
 import java.time.temporal.TemporalField;
 import java.time.temporal.WeekFields;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
 
@@ -152,7 +153,7 @@ public class ShiftController {
         createShiftType ( "eveningShift", manning );
     }
 
-    public HashMap<LocalDate, HashMap<Integer, String>> getDaysAndDrivers(){
+    public HashMap<LocalDate, HashMap<Integer, LinkedList<String>>> getDaysAndDrivers(){
         return null;
     }
 

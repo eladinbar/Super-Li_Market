@@ -38,9 +38,9 @@ public class FacadeService {
     }
 
 
-    public FacadeTruck chooseTruck(String truck) throws NoSuchElementException, IllegalStateException {
+    public FacadeTruck chooseTruck(String truck,LocalDate date , LocalTime shift) throws NoSuchElementException, IllegalStateException {
         int weightToDeliver=deliveryService.getWeightOfCurrReport();
-        FacadeTruck ft =  new FacadeTruck(resourcesService.chooseTruck(truck));
+        FacadeTruck ft =  new FacadeTruck(resourcesService.chooseTruck(truck,date,turnTimeToShift(shift)));
         if (weightToDeliver+ ft.getWeightNeto()>ft.getMaxWeight())
         {
             throw new IllegalStateException("Total Weight is: "+(weightToDeliver+ft.getWeightNeto())+" But Truck can carry: "+ft.getMaxWeight());
@@ -58,8 +58,8 @@ public class FacadeService {
 
 
 
-    public FacadeDriver chooseDriver(String driver) throws IllegalStateException,NoSuchElementException{
-        FacadeDriver fd  = resourcesService.chooseDriver(driver);
+    public FacadeDriver chooseDriver(String driver, LocalDate date,  LocalTime shift) throws IllegalStateException,NoSuchElementException{
+        FacadeDriver fd  = resourcesService.chooseDriver(driver,date, turnTimeToShift(shift));
 
         FacadeTruck ft  = null;
         for (FacadeTruck ft2 : resourcesService.getTrucks()){
@@ -119,21 +119,6 @@ public class FacadeService {
         return deliveryService.getWeightOfCurrReport();
     }
 
-    public void makeUnavailable_Driver(String driver)throws NoSuchElementException {
-        resourcesService.makeUnavailable_Driver(driver);
-    }
-
-    public void makeAvailable_Driver(String driver) {
-        resourcesService.makeAvailable_Driver(driver);
-    }
-
-    public void makeUnavailable_Truck(String truck) {
-        resourcesService.makeUnavailable_Truck(truck);
-    }
-
-    public void makeAvailable_Truck(String truck) {
-        resourcesService.makeAvailable_Truck(truck);
-    }
 
 
 
@@ -258,14 +243,15 @@ public class FacadeService {
 
          if (deliveryService.checkIfAllCompleted(trID)){
              FacadeTruckingReport truckingReport = deliveryService.getTruckReport(trID);
-             resourcesService.makeAvailable_Driver(truckingReport.getDriverID());
-             resourcesService.makeAvailable_Truck(truckingReport.getTruckNumber());
+             // TODO need to think whether we want to implement somehow 2 deliveries in same shift
+    /*         resourcesService.makeAvailable_Driver(truckingReport.getDriverID());
+             resourcesService.makeAvailable_Truck(truckingReport.getTruckNumber());*/
              deliveryService.archive(trID);
 
          }
     }
 
-
+/*
     public void replaceTruck(int trid, String truckNumber, int weight) throws IllegalStateException,IllegalArgumentException,ProviderMismatchException{
         FacadeTruckingReport ftr=getTruckReport(trid);
         String old_truck=ftr.getTruckNumber();
@@ -304,7 +290,7 @@ public class FacadeService {
         resourcesService.replaceTruck(old_truck,truckNumber);
 
 
-    }
+    }*/
 
     public int getSiteDeliveryArea(int site) {
         return deliveryService.getSiteDeliveryArea(site);
@@ -313,8 +299,11 @@ public class FacadeService {
     public void removeSiteFromTruckReport(int siteID, int trID)throws NoSuchElementException{
         deliveryService.removeSiteFromTruckReport(siteID,trID);
         if (deliveryService.getCurrTruckingReport().getDestinations().isEmpty()){
-            resourcesService.makeAvailable_Truck(deliveryService.getCurrTruckingReport().getTruckNumber());
-            resourcesService.makeAvailable_Driver(deliveryService.getCurrTruckingReport().getDriverID());
+            FacadeTruckingReport ft =  getTruckReport(trID);
+            LocalDate date = ft.getDate();
+            int shift = turnTimeToShift(ft.getLeavingHour());
+            resourcesService.deleteTruckConstarint(ft.getTruckNumber(),date,shift);
+            resourcesService.deleteDriverConstarint(ft.getDriverID(),date,shift);
         }
         else{
             saveReportReplacedTruckReport();
@@ -387,8 +376,9 @@ public class FacadeService {
 
         int replacedId =  deliveryService.moveDemandsFromCurrentToReport(tr);
         FacadeTruckingReport replaced = deliveryService.getTruckReport(replacedId);
-        resourcesService.makeUnavailable_Driver(replaced.getDriverID());
-        resourcesService.makeUnavailable_Truck(replaced.getTruckNumber());
+        // TODO need to check why it is here
+  /*      resourcesService.makeUnavailable_Driver(replaced.getDriverID());
+        resourcesService.makeUnavailable_Truck(replaced.getTruckNumber());*/
 
     }
 
@@ -399,8 +389,9 @@ public class FacadeService {
             throw new InputMismatchException("the truck's cannot carry this weight");
         if (fd.getLicenseType().getSize()<(weight + ft.getWeightNeto()))
             throw new InputMismatchException("the driver cannot drive with this weight");
-        resourcesService.makeUnavailable_Truck(truckNumber);
-        resourcesService.makeUnavailable_Driver(driverID);
+        // TODO need to check why its here
+      /*  resourcesService.makeUnavailable_Truck(truckNumber);
+        resourcesService.makeUnavailable_Driver(driverID);*/
 
         deliveryService.setNewTruckToTR(tr.getID(),truckNumber);
         deliveryService.setNewDriverToTR(tr.getID(),driverID);
@@ -436,28 +427,17 @@ public class FacadeService {
         return resourcesService.getDriver(id);
     }
 
-    public LinkedList<FacadeTruck> getAvailableTrucks() {
-        FacadeTruckingReport tr =  deliveryService.getCurrTruckingReport();
-        LocalDate date = tr.getDate();
-        int shift ;
-        if (tr.getLeavingHour().isBefore(LocalTime.of(14,0)))
-            shift = 0;
-        else
-            shift =1;
+    public LinkedList<FacadeTruck> getAvailableTrucks(LocalDate date, LocalTime shift) {
 
-        return resourcesService.getAvailableTrucks(date, shift);
+
+        return resourcesService.getAvailableTrucks(date, turnTimeToShift(shift));
     }
 
-    public LinkedList<FacadeDriver> getAvailableDrivers() {
+    public LinkedList<FacadeDriver> getAvailableDrivers(LocalDate date, LocalTime shift) {
         FacadeTruckingReport tr =  deliveryService.getCurrTruckingReport();
-        LocalDate date = tr.getDate();
-        int shift ;
-        if (tr.getLeavingHour().isBefore(LocalTime.of(14,0)))
-            shift = 0;
-        else
-            shift =1;
 
-        return resourcesService.getAvailableDrivers(date, shift);
+
+        return resourcesService.getAvailableDrivers(date, turnTimeToShift(shift));
     }
 
     private int turnTimeToShift(LocalTime shift){
@@ -485,4 +465,22 @@ public class FacadeService {
     }
 }
 
+
+/*
+    public void makeUnavailable_Driver(String driver)throws NoSuchElementException {
+        resourcesService.makeUnavailable_Driver(driver);
+    }
+
+    public void makeAvailable_Driver(String driver) {
+        resourcesService.makeAvailable_Driver(driver);
+    }
+
+    public void makeUnavailable_Truck(String truck) {
+        resourcesService.makeUnavailable_Truck(truck);
+    }
+
+    public void makeAvailable_Truck(String truck) {
+        resourcesService.makeAvailable_Truck(truck);
+    }
+*/
 
