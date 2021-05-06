@@ -15,9 +15,8 @@ public class Employee {
     private BankAccountInfo bank;
     private HashMap<LocalDate, Constraint> constraints;
 
-    public Employee (String role, String ID, TermsOfEmployment terms, LocalDate transactionDate,  BankAccountInfo bank ) throws EmployeeException {
+    public Employee (String role, String ID, TermsOfEmployment terms, LocalDate transactionDate,  BankAccountInfo bank ) {
         this.role = Role.valueOf (role);
-        if(!validId(ID)){throw new EmployeeException("An invalid ID was entered ");}
         this.ID = ID;
         this.isManager = isManager(this.role);
         employed = true;
@@ -64,11 +63,6 @@ public class Employee {
         this.role = role;
     }
 
-    public void setID(String ID) throws EmployeeException {
-        if(!validId(ID)){throw new EmployeeException("An invalid ID was entered ");}
-        this.ID = ID;
-    }
-
     public void setEmployed(boolean employed) {
         this.employed = employed;
     }
@@ -111,6 +105,7 @@ public class Employee {
         else{ // if the employment has no constraint on that day.
             Constraint newConstraint;
             if(shift == 0){ // morning shift
+
                 newConstraint = new Constraint(date, true, false, reason );
             }
             else if( shift == 1){
@@ -148,17 +143,6 @@ public void deleteConstraint(LocalDate date, int shift) throws EmployeeException
 
     private boolean isManager(Role role){
         return role == Role.branchManager | role == Role.branchManagerAssistant | role == Role.humanResourcesManager;
-    }
-
-    private boolean validId(String ID){
-        if(ID.length () != 9)
-            return false;
-        try{
-            Integer.parseInt ( ID );
-            return true;
-        }catch (NumberFormatException n) {
-            return false;
-        }
     }
 
     private boolean validDate(LocalDate date) {

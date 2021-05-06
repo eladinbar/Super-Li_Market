@@ -71,6 +71,16 @@ public class EmployeeService {
         }
     }
 
+    public ResponseT<FacadeEmployee> addDriver(FacadeEmployee employee, String name) {
+        try{
+            employeeController.addDriver ( employee, name );
+            return new ResponseT<>(employee);
+        }
+        catch (EmployeeException e){
+            return new ResponseT<>(e.getMessage());
+        }
+    }
+
     public ResponseT<FacadeEmployee> addManager(FacadeEmployee manager) {
         try{
             return new ResponseT(new FacadeEmployee(employeeController.addManager(manager)));

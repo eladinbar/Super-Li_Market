@@ -7,9 +7,7 @@ public class BankAccountInfo {
     private int bankBranch;
     private String bank;
 
-    public BankAccountInfo( int accountNumber, int bankBranch, String bank ) throws EmployeeException {
-        if(accountNumber<0 | bankBranch<0){ throw new EmployeeException("Invalid account number or branch number entered");
-        }
+    public BankAccountInfo( int accountNumber, int bankBranch, String bank ){
         this.accountNumber = accountNumber;
         this.bankBranch = bankBranch;
         this.bank = bank;

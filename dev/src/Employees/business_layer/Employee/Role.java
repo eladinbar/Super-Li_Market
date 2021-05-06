@@ -8,5 +8,8 @@ public enum Role {
     cashier,
     guard,
     usher,
-    storeKeeper
+    storeKeeper,
+    truckingManager,
+    driverC,
+    driverC1
 }
