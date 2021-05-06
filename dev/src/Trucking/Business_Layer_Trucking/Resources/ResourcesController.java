@@ -82,7 +82,7 @@ public class ResourcesController {
             throw new IllegalArgumentException("couldn't find truck with such license Number");
     }
 
-    public void deleteConstraint(String id, LocalDate date, Integer shift, HashMap<String, HashMap<LocalDate, Integer>> constraints){
+    private void deleteConstraint(String id, LocalDate date, Integer shift, HashMap<String, HashMap<LocalDate, Integer>> constraints){
         String name;
         String obj;
         String idn;
@@ -165,13 +165,29 @@ public class ResourcesController {
             LocalDate date = entry.getKey();
             output.put(date, new HashMap<>());
             for (Map.Entry<Integer, LinkedList<String>> shift : entry.getValue().entrySet()) {     // loop for each shift
+                if (shift.getKey().equals(2)){
+                    for (String id : shift.getValue()) {                                            // runs through drivers with shift number = 2
+                        if (isDriverAvailable(id, date,2)){
+                            HashMap<Integer, LinkedList<String>> hash = output.get(date);
+                            for (int i = 0; i<2; i++) {
+                                if (hash.get(i) == null) {
+                                    hash.put(shift.getKey(), new LinkedList<>());
+                                }
+                                if (!hash.get(i).contains(id))
+                                    hash.get(shift.getKey()).add(id);
+                            }
+                        }
+
+                    }
+                }
                 for (String id : shift.getValue()) {                                               // runs through drivers
                     if (isDriverAvailable(id, date, shift.getKey())) {
                         HashMap<Integer, LinkedList<String>> hash = output.get(date);
-                        if (hash.get(shift) == null) {
+                        if (hash.get(shift.getKey()) == null) {
                             hash.put(shift.getKey(), new LinkedList<>());
                         }
-                        hash.get(shift.getKey()).add(id);
+                        if (!hash.get(shift.getKey()).contains(id))
+                            hash.get(shift.getKey()).add(id);
                     }
                 }
             }

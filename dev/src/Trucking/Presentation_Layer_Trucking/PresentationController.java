@@ -47,26 +47,6 @@ public class PresentationController {
 
 
 
-    public void makeUnavailable_Driver(String driver) throws NoSuchElementException
-    {
-        facadeService.makeUnavailable_Driver(driver);
-    }
-    public boolean makeAvailable_Driver(String driver)
-    {
-        facadeService.makeAvailable_Driver(driver);
-        return true;
-    }
-    public boolean makeUnavailable_Truck(String truck)
-    {
-
-        facadeService.makeUnavailable_Truck(truck);
-        return true;
-    }
-    public boolean makeAvailable_Truck(String truck)
-    {
-        facadeService.makeAvailable_Truck(truck);
-        return true;
-    }
 
     public void addTruck(String model, String licenseNumber , int weightNeto, int maxWeight) throws KeyAlreadyExistsException {
 
@@ -122,9 +102,7 @@ public class PresentationController {
         return facadeService.getItemWeight(itemID);
     }
 
-    public LinkedList<FacadeDriver> getAvailableDrivers() {
-        return facadeService.getAvailableDrivers();
-    }
+
 
     public FacadeDriver chooseDriver(String driverID) throws IllegalStateException,NoSuchElementException {
         return facadeService.chooseDriver(driverID);
@@ -308,5 +286,25 @@ public class PresentationController {
 
     public LinkedList<FacadeTruck> getAvailableTrucksCurrTr() {
         return facadeService.getAvailableTrucks();
+    }
+    public LinkedList<FacadeDriver> getAvailableDrivers(){
+        return facadeService.getAvailableDrivers();
+    }
+
+    public void deleteDriverConstarint(String id, LocalDate date, LocalTime leavingHour) {
+        facadeService.deleteDriverConstarint(id,date,leavingHour);
+    }
+
+    public void deleteTruckConstarint(String id, LocalDate date, LocalTime leavingHour) {
+        facadeService.deleteTruckConstarint(id, date,leavingHour);
+    }
+
+    public void addDriverConstraint(String id, LocalDate date, LocalTime leavingHour) {
+        facadeService.addDriverConstarint(id,date,leavingHour);
+
+    }
+
+    public void addTruckConstraint(String id, LocalDate date, LocalTime leavingHour) {
+        facadeService.addTruckConstraint(id,date,leavingHour);
     }
 }

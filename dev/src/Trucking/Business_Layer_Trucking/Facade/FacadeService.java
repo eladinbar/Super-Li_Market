@@ -179,9 +179,6 @@ public class FacadeService {
     }
 
 
-    public LinkedList<FacadeDriver> getAvailableDrivers() {
-        return resourcesService.getAvailableDrivers();
-    }
 
     public LinkedList<FacadeDriver> getDrivers() {
         return resourcesService.getDrivers();
@@ -451,11 +448,40 @@ public class FacadeService {
         return resourcesService.getAvailableTrucks(date, shift);
     }
 
+    public LinkedList<FacadeDriver> getAvailableDrivers() {
+        FacadeTruckingReport tr =  deliveryService.getCurrTruckingReport();
+        LocalDate date = tr.getDate();
+        int shift ;
+        if (tr.getLeavingHour().isBefore(LocalTime.of(14,0)))
+            shift = 0;
+        else
+            shift =1;
+
+        return resourcesService.getAvailableDrivers(date, shift);
+    }
+
     private int turnTimeToShift(LocalTime shift){
         if (shift.isBefore(LocalTime.of(14,0)))
             return 0;
         else
             return 1;
+    }
+
+    public void deleteDriverConstarint(String id, LocalDate date, LocalTime leavingHour) {
+        resourcesService.deleteDriverConstarint(id,date,turnTimeToShift(leavingHour));
+    }
+
+    public void deleteTruckConstarint(String id, LocalDate date, LocalTime leavingHour) {
+        resourcesService.deleteTruckConstarint(id,date,turnTimeToShift(leavingHour));
+    }
+
+    public void addDriverConstarint(String id, LocalDate date, LocalTime leavingHour) {
+        resourcesService.addDriverConstarint(id,date,turnTimeToShift(leavingHour));
+
+    }
+
+    public void addTruckConstraint(String id, LocalDate date, LocalTime leavingHour) {
+        resourcesService.addTruckConstraint(id,date,turnTimeToShift(leavingHour));
     }
 }
 

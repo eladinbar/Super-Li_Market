@@ -100,7 +100,7 @@ public class Menu_Printer {
         switch (chose){
             case 1:
                 try {
-                    addNewDriver(scanner);
+                    addNewTruck(scanner);
 
                 } catch (ReflectiveOperationException re) {
                     System.out.println(re.getMessage());
@@ -596,100 +596,6 @@ public class Menu_Printer {
         }
     }
 
-    private void makeDriverAvailable(Scanner scanner) throws ReflectiveOperationException {
-        LinkedList<FacadeDriver> drivers = pc.getDrivers();
-        if (drivers == null) System.out.println("no drivers in the system yet");
-        else {
-            System.out.println("drivers:");
-            int spot = 1;
-            for (FacadeDriver facadeDriver : drivers) {
-
-                System.out.println(spot + ")" + facadeDriver.getName() + ":\n" + "Driver ID: " + facadeDriver.getID() +
-                        " License Type: " + facadeDriver.getLicenseType() +
-                        " Available: " + facadeDriver.isAvailable());
-                spot++;
-            }
-            System.out.println("Choose Driver");
-            int chose = getIntFromUser(scanner);
-            while (chose < 1 || chose > spot) {
-                System.out.println("Option out of bounds, please choose again");
-                chose = getIntFromUser(scanner);
-            }
-            String driver = drivers.get(chose - 1).getID();
-            pc.makeAvailable_Driver(driver);
-        }
-    }
-
-    private void makeTruckAvailable(Scanner scanner) throws ReflectiveOperationException {
-        LinkedList<FacadeTruck> trucks = pc.getTrucks();
-        if (trucks == null) System.out.println("no trucks in the system yet");
-        else {
-            System.out.println("trucks:");
-            int spot = 1;
-            for (FacadeTruck truck : trucks) {
-                System.out.println(spot + ")Trucks License Number: " + truck.getLicenseNumber() +
-                        "\n model: " + truck.getModel() + " maxWeight: " + truck.getMaxWeight() + "\tavailable:" + truck.isAvailable());
-                spot++;
-            }
-            System.out.println("Choose truck by License:");
-            int chose = getIntFromUser(scanner);
-            while (chose < 1 || chose > spot) {
-                System.out.println("Option out of bounds, please choose again");
-                chose = getIntFromUser(scanner);
-            }
-            String truck = trucks.get(chose - 1).getLicenseNumber();
-            pc.makeAvailable_Truck(truck);
-        }
-    }
-
-    private void makeDriverUnavailable(Scanner scanner) throws ReflectiveOperationException {
-        LinkedList<FacadeDriver> drivers = pc.getAvailableDrivers();
-        if (drivers == null) System.out.println("no available drivers");
-        else {
-            System.out.println("available drivers:");
-            int spot = 1;
-            for (FacadeDriver facadeDriver : drivers) {
-                System.out.println(spot + ")" + facadeDriver.getName() + ":\n" + "Driver ID: " + facadeDriver.getID() +
-                        " License Type: " + facadeDriver.getLicenseType() +
-                        " Available: " + facadeDriver.isAvailable());
-                spot++;
-            }
-            System.out.println("Choose Driver by id");
-            int chose = getIntFromUser(scanner);
-            while (chose < 1 || chose > spot) {
-                System.out.println("Option out of bounds, please choose again");
-                chose = getIntFromUser(scanner);
-            }
-            String driver = drivers.get(chose - 1).getID();
-            try {
-                pc.makeUnavailable_Driver(driver);
-            } catch (NoSuchElementException e) {
-                System.out.println(e.getMessage());
-            }
-        }
-    }
-
-    private void makeTruckUnavailable(Scanner scanner) throws ReflectiveOperationException {
-        LinkedList<FacadeTruck> trucks = pc.getAvailableTrucks();
-        if (trucks == null) System.out.println("no available trucks");
-        else {
-            System.out.println("the available trucks:");
-            int spot = 1;
-            for (FacadeTruck truck : trucks) {
-                System.out.println(spot + ")Trucks License Number: " + truck.getLicenseNumber() +
-                        "\n model: " + truck.getModel() + " maxWeight: " + truck.getMaxWeight() + "\tavailable:" + truck.isAvailable());
-                spot++;
-            }
-            System.out.println("Choose truck:");
-            int chose = getIntFromUser(scanner);
-            while (chose < 1 || chose > spot) {
-                System.out.println("Option out of bounds, please choose again");
-                chose = getIntFromUser(scanner);
-            }
-            String truck = trucks.get(chose - 1).getLicenseNumber();
-            pc.makeUnavailable_Truck(truck);
-        }
-    }
 
     private void addNewTruck(Scanner scanner) throws ReflectiveOperationException {
         boolean con = true;
@@ -763,23 +669,6 @@ public class Menu_Printer {
             System.out.println("");
         }
 
-    }
-
-    private void chooseLeavingHour(Scanner scanner) throws ReflectiveOperationException {
-
-        System.out.print("please choose leaving time: \nhour: ");
-        int hour = getIntFromUser(scanner);
-        while (hour > 23) {
-            hour = getIntFromUser(scanner);
-        }
-        System.out.print("minutes: ");
-        int minute = getIntFromUser(scanner);
-        while (minute > 59) {
-            minute = getIntFromUser(scanner);
-        }
-        LocalTime time = LocalTime.of(hour, minute);
-
-        pc.chooseLeavingHour(time);
     }
 
     private void chooseDemands(Scanner scanner) throws ReflectiveOperationException {
@@ -1148,16 +1037,17 @@ public class Menu_Printer {
                 String oldT = tr.getTruckNumber();
                 try {
 
-                    pc.makeAvailable_Driver(oldD);
-                    pc.makeAvailable_Truck(oldT);
+                    pc.deleteDriverConstarint(oldD, tr.getDate(), tr.getLeavingHour());
+                    pc.deleteTruckConstarint(oldT, tr.getDate(), tr.getLeavingHour());
+
                     String truckNumber = chooseTruck(scanner);
                     String DriverID = chooseDriver(scanner);
                     pc.replaceTruckAndDriver(truckNumber, DriverID, tr, weight);
                     pc.updateDeliveryFormRealWeight(fdf.getTrID(), fdf.getID(), weight);
                 } catch (InputMismatchException e) {
                     System.out.println(e.getMessage());
-                    pc.makeUnavailable_Driver(oldD);
-                    pc.makeUnavailable_Truck(oldT);
+                    pc.addDriverConstraint(oldD,tr.getDate(),tr.getLeavingHour());
+                    pc.addTruckConstraint(oldD,tr.getDate(),tr.getLeavingHour());
                 }
                 break;
 
@@ -1388,6 +1278,123 @@ public class Menu_Printer {
         return output;
 
     }
+// old methods
+    /*
+
+    private void chooseLeavingHour(Scanner scanner) throws ReflectiveOperationException {
+
+        System.out.print("please choose leaving time: \nhour: ");
+        int hour = getIntFromUser(scanner);
+        while (hour > 23) {
+            hour = getIntFromUser(scanner);
+        }
+        System.out.print("minutes: ");
+        int minute = getIntFromUser(scanner);
+        while (minute > 59) {
+            minute = getIntFromUser(scanner);
+        }
+        LocalTime time = LocalTime.of(hour, minute);
+
+        pc.chooseLeavingHour(time);
+    }
+*/
+
+
+/*
+    private void makeDriverAvailable(Scanner scanner) throws ReflectiveOperationException {
+        LinkedList<FacadeDriver> drivers = pc.getDrivers();
+        if (drivers == null) System.out.println("no drivers in the system yet");
+        else {
+            System.out.println("drivers:");
+            int spot = 1;
+            for (FacadeDriver facadeDriver : drivers) {
+
+                System.out.println(spot + ")" + facadeDriver.getName() + ":\n" + "Driver ID: " + facadeDriver.getID() +
+                        " License Type: " + facadeDriver.getLicenseType() +
+                        " Available: " + facadeDriver.isAvailable());
+                spot++;
+            }
+            System.out.println("Choose Driver");
+            int chose = getIntFromUser(scanner);
+            while (chose < 1 || chose > spot) {
+                System.out.println("Option out of bounds, please choose again");
+                chose = getIntFromUser(scanner);
+            }
+            String driver = drivers.get(chose - 1).getID();
+            pc.makeAvailable_Driver(driver);
+        }
+    }*/
+
+  /*  private void makeTruckAvailable(Scanner scanner) throws ReflectiveOperationException {
+        LinkedList<FacadeTruck> trucks = pc.getTrucks();
+        if (trucks == null) System.out.println("no trucks in the system yet");
+        else {
+            System.out.println("trucks:");
+            int spot = 1;
+            for (FacadeTruck truck : trucks) {
+                System.out.println(spot + ")Trucks License Number: " + truck.getLicenseNumber() +
+                        "\n model: " + truck.getModel() + " maxWeight: " + truck.getMaxWeight() + "\tavailable:" + truck.isAvailable());
+                spot++;
+            }
+            System.out.println("Choose truck by License:");
+            int chose = getIntFromUser(scanner);
+            while (chose < 1 || chose > spot) {
+                System.out.println("Option out of bounds, please choose again");
+                chose = getIntFromUser(scanner);
+            }
+            String truck = trucks.get(chose - 1).getLicenseNumber();
+            pc.makeAvailable_Truck(truck);
+        }
+    }
+
+    private void makeDriverUnavailable(Scanner scanner) throws ReflectiveOperationException {
+        LinkedList<FacadeDriver> drivers = pc.getAvailableDrivers();
+        if (drivers == null) System.out.println("no available drivers");
+        else {
+            System.out.println("available drivers:");
+            int spot = 1;
+            for (FacadeDriver facadeDriver : drivers) {
+                System.out.println(spot + ")" + facadeDriver.getName() + ":\n" + "Driver ID: " + facadeDriver.getID() +
+                        " License Type: " + facadeDriver.getLicenseType() +
+                        " Available: " + facadeDriver.isAvailable());
+                spot++;
+            }
+            System.out.println("Choose Driver by id");
+            int chose = getIntFromUser(scanner);
+            while (chose < 1 || chose > spot) {
+                System.out.println("Option out of bounds, please choose again");
+                chose = getIntFromUser(scanner);
+            }
+            String driver = drivers.get(chose - 1).getID();
+            try {
+                pc.makeUnavailable_Driver(driver);
+            } catch (NoSuchElementException e) {
+                System.out.println(e.getMessage());
+            }
+        }
+    }*/
+/*
+    private void makeTruckUnavailable(Scanner scanner) throws ReflectiveOperationException {
+        LinkedList<FacadeTruck> trucks = pc.getAvailableTrucks();
+        if (trucks == null) System.out.println("no available trucks");
+        else {
+            System.out.println("the available trucks:");
+            int spot = 1;
+            for (FacadeTruck truck : trucks) {
+                System.out.println(spot + ")Trucks License Number: " + truck.getLicenseNumber() +
+                        "\n model: " + truck.getModel() + " maxWeight: " + truck.getMaxWeight() + "\tavailable:" + truck.isAvailable());
+                spot++;
+            }
+            System.out.println("Choose truck:");
+            int chose = getIntFromUser(scanner);
+            while (chose < 1 || chose > spot) {
+                System.out.println("Option out of bounds, please choose again");
+                chose = getIntFromUser(scanner);
+            }
+            String truck = trucks.get(chose - 1).getLicenseNumber();
+            pc.makeUnavailable_Truck(truck);
+        }
+    }*/
 
 
 }
