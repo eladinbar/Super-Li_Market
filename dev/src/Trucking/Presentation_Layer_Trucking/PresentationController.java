@@ -297,4 +297,12 @@ public class PresentationController {
     public LinkedList<FacadeTruckingReport> getOldTruckingReport() {
         return facadeService.getOldDTruckingReports();
     }
+
+    public HashMap<LocalDate, HashMap<Integer, LinkedList<String>>> getDaysAndDrivers() {
+        return facadeService.getDaysAndDrivers();
+    }
+
+    public FacadeDriver getDriver(String id) {
+        return facadeService.getDriver(id);
+    }
 }

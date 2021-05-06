@@ -7,6 +7,7 @@ import javax.management.openmbean.KeyAlreadyExistsException;
 import java.nio.file.ProviderMismatchException;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.HashMap;
 import java.util.InputMismatchException;
 import java.util.LinkedList;
 import java.util.NoSuchElementException;
@@ -426,6 +427,14 @@ public class FacadeService {
 
     public LinkedList<FacadeTruckingReport> getOldDTruckingReports() {
         return deliveryService.getOldDTruckingReports();
+    }
+
+    public HashMap<LocalDate, HashMap<Integer, LinkedList<String>>> getDaysAndDrivers() {
+        return resourcesService.getDayAndDrivers();
+    }
+
+    public FacadeDriver getDriver(String id) {
+        return resourcesService.getDriver(id);
     }
 }
 

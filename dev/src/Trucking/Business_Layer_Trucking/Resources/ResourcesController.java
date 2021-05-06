@@ -53,6 +53,13 @@ public class ResourcesController {
         }
 
     }
+    public void deleteDriverConstraint(String id, LocalDate date, Integer shift){
+        deleteConstraint(id, date, shift,drivers_constraints);
+    }
+
+    public void deleteTruckConstraint(String id, LocalDate date, Integer shift){
+        deleteConstraint(id,date,shift,trucks_constraints);
+    }
 
 
     public void addDriverConstraint(String driver_id, LocalDate date, Integer shift) throws IllegalArgumentException {

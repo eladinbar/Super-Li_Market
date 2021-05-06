@@ -9,6 +9,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.*;
 import java.util.Scanner;
+import java.util.prefs.PreferenceChangeListener;
 
 public class Menu_Printer {
     PresentationController pc;
@@ -25,10 +26,10 @@ public class Menu_Printer {
         return instance;
     }
 
+    //<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< Menus >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>.
 
-    public void mainMenu() {
-        Scanner scanner = new Scanner(System.in);
-        scanner.useDelimiter("\n");
+
+    public void mainMenu(Scanner scanner) {
         boolean keepGoing = true;
         while (keepGoing) {
             System.out.println("\n\nWelcome to Trucking Menu!\nplease choose the option you'd like:");
@@ -37,8 +38,35 @@ public class Menu_Printer {
             spot++;
             System.out.println(spot + ".\tCurrent Status");
             spot++;
-            System.out.println(spot + ".\tEdit System");
-            spot++;
+            System.out.println(spot + ".\tManager Options - Drivers and Trucks");
+
+
+            System.out.println(spot + ".\tGo back To Main Menu");
+            int choose = getIntFromUserMain(scanner);
+            spot =1;
+            boolean inside = true;
+            while (inside) {
+                switch (choose) {
+                    case 1:
+                        while (truckingReportMenu(scanner));
+                        break;
+                    case 2:
+                        while(currentStatusMenu(scanner));
+                        break;
+                    case 3:
+                        while(managerDriverAndTrucks(scanner));
+                        break;
+                    case 4:
+                        inside =false;
+                        break;
+
+                    default:
+                        System.out.println("option is out of bounds, please try again");
+                        break;
+                }
+
+            }
+
 
 
 
@@ -46,237 +74,259 @@ public class Menu_Printer {
 
     }
 
+    private boolean managerDriverAndTrucks(Scanner scanner){
+        int spot =1;
+        System.out.println(spot + "\tAdd new Truck to the System");
+        spot++;
 
-    public void startMenu() {
-        Scanner scanner = new Scanner(System.in);
-        scanner.useDelimiter("\n");
-        boolean keepGoing = true;
-        while (keepGoing) {
-            System.out.println("\n\nWelcome to Trucking Menu!\nplease choose the option you'd like:");
-            int spot = 1;
-            System.out.println(spot + ".\tCreate new Trucking Report");
-            spot++;
-            System.out.println(spot + ".\tShow Drivers");
-            spot++;
-            System.out.println(spot + ".\tShow Trucks");
-            spot++;
-            System.out.println(spot + ".\tShow Current Demands");
-            spot++; //4
-            System.out.println(spot + ".\tShow Active Trucking Reports");
-            spot++;
-            System.out.println(spot + ".\tShow Completed Active Reports");
-            spot++;
-            System.out.println(spot + ".\tAdd new Driver to the System");
-            spot++;
-            System.out.println(spot + "\tAdd new Truck to the System");
-            spot++;//8
-            System.out.println(spot + ".\tAdd new site to the System");
-            spot++;
-            System.out.println(spot + ".\tAdd new item to the System");
-            spot++;
-            System.out.println(spot + ".\tAdd new Demand to the System");
-            spot++;
-            System.out.println(spot + ".\tMake truck unavailable");
-            spot++;//12
-            System.out.println(spot + ".\tMake driver unavailable");
-            spot++;
-            System.out.println(spot + ".\tMake truck available");
-            spot++;
-            System.out.println(spot + ".\tMake driver available");
-            spot++;
-            System.out.println(spot + "\tUpdate a Trucking report and its Delivery Form's leaving weight");
-            spot++; //16
-            System.out.println(spot + ".\tRemove item from the system");
-            spot++;
-            System.out.println(spot + ".\tRemove site from the system");
-            spot++;
-            System.out.println(spot + ".\tRemove Demand from the system");
-            spot++;
-            System.out.println(spot + ".\tGo back to Main Menu");// 20
 
-            scanner.useDelimiter("[\\,\\n\\r]+");
+        System.out.println(spot + ".\tAdd new site to the System"); // 2
+        spot++;
+        System.out.println(spot + ".\tAdd new item to the System");
+        spot++;
+        System.out.println(spot + ".\tAdd new Demand to the System");
+        spot++;
 
-            int choose = 0;
-            choose = getIntFromUserMain(scanner);
-            //choose = getIntFromUserMain(scanner);
-            switch (choose) {
 
-                case 1:
-                    try {
-                        checkAvailableTrucksAndDrivers();
-                        pc.CreateReport();
-                        chooseDemands(scanner);
-                        chooseTruckAndDriver(scanner);
-                        boolean timeCon = true;
-                        while (timeCon) {
-                            try {
-                                chooseLeavingHour(scanner);
-                                chooseDate(scanner);
-                                timeCon = false;
-                            } catch (IllegalArgumentException e) {
-                                System.out.println(e.getMessage());
-                            }
+        System.out.println(spot + ".\tRemove item from the system");
+        spot++;
+        System.out.println(spot + ".\tRemove site from the system");//6
+        spot++;
+        System.out.println(spot + ".\tRemove Demand from the system");
+        spot++;
+        System.out.println(spot + ".\tGo back To Main Menu");
+
+        int chose = getIntFromUserMain(scanner);
+        switch (chose){
+            case 1:
+                try {
+                    addNewDriver(scanner);
+
+                } catch (ReflectiveOperationException re) {
+                    System.out.println(re.getMessage());
+                }
+
+                break;
+            case 2:
+                try {
+                    addSite(scanner);
+                } catch (ReflectiveOperationException re) {
+                    System.out.println(re.getMessage());
+                }
+                break;
+            case 3:
+                try {
+                    addItem(scanner);
+                } catch (ReflectiveOperationException re) {
+                    System.out.println(re.getMessage());
+                }
+                break;
+
+            case 4:
+                try {
+                    addDemandToSystem(scanner);
+                } catch (ReflectiveOperationException re) {
+                    System.out.println(re.getMessage());
+                }
+                break;
+            case 5:
+                try {
+                    removeItemFromPool(scanner);
+                } catch (ReflectiveOperationException re) {
+                    System.out.println(re.getMessage());
+                }
+                break;
+            case 6:
+                try {
+                    removeSiteFromPool(scanner);
+                } catch (ReflectiveOperationException e) {
+                    System.out.println(e.getMessage());
+                }
+                break;
+
+            case 7:
+                try {
+                    removeDemandFromPool(scanner);
+                } catch (ReflectiveOperationException e) {
+                    System.out.println(e.getMessage());
+                }
+
+
+            case 8:
+                return false;
+            default:
+                System.out.println("option is out of bounds, please try again");
+                break;
+
+        }
+        return true;
+
+    }
+
+    private boolean currentStatusMenu(Scanner scanner){
+        int spot =1;
+        System.out.println(spot + ".\tShow Drivers");
+        spot++;
+        System.out.println(spot + ".\tShow Trucks");
+        spot++;
+        System.out.println(spot + ".\tShow Current Demands");
+        spot++; //4
+        System.out.println(spot + ".\tShow Active Trucking Reports"); // 4
+        spot++;
+        System.out.println(spot + ".\tShow Completed Active Reports");
+        spot++;
+        System.out.println(spot + ".\tGo back To Main Menu");
+
+        int chose = getIntFromUserMain(scanner);
+        switch (chose){
+            case 1:
+                printDrivers();
+                break;
+            case 2:
+                printTrucks();
+                break;
+            case 3:
+                printDemands();
+                break;
+            case 4:
+                showActiveTruckingReports();
+                break;
+            case 5:
+                showOldDeliveryForm();
+                break;
+            case 6:
+                return false;
+            default:
+                System.out.println("option is out of bounds, please try again");
+                break;
+
+        }
+        return true;
+    }
+
+
+
+    private boolean truckingReportMenu(Scanner scanner){
+        int spot =1;
+        System.out.println(spot + ".\tCreate new Trucking Report");
+        spot++;
+        System.out.println(spot + "\tUpdate a Trucking report and its Delivery Form's leaving weight");
+        spot++;
+        System.out.println(spot + "\tGo back To Trucking Main Menu");
+        spot ++;
+        System.out.print("please choose the option you'd like: " );
+        int chose = getIntFromUserMain(scanner);
+        switch (chose){
+            case 1:
+                try {
+                    pc.CreateReport();
+                    chooseDate(scanner);
+                    chooseDemands(scanner);
+                    chooseTruckAndDriver(scanner);
+                    boolean timeCon = true;
+                    while (timeCon) {
+                        try {
+                            chooseLeavingHour(scanner);
+                            chooseDate(scanner);
+                            timeCon = false;
+                        } catch (IllegalArgumentException e) {
+                            System.out.println(e.getMessage());
                         }
-                        pc.saveReport();
-
-
-                    } catch (ReflectiveOperationException re) {
-                        System.out.println(re.getMessage());
                     }
-
-                    break;
-
-
-                case 2:
-                    LinkedList<FacadeDriver> drivers = pc.getDrivers();
-                    if (drivers == null) System.out.println("no Drivers in the system yet");
-                    else {
-                        for (FacadeDriver facadeDriver : drivers) {
-                            System.out.println(facadeDriver.getName() + ":\n" + "Driver ID: " + facadeDriver.getID() +
-                                    " License Type: " + facadeDriver.getLicenseType() +
-                                    " Available: " + facadeDriver.isAvailable());
-                        }
-                    }
-                    break;
-
-                case 3:
-                    LinkedList<FacadeTruck> trucks = pc.getTrucks();
-                    for (FacadeTruck truck : trucks) {
-                        System.out.println("Trucks License Number: " + truck.getLicenseNumber() +
-                                "\nmodel: " + truck.getModel() + " maxWeight: " + truck.getMaxWeight()
-                                + " Available: " + truck.isAvailable());
-                    }
-                    break;
-                case 4:
-                    try {
-
-                        LinkedList<FacadeDemand> demands = pc.getAllDemands();
-                        demands = sortDemandsBySite(demands);
-
-                        printDemands(demands);
-
-                    } catch (NoSuchElementException ne) {
-                        System.out.println(ne.getMessage());
-                    }
-
-                    break;
-                case 5:
-                    showActiveTruckingReports();
-                    break;
-                case 6:
-                    showOldDeliveryForm();
-                    break;
+                    pc.saveReport();
 
 
-                case 7:
-                    try {
-                        addNewDriver(scanner);
+                } catch (ReflectiveOperationException re) {
+                    System.out.println(re.getMessage());
+                }
 
-                    } catch (ReflectiveOperationException re) {
-                        System.out.println(re.getMessage());
-                    }
-
-                    break;
-                case 8:
-                    try {
-                        addNewTruck(scanner);
-
-                    } catch (ReflectiveOperationException re) {
-                        System.out.println(re.getMessage());
-                    }
-                    break;
-                case 9:
-                    try {
-                        addSite(scanner);
-                    } catch (ReflectiveOperationException re) {
-                        System.out.println(re.getMessage());
-                    }
-                    break;
-                case 10:
-                    try {
-                        addItem(scanner);
-                    } catch (ReflectiveOperationException re) {
-                        System.out.println(re.getMessage());
-                    }
-                    break;
-
-                case 11:
-                    try {
-                        addDemandToSystem(scanner);
-                    } catch (ReflectiveOperationException re) {
-                        System.out.println(re.getMessage());
-                    }
-                    break;
-                case 12:
-                    try {
-                        makeTruckUnavailable(scanner);
-                    } catch (ReflectiveOperationException re) {
-                        System.out.println(re.getMessage());
-                    }
-                    break;
-                case 13:
-                    try {
-                        makeDriverUnavailable(scanner);
-                    } catch (ReflectiveOperationException re) {
-                        System.out.println(re.getMessage());
-                    }
-                    break;
-                case 14:
-                    try {
-                        makeTruckAvailable(scanner);
-                    } catch (ReflectiveOperationException re) {
-                        System.out.println(re.getMessage());
-                    }
-                    break;
-                case 15:
-                    try {
-                        makeDriverAvailable(scanner);
-                    } catch (ReflectiveOperationException re) {
-                        System.out.println(re.getMessage());
-                    }
-                    break;
-                case 16:
-                    try {
-                        updateDeliveryForm(scanner);
-                    } catch (ReflectiveOperationException re) {
-                        System.out.println(re.getMessage());
-                    }
-                    break;
-                case 17:
-                    try {
-                        removeItemFromPool(scanner);
-                    } catch (ReflectiveOperationException re) {
-                        System.out.println(re.getMessage());
-                    }
-                    break;
-                case 18:
-                    try {
-                        removeSiteFromPool(scanner);
-                    } catch (ReflectiveOperationException e) {
-                        System.out.println(e.getMessage());
-                    }
-                    break;
-
-                case 19:
-                    try {
-                        removeDemandFromPool(scanner);
-                    } catch (ReflectiveOperationException e) {
-                        System.out.println(e.getMessage());
-                    }
-                    break;
-                case 20:
-
-                    System.out.println("this option isn't supported yet. to be continue");
+                break;
+            case 2:
+                try {
+                    updateDeliveryForm(scanner);
+                } catch (ReflectiveOperationException re) {
+                    System.out.println(re.getMessage());
+                }
+                break;
+            case 3:
+                return false;
+            default:
+                System.out.println("option is out of bounds, please try again");
+                break;
+        }
+        return true;
 
 
-                    break;
-                default:
-                    System.out.println("option is out of bounds");
 
+    }
+
+
+//<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<Print Methods >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+    private void printTrucks() {
+        LinkedList<FacadeTruck> trucks = pc.getTrucks();
+        for (FacadeTruck truck : trucks) {
+            System.out.println("Trucks License Number: " + truck.getLicenseNumber() +
+                    "\nmodel: " + truck.getModel() + " maxWeight: " + truck.getMaxWeight()
+                    + " Available: " + truck.isAvailable());
+        }
+    }
+
+    private void printDemands() {
+        try {
+
+            LinkedList<FacadeDemand> demands = pc.getAllDemands();
+            demands = sortDemandsBySite(demands);
+
+            printDemands(demands);
+
+        } catch (NoSuchElementException ne) {
+            System.out.println(ne.getMessage());
+        }
+    }
+
+
+    private void printDrivers() {
+        LinkedList<FacadeDriver> drivers = pc.getDrivers();
+        if (drivers == null) System.out.println("no Drivers in the system yet");
+        else {
+            for (FacadeDriver facadeDriver : drivers) {
+                printDriverDetails(facadeDriver);
             }
         }
     }
 
+
+
+
+    private void printDateOptions(LocalDate date, HashMap<Integer, LinkedList<String>> shiftAndDrivers, int spot) {
+        for (Map.Entry<Integer, LinkedList<String>> entry: shiftAndDrivers.entrySet()){
+            System.out.println(spot+"./t"+date + "\tshift start time:"+ turnShiftToTimes(entry.getKey()));
+            System.out.println("The Drivers available for this shift:");
+            for (String id: entry.getValue()){
+                printDriverDetails(pc.getDriver(id));
+            }
+
+        }
+
+    }
+
+    private void printDriverDetails(FacadeDriver driver){
+        System.out.println("\t" + driver.getName() + ":\n\t" + "Driver ID: " + driver.getID() +
+                "\tLicense Type: " + driver.getLicenseType());
+    }
+
+
+
+    // <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< methods >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+    private LocalTime turnShiftToTimes(int shift){
+        if (shift == 1)
+            return LocalTime.of(6,0);
+        else
+            return LocalTime.of(14,0);
+
+    }
     private void showOldDeliveryForm() {
         LinkedList<FacadeTruckingReport> truckingReports = pc.getOldTruckingReport();
         if (truckingReports.isEmpty())
@@ -310,7 +360,7 @@ public class Menu_Printer {
                     rep = "" + tr.getTRReplace().getID();
                 }
                 System.out.println(spot + ")\tTrucking report ID: " + tr.getID() + "\nOrigin site:" + tr.getOrigin() + "\tDate:" + tr.getDate() +
-                        "\tLeaveing Hour:" + tr.getLeavingHour() + "\nreplaced:" + rep);
+                        "\tLeaving Hour:" + tr.getLeavingHour() + "\nreplaced:" + rep);
                 System.out.println("related delivery form");
 
                 spot++;
@@ -339,26 +389,53 @@ public class Menu_Printer {
     }
 
     private void chooseDate(Scanner scanner) throws IllegalArgumentException, ReflectiveOperationException {
-        boolean dateCon = true;
-        while (dateCon) {
-            System.out.println("please choose the date you'd like the delivery to be executed:");
-            System.out.print("year:");
-            int year = getIntFromUser(scanner);
-            System.out.print("month:");
-            int month = getIntFromUser(scanner);
-            System.out.print("day:");
-            int day = getIntFromUser(scanner);
-            try {
-                LocalDate chosen = LocalDate.of(year, month, day);
-                dateCon = false;
-                pc.chooseDateToCurrentTR(chosen);
-            } catch (DateTimeException de) {
-                System.out.println("date is invalid, try again");
 
+        HashMap<LocalDate, HashMap<Integer, LinkedList<String>>> daysAndDrivers = pc.getDaysAndDrivers();
+        int spot =1;
+        if (daysAndDrivers.isEmpty()){
+            throw new ReflectiveOperationException("no possible dates to deliver.");
+        }
+        for (Map.Entry<LocalDate, HashMap<Integer, LinkedList<String>>> entry: daysAndDrivers.entrySet()){
+            printDateOptions(entry.getKey(),entry.getValue() ,spot);
+            spot ++;
+
+        }
+        int chose = getIntFromUser(scanner);
+        while (chose <1 || chose > daysAndDrivers.size())
+            chose = getIntFromUser(scanner);
+        LocalDate toInsert;
+        spot =1;
+        for (Map.Entry<LocalDate, HashMap<Integer, LinkedList<String>>> entry: daysAndDrivers.entrySet()){
+            if (spot == chose) {
+                System.out.println("The date you choose: " + entry.getKey());
+                LocalTime time = null;
+                if (entry.getValue().size()>1){
+                    System.out.print("please choose the shift for this date:\n1.\tmorning shift\n2.\tafter-noon shift");
+                    int c = getIntFromUser(scanner);
+                    while (c<1 || c> 2) {
+                        c = getIntFromUser(scanner);
+                    }
+                    c = c-1;
+                    time  = turnShiftToTimes(c);
+
+
+
+                }
+                toInsert = entry.getKey();
+                pc.chooseDateToCurrentTR(toInsert);
+                pc.chooseLeavingHour(time);
+
+                break;
             }
+
         }
 
+
+
+
     }
+
+
 
     private void removeSiteFromPool(Scanner scanner) throws ReflectiveOperationException {
         System.out.println("please choose the site you'd like to remove");
@@ -434,6 +511,9 @@ public class Menu_Printer {
             System.out.println(ne.getMessage());
         }
     }
+
+
+
 
     private void removeItemFromPool(Scanner scanner) throws ReflectiveOperationException {
         LinkedList<FacadeItem> items = pc.getAllItems();
@@ -1199,6 +1279,12 @@ public class Menu_Printer {
         pc.addDemandToSystem(6, 6, 500);
     }
 
+    /**
+     * ask the user for int input, if not int, asks again with a message
+     * this method, does not receive -1 as special case
+     * @param scanner Scanner from java utils
+     * @return the user's int
+     */
     private int getIntFromUserMain(Scanner scanner) {
 
         int choose = -1;
@@ -1222,6 +1308,12 @@ public class Menu_Printer {
 
     }
 
+    /**
+     * ask the user for int input, if not int, asks again with a message
+     * @param scanner
+     * @return
+     * @throws ReflectiveOperationException if -1 received
+     */
     private int getIntFromUser(Scanner scanner) throws ReflectiveOperationException {
         int choose = -1;
         boolean scannerCon = true;

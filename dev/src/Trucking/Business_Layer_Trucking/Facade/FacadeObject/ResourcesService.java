@@ -5,6 +5,7 @@ import Trucking.Business_Layer_Trucking.Resources.ResourcesController;
 import Trucking.Business_Layer_Trucking.Resources.Truck;
 
 import javax.management.openmbean.KeyAlreadyExistsException;
+import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
@@ -126,5 +127,9 @@ public class ResourcesService
     public FacadeTruck getTruck(String truckNumber) {
         return new FacadeTruck(rc.getTruck(truckNumber));
 
+    }
+
+    public HashMap<LocalDate, HashMap<Integer, LinkedList<String>>> getDayAndDrivers() {
+        return rc.getDaysAndDrivers();
     }
 }
