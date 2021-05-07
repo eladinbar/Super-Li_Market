@@ -11,4 +11,16 @@ public class DalDriver implements DalObject {
         this.name = name;
         this.license=license;
     }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getID() {
+        return ID;
+    }
+
+    public String getLicense() {
+        return license;
+    }
 }

@@ -1,16 +1,46 @@
 package DAL;
 
 public class DalSite implements DalObject{
-    private int ID;
-    private double weight;
+    private int siteID;
     private String name;
-    private int originSite;
+    private String city;
+    private int deliveryArea;
+    private String contactName;
+    private String phoneNumber;
 
-    public DalSite(int ID,double weight,String name,int originSite)
+
+    public DalSite(int siteID,String name,String city,int deliveryArea,String contactName,String phoneNumber)
     {
-        this.ID=ID;
-        this.weight=weight;
+        this.siteID=siteID;
         this.name=name;
-        this.originSite=originSite;
+        this.city=city;
+        this.deliveryArea=deliveryArea;
+        this.contactName=contactName;
+        this.phoneNumber=phoneNumber;
+
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public int getSiteID() {
+        return siteID;
+    }
+
+    public int getDeliveryArea() {
+        return deliveryArea;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public String getContactName() {
+        return contactName;
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
     }
 }

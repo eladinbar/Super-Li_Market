@@ -1,8 +1,8 @@
 package DAL;
 
 public class DalTruck implements DalObject{
-    private String model;
     private String licenseNumber;
+    private String model;
     private int weightNeto;
     private int maxWeight;
 
@@ -12,5 +12,21 @@ public class DalTruck implements DalObject{
         this.maxWeight=maxWeight;
         this.model=model;
         this.weightNeto=weightNeto;
+    }
+
+    public int getMaxWeight() {
+        return maxWeight;
+    }
+
+    public int getWeightNeto() {
+        return weightNeto;
+    }
+
+    public String getLicenseNumber() {
+        return licenseNumber;
+    }
+
+    public String getModel() {
+        return model;
     }
 }
