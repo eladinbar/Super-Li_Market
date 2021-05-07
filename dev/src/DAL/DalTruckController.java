@@ -15,7 +15,6 @@ public class DalTruckController extends DalController{
 
     public boolean insert(DalTruck dalTruck) throws SQLException {
         //TODO - change URL
-        boolean done=false;
         System.out.println("starting insert");
         Connection conn= DriverManager.getConnection("jdbc:sqlite:/D:\\Year2\\ניתוצ\\עבודה 2\\database.db");
         String query= "INSERT INTO "+tableName+" VALUES (?,?,?,?)";
@@ -27,7 +26,7 @@ public class DalTruckController extends DalController{
             st.setInt(4,dalTruck.getMaxWeight());
 
             System.out.println("executing insert");
-            done=st.execute();
+            st.executeUpdate();
 
         }
         catch (SQLException e){
@@ -37,7 +36,7 @@ public class DalTruckController extends DalController{
             conn.close();
         }
 
-        return done;
+        return true;
 
 
     }
@@ -68,11 +67,11 @@ public class DalTruckController extends DalController{
 
     public boolean delete(DalTruck dalTruck) throws SQLException {
         Connection conn=DriverManager.getConnection("jdbc:sqlite:/D:\\Year2\\ניתוצ\\עבודה 2\\database.db");
-        String query="DELETE FROM "+tableName+" WHERE ?=? ";
+        String query="DELETE FROM "+tableName+" WHERE"+columnNames[0]+"=?";
         try {
             PreparedStatement st=conn.prepareStatement(query);
-            st.setString(1,columnNames[0]);
-            st.setString(2,dalTruck.getLicenseNumber());
+
+            st.setString(1,dalTruck.getLicenseNumber());
             st.executeUpdate();
         }
         catch (SQLException e)
