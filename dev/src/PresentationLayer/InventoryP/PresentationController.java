@@ -92,11 +92,11 @@ public class PresentationController implements Runnable {
         Response r;
         switch (choice) {
             case "1":
-                String newName = menu.instructAndReceive("Enter new item name");
+                String newName = menu.instructAndReceive("Enter new item name: ");
                 r = service.modifyItemName(itemId, newName);
                 break;
             case "2":
-                String newCategory = menu.instructAndReceive("Enter new item category");
+                String newCategory = menu.instructAndReceive("Enter new item category: ");
                 r = service.modifyItemCategory(itemId, newCategory);
                 break;
             case "3":
@@ -108,11 +108,11 @@ public class PresentationController implements Runnable {
                 r = service.modifyItemSellingPrice(itemId, newSPrice);
                 break;
             case "5":
-                String newLocationST = menu.instructAndReceive("Enter new item storage location");
+                String newLocationST = menu.instructAndReceive("Enter new item storage location: ");
                 r = service.changeItemStorageLocation(itemId, newLocationST);
                 break;
             case "6":
-                String newLocationSH = menu.instructAndReceive("Enter new item shelf location");
+                String newLocationSH = menu.instructAndReceive("Enter new item shelf location: ");
                 r = service.changeItemShelfLocation(itemId, newLocationSH);
                 break;
             case "7":
@@ -122,14 +122,6 @@ public class PresentationController implements Runnable {
             case "8":
                 int newQuantitySH = menu.instructAndReceive("Enter storage quantity: ", Integer.class);
                 r = service.modifyItemShelfQuantity(itemId, newQuantitySH);
-                break;
-            case "9":
-                int newSupplier = menu.instructAndReceive("\"Add new supplier for the item: (enter supplier ID)\"): ", Integer.class);
-                r = service.addItemSupplier(itemId, newSupplier);
-                break;
-            case "10":
-                int oldSupplier = menu.instructAndReceive("Remove a supplier for the item: (enter supplier ID)", Integer.class);
-                r = service.removeItemSupplier(itemId, oldSupplier);
                 break;
             default:
                 r = new Response(true, "Invalid choice");
@@ -644,7 +636,7 @@ public class PresentationController implements Runnable {
 
     private void mainMenu() {
         menu.printMainMenu();
-        String choice = menu.instructAndReceive("select a menu to open");
+        String choice = menu.instructAndReceive("select a menu to open: ");
         switch (choice) {
             case "1":
                 inventoryMainMenu();
@@ -670,7 +662,7 @@ public class PresentationController implements Runnable {
         System.out.println("4. get order");
         System.out.println("5. add product to order");
         System.out.println("6. remove product from order");
-        String chooseInsideMenu = menu.instructAndReceive("enter choice ");
+        String chooseInsideMenu = menu.instructAndReceive("enter choice: ");
         switch (chooseInsideMenu) {
             case "1" -> createNewOrder();
             case "2" -> setPermanentOrder();
@@ -694,8 +686,8 @@ public class PresentationController implements Runnable {
     private void setPermanentOrder() { //case 7
         int day = menu.instructAndReceive("day (1-7) in a week to get the order", Integer.class);
         while(true) {
-            int itemID = menu.instructAndReceive("enter item ID to add to a scheduled order", Integer.class);
-            int amount = menu.instructAndReceive("enter amount to order", Integer.class);
+            int itemID = menu.instructAndReceive("enter item ID to add to a scheduled order: ", Integer.class);
+            int amount = menu.instructAndReceive("enter amount to order: ", Integer.class);
             String order = Service.createScheduledOrder(day, itemID, amount).value.toString();
             System.out.println(order);
             String choice = menu.instructAndReceive("1. add more items.\nenter any other key for completing the order ");
@@ -708,22 +700,22 @@ public class PresentationController implements Runnable {
 
     //a helper function that approve that the order arrived in the system
     private void approveOrder() {
-        int orderID = menu.instructAndReceive("please enter order ID", Integer.class);
+        int orderID = menu.instructAndReceive("please enter order ID: ", Integer.class);
         System.out.println(pc.approveOrder(orderID));
     }
 
     //a helper function to get an order from the system
     private void getOrder() {
-        int orderID = menu.instructAndReceive("please enter order ID", Integer.class);
+        int orderID = menu.instructAndReceive("please enter order ID: ", Integer.class);
         System.out.println(pc.getOrder(orderID));
     }
 
     //todo: check what kind of id is checked (company/System)
     //a helper function to add a product to an order
     private void addProductToOrder() {
-        int orderID = menu.instructAndReceive("please enter order ID", Integer.class);
-        int productID = menu.instructAndReceive("please enter item ID", Integer.class);
-        int amount = menu.instructAndReceive("enter amount to order", Integer.class);
+        int orderID = menu.instructAndReceive("please enter order ID: ", Integer.class);
+        int productID = menu.instructAndReceive("please enter item ID: ", Integer.class);
+        int amount = menu.instructAndReceive("enter amount to order: ", Integer.class);
         System.out.println(pc.addProductToOrder(orderID, productID, amount));
     }
 
@@ -1111,7 +1103,7 @@ public class PresentationController implements Runnable {
     }
     private void inventoryMainMenu() {
         menu.printInventoryMainMenu();
-        String choice = menu.instructAndReceive("Select a sub menu");
+        String choice = menu.instructAndReceive("Select a sub menu: ");
 
         switch (choice) {
             case "1":
@@ -1142,7 +1134,7 @@ public class PresentationController implements Runnable {
 
     private void itemMenuOperations() {
         menu.printItemMenu();
-        String choice = menu.instructAndReceive("Select item option");
+        String choice = menu.instructAndReceive("Select item option: ");
         switch (choice) {
             case "1":
                 showItem();
@@ -1164,7 +1156,7 @@ public class PresentationController implements Runnable {
 
     private void categoryMenuOperations() {
         menu.printCategoryMenu();
-        String choice = menu.instructAndReceive("Select category option");
+        String choice = menu.instructAndReceive("Select category option: ");
         switch (choice) {
             case "1":
                 showCategory();
@@ -1186,7 +1178,7 @@ public class PresentationController implements Runnable {
 
     private void saleMenuOperations() {
         menu.printSaleMenu();
-        String choice = menu.instructAndReceive("Select Sale option");
+        String choice = menu.instructAndReceive("Select Sale option: ");
         switch (choice) {
             case "1":
                 showSale();
@@ -1208,7 +1200,7 @@ public class PresentationController implements Runnable {
 
     private void discountMenuOperations() {
         menu.printDiscountMenu();
-        String choice = menu.instructAndReceive("Select supplier discount option");
+        String choice = menu.instructAndReceive("Select supplier discount option: ");
         switch (choice) {
             case "1":
                 showSupplierDiscount();
@@ -1227,7 +1219,7 @@ public class PresentationController implements Runnable {
 
     private void reportMenuOperations() {
         menu.printReportMenu();
-        String choice = menu.instructAndReceive("Select Report option");
+        String choice = menu.instructAndReceive("Select Report option: ");
         switch (choice) {
             case "1":
                 inventoryReport();

@@ -107,8 +107,6 @@ public class Menu {
         list.add("Change item shelf location");
         list.add("Change item storage quantity");
         list.add("Change item shelf quantity");
-        list.add("Add supplier");
-        list.add("Remove supplier");
 
         return list;
     }
