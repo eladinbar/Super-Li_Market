@@ -13,7 +13,7 @@ public class ItemSale extends DalObject<ItemSale> {
     private int itemID; //Foreign Key
 
     protected ItemSale(String name, double discount, Pair<Calendar, Calendar> saleDates, int itemID) {
-        super(new ItemSaleDalController());
+        super(ItemSaleDalController.getInstance());
         this.name = name;
         this.discount = discount;
         this.saleDates = saleDates;

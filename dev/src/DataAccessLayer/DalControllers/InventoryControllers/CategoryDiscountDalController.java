@@ -4,6 +4,7 @@ import DataAccessLayer.DalControllers.DalController;
 import DataAccessLayer.DalObjects.InventoryObjects.CategoryDiscount;
 
 public class CategoryDiscountDalController extends DalController<CategoryDiscount> {
+    private static CategoryDiscountDalController instance = null;
     final static String CATEGORY_DISCOUNT_TABLE_NAME = "Category Discounts";
 
     /**
@@ -11,8 +12,14 @@ public class CategoryDiscountDalController extends DalController<CategoryDiscoun
      * A public constructor, initializes the database path and the connection string accordingly. Initializes the respective table name and creates it in the database.
      * </summary>
      */
-    public CategoryDiscountDalController() {
+    private CategoryDiscountDalController() {
         super(CATEGORY_DISCOUNT_TABLE_NAME);
+    }
+
+    public static CategoryDiscountDalController getInstance() {
+        if (instance == null)
+            instance = new CategoryDiscountDalController();
+        return instance;
     }
 
     @Override

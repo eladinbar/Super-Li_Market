@@ -4,6 +4,7 @@ import DataAccessLayer.DalControllers.DalController;
 import DataAccessLayer.DalObjects.InventoryObjects.Item;
 
 public class ItemDalController extends DalController<Item> {
+    private static ItemDalController instance = null;
     final static String ITEM_TABLE_NAME = "Items";
 
     /**
@@ -11,8 +12,14 @@ public class ItemDalController extends DalController<Item> {
      * A public constructor, initializes the database path and the connection string accordingly. Initializes the respective table name and creates it in the database.
      * </summary>
      */
-    public ItemDalController() {
+    private ItemDalController() {
         super(ITEM_TABLE_NAME);
+    }
+
+    public static ItemDalController getInstance() {
+        if (instance == null)
+            instance = new ItemDalController();
+        return instance;
     }
 
     @Override

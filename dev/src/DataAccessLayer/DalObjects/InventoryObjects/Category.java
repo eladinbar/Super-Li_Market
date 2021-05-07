@@ -4,11 +4,11 @@ import DataAccessLayer.DalControllers.InventoryControllers.CategoryDalController
 import DataAccessLayer.DalObjects.DalObject;
 
 public class Category extends DalObject<Category> {
-    private String name;
+    private String name; //Primary Key
     private String parentName;
 
     protected Category(String name, String parentName) {
-        super(new CategoryDalController());
+        super(CategoryDalController.getInstance());
         this.name = name;
         this.parentName = parentName;
     }

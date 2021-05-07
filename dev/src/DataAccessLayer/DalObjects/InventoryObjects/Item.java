@@ -18,7 +18,7 @@ public class Item extends DalObject<Item> {
 
     protected Item(int itemID, String name, double costPrice, double sellingPrice, int manufacturerID, int minAmount,
                    int shelfQuantity, int storageQuantity, String shelfLocation, String storageLocation, String categoryName) {
-        super(new ItemDalController());
+        super(ItemDalController.getInstance());
         this.itemID = itemID;
         this.name = name;
         this.costPrice = costPrice;

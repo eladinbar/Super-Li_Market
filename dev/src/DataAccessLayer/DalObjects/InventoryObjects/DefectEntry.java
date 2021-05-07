@@ -12,7 +12,7 @@ public class DefectEntry extends DalObject<DefectEntry> {
     private int itemID; //Foreign Key
 
     protected DefectEntry(Calendar entryDate, String location, int quantity, int itemID) {
-        super(new DefectEntryDalController());
+        super(DefectEntryDalController.getInstance());
         this.entryDate = entryDate;
         this.location = location;
         this.quantity = quantity;

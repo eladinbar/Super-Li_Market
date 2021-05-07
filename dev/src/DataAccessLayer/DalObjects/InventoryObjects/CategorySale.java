@@ -13,7 +13,7 @@ public class CategorySale extends DalObject<CategorySale> {
     private String categoryName; //Foreign Key
 
     protected CategorySale(String name, double discount, Pair<Calendar, Calendar> saleDates, String categoryName) {
-        super(new CategorySaleDalController());
+        super(CategorySaleDalController.getInstance());
         this.name = name;
         this.discount = discount;
         this.saleDates = saleDates;

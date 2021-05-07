@@ -22,10 +22,8 @@ public abstract class DalController<T extends DalObject<T>>{
     <param name="tableName">The table name of the object this controller represents.</param> */
     protected DalController(String tableName)
     {
-//        String path = Path.GetFullPath(Path.Combine(Directory.GetCurrentDirectory(), _databaseName));
-//        connectionString = $"Data Source={path}; Version=3;";
-//        _tableName = tableName;
-//        CreateTable();
+        this.tableName = tableName;
+        CreateTable();
     }
 
     //abstract methods
