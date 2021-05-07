@@ -4,7 +4,7 @@ public class DalDeliveryForm implements DalObject{
     private int ID;
     private int origin;
     private int destination;
-    private Boolean completed;
+    private boolean completed;
     private int leavingWeight;
     private int TRID;
 
@@ -38,7 +38,7 @@ public class DalDeliveryForm implements DalObject{
         return TRID;
     }
 
-    public Boolean getCompleted() {
+    public boolean isCompleted() {
         return completed;
     }
 }
