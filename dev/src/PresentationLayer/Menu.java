@@ -290,7 +290,7 @@ public class Menu {
         System.out.print(instruction);
         return scan.nextLine();
     }
-
+    
     public <T> T instructAndReceive(String instruction, Class<T> type) {
         System.out.print(instruction);
         String next = scan.nextLine();

@@ -7,6 +7,7 @@ import SerciveLayer.Response.*;
 import SerciveLayer.Response.Response;
 import SerciveLayer.Service;
 import SerciveLayer.SimpleObjects.*;
+import SerciveLayer.objects.Order;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -461,7 +462,6 @@ public class PresentationController implements Runnable {
 
     }
 
-
     @Override
     public void run() {
         menu.printWelcomePrompt();
@@ -531,20 +531,25 @@ public class PresentationController implements Runnable {
     private void createNewOrder() { //case 6
         System.out.print("date (dd/mm/yyyy): ");
         LocalDate lclDate = getDateFromUser();
-        String order = service.createShortageOrder(lclDate).value.stream().
-                map(o -> o.getId() + "").reduce("added orders", (acc, curr) -> acc + ", " + curr);
-        System.out.println(order.substring(0, order.length() - 1));
+        ResponseT<List<Order>> oo = service.createShortageOrder(lclDate);
+        if (oo.errorOccurred()) {
+            System.out.println(oo.toString());
+        } else {
+            String order = service.createShortageOrder(lclDate).value.stream().
+                    map(o -> o.getId() + "").reduce("added orders", (acc, curr) -> acc + ", " + curr);
+            System.out.println(order.substring(0, order.length() - 1));
+        }
     }
 
     private void setPermanentOrder() { //case 7
         int day = menu.instructAndReceive("day (1-7) in a week to get the order", Integer.class);
-        while(true) {
+        while (true) {
             int itemID = menu.instructAndReceive("enter item ID to add to a scheduled order: ", Integer.class);
             int amount = menu.instructAndReceive("enter amount to order: ", Integer.class);
             String order = service.createScheduledOrder(day, itemID, amount).value.toString();
             System.out.println(order);
             String choice = menu.instructAndReceive("1. add more items.\nenter any other key for completing the order ");
-            if (!choice.equals("1")){
+            if (!choice.equals("1")) {
                 break;
             }
         }
@@ -573,14 +578,14 @@ public class PresentationController implements Runnable {
     }
 
     private void removeProductFromOrder() {
-        System.out.println("please enter the following details: ");
+        System.out.println("\nplease enter the following details: ");
         int orderId = menu.instructAndReceive("order id: ", Integer.class);
         int productId = menu.instructAndReceive("product id: ", Integer.class);
         System.out.println(service.removeProductFromOrder(orderId, productId).toString());
     }
 
     private void suppliersMainMenu() {
-        System.out.println("supplier menu:");
+        System.out.println("\nsupplier menu:");
         System.out.println("1. add supplier");
         System.out.println("2. get supplier");
         System.out.println("3. update supplier details");
@@ -606,21 +611,16 @@ public class PresentationController implements Runnable {
 
     //a helper function that add supplier to the system
     private void addSupplierFunc() {
-        System.out.print("please enter following details: ");
-        System.out.print("\nfirst name: ");
-        String firstName = readName();
-        System.out.print("last name: ");
-        String lName = readName();
-        System.out.print("email: ");
+        System.out.print("\nplease enter following details: \n");
+        String firstName = readName(0);
+        String lName = readName(1);
         String email = readEmail();
-        System.out.print("ID: ");
         String ID = readID();
-        System.out.print("phone: ");
         String phone = readPhone();
         int companyNumber = readCompanyNumber();
         boolean perm;
         while (true) {
-            String permanent = menu.instructAndReceive("do you a permanent order days? y/n: ");
+            String permanent = menu.instructAndReceive("supplier approve permanent orders? y/n: ");
             if (permanent.equals("y")) {
                 perm = true;
                 break;
@@ -631,7 +631,7 @@ public class PresentationController implements Runnable {
         }
         boolean self;
         while (true) {
-            String selfD = menu.instructAndReceive("do you deliver the orders by yourself? y/n: ");
+            String selfD = menu.instructAndReceive("supplier has self delivery? y/n: ");
             if (selfD.equals("y")) {
                 self = true;
                 break;
@@ -642,7 +642,6 @@ public class PresentationController implements Runnable {
         }
         String pay = "";
         while (true) {
-            System.out.print("how would you like to pay?\n1. Cash\n2. Bank transfer\n3. check\nchoose number: ");
             int payment = menu.instructAndReceive("how would you like to pay?\n1. Cash\n2. Bank transfer\n3. check\nchoose number: ", Integer.class);
             if (payment == 1) {
                 pay = "cash";
@@ -684,6 +683,7 @@ public class PresentationController implements Runnable {
         String supplierId = readID();
         System.out.println(service.getSupplier(supplierId).toString());
     }
+
     //a helper funtion that edit supplier details in the system
     private void updateSupplierDetailFunc() {
         int opt = -1;
@@ -707,27 +707,27 @@ public class PresentationController implements Runnable {
             int choose = getIntFromUser();
             switch (choose) {
                 case 1:
-                    System.out.print("please enter first name: ");
-                    String firstName = readName();
+                    System.out.print("please enter ");
+                    String firstName = readName(0);
                     System.out.println(service.updateFirstName(supplierID, firstName).toString());
                     break;
                 case 2:
-                    System.out.print("please enter last name: ");
-                    String lastName = readName();
+                    System.out.print("please enter ");
+                    String lastName = readName(1);
                     System.out.println(service.updateLastName(supplierID, lastName).toString());
                     break;
                 case 3:
-                    System.out.print("please enter phone number: ");
+                    System.out.print("please enter ");
                     String phoneNum = readPhone();
                     System.out.println(service.updatePhone(supplierID, phoneNum).toString());
                     break;
                 case 4:
-                    System.out.print("please enter email: ");
+                    System.out.print("please enter ");
                     String emailAddr = readEmail();
                     System.out.println(service.updateEmail(supplierID, emailAddr).toString());
                     break;
                 case 5:
-                    System.out.print("please enter company number: ");
+                    System.out.print("please enter ");
                     int cn = readCompanyNumber();
                     System.out.println(service.updateCompanyNumber(supplierID, cn).toString());
                     break;
@@ -788,15 +788,10 @@ public class PresentationController implements Runnable {
                             System.out.println("invalid option");
                         else if (opt == 1) {
                             System.out.print("please enter following details: ");
-                            System.out.print("\nfirst name: ");
-                            String fName = readName();
-                            System.out.print("last name: ");
-                            String lName = readName();
-                            System.out.print("email: ");
+                            String fName = readName(0);
+                            String lName = readName(1);
                             String email = readEmail();
-                            System.out.print("ID: ");
                             String ID = readID();
-                            System.out.print("phone: ");
                             String phone = readPhone();
                             System.out.println(service.addContactMember(supplierID, fName, lName, email, ID, phone).toString());
                         }
@@ -814,7 +809,7 @@ public class PresentationController implements Runnable {
     }
 
     private void addQuantityList() { //case 4
-        System.out.print("please enter supplier id: ");
+        System.out.print("please enter supplier ");
         String supplierId = readID();
         System.out.println(service.addQuantityList(supplierId).toString());
         while (true) {
@@ -825,7 +820,7 @@ public class PresentationController implements Runnable {
             int num = getIntFromUser();
             if (num == 2)
                 break;
-            System.out.println("please enter the following details: ");
+            System.out.println("\nplease enter the following details: ");
             System.out.print("product id: ");
             int productId = getIntFromUser();
             System.out.print("amount of products to get a discount: ");
@@ -838,7 +833,7 @@ public class PresentationController implements Runnable {
     }
 
     private void editQuantityList() { //case 5
-        System.out.print("please enter supplier id: ");
+        System.out.print("please enter supplier ");
         String supplierId = readID();
         System.out.println("Please choose an option to Edit:");
         System.out.println("1. edit product amount");
@@ -918,7 +913,7 @@ public class PresentationController implements Runnable {
                     System.out.println(service.removeItemFromAgreement(supplierId, productId).toString());
                 }
                 case 3 -> {
-                    System.out.println("please enter the following details: ");
+                    System.out.println("\nplease enter the following details: ");
                     System.out.print("supplier id: ");
                     supplierId = readID();
                     System.out.println("product id: ");
@@ -927,7 +922,6 @@ public class PresentationController implements Runnable {
                     int newCompId = scan.nextInt();
                     System.out.println(service.editAgreementItemCompanyProductID(supplierId, productId, newCompId).toString());
                 }
-
                 case 4 -> {
                     System.out.print("product id: ");
                     productId = scan.nextInt();
@@ -942,21 +936,23 @@ public class PresentationController implements Runnable {
     }
 
     private void getAgreement() {
-        System.out.print("please enter supplier ID: ");
+        System.out.print("please enter supplier ");
         String supplierID = readID();
         System.out.println(service.getAgreement(supplierID).toString());
     }
+
     private void getQuantityList() {
-        System.out.print("please enter supplier ID: ");
+        System.out.print("please enter supplier ");
         String supplierID = readID();
         System.out.println(service.getQuantityList(supplierID).toString());
     }
 
     private void removeSupplier() {
-        System.out.print("please enter supplier id: ");
+        System.out.print("please enter supplier ");
         String id = readID();
         System.out.println(service.removeSupplier(id).toString());
     }
+
     private void inventoryMainMenu() {
         menu.printInventoryMainMenu();
         String choice = menu.instructAndReceive("Select a sub menu: ");
@@ -1097,22 +1093,6 @@ public class PresentationController implements Runnable {
 
     }
 
-    private String getStringFromUser() {
-        boolean con = true;
-        String output = "";
-        while (con) {
-            try {
-                output = scan.next();
-                con = false;
-            } catch (NoSuchElementException | IllegalStateException e) {
-                System.out.println("wrong input please try again");
-                scan.nextLine();
-            }
-        }
-        return output;
-
-    }
-
     //a helper function to get a Date from the user
     private LocalDate getDateFromUser() {
         boolean con = true;
@@ -1218,7 +1198,7 @@ public class PresentationController implements Runnable {
 
     private String readID() {
         while (true) {
-            String id = getStringFromUser();
+            String id = menu.instructAndReceive("ID: ");
             try {
                 idCheck(id);
                 return id;
@@ -1228,9 +1208,13 @@ public class PresentationController implements Runnable {
         }
     }
 
-    private String readName() {
+    private String readName(int opt) {
         while (true) {
-            String name = getStringFromUser();
+            String name = "";
+            if (opt == 0)
+                name = menu.instructAndReceive("First name: ");
+            else
+                name = menu.instructAndReceive("Last name: ");
             try {
                 nameCheck(name);
                 return name;
@@ -1242,7 +1226,7 @@ public class PresentationController implements Runnable {
 
     private String readPhone() {
         while (true) {
-            String phone = getStringFromUser();
+            String phone = menu.instructAndReceive("Phone: ");
             try {
                 phoneCheck(phone);
                 return phone;
@@ -1254,7 +1238,7 @@ public class PresentationController implements Runnable {
 
     private String readEmail() {
         while (true) {
-            String email = menu.instructAndReceive("enter E-Mail: ");
+            String email = menu.instructAndReceive("Email: ");
             try {
                 emailCheck(email);
                 return email;
@@ -1266,7 +1250,7 @@ public class PresentationController implements Runnable {
 
     private int readCompanyNumber() {
         while (true) {
-            int cn = menu.instructAndReceive("enter company number: ", Integer.class);
+            int cn = menu.instructAndReceive("company number: ", Integer.class);
             try {
                 companyNumberCheck(cn);
                 return cn;
