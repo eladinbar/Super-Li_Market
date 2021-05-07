@@ -96,44 +96,63 @@ public class TruckingReport {
         return TRReplace;
     }
 
-    public void setCompleted() {
+    public void setCompleted() throws SQLException {
+        DalTruckingReportController.getInstance().update(new DalTruckingReport(ID,leavingHour,date,truckNumber,driverID,origin,completed,TRReplace));
+
         this.completed = true;
     }
 
-    public void setID(int ID) {
+    public void setID(int ID) throws SQLException {
         this.ID = ID;
+        DalTruckingReportController.getInstance().update(new DalTruckingReport(ID,leavingHour,date,truckNumber,driverID,origin,completed,TRReplace));
+
     }
 
-    public void setOrigin(int origin) {
+    public void setOrigin(int origin) throws SQLException {
         this.origin = origin;
+        DalTruckingReportController.getInstance().update(new DalTruckingReport(ID,leavingHour,date,truckNumber,driverID,origin,completed,TRReplace));
+
     }
 
-    public void setDate(LocalDate date) {
+    public void setDate(LocalDate date) throws SQLException {
         this.date = date;
+        DalTruckingReportController.getInstance().update(new DalTruckingReport(ID,leavingHour,date,truckNumber,driverID,origin,completed,TRReplace));
+
     }
 
-    public void setDestinations(LinkedList<Integer> destinations) {
+    public void setDestinations(LinkedList<Integer> destinations) throws SQLException {
         this.destinations = destinations;
+        DalTruckingReportController.getInstance().update(new DalTruckingReport(ID,leavingHour,date,truckNumber,driverID,origin,completed,TRReplace));
+
     }
 
-    public void setDriverID(String driverID) {
+    public void setDriverID(String driverID) throws SQLException {
         this.driverID = driverID;
+        DalTruckingReportController.getInstance().update(new DalTruckingReport(ID,leavingHour,date,truckNumber,driverID,origin,completed,TRReplace));
+
     }
 
-    public void setLeavingHour(LocalTime leavingHour) {
+    public void setLeavingHour(LocalTime leavingHour) throws SQLException {
         this.leavingHour = leavingHour;
+        DalTruckingReportController.getInstance().update(new DalTruckingReport(ID,leavingHour,date,truckNumber,driverID,origin,completed,TRReplace));
+
     }
 
-    public void setTRReplace(int TRReplace) {
+    public void setTRReplace(int TRReplace) throws SQLException {
         this.TRReplace = TRReplace;
+        DalTruckingReportController.getInstance().update(new DalTruckingReport(ID,leavingHour,date,truckNumber,driverID,origin,completed,TRReplace));
+
     }
 
-    public void setTruckNumber(String truckNumber) {
+    public void setTruckNumber(String truckNumber) throws SQLException {
         this.truckNumber = truckNumber;
+        DalTruckingReportController.getInstance().update(new DalTruckingReport(ID,leavingHour,date,truckNumber,driverID,origin,completed,TRReplace));
+
     }
 
     public void addDestination(int destination)  {
         destinations.add(destination);
+
     }
 
     public boolean isCompleted() {

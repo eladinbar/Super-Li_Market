@@ -8,7 +8,7 @@ public class DalDeliveryForm implements DalObject{
     private int leavingWeight;
     private int TRID;
 
-    public DalDeliveryForm(int ID,int origin, int destination,Boolean completed,int leavingWeight,int TRID)
+    public DalDeliveryForm(int ID,int origin, int destination,boolean completed,int leavingWeight,int TRID)
     {
         this.ID=ID;
         this.origin=origin;

@@ -30,11 +30,8 @@ public class Driver {
         this.ID = ID;
         this.name = name;
         this.licenseType = license;
-        String l = "C";
-        if (licenseType == Driver.License.C1) {
-            l = "C1";
-        }
-        DalDriverController.getInstance().insert(new DalDriver(ID, name, l));
+
+        DalDriverController.getInstance().insert(new DalDriver(ID, name, licenseToString(licenseType)));
 
     }
 
@@ -60,15 +57,29 @@ public class Driver {
 
 
 
-    public void setID(String ID) {
+    public void setID(String ID) throws SQLException {
         this.ID = ID;
+        DalDriverController.getInstance().update(new DalDriver(ID, name, licenseToString(licenseType)));
     }
 
-    public void setName(String name) {
+    public void setName(String name) throws SQLException {
         this.name = name;
+        DalDriverController.getInstance().update(new DalDriver(ID, name, licenseToString(licenseType)));
+
     }
 
-    public void setLicenseType(License licenseType) {
+    public void setLicenseType(License licenseType) throws SQLException {
         this.licenseType = licenseType;
+        DalDriverController.getInstance().update(new DalDriver(ID, name, licenseToString(licenseType)));
+
+    }
+
+    private String licenseToString(License license){
+        String l = "C";
+        if (licenseType == Driver.License.C1) {
+            l = "C1";
+        }
+        return l;
+
     }
 }

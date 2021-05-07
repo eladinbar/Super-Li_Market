@@ -48,4 +48,28 @@ public class Truck {
         return model;
     }
 
+    public void setLicenseNumber(String licenseNumber) throws SQLException {
+        this.licenseNumber = licenseNumber;
+        DalTruckController.getInstance().update(new DalTruck(model,licenseNumber,weightNeto,maxWeight));
+
+    }
+
+    public void setMaxWeight(int maxWeight) throws SQLException {
+        this.maxWeight = maxWeight;
+        DalTruckController.getInstance().update(new DalTruck(model,licenseNumber,weightNeto,maxWeight));
+
+    }
+
+    public void setModel(String model) throws SQLException {
+        this.model = model;
+        DalTruckController.getInstance().update(new DalTruck(model,licenseNumber,weightNeto,maxWeight));
+
+    }
+
+    public void setWeightNeto(int weightNeto) throws SQLException {
+        this.weightNeto = weightNeto;
+        DalTruckController.getInstance().insert(new DalTruck(model,licenseNumber,weightNeto,maxWeight));
+
+    }
+
 }

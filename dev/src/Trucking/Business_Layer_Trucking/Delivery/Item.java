@@ -16,7 +16,7 @@ public class Item {
         this.name=name;
         this.weight=weight;
         this.originSiteId = originSiteID;
-        DalItemController.getInstance().insert(new DalItem(id,weight,name,originSiteID));
+        DalItemController.getInstance().insert(new DalItem(ID,weight,name,originSiteID));
 
     }
     public Item(DalItem dalItem){
@@ -38,20 +38,27 @@ public class Item {
         return ID;
     }
 
-    public void setName(String name) {
+    public void setName(String name) throws SQLException {
         this.name = name;
+        DalItemController.getInstance().update(new DalItem(ID,weight,name,originSiteId));
+
     }
 
     public String getName() {
         return name;
+
     }
 
-    public void setWeight(double weight) {
+    public void setWeight(double weight) throws SQLException {
         this.weight = weight;
+        DalItemController.getInstance().update(new DalItem(ID,weight,name,originSiteId));
+
     }
 
 
-    public void setID(int ID) {
+    public void setID(int ID) throws SQLException {
         this.ID = ID;
+        DalItemController.getInstance().update(new DalItem(ID,weight,name,originSiteId));
+
     }
 }

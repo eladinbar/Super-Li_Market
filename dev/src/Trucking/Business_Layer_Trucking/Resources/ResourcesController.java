@@ -235,18 +235,23 @@ public class ResourcesController {
         }
     }
 
-    public void deleteDriver(int id) throws NoSuchElementException {
+    public void deleteDriver(int id) throws NoSuchElementException, SQLException {
         if (drivers.containsKey(id)) {
             Driver removed = drivers.remove(id);
             driversByLicense.remove(removed);
             drivers_constraints.remove(id);
+            String l = "C";
+            if (removed.getLicenseType() == Driver.License.C1)
+                l = "C1";
+            DalDriverController.getInstance().delete(new DalDriver(removed.getID(), removed.getName(),l));
         } else throw new NoSuchElementException("We do not hiring that person");
     }
 
-    public void deleteTruck(int licenseNumber) throws NoSuchElementException {
+    public void deleteTruck(int licenseNumber) throws NoSuchElementException, SQLException {
         if (trucks.containsKey(licenseNumber)) {
-            trucks.remove(licenseNumber);
+            Truck t = trucks.remove(licenseNumber);
             trucks_constraints.remove(licenseNumber);
+            DalTruckController.getInstance().delete(new DalTruck(t.getModel(),t.getLicenseNumber(),t.getWeightNeto(),t.getMaxWeight()));
         } else throw new NoSuchElementException("No such truck found");
     }
 

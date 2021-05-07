@@ -53,31 +53,44 @@ public class Site {
         return phoneNumber;
     }
 
-    public void setCity(String city) {
-        this.city = city;
-    }
-
-    public void setContactName(String contactName) {
-        this.contactName = contactName;
-    }
-
-    public void setDeliveryArea(int deliveryArea) {
-        this.deliveryArea = deliveryArea;
-    }
-
-    public void setPhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
-    }
-
-    public void setSiteID(int siteID) {
-        this.siteID = siteID;
-    }
-
     public String getName() {
         return name;
+
+    }
+    public void setCity(String city) throws SQLException {
+        this.city = city;
+        DalSiteController.getInstance().update(new DalSite(siteID,name,city,deliveryArea,contactName,phoneNumber));
+
     }
 
-    public void setName(String name) {
+    public void setContactName(String contactName) throws SQLException {
+        this.contactName = contactName;
+        DalSiteController.getInstance().update(new DalSite(siteID,name,city,deliveryArea,contactName,phoneNumber));
+
+    }
+
+    public void setDeliveryArea(int deliveryArea) throws SQLException {
+        this.deliveryArea = deliveryArea;
+        DalSiteController.getInstance().update(new DalSite(siteID,name,city,deliveryArea,contactName,phoneNumber));
+
+    }
+
+    public void setPhoneNumber(String phoneNumber) throws SQLException {
+        this.phoneNumber = phoneNumber;
+        DalSiteController.getInstance().update(new DalSite(siteID,name,city,deliveryArea,contactName,phoneNumber));
+
+    }
+
+    public void setSiteID(int siteID) throws SQLException {
+        this.siteID = siteID;
+        DalSiteController.getInstance().update(new DalSite(siteID,name,city,deliveryArea,contactName,phoneNumber));
+
+    }
+
+
+    public void setName(String name) throws SQLException {
         this.name = name;
+        DalSiteController.getInstance().update(new DalSite(siteID,name,city,deliveryArea,contactName,phoneNumber));
+
     }
 }

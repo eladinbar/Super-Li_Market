@@ -57,11 +57,10 @@ public class DeliveryController {
         this.lastItemId = 1;
     }
 
-    public int createNewTruckingReport() {
+    public int createNewTruckingReport() throws SQLException {
 
         currDF = new LinkedList<>();
         currTR = new TruckingReport(lastReportID);
-        currTR.setID(lastReportID);
         lastReportID++;
         return lastReportID - 1;
 
@@ -73,7 +72,7 @@ public class DeliveryController {
      * @param date
      * @throws IllegalArgumentException
      */
-    public void updateCurrTR_Date(LocalDate date) throws IllegalArgumentException {
+    public void updateCurrTR_Date(LocalDate date) throws IllegalArgumentException, SQLException {
         LocalDate now = LocalDate.now();
         if (date.compareTo(now) != -1) {
             currTR.setDate(date);
@@ -89,7 +88,7 @@ public class DeliveryController {
      * @param leavingHour
      * @throws IllegalArgumentException
      */
-    public void updateCurrTR_LeavingHour(LocalTime leavingHour) throws IllegalArgumentException {
+    public void updateCurrTR_LeavingHour(LocalTime leavingHour) throws IllegalArgumentException, SQLException {
         LocalTime now = LocalTime.now();
         if (leavingHour.compareTo(now) != -1) {
             currTR.setLeavingHour(leavingHour);
@@ -104,7 +103,7 @@ public class DeliveryController {
      *
      * @param number
      */
-    public void updateCurrTR_TruckNumber(String number) {//facade service need to check availability
+    public void updateCurrTR_TruckNumber(String number) throws SQLException {//facade service need to check availability
         currTR.setTruckNumber(number);
     }
 
@@ -113,7 +112,7 @@ public class DeliveryController {
      *
      * @param id
      */
-    public void updateCurrTR_DriverID(String id) {//facade service need to check availability
+    public void updateCurrTR_DriverID(String id) throws SQLException {//facade service need to check availability
         currTR.setDriverID(id);
     }
 
@@ -127,7 +126,7 @@ public class DeliveryController {
         try {
             sites.get(origin);
             currTR.setOrigin(origin);
-        } catch (IllegalArgumentException exception) {
+        } catch (IllegalArgumentException | SQLException exception) {
             throw new IllegalArgumentException("SiteID does not exist");
         }
     }
@@ -150,7 +149,7 @@ public class DeliveryController {
      * @param tr_id
      * @throws NoSuchElementException
      */
-    public void updateCurrTR_TrReplaced(int tr_id) throws NoSuchElementException {
+    public void updateCurrTR_TrReplaced(int tr_id) throws NoSuchElementException, SQLException {
         if (oldTruckingReports.containsKey(tr_id)) {
             currTR.setTRReplace(tr_id);
         } else if (activeTruckingReports.containsKey(tr_id)) {
@@ -219,7 +218,7 @@ public class DeliveryController {
     }
 
 
-    public void updateCurrTR_ID(int id) {
+    public void updateCurrTR_ID(int id) throws SQLException {
         currTR.setID(id);
     }
 
@@ -235,11 +234,13 @@ public class DeliveryController {
 
     }
 
-    public boolean removeSite(int siteID) throws NoSuchElementException, IllegalStateException {
+    public boolean removeSite(int siteID) throws NoSuchElementException, IllegalStateException, SQLException {
         if (!sites.containsKey(siteID)) {
             throw new NoSuchElementException("SiteID does not exist");
         } else {
-            sites.remove(siteID);
+
+            Site s = sites.remove(siteID);
+            DalSiteController.getInstance().delete(new DalSite(s.getSiteID(),s.getName(),s.getCity(),s.getDeliveryArea(),s.getContactName(),s.getPhoneNumber()));
             for (Map.Entry<Integer, Item> entry : items.entrySet()) {
                 if (entry.getValue().getOriginSiteId() == siteID) {
                     removeItemFromPool(entry.getKey());
@@ -251,7 +252,7 @@ public class DeliveryController {
     }
 
 
-    public void chooseLeavingHour(LocalTime leavingHour) throws IllegalArgumentException {
+    public void chooseLeavingHour(LocalTime leavingHour) throws IllegalArgumentException, SQLException {
 
         currTR.setLeavingHour(leavingHour);
 
@@ -269,8 +270,12 @@ public class DeliveryController {
             for(Map.Entry<Integer,Integer> entry: items.entrySet()) {
                 DalItemsOnDFController.getInstance().insert(new DalItemsOnDF(df.getID(), entry.getKey(),entry.getValue()));
             }
+            DalDeliveryFormController.getInstance().insert(new DalDeliveryForm(df.getID(),df.getOrigin(),
+                    df.getDestination(),df.isCompleted(),df.getLeavingWeight(),df.getTrID()));
 
         }
+        DalTruckingReportController.getInstance().insert(new DalTruckingReport(currTR.getID(),currTR.getLeavingHour(),
+                currTR.getDate(),currTR.getTruckNumber(),currTR.getDriverID(),currTR.getOrigin(),currTR.isCompleted(),currTR.getTRReplace()));
 
 
     }
@@ -362,15 +367,18 @@ public class DeliveryController {
     /**
      * @param demand- says what item to remove,in which amount,from which site.
      */
-    public void removeItemFromReport(Demand demand) {
+    public void removeItemFromReport(Demand demand) throws SQLException {
 
         for (DeliveryForm df : currDF) {
             if (df.getDestination() == demand.getSite() && df.getItems().containsKey(demand.getItemID())) {
-                if (demand.getAmount() >= df.getItems().get(demand.getItemID()))
+                if (demand.getAmount() >= df.getItems().get(demand.getItemID())) {
                     df.getItems().remove(demand.getItemID());
+                    DalItemsOnDFController.getInstance().delete(new DalItemsOnDF(df.getID(),demand.getItemID(),0));
+                }
                 else for (Map.Entry<Integer, Integer> entry : df.getItems().entrySet()) {
                     if (entry.getKey() == demand.getItemID()) {
                         entry.setValue(entry.getValue() - demand.getAmount());
+                        DalItemsOnDFController.getInstance().update(new DalItemsOnDF(df.getID(),entry.getKey(),entry.getValue()));
                     }
                 }
             }
@@ -378,7 +386,7 @@ public class DeliveryController {
         updateTruckReportDestinations(currTR.getID());
     }
 
-    public void removeItemFromPool(int item) throws NoSuchElementException, IllegalStateException {
+    public void removeItemFromPool(int item) throws NoSuchElementException, IllegalStateException, SQLException {
 
 
         if (!items.containsKey(item)) {
@@ -398,7 +406,8 @@ public class DeliveryController {
             if (d.getItemID() == item)
                 throw new IllegalStateException("Cant delete item when there is a demand with it");
         }
-        items.remove(item);
+        Item i = items.remove(item);
+        DalItemController.getInstance().delete(new DalItem(i.getID(),i.getWeight(),i.getName(),i.getOriginSiteId()));
     }
 
 
@@ -614,7 +623,7 @@ public class DeliveryController {
     }
 
 
-    public void updateDeliveryFormRealWeight(int trID, int dfID, int weight) {
+    public void updateDeliveryFormRealWeight(int trID, int dfID, int weight) throws SQLException {
         LinkedList<DeliveryForm> deliveryForms = activeDeliveryForms.get(trID);
         for (DeliveryForm df : deliveryForms) {
             if (df.getID() == dfID) {
@@ -658,7 +667,7 @@ public class DeliveryController {
 
         for (DeliveryForm df : oldDfs) {
             DeliveryForm nd = new DeliveryForm(df);
-            nd.setID(lastDeliveryForms);
+            nd.setIDWithoutSave(lastDeliveryForms);
             lastDeliveryForms++;
             DalDeliveryFormController.getInstance().insert(new DalDeliveryForm(nd.getID(),nd.getOrigin(),
                     nd.getDestination(),nd.isCompleted(),nd.getLeavingWeight(),nd.getTrID()));
@@ -716,7 +725,7 @@ public class DeliveryController {
         return null;
     }
 
-    public boolean addDemandToTruckReport(int itemNumber, int amount, int siteID, int trID) throws IllegalStateException {
+    public boolean addDemandToTruckReport(int itemNumber, int amount, int siteID, int trID) throws IllegalStateException, SQLException {
         TruckingReport tr = activeTruckingReports.get(trID);
         LinkedList<DeliveryForm> ldfs = activeDeliveryForms.get(trID);
         boolean added = false;
@@ -746,7 +755,7 @@ public class DeliveryController {
         return added;
     }
 
-    public void replaceDriver(int trID, String driverID) {
+    public void replaceDriver(int trID, String driverID) throws SQLException {
         TruckingReport tr = activeTruckingReports.get(trID);
         tr.setDriverID(driverID);
 
@@ -820,13 +829,13 @@ public class DeliveryController {
         return true;
     }
 
-    public void chooseDateToCurrentTR(LocalDate chosen) {
+    public void chooseDateToCurrentTR(LocalDate chosen) throws SQLException {
         if ((chosen.compareTo(LocalDate.now()) == 0) && currTR.getLeavingHour().isBefore(LocalTime.now()) || chosen.isBefore(LocalDate.now()))
             throw new IllegalArgumentException("time inserted is invalid.");
         currTR.setDate(chosen);
     }
 
-    private void updateTruckReportDestinations(int trID) {
+    private void updateTruckReportDestinations(int trID) throws SQLException {
         boolean active = false;
         TruckingReport tr = currTR;
         LinkedList<Integer> newDestinations = new LinkedList<>();
@@ -846,10 +855,11 @@ public class DeliveryController {
     }
 
 
-    public void removeDemand(int itemID, int site) {
+    public void removeDemand(int itemID, int site) throws SQLException {
         for (Demand d : demands) {
             if (d.getSite() == site && d.getItemID() == itemID) {
                 demands.remove(d);
+                DalDemandController.getInstance().delete(new DalDemand(d.getItemID(),d.getAmount(),d.getSite()));
                 break;
             }
         }
@@ -911,7 +921,7 @@ public class DeliveryController {
      * @param df
      * @param rdf
      */
-    private void mergeDeliveryForms(DeliveryForm df, DeliveryForm rdf) {
+    private void mergeDeliveryForms(DeliveryForm df, DeliveryForm rdf) throws SQLException {
         if (!(rdf.getOrigin() == df.getOrigin() && rdf.getDestination() == df.getDestination())) {
             throw new InputMismatchException("delivery forms do not has same origin or destination");
         }
@@ -932,7 +942,7 @@ public class DeliveryController {
 
     }
 
-    private void removeCurrTakenDemandsFromTotal() {
+    private void removeCurrTakenDemandsFromTotal() throws SQLException {
         for (DeliveryForm deliveryForm : currDF) {
             if (!deliveryForm.isCompleted()) {
                 HashMap<Integer, Integer> items = deliveryForm.getItems();
@@ -954,16 +964,16 @@ public class DeliveryController {
 
     }
 
-    public void setNewTruckToTR(int tRid, String truckNumber) {
+    public void setNewTruckToTR(int tRid, String truckNumber) throws SQLException {
         getTruckReport(tRid).setTruckNumber(truckNumber);
     }
 
-    public void setNewDriverToTR(int tRid, String driverID) {
+    public void setNewDriverToTR(int tRid, String driverID) throws SQLException {
         getTruckReport(tRid).setDriverID(driverID);
     }
 
 
-    public void makeDeliveryFormUncompleted(int trID, int dfID) {
+    public void makeDeliveryFormUncompleted(int trID, int dfID) throws SQLException {
         LinkedList<DeliveryForm> deliveryForms = activeDeliveryForms.get(trID);
         for (DeliveryForm df : deliveryForms) {
             if (df.getID() == dfID) {

@@ -37,15 +37,21 @@ public class Demand {
         return site;
     }
 
-    public void setAmount(int amount) {
+    public void setAmount(int amount) throws SQLException {
         this.amount = amount;
+        DalDemandController.getInstance().update(new DalDemand(itemID,amount,site));
+
     }
 
-    public void setItemID(int itemID) {
+    public void setItemID(int itemID) throws SQLException {
         this.itemID = itemID;
+        DalDemandController.getInstance().update(new DalDemand(itemID,amount,site));
+
     }
 
-    public void setSite(int site) {
+    public void setSite(int site) throws SQLException {
         site = site;
+        DalDemandController.getInstance().update(new DalDemand(itemID,amount,site));
+
     }
 }

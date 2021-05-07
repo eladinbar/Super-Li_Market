@@ -16,20 +16,19 @@ public class DeliveryForm {
     private int trID;
     private boolean completed;
 
-    public DeliveryForm(int ID, int origin, int destination, HashMap<Integer,Integer> items,
+    public DeliveryForm(int ID, int origin, int destination, HashMap<Integer, Integer> items,
                         int leavingWeight, int trID) throws SQLException {
-        this.ID=ID;
-        this.origin=origin;
-        this.destination=destination;
-        this.items=items;
-        this.leavingWeight=leavingWeight;
-        this.trID=trID;
-        this.completed=false;
-
-        DalDeliveryFormController.getInstance().insert(new DalDeliveryForm(ID, origin, destination, completed,leavingWeight,trID));
+        this.ID = ID;
+        this.origin = origin;
+        this.destination = destination;
+        this.items = items;
+        this.leavingWeight = leavingWeight;
+        this.trID = trID;
+        this.completed = false;
 
 
-        }
+
+    }
 
     public DeliveryForm(DeliveryForm df) {
 
@@ -44,19 +43,20 @@ public class DeliveryForm {
 
     }
 
-    public DeliveryForm(DalDeliveryForm deliveryForm){
-        this.ID=deliveryForm.getID();
-        this.completed=deliveryForm.getCompleted();
-        this.origin=deliveryForm.getOrigin();
-        this.destination= deliveryForm.getDestination();
-        this.leavingWeight= deliveryForm.getLeavingWeight();
-        this.trID= deliveryForm.getTRID();
-        this.items=new HashMap<>();
+    public DeliveryForm(DalDeliveryForm deliveryForm) {
+        this.ID = deliveryForm.getID();
+        this.completed = deliveryForm.getCompleted();
+        this.origin = deliveryForm.getOrigin();
+        this.destination = deliveryForm.getDestination();
+        this.leavingWeight = deliveryForm.getLeavingWeight();
+        this.trID = deliveryForm.getTRID();
+        this.items = new HashMap<>();
     }
-    public void addItem(int itemID,int amount){
-        if (items==null)
-            items=new HashMap<>();
-        items.put(itemID,amount);
+
+    public void addItem(int itemID, int amount) {
+        if (items == null)
+            items = new HashMap<>();
+        items.put(itemID, amount);
     }
 
     public HashMap<Integer, Integer> getItems() {
@@ -87,36 +87,50 @@ public class DeliveryForm {
         return completed;
     }
 
-    public void setCompleted() {
+    public void setCompleted() throws SQLException {
         this.completed = true;
+        DalDeliveryFormController.getInstance().update(new DalDeliveryForm(ID, origin, destination, completed, leavingWeight, trID));
     }
 
-    public void setDestination(int destination) {
+    public void setDestination(int destination) throws SQLException {
         this.destination = destination;
+        DalDeliveryFormController.getInstance().update(new DalDeliveryForm(ID, origin, destination, completed,leavingWeight,trID));
+
     }
 
-    public void setID(int ID) {
+    public void setID(int ID) throws SQLException {
         this.ID = ID;
+        DalDeliveryFormController.getInstance().update(new DalDeliveryForm(ID, origin, destination, completed,leavingWeight,trID));
+
     }
 
-    public void setItems(HashMap<Integer, Integer> items) {
+    public void setItems(HashMap<Integer, Integer> items) throws SQLException {
         this.items = items;
+        DalDeliveryFormController.getInstance().update(new DalDeliveryForm(ID, origin, destination, completed,leavingWeight,trID));
     }
 
-    public void setLeavingWeight(int leavingWeight) {
+    public void setLeavingWeight(int leavingWeight) throws SQLException {
         this.leavingWeight = leavingWeight;
+        DalDeliveryFormController.getInstance().update(new DalDeliveryForm(ID, origin, destination, completed,leavingWeight,trID));
     }
 
-    public void setOrigin(int origin) {
+    public void setOrigin(int origin) throws SQLException {
         this.origin = origin;
+        DalDeliveryFormController.getInstance().update(new DalDeliveryForm(ID, origin, destination, completed,leavingWeight,trID));
     }
 
-    public void setTrID(int trID) {
+    public void setTrID(int trID) throws SQLException {
         this.trID = trID;
+        DalDeliveryFormController.getInstance().update(new DalDeliveryForm(ID, origin, destination, completed,leavingWeight,trID));
     }
 
-    public void setUncompleted() {
+    public void setUncompleted() throws SQLException {
         completed = false;
+        DalDeliveryFormController.getInstance().update(new DalDeliveryForm(ID, origin, destination, completed,leavingWeight,trID));
+    }
+
+    public void setIDWithoutSave(int lastDeliveryForms) {
+        this.ID = lastDeliveryForms;
     }
 }
 
