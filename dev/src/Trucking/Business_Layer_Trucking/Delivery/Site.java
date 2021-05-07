@@ -2,6 +2,9 @@ package Trucking.Business_Layer_Trucking.Delivery;
 
 import DAL.DalItem;
 import DAL.DalSite;
+import DAL.DalSiteController;
+
+import java.sql.SQLException;
 
 public class Site {
     private int siteID;
@@ -11,14 +14,14 @@ public class Site {
     private String contactName;
     private String name;
 
-    public Site(int siteID,String city,int deliveryArea,String phoneNumber,String contactName,String name)
-    {
+    public Site(int siteID,String city,int deliveryArea,String phoneNumber,String contactName,String name) throws SQLException {
         this.siteID=siteID;
         this.city=city;
         this.contactName=contactName;
         this.phoneNumber=phoneNumber;
         this.deliveryArea=deliveryArea;
         this.name=name;
+        DalSiteController.getInstance().insert(new DalSite(siteID,name,city,deliveryArea,contactName,phoneNumber));
     }
 
     public Site(DalSite dalSite){

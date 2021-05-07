@@ -2,6 +2,9 @@ package Trucking.Business_Layer_Trucking.Resources;
 
 import DAL.DalItem;
 import DAL.DalTruck;
+import DAL.DalTruckController;
+
+import java.sql.SQLException;
 
 public class Truck {
     private String model;
@@ -9,12 +12,15 @@ public class Truck {
     private int weightNeto;
     private  int maxWeight;
 
-    public Truck(String model,String licenseNumber,int weightNeto,int maxWeight)
+    public Truck(String model,String licenseNumber,int weightNeto,int maxWeight) throws SQLException
     {
         this.model=model;
         this.licenseNumber=licenseNumber;
         this.weightNeto=weightNeto;
         this.maxWeight=maxWeight;
+        DalTruckController.getInstance().insert(new DalTruck(model,licenseNumber,weightNeto,maxWeight));
+        // TODO need to check if need to move it from here because of exception inside Constructor
+
 
     }
 

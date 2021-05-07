@@ -1,6 +1,9 @@
 package Trucking.Business_Layer_Trucking.Delivery;
 
 import DAL.DalItem;
+import DAL.DalItemController;
+
+import java.sql.SQLException;
 
 public class Item {
     private  int ID;
@@ -8,11 +11,12 @@ public class Item {
     private String name;
     private int originSiteId ;
 
-    public Item(int id, double weight, String name, int originSiteID){
+    public Item(int id, double weight, String name, int originSiteID) throws SQLException {
         this.ID=id;
         this.name=name;
         this.weight=weight;
         this.originSiteId = originSiteID;
+        DalItemController.getInstance().insert(new DalItem(id,weight,name,originSiteID));
 
     }
     public Item(DalItem dalItem){

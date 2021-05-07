@@ -1,7 +1,9 @@
 package Trucking.Business_Layer_Trucking.Delivery;
 
 import DAL.DalTruckingReport;
+import DAL.DalTruckingReportController;
 
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.LinkedList;
@@ -37,7 +39,7 @@ public class TruckingReport {
 
     }
 
-    public TruckingReport(DalTruckingReport dtr){
+    public TruckingReport(DalTruckingReport dtr) throws SQLException {
         this.ID=dtr.getID();
         this.date=dtr.getDate();
         this.leavingHour=dtr.getLeavingHour();
@@ -47,6 +49,7 @@ public class TruckingReport {
         this.driverID=dtr.getDriverID();
         this.origin=dtr.getOrigin();
         this.TRReplace=dtr.getReplaceTRID();
+        DalTruckingReportController.getInstance().insert(new DalTruckingReport(ID,leavingHour,date,truckNumber,driverID,origin,completed,TRReplace));
 
     }
 

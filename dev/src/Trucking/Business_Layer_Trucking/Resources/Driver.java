@@ -1,7 +1,10 @@
 package Trucking.Business_Layer_Trucking.Resources;
 
 import DAL.DalDriver;
+import DAL.DalDriverController;
 import DAL.DalItem;
+
+import java.sql.SQLException;
 
 public class Driver {
     private  String ID;
@@ -23,16 +26,22 @@ public class Driver {
 
     }
 
-    public Driver(String ID, String name , License license){
+    public Driver(String ID, String name , License license) throws SQLException {
         this.ID = ID;
         this.name = name;
         this.licenseType = license;
+        String l = "C";
+        if (licenseType == Driver.License.C1) {
+            l = "C1";
+        }
+        DalDriverController.getInstance().insert(new DalDriver(ID, name, l));
+
     }
 
     public Driver(DalDriver dalDriver){
         this.ID=dalDriver.getID();
         this.name= dalDriver.getName();
-        if (dalDriver.getLicense()=="C1")
+        if (dalDriver.getLicense().equals("C1"))
             this.licenseType=License.C1;
         else this.licenseType=License.C;
     }

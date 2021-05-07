@@ -39,14 +39,17 @@ public class ResourcesController {
         return instance;
     }
 
-    public void addDriver(String id, String name, Driver.License licenseType) throws KeyAlreadyExistsException {
+    public void addDriver(String id, String name, Driver.License licenseType) throws SQLException, KeyAlreadyExistsException {
         if (!drivers.containsKey(id)) {
             Driver driver = new Driver(id, name, licenseType);
+
             drivers.put(id, driver);
-            if (licenseType == Driver.License.C1)
+            if (licenseType == Driver.License.C1) {
                 driversByLicense.addLast(driver);
+            }
             else driversByLicense.addFirst(driver);
             drivers_constraints.put(id, new HashMap<>());
+
 
         } else {
             throw new KeyAlreadyExistsException("Driver already works here");
@@ -222,7 +225,7 @@ public class ResourcesController {
 
     }
 
-    public void addTruck(String model, String licenseNumber, int weightNeto, int maxWeight) throws KeyAlreadyExistsException {
+    public void addTruck(String model, String licenseNumber, int weightNeto, int maxWeight) throws SQLException, KeyAlreadyExistsException {
         if (!trucks.containsKey(licenseNumber)) {
             Truck truck = new Truck(model, licenseNumber, weightNeto, maxWeight);
             trucks.put(licenseNumber, truck);
@@ -403,7 +406,10 @@ public class ResourcesController {
         for (DalDriver driver: dalDrivers){
             Driver bDriver =  new Driver(driver);
             drivers.put(driver.getID(), bDriver);
-            driversByLicense.add(bDriver);
+            if (bDriver.getLicenseType() == Driver.License.C)
+                driversByLicense.addFirst(bDriver);
+            else
+                driversByLicense.addLast(bDriver);
             trucks_constraints.put(driver.getID(), new HashMap<>());
         }
         for (Map.Entry<String,HashMap<LocalDate,Integer>> entry: driver_cons.entrySet()){

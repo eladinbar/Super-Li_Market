@@ -1,8 +1,10 @@
 package Trucking.Business_Layer_Trucking.Delivery;
 
 import DAL.DalDeliveryForm;
+import DAL.DalDeliveryFormController;
 import DAL.DalItem;
 
+import java.sql.SQLException;
 import java.util.HashMap;
 
 public class DeliveryForm {
@@ -15,7 +17,7 @@ public class DeliveryForm {
     private boolean completed;
 
     public DeliveryForm(int ID, int origin, int destination, HashMap<Integer,Integer> items,
-                        int leavingWeight, int trID){
+                        int leavingWeight, int trID) throws SQLException {
         this.ID=ID;
         this.origin=origin;
         this.destination=destination;
@@ -23,6 +25,9 @@ public class DeliveryForm {
         this.leavingWeight=leavingWeight;
         this.trID=trID;
         this.completed=false;
+
+        DalDeliveryFormController.getInstance().insert(new DalDeliveryForm(ID, origin, destination, completed,leavingWeight,trID));
+
 
         }
 

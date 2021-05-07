@@ -4,6 +4,7 @@ import Trucking.Business_Layer_Trucking.Delivery.*;
 import Trucking.Business_Layer_Trucking.Facade.FacadeObject.*;
 
 import javax.management.openmbean.KeyAlreadyExistsException;
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.HashMap;
@@ -34,7 +35,7 @@ public class DeliveryService {
         dc.addItemToDeliveryForm(demand,);
     }*/
 
-    public FacadeDemand addDemandToReport(int itemID, int supplyAmount, int siteID)  throws IllegalStateException, IllegalArgumentException{
+    public FacadeDemand addDemandToReport(int itemID, int supplyAmount, int siteID) throws IllegalStateException, IllegalArgumentException, SQLException {
         LinkedList<Demand> demands = dc.getDemands();
         Demand d=null;
         for (Demand curr:  demands) {
@@ -71,13 +72,13 @@ public class DeliveryService {
         return new FacadeTruckingReport(dc.getCurrTR());
     }
 
-    public void saveReport() {
+    public void saveReport() throws SQLException {
         dc.saveReport();
     }
 
 
 
-    public FacadeDemand continueAddDemandToReport(int itemID, int supplyAmount, int siteID){
+    public FacadeDemand continueAddDemandToReport(int itemID, int supplyAmount, int siteID) throws SQLException {
         LinkedList<Demand> demands = dc.getDemands();
         Demand d=null;
         for (Demand curr:  demands) {
@@ -299,7 +300,7 @@ public class DeliveryService {
         dc.archive(trID);
     }
 
-    public void archiveNotCompleted(int trID){
+    public void archiveNotCompleted(int trID) throws SQLException {
         dc.archiveNotCompleted(trID);
     }
 
@@ -333,7 +334,7 @@ public class DeliveryService {
         dc.removeItemFromTruckingReport(trID,demand.getItemID(),demand.getSite());
     }
 
-    public boolean continueAddDemandToTruckReport(int itemNumber, int amount, int siteID, int truckId) {
+    public boolean continueAddDemandToTruckReport(int itemNumber, int amount, int siteID, int truckId) throws SQLException {
         return dc.continueAddDemandToTruckReport(itemNumber,amount,siteID,truckId);
     }
 
