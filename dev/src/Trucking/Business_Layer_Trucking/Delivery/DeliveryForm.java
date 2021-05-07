@@ -1,5 +1,8 @@
 package Trucking.Business_Layer_Trucking.Delivery;
 
+import DAL.DalDeliveryForm;
+import DAL.DalItem;
+
 import java.util.HashMap;
 
 public class DeliveryForm {
@@ -34,6 +37,10 @@ public class DeliveryForm {
         this.trID = df.getTrID();
 
 
+    }
+
+    public DeliveryForm(DalDeliveryForm dalItem){
+        throw new UnsupportedOperationException();
     }
 
     public HashMap<Integer, Integer> getItems() {

@@ -1,5 +1,7 @@
 package Trucking.Business_Layer_Trucking.Delivery;
 
+import DAL.DalItem;
+
 public class Item {
     private  int ID;
     private double weight;
@@ -12,6 +14,9 @@ public class Item {
         this.weight=weight;
         this.originSiteId = originSiteID;
 
+    }
+    public Item(DalItem dalItem){
+        throw new UnsupportedOperationException();
     }
 
     public int getOriginSiteId() {

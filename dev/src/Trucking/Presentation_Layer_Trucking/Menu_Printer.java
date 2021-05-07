@@ -39,12 +39,12 @@ public class Menu_Printer {
             spot++;
             System.out.println(spot + ".\tCurrent Status");
             spot++;
-            System.out.println(spot + ".\tManager Options - Drivers and Trucks");
+            System.out.println(spot + ".\tManager Options");
 
 
             System.out.println(spot + ".\tGo back To Main Menu");
             int choose = getIntFromUserMain(scanner);
-            spot =1;
+
             boolean inside = true;
             while (inside) {
                 switch (choose) {

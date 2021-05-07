@@ -1,5 +1,7 @@
 package Trucking.Business_Layer_Trucking.Delivery;
 
+import DAL.DalTruckingReport;
+
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.LinkedList;
@@ -32,6 +34,10 @@ public class TruckingReport {
         this.ID=ID;
         this.destinations = new LinkedList<>();
 
+    }
+
+    public TruckingReport(DalTruckingReport dtr){
+        throw new UnsupportedOperationException();
     }
 
     public TruckingReport(int lastReportID, TruckingReport oldTr) {

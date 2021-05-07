@@ -1,5 +1,8 @@
 package Trucking.Business_Layer_Trucking.Resources;
 
+import DAL.DalItem;
+import DAL.DalTruck;
+
 public class Truck {
     private String model;
     private  String licenseNumber;
@@ -13,6 +16,10 @@ public class Truck {
         this.weightNeto=weightNeto;
         this.maxWeight=maxWeight;
 
+    }
+
+    public Truck(DalTruck dalItem){
+        throw new UnsupportedOperationException();
     }
 
 

@@ -1,5 +1,8 @@
 package Trucking.Business_Layer_Trucking.Delivery;
 
+import DAL.DalItem;
+import DAL.DalSite;
+
 public class Site {
     private int siteID;
     private String city;
@@ -16,6 +19,10 @@ public class Site {
         this.phoneNumber=phoneNumber;
         this.deliveryArea=deliveryArea;
         this.name=name;
+    }
+
+    public Site(DalSite dalItem){
+        throw new UnsupportedOperationException();
     }
 
     public int getDeliveryArea() {

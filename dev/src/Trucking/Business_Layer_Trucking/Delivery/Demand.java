@@ -1,5 +1,8 @@
 package Trucking.Business_Layer_Trucking.Delivery;
 
+import DAL.DalDemand;
+import DAL.DalItem;
+
 public class Demand {
     private int itemID;
     private int site;//the destination - who raised the demand
@@ -9,6 +12,9 @@ public class Demand {
         this.itemID=itemID;
         this.site=site_id;
         this.amount=amount;
+    }
+    public Demand(DalDemand demand){
+        throw new UnsupportedOperationException();
     }
 
     public int getAmount() {

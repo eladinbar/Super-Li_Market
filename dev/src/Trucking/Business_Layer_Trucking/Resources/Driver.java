@@ -1,5 +1,8 @@
 package Trucking.Business_Layer_Trucking.Resources;
 
+import DAL.DalDriver;
+import DAL.DalItem;
+
 public class Driver {
     private  String ID;
     private String name;
@@ -24,6 +27,10 @@ public class Driver {
         this.ID = ID;
         this.name = name;
         this.licenseType = license;
+    }
+
+    public Driver(DalDriver dalItem){
+        throw new UnsupportedOperationException();
     }
 
     public String getID() {

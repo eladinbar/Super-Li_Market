@@ -1,7 +1,10 @@
 package Trucking.Business_Layer_Trucking.Delivery;
 
 
+import DAL.*;
+
 import javax.management.openmbean.KeyAlreadyExistsException;
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.*;
@@ -1033,11 +1036,22 @@ public class DeliveryController {
         }
     }
 
-    public LinkedList<DeliveryForm> getUncompletedDeliveryFormsFromOld(int old_id) {
+    public LinkedList<DeliveryForm> getUncompletedDeliveryFormsFromOld(int old_id)  {
         TruckingReport replace = getReplaceTruckingReport(old_id);
         if (replace.getID() == currTR.getID())
             return currDF;
 
         return activeDeliveryForms.get(replace.getID());
+    }
+    public void upload() throws SQLException{ // TODO need to change new to singleton usage
+        DalItemController dalItemController = new DalItemController();
+        DalDemandController dalDemandController = new DalDemandController();
+        DalSiteController dsc = new DalSiteController();
+        DalDeliveryFormController delivery = new DalDeliveryFormController();
+        DalTruckingReportController truckingReport = new DalTruckingReportController();
+        LinkedList<DalItem> dalItems = dalItemController.load();
+        for (DalItem item: dalItems){
+
+        }
     }
 }
