@@ -3,11 +3,16 @@ package DataAccessLayer.DalObjects.InventoryObjects;
 import DataAccessLayer.DalControllers.InventoryControllers.CategoryDalController;
 import DataAccessLayer.DalObjects.DalObject;
 
+import java.sql.SQLException;
+
 public class Category extends DalObject<Category> {
+    public final String CategoryNameColumnName = "Name";
+    public final String parentNameColumnName = "ParentName";
+
     private String name; //Primary Key
     private String parentName;
 
-    protected Category(String name, String parentName) {
+    protected Category(String name, String parentName) throws SQLException {
         super(CategoryDalController.getInstance());
         this.name = name;
         this.parentName = parentName;

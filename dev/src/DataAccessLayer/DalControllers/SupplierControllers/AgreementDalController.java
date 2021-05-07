@@ -4,6 +4,8 @@ import DataAccessLayer.DalControllers.DalController;
 import DataAccessLayer.DalControllers.InventoryControllers.CategoryDalController;
 import DataAccessLayer.DalObjects.SupplierObjects.Agreement;
 
+import java.sql.SQLException;
+
 public class AgreementDalController extends DalController<Agreement> {
     private static AgreementDalController instance = null;
     final static String AGREEMENT_TABLE_NAME = "Agreements";
@@ -13,11 +15,11 @@ public class AgreementDalController extends DalController<Agreement> {
      * A public constructor, initializes the database path and the connection string accordingly. Initializes the respective table name and creates it in the database.
      * </summary>
      */
-    private AgreementDalController() {
+    private AgreementDalController() throws SQLException {
         super(AGREEMENT_TABLE_NAME);
     }
 
-    public static AgreementDalController getInstance() {
+    public static AgreementDalController getInstance() throws SQLException {
         if (instance == null)
             instance = new AgreementDalController();
         return instance;

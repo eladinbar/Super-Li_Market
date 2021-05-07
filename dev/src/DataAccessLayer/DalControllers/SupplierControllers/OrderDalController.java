@@ -4,6 +4,8 @@ import DataAccessLayer.DalControllers.DalController;
 import DataAccessLayer.DalControllers.InventoryControllers.CategoryDalController;
 import DataAccessLayer.DalObjects.SupplierObjects.Order;
 
+import java.sql.SQLException;
+
 public class OrderDalController extends DalController<Order> {
     private static OrderDalController instance = null;
     final static String ORDER_TABLE_NAME = "Orders";
@@ -13,11 +15,11 @@ public class OrderDalController extends DalController<Order> {
      * A public constructor, initializes the database path and the connection string accordingly. Initializes the respective table name and creates it in the database.
      * </summary>
      */
-    private OrderDalController() {
+    private OrderDalController() throws SQLException {
         super(ORDER_TABLE_NAME);
     }
 
-    public static OrderDalController getInstance() {
+    public static OrderDalController getInstance() throws SQLException {
         if (instance == null)
             instance = new OrderDalController();
         return instance;

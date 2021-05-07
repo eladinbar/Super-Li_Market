@@ -3,6 +3,8 @@ package DataAccessLayer.DalObjects.InventoryObjects;
 import DataAccessLayer.DalControllers.InventoryControllers.ItemDalController;
 import DataAccessLayer.DalObjects.DalObject;
 
+import java.sql.SQLException;
+
 public class Item extends DalObject<Item> {
     private int itemID; //Primary Key
     private String name;
@@ -17,7 +19,7 @@ public class Item extends DalObject<Item> {
     private String categoryName; //Foreign Key
 
     protected Item(int itemID, String name, double costPrice, double sellingPrice, int manufacturerID, int minAmount,
-                   int shelfQuantity, int storageQuantity, String shelfLocation, String storageLocation, String categoryName) {
+                   int shelfQuantity, int storageQuantity, String shelfLocation, String storageLocation, String categoryName) throws SQLException {
         super(ItemDalController.getInstance());
         this.itemID = itemID;
         this.name = name;

@@ -3,6 +3,7 @@ package DataAccessLayer.DalObjects.InventoryObjects;
 import DataAccessLayer.DalControllers.InventoryControllers.ItemDiscountDalController;
 import DataAccessLayer.DalObjects.DalObject;
 
+import java.sql.SQLException;
 import java.util.Calendar;
 
 public class ItemDiscount extends DalObject<ItemDiscount> {
@@ -12,7 +13,7 @@ public class ItemDiscount extends DalObject<ItemDiscount> {
     private int supplierID; //Foreign Key
     private int itemID; //Foreign Key
 
-    protected ItemDiscount(Calendar discountDate, double discount, int itemCount, int supplierID, int itemID) {
+    protected ItemDiscount(Calendar discountDate, double discount, int itemCount, int supplierID, int itemID) throws SQLException {
         super(ItemDiscountDalController.getInstance());
         this.discountDate = discountDate;
         this.discount = discount;

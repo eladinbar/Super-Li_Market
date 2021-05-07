@@ -3,6 +3,11 @@ package DataAccessLayer.DalControllers.InventoryControllers;
 import DataAccessLayer.DalControllers.DalController;
 import DataAccessLayer.DalObjects.InventoryObjects.Category;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+
 public class CategoryDalController extends DalController<Category> {
     private static CategoryDalController instance = null;
     final static String CATEGORY_TABLE_NAME = "Categories";
@@ -12,19 +17,25 @@ public class CategoryDalController extends DalController<Category> {
      * A public constructor, initializes the database path and the connection string accordingly. Initializes the respective table name and creates it in the database.
      * </summary>
      */
-    private CategoryDalController() {
+    private CategoryDalController() throws SQLException {
         super(CATEGORY_TABLE_NAME);
     }
 
-    public static CategoryDalController getInstance() {
+    public static CategoryDalController getInstance() throws SQLException {
         if (instance == null)
             instance = new CategoryDalController();
         return instance;
     }
 
     @Override
-    public void CreateTable() {
-
+    public void CreateTable() throws SQLException {
+        System.out.println("Initiating create " + CATEGORY_TABLE_NAME + " table.");
+        try (Connection conn = DriverManager.getConnection(connectionString)) {
+            String command = "CREATE TABLE IF NOT EXISTS " + CATEGORY_TABLE_NAME;
+            PreparedStatement stmt = conn.prepareStatement(command);
+        } catch (SQLException ex) {
+            throw new SQLException(ex.getMessage());
+        }
     }
 
     @Override

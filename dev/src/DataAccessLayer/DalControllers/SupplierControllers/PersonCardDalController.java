@@ -4,6 +4,8 @@ import DataAccessLayer.DalControllers.DalController;
 import DataAccessLayer.DalControllers.InventoryControllers.CategoryDalController;
 import DataAccessLayer.DalObjects.SupplierObjects.PersonCard;
 
+import java.sql.SQLException;
+
 public class PersonCardDalController extends DalController<PersonCard> {
     private static PersonCardDalController instance = null;
     final static String PERSON_CARD_TABLE_NAME = "Person Cards";
@@ -13,11 +15,11 @@ public class PersonCardDalController extends DalController<PersonCard> {
      * A public constructor, initializes the database path and the connection string accordingly. Initializes the respective table name and creates it in the database.
      * </summary>
      */
-    private PersonCardDalController() {
+    private PersonCardDalController() throws SQLException {
         super(PERSON_CARD_TABLE_NAME);
     }
 
-    public static PersonCardDalController getInstance() {
+    public static PersonCardDalController getInstance() throws SQLException {
         if (instance == null)
             instance = new PersonCardDalController();
         return instance;
