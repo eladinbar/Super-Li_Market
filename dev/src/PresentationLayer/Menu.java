@@ -1,4 +1,4 @@
-package PresentationLayer.InventoryP;
+package PresentationLayer;
 
 import InfrastructurePackage.TextFormatter;
 import SerciveLayer.SimpleObjects.*;
