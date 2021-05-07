@@ -4,6 +4,8 @@ import DataAccessLayer.DalControllers.DalController;
 import DataAccessLayer.DalObjects.InventoryObjects.CategoryDiscount;
 
 public class CategoryDiscountDalController extends DalController<CategoryDiscount> {
+    final String CATEGORY_DISCOUNT_TABLE_NAME = "Category Discounts";
+
     /**
      * <summary>
      * A public constructor, initializes the database path and the connection string accordingly. Initializes the respective table name and creates it in the database.

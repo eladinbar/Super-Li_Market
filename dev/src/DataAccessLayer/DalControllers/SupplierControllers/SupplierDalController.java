@@ -4,6 +4,8 @@ import DataAccessLayer.DalControllers.DalController;
 import DataAccessLayer.DalObjects.SupplierObjects.Supplier;
 
 public class SupplierDalController extends DalController<Supplier> {
+    final String SUPPLIER_TABLE_NAME = "Suppliers";
+
     /**
      * <summary>
      * A public constructor, initializes the database path and the connection string accordingly. Initializes the respective table name and creates it in the database.

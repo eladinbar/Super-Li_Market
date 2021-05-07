@@ -4,6 +4,8 @@ import DataAccessLayer.DalControllers.DalController;
 import DataAccessLayer.DalObjects.SupplierObjects.Order;
 
 public class OrderDalController extends DalController<Order> {
+    final String ORDER_TABLE_NAME = "Orders";
+
     /**
      * <summary>
      * A public constructor, initializes the database path and the connection string accordingly. Initializes the respective table name and creates it in the database.
