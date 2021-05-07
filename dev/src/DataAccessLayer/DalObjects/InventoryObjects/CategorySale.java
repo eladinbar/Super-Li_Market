@@ -41,8 +41,12 @@ public class CategorySale extends DalObject<CategorySale> {
         return saleDates;
     }
 
-    public void setSaleDates(Pair<Calendar, Calendar> saleDates) {
-        this.saleDates = saleDates;
+    public void setStartSaleDate(Calendar startSaleDate) {
+        this.startSaleDate = startSaleDate;
+    }
+
+    public Calendar getEndSaleDate() {
+        return endSaleDate;
     }
 
     public String getCategoryName() {
