@@ -2,6 +2,7 @@ package Trucking.Business_Layer_Trucking.Delivery;
 
 
 import DAL.*;
+import Trucking.Business_Layer_Trucking.Resources.Truck;
 
 import javax.management.openmbean.KeyAlreadyExistsException;
 import java.sql.SQLException;
@@ -1133,5 +1134,55 @@ public class DeliveryController {
             activeTruckingReports.remove(entry.getKey());
             oldDeliveryForms.put(entry.getKey(), new LinkedList<>());
         }
+    }
+
+
+    public HashMap<String, HashMap<LocalDate, Integer>> getTruckConstraintsFromUpload()
+    {
+        HashMap<String,HashMap<LocalDate,Integer>> result=new HashMap<>();
+        for (Map.Entry<Integer,TruckingReport> entry:activeTruckingReports.entrySet())
+        {
+            TruckingReport report=getTruckReport(entry.getKey());
+            String truckNumber=report.getTruckNumber();
+            if (result.get(truckNumber)==null)  // checks if already exist for the specific truck
+            {
+             result.put(truckNumber,new HashMap<>());
+            }
+            LocalDate date=report.getDate();
+            int shift=turnTimeToShift(report.getLeavingHour());
+            if (result.get(truckNumber).get(date)==null)
+            {
+                result.get(truckNumber).put(date,shift);
+            }
+            else result.get(truckNumber).put(date,2);
+        }
+        return result;
+    }
+    public HashMap<String, HashMap<LocalDate, Integer>> getDriverConstraintsFromUpload()
+    {
+        HashMap<String,HashMap<LocalDate,Integer>> result=new HashMap<>();
+        for (Map.Entry<Integer,TruckingReport> entry:activeTruckingReports.entrySet())
+        {
+            TruckingReport report=getTruckReport(entry.getKey());
+            String driverID=report.getDriverID();
+            if (result.get(driverID)==null)  // checks if already exist for the specific truck
+            {
+                result.put(driverID,new HashMap<>());
+            }
+            LocalDate date=report.getDate();
+            int shift=turnTimeToShift(report.getLeavingHour());
+            if (result.get(driverID).get(date)==null)
+            {
+                result.get(driverID).put(date,shift);
+            }
+            else result.get(driverID).put(date,2);
+        }
+        return result;
+    }
+    private int turnTimeToShift(LocalTime shift){
+        if (shift.isBefore(LocalTime.of(14,0)))
+            return 0;
+        else
+            return 1;
     }
 }
