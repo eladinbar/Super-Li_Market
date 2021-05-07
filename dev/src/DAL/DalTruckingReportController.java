@@ -25,6 +25,9 @@ public class DalTruckingReportController extends DalController {
     public boolean insert(DalTruckingReport truckingReport) throws SQLException {
         //TODO - change URL
         System.out.println("starting insert");
+        int completed=0;
+        if (truckingReport.isCompleted())
+            completed=1;
         Connection conn= DriverManager.getConnection("jdbc:sqlite:/D:\\Year2\\ניתוצ\\עבודה 2\\database.db");
         //String query= "INSERT INTO "+tableName+"("+columnNames[0]+columnNames[1]+columnNames[2]+columnNames[3]
         //        +columnNames[4]+columnNames[5]+columnNames[6]+columnNames[7]+") VALUES (? ? ? ? ? ? ? ?)";
@@ -39,7 +42,7 @@ public class DalTruckingReportController extends DalController {
             st.setString(4,truckingReport.getTruckNumber());
             st.setString(5,truckingReport.getDriverID());
             st.setInt(6,truckingReport.getOrigin());
-            st.setString(7,truckingReport.isCompleted().toString());
+            st.setInt(7,completed);
             st.setInt(8,truckingReport.getReplaceTRID());
 
             System.out.println("executing insert");
@@ -59,6 +62,9 @@ public class DalTruckingReportController extends DalController {
     }
 
     public boolean update(DalTruckingReport truckingReport) throws SQLException {
+        int completed=0;
+        if (truckingReport.isCompleted())
+            completed=1;
         Connection conn=DriverManager.getConnection("jdbc:sqlite:/D:\\Year2\\ניתוצ\\עבודה 2\\database.db");
         String query="UPDATE "+tableName +" SET "+columnNames[1]+"=?,"+
                 columnNames[2]+"=?,"+columnNames[3]+"=?,"+columnNames[4]+"=?,"+columnNames[5]+"=?,"+columnNames[6]+"=?,"+
@@ -72,7 +78,7 @@ public class DalTruckingReportController extends DalController {
             st.setString(3,truckingReport.getTruckNumber());
             st.setString(4,truckingReport.getDriverID());
             st.setInt(5,truckingReport.getOrigin());
-            st.setString(6,truckingReport.isCompleted().toString());
+            st.setInt(6,completed);
             st.setInt(7,truckingReport.getReplaceTRID());
             st.setInt(8,truckingReport.getID());
             st.executeUpdate();
