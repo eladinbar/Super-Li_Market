@@ -116,13 +116,6 @@ public class PresentationController {
     }
 
     //products
-    public String createProduct(String name, String manufacturer) {
-        return service.createProduct(name, manufacturer).toString();
-    }
-
-    public String getProduct(int productID) {
-        return service.getProduct(productID).toString();
-    }
 
     public String addItemToagreement(String id, int productID, int companyProductID, int price) {
         return service.addItemToAgreement(id, productID, companyProductID, price).toString();

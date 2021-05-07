@@ -7,6 +7,7 @@ import SerciveLayer.Response.*;
 import SerciveLayer.Response.ResponseT;
 import SerciveLayer.SimpleObjects.*;
 import SerciveLayer.SimpleObjects.DefectEntry;
+import SerciveLayer.objects.Product;
 
 import java.util.*;
 
@@ -691,7 +692,7 @@ public class InventoryServiceImpl implements InventoryService {
     @Override
     public ResponseT<Map<Integer, Integer>> getItemsInShortAndQuantities() {
         ResponseT<List<Item>> itemsInShort = itemShortageReport();
-        if (itemsInShort.isErrorOccurred()) {
+        if (itemsInShort.errorOccurred()) {
             return new ResponseT<>(false, itemsInShort.getMessage(), null);
         }
         Map<Integer, Integer> itemQuantityMap = new HashMap<>();
@@ -702,10 +703,10 @@ public class InventoryServiceImpl implements InventoryService {
     }
 
     @Override
-    public Response updateQuantityInventory(Map<Integer, Integer> items) {
-        for (int itemId: items.keySet()) {
-            inventoryController.modifyItemShelfQuantity(itemId,
-                    items.get(itemId) + inventoryController.getItem(itemId).getStorageQuantity());
+    public Response updateQuantityInventory(ArrayList<Product> items) {
+        for (Product i: items) {
+            inventoryController.modifyItemShelfQuantity(i.getProductID(),
+                    i.getAmount() + inventoryController.getItem(i.getProductID()).getStorageQuantity());
         }
         return new Response(true, "inventory updated");
     }

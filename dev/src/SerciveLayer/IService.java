@@ -1,6 +1,7 @@
 package SerciveLayer;
 
 import SerciveLayer.Response.*;
+import SerciveLayer.SimpleObjects.Item;
 import SerciveLayer.objects.*;
 import java.time.LocalDate;
 import java.util.List;
@@ -26,7 +27,7 @@ public interface IService {
     Response editQuantityListAmount(String supplierID, int productID, int amount);
     Response editQuantityListDiscount(String supplierID, int productID, int discount);
     Response deleteQuantityList(String supplierID);
-    ResponseT<Product> addQuantityListItem(String supplierID, int productID, int amount, int discount);
+    ResponseT<Item> addQuantityListItem(String supplierID, int productID, int amount, int discount);
     Response deleteQuantityListItem(String supplierID, int productID);
     ResponseT<QuantityList> getQuantityList(String supplierId);
 
@@ -41,15 +42,13 @@ public interface IService {
     Response removeProductFromOrder(int orderID, int productID);
 
     //agreement
-    ResponseT<Product> addItemToAgreement(String id, int productID, int companyProductID, int price);
+    ResponseT<Item> addItemToAgreement(String id, int productID, int companyProductID, int price);
     Response removeItemFromAgreement(String supplierId, int productId);
     Response editAgreementItemCompanyProductID(String supplierID, int productID, int companyProductID);
     Response editAgreementItemPrice(String supplierID, int productID, int companyProductID);
     ResponseT<Agreement> getAgreement(String supplierID);
 
     //products
-    ResponseT<Product> createProduct(String name, String manufacturer);
-    ResponseT<Product> getProduct(int productID);
     ResponseT<Double> getPrice(String supplierID,int amount, int productID);
     ResponseT<Supplier> getCheapestSupplier(int productID, int amount, boolean scheduled);
     ResponseT<Double> getOrderTotalPrice(int orderID);

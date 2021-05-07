@@ -2,6 +2,7 @@ package SerciveLayer;
 
 import SerciveLayer.Response.Response;
 import SerciveLayer.Response.ResponseT;
+import SerciveLayer.SimpleObjects.Item;
 import SerciveLayer.objects.*;
 
 import java.time.LocalDate;
@@ -106,17 +107,23 @@ public class Service implements IService {
     }
 
     @Override
-    public ResponseT<Product> addQuantityListItem(String supplierID, int productID, int amount, int discount) {
-        ResponseT<Product> r = orderService.getProduct(productID);
-        if (!r.errorOccured())
-            return supplierService.addQuantityListItem(supplierID, productID, amount, discount, orderService);
+    public ResponseT<Item> addQuantityListItem(String supplierID, int productID, int amount, int discount) {
+        ResponseT<Item> r = inventoryService.getItem(productID);
+        if (!r.errorOccurred()) {
+            ResponseT<Item> rp = supplierService.addQuantityListItem(supplierID, productID, amount, discount, inventoryService);
+            if(rp.errorOccurred())
+                return new ResponseT<>(rp.getErrorMessage());
+        }
         return r;
     }
 
-    public ResponseT<Product> addItemToAgreement(String id, int productID, int companyProductID, int price) {
-        ResponseT<Product> r = orderService.getProduct(productID);
-        if (!r.errorOccured())
-            return supplierService.addItemToAgreement(id, productID, companyProductID, price, orderService);
+    public ResponseT<Item> addItemToAgreement(String id, int productID, int companyProductID, int price) {
+        ResponseT<Item> r = inventoryService.getItem(productID);
+        if (!r.errorOccurred()) {
+            ResponseT<Item> rp = supplierService.addItemToAgreement(id, productID, companyProductID, price, inventoryService);
+            if(rp.errorOccurred())
+                return new ResponseT<>(rp.getErrorMessage());
+        }
         return r;
     }
 
@@ -143,10 +150,10 @@ public class Service implements IService {
     @Override
     public ResponseT<List<Order>> createShortageOrder(LocalDate date) {//todo check again
         ResponseT<Map<Integer,Integer>> itemInShort = inventoryService.getItemsInShortAndQuantities();
-        if(itemInShort.errorOccured())
+        if(itemInShort.errorOccurred())
             return new ResponseT<>(itemInShort.getErrorMessage());
         ResponseT<Map<String,Map<Integer,Integer>>> r = supplierService.createShortageOrders(itemInShort.value);
-        if(r.errorOccured())
+        if(r.errorOccurred())
             return new ResponseT<>(r.getErrorMessage());
         ResponseT<List<Order>> orderR = orderService.createShortageOrders(r.value,date,supplierService.getSp());
         return orderR;
@@ -155,15 +162,15 @@ public class Service implements IService {
     @Override
     public ResponseT<Order> createScheduledOrder(int day, int itemID, int amount) {
         ResponseT<Supplier> cheap = supplierService.getCheapestSupplier(itemID,amount,true);
-        if(cheap.errorOccured())
+        if(cheap.errorOccurred())
             return new ResponseT<>(cheap.getErrorMessage());
         Supplier s = cheap.value;
         ResponseT<Order> scheduledOrder = orderService.createPernamentOrder(day,s.getSc().getId(), supplierService.getSp());
-        if(scheduledOrder.errorOccured())
+        if(scheduledOrder.errorOccurred())
             return new ResponseT<>(cheap.getErrorMessage());
         Response addItemResp = orderService.addProductToOrder(scheduledOrder.value.getId(),itemID,amount);
         //todo: check the case if the item already exists in the order and handle it accordingly
-        if(addItemResp.errorOccured())
+        if(addItemResp.errorOccurred())
             return new ResponseT<>(true, "Supplier already has the item in the order, check if you want to edit the amount." +
                     "\nOrder ID to edit : " + scheduledOrder.value.getId(),null);
 
@@ -188,10 +195,10 @@ public class Service implements IService {
     @Override
     public Response approveOrder(int orderID) {
         Response r = orderService.approveOrder(orderID);
-        if(r.errorOccured())
+        if(r.errorOccurred())
             return r;
-        ResponseT<Order> orderR = orderService.getOrder(orderID);
-        if(orderR.errorOccured())
+        ResponseT<Order> orderR = orderService.getOrder(orderID, inventoryService);
+        if(orderR.errorOccurred())
             return orderR;
         inventoryService.updateQuantityInventory(orderR.value.getProducts());
 
@@ -200,7 +207,7 @@ public class Service implements IService {
 
     @Override
     public ResponseT<Order> getOrder(int orderID) {
-        return orderService.getOrder(orderID);
+        return orderService.getOrder(orderID, inventoryService);
     }
 
     @Override
@@ -211,16 +218,6 @@ public class Service implements IService {
     @Override
     public Response removeProductFromOrder(int orderID, int productID) {
         return orderService.removeProductFromOrder(orderID, productID);
-    }
-
-    @Override
-    public ResponseT<Product> createProduct(String name, String manufacturer) {
-        return orderService.createProduct(name, manufacturer);
-    }
-
-    @Override
-    public ResponseT<Product> getProduct(int productID) {
-        return orderService.getProduct(productID);
     }
 
     @Override

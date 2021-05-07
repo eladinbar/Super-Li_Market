@@ -50,7 +50,7 @@ public class PresentationController implements Runnable {
         int intManfac = menu.instructAndReceive("Enter manufacturer ID: ", Integer.class);
         String category = menu.instructAndReceive("Enter category name: ");
         Response r = service.addItem(itemID, name, category, costP, sellP, minA, storeL, storageL, storageQ, storeQ, intManfac, new ArrayList<>());
-        if (r.isErrorOccurred()) {
+        if (r.errorOccurred()) {
             menu.errorPrompt(r.getMessage());
         } else {
             System.out.println("Item added successfully");
@@ -60,7 +60,7 @@ public class PresentationController implements Runnable {
     private void showItem() {
         int itemID = menu.instructAndReceive("Enter item ID: ", Integer.class);
         ResponseT<Item> r = service.getItem(itemID);
-        if (!r.isErrorOccurred()) {
+        if (!r.errorOccurred()) {
             menu.itemHeader();
             menu.printEntity(r.getValue());
         } else {
@@ -71,7 +71,7 @@ public class PresentationController implements Runnable {
     private void editItem() {
         int itemID = menu.instructAndReceive("Enter item ID: ", Integer.class);
         ResponseT<Item> r = service.getItem(itemID);
-        if (r.isErrorOccurred()) {
+        if (r.errorOccurred()) {
             menu.errorPrompt("Could not get item. Make sure you entered the ID correctly.");
             return;
         }
@@ -79,7 +79,7 @@ public class PresentationController implements Runnable {
         menu.printEntity(r.getValue());
         menu.printItemModMenu();
         Response modResp = editItemChoiceInput(itemID);
-        if (modResp.isErrorOccurred())
+        if (modResp.errorOccurred())
             System.out.println(modResp.getMessage());
         else
             System.out.println("Changes saved!");
@@ -141,7 +141,7 @@ public class PresentationController implements Runnable {
     private void removeItem() {
         int itemID = menu.instructAndReceive("Enter item ID: ", Integer.class);
         Response r = service.removeItem(itemID);
-        if (r.isErrorOccurred()) {
+        if (r.errorOccurred()) {
             menu.errorPrompt(r.getMessage());
         } else {
             System.out.println("Item removed successfully");
@@ -153,7 +153,7 @@ public class PresentationController implements Runnable {
         String catName = menu.instructAndReceive("Enter category name: ");
         String parentCategoryName = menu.instructAndReceive("Enter parent category: (enter nothing to set an item as 'uncategorized')");
         Response addR = service.addCategory(catName, parentCategoryName);
-        if (addR.isErrorOccurred())
+        if (addR.errorOccurred())
             System.out.println(addR.getMessage());
         else
             System.out.println("Category added successfully");
@@ -163,7 +163,7 @@ public class PresentationController implements Runnable {
     private void showCategory() {
         String catName = menu.instructAndReceive("Enter category name: ");
         ResponseT<Category> rCategory = service.getCategory(catName);
-        if (rCategory.isErrorOccurred())
+        if (rCategory.errorOccurred())
             System.out.println(rCategory.getMessage());
         else
             menu.printEntity(rCategory.getValue());
@@ -172,7 +172,7 @@ public class PresentationController implements Runnable {
     private void editCategory() {
         String catName = menu.instructAndReceive("Enter category name: ");
         ResponseT<Category> catR = service.getCategory(catName);
-        if (catR.isErrorOccurred()) {
+        if (catR.errorOccurred()) {
             menu.errorPrompt(catR.getMessage());
             return;
         } else
@@ -194,7 +194,7 @@ public class PresentationController implements Runnable {
                 break;
         }
 
-        if (modResp.isErrorOccurred())
+        if (modResp.errorOccurred())
             menu.errorPrompt(modResp.getMessage());
         else
             System.out.println("Changes Saved!");
@@ -204,7 +204,7 @@ public class PresentationController implements Runnable {
     private void removeCategory() {
         String catName = menu.instructAndReceive("Enter category name: ");
         Response catR = service.removeCategory(catName);
-        if (catR.isErrorOccurred())
+        if (catR.errorOccurred())
             menu.errorPrompt(catR.getMessage());
         else
             System.out.println("Category removed!");
@@ -213,7 +213,7 @@ public class PresentationController implements Runnable {
     private <T extends SimpleEntity> void showSale() {
         String saleName = menu.instructAndReceive("Enter sale name: ");
         ResponseT<Sale<T>> saleR = service.getSale(saleName);
-        if (saleR.isErrorOccurred()) {
+        if (saleR.errorOccurred()) {
             menu.errorPrompt(saleR.getMessage());
         } else {
             menu.printEntity(saleR.getValue());
@@ -229,12 +229,12 @@ public class PresentationController implements Runnable {
         int applyOnItem = menu.instructAndReceive("Enter item ID for the sale: ", Integer.class);
         //checking if exists
         ResponseT<Item> rExist = service.getItem(applyOnItem);
-        if (rExist.isErrorOccurred()) {
+        if (rExist.errorOccurred()) {
             menu.errorPrompt(rExist.getMessage());
             return;
         }
         Response r1 = service.addItemSale(saleName, applyOnItem, saleDiscount, dates.getFirst(), dates.getSecond());
-        if (r1.isErrorOccurred()) {
+        if (r1.errorOccurred()) {
             menu.errorPrompt(r1.getMessage());
             return;
         }
@@ -251,12 +251,12 @@ public class PresentationController implements Runnable {
         String applyOnItem = menu.instructAndReceive("Enter category name for the sale: ");
         //checking if exists
         ResponseT<Category> rExist = service.getCategory(applyOnItem);
-        if (rExist.isErrorOccurred()) {
+        if (rExist.errorOccurred()) {
             menu.errorPrompt(rExist.getMessage());
             return;
         }
         Response r1 = service.addCategorySale(saleName, applyOnItem, saleDiscount, dates.getFirst(), dates.getSecond());
-        if (r1.isErrorOccurred()) {
+        if (r1.errorOccurred()) {
             menu.errorPrompt(r1.getMessage());
             return;
         }
@@ -292,7 +292,7 @@ public class PresentationController implements Runnable {
     private <T extends SimpleEntity> void modifySale() {
         String saleName = menu.instructAndReceive("Enter sale name: ");
         ResponseT<Sale<T>> saleR = service.getSale(saleName);
-        if (saleR.isErrorOccurred()) {
+        if (saleR.errorOccurred()) {
             menu.errorPrompt(saleR.getMessage());
             return;
         } else
@@ -320,7 +320,7 @@ public class PresentationController implements Runnable {
                 modResp = new Response(true, "Invalid choice");
                 break;
         }
-        if (modResp.isErrorOccurred())
+        if (modResp.errorOccurred())
             menu.errorPrompt(modResp.getMessage());
         else
             System.out.println("Changes Saved!");
@@ -366,7 +366,7 @@ public class PresentationController implements Runnable {
             return;
         }
         Response r1 = service.addItemDiscount(suppId, discountGiven, date, itemCount, itemId);
-        if (r1.isErrorOccurred()) {
+        if (r1.errorOccurred()) {
             menu.errorPrompt(r1.getMessage());
             return;
         }
@@ -396,7 +396,7 @@ public class PresentationController implements Runnable {
             return;
         }
         Response r1 = service.addCategoryDiscount(suppId, discountGiven, date, itemCount, catName);
-        if (r1.isErrorOccurred()) {
+        if (r1.errorOccurred()) {
             menu.errorPrompt(r1.getMessage());
             return;
         }
@@ -413,7 +413,7 @@ public class PresentationController implements Runnable {
         //location2
         String location = menu.instructAndReceive("Enter storage/shelf location: follow this format \"<ST/SH>-A<number>-<L/R>-S<number>\"");
         Response recorded = service.recordDefect(itemID, date, defectedAmount, location);
-        if (recorded.isErrorOccurred()) {
+        if (recorded.errorOccurred()) {
             menu.errorPrompt(recorded.getMessage());
             return;
         }
@@ -422,7 +422,7 @@ public class PresentationController implements Runnable {
 
     private void inventoryReport() {
         ResponseT<List<Item>> reportResp = service.inventoryReport();
-        if (reportResp.isErrorOccurred()) {
+        if (reportResp.errorOccurred()) {
             menu.errorPrompt(reportResp.getMessage());
             return;
         }
@@ -432,12 +432,12 @@ public class PresentationController implements Runnable {
     private void categoryReport() {
         String catName = menu.instructAndReceive("Enter category name: ");
         ResponseT<Category> catR = service.getCategory(catName);
-        if (catR.isErrorOccurred()) {
+        if (catR.errorOccurred()) {
             menu.errorPrompt(catR.getMessage());
             return;
         }
         ResponseT<List<Item>> categoryItems = service.categoryReport(catName);
-        if (categoryItems.isErrorOccurred()) {
+        if (categoryItems.errorOccurred()) {
             menu.errorPrompt(categoryItems.getMessage());
         }
         menu.printEntity(catR.getValue());
@@ -445,7 +445,7 @@ public class PresentationController implements Runnable {
 
     private void itemShortageReport() {
         ResponseT<List<Item>> shortage = service.itemShortageReport();
-        if (shortage.isErrorOccurred()) {
+        if (shortage.errorOccurred()) {
             menu.errorPrompt(shortage.getMessage());
             return;
         }
@@ -457,7 +457,7 @@ public class PresentationController implements Runnable {
         if (interval == null)
             return;
         ResponseT<List<DefectEntry>> defects = service.defectsReport(interval.getFirst(), interval.getSecond());
-        if (defects.isErrorOccurred()) {
+        if (defects.errorOccurred()) {
             menu.errorPrompt(defects.getMessage());
             return;
         }
@@ -693,10 +693,17 @@ public class PresentationController implements Runnable {
 
     private void setPermanentOrder() { //case 7
         int day = menu.instructAndReceive("day (1-7) in a week to get the order", Integer.class);
-        int itemID = menu.instructAndReceive("enter item ID to add to a scheduled order", Integer.class);
-        int amount = menu.instructAndReceive("enter amount to order", Integer.class);
-        String order = Service.createScheduledOrder(day, itemID, amount).value.toString();
-        System.out.println(order);
+        while(true) {
+            int itemID = menu.instructAndReceive("enter item ID to add to a scheduled order", Integer.class);
+            int amount = menu.instructAndReceive("enter amount to order", Integer.class);
+            String order = Service.createScheduledOrder(day, itemID, amount).value.toString();
+            System.out.println(order);
+            String choice = menu.instructAndReceive("1. add more items.\nenter any other key for completing the order ");
+            if (!choice.equals("1")){
+                break;
+            }
+        }
+
     }
 
     //a helper function that approve that the order arrived in the system

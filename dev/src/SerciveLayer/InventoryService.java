@@ -3,7 +3,9 @@ package SerciveLayer;
 import SerciveLayer.Response.Response;
 import SerciveLayer.Response.ResponseT;
 import SerciveLayer.SimpleObjects.*;
+import SerciveLayer.objects.Product;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Map;
@@ -76,5 +78,5 @@ public interface InventoryService {
 
     ResponseT<Map<Integer, Integer>> getItemsInShortAndQuantities();
 
-    Response updateQuantityInventory(Map<Integer, Integer> items);
+    Response updateQuantityInventory(ArrayList<Product> items);
 }

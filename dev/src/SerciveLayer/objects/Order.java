@@ -1,16 +1,17 @@
 package SerciveLayer.objects;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Map;
 
 public class Order {
     private int id;
-    private Map<Integer, Integer> products;
+    private ArrayList<Product> products;
     private LocalDate date;
     private boolean delivered;
     private Supplier supplier;
 
-    public Order(int id, LocalDate date, Supplier supplier, Map<Integer, Integer> products, boolean delivered) {
+    public Order(int id, LocalDate date, Supplier supplier, ArrayList<Product> products, boolean delivered) {
         this.id = id;
         this.products = products;
         this.date = date;
@@ -18,9 +19,9 @@ public class Order {
         this.supplier = supplier;
     }
 
-    public Order(BusinessLayer.SupliersPackage.orderPackage.Order order) {
+    public Order(BusinessLayer.SupliersPackage.orderPackage.Order order, ArrayList<Product> products) {
         this.id = order.getId();
-        this.products = order.getProducts();
+        this.products = products;
         this.date = order.getDate();
         this.delivered = order.isDelivered();
         this.supplier = new Supplier(order.getSupplier());
@@ -30,15 +31,15 @@ public class Order {
         return id;
     }
 
-    public Map<Integer, Integer> getProducts() {
+    public ArrayList<Product> getProducts() {
         return products;
     }
 
     @Override
     public String toString() {
         String proToString = "";
-        for (Map.Entry<Integer, Integer> en : products.entrySet()) {
-            proToString += "\nproduct id : " + en.getKey() + "       amount: " + en.getValue();
+        for (Product en : products) {
+            proToString += "\nproduct id : " + en.getProductID() + "       amount: " + en.getAmount();
         }
 
         if (date == null) {

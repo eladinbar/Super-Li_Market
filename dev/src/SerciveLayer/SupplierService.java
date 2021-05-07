@@ -2,6 +2,7 @@ package SerciveLayer;
 
 import BusinessLayer.SupliersPackage.supplierPackage.SupplierController;
 import SerciveLayer.Response.*;
+import SerciveLayer.SimpleObjects.Item;
 import SerciveLayer.objects.Agreement;
 import SerciveLayer.objects.Product;
 import SerciveLayer.objects.QuantityList;
@@ -192,11 +193,11 @@ public class SupplierService {
         return toReturn;
     }
 
-    public ResponseT<Product> addQuantityListItem(String supplierID, int productID, int amount, int discount, OrderService oc) {
-        ResponseT<Product> toReturn;
+    public ResponseT<Item> addQuantityListItem(String supplierID, int productID, int amount, int discount, InventoryService inventoryService) {
+        ResponseT<Item> toReturn;
         try {
             sp.addQuantityListItem(supplierID, productID, amount, discount);
-            toReturn = oc.getProduct(productID);
+            toReturn = inventoryService.getItem(productID);
         } catch (Exception e) {
             toReturn = new ResponseT<>(e.getMessage());
         }
@@ -223,11 +224,11 @@ public class SupplierService {
         return toReturn;
     }
 
-    public ResponseT<Product> addItemToAgreement(String id, int productID, int companyProductID, int price, OrderService oc) {
-        ResponseT<Product> toReturn;
+    public ResponseT<Item> addItemToAgreement(String id, int productID, int companyProductID, int price, InventoryService inventoryService) {
+        ResponseT<Item> toReturn;
         try {
             sp.addItemToAgreement(id, productID, companyProductID,price);
-            toReturn = oc.getProduct(productID);
+            toReturn = inventoryService.getItem(productID);
         } catch (Exception e) {
             toReturn = new ResponseT<>(e.getMessage());
         }

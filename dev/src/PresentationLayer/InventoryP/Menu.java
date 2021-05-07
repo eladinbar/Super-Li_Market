@@ -2,6 +2,7 @@ package PresentationLayer.InventoryP;
 
 import InfrastructurePackage.TextFormatter;
 import SerciveLayer.SimpleObjects.*;
+import SerciveLayer.objects.Product;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -231,6 +232,9 @@ public class Menu {
     public void itemHeader() {
         System.out.println(tf.formatItemMenuColumns());
     }
+    public void productHeader(){
+        System.out.println(tf.formatProductMenuColumns());
+    }
 
     public void printEntity(Item item) {
         try {
@@ -245,6 +249,14 @@ public class Menu {
         for (Item i : itemList) {
             printEntity(i);
         }
+    }
+
+    public void printEntity(Product orderProduct){
+
+    }
+
+    public void printEntity(ArrayList<Product> orderProduct){
+
     }
 
     public void printEntity(Category category) {
