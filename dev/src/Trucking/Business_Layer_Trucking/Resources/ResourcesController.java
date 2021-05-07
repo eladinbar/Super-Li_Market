@@ -1,14 +1,12 @@
 package Trucking.Business_Layer_Trucking.Resources;
 
+import Employees.EmployeeException;
 import Employees.business_layer.Shift.ShiftController;
 
 import javax.management.openmbean.KeyAlreadyExistsException;
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.Map;
-import java.util.NoSuchElementException;
+import java.util.*;
 
 public class ResourcesController {
     private HashMap<String, Driver> drivers;
@@ -159,13 +157,20 @@ public class ResourcesController {
 
 
     public HashMap<LocalDate, HashMap<Integer, LinkedList<String>>> getDaysAndDrivers() throws IllegalArgumentException {
-        HashMap<LocalDate, HashMap<Integer, LinkedList<String>>> received = ShiftController.getInstance().getDaysAndDrivers();
+        HashMap<LocalDate, HashMap<Integer, List<String>>> received = null;
+        try {
+            received = ShiftController.getInstance().getDaysAndDrivers();
+        }catch (EmployeeException e){
+            System.out.println("Employee's Exception thrown in Resources Service. exits...");
+            System.exit(1);
+        }
+
 
         HashMap<LocalDate, HashMap<Integer, LinkedList<String>>> output = new HashMap<>();
-        for (Map.Entry<LocalDate, HashMap<Integer, LinkedList<String>>> entry : received.entrySet()) {     // loop for each date
+        for (Map.Entry<LocalDate, HashMap<Integer, List<String>>> entry : received.entrySet()) {     // loop for each date
             LocalDate date = entry.getKey();
             output.put(date, new HashMap<>());
-            for (Map.Entry<Integer, LinkedList<String>> shift : entry.getValue().entrySet()) {     // loop for each shift
+            for (Map.Entry<Integer, List<String>> shift : entry.getValue().entrySet()) {     // loop for each shift
                 if (shift.getKey().equals(2)){
                     for (String id : shift.getValue()) {                                            // runs through drivers with shift number = 2
                         if (isDriverAvailable(id, date,2)){

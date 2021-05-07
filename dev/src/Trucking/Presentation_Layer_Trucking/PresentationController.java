@@ -1,5 +1,6 @@
 package Trucking.Presentation_Layer_Trucking;
 
+import Employees.EmployeeException;
 import Trucking.Business_Layer_Trucking.Facade.FacadeObject.*;
 import Trucking.Business_Layer_Trucking.Facade.FacadeService;
 import Trucking.Business_Layer_Trucking.Resources.Driver;
@@ -238,7 +239,7 @@ public class PresentationController {
         return facadeService.getOldDTruckingReports();
     }
 
-    public HashMap<LocalDate, HashMap<Integer, LinkedList<String>>> getDaysAndDrivers() {
+    public HashMap<LocalDate, HashMap<Integer, LinkedList<String>>> getDaysAndDrivers() throws IllegalArgumentException {
         return facadeService.getDaysAndDrivers();
     }
 

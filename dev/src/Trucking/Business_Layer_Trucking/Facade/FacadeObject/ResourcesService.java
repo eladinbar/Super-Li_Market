@@ -1,5 +1,6 @@
 package Trucking.Business_Layer_Trucking.Facade.FacadeObject;
 
+import Employees.EmployeeException;
 import Trucking.Business_Layer_Trucking.Resources.Driver;
 import Trucking.Business_Layer_Trucking.Resources.ResourcesController;
 import Trucking.Business_Layer_Trucking.Resources.Truck;
@@ -90,7 +91,7 @@ public class ResourcesService {
 
     }
 
-    public HashMap<LocalDate, HashMap<Integer, LinkedList<String>>> getDayAndDrivers() {
+    public HashMap<LocalDate, HashMap<Integer, LinkedList<String>>> getDayAndDrivers() throws IllegalArgumentException {
         return rc.getDaysAndDrivers();
     }
 

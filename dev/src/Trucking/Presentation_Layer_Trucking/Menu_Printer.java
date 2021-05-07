@@ -1,5 +1,6 @@
 package Trucking.Presentation_Layer_Trucking;
 
+import Employees.EmployeeException;
 import Trucking.Business_Layer_Trucking.Facade.FacadeObject.*;
 import Trucking.Business_Layer_Trucking.Resources.Driver;
 
@@ -233,7 +234,6 @@ public class Menu_Printer {
                 } catch (ReflectiveOperationException re) {
                     System.out.println(re.getMessage());
                 }
-
                 break;
             case 2:
                 try {
@@ -383,7 +383,7 @@ public class Menu_Printer {
 
     }
 
-    private LinkedList<String> chooseDate(Scanner scanner) throws IllegalArgumentException, ReflectiveOperationException {
+    private LinkedList<String> chooseDate(Scanner scanner) throws  IllegalArgumentException, ReflectiveOperationException {
 
         HashMap<LocalDate, HashMap<Integer, LinkedList<String>>> daysAndDrivers = pc.getDaysAndDrivers();
         int spot =1;
