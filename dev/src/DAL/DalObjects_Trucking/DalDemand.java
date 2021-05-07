@@ -1,6 +1,8 @@
-package DAL;
+package DAL.DalObjects_Trucking;
 
-public class DalDemand implements DalObject{
+import DAL.DalObject;
+
+public class DalDemand implements DalObject {
     private int itemID;
     private int amount;
     private int siteID;

@@ -1,4 +1,7 @@
-package DAL;
+package DAL.DalControllers_Trucking;
+
+import DAL.DalControllers_Employee.DalController;
+import DAL.DalObjects_Trucking.DalTruckingReport;
 
 
 import java.sql.*;

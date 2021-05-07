@@ -27,9 +27,33 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="05ca914f-9056-4de3-9869-7fdfaa880f2d" name="Default Changelist" comment="DAL insert&amp; update methods has been made. Time to test">
+    <list default="true" id="05ca914f-9056-4de3-9869-7fdfaa880f2d" name="Default Changelist" comment="last update">
+      <change afterPath="$PROJECT_DIR$/dev/src/DAL/DalControllers_Employee/DalEmployeeController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/dev/src/DAL/DalObjects_Employees/DalBankBranch.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/dev/src/DAL/DalObjects_Employees/DalConstraint.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/dev/src/DAL/DalObjects_Employees/DalEmployee.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/dev/src/DAL/DalObjects_Employees/DalShift.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/dev/src/DAL/DalObjects_Employees/DalShiftType.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dev/src/DAL/DalTruckController.java" beforeDir="false" afterPath="$PROJECT_DIR$/dev/src/DAL/DalTruckController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dev/src/DAL/DalController.java" beforeDir="false" afterPath="$PROJECT_DIR$/dev/src/DAL/DalController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dev/src/DAL/DalDeliveryForm.java" beforeDir="false" afterPath="$PROJECT_DIR$/dev/src/DAL/DalObjects_Trucking/DalDeliveryForm.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dev/src/DAL/DalDeliveryFormController.java" beforeDir="false" afterPath="$PROJECT_DIR$/dev/src/DAL/DalControllers_Trucking/DalDeliveryFormController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dev/src/DAL/DalDemand.java" beforeDir="false" afterPath="$PROJECT_DIR$/dev/src/DAL/DalObjects_Trucking/DalDemand.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dev/src/DAL/DalDemandController.java" beforeDir="false" afterPath="$PROJECT_DIR$/dev/src/DAL/DalControllers_Trucking/DalDemandController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dev/src/DAL/DalDriver.java" beforeDir="false" afterPath="$PROJECT_DIR$/dev/src/DAL/DalObjects_Trucking/DalDriver.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dev/src/DAL/DalDriverController.java" beforeDir="false" afterPath="$PROJECT_DIR$/dev/src/DAL/DalControllers_Trucking/DalDriverController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dev/src/DAL/DalItem.java" beforeDir="false" afterPath="$PROJECT_DIR$/dev/src/DAL/DalObjects_Trucking/DalItem.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dev/src/DAL/DalItemController.java" beforeDir="false" afterPath="$PROJECT_DIR$/dev/src/DAL/DalControllers_Trucking/DalItemController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dev/src/DAL/DalItemsOnDF.java" beforeDir="false" afterPath="$PROJECT_DIR$/dev/src/DAL/DalObjects_Trucking/DalItemsOnDF.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dev/src/DAL/DalItemsOnDFController.java" beforeDir="false" afterPath="$PROJECT_DIR$/dev/src/DAL/DalControllers_Trucking/DalItemsOnDFController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dev/src/DAL/DalObject.java" beforeDir="false" afterPath="$PROJECT_DIR$/dev/src/DAL/DalObject.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dev/src/DAL/DalSite.java" beforeDir="false" afterPath="$PROJECT_DIR$/dev/src/DAL/DalObjects_Trucking/DalSite.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dev/src/DAL/DalSiteController.java" beforeDir="false" afterPath="$PROJECT_DIR$/dev/src/DAL/DalControllers_Trucking/DalSiteController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dev/src/DAL/DalTruck.java" beforeDir="false" afterPath="$PROJECT_DIR$/dev/src/DAL/DalObjects_Trucking/DalTruck.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dev/src/DAL/DalTruckController.java" beforeDir="false" afterPath="$PROJECT_DIR$/dev/src/DAL/DalControllers_Trucking/DalTruckController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dev/src/DAL/DalTruckingReport.java" beforeDir="false" afterPath="$PROJECT_DIR$/dev/src/DAL/DalObjects_Trucking/DalTruckingReport.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dev/src/DAL/DalTruckingReportController.java" beforeDir="false" afterPath="$PROJECT_DIR$/dev/src/DAL/DalControllers_Trucking/DalTruckingReportController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/classDiagram_Employee_trucking.drawio" beforeDir="false" afterPath="$PROJECT_DIR$/docs/classDiagram_Employee_trucking.drawio" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -47,7 +71,7 @@
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="DAL-Raz" />
+        <entry key="$PROJECT_DIR$" value="203834734-206117400" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -59,6 +83,12 @@
       <filtered-out-file-type name="TAG" />
       <filtered-out-file-type name="COMMIT_BY_MESSAGE" />
     </file-type-list>
+  </component>
+  <component name="HighlightingSettingsPerFile">
+    <setting file="file://$PROJECT_DIR$/dev/src/Main.java" root0="FORCE_HIGHLIGHTING" />
+  </component>
+  <component name="ProblemsViewState">
+    <option name="selectedIndex" value="1" />
   </component>
   <component name="ProjectId" id="1pchlU42Bar4qov9F42Tsf9ACy9" />
   <component name="ProjectViewState">
@@ -76,35 +106,27 @@
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
     <property name="extract.method.default.visibility" value="private" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/sqlite-jdbc-3.32.3.2.jar" />
     <property name="nodejs_package_manager_path" value="npm" />
-    <property name="project.structure.last.edited" value="Modules" />
+    <property name="project.structure.last.edited" value="Artifacts" />
     <property name="project.structure.proportion" value="0.15332031" />
     <property name="project.structure.side.proportion" value="0.2" />
     <property name="settings.editor.selected.configurable" value="preferences.lookFeel" />
   </component>
-  <component name="RecentsManager">
-    <key name="CopyFile.RECENT_KEYS">
-      <recent name="C:\Users\razba\Desktop\ADSS_Group_G" />
-    </key>
-  </component>
   <component name="RunManager" selected="Application.Main">
-    <configuration default="true" type="ArquillianTestNG" factoryName="" nameIsGenerated="true">
+    <configuration name="Main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="Main" />
+      <module name="ADSS_Group_G" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration default="true" type="ArquillianJUnit" factoryName="" nameIsGenerated="true">
       <option name="arquillianRunConfiguration">
         <value>
           <option name="containerStateName" value="" />
         </value>
       </option>
-      <option name="TEST_OBJECT" value="CLASS" />
-      <properties />
-      <listeners />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="Main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="Main" />
-      <module name="ADSS_Group_G" />
+      <option name="TEST_OBJECT" value="class" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -134,7 +156,7 @@
         <item itemvalue="JUnit.ResourcesServiceTest" />
         <item itemvalue="JAR Application.ADSS_Group_G.jar" />
         <item itemvalue="Application.Main" />
-        <item itemvalue="JUnit.ResourcesServiceTest" />
+        <item itemvalue="Application.Main" />
       </list>
     </recent_temporary>
   </component>
@@ -452,49 +474,7 @@
       <option name="project" value="LOCAL" />
       <updated>1617992627648</updated>
     </task>
-    <task id="LOCAL-00042" summary="Started DAL">
-      <created>1619871948236</created>
-      <option name="number" value="00042" />
-      <option name="presentableId" value="LOCAL-00042" />
-      <option name="project" value="LOCAL" />
-      <updated>1619871948236</updated>
-    </task>
-    <task id="LOCAL-00043" summary="Started DAL - Constructors , Load method signature changed.">
-      <created>1619887030042</created>
-      <option name="number" value="00043" />
-      <option name="presentableId" value="LOCAL-00043" />
-      <option name="project" value="LOCAL" />
-      <updated>1619887030042</updated>
-    </task>
-    <task id="LOCAL-00044" summary="DalTruckingReportController insert method made.">
-      <created>1619971196521</created>
-      <option name="number" value="00044" />
-      <option name="presentableId" value="LOCAL-00044" />
-      <option name="project" value="LOCAL" />
-      <updated>1619971196521</updated>
-    </task>
-    <task id="LOCAL-00045" summary="DAL Trucking classes almost done!">
-      <created>1620068815332</created>
-      <option name="number" value="00045" />
-      <option name="presentableId" value="LOCAL-00045" />
-      <option name="project" value="LOCAL" />
-      <updated>1620068815332</updated>
-    </task>
-    <task id="LOCAL-00046" summary="DAL Load &amp; delete methods working">
-      <created>1620238888479</created>
-      <option name="number" value="00046" />
-      <option name="presentableId" value="LOCAL-00046" />
-      <option name="project" value="LOCAL" />
-      <updated>1620238888480</updated>
-    </task>
-    <task id="LOCAL-00047" summary="DAL insert&amp; update methods has been made. Time to test">
-      <created>1620289584903</created>
-      <option name="number" value="00047" />
-      <option name="presentableId" value="LOCAL-00047" />
-      <option name="project" value="LOCAL" />
-      <updated>1620289584904</updated>
-    </task>
-    <option name="localTasksCounter" value="48" />
+    <option name="localTasksCounter" value="42" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -513,6 +493,12 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
+    <MESSAGE value="some fixed in PresentationController, last methods has been made, TODO added to business layer" />
+    <MESSAGE value="finished Facade layer and Presentation layer. waiting for combine with business layer to tests.&#10;&#10;** Unit test haven't done yet.&#10;** NTH didn't accomplished yet" />
+    <MESSAGE value="after combine meeting." />
+    <MESSAGE value="replan changed" />
+    <MESSAGE value="** compilation error exist. need to add getItems in Delivery service" />
+    <MESSAGE value="Facade objects has been completed" />
     <MESSAGE value="merged before tests" />
     <MESSAGE value="First test has been done - ido left to do Menu test.&#10;Raz has left with everything else because he is such a dick&#10;Love you raz" />
     <MESSAGE value="fixed input exceptions" />
@@ -532,49 +518,35 @@
     <MESSAGE value="finished to upload" />
     <MESSAGE value="Fixed intiate method" />
     <MESSAGE value="last update" />
-    <MESSAGE value="Started DAL" />
-    <MESSAGE value="Started DAL - Constructors , Load method signature changed." />
-    <MESSAGE value="DalTruckingReportController insert method made." />
-    <MESSAGE value="DAL Trucking classes almost done!" />
-    <MESSAGE value="DAL Load &amp; delete methods working" />
-    <MESSAGE value="DAL insert&amp; update methods has been made. Time to test" />
-    <option name="LAST_COMMIT_MESSAGE" value="DAL insert&amp; update methods has been made. Time to test" />
+    <option name="LAST_COMMIT_MESSAGE" value="last update" />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="2685" y="231" key="#com.intellij.ide.util.MemberChooser" timestamp="1619881335508">
+      <screen x="1920" y="0" width="1920" height="1050" />
+    </state>
+    <state x="2685" y="231" key="#com.intellij.ide.util.MemberChooser/0.0.1280.689/1920.0.1920.1050@1920.0.1920.1050" timestamp="1619881335508" />
+    <state x="121" y="52" key="MergeDialog" timestamp="1619873554380">
+      <screen x="0" y="0" width="1280" height="689" />
+    </state>
+    <state x="121" y="52" key="MergeDialog/0.0.1280.689/1920.0.1920.1050@0.0.1280.689" timestamp="1619873554380" />
+    <state x="280" y="107" key="MultipleFileMergeDialog" timestamp="1619873471042">
+      <screen x="0" y="0" width="1280" height="689" />
+    </state>
+    <state x="280" y="107" key="MultipleFileMergeDialog/0.0.1280.689/1920.0.1920.1050@0.0.1280.689" timestamp="1619873471042" />
+    <state x="458" y="259" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1619873502035">
+      <screen x="0" y="0" width="1280" height="689" />
+    </state>
+    <state x="458" y="259" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/0.0.1280.689/1920.0.1920.1050@0.0.1280.689" timestamp="1619873502035" />
+    <state x="380" y="58" key="git4idea.branch.GitSmartOperationDialog" timestamp="1619873540731">
+      <screen x="0" y="0" width="1280" height="689" />
+    </state>
+    <state x="380" y="58" key="git4idea.branch.GitSmartOperationDialog/0.0.1280.689/1920.0.1920.1050@0.0.1280.689" timestamp="1619873540731" />
+    <state x="340" y="247" key="git4idea.rebase.GitUnstructuredEditor" timestamp="1619873479476">
+      <screen x="0" y="0" width="1280" height="689" />
+    </state>
+    <state x="340" y="247" key="git4idea.rebase.GitUnstructuredEditor/0.0.1280.689/1920.0.1920.1050@0.0.1280.689" timestamp="1619873479476" />
   </component>
   <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/dev/src/DAL/DalTruckingReportController.java</url>
-          <line>22</line>
-          <option name="timeStamp" value="1" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/dev/src/DAL/DalTruckingReportController.java</url>
-          <line>41</line>
-          <option name="timeStamp" value="2" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/dev/src/DAL/DalTruckingReportController.java</url>
-          <line>91</line>
-          <option name="timeStamp" value="7" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/dev/src/DAL/DalItemController.java</url>
-          <line>19</line>
-          <option name="timeStamp" value="13" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/dev/src/DAL/DalItemController.java</url>
-          <line>45</line>
-          <option name="timeStamp" value="14" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/dev/src/Main.java</url>
-          <line>33</line>
-          <option name="timeStamp" value="15" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
     <pin-to-top-manager>
       <pinned-members>
         <PinnedItemInfo parentTag="java.lang.Integer" memberName="value" />
@@ -586,7 +558,6 @@
     </pin-to-top-manager>
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/Main_java$Main.ic" NAME="Main Coverage Results" MODIFIED="1620284345160" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
     <SUITE FILE_PATH="coverage/ADSS_Group_G$Main.ic" NAME="Main Coverage Results" MODIFIED="1617982326074" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
   </component>
 </project>

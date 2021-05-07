@@ -1,9 +1,11 @@
-package DAL;
+package DAL.DalObjects_Trucking;
+
+import DAL.DalObject;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
 
-public class DalTruckingReport implements DalObject{
+public class DalTruckingReport implements DalObject {
     private int ID;
     private LocalTime leavingHour;
     private LocalDate date;

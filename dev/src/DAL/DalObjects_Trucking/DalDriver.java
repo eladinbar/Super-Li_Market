@@ -1,4 +1,6 @@
-package DAL;
+package DAL.DalObjects_Trucking;
+
+import DAL.DalObject;
 
 public class DalDriver implements DalObject {
     private String ID;

@@ -1,9 +1,12 @@
-package DAL;
+package DAL.DalControllers_Trucking;
+
+import DAL.DalControllers_Employee.DalController;
+import DAL.DalObjects_Trucking.DalDriver;
 
 import java.sql.*;
 import java.util.LinkedList;
 
-public class DalDriverController extends DalController{
+public class DalDriverController extends DalController {
 
     public DalDriverController(){
         //TODO - Check when tables created

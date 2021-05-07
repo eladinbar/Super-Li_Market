@@ -1,6 +1,8 @@
-package DAL;
+package DAL.DalObjects_Trucking;
 
-public class DalItemsOnDF implements DalObject{
+import DAL.DalObject;
+
+public class DalItemsOnDF implements DalObject {
     int itemID;
     int amount;
 

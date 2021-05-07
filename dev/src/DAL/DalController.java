@@ -1,9 +1,9 @@
 package DAL;
 
 public abstract class DalController {
-    String connection;
-    String tableName;
-    String[] columnNames;
+   protected String connection;
+    protected String tableName;
+    protected String[] columnNames;
 
     public DalController()
     {

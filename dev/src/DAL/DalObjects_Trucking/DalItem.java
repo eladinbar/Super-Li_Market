@@ -1,6 +1,8 @@
-package DAL;
+package DAL.DalObjects_Trucking;
 
-public class DalItem implements DalObject{
+import DAL.DalObject;
+
+public class DalItem implements DalObject {
     private int ID;
     private double weight;
     private String name;
