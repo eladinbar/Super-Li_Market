@@ -5,13 +5,16 @@ import java.util.LinkedList;
 
 public class DalSiteController extends DalController{
 
-    public  DalSiteController(){//TODO - Check when tables created
+    private DalSiteController(){//TODO - Check when tables created
         super();
         this.tableName="Sites";
         this.columnNames=new String[6];
         columnNames[0]="siteID";columnNames[1]="name";columnNames[2]="city";
         columnNames[3]="deliverArea";columnNames[4]="contactName";columnNames[5]="phoneNumber";}
 
+    public static DalSiteController getInstance() {
+        return new DalSiteController();
+    }
 
     public boolean insert(DalSite dalSite) throws SQLException {
         //TODO - change URL

@@ -21,8 +21,13 @@ public class Site {
         this.name=name;
     }
 
-    public Site(DalSite dalItem){
-        throw new UnsupportedOperationException();
+    public Site(DalSite dalSite){
+        this.siteID=dalSite.getSiteID();
+        this.city= dalSite.getCity();
+        this.contactName= dalSite.getContactName();
+        this.phoneNumber= dalSite.getPhoneNumber();
+        this.deliveryArea=dalSite.getDeliveryArea();
+        this.name=dalSite.getName();
     }
 
     public int getDeliveryArea() {

@@ -5,12 +5,16 @@ import java.util.LinkedList;
 
 public class DalDriverController extends DalController{
 
-    public DalDriverController(){
+    private DalDriverController(){
         //TODO - Check when tables created
         super();
         this.tableName="Drivers";
         this.columnNames=new String[6];
         columnNames[0]="ID";columnNames[1]="name";columnNames[2]="license";
+    }
+
+    public static DalDriverController getInstance() {
+        return new DalDriverController();
     }
 
 

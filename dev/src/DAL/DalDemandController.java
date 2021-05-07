@@ -5,12 +5,16 @@ import java.util.LinkedList;
 
 public class DalDemandController extends DalController{
 
-    public DalDemandController()
+    private DalDemandController()
     {//TODO - Check when tables created
         super();
         this.tableName="Demands";
         this.columnNames=new String[3];
         columnNames[0]="itemID";columnNames[1]="amount";columnNames[2]="siteID";
+    }
+
+    public static DalDemandController getInstance() {
+        return new DalDemandController();
     }
 
 

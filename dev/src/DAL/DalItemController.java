@@ -5,12 +5,15 @@ import java.util.LinkedList;
 
 public class DalItemController extends DalController{
 
-    public DalItemController(){//TODO - Check when tables created
+    private DalItemController(){//TODO - Check when tables created
         super();
         this.tableName="Items";
         this.columnNames=new String[4];
         columnNames[0]="ID";columnNames[1]="weight";columnNames[2]="name";columnNames[3]="originSite";}
 
+    public static DalItemController getInstance() {
+        return new DalItemController();
+    }
 
     public boolean insert(DalItem dalItem) throws SQLException {
         //TODO - change URL

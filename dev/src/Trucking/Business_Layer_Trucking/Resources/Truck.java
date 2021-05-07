@@ -18,8 +18,11 @@ public class Truck {
 
     }
 
-    public Truck(DalTruck dalItem){
-        throw new UnsupportedOperationException();
+    public Truck(DalTruck dalTruck){
+        this.licenseNumber= dalTruck.getLicenseNumber();
+        this.model= dalTruck.getModel();
+        this.weightNeto= dalTruck.getWeightNeto();
+        this.maxWeight= dalTruck.getMaxWeight();
     }
 
 

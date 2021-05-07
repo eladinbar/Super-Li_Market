@@ -19,7 +19,7 @@ public class Main {
         //presentationController.start ();
         DalTruckingReport dtr=new DalTruckingReport(1, LocalTime.NOON,LocalDate.of(2022,5,5),
                 "21","12",5,true,0);
-        DalTruckingReportController d=new DalTruckingReportController();
+        DalTruckingReportController d=DalTruckingReportController.getInstance();
         //DalItemController d1=new DalItemController();
         //DalItem item=new DalItem(1,1.5,"milki",2);
 

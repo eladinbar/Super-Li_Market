@@ -7,13 +7,17 @@ import java.util.LinkedList;
 
 public class DalDeliveryFormController extends DalController {
 
-    public DalDeliveryFormController(){
+    private DalDeliveryFormController(){
         //TODO - Check when tables created
         super();
         this.tableName="DeliveryForms";
         this.columnNames=new String[6];
         columnNames[0]="ID";columnNames[1]="origin";columnNames[2]="destination";
         columnNames[3]="completed";columnNames[4]="leavingWeight";columnNames[5]="TRID";
+    }
+
+     public static DalDeliveryFormController getInstance() {
+        return new DalDeliveryFormController();
     }
 
 

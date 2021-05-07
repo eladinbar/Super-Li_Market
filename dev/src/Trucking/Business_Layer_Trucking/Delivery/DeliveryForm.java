@@ -39,8 +39,19 @@ public class DeliveryForm {
 
     }
 
-    public DeliveryForm(DalDeliveryForm dalItem){
-        throw new UnsupportedOperationException();
+    public DeliveryForm(DalDeliveryForm deliveryForm){
+        this.ID=deliveryForm.getID();
+        this.completed=deliveryForm.getCompleted();
+        this.origin=deliveryForm.getOrigin();
+        this.destination= deliveryForm.getDestination();
+        this.leavingWeight= deliveryForm.getLeavingWeight();
+        this.trID= deliveryForm.getTRID();
+        this.items=new HashMap<>();
+    }
+    public void addItem(int itemID,int amount){
+        if (items==null)
+            items=new HashMap<>();
+        items.put(itemID,amount);
     }
 
     public HashMap<Integer, Integer> getItems() {

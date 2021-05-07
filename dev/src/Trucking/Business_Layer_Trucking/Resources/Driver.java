@@ -29,8 +29,12 @@ public class Driver {
         this.licenseType = license;
     }
 
-    public Driver(DalDriver dalItem){
-        throw new UnsupportedOperationException();
+    public Driver(DalDriver dalDriver){
+        this.ID=dalDriver.getID();
+        this.name= dalDriver.getName();
+        if (dalDriver.getLicense()=="C1")
+            this.licenseType=License.C1;
+        else this.licenseType=License.C;
     }
 
     public String getID() {

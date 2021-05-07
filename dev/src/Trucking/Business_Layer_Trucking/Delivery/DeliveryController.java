@@ -151,11 +151,11 @@ public class DeliveryController {
     public void updateCurrTR_TrReplaced(int tr_id)throws NoSuchElementException{
         if (oldTruckingReports.containsKey(tr_id))
         {
-            currTR.setTRReplace(oldTruckingReports.get(tr_id));
+            currTR.setTRReplace(tr_id);
         }
         else if (activeTruckingReports.containsKey(tr_id))
         {
-            currTR.setTRReplace(activeTruckingReports.get(tr_id));
+            currTR.setTRReplace(tr_id);
         }
         else throw new NoSuchElementException("TR was not found");
     }
@@ -699,7 +699,7 @@ public class DeliveryController {
         currTR.setDriverID(truckReport.getDriverID());
         currTR.setOrigin(truckReport.getOrigin());
         currTR.setDestinations(truckReport.getDestinations());
-        currTR.setTRReplace(truckReport);
+        currTR.setTRReplace(truckReport.getID());
         // removing all Delivery forms
         LinkedList<DeliveryForm> oldDfs =  activeDeliveryForms.get(truckReport.getID());
 
@@ -750,10 +750,10 @@ public class DeliveryController {
     }
 
     public TruckingReport getReplaceTruckingReport(int trID) {
-        if (currTR.getTRReplace().getID() == trID)
+        if (currTR.getTRReplace() == trID)
             return currTR;
         for(Map.Entry<Integer,TruckingReport> act : activeTruckingReports.entrySet()){
-            if (act.getValue().getTRReplace().getID() == trID){
+            if (act.getValue().getTRReplace()== trID){
                 return act.getValue();
             }
         }
@@ -819,7 +819,7 @@ public class DeliveryController {
     }
 
     private LinkedList<DeliveryForm> getDeliveryFormsFromOld(int trID) {
-        if (currTR.getTRReplace().getID() == trID)
+        if (currTR.getTRReplace() == trID)
             return currDF;
         TruckingReport tr = getReplaceTruckingReport(trID);
         return activeDeliveryForms.get(tr.getID());
@@ -957,7 +957,7 @@ public class DeliveryController {
         }
         else*/
 
-            currTR.setTRReplace(getTruckReport(replaceId));
+            currTR.setTRReplace(replaceId);
             int output = currTR.getID();
             saveReport();
             return output;
@@ -1043,15 +1043,95 @@ public class DeliveryController {
 
         return activeDeliveryForms.get(replace.getID());
     }
-    public void upload() throws SQLException{ // TODO need to change new to singleton usage
-        DalItemController dalItemController = new DalItemController();
-        DalDemandController dalDemandController = new DalDemandController();
-        DalSiteController dsc = new DalSiteController();
-        DalDeliveryFormController delivery = new DalDeliveryFormController();
-        DalTruckingReportController truckingReport = new DalTruckingReportController();
+    public void upload() throws SQLException { // TODO need to change new to singleton usage
+        DalItemController dalItemController =DalItemController.getInstance();
+        DalDemandController dalDemandController = DalDemandController.getInstance();
+        DalItemsOnDFController itemsOnDF = DalItemsOnDFController.getInstance();
+        DalSiteController dsc =DalSiteController.getInstance();
+        DalDeliveryFormController delivery = DalDeliveryFormController.getInstance();
+        DalTruckingReportController truckingReport = DalTruckingReportController.getInstance();
         LinkedList<DalItem> dalItems = dalItemController.load();
-        for (DalItem item: dalItems){
+        for (DalItem item : dalItems)                        // item list create
+            items.put(item.getID(), new Item(item));
+        LinkedList<DalSite> dalSites = dsc.load();
+        for (DalSite site : dalSites)                        // site list create
+            sites.put(site.getSiteID(), new Site(site));
+        LinkedList<DalTruckingReport> d_truckingReports = truckingReport.load();
+        // sets the Trucking reports in old/ active as needed
+        LinkedList<DalDemand> dalDemands = dalDemandController.load();
+        for (DalDemand demand : dalDemands) {                 // demand list create
+            demands.add(new Demand(demand));
 
+        }
+        for (DalTruckingReport dr : d_truckingReports) {
+            activeTruckingReports.put(dr.getID(), new TruckingReport(dr));
+            activeDeliveryForms.put(dr.getID(), new LinkedList<>());
+        }
+        fixActiveAndOldTruckingReports();
+
+        LinkedList<DalDeliveryForm> deliveryForms = delivery.load();
+        for (DalDeliveryForm df: deliveryForms){
+            DeliveryForm deliveryForm = new DeliveryForm(df);
+            if (activeTruckingReports.containsKey(deliveryForm.getTrID())){
+                if (activeDeliveryForms.get(deliveryForm.getTrID()) == null)
+                    activeDeliveryForms.put(deliveryForm.getTrID(), new LinkedList<>());
+                activeDeliveryForms.get(deliveryForm.getTrID()).add(deliveryForm);
+
+            }
+
+            else{
+                if (oldDeliveryForms.get(deliveryForm.getTrID()) == null)
+                    oldDeliveryForms.put(deliveryForm.getTrID(), new LinkedList<>());
+                oldDeliveryForms.get(deliveryForm.getTrID()).add(deliveryForm);
+            }
+
+            getTruckReport(deliveryForm.getTrID()).addDestination(deliveryForm.getDestination());
+
+
+        }
+        LinkedList<DalItemsOnDF> itemsOnDFS = itemsOnDF.load();
+        for (DalItemsOnDF iod: itemsOnDFS){
+            DeliveryForm df=getDF(iod.getDFID());
+            df.addItem(iod.getItemID(), iod.getAmount());
+        }
+
+
+
+
+    }
+    private DeliveryForm getDF(int ID)
+    {
+        for (Map.Entry<Integer,LinkedList<DeliveryForm>> entry:activeDeliveryForms.entrySet())
+        {
+            for (DeliveryForm df:entry.getValue())
+            {
+                if (df.getID()==ID)
+                {
+                    return df;
+                }
+            }
+        }
+        return null;
+    }
+
+    private void fixActiveAndOldTruckingReports() {
+        HashMap<Integer, TruckingReport> ids = new HashMap<>();
+        for (Map.Entry<Integer, TruckingReport> entry : activeTruckingReports.entrySet()) {
+            int id = entry.getValue().getTRReplace();
+            if (id != -1) {
+                if (!ids.containsKey(id))
+                    ids.put(id, getTruckReport(id));
+            }
+            if (entry.getValue().isCompleted()) {
+                id = entry.getValue().getID();
+                if (!ids.containsKey(id))
+                    ids.put(id, getTruckReport(id));
+            }
+        }
+        oldTruckingReports = ids;
+        for (Map.Entry<Integer, TruckingReport> entry : ids.entrySet()) {
+            activeTruckingReports.remove(entry.getKey());
+            oldDeliveryForms.put(entry.getKey(), new LinkedList<>());
         }
     }
 }

@@ -16,7 +16,10 @@ public class Item {
 
     }
     public Item(DalItem dalItem){
-        throw new UnsupportedOperationException();
+        this.ID=dalItem.getID();
+        this.weight= dalItem.getWeight();
+        this.name= dalItem.getName();
+        this.originSiteId= dalItem.getOriginSite();
     }
 
     public int getOriginSiteId() {

@@ -9,13 +9,17 @@ import java.util.LinkedList;
 
 public class DalTruckingReportController extends DalController {
 
-    public DalTruckingReportController(){
+    private DalTruckingReportController(){
         super();
         this.tableName="TruckingReports";
         this.columnNames=new String[8];
         columnNames[0]="ID";columnNames[1]="leavingHour";columnNames[2]="date";
         columnNames[3]="truckNumber";columnNames[4]="driverID";columnNames[5]="origin";
         columnNames[6]="completed";columnNames[7]="replaceTRID";
+    }
+
+    public static DalTruckingReportController getInstance() {
+        return new DalTruckingReportController();
     }
 
     public boolean insert(DalTruckingReport truckingReport) throws SQLException {

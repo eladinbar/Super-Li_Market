@@ -14,7 +14,9 @@ public class Demand {
         this.amount=amount;
     }
     public Demand(DalDemand demand){
-        throw new UnsupportedOperationException();
+        this.itemID=demand.getItemID();
+        this.amount=demand.getAmount();
+        this.site=demand.getSiteID();
     }
 
     public int getAmount() {

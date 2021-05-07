@@ -14,12 +14,12 @@ public class TruckingReport {
     private String  driverID;
     private int origin;
     private LinkedList<Integer> destinations;
-    private TruckingReport TRReplace;
+    private int TRReplace;
     private boolean completed;
 
 
     public TruckingReport(int ID, LocalDate date, LocalTime leavingHour, String  truckNumber, String driverID,
-                          int origin, LinkedList<Integer> destinations, TruckingReport TRReplace)
+                          int origin, LinkedList<Integer> destinations)
     {
         this.ID=ID;
         this.date=date;
@@ -28,16 +28,26 @@ public class TruckingReport {
         this.driverID=driverID;
         this.origin=origin;
         this.destinations=destinations;
-        this.TRReplace=TRReplace;
+        this.TRReplace=-1;
     }
     public TruckingReport(int ID){
         this.ID=ID;
         this.destinations = new LinkedList<>();
+        this.TRReplace=-1;
 
     }
 
     public TruckingReport(DalTruckingReport dtr){
-        throw new UnsupportedOperationException();
+        this.ID=dtr.getID();
+        this.date=dtr.getDate();
+        this.leavingHour=dtr.getLeavingHour();
+        this.destinations=new LinkedList<>();
+        this.truckNumber=dtr.getTruckNumber();
+        this.completed=dtr.isCompleted();
+        this.driverID=dtr.getDriverID();
+        this.origin=dtr.getOrigin();
+        this.TRReplace=dtr.getReplaceTRID();
+
     }
 
     public TruckingReport(int lastReportID, TruckingReport oldTr) {
@@ -48,7 +58,7 @@ public class TruckingReport {
         this.driverID=oldTr.driverID;
         this.origin=oldTr.origin;
         this.destinations=oldTr.destinations;
-        this.TRReplace=oldTr;
+        this.TRReplace=oldTr.getID();
     }
 
     public int getID() {
@@ -79,7 +89,7 @@ public class TruckingReport {
         return destinations;
     }
 
-    public TruckingReport getTRReplace() {
+    public int getTRReplace() {
         return TRReplace;
     }
 
@@ -111,7 +121,7 @@ public class TruckingReport {
         this.leavingHour = leavingHour;
     }
 
-    public void setTRReplace(TruckingReport TRReplace) {
+    public void setTRReplace(int TRReplace) {
         this.TRReplace = TRReplace;
     }
 

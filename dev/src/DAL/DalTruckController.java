@@ -5,13 +5,16 @@ import java.util.LinkedList;
 
 public class DalTruckController extends DalController{
 
-    public DalTruckController(){//TODO - Check when tables created
+    private DalTruckController(){//TODO - Check when tables created
         super();
         this.tableName="Trucks";
         this.columnNames=new String[4];
         columnNames[1]="model";columnNames[0]="licenseNumber";columnNames[2]="weightNeto";
         columnNames[3]="maxWeight";}
 
+    public static DalTruckController getInstance() {
+        return new DalTruckController();
+    }
 
     public boolean insert(DalTruck dalTruck) throws SQLException {
         //TODO - change URL

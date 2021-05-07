@@ -1,10 +1,11 @@
 package DAL;
 
 public class DalItemsOnDF implements DalObject{
+    int DFID;
     int itemID;
     int amount;
 
-    public  DalItemsOnDF (int itemID,int amount)
+    public  DalItemsOnDF (int DFID,int itemID,int amount)
     {
         this.itemID=itemID;
         this.amount=amount;
@@ -16,5 +17,9 @@ public class DalItemsOnDF implements DalObject{
 
     public int getAmount() {
         return amount;
+    }
+
+    public int getDFID() {
+        return DFID;
     }
 }
