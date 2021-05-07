@@ -3,7 +3,6 @@ package Trucking.Business_Layer_Trucking.Resources;
 public class Driver {
     private  String ID;
     private String name;
-    private boolean available;
     private License licenseType;
 
     public enum License{
@@ -24,7 +23,6 @@ public class Driver {
     public Driver(String ID, String name , License license){
         this.ID = ID;
         this.name = name;
-        this.available = true;
         this.licenseType = license;
     }
 
@@ -40,17 +38,7 @@ public class Driver {
         return licenseType;
     }
 
-    public boolean isAvailable() {
-        return available;
-    }
-    public void setUnavailable()
-    {
-        available=false;
-    }
-    public void makeAvailable()
-    {
-        available=true;
-    }
+
 
     public void setID(String ID) {
         this.ID = ID;

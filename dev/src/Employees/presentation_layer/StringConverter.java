@@ -41,6 +41,8 @@ public class StringConverter {
         if(facadeShift.isMissing()){isFull="No";}
         else{isFull="Yes";}
         String manning="";
+        if(!facadeShift.getManning ().containsKey ( "shiftManager" ))
+            isFull += "\nNOTE: THERE IS NO SHIFT MANAGER IN THIS SHIFT!";
         for (String role: facadeShift.getManning().keySet()) {
             manning+= role+":\n ";
             for (String ID : facadeShift.getManning().get(role)) {

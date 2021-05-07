@@ -101,7 +101,7 @@ public class FacadeService {
 
     public Response updateBankAccount(String Id, int accountNum, int bankBranch, String bank) {
         return employeeService.updateBankAccount ( Id,accountNum,bankBranch,bank );
-    }
+}
 
     public Response updateTermsOfEmployee(String Id, int salary, int educationFund, int sickDays, int daysOff) {
         return employeeService.updateTermsOfEmployee ( Id,salary,educationFund,sickDays,daysOff );
@@ -109,6 +109,10 @@ public class FacadeService {
 
     public Response addEmployee(FacadeEmployee employee) {
         return employeeService.addEmployee ( employee );
+    }
+
+    public Response addDriver(FacadeEmployee employee, String name) {
+        return employeeService.addDriver ( employee, name );
     }
 
     public ResponseT<FacadeEmployee> addManager(FacadeEmployee manager) {

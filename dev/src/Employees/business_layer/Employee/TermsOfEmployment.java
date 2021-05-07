@@ -8,8 +8,7 @@ public class TermsOfEmployment {
     private int sickDays;
     private int daysOff;
 
-    public TermsOfEmployment(int salary, int educationFund, int sickDays, int daysOff) throws EmployeeException {
-        if(salary<0 | educationFund<0 | sickDays<0 | daysOff<0){throw new EmployeeException("One of the entered employment conditions is invalid"); }
+    public TermsOfEmployment(int salary, int educationFund, int sickDays, int daysOff) {
         this.salary = salary;
         this.educationFund = educationFund;
         this.sickDays = sickDays;
