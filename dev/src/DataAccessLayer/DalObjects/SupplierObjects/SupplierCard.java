@@ -9,11 +9,11 @@ import java.sql.SQLException;
 import java.util.List;
 
 public class SupplierCard extends DalObject<SupplierCard> {
-    public final String supplierIdColumnName = "Supplier_ID";
-    public final String companyNumberColumnName = "Company_Number";
-    public final String isPermanentDaysColumnName = "Is_Permanent_Days";
-    public final String selfDeliveryColumnName = "Self_Delivery";
-    public final String paymentColumnName = "Payment";
+    public static final String supplierIdColumnName = "Supplier_ID";
+    public static final String companyNumberColumnName = "Company_Number";
+    public static final String isPermanentDaysColumnName = "Is_Permanent_Days";
+    public static final String selfDeliveryColumnName = "Self_Delivery";
+    public static final String paymentColumnName = "Payment";
 
 
     private int supplierId; //foreign key of personCard

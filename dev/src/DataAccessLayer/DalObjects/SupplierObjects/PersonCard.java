@@ -7,11 +7,11 @@ import DataAccessLayer.DalObjects.DalObject;
 import java.sql.SQLException;
 
 public class PersonCard extends DalObject<PersonCard> {
-    public final String firstNameColumnName = "First_Name";
-    public final String lastNameColumnName = "Last_Name";
-    public final String emailColumnName = "Email";
-    public final String idColumnName = "ID";
-    public final String phoneColumnName = "Phone";
+    public static final String idColumnName = "ID";
+    public static final String firstNameColumnName = "First_Name";
+    public static final String lastNameColumnName = "Last_Name";
+    public static final String emailColumnName = "Email";
+    public static final String phoneColumnName = "Phone";
     private String firstName;
     private String lastName;
     private String email;

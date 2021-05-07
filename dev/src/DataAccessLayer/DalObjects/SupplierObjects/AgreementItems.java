@@ -9,9 +9,9 @@ import java.sql.SQLException;
 import java.util.Map;
 
 public class AgreementItems extends DalObject<AgreementItems> {
-    public final String productIdColumnName = "Product_ID";
-    public final String productCompIdColumnName = "Product_Company_ID";
-    public final String priceColumnName = "Price";
+    public static final String productIdColumnName = "Product_ID";
+    public static final String productCompIdColumnName = "Product_Company_ID";
+    public static final String priceColumnName = "Price";
     private int productId;
     private int productCompId;
     private int price;

@@ -10,9 +10,9 @@ import java.time.LocalDate;
 import java.util.Map;
 
 public class Order extends DalObject<Order> {
-    public final String orderIdColumnName = "Order_ID";
-    public final String dateColumnName = "Date";
-    public final String deliveredColumnName = "Delivered";
+    public static final String orderIdColumnName = "Order_ID";
+    public static final String dateColumnName = "Date";
+    public static final String deliveredColumnName = "Delivered";
     private int id;
     private LocalDate date;
     private boolean delivered;

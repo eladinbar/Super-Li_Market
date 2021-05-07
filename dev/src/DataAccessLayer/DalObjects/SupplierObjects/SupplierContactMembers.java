@@ -6,6 +6,8 @@ import DataAccessLayer.DalObjects.DalObject;
 import java.sql.SQLException;
 
 public class SupplierContactMembers extends DalObject<SupplierContactMembers> {
+    public static final String supplierIdColumnName = "Supplier_Id";
+    public static final String personIdColumnName = "Person_Id";
     private int supplierId;
     private int personId;
 

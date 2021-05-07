@@ -8,8 +8,8 @@ import java.sql.SQLException;
 import java.util.Map;
 
 public class ProductsInOrder extends DalObject<ProductsInOrder> {
-    public final String productIdColumnName = "Product_Id";
-    public final String amountColumnName = "Amount";
+    public static final String productIdColumnName = "Product_Id";
+    public static final String amountColumnName = "Amount";
     private int productId;
     private int amount;
 
