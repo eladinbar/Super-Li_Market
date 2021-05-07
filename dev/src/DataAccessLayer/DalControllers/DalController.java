@@ -2,22 +2,26 @@ package DataAccessLayer.DalControllers;
 
 import DataAccessLayer.DalObjects.DalObject;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.sql.Statement;
+
 /** <summary>
 An abstract class used as the basis to form connections with the database for reading and writing purposes.
 </summary> */
 public abstract class DalController<T extends DalObject<T>>{
-    protected String connectionString;
     protected String tableName;
-    protected final String databaseName = "SuperLi.db";
+    protected final String databaseName = "SuperLi";
+    protected final String path = System.getProperty("user.dir") + "\\" + databaseName + ".db";
+    protected final String connectionString = "jdbc:sqlite:/" + path;
 
     /** <summary>
     A public constructor, initializes the database path and the connection string accordingly. Initializes the respective table name and creates it in the database.
     </summary>
     <param name="tableName">The table name of the object this controller represents.</param> */
-    public DalController(String tableName)
+    protected DalController(String tableName)
     {
-        String path = System.getProperty("user.dir") + "\\" + databaseName;
-        connectionString = "jdbc:sqlite:/" + path;
 //        String path = Path.GetFullPath(Path.Combine(Directory.GetCurrentDirectory(), _databaseName));
 //        connectionString = $"Data Source={path}; Version=3;";
 //        _tableName = tableName;
@@ -52,8 +56,26 @@ public abstract class DalController<T extends DalObject<T>>{
     <returns>Returns a DalObject that extends DalObject<T>.</returns> */
     public abstract T ConvertReaderToObject(/*SQLiteDataReader reader*/);
 
-    //
-//    //implemented methods
+
+    //implemented methods
+
+    /// <summary>
+    /// Creates the database .db file.
+    /// </summary>
+    protected void createDBFile()
+    {
+        // Open a connection
+        try(Connection conn = DriverManager.getConnection(connectionString);
+            Statement stmt = conn.createStatement();
+        ) {
+            String sql = "CREATE DATABASE " + databaseName;
+            stmt.executeUpdate(sql);
+            System.out.println("Database created successfully...");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
 //    /// <summary>
 //    /// A select command function for the Users and Boards tables.
 //    /// </summary>
@@ -419,18 +441,7 @@ public abstract class DalController<T extends DalObject<T>>{
 //        return res > 0;
 //    }
 //
-//    /// <summary>
-//    /// Creates the database .db file.
-//    /// </summary>
-//    protected void CreateDBFile()
-//    {
-//        string path = Path.GetFullPath(Path.Combine(Directory.GetCurrentDirectory(), _databaseName));
-//        FileInfo DBFile = new FileInfo(path);
-//        if (!DBFile.Exists)
-//        {
-//            SQLiteConnection.CreateFile(_databaseName);
-//        }
-//    }
+
 //
 //    //private methods
 //

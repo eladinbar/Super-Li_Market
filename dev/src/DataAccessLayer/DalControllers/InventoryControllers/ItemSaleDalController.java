@@ -4,18 +4,15 @@ import DataAccessLayer.DalControllers.DalController;
 import DataAccessLayer.DalObjects.InventoryObjects.ItemSale;
 
 public class ItemSaleDalController extends DalController<ItemSale> {
-    final String ITEM_DISCOUNT_TABLE_NAME = "Item Sales";
+    final static String ITEM_DISCOUNT_TABLE_NAME = "Item Sales";
 
     /**
      * <summary>
      * A public constructor, initializes the database path and the connection string accordingly. Initializes the respective table name and creates it in the database.
      * </summary>
-     * <param name="tableName">The table name of the object this controller represents.</param>
-     *
-     * @param tableName
      */
-    public ItemSaleDalController(String tableName) {
-        super(tableName);
+    public ItemSaleDalController() {
+        super(ITEM_DISCOUNT_TABLE_NAME);
     }
 
     @Override

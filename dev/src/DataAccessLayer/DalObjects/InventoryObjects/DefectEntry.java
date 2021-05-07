@@ -1,6 +1,6 @@
 package DataAccessLayer.DalObjects.InventoryObjects;
 
-import DataAccessLayer.DalControllers.DalController;
+import DataAccessLayer.DalControllers.InventoryControllers.DefectEntryDalController;
 import DataAccessLayer.DalObjects.DalObject;
 
 import java.util.Calendar;
@@ -11,8 +11,8 @@ public class DefectEntry extends DalObject<DefectEntry> {
     private int quantity;
     private int itemID; //Foreign Key
 
-    protected DefectEntry(DalController<DefectEntry> controller, Calendar entryDate, String location, int quantity, int itemID) {
-        super(controller);
+    protected DefectEntry(Calendar entryDate, String location, int quantity, int itemID) {
+        super(new DefectEntryDalController());
         this.entryDate = entryDate;
         this.location = location;
         this.quantity = quantity;

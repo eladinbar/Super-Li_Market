@@ -1,6 +1,6 @@
 package DataAccessLayer.DalObjects.InventoryObjects;
 
-import DataAccessLayer.DalControllers.DalController;
+import DataAccessLayer.DalControllers.InventoryControllers.ItemDalController;
 import DataAccessLayer.DalObjects.DalObject;
 
 public class Item extends DalObject<Item> {
@@ -16,9 +16,9 @@ public class Item extends DalObject<Item> {
     private String storageLocation;
     private String categoryName; //Foreign Key
 
-    protected Item(DalController<Item> controller, int itemID, String name, double costPrice, double sellingPrice, int manufacturerID, int minAmount,
+    protected Item(int itemID, String name, double costPrice, double sellingPrice, int manufacturerID, int minAmount,
                    int shelfQuantity, int storageQuantity, String shelfLocation, String storageLocation, String categoryName) {
-        super(controller);
+        super(new ItemDalController());
         this.itemID = itemID;
         this.name = name;
         this.costPrice = costPrice;

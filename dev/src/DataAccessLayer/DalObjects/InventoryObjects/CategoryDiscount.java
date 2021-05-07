@@ -1,6 +1,6 @@
 package DataAccessLayer.DalObjects.InventoryObjects;
 
-import DataAccessLayer.DalControllers.DalController;
+import DataAccessLayer.DalControllers.InventoryControllers.CategoryDiscountDalController;
 import DataAccessLayer.DalObjects.DalObject;
 
 import java.util.Calendar;
@@ -12,8 +12,8 @@ public class CategoryDiscount extends DalObject<CategoryDiscount> {
     private int supplierID; //Foreign Key
     private String categoryName; //Foreign Key
 
-    protected CategoryDiscount(DalController<CategoryDiscount> controller, Calendar discountDate, double discount, int itemCount, int supplierID, String categoryName) {
-        super(controller);
+    protected CategoryDiscount(Calendar discountDate, double discount, int itemCount, int supplierID, String categoryName) {
+        super(new CategoryDiscountDalController());
         this.discountDate = discountDate;
         this.discount = discount;
         this.itemCount = itemCount;

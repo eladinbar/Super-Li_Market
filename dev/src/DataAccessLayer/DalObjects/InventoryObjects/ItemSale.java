@@ -1,6 +1,6 @@
 package DataAccessLayer.DalObjects.InventoryObjects;
 
-import DataAccessLayer.DalControllers.DalController;
+import DataAccessLayer.DalControllers.InventoryControllers.ItemSaleDalController;
 import DataAccessLayer.DalObjects.DalObject;
 import InfrastructurePackage.Pair;
 
@@ -12,8 +12,8 @@ public class ItemSale extends DalObject<ItemSale> {
     private Pair<Calendar, Calendar> saleDates;
     private int itemID; //Foreign Key
 
-    protected ItemSale(DalController<ItemSale> controller, String name, double discount, Pair<Calendar, Calendar> saleDates, int itemID) {
-        super(controller);
+    protected ItemSale(String name, double discount, Pair<Calendar, Calendar> saleDates, int itemID) {
+        super(new ItemSaleDalController());
         this.name = name;
         this.discount = discount;
         this.saleDates = saleDates;

@@ -4,18 +4,15 @@ import DataAccessLayer.DalControllers.DalController;
 import DataAccessLayer.DalObjects.SupplierObjects.Supplier;
 
 public class SupplierDalController extends DalController<Supplier> {
-    final String SUPPLIER_TABLE_NAME = "Suppliers";
+    final static String SUPPLIER_TABLE_NAME = "Suppliers";
 
     /**
      * <summary>
      * A public constructor, initializes the database path and the connection string accordingly. Initializes the respective table name and creates it in the database.
      * </summary>
-     * <param name="tableName">The table name of the object this controller represents.</param>
-     *
-     * @param tableName
      */
-    public SupplierDalController(String tableName) {
-        super(tableName);
+    public SupplierDalController() {
+        super(SUPPLIER_TABLE_NAME);
     }
 
     @Override

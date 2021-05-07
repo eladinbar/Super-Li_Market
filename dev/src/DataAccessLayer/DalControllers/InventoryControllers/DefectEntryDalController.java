@@ -4,18 +4,15 @@ import DataAccessLayer.DalControllers.DalController;
 import DataAccessLayer.DalObjects.InventoryObjects.DefectEntry;
 
 public class DefectEntryDalController extends DalController<DefectEntry> {
-    final String DEFECT_ENTRY_TABLE_NAME = "Defect Entries";
+    final static String DEFECT_ENTRY_TABLE_NAME = "Defect Entries";
 
     /**
      * <summary>
      * A public constructor, initializes the database path and the connection string accordingly. Initializes the respective table name and creates it in the database.
      * </summary>
-     * <param name="tableName">The table name of the object this controller represents.</param>
-     *
-     * @param tableName
      */
-    public DefectEntryDalController(String tableName) {
-        super(tableName);
+    public DefectEntryDalController() {
+        super(DEFECT_ENTRY_TABLE_NAME);
     }
 
     @Override

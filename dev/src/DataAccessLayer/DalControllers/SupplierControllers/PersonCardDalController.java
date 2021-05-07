@@ -4,18 +4,15 @@ import DataAccessLayer.DalControllers.DalController;
 import DataAccessLayer.DalObjects.SupplierObjects.PersonCard;
 
 public class PersonCardDalController extends DalController<PersonCard> {
-    final String PERSON_CARD_TABLE_NAME = "Person Cards";
+    final static String PERSON_CARD_TABLE_NAME = "Person Cards";
 
     /**
      * <summary>
      * A public constructor, initializes the database path and the connection string accordingly. Initializes the respective table name and creates it in the database.
      * </summary>
-     * <param name="tableName">The table name of the object this controller represents.</param>
-     *
-     * @param tableName
      */
-    public PersonCardDalController(String tableName) {
-        super(tableName);
+    public PersonCardDalController() {
+        super(PERSON_CARD_TABLE_NAME);
     }
 
     @Override

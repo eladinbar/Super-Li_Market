@@ -4,18 +4,15 @@ import DataAccessLayer.DalControllers.DalController;
 import DataAccessLayer.DalObjects.SupplierObjects.AgreementItems;
 
 public class AgreementItemsDalController extends DalController<AgreementItems> {
-    final String AGREEMENT_ITEMS_TABLE_NAME = "Agreement Items";
+    final static String AGREEMENT_ITEMS_TABLE_NAME = "Agreement Items";
 
     /**
      * <summary>
      * A public constructor, initializes the database path and the connection string accordingly. Initializes the respective table name and creates it in the database.
      * </summary>
-     * <param name="tableName">The table name of the object this controller represents.</param>
-     *
-     * @param tableName
      */
-    public AgreementItemsDalController(String tableName) {
-        super(tableName);
+    public AgreementItemsDalController() {
+        super(AGREEMENT_ITEMS_TABLE_NAME);
     }
 
     @Override

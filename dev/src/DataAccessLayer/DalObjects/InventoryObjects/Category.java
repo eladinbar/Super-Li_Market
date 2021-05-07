@@ -1,14 +1,14 @@
 package DataAccessLayer.DalObjects.InventoryObjects;
 
-import DataAccessLayer.DalControllers.DalController;
+import DataAccessLayer.DalControllers.InventoryControllers.CategoryDalController;
 import DataAccessLayer.DalObjects.DalObject;
 
 public class Category extends DalObject<Category> {
     private String name;
     private String parentName;
 
-    protected Category(DalController<Category> controller, String name, String parentName) {
-        super(controller);
+    protected Category(String name, String parentName) {
+        super(new CategoryDalController());
         this.name = name;
         this.parentName = parentName;
     }

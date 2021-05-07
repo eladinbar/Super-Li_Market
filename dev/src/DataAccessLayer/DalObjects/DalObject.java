@@ -11,7 +11,7 @@ public abstract class DalObject<T extends DalObject<T>> {
     /// <param name="controller">The respective controller of the DalObject.</param>
     protected DalObject(DalController<T> controller)
     {
-        controller = controller;
+        this.controller = controller;
     }
 
     /// <summary>
