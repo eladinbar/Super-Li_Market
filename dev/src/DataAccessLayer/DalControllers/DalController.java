@@ -20,12 +20,9 @@ public abstract class DalController<T extends DalObject<T>>{
     A public constructor, initializes the database path and the connection string accordingly. Initializes the respective table name and creates it in the database.
     </summary>
     <param name="tableName">The table name of the object this controller represents.</param> */
-    protected DalController(String tableName)
-    {
-//        String path = Path.GetFullPath(Path.Combine(Directory.GetCurrentDirectory(), _databaseName));
-//        connectionString = $"Data Source={path}; Version=3;";
-//        _tableName = tableName;
-//        CreateTable();
+    protected DalController(String tableName) throws SQLException {
+        this.tableName = tableName;
+        CreateTable();
     }
 
     //abstract methods
@@ -33,7 +30,7 @@ public abstract class DalController<T extends DalObject<T>>{
     /** <summary>
     Creates a database table with the name initialized in the field '_tableName'.
     </summary> */
-    public abstract void CreateTable();
+    public abstract void CreateTable() throws SQLException;
 
     /** <summary>
     Inserts the given object into its respective table in the database.

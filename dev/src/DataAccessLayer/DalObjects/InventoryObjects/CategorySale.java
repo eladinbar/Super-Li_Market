@@ -4,6 +4,7 @@ import DataAccessLayer.DalControllers.InventoryControllers.CategorySaleDalContro
 import DataAccessLayer.DalObjects.DalObject;
 import InfrastructurePackage.Pair;
 
+import java.sql.SQLException;
 import java.util.Calendar;
 
 public class CategorySale extends DalObject<CategorySale> {
@@ -12,8 +13,8 @@ public class CategorySale extends DalObject<CategorySale> {
     private Pair<Calendar, Calendar> saleDates;
     private String categoryName; //Foreign Key
 
-    protected CategorySale(String name, double discount, Pair<Calendar, Calendar> saleDates, String categoryName) {
-        super(new CategorySaleDalController());
+    protected CategorySale(String name, double discount, Pair<Calendar, Calendar> saleDates, String categoryName) throws SQLException {
+        super(CategorySaleDalController.getInstance());
         this.name = name;
         this.discount = discount;
         this.saleDates = saleDates;
