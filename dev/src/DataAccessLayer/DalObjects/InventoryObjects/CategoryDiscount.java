@@ -7,11 +7,17 @@ import java.sql.SQLException;
 import java.util.Calendar;
 
 public class CategoryDiscount extends DalObject<CategoryDiscount> {
-    private Calendar discountDate; //Primary Key
+    public final String discountDateColumnName = "Discount_Date"; //Primary Key
+    public final String discountColumnName = "Discount";
+    public final String itemCountColumnName = "Item_Count";
+    public final String supplierIdColumnName = "Supplier_ID"; //Foreign Key
+    public final String categoryNameColumnName = "Category_Name"; //Foreign Key
+
+    private Calendar discountDate;
     private double discount;
     private int itemCount;
-    private int supplierID; //Foreign Key
-    private String categoryName; //Foreign Key
+    private int supplierID;
+    private String categoryName;
 
     protected CategoryDiscount(Calendar discountDate, double discount, int itemCount, int supplierID, String categoryName) throws SQLException {
         super(CategoryDiscountDalController.getInstance());

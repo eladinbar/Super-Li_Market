@@ -8,7 +8,7 @@ import java.sql.SQLException;
 
 public class ProductsInOrderDalController extends DalController<ProductsInOrder> {
     private static ProductsInOrderDalController instance = null;
-    final static String PRODUCTS_IN_ORDER_TABLE_NAME = "Products In Order";
+    final static String PRODUCTS_IN_ORDER_TABLE_NAME = "Products_In_Order";
 
     /**
      * <summary>

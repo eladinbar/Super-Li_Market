@@ -7,10 +7,15 @@ import java.sql.SQLException;
 import java.util.Calendar;
 
 public class DefectEntry extends DalObject<DefectEntry> {
-    private Calendar entryDate; //Primary Key
+    public final String entryDateColumnName = "Entry_Date"; //Primary Key
+    public final String locationColumnName = "Location";
+    public final String quantityColumnName = "Quantity";
+    public final String itemIdColumnName = "Item_ID"; //Foreign Key
+
+    private Calendar entryDate;
     private String location;
     private int quantity;
-    private int itemID; //Foreign Key
+    private int itemID;
 
     protected DefectEntry(Calendar entryDate, String location, int quantity, int itemID) throws SQLException {
         super(DefectEntryDalController.getInstance());

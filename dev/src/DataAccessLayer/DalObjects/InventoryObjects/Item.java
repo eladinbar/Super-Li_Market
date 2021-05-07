@@ -6,7 +6,18 @@ import DataAccessLayer.DalObjects.DalObject;
 import java.sql.SQLException;
 
 public class Item extends DalObject<Item> {
-    private int itemID; //Primary Key
+    public final String nameColumnName = "Name"; //Primary Key
+    public final String costPriceColumnName = "Cost_Price";
+    public final String sellingPriceColumnName = "Selling_Price";
+    public final String manufacturerIdColumnName = "Manufacturer_ID";
+    public final String minAmountColumnName = "Minimum_Amount";
+    public final String shelfQuantityColumnName = "Shelf_Quantity";
+    public final String storageQuantityColumnName = "Storage_Quantity";
+    public final String shelfLocationColumnName = "Shelf_Location";
+    public final String storageLocationColumnName = "Storage_Location";
+    public final String categoryNameColumnName = "Category_Name"; //Foreign Key
+
+    private int itemID;
     private String name;
     private double costPrice;
     private double sellingPrice;
@@ -16,7 +27,7 @@ public class Item extends DalObject<Item> {
     private int storageQuantity;
     private String shelfLocation;
     private String storageLocation;
-    private String categoryName; //Foreign Key
+    private String categoryName;
 
     protected Item(int itemID, String name, double costPrice, double sellingPrice, int manufacturerID, int minAmount,
                    int shelfQuantity, int storageQuantity, String shelfLocation, String storageLocation, String categoryName) throws SQLException {

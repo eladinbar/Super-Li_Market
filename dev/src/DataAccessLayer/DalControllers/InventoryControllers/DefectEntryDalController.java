@@ -7,7 +7,7 @@ import java.sql.SQLException;
 
 public class DefectEntryDalController extends DalController<DefectEntry> {
     private static DefectEntryDalController instance = null;
-    final static String DEFECT_ENTRY_TABLE_NAME = "Defect Entries";
+    final static String DEFECT_ENTRY_TABLE_NAME = "Defect_Entries";
 
     /**
      * <summary>

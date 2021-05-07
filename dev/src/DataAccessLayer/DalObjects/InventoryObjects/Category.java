@@ -9,7 +9,7 @@ public class Category extends DalObject<Category> {
     public final String categoryNameColumnName = "Name"; //Primary Key
     public final String parentNameColumnName = "ParentName";
 
-    private String name; //Primary Key
+    private String name;
     private String parentName;
 
     protected Category(String name, String parentName) throws SQLException {

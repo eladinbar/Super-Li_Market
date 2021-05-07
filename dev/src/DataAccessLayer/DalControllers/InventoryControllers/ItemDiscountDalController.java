@@ -7,7 +7,7 @@ import java.sql.SQLException;
 
 public class ItemDiscountDalController extends DalController<ItemDiscount> {
     private static ItemDiscountDalController instance = null;
-    final static String ITEM_DISCOUNTS_TABLE_NAME = "Item Discounts";
+    final static String ITEM_DISCOUNTS_TABLE_NAME = "Item_Discounts";
 
     /**
      * <summary>

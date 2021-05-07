@@ -7,7 +7,7 @@ import java.sql.SQLException;
 
 public class CategorySaleDalController extends DalController<CategorySale> {
     private static CategorySaleDalController instance = null;
-    final static String CATEGORY_SALE_TABLE_NAME = "Category Sales";
+    final static String CATEGORY_SALE_TABLE_NAME = "Category_Sales";
 
     /**
      * <summary>

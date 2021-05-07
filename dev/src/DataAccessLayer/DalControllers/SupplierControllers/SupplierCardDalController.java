@@ -8,7 +8,7 @@ import java.sql.SQLException;
 
 public class SupplierCardDalController extends DalController<SupplierCard> {
     private static SupplierCardDalController instance = null;
-    final static String SUPPLIER_CARD_TABLE_NAME = "Supplier Cards";
+    final static String SUPPLIER_CARD_TABLE_NAME = "Supplier_Cards";
 
     /**
      * <summary>
