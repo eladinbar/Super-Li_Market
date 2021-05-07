@@ -27,19 +27,9 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="05ca914f-9056-4de3-9869-7fdfaa880f2d" name="Default Changelist" comment="DAL Load &amp; delete methods working">
+    <list default="true" id="05ca914f-9056-4de3-9869-7fdfaa880f2d" name="Default Changelist" comment="DAL insert&amp; update methods has been made. Time to test">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dev/src/DAL/DalDeliveryFormController.java" beforeDir="false" afterPath="$PROJECT_DIR$/dev/src/DAL/DalDeliveryFormController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dev/src/DAL/DalDemandController.java" beforeDir="false" afterPath="$PROJECT_DIR$/dev/src/DAL/DalDemandController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dev/src/DAL/DalDriverController.java" beforeDir="false" afterPath="$PROJECT_DIR$/dev/src/DAL/DalDriverController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dev/src/DAL/DalItem.java" beforeDir="false" afterPath="$PROJECT_DIR$/dev/src/DAL/DalItem.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dev/src/DAL/DalItemController.java" beforeDir="false" afterPath="$PROJECT_DIR$/dev/src/DAL/DalItemController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dev/src/DAL/DalItemsOnDFController.java" beforeDir="false" afterPath="$PROJECT_DIR$/dev/src/DAL/DalItemsOnDFController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dev/src/DAL/DalSiteController.java" beforeDir="false" afterPath="$PROJECT_DIR$/dev/src/DAL/DalSiteController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/dev/src/DAL/DalTruckController.java" beforeDir="false" afterPath="$PROJECT_DIR$/dev/src/DAL/DalTruckController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dev/src/DAL/DalTruckingReportController.java" beforeDir="false" afterPath="$PROJECT_DIR$/dev/src/DAL/DalTruckingReportController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dev/src/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/dev/src/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/ADSS_Group_G/Main.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/ADSS_Group_G/Main.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -497,7 +487,14 @@
       <option name="project" value="LOCAL" />
       <updated>1620238888480</updated>
     </task>
-    <option name="localTasksCounter" value="47" />
+    <task id="LOCAL-00047" summary="DAL insert&amp; update methods has been made. Time to test">
+      <created>1620289584903</created>
+      <option name="number" value="00047" />
+      <option name="presentableId" value="LOCAL-00047" />
+      <option name="project" value="LOCAL" />
+      <updated>1620289584904</updated>
+    </task>
+    <option name="localTasksCounter" value="48" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -516,7 +513,6 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Facade objects has been completed" />
     <MESSAGE value="merged before tests" />
     <MESSAGE value="First test has been done - ido left to do Menu test.&#10;Raz has left with everything else because he is such a dick&#10;Love you raz" />
     <MESSAGE value="fixed input exceptions" />
@@ -541,7 +537,8 @@
     <MESSAGE value="DalTruckingReportController insert method made." />
     <MESSAGE value="DAL Trucking classes almost done!" />
     <MESSAGE value="DAL Load &amp; delete methods working" />
-    <option name="LAST_COMMIT_MESSAGE" value="DAL Load &amp; delete methods working" />
+    <MESSAGE value="DAL insert&amp; update methods has been made. Time to test" />
+    <option name="LAST_COMMIT_MESSAGE" value="DAL insert&amp; update methods has been made. Time to test" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
