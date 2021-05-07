@@ -15,6 +15,7 @@ public class DalDemandController extends DalController{
 
     public static DalDemandController getInstance() {
         return new DalDemandController();
+        //TODO change to return instance!
     }
 
 

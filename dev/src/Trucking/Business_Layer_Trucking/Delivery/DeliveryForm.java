@@ -26,8 +26,6 @@ public class DeliveryForm {
         this.trID = trID;
         this.completed = false;
 
-
-
     }
 
     public DeliveryForm(DeliveryForm df) {
@@ -45,7 +43,7 @@ public class DeliveryForm {
 
     public DeliveryForm(DalDeliveryForm deliveryForm) {
         this.ID = deliveryForm.getID();
-        this.completed = deliveryForm.getCompleted();
+        this.completed = deliveryForm.isCompleted();
         this.origin = deliveryForm.getOrigin();
         this.destination = deliveryForm.getDestination();
         this.leavingWeight = deliveryForm.getLeavingWeight();

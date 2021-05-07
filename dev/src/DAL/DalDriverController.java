@@ -28,7 +28,6 @@ public class DalDriverController extends DalController{
             st.setString(1,dalDriver.getID());
             st.setString(2,dalDriver.getName());
             st.setString(3,dalDriver.getLicense());
-
             System.out.println("executing insert");
             st.executeUpdate();
 
