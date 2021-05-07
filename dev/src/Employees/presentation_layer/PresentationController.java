@@ -8,6 +8,7 @@ import Employees.business_layer.facade.facadeObject.FacadeConstraint;
 import Employees.business_layer.facade.facadeObject.FacadeEmployee;
 import Employees.business_layer.facade.facadeObject.FacadeShift;
 import Employees.business_layer.facade.facadeObject.FacadeWeeklyShiftSchedule;
+import Trucking.Presentation_Layer_Trucking.Menu_Printer;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
@@ -521,7 +522,7 @@ public class PresentationController {
                 choice = menuPrinter.managerMenu ( );
                 handleManagerChoice ( choice );
             } else if(role.equals ( "truckingManager" )){
-                //TODO - menu of trucking
+                Menu_Printer.getInstance().mainMenu();
                 logout ();
                 while(!login (false));
             } else {
