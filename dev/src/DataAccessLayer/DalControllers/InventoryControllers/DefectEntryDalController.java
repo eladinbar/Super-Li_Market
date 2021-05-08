@@ -70,12 +70,10 @@ public class DefectEntryDalController extends DalController<DefectEntry> {
     @Override
     public boolean delete(DefectEntry defectEntry) throws SQLException {
         try (Connection conn = DriverManager.getConnection(connectionString)) {
-            String query = "DELETE FROM " + tableName + " WHERE ?=? AND ?=?";
+            String query = "DELETE FROM " + tableName + " WHERE ("+ DefectEntry.entryDateColumnName + "=? AND " + DefectEntry.itemIdColumnName + "=?)";
             PreparedStatement stmt = conn.prepareStatement(query);
-            stmt.setString(1, DefectEntry.entryDateColumnName);
-            stmt.setString(2, defectEntry.getEntryDate());
-            stmt.setString(3, DefectEntry.itemIdColumnName);
-            stmt.setInt(4, defectEntry.getItemID());
+            stmt.setString(1, defectEntry.getEntryDate());
+            stmt.setInt(2, defectEntry.getItemID());
             stmt.executeUpdate();
         } catch (SQLException ex) {
             throw new SQLException(ex.getMessage());

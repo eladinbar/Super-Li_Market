@@ -73,11 +73,10 @@ public class CategorySaleDalController extends DalController<CategorySale> {
     @Override
     public boolean delete(CategorySale categorySale) throws SQLException {
         try (Connection conn = DriverManager.getConnection(connectionString)) {
-            String query = "DELETE FROM " + tableName + " WHERE ?=?";
+            String query = "DELETE FROM " + tableName + " WHERE (" + CategorySale.categorySaleNameColumnName + "=?)";
             PreparedStatement stmt = conn.prepareStatement(query);
 
-            stmt.setString(1, CategorySale.categorySaleNameColumnName);
-            stmt.setString(2, categorySale.getName());
+            stmt.setString(1, categorySale.getName());
             stmt.executeUpdate();
         } catch (SQLException ex) {
             throw new SQLException(ex.getMessage());
