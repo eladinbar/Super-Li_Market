@@ -29,10 +29,16 @@ public class CategoryDalController extends DalController<Category> {
 
     @Override
     public void CreateTable() throws SQLException {
-        System.out.println("Initiating create " + CATEGORY_TABLE_NAME + " table.");
+        System.out.println("Initiating create '" + CATEGORY_TABLE_NAME + "' table.");
         try (Connection conn = DriverManager.getConnection(connectionString)) {
-            String command = "CREATE TABLE IF NOT EXISTS " + CATEGORY_TABLE_NAME;
+            String command = "CREATE TABLE IF NOT EXISTS " + CATEGORY_TABLE_NAME + " (" +
+                    Category.categoryNameColumnName + " TEXT NOT NULL," +
+                    Category.parentNameColumnName + " TEXT," +
+                    "PRIMARY KEY (" + Category.categoryNameColumnName + ")" +
+                    ");";
             PreparedStatement stmt = conn.prepareStatement(command);
+            System.out.println("Creating " + CATEGORY_TABLE_NAME + " table.");
+            stmt.executeUpdate();
         } catch (SQLException ex) {
             throw new SQLException(ex.getMessage());
         }

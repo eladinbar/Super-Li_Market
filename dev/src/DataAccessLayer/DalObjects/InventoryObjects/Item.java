@@ -7,15 +7,15 @@ import java.sql.SQLException;
 
 public class Item extends DalObject<Item> {
     public final String nameColumnName = "Name"; //Primary Key
-    public final String costPriceColumnName = "Cost_Price";
-    public final String sellingPriceColumnName = "Selling_Price";
-    public final String manufacturerIdColumnName = "Manufacturer_ID";
-    public final String minAmountColumnName = "Minimum_Amount";
-    public final String shelfQuantityColumnName = "Shelf_Quantity";
-    public final String storageQuantityColumnName = "Storage_Quantity";
-    public final String shelfLocationColumnName = "Shelf_Location";
-    public final String storageLocationColumnName = "Storage_Location";
-    public final String categoryNameColumnName = "Category_Name"; //Foreign Key
+    public static final String costPriceColumnName = "Cost_Price";
+    public static final String sellingPriceColumnName = "Selling_Price";
+    public static final String manufacturerIdColumnName = "Manufacturer_ID";
+    public static final String minAmountColumnName = "Minimum_Amount";
+    public static final String shelfQuantityColumnName = "Shelf_Quantity";
+    public static final String storageQuantityColumnName = "Storage_Quantity";
+    public static final String shelfLocationColumnName = "Shelf_Location";
+    public static final String storageLocationColumnName = "Storage_Location";
+    public static final String categoryNameColumnName = "Category_Name"; //Foreign Key
 
     private int itemID;
     private String name;

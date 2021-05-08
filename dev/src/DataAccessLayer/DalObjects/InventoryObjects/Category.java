@@ -6,8 +6,8 @@ import DataAccessLayer.DalObjects.DalObject;
 import java.sql.SQLException;
 
 public class Category extends DalObject<Category> {
-    public final String categoryNameColumnName = "Name"; //Primary Key
-    public final String parentNameColumnName = "ParentName";
+    public static final String categoryNameColumnName = "Name"; //Primary Key
+    public static final String parentNameColumnName = "ParentName";
 
     private String name;
     private String parentName;

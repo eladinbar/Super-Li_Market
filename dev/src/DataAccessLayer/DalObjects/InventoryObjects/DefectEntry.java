@@ -7,10 +7,10 @@ import java.sql.SQLException;
 import java.util.Calendar;
 
 public class DefectEntry extends DalObject<DefectEntry> {
-    public final String entryDateColumnName = "Entry_Date"; //Primary Key
-    public final String locationColumnName = "Location";
-    public final String quantityColumnName = "Quantity";
-    public final String itemIdColumnName = "Item_ID"; //Foreign Key
+    public static final String entryDateColumnName = "Entry_Date"; //Primary Key
+    public static final String locationColumnName = "Location";
+    public static final String quantityColumnName = "Quantity";
+    public static final String itemIdColumnName = "Item_ID"; //Foreign Key
 
     private Calendar entryDate;
     private String location;

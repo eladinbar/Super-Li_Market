@@ -8,11 +8,11 @@ import java.sql.SQLException;
 import java.util.Calendar;
 
 public class CategorySale extends DalObject<CategorySale> {
-    public final String categorySaleNameColumnName = "Name"; //Primary Key
-    public final String discountColumnName = "Discount";
-    public final String startSaleDateColumnName = "Start_Sale_Date";
-    public final String endSaleDateColumnName = "End_Sale_Date";
-    public final String categoryNameColumnName = "Category_Name"; //Foreign Key
+    public static final String categorySaleNameColumnName = "Name"; //Primary Key
+    public static final String discountColumnName = "Discount";
+    public static final String startSaleDateColumnName = "Start_Sale_Date";
+    public static final String endSaleDateColumnName = "End_Sale_Date";
+    public static final String categoryNameColumnName = "Category_Name"; //Foreign Key
 
     private String name;
     private double discount;

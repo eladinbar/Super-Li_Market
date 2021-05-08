@@ -59,7 +59,7 @@ public abstract class DalController<T extends DalObject<T>>{
     /// <summary>
     /// Creates the database .db file.
     /// </summary>
-    protected void createDBFile()
+    public void createDBFile()
     {
         // Open a connection
         try(Connection conn = DriverManager.getConnection(connectionString);
