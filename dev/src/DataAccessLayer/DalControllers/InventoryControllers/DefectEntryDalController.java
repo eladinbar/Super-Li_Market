@@ -37,7 +37,7 @@ public class DefectEntryDalController extends DalController<DefectEntry> {
                     DefectEntry.itemIdColumnName + " INTEGER NOT NULL," +
                     "PRIMARY KEY (" + DefectEntry.entryDateColumnName + ")," +
                     "FOREIGN KEY (" + DefectEntry.itemIdColumnName + ")" +
-                    "REFERENCES " + Item.itemIdColumnName + " (" + ITEM_TABLE_NAME + ") ON DELETE CASCADE," +
+                    "REFERENCES " + Item.itemIdColumnName + " (" + ITEM_TABLE_NAME + ") ON DELETE NO ACTION," +
                     "CONSTRAINT Natural_Number CHECK (" + DefectEntry.quantityColumnName + ">=0)" +
                     ");";
             PreparedStatement stmt = conn.prepareStatement(command);

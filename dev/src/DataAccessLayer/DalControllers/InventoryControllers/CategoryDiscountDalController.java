@@ -41,9 +41,9 @@ public class CategoryDiscountDalController extends DalController<CategoryDiscoun
                     CategoryDiscount.categoryNameColumnName + " TEXT NOT NULL," +
                     "PRIMARY KEY (" + CategoryDiscount.discountDateColumnName + ")," +
                     "FOREIGN KEY (" + CategoryDiscount.supplierIdColumnName + ")" +
-                    "REFERENCES " + SupplierCard.supplierIdColumnName + " (" + SUPPLIER_CARD_TABLE_NAME + ") ON DELETE CASCADE," +
+                    "REFERENCES " + SupplierCard.supplierIdColumnName + " (" + SUPPLIER_CARD_TABLE_NAME + ") ON DELETE NO ACTION," +
                     "FOREIGN KEY (" + CategoryDiscount.categoryNameColumnName + ")" +
-                    "REFERENCES " + Category.categoryNameColumnName + " (" + CATEGORY_TABLE_NAME + ") ON DELETE CASCADE," +
+                    "REFERENCES " + Category.categoryNameColumnName + " (" + CATEGORY_TABLE_NAME + ") ON DELETE NO ACTION," +
                     "CONSTRAINT Natural_Number CHECK (" + CategoryDiscount.discountColumnName + ">= 0 AND " + CategoryDiscount.itemCountColumnName + ">=0)" +
                     ");";
             PreparedStatement stmt = conn.prepareStatement(command);
