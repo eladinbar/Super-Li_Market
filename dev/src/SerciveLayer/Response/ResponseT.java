@@ -23,7 +23,7 @@ public class ResponseT <T> extends Response{
 
     @Override
     public String toString() {
-        if(errorOccured())
+        if(errorOccurred())
             return "\nError: "+getErrorMessage()+"\n";
         return "\nSuccess: \n"+value.toString();
     }

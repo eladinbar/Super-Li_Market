@@ -2,9 +2,11 @@ package SerciveLayer;
 
 import SerciveLayer.Response.Response;
 import SerciveLayer.Response.ResponseT;
+import SerciveLayer.SimpleObjects.*;
 import SerciveLayer.objects.*;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -106,17 +108,23 @@ public class Service implements IService {
     }
 
     @Override
-    public ResponseT<Product> addQuantityListItem(String supplierID, int productID, int amount, int discount) {
-        ResponseT<Product> r = orderService.getProduct(productID);
-        if (!r.errorOccured())
-            return supplierService.addQuantityListItem(supplierID, productID, amount, discount, orderService);
+    public ResponseT<Item> addQuantityListItem(String supplierID, int productID, int amount, int discount) {
+        ResponseT<Item> r = inventoryService.getItem(productID);
+        if (!r.errorOccurred()) {
+            ResponseT<Item> rp = supplierService.addQuantityListItem(supplierID, productID, amount, discount, inventoryService);
+            if(rp.errorOccurred())
+                return new ResponseT<>(rp.getErrorMessage());
+        }
         return r;
     }
 
-    public ResponseT<Product> addItemToAgreement(String id, int productID, int companyProductID, int price) {
-        ResponseT<Product> r = orderService.getProduct(productID);
-        if (!r.errorOccured())
-            return supplierService.addItemToAgreement(id, productID, companyProductID, price, orderService);
+    public ResponseT<Item> addItemToAgreement(String id, int productID, int companyProductID, int price) {
+        ResponseT<Item> r = inventoryService.getItem(productID);
+        if (!r.errorOccurred()) {
+            ResponseT<Item> rp = supplierService.addItemToAgreement(id, productID, companyProductID, price, inventoryService);
+            if(rp.errorOccurred())
+                return new ResponseT<>(rp.getErrorMessage());
+        }
         return r;
     }
 
@@ -143,19 +151,31 @@ public class Service implements IService {
     @Override
     public ResponseT<List<Order>> createShortageOrder(LocalDate date) {//todo check again
         ResponseT<Map<Integer,Integer>> itemInShort = inventoryService.getItemsInShortAndQuantities();
-        if(itemInShort.errorOccured())
+        if(itemInShort.errorOccurred())
             return new ResponseT<>(itemInShort.getErrorMessage());
         ResponseT<Map<String,Map<Integer,Integer>>> r = supplierService.createShortageOrders(itemInShort.value);
-        if(r.errorOccured())
+        if(r.errorOccurred())
             return new ResponseT<>(r.getErrorMessage());
         ResponseT<List<Order>> orderR = orderService.createShortageOrders(r.value,date,supplierService.getSp());
         return orderR;
     }
 
     @Override
-    public ResponseT<List<Order>> createScheduledOrder(int day, int itemID, int amount) {
+    public ResponseT<Order> createScheduledOrder(int day, int itemID, int amount) {
         ResponseT<Supplier> cheap = supplierService.getCheapestSupplier(itemID,amount,true);
-        return null;
+        if(cheap.errorOccurred())
+            return new ResponseT<>(cheap.getErrorMessage());
+        Supplier s = cheap.value;
+        ResponseT<Order> scheduledOrder = orderService.createPernamentOrder(day,s.getSc().getId(), supplierService.getSp());
+        if(scheduledOrder.errorOccurred())
+            return new ResponseT<>(cheap.getErrorMessage());
+        Response addItemResp = orderService.addProductToOrder(scheduledOrder.value.getId(),itemID,amount);
+        //todo: check the case if the item already exists in the order and handle it accordingly
+        if(addItemResp.errorOccurred())
+            return new ResponseT<>(true, "Supplier already has the item in the order, check if you want to edit the amount." +
+                    "\nOrder ID to edit : " + scheduledOrder.value.getId(),null);
+
+        return getOrder(scheduledOrder.value.getId());
     }
 
     @Override
@@ -175,12 +195,26 @@ public class Service implements IService {
 
     @Override
     public Response approveOrder(int orderID) {
-        return orderService.approveOrder(orderID);
+        Response r = orderService.approveOrder(orderID);
+        if(r.errorOccurred())
+            return r;
+        ResponseT<Order> orderR = orderService.getOrder(orderID, inventoryService);
+        if(orderR.errorOccurred())
+            return orderR;
+        ArrayList<Product> productList = orderR.value.getProducts();
+        inventoryService.updateQuantityInventory(productList);
+        for (Product p : productList) {
+            if(p.getDiscount() > 0){
+                inventoryService.addItemDiscount(orderR.value.getSupplier().getSc().getId(), p.getDiscount(), orderR.value.getDate(), p.getAmount(), p.getProductID());
+            }
+        }
+
+        return r;
     }
 
     @Override
     public ResponseT<Order> getOrder(int orderID) {
-        return orderService.getOrder(orderID);
+        return orderService.getOrder(orderID, inventoryService);
     }
 
     @Override
@@ -191,16 +225,6 @@ public class Service implements IService {
     @Override
     public Response removeProductFromOrder(int orderID, int productID) {
         return orderService.removeProductFromOrder(orderID, productID);
-    }
-
-    @Override
-    public ResponseT<Product> createProduct(String name, String manufacturer) {
-        return orderService.createProduct(name, manufacturer);
-    }
-
-    @Override
-    public ResponseT<Product> getProduct(int productID) {
-        return orderService.getProduct(productID);
     }
 
     @Override
@@ -235,6 +259,156 @@ public class Service implements IService {
     @Override
     public ResponseT<Double> getOrderTotalDiscount(int orderID) {
         return orderService.getOrderTotalDiscount(orderID);
+    }
+
+    @Override
+    public Response addItem(int id, String name, String categoryName, double costPrice, double sellingPrice, int minAmount, String shelfLocation, String storageLocation, int shelfQuantity, int storageQuantity, int manufacturerId, List<String> suppliersIds) {
+        return inventoryService.addItem(id,name,categoryName,costPrice,sellingPrice,minAmount,shelfLocation,storageLocation,shelfQuantity,storageQuantity,manufacturerId,suppliersIds);
+    }
+
+    @Override
+    public ResponseT<Item> getItem(int itemId) {
+        return inventoryService.getItem(itemId);
+    }
+
+    @Override
+    public Response modifyItemName(int itemId, String newName) {
+        return inventoryService.modifyItemName(itemId,newName);
+    }
+
+    @Override
+    public Response modifyItemCategory(int itemId, String newCategoryName) {
+        return inventoryService.modifyItemCategory(itemId, newCategoryName);
+    }
+
+    @Override
+    public Response modifyItemCostPrice(int itemId, double newCostPrice) {
+        return inventoryService.modifyItemCostPrice(itemId, newCostPrice);
+    }
+
+    @Override
+    public Response modifyItemSellingPrice(int itemId, double newSellingPrice) {
+        return inventoryService.modifyItemSellingPrice(itemId, newSellingPrice);
+    }
+
+    @Override
+    public Response changeItemShelfLocation(int itemId, String newShelfLocation) {
+        return inventoryService.changeItemShelfLocation(itemId, newShelfLocation);
+    }
+
+    @Override
+    public Response changeItemStorageLocation(int itemId, String newStorageLocation) {
+        return inventoryService.changeItemShelfLocation(itemId, newStorageLocation);
+    }
+
+    @Override
+    public Response modifyItemShelfQuantity(int itemId, int newShelfQuantity) {
+        return inventoryService.modifyItemShelfQuantity(itemId, newShelfQuantity);
+    }
+
+    @Override
+    public Response modifyItemStorageQuantity(int itemId, int newStorageQuantity) {
+        return inventoryService.modifyItemStorageQuantity(itemId, newStorageQuantity);
+    }
+
+    @Override
+    public Response removeItem(int itemId) {
+        return inventoryService.removeItem(itemId);
+    }
+
+    @Override
+    public Response addCategory(String categoryName, String parentCategoryName) {
+        return inventoryService.addCategory(categoryName,parentCategoryName);
+    }
+
+    @Override
+    public ResponseT<Category> getCategory(String categoryName) {
+        return inventoryService.getCategory(categoryName);
+    }
+
+    @Override
+    public Response modifyCategoryName(String oldName, String newName) {
+        return inventoryService.modifyCategoryName(oldName, newName);
+    }
+
+    @Override
+    public Response removeCategory(String categoryName) {
+        return inventoryService.removeCategory(categoryName);
+    }
+
+    @Override
+    public Response changeParentCategory(String categoryName, String newParentName) {
+        return inventoryService.changeParentCategory(categoryName, newParentName);
+    }
+
+    @Override
+    public <T extends SimpleEntity> ResponseT<Sale<T>> getSale(String saleName) {
+        return inventoryService.getSale(saleName);
+    }
+
+    @Override
+    public Response addItemSale(String saleName, int itemID, double saleDiscount, LocalDate startDate, LocalDate endDate) {
+        return inventoryService.addItemSale(saleName, itemID, saleDiscount, startDate, endDate);
+    }
+
+    @Override
+    public Response addCategorySale(String saleName, String categoryName, double saleDiscount, LocalDate startDate, LocalDate endDate) {
+        return inventoryService.addCategorySale(saleName, categoryName, saleDiscount, startDate, endDate);
+    }
+
+    @Override
+    public Response modifySaleName(String oldName, String newName) {
+        return inventoryService.modifySaleName(oldName, newName);
+    }
+
+    @Override
+    public Response modifySaleDiscount(String saleName, double newDiscount) {
+        return inventoryService.modifySaleDiscount(saleName, newDiscount);
+    }
+
+    @Override
+    public Response modifySaleDates(String saleName, LocalDate startDate, LocalDate endDate) {
+        return inventoryService.modifySaleDates(saleName, startDate, endDate);
+    }
+
+    @Override
+    public <T extends SimpleEntity> ResponseT<List<Discount<T>>> getDiscount(String supplierId, LocalDate discountDate) {
+        return inventoryService.getDiscount(supplierId,discountDate);
+    }
+
+    @Override
+    public Response recordDefect(int itemId, LocalDate entryDate, int defectQuantity, String defectLocation) {
+        return inventoryService.recordDefect(itemId, entryDate, defectQuantity, defectLocation);
+    }
+
+    @Override
+    public ResponseT<List<Item>> inventoryReport() {
+        return inventoryService.inventoryReport();
+    }
+
+    @Override
+    public ResponseT<List<Item>> categoryReport(String categoryName) {
+        return inventoryService.categoryReport(categoryName);
+    }
+
+    @Override
+    public ResponseT<List<Item>> itemShortageReport() {
+        return inventoryService.itemShortageReport();
+    }
+
+    @Override
+    public ResponseT<List<DefectEntry>> defectsReport(LocalDate fromDate, LocalDate toDate) {
+        return inventoryService.defectsReport(fromDate, toDate);
+    }
+
+    @Override
+    public ResponseT<Map<Integer, Integer>> getItemsInShortAndQuantities() {
+        return inventoryService.getItemsInShortAndQuantities();
+    }
+
+    @Override
+    public Response updateQuantityInventory(ArrayList<Product> items) {
+        return inventoryService.updateQuantityInventory(items);
     }
 
     @Override

@@ -1,26 +1,17 @@
 package BusinessLayer.InventoryPackage.SalePackage;
 
-import InfrastructurePackage.Pair;
 import BusinessLayer.InventoryPackage.Category;
 
-import java.util.Calendar;
+import java.time.LocalDate;
+import java.sql.SQLException;
 
 public class CategorySale extends Sale{
+    private DataAccessLayer.DalObjects.InventoryObjects.CategorySale dalCopyCategorySale;
+
     private Category category;
 
-    public CategorySale(String name, double discount, Calendar startDate, Calendar endDate, Category category) {
-        this.name = name;
-        this.discount = discount;
-        this.saleDates = new Pair<>(startDate, endDate);
-        //Remove redundant time from dates
-        startDate.clear(Calendar.MILLISECOND);
-        startDate.clear(Calendar.SECOND);
-        startDate.clear(Calendar.MINUTE);
-        startDate.clear(Calendar.HOUR);
-        endDate.clear(Calendar.MILLISECOND);
-        endDate.clear(Calendar.SECOND);
-        endDate.clear(Calendar.MINUTE);
-        endDate.clear(Calendar.HOUR);
+    public CategorySale(String name, double discount, LocalDate startDate, LocalDate endDate, Category category) {
+        super(name, discount, startDate, endDate);
         this.category = category;
     }
 
@@ -30,5 +21,11 @@ public class CategorySale extends Sale{
 
     public void setCategory(Category category) {
         this.category = category;
+    }
+
+    public void save() throws SQLException {
+        dalCopyCategorySale = new DataAccessLayer.DalObjects.InventoryObjects.CategorySale(name, discount,
+                saleDates.getFirst().toString(), saleDates.getSecond().toString(), category.getName());
+        dalCopyCategorySale.save();
     }
 }

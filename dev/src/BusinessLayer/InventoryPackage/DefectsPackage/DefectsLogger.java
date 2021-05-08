@@ -1,5 +1,6 @@
 package BusinessLayer.InventoryPackage.DefectsPackage;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -15,7 +16,7 @@ public class DefectsLogger {
         return defectEntries;
     }
 
-    public DefectEntry getDefectEntry(int itemId, Calendar entryDate) {
+    public DefectEntry getDefectEntry(int itemId, LocalDate entryDate) {
         for (DefectEntry defectEntry : defectEntries) {
             if (defectEntry.getEntryDate().equals(entryDate) & defectEntry.getItemID() == itemId)
                 return defectEntry;

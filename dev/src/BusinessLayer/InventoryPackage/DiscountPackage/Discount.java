@@ -1,14 +1,21 @@
 package BusinessLayer.InventoryPackage.DiscountPackage;
 
-import java.util.Calendar;
+import java.time.LocalDate;
 
 public abstract class Discount {
-    protected int supplierID;
+    protected String supplierID;
     protected double discount;
-    protected Calendar date;
+    protected LocalDate date;
     protected int itemCount;
 
-    public int getSupplierID() {
+    public Discount(String supplierID, double discount, LocalDate date, int itemCount) {
+        this.supplierID = supplierID;
+        this.discount = discount;
+        this.date = date;
+        this.itemCount = itemCount;
+    }
+
+    public String getSupplierID() {
         return supplierID;
     }
 
@@ -20,7 +27,7 @@ public abstract class Discount {
         this.discount = discount;
     }
 
-    public Calendar getDate() {
+    public LocalDate getDate() {
         return date;
     }
 

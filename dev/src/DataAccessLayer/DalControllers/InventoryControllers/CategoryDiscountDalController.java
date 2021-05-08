@@ -35,7 +35,7 @@ public class CategoryDiscountDalController extends DalController<CategoryDiscoun
         try (Connection conn = DriverManager.getConnection(connectionString)) {
             String command = "CREATE TABLE IF NOT EXISTS " + tableName + " (" +
                     CategoryDiscount.discountDateColumnName + " TEXT NOT NULL," +
-                    CategoryDiscount.supplierIdColumnName + " INTEGER NOT NULL," +
+                    CategoryDiscount.supplierIdColumnName + " TEXT NOT NULL," +
                     CategoryDiscount.categoryNameColumnName + " TEXT NOT NULL," +
                     CategoryDiscount.discountColumnName + " REAL DEFAULT 0 NOT NULL," +
                     CategoryDiscount.itemCountColumnName + " INTEGER DEFAULT 0 NOT NULL," +
@@ -60,11 +60,11 @@ public class CategoryDiscountDalController extends DalController<CategoryDiscoun
     public boolean insert(CategoryDiscount categoryDiscount) throws SQLException {
         System.out.println("Initiating " + tableName + " insert.");
         try (Connection conn = DriverManager.getConnection(connectionString)) {
-            String query = "INSERT INTO " + tableName + " VALUES (?,?, ?, ?, ?)";
+            String query = "INSERT OR IGNORE INTO " + tableName + " VALUES (?,?, ?, ?, ?)";
             PreparedStatement stmt = conn.prepareStatement(query);
 
             stmt.setString(1, categoryDiscount.getDiscountDate());
-            stmt.setInt(2, categoryDiscount.getSupplierID());
+            stmt.setString(2, categoryDiscount.getSupplierID());
             stmt.setString(3, categoryDiscount.getCategoryName());
             stmt.setDouble(4, categoryDiscount.getDiscount());
             stmt.setInt(5, categoryDiscount.getItemCount());
@@ -84,7 +84,7 @@ public class CategoryDiscountDalController extends DalController<CategoryDiscoun
             PreparedStatement stmt = conn.prepareStatement(query);
 
             stmt.setString(1, categoryDiscount.getDiscountDate());
-            stmt.setInt(2, categoryDiscount.getSupplierID());
+            stmt.setString(2, categoryDiscount.getSupplierID());
             stmt.setString(3, categoryDiscount.getCategoryName());
             stmt.executeUpdate();
         } catch (SQLException ex) {
@@ -104,7 +104,7 @@ public class CategoryDiscountDalController extends DalController<CategoryDiscoun
             stmt.setDouble(1, categoryDiscount.getDiscount());
             stmt.setInt(2, categoryDiscount.getItemCount());
             stmt.setString(3, categoryDiscount.getDiscountDate());
-            stmt.setInt(4, categoryDiscount.getSupplierID());
+            stmt.setString(4, categoryDiscount.getSupplierID());
             stmt.setString(5, categoryDiscount.getCategoryName());
             stmt.executeUpdate();
         } catch (SQLException ex) {
@@ -115,8 +115,6 @@ public class CategoryDiscountDalController extends DalController<CategoryDiscoun
 
     @Override
     public CategoryDiscount select(CategoryDiscount categoryDiscount) throws SQLException {
-        CategoryDiscount savedCategoryDiscount = new CategoryDiscount(categoryDiscount.getDiscountDate(), categoryDiscount.getSupplierID(),
-                categoryDiscount.getCategoryName(), 0, 0);
         try (Connection conn = DriverManager.getConnection(connectionString)) {
             String query = "SELECT * FROM " + tableName;
             PreparedStatement stmt = conn.prepareStatement(query);
@@ -124,16 +122,16 @@ public class CategoryDiscountDalController extends DalController<CategoryDiscoun
             while (resultSet.next())
             {
                 boolean isDesired = resultSet.getString(0).equals(categoryDiscount.getDiscountDate()) &&
-                        resultSet.getInt(1) == categoryDiscount.getSupplierID() && resultSet.getString(2).equals(categoryDiscount.getCategoryName());
+                        resultSet.getString(1).equals(categoryDiscount.getSupplierID()) && resultSet.getString(2).equals(categoryDiscount.getCategoryName());
                 if (isDesired) {
-                    savedCategoryDiscount.setDiscount(resultSet.getInt(1));
-                    savedCategoryDiscount.setItemCount(resultSet.getInt(2));
+                    categoryDiscount.setDiscount(resultSet.getInt(1));
+                    categoryDiscount.setItemCount(resultSet.getInt(2));
                     break; //Desired category discount found
                 }
             }
         } catch (SQLException ex) {
             throw new SQLException(ex.getMessage());
         }
-        return savedCategoryDiscount;
+        return categoryDiscount;
     }
 }

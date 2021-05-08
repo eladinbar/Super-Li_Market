@@ -53,7 +53,7 @@ public class DefectEntryDalController extends DalController<DefectEntry> {
     public boolean insert(DefectEntry defectEntry) throws SQLException {
         System.out.println("Initiating " + tableName + " insert.");
         try (Connection conn = DriverManager.getConnection(connectionString)) {
-            String query = "INSERT INTO " + tableName + " VALUES (?,?, ?, ?)";
+            String query = "INSERT OR IGNORE INTO " + tableName + " VALUES (?,?, ?, ?)";
             PreparedStatement stmt = conn.prepareStatement(query);
             stmt.setString(1, defectEntry.getEntryDate());
             stmt.setInt(2, defectEntry.getItemID());
@@ -102,7 +102,6 @@ public class DefectEntryDalController extends DalController<DefectEntry> {
 
     @Override
     public DefectEntry select(DefectEntry defectEntry) throws SQLException {
-        DefectEntry savedDefectEntry = new DefectEntry(defectEntry.getEntryDate(), defectEntry.getItemID(), null, 0);
         try (Connection conn = DriverManager.getConnection(connectionString)) {
             String query = "SELECT * FROM " + tableName;
             PreparedStatement stmt = conn.prepareStatement(query);
@@ -112,14 +111,14 @@ public class DefectEntryDalController extends DalController<DefectEntry> {
                 boolean isDesired = resultSet.getString(0).equals(defectEntry.getEntryDate()) &&
                         resultSet.getInt(1) == defectEntry.getItemID();
                 if (isDesired) {
-                    savedDefectEntry.setLocation(resultSet.getString(1));
-                    savedDefectEntry.setQuantity(resultSet.getInt(2));
+                    defectEntry.setLocation(resultSet.getString(1));
+                    defectEntry.setQuantity(resultSet.getInt(2));
                     break; //Desired defect entry found
                 }
             }
         } catch (SQLException ex) {
             throw new SQLException(ex.getMessage());
         }
-        return savedDefectEntry;
+        return defectEntry;
     }
 }

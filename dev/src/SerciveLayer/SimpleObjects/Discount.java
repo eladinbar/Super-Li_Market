@@ -1,22 +1,23 @@
 package SerciveLayer.SimpleObjects;
 
+import java.time.LocalDate;
 import java.util.Calendar;
 
 public class Discount<T extends SimpleEntity> extends SimpleEntity {
-    private int supplierID;
+    private String supplierID;
     private double discount;
-    private Calendar date;
+    private LocalDate date;
     private int itemCount;
     private T appliesOn;
 
-    public Discount(int supplierID, double discount, Calendar date, int itemCount) {
+    public Discount(String supplierID, double discount, LocalDate date, int itemCount) {
         this.supplierID = supplierID;
         this.discount = discount;
         this.date = date;
         this.itemCount = itemCount;
     }
 
-    public int getSupplierID() {
+    public String getSupplierID() {
         return supplierID;
     }
 
@@ -24,7 +25,7 @@ public class Discount<T extends SimpleEntity> extends SimpleEntity {
         return discount;
     }
 
-    public Calendar getDate() {
+    public LocalDate getDate() {
         return date;
     }
 

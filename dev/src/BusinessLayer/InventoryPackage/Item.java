@@ -1,19 +1,22 @@
 package BusinessLayer.InventoryPackage;
 
+import java.sql.SQLException;
 import java.util.List;
 
 public class Item {
+    private DataAccessLayer.DalObjects.InventoryObjects.Item dalCopyItem;
+
     private int ID;
     private String name;
     private double costPrice;
     private double sellingPrice;
     private int minAmount;
     private int manufacturerID;
-    private final List<Integer> supplierIDs;
+    private final List<String> supplierIDs;
     private final Quantity quantity;
     private final Location location;
 
-    public Item(int ID, String name, double costPrice, double sellingPrice, int minAmount, int manufacturerID, List<Integer> supplierIDs,
+    public Item(int ID, String name, double costPrice, double sellingPrice, int minAmount, int manufacturerID, List<String> supplierIDs,
                 int shelfQuantity, int storageQuantity, String shelfLocation, String storageLocation) {
         this.ID = ID;
         this.name = name;
@@ -62,11 +65,11 @@ public class Item {
         return manufacturerID;
     }
 
-    public void addSupplier(int supplierID) {
+    public void addSupplier(String supplierID) {
         supplierIDs.add(supplierID);
     }
 
-    public void removeSupplier(int supplierID) {
+    public void removeSupplier(String supplierID) {
         supplierIDs.remove(supplierID);
     }
 
@@ -114,5 +117,11 @@ public class Item {
 
     public void setStorageLocation(String storageLocation) {
         this.location.setStorageLocation(storageLocation);
+    }
+
+    public void save(String categoryName) throws SQLException {
+        dalCopyItem = new DataAccessLayer.DalObjects.InventoryObjects.Item(ID, name, costPrice, sellingPrice, manufacturerID, minAmount,
+                getShelfQuantity(), getStorageQuantity(), getShelfLocation(), getStorageLocation(), categoryName);
+        dalCopyItem.save();
     }
 }

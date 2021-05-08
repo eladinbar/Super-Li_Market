@@ -47,7 +47,7 @@ public class CategoryDalController extends DalController<Category> {
     public boolean insert(Category category) throws SQLException {
         System.out.println("Initiating " + tableName + " insert.");
         try (Connection conn = DriverManager.getConnection(connectionString)) {
-            String query = "INSERT INTO " + tableName + " VALUES (?,?)";
+            String query = "INSERT OR IGNORE INTO " + tableName + " VALUES (?,?)";
             PreparedStatement stmt = conn.prepareStatement(query);
             stmt.setString(1, category.getName());
             stmt.setString(2, category.getParentName());
@@ -89,9 +89,24 @@ public class CategoryDalController extends DalController<Category> {
         return true;
     }
 
+    public boolean update(Category category, String oldName) throws SQLException {
+        try (Connection conn = DriverManager.getConnection(connectionString)) {
+            String query = "UPDATE " + tableName + " SET " + Category.categoryNameColumnName + "=?," + Category.parentNameColumnName +
+                    "=? WHERE(" + Category.categoryNameColumnName + "=?)";
+            PreparedStatement stmt = conn.prepareStatement(query);
+
+            stmt.setString(1, category.getName());
+            stmt.setString(2, category.getParentName());
+            stmt.setString(3, oldName);
+            stmt.executeUpdate();
+        } catch (SQLException ex) {
+            throw new SQLException(ex.getMessage());
+        }
+        return true;
+    }
+
     @Override
     public Category select(Category category) throws SQLException {
-        Category savedCategory = new Category(category.getName(), null);
         try (Connection conn = DriverManager.getConnection(connectionString)) {
             String query = "SELECT * FROM " + tableName;
             PreparedStatement stmt = conn.prepareStatement(query);
@@ -100,13 +115,13 @@ public class CategoryDalController extends DalController<Category> {
             {
                 boolean isDesired = resultSet.getString(0).equals(category.getName());
                 if (isDesired) {
-                    savedCategory.setParentName(resultSet.getString(1));
+                    category.setParentName(resultSet.getString(1));
                     break; //Desired category found
                 }
             }
         } catch (SQLException ex) {
             throw new SQLException(ex.getMessage());
         }
-        return savedCategory;
+        return category;
     }
 }
