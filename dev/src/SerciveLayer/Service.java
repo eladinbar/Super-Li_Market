@@ -125,6 +125,7 @@ public class Service implements IService {
             if(rp.errorOccurred())
                 return new ResponseT<>(rp.getErrorMessage());
         }
+        inventoryService.addItemSupplier(productID, id);
         return r;
     }
 
