@@ -13,22 +13,22 @@ public class TextFormatter {
 
     public String formatItemMenuColumns() {
         Field[] itemFields = Item.class.getDeclaredFields();
-        String outPut = "";
+        String output = "";
         for (int i = 0; i < itemFields.length - 1; i++) {
             String currentField = itemFields[i].getName();
-            outPut = outPut + centerString(currentField, 20) + "|";
+            output = output + centerString(currentField, 20) + "|";
         }
-        return outPut + centerString(itemFields[itemFields.length - 1].getName(), paddingSize);
+        return output + centerString(itemFields[itemFields.length - 1].getName(), paddingSize);
     }
 
     public String formatProductMenuColumns(){
         Field[] productFields = Product.class.getDeclaredFields();
-        String outPut = "";
+        String output = "";
         for (int i = 0; i < productFields.length - 1; i++) {
             String currentField = productFields[i].getName();
-            outPut = outPut + centerString(currentField, 20) + "|";
+            output = output + centerString(currentField, 20) + "|";
         }
-        return outPut + centerString(productFields[productFields.length - 1].getName(), paddingSize);
+        return output + centerString(productFields[productFields.length - 1].getName(), paddingSize);
     }
 
     public String defectsMenuFormat(){
@@ -62,8 +62,6 @@ public class TextFormatter {
                 "Count: " + discount.getItemCount() + "\n"+
                  "Applied On:");
     }
-
-
 
     public String centerString(String s, int width) {
         return String.format("%-" + width + "s", String.format("%" + (s.length() + (width - s.length()) / 2) + "s", s));

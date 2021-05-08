@@ -47,7 +47,7 @@ public class CategoryDalController extends DalController<Category> {
     public boolean insert(Category category) throws SQLException {
         System.out.println("Initiating " + tableName + " insert.");
         try (Connection conn = DriverManager.getConnection(connectionString)) {
-            String query = "INSERT INTO " + tableName + " VALUES (?,?)";
+            String query = "INSERT OR IGNORE INTO " + tableName + " VALUES (?,?)";
             PreparedStatement stmt = conn.prepareStatement(query);
             stmt.setString(1, category.getName());
             stmt.setString(2, category.getParentName());
