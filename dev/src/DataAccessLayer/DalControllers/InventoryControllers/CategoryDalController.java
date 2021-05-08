@@ -51,11 +51,11 @@ public class CategoryDalController extends DalController<Category> {
         System.out.println("Initiating " + CATEGORY_TABLE_NAME + " insert.");
         try (Connection conn = DriverManager.getConnection(connectionString)) {
             String query = "INSERT INTO " + tableName + " VALUES (?,?)";
-            PreparedStatement st = conn.prepareStatement(query);
-            st.setString(1, category.getName());
-            st.setString(2, category.getParentName());
+            PreparedStatement stmt = conn.prepareStatement(query);
+            stmt.setString(1, category.getName());
+            stmt.setString(2, category.getParentName());
             System.out.println("Executing " + CATEGORY_TABLE_NAME + " insert.");
-            st.executeUpdate();
+            stmt.executeUpdate();
         } catch (SQLException ex) {
             throw new SQLException(ex.getMessage());
         }
@@ -63,17 +63,26 @@ public class CategoryDalController extends DalController<Category> {
     }
 
     @Override
-    public boolean delete(Category dalObject) {
+    public boolean delete(Category category) throws SQLException {
+        try (Connection conn = DriverManager.getConnection(connectionString)) {
+            String query = "DELETE FROM " + tableName + " WHERE ?=?";
+            PreparedStatement stmt = conn.prepareStatement(query);
+            stmt.setString(1, Category.categoryNameColumnName);
+            stmt.setString(2, category.getName());
+            stmt.executeUpdate();
+        } catch (SQLException ex) {
+            throw new SQLException(ex.getMessage());
+        }
+        return true;
+    }
+
+    @Override
+    public boolean update(Category category) {
         return false;
     }
 
     @Override
-    public boolean update(Category dalObject) {
-        return false;
-    }
-
-    @Override
-    public Category select(Category dalObject) {
+    public Category select(Category category) {
         return null;
     }
 }

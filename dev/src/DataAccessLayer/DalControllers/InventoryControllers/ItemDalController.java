@@ -2,6 +2,7 @@ package DataAccessLayer.DalControllers.InventoryControllers;
 
 import DataAccessLayer.DalControllers.DalController;
 import DataAccessLayer.DalObjects.InventoryObjects.Category;
+import DataAccessLayer.DalObjects.InventoryObjects.CategorySale;
 import DataAccessLayer.DalObjects.InventoryObjects.Item;
 
 import java.sql.Connection;
@@ -66,19 +67,19 @@ public class ItemDalController extends DalController<Item> {
         System.out.println("Initiating " + tableName + " insert.");
         try (Connection conn = DriverManager.getConnection(connectionString)) {
             String query = "INSERT INTO " + tableName + " VALUES (?,?, ?, ?, ?, ?,?, ?, ?, ?)";
-            PreparedStatement st = conn.prepareStatement(query);
-            st.setInt(1, item.getItemID());
-            st.setDouble(2, item.getCostPrice());
-            st.setDouble(3, item.getSellingPrice());
-            st.setInt(4, item.getManufacturerID());
-            st.setInt(5, item.getMinAmount());
-            st.setInt(6, item.getShelfQuantity());
-            st.setInt(7, item.getStorageQuantity());
-            st.setString(8, item.getShelfLocation());
-            st.setString(9, item.getStorageLocation());
-            st.setString(10, item.getCategoryName());
+            PreparedStatement stmt = conn.prepareStatement(query);
+            stmt.setInt(1, item.getItemID());
+            stmt.setDouble(2, item.getCostPrice());
+            stmt.setDouble(3, item.getSellingPrice());
+            stmt.setInt(4, item.getManufacturerID());
+            stmt.setInt(5, item.getMinAmount());
+            stmt.setInt(6, item.getShelfQuantity());
+            stmt.setInt(7, item.getStorageQuantity());
+            stmt.setString(8, item.getShelfLocation());
+            stmt.setString(9, item.getStorageLocation());
+            stmt.setString(10, item.getCategoryName());
             System.out.println("Executing " + tableName + " insert.");
-            st.executeUpdate();
+            stmt.executeUpdate();
         } catch (SQLException ex) {
             throw new SQLException(ex.getMessage());
         }
@@ -86,17 +87,26 @@ public class ItemDalController extends DalController<Item> {
     }
 
     @Override
-    public boolean delete(Item dalObject) {
+    public boolean delete(Item item) throws SQLException {
+        try (Connection conn = DriverManager.getConnection(connectionString)) {
+            String query = "DELETE FROM " + tableName + " WHERE ?=?";
+            PreparedStatement stmt = conn.prepareStatement(query);
+            stmt.setString(1, Item.itemIdColumnName);
+            stmt.setInt(2, item.getItemID());
+            stmt.executeUpdate();
+        } catch (SQLException ex) {
+            throw new SQLException(ex.getMessage());
+        }
+        return true;
+    }
+
+    @Override
+    public boolean update(Item item) {
         return false;
     }
 
     @Override
-    public boolean update(Item dalObject) {
-        return false;
-    }
-
-    @Override
-    public Item select(Item dalObject) {
+    public Item select(Item item) {
         return null;
     }
 }

@@ -1,6 +1,7 @@
 package DataAccessLayer.DalControllers.InventoryControllers;
 
 import DataAccessLayer.DalControllers.DalController;
+import DataAccessLayer.DalObjects.InventoryObjects.CategoryDiscount;
 import DataAccessLayer.DalObjects.InventoryObjects.Item;
 import DataAccessLayer.DalObjects.InventoryObjects.ItemDiscount;
 import DataAccessLayer.DalObjects.SupplierObjects.SupplierCard;
@@ -64,14 +65,14 @@ public class ItemDiscountDalController extends DalController<ItemDiscount> {
         System.out.println("Initiating " + tableName + " insert.");
         try (Connection conn = DriverManager.getConnection(connectionString)) {
             String query = "INSERT INTO " + tableName + " VALUES (?,?, ?, ?, ?)";
-            PreparedStatement st = conn.prepareStatement(query);
-            st.setString(1, itemDiscount.getDiscountDate());
-            st.setDouble(2, itemDiscount.getDiscount());
-            st.setInt(3, itemDiscount.getItemCount());
-            st.setInt(4, itemDiscount.getSupplierID());
-            st.setInt(5, itemDiscount.getItemID());
+            PreparedStatement stmt = conn.prepareStatement(query);
+            stmt.setString(1, itemDiscount.getDiscountDate());
+            stmt.setDouble(2, itemDiscount.getDiscount());
+            stmt.setInt(3, itemDiscount.getItemCount());
+            stmt.setInt(4, itemDiscount.getSupplierID());
+            stmt.setInt(5, itemDiscount.getItemID());
             System.out.println("Executing " + tableName + " insert.");
-            st.executeUpdate();
+            stmt.executeUpdate();
         } catch (SQLException ex) {
             throw new SQLException(ex.getMessage());
         }
@@ -79,17 +80,26 @@ public class ItemDiscountDalController extends DalController<ItemDiscount> {
     }
 
     @Override
-    public boolean delete(ItemDiscount dalObject) {
+    public boolean delete(ItemDiscount itemDiscount) throws SQLException {
+        try (Connection conn = DriverManager.getConnection(connectionString)) {
+            String query = "DELETE FROM " + tableName + " WHERE ?=?";
+            PreparedStatement stmt = conn.prepareStatement(query);
+            stmt.setString(1, ItemDiscount.discountDateColumnName);
+            stmt.setString(2, itemDiscount.getDiscountDate());
+            stmt.executeUpdate();
+        } catch (SQLException ex) {
+            throw new SQLException(ex.getMessage());
+        }
+        return true;
+    }
+
+    @Override
+    public boolean update(ItemDiscount itemDiscount) {
         return false;
     }
 
     @Override
-    public boolean update(ItemDiscount dalObject) {
-        return false;
-    }
-
-    @Override
-    public ItemDiscount select(ItemDiscount dalObject) {
+    public ItemDiscount select(ItemDiscount itemDiscount) {
         return null;
     }
 }

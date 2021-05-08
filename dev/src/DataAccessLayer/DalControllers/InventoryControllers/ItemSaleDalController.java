@@ -1,6 +1,7 @@
 package DataAccessLayer.DalControllers.InventoryControllers;
 
 import DataAccessLayer.DalControllers.DalController;
+import DataAccessLayer.DalObjects.InventoryObjects.CategorySale;
 import DataAccessLayer.DalObjects.InventoryObjects.Item;
 import DataAccessLayer.DalObjects.InventoryObjects.ItemSale;
 
@@ -62,14 +63,14 @@ public class ItemSaleDalController extends DalController<ItemSale> {
         System.out.println("Initiating " + tableName + " insert.");
         try (Connection conn = DriverManager.getConnection(connectionString)) {
             String query = "INSERT INTO " + tableName + " VALUES (?,?, ?, ?, ?)";
-            PreparedStatement st = conn.prepareStatement(query);
-            st.setString(1, itemSale.getName());
-            st.setDouble(2, itemSale.getDiscount());
-            st.setString(3, itemSale.getStartSaleDate());
-            st.setString(4, itemSale.getEndSaleDate());
-            st.setInt(5, itemSale.getItemID());
+            PreparedStatement stmt = conn.prepareStatement(query);
+            stmt.setString(1, itemSale.getName());
+            stmt.setDouble(2, itemSale.getDiscount());
+            stmt.setString(3, itemSale.getStartSaleDate());
+            stmt.setString(4, itemSale.getEndSaleDate());
+            stmt.setInt(5, itemSale.getItemID());
             System.out.println("Executing " + tableName + " insert.");
-            st.executeUpdate();
+            stmt.executeUpdate();
         } catch (SQLException ex) {
             throw new SQLException(ex.getMessage());
         }
@@ -77,17 +78,26 @@ public class ItemSaleDalController extends DalController<ItemSale> {
     }
 
     @Override
-    public boolean delete(ItemSale dalObject) {
+    public boolean delete(ItemSale itemSale) throws SQLException {
+        try (Connection conn = DriverManager.getConnection(connectionString)) {
+            String query = "DELETE FROM " + tableName + " WHERE ?=?";
+            PreparedStatement stmt = conn.prepareStatement(query);
+            stmt.setString(1, ItemSale.itemSaleNameColumnName);
+            stmt.setString(2, itemSale.getName());
+            stmt.executeUpdate();
+        } catch (SQLException ex) {
+            throw new SQLException(ex.getMessage());
+        }
+        return true;
+    }
+
+    @Override
+    public boolean update(ItemSale itemSale) {
         return false;
     }
 
     @Override
-    public boolean update(ItemSale dalObject) {
-        return false;
-    }
-
-    @Override
-    public ItemSale select(ItemSale dalObject) {
+    public ItemSale select(ItemSale itemSale) {
         return null;
     }
 }

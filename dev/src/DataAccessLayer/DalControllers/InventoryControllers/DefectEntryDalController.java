@@ -58,13 +58,13 @@ public class DefectEntryDalController extends DalController<DefectEntry> {
         System.out.println("Initiating " + tableName + " insert.");
         try (Connection conn = DriverManager.getConnection(connectionString)) {
             String query = "INSERT INTO " + tableName + " VALUES (?,?, ?, ?)";
-            PreparedStatement st = conn.prepareStatement(query);
-            st.setString(1, defectEntry.getEntryDate());
-            st.setString(2, defectEntry.getLocation());
-            st.setInt(3, defectEntry.getQuantity());
-            st.setInt(4, defectEntry.getItemID());
+            PreparedStatement stmt = conn.prepareStatement(query);
+            stmt.setString(1, defectEntry.getEntryDate());
+            stmt.setString(2, defectEntry.getLocation());
+            stmt.setInt(3, defectEntry.getQuantity());
+            stmt.setInt(4, defectEntry.getItemID());
             System.out.println("Executing " + tableName + " insert.");
-            st.executeUpdate();
+            stmt.executeUpdate();
         } catch (SQLException ex) {
             throw new SQLException(ex.getMessage());
         }
@@ -72,17 +72,26 @@ public class DefectEntryDalController extends DalController<DefectEntry> {
     }
 
     @Override
-    public boolean delete(DefectEntry dalObject) {
+    public boolean delete(DefectEntry defectEntry) throws SQLException {
+        try (Connection conn = DriverManager.getConnection(connectionString)) {
+            String query = "DELETE FROM " + tableName + " WHERE ?=?";
+            PreparedStatement stmt = conn.prepareStatement(query);
+            stmt.setString(1, DefectEntry.entryDateColumnName);
+            stmt.setString(2, defectEntry.getEntryDate());
+            stmt.executeUpdate();
+        } catch (SQLException ex) {
+            throw new SQLException(ex.getMessage());
+        }
+        return true;
+    }
+
+    @Override
+    public boolean update(DefectEntry defectEntry) {
         return false;
     }
 
     @Override
-    public boolean update(DefectEntry dalObject) {
-        return false;
-    }
-
-    @Override
-    public DefectEntry select(DefectEntry dalObject) {
+    public DefectEntry select(DefectEntry defectEntry) {
         return null;
     }
 }

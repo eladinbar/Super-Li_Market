@@ -42,7 +42,7 @@ public abstract class DalController<T extends DalObject<T>>{
     </summary>
     <param name="dalObject">The data access layer object instance to delete from the database.</param>
     <returns>Returns true if the method changed more than 0 rows.</returns> */
-    public abstract boolean delete(T dalObject);
+    public abstract boolean delete(T dalObject) throws SQLException;
 
     /** <summary>
      Updates the column in the database associated with the given DalObject and sets the value.

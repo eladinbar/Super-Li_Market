@@ -64,14 +64,14 @@ public class CategoryDiscountDalController extends DalController<CategoryDiscoun
         System.out.println("Initiating " + tableName + " insert.");
         try (Connection conn = DriverManager.getConnection(connectionString)) {
             String query = "INSERT INTO " + tableName + " VALUES (?,?, ?, ?, ?)";
-            PreparedStatement st = conn.prepareStatement(query);
-            st.setString(1, categoryDiscount.getDiscountDate());
-            st.setDouble(2, categoryDiscount.getDiscount());
-            st.setInt(3, categoryDiscount.getItemCount());
-            st.setInt(4, categoryDiscount.getSupplierID());
-            st.setString(5, categoryDiscount.getCategoryName());
+            PreparedStatement stmt = conn.prepareStatement(query);
+            stmt.setString(1, categoryDiscount.getDiscountDate());
+            stmt.setDouble(2, categoryDiscount.getDiscount());
+            stmt.setInt(3, categoryDiscount.getItemCount());
+            stmt.setInt(4, categoryDiscount.getSupplierID());
+            stmt.setString(5, categoryDiscount.getCategoryName());
             System.out.println("Executing " + tableName + " insert.");
-            st.executeUpdate();
+            stmt.executeUpdate();
         } catch (SQLException ex) {
             throw new SQLException(ex.getMessage());
         }
@@ -79,17 +79,26 @@ public class CategoryDiscountDalController extends DalController<CategoryDiscoun
     }
 
     @Override
-    public boolean delete(CategoryDiscount dalObject) {
+    public boolean delete(CategoryDiscount categoryDiscount) throws SQLException {
+        try (Connection conn = DriverManager.getConnection(connectionString)) {
+            String query = "DELETE FROM " + tableName + " WHERE ?=?";
+            PreparedStatement stmt = conn.prepareStatement(query);
+            stmt.setString(1, CategoryDiscount.discountDateColumnName);
+            stmt.setString(2, categoryDiscount.getDiscountDate());
+            stmt.executeUpdate();
+        } catch (SQLException ex) {
+            throw new SQLException(ex.getMessage());
+        }
+        return true;
+    }
+
+    @Override
+    public boolean update(CategoryDiscount categoryDiscount) {
         return false;
     }
 
     @Override
-    public boolean update(CategoryDiscount dalObject) {
-        return false;
-    }
-
-    @Override
-    public CategoryDiscount select(CategoryDiscount dalObject) {
+    public CategoryDiscount select(CategoryDiscount categoryDiscount) {
         return null;
     }
 }
