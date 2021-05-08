@@ -3,6 +3,7 @@ package DataAccessLayer.DalControllers;
 import DataAccessLayer.DalObjects.DalObject;
 
 import java.sql.SQLException;
+import java.time.LocalDate;
 
 /** <summary>
 An abstract class used as the basis to form connections with the database for reading and writing purposes.
@@ -50,6 +51,49 @@ public abstract class DalController<T extends DalObject<T>>{
      <param name="dalObject">The object to select from the database.</param>
      <returns>Returns a DalObject that extends DalObject<T>.</returns> */
     public abstract boolean update(T dalObject) throws SQLException;
+
+    /** <summary>
+     Updates the column in the database associated with the given DalObject and sets the value.
+     </summary>
+     <param name="dalObject">The object to select from the database.</param>
+     <param name="oldName">The old name of the object to update.</param>
+     <returns>Returns a DalObject that extends DalObject<T>.</returns> */
+    public boolean update(T dalObject, String oldName) throws SQLException {
+        return false;
+    }
+
+    /** <summary>
+     Updates the column in the database associated with the given DalObject and sets the value.
+     </summary>
+     <param name="dalObject">The object to select from the database.</param>
+     <param name="oldId">The old ID of the object to update.</param>
+     <returns>Returns a DalObject that extends DalObject<T>.</returns> */
+    public boolean update(T dalObject, int oldId) throws SQLException {
+        return false;
+    }
+
+    /** <summary>
+     Updates the column in the database associated with the given DalObject and sets the value.
+     </summary>
+     <param name="dalObject">The object to select from the database.</param>
+     <param name="oldDate">The old date of the object to update.</param>
+     <param name="oldId">The old ID of the object to update.</param>
+     <returns>Returns a DalObject that extends DalObject<T>.</returns> */
+    public boolean update(T dalObject, LocalDate oldDate, int oldId) throws SQLException {
+        return false;
+    }
+
+    /** <summary>
+     Updates the column in the database associated with the given DalObject and sets the value.
+     </summary>
+     <param name="dalObject">The object to select from the database.</param>
+     <param name="oldDate">The old date of the object to update.</param>
+     <param name="oldId">The old Id of the object to update.</param>
+     <param name="oldName">The old name of the object to update.</param>
+     <returns>Returns a DalObject that extends DalObject<T>.</returns> */
+    public boolean update(T dalObject, LocalDate oldDate, String oldId, String oldName) throws SQLException {
+        return false;
+    }
 
     /** <summary>
     A select command function to extract an object from database into RAM.

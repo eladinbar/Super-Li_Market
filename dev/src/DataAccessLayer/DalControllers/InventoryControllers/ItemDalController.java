@@ -127,8 +127,6 @@ public class ItemDalController extends DalController<Item> {
 
     @Override
     public Item select(Item item) throws SQLException {
-        Item savedItem = new Item(item.getItemID(), null, 0, 0, 0, 0, 0, 0,
-                null, null, null);
         try (Connection conn = DriverManager.getConnection(connectionString)) {
             String query = "SELECT * FROM " + tableName;
             PreparedStatement stmt = conn.prepareStatement(query);
@@ -137,22 +135,22 @@ public class ItemDalController extends DalController<Item> {
             {
                 boolean isDesired = resultSet.getInt(0) == item.getItemID();
                 if (isDesired) {
-                    savedItem.setName(resultSet.getString(1));
-                    savedItem.setCostPrice(resultSet.getDouble(2));
-                    savedItem.setSellingPrice(resultSet.getDouble(3));
-                    savedItem.setManufacturerID(resultSet.getInt(4));
-                    savedItem.setMinAmount(resultSet.getInt(5));
-                    savedItem.setShelfQuantity(resultSet.getInt(6));
-                    savedItem.setStorageQuantity(resultSet.getInt(7));
-                    savedItem.setShelfLocation(resultSet.getString(8));
-                    savedItem.setStorageLocation(resultSet.getString(9));
-                    savedItem.setCategoryName(resultSet.getString(10));
+                    item.setName(resultSet.getString(1));
+                    item.setCostPrice(resultSet.getDouble(2));
+                    item.setSellingPrice(resultSet.getDouble(3));
+                    item.setManufacturerID(resultSet.getInt(4));
+                    item.setMinAmount(resultSet.getInt(5));
+                    item.setShelfQuantity(resultSet.getInt(6));
+                    item.setStorageQuantity(resultSet.getInt(7));
+                    item.setShelfLocation(resultSet.getString(8));
+                    item.setStorageLocation(resultSet.getString(9));
+                    item.setCategoryName(resultSet.getString(10));
                     break; //Desired item found
                 }
             }
         } catch (SQLException ex) {
             throw new SQLException(ex.getMessage());
         }
-        return savedItem;
+        return item;
     }
 }

@@ -106,7 +106,6 @@ public class ItemSaleDalController extends DalController<ItemSale> {
 
     @Override
     public ItemSale select(ItemSale itemSale) throws SQLException {
-        ItemSale savedCategorySale = new ItemSale(itemSale.getName(), 0, null, null, 0);
         try (Connection conn = DriverManager.getConnection(connectionString)) {
             String query = "SELECT * FROM " + tableName;
             PreparedStatement stmt = conn.prepareStatement(query);
@@ -115,16 +114,16 @@ public class ItemSaleDalController extends DalController<ItemSale> {
             {
                 boolean isDesired = resultSet.getString(0).equals(itemSale.getName());
                 if (isDesired) {
-                    savedCategorySale.setDiscount(resultSet.getInt(1));
-                    savedCategorySale.setStartSaleDate(resultSet.getString(2));
-                    savedCategorySale.setEndSaleDate(resultSet.getString(3));
-                    savedCategorySale.setItemID(resultSet.getInt(4));
+                    itemSale.setDiscount(resultSet.getInt(1));
+                    itemSale.setStartSaleDate(resultSet.getString(2));
+                    itemSale.setEndSaleDate(resultSet.getString(3));
+                    itemSale.setItemID(resultSet.getInt(4));
                     break; //Desired item sale found
                 }
             }
         } catch (SQLException ex) {
             throw new SQLException(ex.getMessage());
         }
-        return savedCategorySale;
+        return itemSale;
     }
 }

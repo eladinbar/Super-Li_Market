@@ -106,7 +106,6 @@ public class CategorySaleDalController extends DalController<CategorySale> {
 
     @Override
     public CategorySale select(CategorySale categorySale) throws SQLException {
-        CategorySale savedCategorySale = new CategorySale(categorySale.getName(), 0, null, null, null);
         try (Connection conn = DriverManager.getConnection(connectionString)) {
             String query = "SELECT * FROM " + tableName;
             PreparedStatement stmt = conn.prepareStatement(query);
@@ -115,16 +114,16 @@ public class CategorySaleDalController extends DalController<CategorySale> {
             {
                 boolean isDesired = resultSet.getString(0).equals(categorySale.getName());
                 if (isDesired) {
-                    savedCategorySale.setDiscount(resultSet.getInt(1));
-                    savedCategorySale.setStartSaleDate(resultSet.getString(2));
-                    savedCategorySale.setEndSaleDate(resultSet.getString(3));
-                    savedCategorySale.setCategoryName(resultSet.getString(4));
+                    categorySale.setDiscount(resultSet.getInt(1));
+                    categorySale.setStartSaleDate(resultSet.getString(2));
+                    categorySale.setEndSaleDate(resultSet.getString(3));
+                    categorySale.setCategoryName(resultSet.getString(4));
                     break; //Desired category sale found
                 }
             }
         } catch (SQLException ex) {
             throw new SQLException(ex.getMessage());
         }
-        return savedCategorySale;
+        return categorySale;
     }
 }
