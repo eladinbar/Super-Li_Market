@@ -1,6 +1,7 @@
 package InfrastructurePackage;
 
 import SerciveLayer.SimpleObjects.*;
+import SerciveLayer.objects.Product;
 
 import java.lang.reflect.Field;
 import java.text.SimpleDateFormat;
@@ -18,6 +19,16 @@ public class TextFormatter {
             outPut = outPut + centerString(currentField, 20) + "|";
         }
         return outPut + centerString(itemFields[itemFields.length - 1].getName(), paddingSize);
+    }
+
+    public String formatProductMenuColumns(){
+        Field[] productFields = Product.class.getDeclaredFields();
+        String outPut = "";
+        for (int i = 0; i < productFields.length - 1; i++) {
+            String currentField = productFields[i].getName();
+            outPut = outPut + centerString(currentField, 20) + "|";
+        }
+        return outPut + centerString(productFields[productFields.length - 1].getName(), paddingSize);
     }
 
     public String defectsMenuFormat(){

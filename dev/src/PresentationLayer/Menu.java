@@ -1,7 +1,8 @@
-package PresentationLayer.InventoryP;
+package PresentationLayer;
 
 import InfrastructurePackage.TextFormatter;
 import SerciveLayer.SimpleObjects.*;
+import SerciveLayer.objects.Product;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -106,8 +107,6 @@ public class Menu {
         list.add("Change item shelf location");
         list.add("Change item storage quantity");
         list.add("Change item shelf quantity");
-        list.add("Add supplier");
-        list.add("Remove supplier");
 
         return list;
     }
@@ -231,6 +230,9 @@ public class Menu {
     public void itemHeader() {
         System.out.println(tf.formatItemMenuColumns());
     }
+    public void productHeader(){
+        System.out.println(tf.formatProductMenuColumns());
+    }
 
     public void printEntity(Item item) {
         try {
@@ -245,6 +247,14 @@ public class Menu {
         for (Item i : itemList) {
             printEntity(i);
         }
+    }
+
+    public void printEntity(Product orderProduct){
+
+    }
+
+    public void printEntity(ArrayList<Product> orderProduct){
+
     }
 
     public void printEntity(Category category) {
@@ -277,19 +287,19 @@ public class Menu {
 
     //User Input methods
     public String instructAndReceive(String instruction) {
-        System.out.println(instruction);
+        System.out.print(instruction);
         return scan.nextLine();
     }
-
+    
     public <T> T instructAndReceive(String instruction, Class<T> type) {
-        System.out.println(instruction);
+        System.out.print(instruction);
         String next = scan.nextLine();
         if (type == Integer.class) {
             Integer wantedInt;
             try {
-                while (!Pattern.matches("(^[1-9][0-9]+$)|0", next)) {
+                while (!Pattern.matches("(^[1-9][0-9]*$)|0", next)) {
                     System.out.println("invalid input: " + next);
-                    System.out.println(instruction);
+                    System.out.print(instruction);
                     next = scan.nextLine();
                 }
                 wantedInt = Integer.parseInt(next);
@@ -305,7 +315,7 @@ public class Menu {
             try {
                 while (!Pattern.matches("^\\d+(\\.\\d+)?", next)) {
                     System.out.println("invalid input: " + next);
-                    System.out.println(instruction);
+                    System.out.print(instruction);
                     next = scan.nextLine();
                 }
                 wantedDouble = Double.parseDouble(next);

@@ -9,6 +9,7 @@ import BusinessLayer.InventoryPackage.SalePackage.CategorySale;
 import BusinessLayer.InventoryPackage.SalePackage.ItemSale;
 import BusinessLayer.InventoryPackage.SalePackage.Sale;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -30,7 +31,7 @@ public class InventoryController {
     //-------------------------------------------------------------------------Item functions
 
     public void addItem(int id, String name, String categoryName, double costPrice, double sellingPrice, int minAmount,
-                     String shelfLocation, String storageLocation, int storageQuantity, int shelfQuantity, int manufacturerId, List<Integer> suppliersIds) {
+                     String shelfLocation, String storageLocation, int storageQuantity, int shelfQuantity, int manufacturerId, List<String> suppliersIds) {
         //If categoryName is empty or null, add item with the base category
         if (categoryName == null || categoryName.trim().equals("")) {
             Item newItem = new Item(id, name, costPrice, sellingPrice, minAmount, manufacturerId, suppliersIds,
@@ -186,12 +187,12 @@ public class InventoryController {
         item.setStorageQuantity(newStorageQuantity);
     }
 
-    public void addItemSupplier(int itemId, int supplierId) {
+    public void addItemSupplier(int itemId, String supplierId) {
         Item item = getItem(itemId);
         item.addSupplier(supplierId);
     }
 
-    public void removeItemSupplier(int itemId, int supplierId) {
+    public void removeItemSupplier(int itemId, String supplierId) {
         Item item = getItem(itemId);
         item.removeSupplier(supplierId);
     }
@@ -313,7 +314,7 @@ public class InventoryController {
 
     //-------------------------------------------------------------------------Sale functions
 
-    public void addItemSale(String saleName, int itemId, double saleDiscount, Calendar startDate, Calendar endDate) {
+    public void addItemSale(String saleName, int itemId, double saleDiscount, LocalDate startDate, LocalDate endDate) {
         Item item = getItem(itemId); //Makes sure an item with 'itemId' exists in the system, throws an exception if not
         try {
             getSale(saleName);
@@ -327,7 +328,7 @@ public class InventoryController {
         }
     }
 
-    public void addCategorySale(String saleName, String categoryName, double saleDiscount, Calendar startDate, Calendar endDate) {
+    public void addCategorySale(String saleName, String categoryName, double saleDiscount, LocalDate startDate, LocalDate endDate) {
         getCategory(categoryName); //Makes sure a category with 'categoryName' exists in the system, throws an exception if not
         try {
             getSale(saleName);
@@ -359,7 +360,7 @@ public class InventoryController {
         sale.setDiscount(newDiscount);
     }
 
-    public void modifySaleDates(String saleName, Calendar startDate, Calendar endDate) {
+    public void modifySaleDates(String saleName, LocalDate startDate, LocalDate endDate) {
         Sale sale = getSale(saleName);
         sale.setSaleDates(startDate, endDate);
     }
@@ -367,7 +368,7 @@ public class InventoryController {
 
     //-------------------------------------------------------------------------Discount functions
 
-    public void addItemDiscount(int supplierId, double discount, Calendar discountDate, int itemCount, int itemId) {
+    public void addItemDiscount(String supplierId, double discount, LocalDate discountDate, int itemCount, int itemId) {
         getItem(itemId); //Makes sure an item with 'itemId' exists in the system, throws an exception if not
         try {
             getDiscount(supplierId, discountDate);
@@ -381,7 +382,7 @@ public class InventoryController {
         }
     }
 
-    public void addCategoryDiscount(int supplierId, double discount, Calendar discountDate, int itemCount, String categoryName) {
+    public void addCategoryDiscount(String supplierId, double discount, LocalDate discountDate, int itemCount, String categoryName) {
         getCategory(categoryName); //Makes sure a category with 'categoryName' exists in the system, throws an exception if not
         try {
             getDiscount(supplierId, discountDate);
@@ -395,10 +396,10 @@ public class InventoryController {
         }
     }
 
-    public List<Discount> getDiscount(int supplierId, Calendar discountDate) {
+    public List<Discount> getDiscount(String supplierId, LocalDate discountDate) {
         List<Discount> discountList = new ArrayList<>();
         for (Discount discount : discounts) {
-            if (discount.getSupplierID() == supplierId & discount.getDate().compareTo(discountDate) == 0)
+            if (discount.getSupplierID().equals(supplierId) & discount.getDate().compareTo(discountDate) == 0)
                 discountList.add(discount);
         }
 
@@ -410,7 +411,7 @@ public class InventoryController {
 
     //-------------------------------------------------------------------------Defect functions
 
-    public void recordDefect(int itemId, Calendar entryDate, int defectQuantity, String defectLocation) {
+    public void recordDefect(int itemId, LocalDate entryDate, int defectQuantity, String defectLocation) {
         Item item = getItem(itemId);
         try {
             getDefectEntry(itemId, entryDate);
@@ -424,7 +425,7 @@ public class InventoryController {
         }
     }
 
-    public DefectEntry getDefectEntry(int itemId, Calendar entryDate) {
+    public DefectEntry getDefectEntry(int itemId, LocalDate entryDate) {
         DefectEntry defectEntry = defectsLogger.getDefectEntry(itemId, entryDate);
         if (defectEntry == null)
             throw new IllegalArgumentException("No defect entry with ID: " + itemId + " and date recorded: " + entryDate + " were found in the system");
@@ -466,10 +467,10 @@ public class InventoryController {
         return shortageReportList;
     }
 
-    public List<DefectEntry> defectsReport(Calendar fromDate, Calendar toDate) {
+    public List<DefectEntry> defectsReport(LocalDate fromDate, LocalDate toDate) {
         List<DefectEntry> defectEntryList = new ArrayList<>();
         for (DefectEntry defectEntry : defectsLogger.getDefectEntries()) {
-            Calendar entryDate = defectEntry.getEntryDate();
+            LocalDate entryDate = defectEntry.getEntryDate();
             if(entryDate.compareTo(fromDate) >= 0 & entryDate.compareTo(toDate) <= 0)
                 defectEntryList.add(defectEntry);
         }

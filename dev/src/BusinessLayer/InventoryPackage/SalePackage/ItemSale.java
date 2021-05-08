@@ -1,9 +1,11 @@
 package BusinessLayer.InventoryPackage.SalePackage;
 
+import InfrastructurePackage.Pair;
 import BusinessLayer.InventoryPackage.Item;
 
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.Calendar;
 
 public class ItemSale extends Sale {

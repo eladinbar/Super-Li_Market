@@ -2,6 +2,7 @@ package BusinessLayer.InventoryPackage.SalePackage;
 
 import BusinessLayer.InventoryPackage.Category;
 
+import java.time.LocalDate;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;

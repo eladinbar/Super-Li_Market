@@ -29,6 +29,8 @@ public class supplierCard extends PersonCard {
         this.contactMembers = sc.getContactMembers();
     }
 
+
+
     @Override
     public String toString() {
         return "\nsupplier details:" +

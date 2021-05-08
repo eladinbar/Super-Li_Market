@@ -1,14 +1,16 @@
 package BusinessLayer.InventoryPackage.DiscountPackage;
 
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.Calendar;
 
 public abstract class Discount {
-    protected int supplierID;
+    protected String supplierID;
     protected double discount;
-    protected Calendar date;
+    protected LocalDate date;
     protected int itemCount;
 
+    public String getSupplierID() {
     public Discount(int supplierID, double discount, Calendar date, int itemCount) {
         this.supplierID = supplierID;
         this.discount = discount;
@@ -33,7 +35,7 @@ public abstract class Discount {
         this.discount = discount;
     }
 
-    public Calendar getDate() {
+    public LocalDate getDate() {
         return date;
     }
 

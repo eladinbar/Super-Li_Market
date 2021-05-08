@@ -2,15 +2,16 @@ package SerciveLayer.SimpleObjects;
 
 import InfrastructurePackage.Pair;
 
+import java.time.LocalDate;
 import java.util.Calendar;
 
 public class Sale<T extends SimpleEntity> extends SimpleEntity {
     private String name;
     private double discount;
-    private Pair<Calendar, Calendar> saleDates;
+    private Pair<LocalDate, LocalDate> saleDates;
     private T appliesOn;
 
-    public Sale(String name, double discount, Pair<Calendar, Calendar> saleDates, T appliesOn) {
+    public Sale(String name, double discount, Pair<LocalDate, LocalDate> saleDates, T appliesOn) {
         this.name = name;
         this.discount = discount;
         this.saleDates = saleDates;
@@ -25,7 +26,7 @@ public class Sale<T extends SimpleEntity> extends SimpleEntity {
         return discount;
     }
 
-    public Pair<Calendar, Calendar> getSaleDates() {
+    public Pair<LocalDate, LocalDate> getSaleDates() {
         return saleDates;
     }
 
