@@ -20,8 +20,8 @@ public class SupplierContactMembersDalController extends DalController<SupplierC
     }
 
     @Override
-    public void createTable() throws SQLException {
-
+    public boolean createTable() throws SQLException {
+        return true;
     }
 
     @Override
@@ -35,7 +35,12 @@ public class SupplierContactMembersDalController extends DalController<SupplierC
     }
 
     @Override
-    public SupplierContactMembers convertReaderToObject() {
+    public boolean update(SupplierContactMembers dalObject) {
+        return false;
+    }
+
+    @Override
+    public SupplierContactMembers select(SupplierContactMembers dalObject) {
         return null;
     }
 }

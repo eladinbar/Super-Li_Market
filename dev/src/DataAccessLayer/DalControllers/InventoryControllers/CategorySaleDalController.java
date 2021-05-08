@@ -31,7 +31,7 @@ public class CategorySaleDalController extends DalController<CategorySale> {
     }
 
     @Override
-    public void createTable() throws SQLException {
+    public boolean createTable() throws SQLException {
         System.out.println("Initiating create '" + CATEGORY_SALE_TABLE_NAME + "' table.");
         try (Connection conn = DriverManager.getConnection(connectionString)) {
             String command = "CREATE TABLE IF NOT EXISTS " + CATEGORY_SALE_TABLE_NAME + " (" +
@@ -54,6 +54,7 @@ public class CategorySaleDalController extends DalController<CategorySale> {
         } catch (SQLException ex) {
             throw new SQLException(ex.getMessage());
         }
+        return true;
     }
 
     @Override
@@ -67,7 +68,12 @@ public class CategorySaleDalController extends DalController<CategorySale> {
     }
 
     @Override
-    public CategorySale convertReaderToObject() {
+    public boolean update(CategorySale dalObject) {
+        return false;
+    }
+
+    @Override
+    public CategorySale select(CategorySale dalObject) {
         return null;
     }
 }

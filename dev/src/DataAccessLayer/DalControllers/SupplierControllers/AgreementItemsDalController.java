@@ -1,7 +1,6 @@
 package DataAccessLayer.DalControllers.SupplierControllers;
 
 import DataAccessLayer.DalControllers.DalController;
-import DataAccessLayer.DalControllers.InventoryControllers.CategoryDalController;
 import DataAccessLayer.DalObjects.SupplierObjects.AgreementItems;
 
 import java.sql.SQLException;
@@ -26,8 +25,8 @@ public class AgreementItemsDalController extends DalController<AgreementItems> {
     }
 
     @Override
-    public void createTable() throws SQLException {
-
+    public boolean createTable() throws SQLException {
+        return true;
     }
 
     @Override
@@ -41,7 +40,12 @@ public class AgreementItemsDalController extends DalController<AgreementItems> {
     }
 
     @Override
-    public AgreementItems convertReaderToObject() {
+    public boolean update(AgreementItems dalObject) {
+        return false;
+    }
+
+    @Override
+    public AgreementItems select(AgreementItems dalObject) {
         return null;
     }
 }

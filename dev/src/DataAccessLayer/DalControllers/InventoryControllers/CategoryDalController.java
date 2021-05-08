@@ -28,7 +28,7 @@ public class CategoryDalController extends DalController<Category> {
     }
 
     @Override
-    public void createTable() throws SQLException {
+    public boolean createTable() throws SQLException {
         System.out.println("Initiating create '" + CATEGORY_TABLE_NAME + "' table.");
         try (Connection conn = DriverManager.getConnection(connectionString)) {
             String command = "CREATE TABLE IF NOT EXISTS " + CATEGORY_TABLE_NAME + " (" +
@@ -43,11 +43,23 @@ public class CategoryDalController extends DalController<Category> {
         } catch (SQLException ex) {
             throw new SQLException(ex.getMessage());
         }
+        return true;
     }
 
     @Override
-    public boolean insert(Category dalObject) {
-        return false;
+    public boolean insert(Category category) throws SQLException {
+        System.out.println("Initiating category insert");
+        try (Connection conn = DriverManager.getConnection("jdbc:sqlite:/D:\\Year2\\ניתוצ\\עבודה 2\\database.db")) {
+            String query = "INSERT INTO " + tableName + " VALUES (?,?,?,?,?,?)";
+            PreparedStatement st = conn.prepareStatement(query);
+            st.setString(1, category.getName());
+            st.setString(2, category.getParentName());
+            System.out.println("Executing category insert");
+            st.executeUpdate();
+        } catch (SQLException ex) {
+            throw new SQLException(ex.getMessage());
+        }
+        return true;
     }
 
     @Override
@@ -56,7 +68,12 @@ public class CategoryDalController extends DalController<Category> {
     }
 
     @Override
-    public Category convertReaderToObject() {
+    public boolean update(Category dalObject) {
+        return false;
+    }
+
+    @Override
+    public Category select(Category dalObject) {
         return null;
     }
 }

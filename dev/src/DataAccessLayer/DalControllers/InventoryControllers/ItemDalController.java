@@ -31,7 +31,7 @@ public class ItemDalController extends DalController<Item> {
     }
 
     @Override
-    public void createTable() throws SQLException {
+    public boolean createTable() throws SQLException {
         System.out.println("Initiating create '" + ITEM_TABLE_NAME + "' table.");
         try (Connection conn = DriverManager.getConnection(connectionString)) {
             String command = "CREATE TABLE IF NOT EXISTS " + ITEM_TABLE_NAME + " (" +
@@ -58,6 +58,7 @@ public class ItemDalController extends DalController<Item> {
         } catch (SQLException ex) {
             throw new SQLException(ex.getMessage());
         }
+        return true;
     }
 
     @Override
@@ -71,7 +72,12 @@ public class ItemDalController extends DalController<Item> {
     }
 
     @Override
-    public Item convertReaderToObject() {
+    public boolean update(Item dalObject) {
+        return false;
+    }
+
+    @Override
+    public Item select(Item dalObject) {
         return null;
     }
 }

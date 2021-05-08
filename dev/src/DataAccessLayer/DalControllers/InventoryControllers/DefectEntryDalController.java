@@ -30,7 +30,7 @@ public class DefectEntryDalController extends DalController<DefectEntry> {
     }
 
     @Override
-    public void createTable() throws SQLException {
+    public boolean createTable() throws SQLException {
         System.out.println("Initiating create '" + DEFECT_ENTRY_TABLE_NAME + "' table.");
         try (Connection conn = DriverManager.getConnection(connectionString)) {
             String command = "CREATE TABLE IF NOT EXISTS " + DEFECT_ENTRY_TABLE_NAME + " (" +
@@ -50,6 +50,7 @@ public class DefectEntryDalController extends DalController<DefectEntry> {
         } catch (SQLException ex) {
             throw new SQLException(ex.getMessage());
         }
+        return true;
     }
 
     @Override
@@ -63,7 +64,12 @@ public class DefectEntryDalController extends DalController<DefectEntry> {
     }
 
     @Override
-    public DefectEntry convertReaderToObject() {
+    public boolean update(DefectEntry dalObject) {
+        return false;
+    }
+
+    @Override
+    public DefectEntry select(DefectEntry dalObject) {
         return null;
     }
 }

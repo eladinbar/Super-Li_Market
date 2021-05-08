@@ -1,7 +1,6 @@
 package DataAccessLayer.DalControllers.SupplierControllers;
 
 import DataAccessLayer.DalControllers.DalController;
-import DataAccessLayer.DalControllers.InventoryControllers.CategoryDalController;
 import DataAccessLayer.DalObjects.SupplierObjects.PersonCard;
 
 import java.sql.SQLException;
@@ -26,8 +25,8 @@ public class PersonCardDalController extends DalController<PersonCard> {
     }
 
     @Override
-    public void createTable() throws SQLException {
-
+    public boolean createTable() throws SQLException {
+        return true;
     }
 
     @Override
@@ -41,7 +40,12 @@ public class PersonCardDalController extends DalController<PersonCard> {
     }
 
     @Override
-    public PersonCard convertReaderToObject() {
+    public boolean update(PersonCard dalObject) {
+        return false;
+    }
+
+    @Override
+    public PersonCard select(PersonCard dalObject) {
         return null;
     }
 }
