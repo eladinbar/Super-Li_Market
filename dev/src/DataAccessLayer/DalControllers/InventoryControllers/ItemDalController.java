@@ -32,9 +32,9 @@ public class ItemDalController extends DalController<Item> {
 
     @Override
     public boolean createTable() throws SQLException {
-        System.out.println("Initiating create '" + ITEM_TABLE_NAME + "' table.");
+        System.out.println("Initiating create '" + tableName + "' table.");
         try (Connection conn = DriverManager.getConnection(connectionString)) {
-            String command = "CREATE TABLE IF NOT EXISTS " + ITEM_TABLE_NAME + " (" +
+            String command = "CREATE TABLE IF NOT EXISTS " + tableName + " (" +
                     Item.itemIdColumnName + " INTEGER NOT NULL," +
                     Item.costPriceColumnName + " REAL DEFAULT 0 NOT NULL," +
                     Item.sellingPriceColumnName + " REAL DEFAULT 0 NOT NULL," +
@@ -52,9 +52,9 @@ public class ItemDalController extends DalController<Item> {
                     Item.minAmountColumnName + ">=0 AND " + Item.shelfQuantityColumnName + ">=0 AND " + Item.storageQuantityColumnName + ">=0)" +
                     ");";
             PreparedStatement stmt = conn.prepareStatement(command);
-            System.out.println("Creating '" + ITEM_TABLE_NAME + "' table.");
+            System.out.println("Creating '" + tableName + "' table.");
             stmt.executeUpdate();
-            System.out.println("Table '" + ITEM_TABLE_NAME + "' created.");
+            System.out.println("Table '" + tableName + "' created.");
         } catch (SQLException ex) {
             throw new SQLException(ex.getMessage());
         }
@@ -62,8 +62,27 @@ public class ItemDalController extends DalController<Item> {
     }
 
     @Override
-    public boolean insert(Item dalObject) {
-        return false;
+    public boolean insert(Item item) throws SQLException {
+        System.out.println("Initiating " + tableName + " insert.");
+        try (Connection conn = DriverManager.getConnection(connectionString)) {
+            String query = "INSERT INTO " + tableName + " VALUES (?,?, ?, ?, ?, ?,?, ?, ?, ?)";
+            PreparedStatement st = conn.prepareStatement(query);
+            st.setInt(1, item.getItemID());
+            st.setDouble(2, item.getCostPrice());
+            st.setDouble(3, item.getSellingPrice());
+            st.setInt(4, item.getManufacturerID());
+            st.setInt(5, item.getMinAmount());
+            st.setInt(6, item.getShelfQuantity());
+            st.setInt(7, item.getStorageQuantity());
+            st.setString(8, item.getShelfLocation());
+            st.setString(9, item.getStorageLocation());
+            st.setString(10, item.getCategoryName());
+            System.out.println("Executing " + tableName + " insert.");
+            st.executeUpdate();
+        } catch (SQLException ex) {
+            throw new SQLException(ex.getMessage());
+        }
+        return true;
     }
 
     @Override

@@ -32,9 +32,9 @@ public class CategorySaleDalController extends DalController<CategorySale> {
 
     @Override
     public boolean createTable() throws SQLException {
-        System.out.println("Initiating create '" + CATEGORY_SALE_TABLE_NAME + "' table.");
+        System.out.println("Initiating create '" + tableName + "' table.");
         try (Connection conn = DriverManager.getConnection(connectionString)) {
-            String command = "CREATE TABLE IF NOT EXISTS " + CATEGORY_SALE_TABLE_NAME + " (" +
+            String command = "CREATE TABLE IF NOT EXISTS " + tableName + " (" +
                     CategorySale.categorySaleNameColumnName + " TEXT NOT NULL," +
                     CategorySale.discountColumnName + " REAL DEFAULT 0 NOT NULL," +
                     CategorySale.startSaleDateColumnName + " TEXT NOT NULL," +
@@ -48,9 +48,9 @@ public class CategorySaleDalController extends DalController<CategorySale> {
                     + CategorySale.endSaleDateColumnName + " IS NULL)" +
                     ");";
             PreparedStatement stmt = conn.prepareStatement(command);
-            System.out.println("Creating '" + CATEGORY_SALE_TABLE_NAME + "' table.");
+            System.out.println("Creating '" + tableName + "' table.");
             stmt.executeUpdate();
-            System.out.println("Table '" + CATEGORY_SALE_TABLE_NAME + "' created.");
+            System.out.println("Table '" + tableName + "' created.");
         } catch (SQLException ex) {
             throw new SQLException(ex.getMessage());
         }
@@ -58,8 +58,22 @@ public class CategorySaleDalController extends DalController<CategorySale> {
     }
 
     @Override
-    public boolean insert(CategorySale dalObject) {
-        return false;
+    public boolean insert(CategorySale categorySale) throws SQLException {
+        System.out.println("Initiating " + tableName + " insert.");
+        try (Connection conn = DriverManager.getConnection(connectionString)) {
+            String query = "INSERT INTO " + tableName + " VALUES (?,?, ?, ?, ?)";
+            PreparedStatement st = conn.prepareStatement(query);
+            st.setString(1, categorySale.getName());
+            st.setDouble(2, categorySale.getDiscount());
+            st.setString(3, categorySale.getStartSaleDate());
+            st.setString(4, categorySale.getEndSaleDate());
+            st.setString(5, categorySale.getCategoryName());
+            System.out.println("Executing " + tableName + " insert.");
+            st.executeUpdate();
+        } catch (SQLException ex) {
+            throw new SQLException(ex.getMessage());
+        }
+        return true;
     }
 
     @Override

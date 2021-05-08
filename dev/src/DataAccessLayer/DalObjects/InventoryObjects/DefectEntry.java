@@ -4,7 +4,6 @@ import DataAccessLayer.DalControllers.InventoryControllers.DefectEntryDalControl
 import DataAccessLayer.DalObjects.DalObject;
 
 import java.sql.SQLException;
-import java.util.Calendar;
 
 public class DefectEntry extends DalObject<DefectEntry> {
     public static final String entryDateColumnName = "Entry_Date"; //Primary Key
@@ -12,12 +11,12 @@ public class DefectEntry extends DalObject<DefectEntry> {
     public static final String quantityColumnName = "Quantity";
     public static final String itemIdColumnName = "Item_ID"; //Foreign Key
 
-    private Calendar entryDate;
+    private String entryDate;
     private String location;
     private int quantity;
     private int itemID;
 
-    protected DefectEntry(Calendar entryDate, String location, int quantity, int itemID) throws SQLException {
+    protected DefectEntry(String entryDate, String location, int quantity, int itemID) throws SQLException {
         super(DefectEntryDalController.getInstance());
         this.entryDate = entryDate;
         this.location = location;
@@ -25,11 +24,11 @@ public class DefectEntry extends DalObject<DefectEntry> {
         this.itemID = itemID;
     }
 
-    public Calendar getEntryDate() {
+    public String getEntryDate() {
         return entryDate;
     }
 
-    public void setEntryDate(Calendar entryDate) {
+    public void setEntryDate(String entryDate) {
         this.entryDate = entryDate;
     }
 

@@ -34,9 +34,9 @@ public class CategoryDiscountDalController extends DalController<CategoryDiscoun
 
     @Override
     public boolean createTable() throws SQLException {
-        System.out.println("Initiating create '" + CATEGORY_DISCOUNT_TABLE_NAME + "' table.");
+        System.out.println("Initiating create '" + tableName + "' table.");
         try (Connection conn = DriverManager.getConnection(connectionString)) {
-            String command = "CREATE TABLE IF NOT EXISTS " + CATEGORY_DISCOUNT_TABLE_NAME + " (" +
+            String command = "CREATE TABLE IF NOT EXISTS " + tableName + " (" +
                     CategoryDiscount.discountDateColumnName + " TEXT NOT NULL," +
                     CategoryDiscount.discountColumnName + " REAL DEFAULT 0 NOT NULL," +
                     CategoryDiscount.itemCountColumnName + " INTEGER DEFAULT 0 NOT NULL," +
@@ -50,9 +50,9 @@ public class CategoryDiscountDalController extends DalController<CategoryDiscoun
                     "CONSTRAINT Natural_Number CHECK (" + CategoryDiscount.discountColumnName + ">= 0 AND " + CategoryDiscount.itemCountColumnName + ">=0)" +
                     ");";
             PreparedStatement stmt = conn.prepareStatement(command);
-            System.out.println("Creating '" + CATEGORY_DISCOUNT_TABLE_NAME + "' table.");
+            System.out.println("Creating '" + tableName + "' table.");
             stmt.executeUpdate();
-            System.out.println("Table '" + CATEGORY_DISCOUNT_TABLE_NAME + "' created.");
+            System.out.println("Table '" + tableName + "' created.");
         } catch (SQLException ex) {
             throw new SQLException(ex.getMessage());
         }
@@ -60,8 +60,22 @@ public class CategoryDiscountDalController extends DalController<CategoryDiscoun
     }
 
     @Override
-    public boolean insert(CategoryDiscount dalObject) {
-        return false;
+    public boolean insert(CategoryDiscount categoryDiscount) throws SQLException {
+        System.out.println("Initiating " + tableName + " insert.");
+        try (Connection conn = DriverManager.getConnection(connectionString)) {
+            String query = "INSERT INTO " + tableName + " VALUES (?,?, ?, ?, ?)";
+            PreparedStatement st = conn.prepareStatement(query);
+            st.setString(1, categoryDiscount.getDiscountDate());
+            st.setDouble(2, categoryDiscount.getDiscount());
+            st.setInt(3, categoryDiscount.getItemCount());
+            st.setInt(4, categoryDiscount.getSupplierID());
+            st.setString(5, categoryDiscount.getCategoryName());
+            System.out.println("Executing " + tableName + " insert.");
+            st.executeUpdate();
+        } catch (SQLException ex) {
+            throw new SQLException(ex.getMessage());
+        }
+        return true;
     }
 
     @Override

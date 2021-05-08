@@ -29,17 +29,17 @@ public class CategoryDalController extends DalController<Category> {
 
     @Override
     public boolean createTable() throws SQLException {
-        System.out.println("Initiating create '" + CATEGORY_TABLE_NAME + "' table.");
+        System.out.println("Initiating create '" + tableName + "' table.");
         try (Connection conn = DriverManager.getConnection(connectionString)) {
-            String command = "CREATE TABLE IF NOT EXISTS " + CATEGORY_TABLE_NAME + " (" +
+            String command = "CREATE TABLE IF NOT EXISTS " + tableName + " (" +
                     Category.categoryNameColumnName + " TEXT NOT NULL," +
                     Category.parentNameColumnName + " TEXT," +
                     "PRIMARY KEY (" + Category.categoryNameColumnName + ")" +
                     ");";
             PreparedStatement stmt = conn.prepareStatement(command);
-            System.out.println("Creating '" + CATEGORY_TABLE_NAME + "' table.");
+            System.out.println("Creating '" + tableName + "' table.");
             stmt.executeUpdate();
-            System.out.println("Table '" + CATEGORY_TABLE_NAME + "' created.");
+            System.out.println("Table '" + tableName + "' created.");
         } catch (SQLException ex) {
             throw new SQLException(ex.getMessage());
         }
@@ -48,13 +48,13 @@ public class CategoryDalController extends DalController<Category> {
 
     @Override
     public boolean insert(Category category) throws SQLException {
-        System.out.println("Initiating category insert");
-        try (Connection conn = DriverManager.getConnection("jdbc:sqlite:/D:\\Year2\\ניתוצ\\עבודה 2\\database.db")) {
-            String query = "INSERT INTO " + tableName + " VALUES (?,?,?,?,?,?)";
+        System.out.println("Initiating " + CATEGORY_TABLE_NAME + " insert.");
+        try (Connection conn = DriverManager.getConnection(connectionString)) {
+            String query = "INSERT INTO " + tableName + " VALUES (?,?)";
             PreparedStatement st = conn.prepareStatement(query);
             st.setString(1, category.getName());
             st.setString(2, category.getParentName());
-            System.out.println("Executing category insert");
+            System.out.println("Executing " + CATEGORY_TABLE_NAME + " insert.");
             st.executeUpdate();
         } catch (SQLException ex) {
             throw new SQLException(ex.getMessage());

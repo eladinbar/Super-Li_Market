@@ -31,9 +31,9 @@ public class DefectEntryDalController extends DalController<DefectEntry> {
 
     @Override
     public boolean createTable() throws SQLException {
-        System.out.println("Initiating create '" + DEFECT_ENTRY_TABLE_NAME + "' table.");
+        System.out.println("Initiating create '" + tableName + "' table.");
         try (Connection conn = DriverManager.getConnection(connectionString)) {
-            String command = "CREATE TABLE IF NOT EXISTS " + DEFECT_ENTRY_TABLE_NAME + " (" +
+            String command = "CREATE TABLE IF NOT EXISTS " + tableName + " (" +
                     DefectEntry.entryDateColumnName + " TEXT NOT NULL," +
                     DefectEntry.locationColumnName + " TEXT NOT NULL," +
                     DefectEntry.quantityColumnName + " INTEGER DEFAULT 0 NOT NULL," +
@@ -44,9 +44,9 @@ public class DefectEntryDalController extends DalController<DefectEntry> {
                     "CONSTRAINT Natural_Number CHECK (" + DefectEntry.quantityColumnName + ">=0)" +
                     ");";
             PreparedStatement stmt = conn.prepareStatement(command);
-            System.out.println("Creating '" + DEFECT_ENTRY_TABLE_NAME + "' table.");
+            System.out.println("Creating '" + tableName + "' table.");
             stmt.executeUpdate();
-            System.out.println("Table '" + DEFECT_ENTRY_TABLE_NAME + "' created.");
+            System.out.println("Table '" + tableName + "' created.");
         } catch (SQLException ex) {
             throw new SQLException(ex.getMessage());
         }
@@ -54,8 +54,21 @@ public class DefectEntryDalController extends DalController<DefectEntry> {
     }
 
     @Override
-    public boolean insert(DefectEntry dalObject) {
-        return false;
+    public boolean insert(DefectEntry defectEntry) throws SQLException {
+        System.out.println("Initiating " + tableName + " insert.");
+        try (Connection conn = DriverManager.getConnection(connectionString)) {
+            String query = "INSERT INTO " + tableName + " VALUES (?,?, ?, ?)";
+            PreparedStatement st = conn.prepareStatement(query);
+            st.setString(1, defectEntry.getEntryDate());
+            st.setString(2, defectEntry.getLocation());
+            st.setInt(3, defectEntry.getQuantity());
+            st.setInt(4, defectEntry.getItemID());
+            System.out.println("Executing " + tableName + " insert.");
+            st.executeUpdate();
+        } catch (SQLException ex) {
+            throw new SQLException(ex.getMessage());
+        }
+        return true;
     }
 
     @Override

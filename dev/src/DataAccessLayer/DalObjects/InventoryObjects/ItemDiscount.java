@@ -4,7 +4,6 @@ import DataAccessLayer.DalControllers.InventoryControllers.ItemDiscountDalContro
 import DataAccessLayer.DalObjects.DalObject;
 
 import java.sql.SQLException;
-import java.util.Calendar;
 
 public class ItemDiscount extends DalObject<ItemDiscount> {
     public static final String discountDateColumnName = "Discount_Date"; //Primary Key
@@ -13,13 +12,13 @@ public class ItemDiscount extends DalObject<ItemDiscount> {
     public static final String supplierIdColumnName = "Supplier_ID"; //Foreign Key
     public static final String itemIdColumnName = "Item_ID"; //Foreign Key
 
-    private Calendar discountDate;
+    private String discountDate;
     private double discount;
     private int itemCount;
     private int supplierID;
     private int itemID;
 
-    protected ItemDiscount(Calendar discountDate, double discount, int itemCount, int supplierID, int itemID) throws SQLException {
+    protected ItemDiscount(String discountDate, double discount, int itemCount, int supplierID, int itemID) throws SQLException {
         super(ItemDiscountDalController.getInstance());
         this.discountDate = discountDate;
         this.discount = discount;
@@ -28,11 +27,11 @@ public class ItemDiscount extends DalObject<ItemDiscount> {
         this.itemID = itemID;
     }
 
-    public Calendar getDiscountDate() {
+    public String getDiscountDate() {
         return discountDate;
     }
 
-    public void setDiscountDate(Calendar discountDate) {
+    public void setDiscountDate(String discountDate) {
         this.discountDate = discountDate;
     }
 

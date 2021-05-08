@@ -2,10 +2,8 @@ package DataAccessLayer.DalObjects.InventoryObjects;
 
 import DataAccessLayer.DalControllers.InventoryControllers.ItemSaleDalController;
 import DataAccessLayer.DalObjects.DalObject;
-import InfrastructurePackage.Pair;
 
 import java.sql.SQLException;
-import java.util.Calendar;
 
 public class ItemSale extends DalObject<ItemSale> {
     public static final String itemSaleNameColumnName = "Name"; //Primary Key
@@ -16,14 +14,16 @@ public class ItemSale extends DalObject<ItemSale> {
 
     private String name;
     private double discount;
-    private Pair<Calendar, Calendar> saleDates;
+    private String startSaleDate;
+    private String endSaleDate;
     private int itemID;
 
-    protected ItemSale(String name, double discount, Pair<Calendar, Calendar> saleDates, int itemID) throws SQLException {
+    protected ItemSale(String name, double discount, String startSaleDate, String endSaleDate, int itemID) throws SQLException {
         super(ItemSaleDalController.getInstance());
         this.name = name;
         this.discount = discount;
-        this.saleDates = saleDates;
+        this.startSaleDate = startSaleDate;
+        this.endSaleDate = endSaleDate;
         this.itemID = itemID;
     }
 
@@ -43,12 +43,20 @@ public class ItemSale extends DalObject<ItemSale> {
         this.discount = discount;
     }
 
-    public Pair<Calendar, Calendar> getSaleDates() {
-        return saleDates;
+    public String getStartSaleDate() {
+        return startSaleDate;
     }
 
-    public void setSaleDates(Pair<Calendar, Calendar> saleDates) {
-        this.saleDates = saleDates;
+    public void setStartSaleDate(String startSaleDate) {
+        this.startSaleDate = startSaleDate;
+    }
+
+    public String getEndSaleDate() {
+        return endSaleDate;
+    }
+
+    public void setEndSaleDate(String endSaleDate) {
+        this.endSaleDate = endSaleDate;
     }
 
     public int getItemID() {

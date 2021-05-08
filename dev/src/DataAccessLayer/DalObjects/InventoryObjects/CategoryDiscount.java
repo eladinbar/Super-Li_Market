@@ -13,13 +13,13 @@ public class CategoryDiscount extends DalObject<CategoryDiscount> {
     public static final String supplierIdColumnName = "Supplier_ID"; //Foreign Key
     public static final String categoryNameColumnName = "Category_Name"; //Foreign Key
 
-    private Calendar discountDate;
+    private String discountDate;
     private double discount;
     private int itemCount;
     private int supplierID;
     private String categoryName;
 
-    protected CategoryDiscount(Calendar discountDate, double discount, int itemCount, int supplierID, String categoryName) throws SQLException {
+    protected CategoryDiscount(String discountDate, double discount, int itemCount, int supplierID, String categoryName) throws SQLException {
         super(CategoryDiscountDalController.getInstance());
         this.discountDate = discountDate;
         this.discount = discount;
@@ -28,11 +28,11 @@ public class CategoryDiscount extends DalObject<CategoryDiscount> {
         this.categoryName = categoryName;
     }
 
-    public Calendar getDiscountDate() {
+    public String getDiscountDate() {
         return discountDate;
     }
 
-    public void setDiscountDate(Calendar discountDate) {
+    public void setDiscountDate(String discountDate) {
         this.discountDate = discountDate;
     }
 

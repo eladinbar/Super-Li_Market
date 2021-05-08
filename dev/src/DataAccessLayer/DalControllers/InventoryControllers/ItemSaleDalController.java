@@ -32,9 +32,9 @@ public class ItemSaleDalController extends DalController<ItemSale> {
 
     @Override
     public boolean createTable() throws SQLException {
-        System.out.println("Initiating create '" + ITEM_SALE_TABLE_NAME + "' table.");
+        System.out.println("Initiating create '" + tableName + "' table.");
         try (Connection conn = DriverManager.getConnection(connectionString)) {
-            String command = "CREATE TABLE IF NOT EXISTS " + ITEM_SALE_TABLE_NAME + " (" +
+            String command = "CREATE TABLE IF NOT EXISTS " + tableName + " (" +
                     ItemSale.itemSaleNameColumnName + " TEXT NOT NULL," +
                     ItemSale.discountColumnName + " REAL DEFAULT 0 NOT NULL," +
                     ItemSale.startSaleDateColumnName + " TEXT NOT NULL," +
@@ -48,9 +48,9 @@ public class ItemSaleDalController extends DalController<ItemSale> {
                     + ItemSale.endSaleDateColumnName + " IS NULL)" +
                     ");";
             PreparedStatement stmt = conn.prepareStatement(command);
-            System.out.println("Creating '" + ITEM_SALE_TABLE_NAME + "' table.");
+            System.out.println("Creating '" + tableName + "' table.");
             stmt.executeUpdate();
-            System.out.println("Table '" + ITEM_SALE_TABLE_NAME + "' created.");
+            System.out.println("Table '" + tableName + "' created.");
         } catch (SQLException ex) {
             throw new SQLException(ex.getMessage());
         }
@@ -58,8 +58,22 @@ public class ItemSaleDalController extends DalController<ItemSale> {
     }
 
     @Override
-    public boolean insert(ItemSale dalObject) {
-        return false;
+    public boolean insert(ItemSale itemSale) throws SQLException {
+        System.out.println("Initiating " + tableName + " insert.");
+        try (Connection conn = DriverManager.getConnection(connectionString)) {
+            String query = "INSERT INTO " + tableName + " VALUES (?,?, ?, ?, ?)";
+            PreparedStatement st = conn.prepareStatement(query);
+            st.setString(1, itemSale.getName());
+            st.setDouble(2, itemSale.getDiscount());
+            st.setString(3, itemSale.getStartSaleDate());
+            st.setString(4, itemSale.getEndSaleDate());
+            st.setInt(5, itemSale.getItemID());
+            System.out.println("Executing " + tableName + " insert.");
+            st.executeUpdate();
+        } catch (SQLException ex) {
+            throw new SQLException(ex.getMessage());
+        }
+        return true;
     }
 
     @Override
