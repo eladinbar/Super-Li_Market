@@ -1,14 +1,12 @@
 package DataAccessLayer.DalControllers.SupplierControllers;
 
 import DataAccessLayer.DalControllers.DalController;
+import DataAccessLayer.DalObjects.SupplierObjects.AgreementItems;
 import DataAccessLayer.DalObjects.SupplierObjects.PersonCard;
 import DataAccessLayer.DalObjects.SupplierObjects.SupplierCard;
 import DataAccessLayer.DalObjects.SupplierObjects.SupplierContactMembers;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
+import java.sql.*;
 
 public class SupplierContactMembersDalController extends DalController<SupplierContactMembers> {
     private static SupplierContactMembersDalController instance = null;
@@ -31,6 +29,8 @@ public class SupplierContactMembersDalController extends DalController<SupplierC
             String command = "CREATE TABLE IF NOT EXISTS " + tableName + " (" +
                     SupplierContactMembers.supplierIdColumnName + " INTEGER NOT NULL," +
                     SupplierContactMembers.personIdColumnName + " INTEGET NOT NULL," +
+                    "PRIMARY KEY ("+ SupplierContactMembers.supplierIdColumnName+
+                    ", "+ SupplierContactMembers.personIdColumnName+"),"+
                     "FOREIGN KEY (" + SupplierContactMembers.supplierIdColumnName + ")" + "REFERENCES " + SupplierCard.supplierIdColumnName + " (" + SupplierCardDalController.SUPPLIER_CARD_TABLE_NAME +") ON DELETE NO ACTION "+
                     "FOREIGN KEY (" + SupplierContactMembers.personIdColumnName + ")" + "REFERENCES " + PersonCard.idColumnName + " (" + PersonCardDalController.PERSON_CARD_TABLE_NAME +") ON DELETE NO ACTION "+
                     ");";
@@ -62,8 +62,18 @@ public class SupplierContactMembersDalController extends DalController<SupplierC
     }
 
     @Override
-    public boolean delete(SupplierContactMembers dalObject) {
-        return false;
+    public boolean delete(SupplierContactMembers supplierContactMember) throws SQLException {
+        try (Connection conn = DriverManager.getConnection(connectionString)) {
+            String query = "DELETE FROM " + tableName + " WHERE (" + SupplierContactMembers.supplierIdColumnName + "=? AND "+SupplierContactMembers.personIdColumnName+"=?)";
+            PreparedStatement stmt = conn.prepareStatement(query);
+
+            stmt.setInt(1, supplierContactMember.getSupplierId());
+            stmt.setInt(2, supplierContactMember.getPersonId());
+            stmt.executeUpdate();
+        } catch (SQLException ex) {
+            throw new SQLException(ex.getMessage());
+        }
+        return true;
     }
 
     @Override
@@ -72,7 +82,7 @@ public class SupplierContactMembersDalController extends DalController<SupplierC
     }
 
     @Override
-    public SupplierContactMembers select(SupplierContactMembers dalObject) {
-        return null;
+    public SupplierContactMembers select(SupplierContactMembers supplierContactMember) {
+        return supplierContactMember;
     }
 }

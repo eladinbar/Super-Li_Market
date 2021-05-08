@@ -33,4 +33,16 @@ public class QuantityListItems extends DalObject<QuantityListItems> {
     public double getDiscount() {
         return discount;
     }
+
+    public void setProductId(int productId) {
+        this.productId = productId;
+    }
+
+    public void setAmount(int amount) {
+        this.amount = amount;
+    }
+
+    public void setDiscount(double discount) {
+        this.discount = discount;
+    }
 }

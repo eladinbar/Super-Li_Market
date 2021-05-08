@@ -37,4 +37,16 @@ public class Order extends DalObject<Order> {
             return 1;
         return 0;
     }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public void setDate(LocalDate date) {
+        this.date = date;
+    }
+
+    public void setDelivered(boolean delivered) {
+        this.delivered = delivered;
+    }
 }

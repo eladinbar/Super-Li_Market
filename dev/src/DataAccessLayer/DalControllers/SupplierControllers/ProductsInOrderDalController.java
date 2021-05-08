@@ -4,13 +4,11 @@ import DataAccessLayer.DalControllers.DalController;
 import DataAccessLayer.DalControllers.InventoryControllers.ItemDalController;
 import DataAccessLayer.DalObjects.InventoryObjects.Item;
 import DataAccessLayer.DalObjects.SupplierObjects.AgreementItems;
+import DataAccessLayer.DalObjects.SupplierObjects.Order;
 import DataAccessLayer.DalObjects.SupplierObjects.PersonCard;
 import DataAccessLayer.DalObjects.SupplierObjects.ProductsInOrder;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
+import java.sql.*;
 
 public class ProductsInOrderDalController extends DalController<ProductsInOrder> {
     private static ProductsInOrderDalController instance = null;
@@ -38,6 +36,7 @@ public class ProductsInOrderDalController extends DalController<ProductsInOrder>
             String command = "CREATE TABLE IF NOT EXISTS " + tableName + " (" +
                     ProductsInOrder.productIdColumnName + " INTEGER NOT NULL," +
                     ProductsInOrder.amountColumnName + " INTEGET NOT NULL," +
+                    "PRIMARY KEY ("+ ProductsInOrder.productIdColumnName + "),"+
                     "FOREIGN KEY (" + ProductsInOrder.productIdColumnName + ")" + "REFERENCES " + Item.itemIdColumnName + " (" + ItemDalController.ITEM_TABLE_NAME +") ON DELETE NO ACTION "+
                     ");";
 
@@ -68,17 +67,51 @@ public class ProductsInOrderDalController extends DalController<ProductsInOrder>
     }
 
     @Override
-    public boolean delete(ProductsInOrder dalObject) {
-        return false;
+    public boolean delete(ProductsInOrder productsInOrder) throws SQLException {
+        try (Connection conn = DriverManager.getConnection(connectionString)) {
+            String query = "DELETE FROM " + tableName + " WHERE (" + ProductsInOrder.productIdColumnName + "=?)";
+            PreparedStatement stmt = conn.prepareStatement(query);
+            stmt.setInt(1, productsInOrder.getProductId());
+            stmt.executeUpdate();
+        } catch (SQLException ex) {
+            throw new SQLException(ex.getMessage());
+        }
+        return true;
     }
 
     @Override
-    public boolean update(ProductsInOrder dalObject) {
-        return false;
+    public boolean update(ProductsInOrder productInOrder) throws SQLException {
+        try (Connection conn = DriverManager.getConnection(connectionString)) {
+            String query = "UPDATE " + tableName + " SET " + ProductsInOrder.amountColumnName +
+                    "=? WHERE(" + ProductsInOrder.productIdColumnName + "=?)";
+            PreparedStatement stmt = conn.prepareStatement(query);
+
+            stmt.setInt(1, productInOrder.getAmount());
+            stmt.setInt(2, productInOrder.getProductId());
+            stmt.executeUpdate();
+        } catch (SQLException ex) {
+            throw new SQLException(ex.getMessage());
+        }
+        return true;
     }
 
     @Override
-    public ProductsInOrder select(ProductsInOrder dalObject) {
-        return null;
+    public ProductsInOrder select(ProductsInOrder productInOrder) throws SQLException {
+        try (Connection conn = DriverManager.getConnection(connectionString)) {
+            String query = "SELECT * FROM " + tableName;
+            PreparedStatement stmt = conn.prepareStatement(query);
+            ResultSet resultSet = stmt.executeQuery(query);
+            while (resultSet.next())
+            {
+                boolean isDesired = resultSet.getString(0).equals(productInOrder.getProductId());
+                if (isDesired) {
+                    productInOrder.setAmount(resultSet.getInt(1));
+                    break; //Desired category discount found
+                }
+            }
+        } catch (SQLException ex) {
+            throw new SQLException(ex.getMessage());
+        }
+        return productInOrder;
     }
 }

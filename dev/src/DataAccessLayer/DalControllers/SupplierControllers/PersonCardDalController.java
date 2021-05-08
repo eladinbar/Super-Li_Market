@@ -1,13 +1,11 @@
 package DataAccessLayer.DalControllers.SupplierControllers;
 
 import DataAccessLayer.DalControllers.DalController;
+import DataAccessLayer.DalObjects.SupplierObjects.AgreementItems;
 import DataAccessLayer.DalObjects.SupplierObjects.Order;
 import DataAccessLayer.DalObjects.SupplierObjects.PersonCard;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
+import java.sql.*;
 
 public class PersonCardDalController extends DalController<PersonCard> {
     private static PersonCardDalController instance = null;
@@ -68,17 +66,60 @@ public class PersonCardDalController extends DalController<PersonCard> {
     }
 
     @Override
-    public boolean delete(PersonCard dalObject) {
-        return false;
+    public boolean delete(PersonCard personCard) throws SQLException {
+        try (Connection conn = DriverManager.getConnection(connectionString)) {
+            String query = "DELETE FROM " + tableName + " WHERE (" + PersonCard.idColumnName+ "=?)";
+            PreparedStatement stmt = conn.prepareStatement(query);
+
+            stmt.setString(1, personCard.getId());
+            stmt.executeUpdate();
+        } catch (SQLException ex) {
+            throw new SQLException(ex.getMessage());
+        }
+        return true;
     }
 
     @Override
-    public boolean update(PersonCard dalObject) {
-        return false;
+    public boolean update(PersonCard personCard) throws SQLException {
+        try (Connection conn = DriverManager.getConnection(connectionString)) {
+            String query = "UPDATE " + tableName + " SET " + PersonCard.firstNameColumnName +
+                    "=?, "+ PersonCard.lastNameColumnName +"=?, "+PersonCard.emailColumnName+"=?, "+
+                    PersonCard.phoneColumnName+"=?" +
+                    " WHERE(" + PersonCard.idColumnName + "=?)";
+            PreparedStatement stmt = conn.prepareStatement(query);
+
+            stmt.setString(1, personCard.getFirstName());
+            stmt.setString(2, personCard.getLastName());
+            stmt.setString(3, personCard.getEmail());
+            stmt.setString(4, personCard.getPhone());
+            stmt.setString(5, personCard.getId());
+            stmt.executeUpdate();
+        } catch (SQLException ex) {
+            throw new SQLException(ex.getMessage());
+        }
+        return true;
     }
 
     @Override
-    public PersonCard select(PersonCard dalObject) {
-        return null;
+    public PersonCard select(PersonCard personCard) throws SQLException {
+        try (Connection conn = DriverManager.getConnection(connectionString)) {
+            String query = "SELECT * FROM " + tableName;
+            PreparedStatement stmt = conn.prepareStatement(query);
+            ResultSet resultSet = stmt.executeQuery(query);
+            while (resultSet.next())
+            {
+                boolean isDesired = resultSet.getString(0).equals(personCard.getId());
+                if (isDesired) {
+                    personCard.setFirstName(resultSet.getString(1));
+                    personCard.setLastName(resultSet.getString(2));
+                    personCard.setEmail(resultSet.getString(3));
+                    personCard.setPhone(resultSet.getString(4));
+                    break; //Desired category discount found
+                }
+            }
+        } catch (SQLException ex) {
+            throw new SQLException(ex.getMessage());
+        }
+        return personCard;
     }
 }

@@ -53,4 +53,24 @@ public class SupplierCard extends DalObject<SupplierCard> {
     public String getPayment() {
         return payment.toString();
     }
+
+    public void setSupplierId(int supplierId) {
+        this.supplierId = supplierId;
+    }
+
+    public void setCompanyNumber(int companyNumber) {
+        this.companyNumber = companyNumber;
+    }
+
+    public void setPermanentDays(boolean permanentDays) {
+        isPermanentDays = permanentDays;
+    }
+
+    public void setSelfDelivery(boolean selfDelivery) {
+        this.selfDelivery = selfDelivery;
+    }
+
+    public void setPayment(Payment payment) {
+        this.payment = payment;
+    }
 }

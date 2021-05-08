@@ -3,14 +3,9 @@ package DataAccessLayer.DalControllers.SupplierControllers;
 import DataAccessLayer.DalControllers.DalController;
 import DataAccessLayer.DalControllers.InventoryControllers.ItemDalController;
 import DataAccessLayer.DalObjects.InventoryObjects.Item;
-import DataAccessLayer.DalObjects.SupplierObjects.PersonCard;
-import DataAccessLayer.DalObjects.SupplierObjects.ProductsInOrder;
-import DataAccessLayer.DalObjects.SupplierObjects.SupplierCard;
+import DataAccessLayer.DalObjects.SupplierObjects.*;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
+import java.sql.*;
 
 public class SupplierCardDalController extends DalController<SupplierCard> {
     private static SupplierCardDalController instance = null;
@@ -38,6 +33,7 @@ public class SupplierCardDalController extends DalController<SupplierCard> {
             String command = "CREATE TABLE IF NOT EXISTS " + tableName + " (" +
                     SupplierCard.supplierIdColumnName + " INTEGER NOT NULL," +
                     SupplierCard.companyNumberColumnName + " INTEGET NOT NULL," + SupplierCard.isPermanentDaysColumnName +" INTEGER NOT NULL," + SupplierCard.selfDeliveryColumnName+ " INTEGER NOT NULL,"+ SupplierCard.paymentColumnName+" TEXT NOT NULL,"+
+                    "PRIMARY KEY ("+ SupplierCard.supplierIdColumnName+"),"+
                     "FOREIGN KEY (" + SupplierCard.supplierIdColumnName + ")" + "REFERENCES " + PersonCard.idColumnName + " (" + PersonCardDalController.PERSON_CARD_TABLE_NAME +") ON DELETE NO ACTION "+
                     ");";
 
@@ -71,17 +67,58 @@ public class SupplierCardDalController extends DalController<SupplierCard> {
     }
 
     @Override
-    public boolean delete(SupplierCard dalObject) {
-        return false;
+    public boolean delete(SupplierCard supplierCard) throws SQLException {
+        try (Connection conn = DriverManager.getConnection(connectionString)) {
+            String query = "DELETE FROM " + tableName + " WHERE (" + SupplierCard.supplierIdColumnName + "=?)";
+            PreparedStatement stmt = conn.prepareStatement(query);
+
+            stmt.setInt(1, supplierCard.getSupplierId());
+            stmt.executeUpdate();
+        } catch (SQLException ex) {
+            throw new SQLException(ex.getMessage());
+        }
+        return true;
     }
 
     @Override
-    public boolean update(SupplierCard dalObject) {
-        return false;
+    public boolean update(SupplierCard supplierCard) throws SQLException {
+        try (Connection conn = DriverManager.getConnection(connectionString)) {
+            String query = "UPDATE " + tableName + " SET " + SupplierCard.companyNumberColumnName +
+                    "=?, "+ SupplierCard.isPermanentDaysColumnName +"=?, "+ SupplierCard.selfDeliveryColumnName +"=?, "+SupplierCard.paymentColumnName+"=? WHERE(" + SupplierCard.supplierIdColumnName + "=?)";
+            PreparedStatement stmt = conn.prepareStatement(query);
+
+            stmt.setInt(1, supplierCard.getCompanyNumber());
+            stmt.setInt(2, supplierCard.isPermanentDays());
+            stmt.setInt(3, supplierCard.isSelfDelivery());
+            stmt.setString(4, supplierCard.getPayment());
+            stmt.setInt(5, supplierCard.getSupplierId());
+            stmt.executeUpdate();
+        } catch (SQLException ex) {
+            throw new SQLException(ex.getMessage());
+        }
+        return true;
     }
 
     @Override
-    public SupplierCard select(SupplierCard dalObject) {
-        return null;
+    public SupplierCard select(SupplierCard supplierCard) throws SQLException {
+        try (Connection conn = DriverManager.getConnection(connectionString)) {
+            String query = "SELECT * FROM " + tableName;
+            PreparedStatement stmt = conn.prepareStatement(query);
+            ResultSet resultSet = stmt.executeQuery(query);
+            while (resultSet.next())
+            {
+                boolean isDesired = resultSet.getString(0).equals(supplierCard.getSupplierId());
+                if (isDesired) {
+                    supplierCard.setCompanyNumber(resultSet.getInt(1));
+//                    supplierCard.setPermanentDays(resultSet.getInt(2));
+//                    supplierCard.setSelfDelivery(resultSet.getInt(3));
+//                    supplierCard.setPayment(resultSet.getString(4));
+                    break; //Desired category discount found
+                }
+            }
+        } catch (SQLException ex) {
+            throw new SQLException(ex.getMessage());
+        }
+        return supplierCard;
     }
 }

@@ -26,4 +26,12 @@ public class ProductsInOrder extends DalObject<ProductsInOrder> {
     public int getAmount() {
         return amount;
     }
+
+    public void setProductId(int productId) {
+        this.productId = productId;
+    }
+
+    public void setAmount(int amount) {
+        this.amount = amount;
+    }
 }
