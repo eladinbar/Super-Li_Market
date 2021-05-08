@@ -1,9 +1,19 @@
 package DataAccessLayer.DalControllers.SupplierControllers;
 
 import DataAccessLayer.DalControllers.DalController;
+import DataAccessLayer.DalControllers.InventoryControllers.ItemDalController;
+import DataAccessLayer.DalObjects.InventoryObjects.Category;
+import DataAccessLayer.DalObjects.InventoryObjects.CategoryDiscount;
+import DataAccessLayer.DalObjects.InventoryObjects.Item;
 import DataAccessLayer.DalObjects.SupplierObjects.AgreementItems;
+import DataAccessLayer.DalObjects.SupplierObjects.SupplierCard;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
+
+import static DataAccessLayer.DalControllers.SupplierControllers.SupplierCardDalController.SUPPLIER_CARD_TABLE_NAME;
 
 public class AgreementItemsDalController extends DalController<AgreementItems> {
     private static AgreementItemsDalController instance = null;
@@ -26,6 +36,21 @@ public class AgreementItemsDalController extends DalController<AgreementItems> {
 
     @Override
     public boolean createTable() throws SQLException {
+        System.out.println("Initiating create '" + tableName + "' table.");
+        try (Connection conn = DriverManager.getConnection(connectionString)) {
+            String command = "CREATE TABLE IF NOT EXISTS " + tableName + " (" +
+                    AgreementItems.productIdColumnName + " INTEGER NOT NULL," +
+                    AgreementItems.productCompIdColumnName + " INTEGER NOT NULL," + AgreementItems.priceColumnName +" REAL NOT NULL,"+
+                    "FOREIGN KEY (" + AgreementItems.productIdColumnName + ")" + "REFERENCES " + Item.itemIdColumnName + " (" + ItemDalController.ITEM_TABLE_NAME +") ON DELETE NO ACTION "+
+                    ");";
+
+            PreparedStatement stmt = conn.prepareStatement(command);
+            System.out.println("Creating '" + tableName + "' table.");
+            stmt.executeUpdate();
+            System.out.println("Table '" + tableName + "' created.");
+        } catch (SQLException ex) {
+            throw new SQLException(ex.getMessage());
+        }
         return true;
     }
 

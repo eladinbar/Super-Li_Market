@@ -8,8 +8,8 @@ import java.sql.SQLException;
 public class SupplierContactMembers extends DalObject<SupplierContactMembers> {
     public static final String supplierIdColumnName = "Supplier_Id";
     public static final String personIdColumnName = "Person_Id";
-    private int supplierId;
-    private int personId;
+    private int supplierId; //foreign key (supplier card)
+    private int personId; //foreign key (person card)
 
     public SupplierContactMembers(int supplierId, int personId) throws SQLException {
         super(SupplierContactMembersDalController.getInstance());

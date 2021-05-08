@@ -1,8 +1,14 @@
 package DataAccessLayer.DalControllers.SupplierControllers;
 
 import DataAccessLayer.DalControllers.DalController;
+import DataAccessLayer.DalControllers.InventoryControllers.ItemDalController;
+import DataAccessLayer.DalObjects.InventoryObjects.Item;
+import DataAccessLayer.DalObjects.SupplierObjects.ProductsInOrder;
 import DataAccessLayer.DalObjects.SupplierObjects.QuantityListItems;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 public class QuantityListItemsDalController extends DalController<QuantityListItems> {
@@ -26,6 +32,21 @@ public class QuantityListItemsDalController extends DalController<QuantityListIt
 
     @Override
     public boolean createTable() throws SQLException {
+        System.out.println("Initiating create '" + tableName + "' table.");
+        try (Connection conn = DriverManager.getConnection(connectionString)) {
+            String command = "CREATE TABLE IF NOT EXISTS " + tableName + " (" +
+                    QuantityListItems.productIdColumnName + " INTEGER NOT NULL," +
+                    QuantityListItems.amountColumnName+ " INTEGET NOT NULL," + QuantityListItems.discountColumnName+ " REAL NOT NULL,"+
+                    "FOREIGN KEY (" + ProductsInOrder.productIdColumnName + ")" + "REFERENCES " + Item.itemIdColumnName + " (" + ItemDalController.ITEM_TABLE_NAME +") ON DELETE NO ACTION "+
+                    ");";
+
+            PreparedStatement stmt = conn.prepareStatement(command);
+            System.out.println("Creating '" + tableName + "' table.");
+            stmt.executeUpdate();
+            System.out.println("Table '" + tableName + "' created.");
+        } catch (SQLException ex) {
+            throw new SQLException(ex.getMessage());
+        }
         return true;
     }
 

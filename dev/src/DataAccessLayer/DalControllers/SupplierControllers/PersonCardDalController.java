@@ -1,8 +1,12 @@
 package DataAccessLayer.DalControllers.SupplierControllers;
 
 import DataAccessLayer.DalControllers.DalController;
+import DataAccessLayer.DalObjects.SupplierObjects.Order;
 import DataAccessLayer.DalObjects.SupplierObjects.PersonCard;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 public class PersonCardDalController extends DalController<PersonCard> {
@@ -26,6 +30,21 @@ public class PersonCardDalController extends DalController<PersonCard> {
 
     @Override
     public boolean createTable() throws SQLException {
+        System.out.println("Initiating create '" + tableName + "' table.");
+        try (Connection conn = DriverManager.getConnection(connectionString)) {
+            String command = "CREATE TABLE IF NOT EXISTS " + tableName + " (" +
+                    PersonCard.idColumnName + " INTEGER NOT NULL," +
+                    PersonCard.firstNameColumnName + " TEXT NOT NULL," + PersonCard.lastNameColumnName +" TEXT NOT NULL,"+ PersonCard.emailColumnName + " TEXT NOT NULL," + PersonCard.phoneColumnName + " TEXT NOT NULL,"+
+                    "PRIMARY KEY (" + PersonCard.idColumnName + ")" +
+                    ");";
+
+            PreparedStatement stmt = conn.prepareStatement(command);
+            System.out.println("Creating '" + tableName + "' table.");
+            stmt.executeUpdate();
+            System.out.println("Table '" + tableName + "' created.");
+        } catch (SQLException ex) {
+            throw new SQLException(ex.getMessage());
+        }
         return true;
     }
 

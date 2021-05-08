@@ -1,8 +1,14 @@
 package DataAccessLayer.DalControllers.SupplierControllers;
 
 import DataAccessLayer.DalControllers.DalController;
+import DataAccessLayer.DalControllers.InventoryControllers.ItemDalController;
+import DataAccessLayer.DalObjects.InventoryObjects.Item;
+import DataAccessLayer.DalObjects.SupplierObjects.AgreementItems;
 import DataAccessLayer.DalObjects.SupplierObjects.Order;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 public class OrderDalController extends DalController<Order> {
@@ -26,6 +32,21 @@ public class OrderDalController extends DalController<Order> {
 
     @Override
     public boolean createTable() throws SQLException {
+        System.out.println("Initiating create '" + tableName + "' table.");
+        try (Connection conn = DriverManager.getConnection(connectionString)) {
+            String command = "CREATE TABLE IF NOT EXISTS " + tableName + " (" +
+                    Order.orderIdColumnName + " INTEGER NOT NULL," +
+                    Order.dateColumnName + " TEXT NOT NULL," + Order.deliveredColumnName +" INTEGER NOT NULL,"+
+                    "PRIMARY KEY (" + Order.orderIdColumnName + ")" +
+                    ");";
+
+            PreparedStatement stmt = conn.prepareStatement(command);
+            System.out.println("Creating '" + tableName + "' table.");
+            stmt.executeUpdate();
+            System.out.println("Table '" + tableName + "' created.");
+        } catch (SQLException ex) {
+            throw new SQLException(ex.getMessage());
+        }
         return true;
     }
 

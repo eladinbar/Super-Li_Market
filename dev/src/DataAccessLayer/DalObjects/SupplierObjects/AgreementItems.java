@@ -12,7 +12,7 @@ public class AgreementItems extends DalObject<AgreementItems> {
     public static final String productIdColumnName = "Product_ID";
     public static final String productCompIdColumnName = "Product_Company_ID";
     public static final String priceColumnName = "Price";
-    private int productId;
+    private int productId; //foreign key (item)
     private int productCompId;
     private int price;
 
