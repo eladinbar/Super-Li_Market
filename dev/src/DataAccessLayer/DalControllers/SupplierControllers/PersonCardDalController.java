@@ -49,8 +49,22 @@ public class PersonCardDalController extends DalController<PersonCard> {
     }
 
     @Override
-    public boolean insert(PersonCard dalObject) {
-        return false;
+    public boolean insert(PersonCard personCard) throws SQLException {
+        System.out.println("Initiating " + tableName + " insert.");
+        try (Connection conn = DriverManager.getConnection(connectionString)) {
+            String query = "INSERT INTO " + tableName + " VALUES (?,?,?,?,?)";
+            PreparedStatement stmt = conn.prepareStatement(query);
+            stmt.setString(1, personCard.getId());
+            stmt.setString(2, personCard.getFirstName());
+            stmt.setString(3, personCard.getLastName());
+            stmt.setString(4, personCard.getEmail());
+            stmt.setString(5, personCard.getPhone());
+            System.out.println("Executing " + tableName + " insert.");
+            stmt.executeUpdate();
+        } catch (SQLException ex) {
+            throw new SQLException(ex.getMessage());
+        }
+        return true;
     }
 
     @Override

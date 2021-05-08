@@ -23,4 +23,18 @@ public class Order extends DalObject<Order> {
         this.date = date;
         this.delivered = delivered;
     }
+
+    public int getId() {
+        return id;
+    }
+
+    public String getDate() {
+        return date.toString();
+    }
+
+    public int isDelivered() {
+        if (delivered)
+            return 1;
+        return 0;
+    }
 }

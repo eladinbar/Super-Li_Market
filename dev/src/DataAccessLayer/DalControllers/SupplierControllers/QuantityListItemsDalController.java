@@ -51,8 +51,20 @@ public class QuantityListItemsDalController extends DalController<QuantityListIt
     }
 
     @Override
-    public boolean insert(QuantityListItems dalObject) {
-        return false;
+    public boolean insert(QuantityListItems quantityListItem) throws SQLException {
+        System.out.println("Initiating " + tableName + " insert.");
+        try (Connection conn = DriverManager.getConnection(connectionString)) {
+            String query = "INSERT INTO " + tableName + " VALUES (?,?,?)";
+            PreparedStatement stmt = conn.prepareStatement(query);
+            stmt.setInt(1, quantityListItem.getProductId());
+            stmt.setInt(2, quantityListItem.getAmount());
+            stmt.setDouble(3, quantityListItem.getDiscount());
+            System.out.println("Executing " + tableName + " insert.");
+            stmt.executeUpdate();
+        } catch (SQLException ex) {
+            throw new SQLException(ex.getMessage());
+        }
+        return true;
     }
 
     @Override

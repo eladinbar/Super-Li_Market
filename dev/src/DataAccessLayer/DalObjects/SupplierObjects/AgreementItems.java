@@ -14,12 +14,24 @@ public class AgreementItems extends DalObject<AgreementItems> {
     public static final String priceColumnName = "Price";
     private int productId; //foreign key (item)
     private int productCompId;
-    private int price;
+    private double price;
 
     public AgreementItems(int productId, int productCompId, int price) throws SQLException {
         super(AgreementItemsDalController.getInstance());
         this.productId = productId;
         this.productCompId = productCompId;
         this.price = price;
+    }
+
+    public int getProductId() {
+        return productId;
+    }
+
+    public int getProductCompId() {
+        return productCompId;
+    }
+
+    public double getPrice() {
+        return price;
     }
 }

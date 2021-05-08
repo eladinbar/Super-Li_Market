@@ -13,12 +13,24 @@ public class QuantityListItems extends DalObject<QuantityListItems> {
     public static final String discountColumnName = "Discount";
     private int productId; // foreign key (item)
     private int amount;
-    private int discount;
+    private double discount;
 
     public QuantityListItems(int productId, int amount, int discount) throws SQLException {
         super(QuantityListItemsDalController.getInstance());
         this.productId = productId;
         this.amount = amount;
         this.discount = discount;
+    }
+
+    public int getProductId() {
+        return productId;
+    }
+
+    public int getAmount() {
+        return amount;
+    }
+
+    public double getDiscount() {
+        return discount;
     }
 }

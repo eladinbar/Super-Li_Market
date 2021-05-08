@@ -55,8 +55,20 @@ public class AgreementItemsDalController extends DalController<AgreementItems> {
     }
 
     @Override
-    public boolean insert(AgreementItems dalObject) {
-        return false;
+    public boolean insert(AgreementItems agreementItem) throws SQLException {
+        System.out.println("Initiating " + tableName + " insert.");
+        try (Connection conn = DriverManager.getConnection(connectionString)) {
+            String query = "INSERT INTO " + tableName + " VALUES (?,?,?)";
+            PreparedStatement stmt = conn.prepareStatement(query);
+            stmt.setInt(1, agreementItem.getProductId());
+            stmt.setInt(2, agreementItem.getProductCompId());
+            stmt.setDouble(3, agreementItem.getPrice());
+            System.out.println("Executing " + tableName + " insert.");
+            stmt.executeUpdate();
+        } catch (SQLException ex) {
+            throw new SQLException(ex.getMessage());
+        }
+        return true;
     }
 
     @Override

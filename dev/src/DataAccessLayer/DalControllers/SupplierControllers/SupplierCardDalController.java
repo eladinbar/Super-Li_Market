@@ -52,8 +52,22 @@ public class SupplierCardDalController extends DalController<SupplierCard> {
     }
 
     @Override
-    public boolean insert(SupplierCard dalObject) {
-        return false;
+    public boolean insert(SupplierCard supplierCard) throws SQLException {
+        System.out.println("Initiating " + tableName + " insert.");
+        try (Connection conn = DriverManager.getConnection(connectionString)) {
+            String query = "INSERT INTO " + tableName + " VALUES (?,?,?,?,?)";
+            PreparedStatement stmt = conn.prepareStatement(query);
+            stmt.setInt(1, supplierCard.getSupplierId());
+            stmt.setInt(2, supplierCard.getCompanyNumber());
+            stmt.setInt(3, supplierCard.isPermanentDays());
+            stmt.setInt(4, supplierCard.isSelfDelivery());
+            stmt.setString(5, supplierCard.getPayment());
+            System.out.println("Executing " + tableName + " insert.");
+            stmt.executeUpdate();
+        } catch (SQLException ex) {
+            throw new SQLException(ex.getMessage());
+        }
+        return true;
     }
 
     @Override
