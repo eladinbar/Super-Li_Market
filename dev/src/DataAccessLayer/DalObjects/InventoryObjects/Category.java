@@ -26,7 +26,8 @@ public class Category extends DalObject<Category> {
         return parentName;
     }
 
-    public void setParentName(String parentName) {
+    public void setParentName(String parentName) throws SQLException {
         this.parentName = parentName;
+        controller.update(this);
     }
 }

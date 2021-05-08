@@ -93,8 +93,8 @@ public class DefectEntryDalController extends DalController<DefectEntry> {
 
             stmt.setString(1, defectEntry.getLocation());
             stmt.setInt(2, defectEntry.getQuantity());
-            stmt.setInt(3, defectEntry.getItemID());
-            stmt.setString(4, defectEntry.getEntryDate());
+            stmt.setString(3, defectEntry.getEntryDate());
+            stmt.setInt(4, defectEntry.getItemID());
             stmt.executeUpdate();
         } catch (SQLException ex) {
             throw new SQLException(ex.getMessage());

@@ -36,16 +36,18 @@ public class ItemDiscount extends DalObject<ItemDiscount> {
         return discount;
     }
 
-    public void setDiscount(double discount) {
+    public void setDiscount(double discount) throws SQLException {
         this.discount = discount;
+        controller.update(this);
     }
 
     public int getItemCount() {
         return itemCount;
     }
 
-    public void setItemCount(int itemCount) {
+    public void setItemCount(int itemCount) throws SQLException {
         this.itemCount = itemCount;
+        controller.update(this);
     }
 
     public int getSupplierID() {

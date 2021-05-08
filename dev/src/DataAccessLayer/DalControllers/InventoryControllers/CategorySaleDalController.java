@@ -75,6 +75,7 @@ public class CategorySaleDalController extends DalController<CategorySale> {
         try (Connection conn = DriverManager.getConnection(connectionString)) {
             String query = "DELETE FROM " + tableName + " WHERE ?=?";
             PreparedStatement stmt = conn.prepareStatement(query);
+
             stmt.setString(1, CategorySale.categorySaleNameColumnName);
             stmt.setString(2, categorySale.getName());
             stmt.executeUpdate();

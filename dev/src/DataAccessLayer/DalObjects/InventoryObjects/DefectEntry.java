@@ -32,16 +32,18 @@ public class DefectEntry extends DalObject<DefectEntry> {
         return location;
     }
 
-    public void setLocation(String location) {
+    public void setLocation(String location) throws SQLException {
         this.location = location;
+        controller.update(this);
     }
 
     public int getQuantity() {
         return quantity;
     }
 
-    public void setQuantity(int quantity) {
+    public void setQuantity(int quantity) throws SQLException {
         this.quantity = quantity;
+        controller.update(this);
     }
 
     public int getItemID() {

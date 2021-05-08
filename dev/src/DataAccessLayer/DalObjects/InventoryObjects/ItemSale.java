@@ -35,31 +35,35 @@ public class ItemSale extends DalObject<ItemSale> {
         return discount;
     }
 
-    public void setDiscount(double discount) {
+    public void setDiscount(double discount) throws SQLException {
         this.discount = discount;
+        controller.update(this);
     }
 
     public String getStartSaleDate() {
         return startSaleDate;
     }
 
-    public void setStartSaleDate(String startSaleDate) {
+    public void setStartSaleDate(String startSaleDate) throws SQLException {
         this.startSaleDate = startSaleDate;
+        controller.update(this);
     }
 
     public String getEndSaleDate() {
         return endSaleDate;
     }
 
-    public void setEndSaleDate(String endSaleDate) {
+    public void setEndSaleDate(String endSaleDate) throws SQLException {
         this.endSaleDate = endSaleDate;
+        controller.update(this);
     }
 
     public int getItemID() {
         return itemID;
     }
 
-    public void setItemID(int itemID) {
+    public void setItemID(int itemID) throws SQLException {
         this.itemID = itemID;
+        controller.update(this);
     }
 }

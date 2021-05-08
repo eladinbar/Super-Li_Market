@@ -33,7 +33,7 @@ public class ItemDalController extends DalController<Item> {
         try (Connection conn = DriverManager.getConnection(connectionString)) {
             String command = "CREATE TABLE IF NOT EXISTS " + tableName + " (" +
                     Item.itemIdColumnName + " INTEGER NOT NULL," +
-                    Item.itemNameColumnName + "TEXT," +
+                    Item.itemNameColumnName + " TEXT," +
                     Item.costPriceColumnName + " REAL DEFAULT 0 NOT NULL," +
                     Item.sellingPriceColumnName + " REAL DEFAULT 0 NOT NULL," +
                     Item.manufacturerIdColumnName + " INTEGER NOT NULL," +

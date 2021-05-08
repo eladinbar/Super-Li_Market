@@ -54,79 +54,89 @@ public class Item extends DalObject<Item> {
         return name;
     }
 
-    public void setName(String name) {
+    public void setName(String name) throws SQLException {
         this.name = name;
+        controller.update(this);
     }
 
     public double getCostPrice() {
         return costPrice;
     }
 
-    public void setCostPrice(double costPrice) {
+    public void setCostPrice(double costPrice) throws SQLException {
         this.costPrice = costPrice;
+        controller.update(this);
     }
 
     public double getSellingPrice() {
         return sellingPrice;
     }
 
-    public void setSellingPrice(double sellingPrice) {
+    public void setSellingPrice(double sellingPrice) throws SQLException {
         this.sellingPrice = sellingPrice;
+        controller.update(this);
     }
 
     public int getManufacturerID() {
         return manufacturerID;
     }
 
-    public void setManufacturerID(int manufacturerID) {
+    public void setManufacturerID(int manufacturerID) throws SQLException {
         this.manufacturerID = manufacturerID;
+        controller.update(this);
     }
 
     public int getMinAmount() {
         return minAmount;
     }
 
-    public void setMinAmount(int minAmount) {
+    public void setMinAmount(int minAmount) throws SQLException {
         this.minAmount = minAmount;
+        controller.update(this);
     }
 
     public int getShelfQuantity() {
         return shelfQuantity;
     }
 
-    public void setShelfQuantity(int shelfQuantity) {
+    public void setShelfQuantity(int shelfQuantity) throws SQLException {
         this.shelfQuantity = shelfQuantity;
+        controller.update(this);
     }
 
     public int getStorageQuantity() {
         return storageQuantity;
     }
 
-    public void setStorageQuantity(int storageQuantity) {
+    public void setStorageQuantity(int storageQuantity) throws SQLException {
         this.storageQuantity = storageQuantity;
+        controller.update(this);
     }
 
     public String getShelfLocation() {
         return shelfLocation;
     }
 
-    public void setShelfLocation(String shelfLocation) {
+    public void setShelfLocation(String shelfLocation) throws SQLException {
         this.shelfLocation = shelfLocation;
+        controller.update(this);
     }
 
     public String getStorageLocation() {
         return storageLocation;
     }
 
-    public void setStorageLocation(String storageLocation) {
+    public void setStorageLocation(String storageLocation) throws SQLException {
         this.storageLocation = storageLocation;
+        controller.update(this);
     }
 
     public String getCategoryName() {
         return categoryName;
     }
 
-    public void setCategoryName(String categoryName) {
+    public void setCategoryName(String categoryName) throws SQLException {
         this.categoryName = categoryName;
+        controller.update(this);
     }
 }
