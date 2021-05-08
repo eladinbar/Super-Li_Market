@@ -10,7 +10,7 @@ import java.sql.SQLException;
 
 public class CategoryDalController extends DalController<Category> {
     private static CategoryDalController instance = null;
-    final static String CATEGORY_TABLE_NAME = "Categories";
+    public final static String CATEGORY_TABLE_NAME = "Categories";
 
     /**
      * <summary>
@@ -37,8 +37,9 @@ public class CategoryDalController extends DalController<Category> {
                     "PRIMARY KEY (" + Category.categoryNameColumnName + ")" +
                     ");";
             PreparedStatement stmt = conn.prepareStatement(command);
-            System.out.println("Creating " + CATEGORY_TABLE_NAME + " table.");
+            System.out.println("Creating '" + CATEGORY_TABLE_NAME + "' table.");
             stmt.executeUpdate();
+            System.out.println("Table '" + CATEGORY_TABLE_NAME + "' created.");
         } catch (SQLException ex) {
             throw new SQLException(ex.getMessage());
         }

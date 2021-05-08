@@ -8,7 +8,7 @@ import java.sql.SQLException;
 
 public class QuantityListItemsDalController extends DalController<QuantityListItems> {
     private static QuantityListItemsDalController instance = null;
-    final static String QUANTITY_LIST_ITEMS_TABLE_NAME = "Quantity_List_Items";
+    public final static String QUANTITY_LIST_ITEMS_TABLE_NAME = "Quantity_List_Items";
 
     /**
      * <summary>
@@ -26,7 +26,7 @@ public class QuantityListItemsDalController extends DalController<QuantityListIt
     }
 
     @Override
-    public void CreateTable() {
+    public void CreateTable() throws SQLException {
 
     }
 

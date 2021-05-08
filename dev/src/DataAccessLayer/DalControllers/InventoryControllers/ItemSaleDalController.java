@@ -1,13 +1,22 @@
 package DataAccessLayer.DalControllers.InventoryControllers;
 
 import DataAccessLayer.DalControllers.DalController;
+import DataAccessLayer.DalObjects.InventoryObjects.Category;
+import DataAccessLayer.DalObjects.InventoryObjects.CategorySale;
+import DataAccessLayer.DalObjects.InventoryObjects.Item;
 import DataAccessLayer.DalObjects.InventoryObjects.ItemSale;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
+
+import static DataAccessLayer.DalControllers.InventoryControllers.CategoryDalController.CATEGORY_TABLE_NAME;
+import static DataAccessLayer.DalControllers.InventoryControllers.ItemDalController.ITEM_TABLE_NAME;
 
 public class ItemSaleDalController extends DalController<ItemSale> {
     private static ItemSaleDalController instance = null;
-    final static String ITEM_DISCOUNT_TABLE_NAME = "Item_Sales";
+    public final static String ITEM_SALE_TABLE_NAME = "Item_Sales";
 
     /**
      * <summary>
@@ -15,7 +24,7 @@ public class ItemSaleDalController extends DalController<ItemSale> {
      * </summary>
      */
     private ItemSaleDalController() throws SQLException {
-        super(ITEM_DISCOUNT_TABLE_NAME);
+        super(ITEM_SALE_TABLE_NAME);
     }
 
     public static ItemSaleDalController getInstance() throws SQLException {
@@ -25,8 +34,29 @@ public class ItemSaleDalController extends DalController<ItemSale> {
     }
 
     @Override
-    public void CreateTable() {
-
+    public void CreateTable() throws SQLException {
+        System.out.println("Initiating create '" + ITEM_SALE_TABLE_NAME + "' table.");
+        try (Connection conn = DriverManager.getConnection(connectionString)) {
+            String command = "CREATE TABLE IF NOT EXISTS " + ITEM_SALE_TABLE_NAME + " (" +
+                    ItemSale.itemSaleNameColumnName + " TEXT NOT NULL," +
+                    ItemSale.discountColumnName + " REAL DEFAULT 0 NOT NULL," +
+                    ItemSale.startSaleDateColumnName + " TEXT NOT NULL," +
+                    ItemSale.endSaleDateColumnName + " TEXT NOT NULL," +
+                    ItemSale.itemIdColumnName + " INTEGER NOT NULL," +
+                    "PRIMARY KEY (" + ItemSale.itemSaleNameColumnName + ")," +
+                    "FOREIGN KEY (" + Item.itemIdColumnName + ")" +
+                    "REFERENCES " + Item.itemIdColumnName + " (" + ITEM_TABLE_NAME + ") ON DELETE CASCADE," +
+                    "CONSTRAINT Natural_Number CHECK (" + ItemSale.discountColumnName + " >= 0)," +
+                    "CONSTRAINT End_Date CHECK (date(" + ItemSale.startSaleDateColumnName + ")>=date(" + ItemSale.endSaleDateColumnName + ") OR "
+                    + ItemSale.endSaleDateColumnName + " IS NULL)" +
+                    ");";
+            PreparedStatement stmt = conn.prepareStatement(command);
+            System.out.println("Creating '" + ITEM_SALE_TABLE_NAME + "' table.");
+            stmt.executeUpdate();
+            System.out.println("Table '" + ITEM_SALE_TABLE_NAME + "' created.");
+        } catch (SQLException ex) {
+            throw new SQLException(ex.getMessage());
+        }
     }
 
     @Override

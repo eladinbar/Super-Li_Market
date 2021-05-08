@@ -1,13 +1,24 @@
 package DataAccessLayer.DalControllers.InventoryControllers;
 
 import DataAccessLayer.DalControllers.DalController;
+import DataAccessLayer.DalObjects.InventoryObjects.Category;
+import DataAccessLayer.DalObjects.InventoryObjects.CategoryDiscount;
+import DataAccessLayer.DalObjects.InventoryObjects.Item;
 import DataAccessLayer.DalObjects.InventoryObjects.ItemDiscount;
+import DataAccessLayer.DalObjects.SupplierObjects.SupplierCard;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
+
+import static DataAccessLayer.DalControllers.InventoryControllers.CategoryDalController.CATEGORY_TABLE_NAME;
+import static DataAccessLayer.DalControllers.InventoryControllers.ItemDalController.ITEM_TABLE_NAME;
+import static DataAccessLayer.DalControllers.SupplierControllers.SupplierCardDalController.SUPPLIER_CARD_TABLE_NAME;
 
 public class ItemDiscountDalController extends DalController<ItemDiscount> {
     private static ItemDiscountDalController instance = null;
-    final static String ITEM_DISCOUNTS_TABLE_NAME = "Item_Discounts";
+    public final static String ITEM_DISCOUNT_TABLE_NAME = "Item_Discounts";
 
     /**
      * <summary>
@@ -15,7 +26,7 @@ public class ItemDiscountDalController extends DalController<ItemDiscount> {
      * </summary>
      */
     private ItemDiscountDalController() throws SQLException {
-        super(ITEM_DISCOUNTS_TABLE_NAME);
+        super(ITEM_DISCOUNT_TABLE_NAME);
     }
 
     public static ItemDiscountDalController getInstance() throws SQLException {
@@ -25,8 +36,29 @@ public class ItemDiscountDalController extends DalController<ItemDiscount> {
     }
 
     @Override
-    public void CreateTable() {
-
+    public void CreateTable() throws SQLException {
+        System.out.println("Initiating create '" + ITEM_DISCOUNT_TABLE_NAME + "' table.");
+        try (Connection conn = DriverManager.getConnection(connectionString)) {
+            String command = "CREATE TABLE IF NOT EXISTS " + ITEM_DISCOUNT_TABLE_NAME + " (" +
+                    ItemDiscount.discountDateColumnName + " TEXT NOT NULL," +
+                    ItemDiscount.discountColumnName + " REAL DEFAULT 0 NOT NULL," +
+                    ItemDiscount.itemCountColumnName + " INTEGER DEFAULT 0 NOT NULL," +
+                    ItemDiscount.supplierIdColumnName + " INTEGER NOT NULL," +
+                    ItemDiscount.itemIdColumnName + " INTEGER NOT NULL," +
+                    "PRIMARY KEY (" + ItemDiscount.discountDateColumnName + ")," +
+                    "FOREIGN KEY (" + ItemDiscount.supplierIdColumnName + ")" +
+                    "REFERENCES " + SupplierCard.supplierIdColumnName + " (" + SUPPLIER_CARD_TABLE_NAME + ") ON DELETE CASCADE," +
+                    "FOREIGN KEY (" + ItemDiscount.itemIdColumnName + ")" +
+                    "REFERENCES " + Item.itemIdColumnName + " (" + ITEM_TABLE_NAME + ") ON DELETE CASCADE," +
+                    "CONSTRAINT Natural_Number CHECK (" + ItemDiscount.discountColumnName + ">=0 AND " + ItemDiscount.itemCountColumnName + ">=0)" +
+                    ");";
+            PreparedStatement stmt = conn.prepareStatement(command);
+            System.out.println("Creating '" + ITEM_DISCOUNT_TABLE_NAME + "' table.");
+            stmt.executeUpdate();
+            System.out.println("Table '" + ITEM_DISCOUNT_TABLE_NAME + "' created.");
+        } catch (SQLException ex) {
+            throw new SQLException(ex.getMessage());
+        }
     }
 
     @Override

@@ -7,7 +7,7 @@ import java.sql.SQLException;
 
 public class SupplierContactMembersDalController extends DalController<SupplierContactMembers> {
     private static SupplierContactMembersDalController instance = null;
-    final static String SUPPLIER_CONTACT_MEMBERS_TABLE_NAME = "Supplier_Contact_Members";
+    public final static String SUPPLIER_CONTACT_MEMBERS_TABLE_NAME = "Supplier_Contact_Members";
 
     private SupplierContactMembersDalController() throws SQLException {
         super(SUPPLIER_CONTACT_MEMBERS_TABLE_NAME);

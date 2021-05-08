@@ -8,7 +8,7 @@ import java.util.Calendar;
 
 public class ItemDiscount extends DalObject<ItemDiscount> {
     public static final String discountDateColumnName = "Discount_Date"; //Primary Key
-    public static final String dscountColumnName = "Discount";
+    public static final String discountColumnName = "Discount";
     public static final String itemCountColumnName = "Item_Count";
     public static final String supplierIdColumnName = "Supplier_ID"; //Foreign Key
     public static final String itemIdColumnName = "Item_ID"; //Foreign Key

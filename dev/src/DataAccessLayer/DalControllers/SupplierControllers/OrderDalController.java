@@ -8,7 +8,7 @@ import java.sql.SQLException;
 
 public class OrderDalController extends DalController<Order> {
     private static OrderDalController instance = null;
-    final static String ORDER_TABLE_NAME = "Orders";
+    public final static String ORDER_TABLE_NAME = "Orders";
 
     /**
      * <summary>
@@ -26,7 +26,7 @@ public class OrderDalController extends DalController<Order> {
     }
 
     @Override
-    public void CreateTable() {
+    public void CreateTable() throws SQLException {
 
     }
 
