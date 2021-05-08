@@ -18,7 +18,7 @@ public class ItemDiscount extends DalObject<ItemDiscount> {
     private int supplierID;
     private int itemID;
 
-    protected ItemDiscount(String discountDate, double discount, int itemCount, int supplierID, int itemID) throws SQLException {
+    public ItemDiscount(String discountDate, double discount, int itemCount, int supplierID, int itemID) throws SQLException {
         super(ItemDiscountDalController.getInstance());
         this.discountDate = discountDate;
         this.discount = discount;

@@ -16,7 +16,7 @@ public class DefectEntry extends DalObject<DefectEntry> {
     private int quantity;
     private int itemID;
 
-    protected DefectEntry(String entryDate, String location, int quantity, int itemID) throws SQLException {
+    public DefectEntry(String entryDate, String location, int quantity, int itemID) throws SQLException {
         super(DefectEntryDalController.getInstance());
         this.entryDate = entryDate;
         this.location = location;

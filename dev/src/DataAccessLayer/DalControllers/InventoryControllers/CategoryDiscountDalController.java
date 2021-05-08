@@ -5,10 +5,7 @@ import DataAccessLayer.DalObjects.InventoryObjects.Category;
 import DataAccessLayer.DalObjects.InventoryObjects.CategoryDiscount;
 import DataAccessLayer.DalObjects.SupplierObjects.SupplierCard;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
+import java.sql.*;
 
 import static DataAccessLayer.DalControllers.InventoryControllers.CategoryDalController.CATEGORY_TABLE_NAME;
 import static DataAccessLayer.DalControllers.SupplierControllers.SupplierCardDalController.SUPPLIER_CARD_TABLE_NAME;
@@ -113,7 +110,26 @@ public class CategoryDiscountDalController extends DalController<CategoryDiscoun
     }
 
     @Override
-    public CategoryDiscount select(CategoryDiscount categoryDiscount) {
-        return null;
+    public CategoryDiscount select(CategoryDiscount categoryDiscount) throws SQLException {
+        CategoryDiscount savedCategoryDiscount = new CategoryDiscount(categoryDiscount.getDiscountDate(), 0, 0, 0, null);
+        try (Connection conn = DriverManager.getConnection(connectionString)) {
+            String query = "SELECT * FROM " + tableName;
+            PreparedStatement stmt = conn.prepareStatement(query);
+            ResultSet resultSet = stmt.executeQuery(query);
+            while (resultSet.next())
+            {
+                boolean isDesired = resultSet.getString(0).equals(categoryDiscount.getDiscountDate());
+                if (isDesired) {
+                    savedCategoryDiscount.setDiscount(resultSet.getInt(1));
+                    savedCategoryDiscount.setItemCount(resultSet.getInt(2));
+                    savedCategoryDiscount.setSupplierID(resultSet.getInt(3));
+                    savedCategoryDiscount.setCategoryName(resultSet.getString(4));
+                    break; //Desired category discount found
+                }
+            }
+        } catch (SQLException ex) {
+            throw new SQLException(ex.getMessage());
+        }
+        return savedCategoryDiscount;
     }
 }

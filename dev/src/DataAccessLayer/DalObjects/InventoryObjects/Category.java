@@ -12,7 +12,7 @@ public class Category extends DalObject<Category> {
     private String name;
     private String parentName;
 
-    protected Category(String name, String parentName) throws SQLException {
+    public Category(String name, String parentName) throws SQLException {
         super(CategoryDalController.getInstance());
         this.name = name;
         this.parentName = parentName;
