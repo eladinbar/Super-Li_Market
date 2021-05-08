@@ -22,10 +22,6 @@ public class Category extends DalObject<Category> {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public String getParentName() {
         return parentName;
     }

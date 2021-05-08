@@ -31,10 +31,6 @@ public class CategorySale extends DalObject<CategorySale> {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public double getDiscount() {
         return discount;
     }

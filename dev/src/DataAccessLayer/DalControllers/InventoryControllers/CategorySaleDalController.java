@@ -39,10 +39,7 @@ public class CategorySaleDalController extends DalController<CategorySale> {
                     CategorySale.categoryNameColumnName + " TEXT NOT NULL," +
                     "PRIMARY KEY (" + CategorySale.categorySaleNameColumnName + ")," +
                     "FOREIGN KEY (" + CategorySale.categoryNameColumnName + ")" +
-                    "REFERENCES " + Category.categoryNameColumnName + " (" + CATEGORY_TABLE_NAME + ") ON DELETE CASCADE," +
-                    "CONSTRAINT Natural_Number CHECK (" + CategorySale.discountColumnName + " >= 0)," +
-                    "CONSTRAINT End_Date CHECK (date(" + CategorySale.startSaleDateColumnName + ")>=date(" + CategorySale.endSaleDateColumnName + ") OR "
-                    + CategorySale.endSaleDateColumnName + " IS NULL)" +
+                    "REFERENCES " + Category.categoryNameColumnName + " (" + CATEGORY_TABLE_NAME + ") ON DELETE CASCADE" +
                     ");";
             PreparedStatement stmt = conn.prepareStatement(command);
             System.out.println("Creating '" + tableName + "' table.");

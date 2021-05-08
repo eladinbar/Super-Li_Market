@@ -35,16 +35,16 @@ public class CategoryDiscountDalController extends DalController<CategoryDiscoun
         try (Connection conn = DriverManager.getConnection(connectionString)) {
             String command = "CREATE TABLE IF NOT EXISTS " + tableName + " (" +
                     CategoryDiscount.discountDateColumnName + " TEXT NOT NULL," +
-                    CategoryDiscount.discountColumnName + " REAL DEFAULT 0 NOT NULL," +
-                    CategoryDiscount.itemCountColumnName + " INTEGER DEFAULT 0 NOT NULL," +
                     CategoryDiscount.supplierIdColumnName + " INTEGER NOT NULL," +
                     CategoryDiscount.categoryNameColumnName + " TEXT NOT NULL," +
-                    "PRIMARY KEY (" + CategoryDiscount.discountDateColumnName + ")," +
+                    CategoryDiscount.discountColumnName + " REAL DEFAULT 0 NOT NULL," +
+                    CategoryDiscount.itemCountColumnName + " INTEGER DEFAULT 0 NOT NULL," +
+                    "PRIMARY KEY (" + CategoryDiscount.discountDateColumnName + ", " + CategoryDiscount.supplierIdColumnName + "," +
+                    CategoryDiscount.categoryNameColumnName + ")," +
                     "FOREIGN KEY (" + CategoryDiscount.supplierIdColumnName + ")" +
                     "REFERENCES " + SupplierCard.supplierIdColumnName + " (" + SUPPLIER_CARD_TABLE_NAME + ") ON DELETE NO ACTION," +
                     "FOREIGN KEY (" + CategoryDiscount.categoryNameColumnName + ")" +
-                    "REFERENCES " + Category.categoryNameColumnName + " (" + CATEGORY_TABLE_NAME + ") ON DELETE NO ACTION," +
-                    "CONSTRAINT Natural_Number CHECK (" + CategoryDiscount.discountColumnName + ">= 0 AND " + CategoryDiscount.itemCountColumnName + ">=0)" +
+                    "REFERENCES " + Category.categoryNameColumnName + " (" + CATEGORY_TABLE_NAME + ") ON DELETE NO ACTION" +
                     ");";
             PreparedStatement stmt = conn.prepareStatement(command);
             System.out.println("Creating '" + tableName + "' table.");
@@ -62,11 +62,12 @@ public class CategoryDiscountDalController extends DalController<CategoryDiscoun
         try (Connection conn = DriverManager.getConnection(connectionString)) {
             String query = "INSERT INTO " + tableName + " VALUES (?,?, ?, ?, ?)";
             PreparedStatement stmt = conn.prepareStatement(query);
+
             stmt.setString(1, categoryDiscount.getDiscountDate());
-            stmt.setDouble(2, categoryDiscount.getDiscount());
-            stmt.setInt(3, categoryDiscount.getItemCount());
-            stmt.setInt(4, categoryDiscount.getSupplierID());
-            stmt.setString(5, categoryDiscount.getCategoryName());
+            stmt.setInt(2, categoryDiscount.getSupplierID());
+            stmt.setString(3, categoryDiscount.getCategoryName());
+            stmt.setDouble(4, categoryDiscount.getDiscount());
+            stmt.setInt(5, categoryDiscount.getItemCount());
             System.out.println("Executing " + tableName + " insert.");
             stmt.executeUpdate();
         } catch (SQLException ex) {
@@ -78,10 +79,15 @@ public class CategoryDiscountDalController extends DalController<CategoryDiscoun
     @Override
     public boolean delete(CategoryDiscount categoryDiscount) throws SQLException {
         try (Connection conn = DriverManager.getConnection(connectionString)) {
-            String query = "DELETE FROM " + tableName + " WHERE ?=?";
+            String query = "DELETE FROM " + tableName + " WHERE ?=? AND ?=? AND ?=?";
             PreparedStatement stmt = conn.prepareStatement(query);
+
             stmt.setString(1, CategoryDiscount.discountDateColumnName);
             stmt.setString(2, categoryDiscount.getDiscountDate());
+            stmt.setString(3, CategoryDiscount.supplierIdColumnName);
+            stmt.setInt(4, categoryDiscount.getSupplierID());
+            stmt.setString(5, CategoryDiscount.categoryNameColumnName);
+            stmt.setString(6, categoryDiscount.getCategoryName());
             stmt.executeUpdate();
         } catch (SQLException ex) {
             throw new SQLException(ex.getMessage());
@@ -92,16 +98,16 @@ public class CategoryDiscountDalController extends DalController<CategoryDiscoun
     @Override
     public boolean update(CategoryDiscount categoryDiscount) throws SQLException {
         try (Connection conn = DriverManager.getConnection(connectionString)) {
-            String query = "UPDATE " + tableName + " SET " + CategoryDiscount.discountColumnName + "=?, " +
-                    CategoryDiscount.itemCountColumnName + "=?, " + CategoryDiscount.supplierIdColumnName + "=?, " +
-                    CategoryDiscount.categoryNameColumnName + "=? WHERE(" + CategoryDiscount.discountDateColumnName + "=?)";
+            String query = "UPDATE " + tableName + " SET " + CategoryDiscount.discountColumnName + "=?, " + CategoryDiscount.itemCountColumnName +
+                     "=? WHERE(" + CategoryDiscount.discountDateColumnName + "=? AND " + CategoryDiscount.supplierIdColumnName
+                    + "=? AND " + CategoryDiscount.categoryNameColumnName + "=?)";
             PreparedStatement stmt = conn.prepareStatement(query);
 
             stmt.setDouble(1, categoryDiscount.getDiscount());
             stmt.setInt(2, categoryDiscount.getItemCount());
-            stmt.setInt(3, categoryDiscount.getSupplierID());
-            stmt.setString(4, categoryDiscount.getCategoryName());
-            stmt.setString(5, categoryDiscount.getDiscountDate());
+            stmt.setString(3, categoryDiscount.getDiscountDate());
+            stmt.setInt(4, categoryDiscount.getSupplierID());
+            stmt.setString(5, categoryDiscount.getCategoryName());
             stmt.executeUpdate();
         } catch (SQLException ex) {
             throw new SQLException(ex.getMessage());
@@ -111,19 +117,19 @@ public class CategoryDiscountDalController extends DalController<CategoryDiscoun
 
     @Override
     public CategoryDiscount select(CategoryDiscount categoryDiscount) throws SQLException {
-        CategoryDiscount savedCategoryDiscount = new CategoryDiscount(categoryDiscount.getDiscountDate(), 0, 0, 0, null);
+        CategoryDiscount savedCategoryDiscount = new CategoryDiscount(categoryDiscount.getDiscountDate(), categoryDiscount.getSupplierID(),
+                categoryDiscount.getCategoryName(), 0, 0);
         try (Connection conn = DriverManager.getConnection(connectionString)) {
             String query = "SELECT * FROM " + tableName;
             PreparedStatement stmt = conn.prepareStatement(query);
             ResultSet resultSet = stmt.executeQuery(query);
             while (resultSet.next())
             {
-                boolean isDesired = resultSet.getString(0).equals(categoryDiscount.getDiscountDate());
+                boolean isDesired = resultSet.getString(0).equals(categoryDiscount.getDiscountDate()) &&
+                        resultSet.getInt(1) == categoryDiscount.getSupplierID() && resultSet.getString(2).equals(categoryDiscount.getCategoryName());
                 if (isDesired) {
                     savedCategoryDiscount.setDiscount(resultSet.getInt(1));
                     savedCategoryDiscount.setItemCount(resultSet.getInt(2));
-                    savedCategoryDiscount.setSupplierID(resultSet.getInt(3));
-                    savedCategoryDiscount.setCategoryName(resultSet.getString(4));
                     break; //Desired category discount found
                 }
             }

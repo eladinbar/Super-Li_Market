@@ -7,16 +7,16 @@ import java.sql.SQLException;
 
 public class DefectEntry extends DalObject<DefectEntry> {
     public static final String entryDateColumnName = "Entry_Date"; //Primary Key
+    public static final String itemIdColumnName = "Item_ID"; //Primary Key, Foreign Key
     public static final String locationColumnName = "Location";
     public static final String quantityColumnName = "Quantity";
-    public static final String itemIdColumnName = "Item_ID"; //Foreign Key
 
     private String entryDate;
+    private int itemID;
     private String location;
     private int quantity;
-    private int itemID;
 
-    public DefectEntry(String entryDate, String location, int quantity, int itemID) throws SQLException {
+    public DefectEntry(String entryDate, int itemID, String location, int quantity) throws SQLException {
         super(DefectEntryDalController.getInstance());
         this.entryDate = entryDate;
         this.location = location;
@@ -26,10 +26,6 @@ public class DefectEntry extends DalObject<DefectEntry> {
 
     public String getEntryDate() {
         return entryDate;
-    }
-
-    public void setEntryDate(String entryDate) {
-        this.entryDate = entryDate;
     }
 
     public String getLocation() {
@@ -50,9 +46,5 @@ public class DefectEntry extends DalObject<DefectEntry> {
 
     public int getItemID() {
         return itemID;
-    }
-
-    public void setItemID(int itemID) {
-        this.itemID = itemID;
     }
 }
