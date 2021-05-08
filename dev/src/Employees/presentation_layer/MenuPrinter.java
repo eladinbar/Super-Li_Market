@@ -7,19 +7,26 @@ import Employees.business_layer.facade.facadeObject.FacadeTermsOfEmployment;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
-import java.io.Reader;
-import java.nio.Buffer;
 import java.time.LocalDate;
-import java.util.Scanner;
 
 public class MenuPrinter {
 
-BufferedReader sc = new BufferedReader(new InputStreamReader(System.in));
+    BufferedReader sc = new BufferedReader(new InputStreamReader(System.in));
 
-    //Scanner sc = new Scanner ( System.in );
+    private static MenuPrinter instance = null;
+
+    private MenuPrinter() {
+
+    }
+
+    public static MenuPrinter getInstance() {
+        if (instance == null) {
+            instance = new MenuPrinter();
+        }
+        return instance;
+    }
 
     public int uploadProgram(){
-        //sc.useDelimiter ( "\n" );
         System.out.println ("choose the option you'd like:\n1.upload a program with an existing data.\n2.upload a program without an existing data." );
         return getInt ();
     }

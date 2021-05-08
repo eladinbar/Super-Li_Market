@@ -30,7 +30,8 @@ public class Menu_Printer {
     //<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< Menus >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>.
 
 
-    public void mainMenu(Scanner scanner) {
+    public void mainMenu() {
+        Scanner scanner = new Scanner ( System.in );
         boolean keepGoing = true;
         while (keepGoing) {
             System.out.println("\n\nWelcome to Trucking Menu!\nplease choose the option you'd like:");

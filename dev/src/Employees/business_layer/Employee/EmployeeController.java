@@ -183,7 +183,7 @@ public class EmployeeController {
 
     public Employee addDriver(FacadeEmployee e, String name) throws EmployeeException {
         Employee driver = addEmployee ( e );
-        ResourcesController.getInstance ().addDriver ( e.getID (), name, Driver.License.valueOf ( (e.getRole ().equals ( "driverC" )) ? "120000" : "200000" ) );
+        ResourcesController.getInstance ().addDriver ( e.getID (), name, Driver.License.valueOf ( (e.getRole ().equals ( "driverC" )) ? "C" : "C1" ) );
         return driver;
     }
 

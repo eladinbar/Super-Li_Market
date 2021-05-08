@@ -1,39 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="ArtifactsWorkspaceSettings">
-    <artifacts-to-build>
-      <artifact name="ADSS_Group_G:jar" />
-    </artifacts-to-build>
-  </component>
-  <component name="AutoImportSettings">
-    <option name="autoReloadType" value="SELECTIVE" />
-  </component>
-  <component name="BranchesTreeState">
-    <expand>
-      <path>
-        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
-        <item name="LOCAL_ROOT" type="e8cecc67:BranchNodeDescriptor" />
-      </path>
-      <path>
-        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
-        <item name="REMOTE_ROOT" type="e8cecc67:BranchNodeDescriptor" />
-      </path>
-      <path>
-        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
-        <item name="REMOTE_ROOT" type="e8cecc67:BranchNodeDescriptor" />
-        <item name="GROUP_NODE:origin" type="e8cecc67:BranchNodeDescriptor" />
-      </path>
-    </expand>
-    <select />
-  </component>
   <component name="ChangeListManager">
-    <list default="true" id="05ca914f-9056-4de3-9869-7fdfaa880f2d" name="Default Changelist" comment="after merge with employee's bussines layer">
+    <list default="true" id="81ce0887-8b24-4737-8b90-9f78e7d4770c" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dev/src/Trucking/Business_Layer_Trucking/Facade/FacadeObject/ResourcesService.java" beforeDir="false" afterPath="$PROJECT_DIR$/dev/src/Trucking/Business_Layer_Trucking/Facade/FacadeObject/ResourcesService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dev/src/Trucking/Business_Layer_Trucking/Facade/FacadeService.java" beforeDir="false" afterPath="$PROJECT_DIR$/dev/src/Trucking/Business_Layer_Trucking/Facade/FacadeService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dev/src/Trucking/Business_Layer_Trucking/Resources/ResourcesController.java" beforeDir="false" afterPath="$PROJECT_DIR$/dev/src/Trucking/Business_Layer_Trucking/Resources/ResourcesController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dev/src/Employees/business_layer/Employee/EmployeeController.java" beforeDir="false" afterPath="$PROJECT_DIR$/dev/src/Employees/business_layer/Employee/EmployeeController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dev/src/Employees/presentation_layer/MenuPrinter.java" beforeDir="false" afterPath="$PROJECT_DIR$/dev/src/Employees/presentation_layer/MenuPrinter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dev/src/Employees/presentation_layer/PresentationController.java" beforeDir="false" afterPath="$PROJECT_DIR$/dev/src/Employees/presentation_layer/PresentationController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/dev/src/Trucking/Presentation_Layer_Trucking/Menu_Printer.java" beforeDir="false" afterPath="$PROJECT_DIR$/dev/src/Trucking/Presentation_Layer_Trucking/Menu_Printer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dev/src/Trucking/Presentation_Layer_Trucking/PresentationController.java" beforeDir="false" afterPath="$PROJECT_DIR$/dev/src/Trucking/Presentation_Layer_Trucking/PresentationController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/ADSS_Group_G/Employees/business_layer/Employee/BankAccountInfo.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/ADSS_Group_G/Employees/business_layer/Employee/BankAccountInfo.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/ADSS_Group_G/Employees/business_layer/Employee/Constraint.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/ADSS_Group_G/Employees/business_layer/Employee/Constraint.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/ADSS_Group_G/Employees/business_layer/Employee/Employee.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/ADSS_Group_G/Employees/business_layer/Employee/Employee.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/ADSS_Group_G/Employees/business_layer/Employee/EmployeeController.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/ADSS_Group_G/Employees/business_layer/Employee/EmployeeController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/ADSS_Group_G/Employees/business_layer/Employee/Role.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/ADSS_Group_G/Employees/business_layer/Employee/Role.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/ADSS_Group_G/Employees/business_layer/Employee/TermsOfEmployment.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/ADSS_Group_G/Employees/business_layer/Employee/TermsOfEmployment.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/ADSS_Group_G/Employees/business_layer/Shift/Shift.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/ADSS_Group_G/Employees/business_layer/Shift/Shift.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/ADSS_Group_G/Employees/business_layer/facade/EmployeeService.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/ADSS_Group_G/Employees/business_layer/facade/EmployeeService.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/ADSS_Group_G/Employees/business_layer/facade/FacadeService.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/ADSS_Group_G/Employees/business_layer/facade/FacadeService.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/ADSS_Group_G/Employees/presentation_layer/MenuPrinter.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/ADSS_Group_G/Employees/presentation_layer/MenuPrinter.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/ADSS_Group_G/Employees/presentation_layer/PresentationController.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/ADSS_Group_G/Employees/presentation_layer/PresentationController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/ADSS_Group_G/Employees/presentation_layer/StringConverter.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/ADSS_Group_G/Employees/presentation_layer/StringConverter.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -43,15 +28,29 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="Interface" />
         <option value="Class" />
       </list>
     </option>
   </component>
   <component name="Git.Settings">
+    <favorite-branches>
+      <branch-storage>
+        <map>
+          <entry type="REMOTE">
+            <value>
+              <list>
+                <branch-info repo="$PROJECT_DIR$" source="origin/2.2Employees" />
+                <branch-info repo="$PROJECT_DIR$" source="origin/ayala-businassL" />
+                <branch-info repo="$PROJECT_DIR$" source="origin/ayala-presentation" />
+              </list>
+            </value>
+          </entry>
+        </map>
+      </branch-storage>
+    </favorite-branches>
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="2.1_Trucking" />
+        <entry key="$PROJECT_DIR$" value="ayala-businassL" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -64,32 +63,32 @@
       <filtered-out-file-type name="COMMIT_BY_MESSAGE" />
     </file-type-list>
   </component>
-  <component name="ProblemsViewState">
-    <option name="selectedIndex" value="1" />
+  <component name="HighlightingSettingsPerFile">
+    <setting file="file://$PROJECT_DIR$/dev/src/Main.java" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/dev/src/InfrastructurePackage/SystemLogger.java" root0="FORCE_HIGHLIGHTING" />
   </component>
-  <component name="ProjectId" id="1pchlU42Bar4qov9F42Tsf9ACy9" />
+  <component name="ProjectId" id="1s7aVbJPf0UZ0ZsEfDnwNZEoJHQ" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent">
-    <property name="Downloaded.Files.Path.Enabled" value="false" />
     <property name="Git.Branch.Popup.ShowAllRemotes" value="true" />
-    <property name="Repository.Attach.Annotations" value="false" />
-    <property name="Repository.Attach.JavaDocs" value="false" />
-    <property name="Repository.Attach.Sources" value="false" />
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="extract.method.default.visibility" value="private" />
-    <property name="nodejs_package_manager_path" value="npm" />
-    <property name="project.structure.last.edited" value="Artifacts" />
-    <property name="project.structure.proportion" value="0.15332031" />
-    <property name="project.structure.side.proportion" value="0.2" />
-    <property name="settings.editor.selected.configurable" value="preferences.lookFeel" />
+    <property name="node.js.detected.package.eslint" value="true" />
+    <property name="node.js.detected.package.tslint" value="true" />
+    <property name="node.js.selected.package.eslint" value="(autodetect)" />
+    <property name="node.js.selected.package.tslint" value="(autodetect)" />
   </component>
-  <component name="RunManager" selected="Application.Main">
+  <component name="RecentsManager">
+    <key name="CreateClassDialog.RecentsKey">
+      <recent name="Employees" />
+    </key>
+  </component>
+  <component name="RunManager">
     <configuration name="Main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="Main" />
       <module name="ADSS_Group_G" />
@@ -97,456 +96,150 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="ResourcesServiceTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="ADSS_Group_G" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="Tests.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="Tests" />
-      <option name="MAIN_CLASS_NAME" value="Tests.ResourcesServiceTest" />
+    <configuration default="true" type="ArquillianJUnit" factoryName="" nameIsGenerated="true">
+      <option name="arquillianRunConfiguration">
+        <value>
+          <option name="containerStateName" value="" />
+        </value>
+      </option>
       <option name="TEST_OBJECT" value="class" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="ADSS_Group_G.jar" type="JarApplication" temporary="true">
-      <option name="JAR_PATH" value="$PROJECT_DIR$/out/artifacts/ADSS_Group_G_jar/ADSS_Group_G.jar" />
-      <method v="2" />
-    </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Application.Main" />
-        <item itemvalue="JUnit.ResourcesServiceTest" />
-        <item itemvalue="JAR Application.ADSS_Group_G.jar" />
-        <item itemvalue="Application.Main" />
         <item itemvalue="Application.Main" />
       </list>
     </recent_temporary>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
-  <component name="SvnConfiguration">
-    <configuration />
-  </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="05ca914f-9056-4de3-9869-7fdfaa880f2d" name="Default Changelist" comment="" />
-      <created>1615488437162</created>
+      <changelist id="81ce0887-8b24-4737-8b90-9f78e7d4770c" name="Default Changelist" comment="" />
+      <created>1620226113349</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
-      <updated>1615488437162</updated>
-      <workItem from="1615488447919" duration="335000" />
-      <workItem from="1615658425420" duration="293000" />
-      <workItem from="1617021253314" duration="31710000" />
-      <workItem from="1617283946638" duration="32036000" />
-      <workItem from="1617441029503" duration="7267000" />
-      <workItem from="1617459116634" duration="79000" />
-      <workItem from="1617544285290" duration="6673000" />
-      <workItem from="1617559642726" duration="25025000" />
-      <workItem from="1617779133098" duration="119952000" />
-      <workItem from="1617992472850" duration="2656000" />
-      <workItem from="1618208518753" duration="178000" />
-      <workItem from="1618825989222" duration="904000" />
-      <workItem from="1619330774077" duration="12857000" />
-      <workItem from="1619792461374" duration="1895000" />
-      <workItem from="1619794411025" duration="1033000" />
-      <workItem from="1619869834303" duration="159000" />
-      <workItem from="1620152768828" duration="444000" />
-      <workItem from="1620153288961" duration="9929000" />
-      <workItem from="1620228347458" duration="33458000" />
+      <updated>1620226113349</updated>
+      <workItem from="1620226115138" duration="12000" />
+      <workItem from="1620226295678" duration="2352000" />
     </task>
-    <task id="LOCAL-00001" summary="ID text file has been added. team ido and raz :)">
-      <created>1615488571310</created>
+    <task id="LOCAL-00001" summary="merging tests">
+      <created>1620227247282</created>
       <option name="number" value="00001" />
       <option name="presentableId" value="LOCAL-00001" />
       <option name="project" value="LOCAL" />
-      <updated>1615488571310</updated>
+      <updated>1620227247283</updated>
     </task>
-    <task id="LOCAL-00002" summary="module name changed">
-      <created>1615658522886</created>
+    <task id="LOCAL-00002" summary="getDaysAndDrivers&#10;addDriverToShift&#10;isDriverAssigned&#10;driver  and truckingManager in role">
+      <created>1620251048815</created>
       <option name="number" value="00002" />
       <option name="presentableId" value="LOCAL-00002" />
       <option name="project" value="LOCAL" />
-      <updated>1615658522886</updated>
+      <updated>1620251048815</updated>
     </task>
-    <task id="LOCAL-00003" summary="Skeleton half made">
-      <created>1617044361731</created>
+    <task id="LOCAL-00003" summary="make sure no exceptions in the constructors">
+      <created>1620254041414</created>
       <option name="number" value="00003" />
       <option name="presentableId" value="LOCAL-00003" />
       <option name="project" value="LOCAL" />
-      <updated>1617044361731</updated>
+      <updated>1620254041414</updated>
     </task>
-    <task id="LOCAL-00004" summary="3rd demand has been added">
-      <created>1617046716000</created>
+    <task id="LOCAL-00004" summary="kosher super - cannot edit shifts in friday evening and saturday morning">
+      <created>1620254460870</created>
       <option name="number" value="00004" />
       <option name="presentableId" value="LOCAL-00004" />
       <option name="project" value="LOCAL" />
-      <updated>1617046716000</updated>
+      <updated>1620254460870</updated>
     </task>
-    <task id="LOCAL-00005" summary="skeleton has been fully completed, time to work :(">
-      <created>1617188946905</created>
+    <task id="LOCAL-00005" summary="when employee gives constraint - if it is a driver sends the details to Raz&amp;Ido">
+      <created>1620281038048</created>
       <option name="number" value="00005" />
       <option name="presentableId" value="LOCAL-00005" />
       <option name="project" value="LOCAL" />
-      <updated>1617188946905</updated>
+      <updated>1620281038048</updated>
     </task>
-    <task id="LOCAL-00006" summary="finished insert demand to report in menu printer">
-      <created>1617290764997</created>
+    <task id="LOCAL-00006" summary="adding a driver - get a name and send details to Raz&amp;Ido">
+      <created>1620281794164</created>
       <option name="number" value="00006" />
       <option name="presentableId" value="LOCAL-00006" />
       <option name="project" value="LOCAL" />
-      <updated>1617290764997</updated>
+      <updated>1620281794164</updated>
     </task>
-    <task id="LOCAL-00007" summary="finished writing Menu_Printer - need to check with businessLayer">
-      <created>1617316526174</created>
+    <task id="LOCAL-00007" summary="note when creating a shift without a shift manager">
+      <created>1620282853014</created>
       <option name="number" value="00007" />
       <option name="presentableId" value="LOCAL-00007" />
       <option name="project" value="LOCAL" />
-      <updated>1617316526174</updated>
+      <updated>1620282853014</updated>
     </task>
-    <task id="LOCAL-00008" summary="done with PresentationController by now, new methods added to bussiness layer">
-      <created>1617355495108</created>
+    <task id="LOCAL-00008" summary="shift creating - no drivers without store keeper">
+      <created>1620285755883</created>
       <option name="number" value="00008" />
       <option name="presentableId" value="LOCAL-00008" />
       <option name="project" value="LOCAL" />
-      <updated>1617355495108</updated>
+      <updated>1620285755883</updated>
     </task>
-    <task id="LOCAL-00009" summary="some fixed in PresentationController, last methods has been made, TODO added to business layer">
-      <created>1617365080297</created>
+    <task id="LOCAL-00009" summary="create data - add driver">
+      <created>1620301473454</created>
       <option name="number" value="00009" />
       <option name="presentableId" value="LOCAL-00009" />
       <option name="project" value="LOCAL" />
-      <updated>1617365080298</updated>
+      <updated>1620301473454</updated>
     </task>
-    <task id="LOCAL-00010" summary="finished Facade layer and Presentation layer. waiting for combine with business layer to tests.&#10;&#10;** Unit test haven't done yet.&#10;** NTH didn't accomplished yet">
-      <created>1617379529536</created>
+    <task id="LOCAL-00010" summary="shift options - only 0,1,2&#10;date - checking if it is sunday&#10;login - trucking manager&#10;logout and login right after">
+      <created>1620306858187</created>
       <option name="number" value="00010" />
       <option name="presentableId" value="LOCAL-00010" />
       <option name="project" value="LOCAL" />
-      <updated>1617379529536</updated>
+      <updated>1620306858187</updated>
     </task>
-    <task id="LOCAL-00011" summary="after combine meeting.">
-      <created>1617442640772</created>
+    <task id="LOCAL-00011" summary="\n">
+      <created>1620307883965</created>
       <option name="number" value="00011" />
       <option name="presentableId" value="LOCAL-00011" />
       <option name="project" value="LOCAL" />
-      <updated>1617442640772</updated>
+      <updated>1620307883965</updated>
     </task>
-    <task id="LOCAL-00012" summary="replan changed">
-      <created>1617448511041</created>
-      <option name="number" value="00012" />
-      <option name="presentableId" value="LOCAL-00012" />
-      <option name="project" value="LOCAL" />
-      <updated>1617448511041</updated>
-    </task>
-    <task id="LOCAL-00013" summary="** compilation error exist. need to add getItems in Delivery service">
-      <created>1617449982865</created>
-      <option name="number" value="00013" />
-      <option name="presentableId" value="LOCAL-00013" />
-      <option name="project" value="LOCAL" />
-      <updated>1617449982865</updated>
-    </task>
-    <task id="LOCAL-00014" summary="Facade objects has been completed">
-      <created>1617549120191</created>
-      <option name="number" value="00014" />
-      <option name="presentableId" value="LOCAL-00014" />
-      <option name="project" value="LOCAL" />
-      <updated>1617549120191</updated>
-    </task>
-    <task id="LOCAL-00015" summary="merged before tests">
-      <created>1617557389459</created>
-      <option name="number" value="00015" />
-      <option name="presentableId" value="LOCAL-00015" />
-      <option name="project" value="LOCAL" />
-      <updated>1617557389459</updated>
-    </task>
-    <task id="LOCAL-00016" summary="First test has been done - ido left to do Menu test.&#10;Raz has left with everything else because he is such a dick&#10;Love you raz">
-      <created>1617566004636</created>
-      <option name="number" value="00016" />
-      <option name="presentableId" value="LOCAL-00016" />
-      <option name="project" value="LOCAL" />
-      <updated>1617566004636</updated>
-    </task>
-    <task id="LOCAL-00017" summary="fixed input exceptions">
-      <created>1617711142345</created>
-      <option name="number" value="00017" />
-      <option name="presentableId" value="LOCAL-00017" />
-      <option name="project" value="LOCAL" />
-      <updated>1617711142345</updated>
-    </task>
-    <task id="LOCAL-00018" summary="initalize test method has been improved. String scanner exception has been cought">
-      <created>1617715420665</created>
-      <option name="number" value="00018" />
-      <option name="presentableId" value="LOCAL-00018" />
-      <option name="project" value="LOCAL" />
-      <updated>1617715420665</updated>
-    </task>
-    <task id="LOCAL-00019" summary="TODO has been added to both branche's job">
-      <created>1617715973615</created>
-      <option name="number" value="00019" />
-      <option name="presentableId" value="LOCAL-00019" />
-      <option name="project" value="LOCAL" />
-      <updated>1617715973615</updated>
-    </task>
-    <task id="LOCAL-00020" summary="DF active has been added">
-      <created>1617782711922</created>
-      <option name="number" value="00020" />
-      <option name="presentableId" value="LOCAL-00020" />
-      <option name="project" value="LOCAL" />
-      <updated>1617782711922</updated>
-    </task>
-    <task id="LOCAL-00021" summary="DF active has been added">
-      <created>1617783487004</created>
-      <option name="number" value="00021" />
-      <option name="presentableId" value="LOCAL-00021" />
-      <option name="project" value="LOCAL" />
-      <updated>1617783487004</updated>
-    </task>
-    <task id="LOCAL-00022" summary="updateDeliveryForm has been added">
-      <created>1617788487524</created>
-      <option name="number" value="00022" />
-      <option name="presentableId" value="LOCAL-00022" />
-      <option name="project" value="LOCAL" />
-      <updated>1617788487524</updated>
-    </task>
-    <task id="LOCAL-00023" summary="updateDeliveryForm has been added">
-      <created>1617794617070</created>
-      <option name="number" value="00023" />
-      <option name="presentableId" value="LOCAL-00023" />
-      <option name="project" value="LOCAL" />
-      <updated>1617794617070</updated>
-    </task>
-    <task id="LOCAL-00024" summary="updateDeliveryForm has been added">
-      <created>1617797511295</created>
-      <option name="number" value="00024" />
-      <option name="presentableId" value="LOCAL-00024" />
-      <option name="project" value="LOCAL" />
-      <updated>1617797511296</updated>
-    </task>
-    <task id="LOCAL-00025" summary="menu printer has been updated, all exception catched">
-      <created>1617827344959</created>
-      <option name="number" value="00025" />
-      <option name="presentableId" value="LOCAL-00025" />
-      <option name="project" value="LOCAL" />
-      <updated>1617827344959</updated>
-    </task>
-    <task id="LOCAL-00026" summary="menu printer has been updated, all exception catched">
-      <created>1617830902413</created>
-      <option name="number" value="00026" />
-      <option name="presentableId" value="LOCAL-00026" />
-      <option name="project" value="LOCAL" />
-      <updated>1617830902413</updated>
-    </task>
-    <task id="LOCAL-00027" summary="menu printer has been updated, all exception catched">
-      <created>1617865506806</created>
-      <option name="number" value="00027" />
-      <option name="presentableId" value="LOCAL-00027" />
-      <option name="project" value="LOCAL" />
-      <updated>1617865506806</updated>
-    </task>
-    <task id="LOCAL-00028" summary="menu printer has been updated, all exception catched">
-      <created>1617866516208</created>
-      <option name="number" value="00028" />
-      <option name="presentableId" value="LOCAL-00028" />
-      <option name="project" value="LOCAL" />
-      <updated>1617866516208</updated>
-    </task>
-    <task id="LOCAL-00029" summary="menu printer method has been updated">
-      <created>1617867431184</created>
-      <option name="number" value="00029" />
-      <option name="presentableId" value="LOCAL-00029" />
-      <option name="project" value="LOCAL" />
-      <updated>1617867431184</updated>
-    </task>
-    <task id="LOCAL-00030" summary="remove site from pool option added">
-      <created>1617868967243</created>
-      <option name="number" value="00030" />
-      <option name="presentableId" value="LOCAL-00030" />
-      <option name="project" value="LOCAL" />
-      <updated>1617868967243</updated>
-    </task>
-    <task id="LOCAL-00031" summary="date added to AddDemand">
-      <created>1617873405041</created>
-      <option name="number" value="00031" />
-      <option name="presentableId" value="LOCAL-00031" />
-      <option name="project" value="LOCAL" />
-      <updated>1617873405041</updated>
-    </task>
-    <task id="LOCAL-00032" summary="Finnally merged, re testing">
-      <created>1617875911735</created>
-      <option name="number" value="00032" />
-      <option name="presentableId" value="LOCAL-00032" />
-      <option name="project" value="LOCAL" />
-      <updated>1617875911735</updated>
-    </task>
-    <task id="LOCAL-00033" summary="Finnally merged, re testing">
-      <created>1617888225427</created>
-      <option name="number" value="00033" />
-      <option name="presentableId" value="LOCAL-00033" />
-      <option name="project" value="LOCAL" />
-      <updated>1617888225427</updated>
-    </task>
-    <task id="LOCAL-00034" summary="first step test, passed">
-      <created>1617893615283</created>
-      <option name="number" value="00034" />
-      <option name="presentableId" value="LOCAL-00034" />
-      <option name="project" value="LOCAL" />
-      <updated>1617893615283</updated>
-    </task>
-    <task id="LOCAL-00035" summary="remove Demand has been added">
-      <created>1617899185018</created>
-      <option name="number" value="00035" />
-      <option name="presentableId" value="LOCAL-00035" />
-      <option name="project" value="LOCAL" />
-      <updated>1617899185018</updated>
-    </task>
-    <task id="LOCAL-00036" summary="remove Demand has been added">
-      <created>1617902532984</created>
-      <option name="number" value="00036" />
-      <option name="presentableId" value="LOCAL-00036" />
-      <option name="project" value="LOCAL" />
-      <updated>1617902532984</updated>
-    </task>
-    <task id="LOCAL-00037" summary="replan to be improved">
-      <created>1617930237681</created>
-      <option name="number" value="00037" />
-      <option name="presentableId" value="LOCAL-00037" />
-      <option name="project" value="LOCAL" />
-      <updated>1617930237681</updated>
-    </task>
-    <task id="LOCAL-00038" summary="all method save finnnalyyy">
-      <created>1617983734990</created>
-      <option name="number" value="00038" />
-      <option name="presentableId" value="LOCAL-00038" />
-      <option name="project" value="LOCAL" />
-      <updated>1617983734990</updated>
-    </task>
-    <task id="LOCAL-00039" summary="finished to upload">
-      <created>1617986325475</created>
-      <option name="number" value="00039" />
-      <option name="presentableId" value="LOCAL-00039" />
-      <option name="project" value="LOCAL" />
-      <updated>1617986325475</updated>
-    </task>
-    <task id="LOCAL-00040" summary="Fixed intiate method">
-      <created>1617987095296</created>
-      <option name="number" value="00040" />
-      <option name="presentableId" value="LOCAL-00040" />
-      <option name="project" value="LOCAL" />
-      <updated>1617987095296</updated>
-    </task>
-    <task id="LOCAL-00041" summary="last update">
-      <created>1617992627648</created>
-      <option name="number" value="00041" />
-      <option name="presentableId" value="LOCAL-00041" />
-      <option name="project" value="LOCAL" />
-      <updated>1617992627648</updated>
-    </task>
-    <task id="LOCAL-00042" summary="modules has been merged. Workers and Trucking">
-      <created>1619795143227</created>
-      <option name="number" value="00042" />
-      <option name="presentableId" value="LOCAL-00042" />
-      <option name="project" value="LOCAL" />
-      <updated>1619795143227</updated>
-    </task>
-    <task id="LOCAL-00043" summary="getDaysAndDrivers has been updated">
-      <created>1620304473236</created>
-      <option name="number" value="00043" />
-      <option name="presentableId" value="LOCAL-00043" />
-      <option name="project" value="LOCAL" />
-      <updated>1620304473236</updated>
-    </task>
-    <task id="LOCAL-00044" summary="delete and add Constraints has been added">
-      <created>1620305528593</created>
-      <option name="number" value="00044" />
-      <option name="presentableId" value="LOCAL-00044" />
-      <option name="project" value="LOCAL" />
-      <updated>1620305528593</updated>
-    </task>
-    <task id="LOCAL-00045" summary="splitted menu has been made">
-      <created>1620321358632</created>
-      <option name="number" value="00045" />
-      <option name="presentableId" value="LOCAL-00045" />
-      <option name="project" value="LOCAL" />
-      <updated>1620321358632</updated>
-    </task>
-    <task id="LOCAL-00046" summary="save report and choose dirver and truck updated">
-      <created>1620325590180</created>
-      <option name="number" value="00046" />
-      <option name="presentableId" value="LOCAL-00046" />
-      <option name="project" value="LOCAL" />
-      <updated>1620325590180</updated>
-    </task>
-    <task id="LOCAL-00047" summary="add/Delete Constraint and getDaysAndDrivers has been updated.&#10;finished for now">
-      <created>1620328900183</created>
-      <option name="number" value="00047" />
-      <option name="presentableId" value="LOCAL-00047" />
-      <option name="project" value="LOCAL" />
-      <updated>1620328900183</updated>
-    </task>
-    <task id="LOCAL-00048" summary="delete avaiable fields and make available\unavaiable">
-      <created>1620332597470</created>
-      <option name="number" value="00048" />
-      <option name="presentableId" value="LOCAL-00048" />
-      <option name="project" value="LOCAL" />
-      <updated>1620332597470</updated>
-    </task>
-    <task id="LOCAL-00049" summary="after merge with employee's bussines layer">
-      <created>1620333425213</created>
-      <option name="number" value="00049" />
-      <option name="presentableId" value="LOCAL-00049" />
-      <option name="project" value="LOCAL" />
-      <updated>1620333425213</updated>
-    </task>
-    <option name="localTasksCounter" value="50" />
+    <option name="localTasksCounter" value="12" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
-    <option name="TAB_STATES">
-      <map>
-        <entry key="MAIN">
-          <value>
-            <State />
-          </value>
-        </entry>
-      </map>
-    </option>
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="fixed input exceptions" />
-    <MESSAGE value="initalize test method has been improved. String scanner exception has been cought" />
-    <MESSAGE value="TODO has been added to both branche's job" />
-    <MESSAGE value="DF active has been added" />
-    <MESSAGE value="updateDeliveryForm has been added" />
-    <MESSAGE value="menu printer has been updated, all exception catched" />
-    <MESSAGE value="menu printer method has been updated" />
-    <MESSAGE value="remove site from pool option added" />
-    <MESSAGE value="date added to AddDemand" />
-    <MESSAGE value="Finnally merged, re testing" />
-    <MESSAGE value="first step test, passed" />
-    <MESSAGE value="remove Demand has been added" />
-    <MESSAGE value="replan to be improved" />
-    <MESSAGE value="all method save finnnalyyy" />
-    <MESSAGE value="finished to upload" />
-    <MESSAGE value="Fixed intiate method" />
-    <MESSAGE value="last update" />
-    <MESSAGE value="modules has been merged. Workers and Trucking" />
-    <MESSAGE value="getDaysAndDrivers has been updated" />
-    <MESSAGE value="delete and add Constraints has been added" />
-    <MESSAGE value="splitted menu has been made" />
-    <MESSAGE value="save report and choose dirver and truck updated" />
-    <MESSAGE value="add/Delete Constraint and getDaysAndDrivers has been updated.&#10;finished for now" />
-    <MESSAGE value="delete avaiable fields and make available\unavaiable" />
-    <MESSAGE value="after merge with employee's bussines layer" />
-    <option name="LAST_COMMIT_MESSAGE" value="after merge with employee's bussines layer" />
+    <MESSAGE value="Merge branch '203834734_206117400_314978925_315994442' into 2.2Employees&#10;&#10;# Conflicts:&#10;#&#9;.idea/.gitignore&#10;#&#9;.idea/misc.xml&#10;#&#9;.idea/vcs.xml" />
+    <MESSAGE value="merging tests" />
+    <MESSAGE value="getDaysAndDrivers&#10;addDriverToShift&#10;isDriverAssigned&#10;driver  and truckingManager in role" />
+    <MESSAGE value="make sure no exceptions in the constructors" />
+    <MESSAGE value="kosher super - cannot edit shifts in friday evening and saturday morning" />
+    <MESSAGE value="when employee gives constraint - if it is a driver sends the details to Raz&amp;Ido" />
+    <MESSAGE value="adding a driver - get a name and send details to Raz&amp;Ido" />
+    <MESSAGE value="note when creating a shift without a shift manager" />
+    <MESSAGE value="shift creating - no drivers without store keeper" />
+    <MESSAGE value="create data - add driver" />
+    <MESSAGE value="shift options - only 0,1,2&#10;date - checking if it is sunday&#10;login - trucking manager&#10;logout and login right after" />
+    <MESSAGE value="\n" />
+    <option name="LAST_COMMIT_MESSAGE" value="\n" />
   </component>
   <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/dev/src/Employees/business_layer/facade/ShiftService.java</url>
+          <line>97</line>
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/dev/src/Employees/business_layer/Employee/EmployeeController.java</url>
+          <line>184</line>
+          <option name="timeStamp" value="2" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
     <pin-to-top-manager>
       <pinned-members>
         <PinnedItemInfo parentTag="java.lang.Integer" memberName="value" />
