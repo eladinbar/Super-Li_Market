@@ -2,14 +2,9 @@ package DataAccessLayer.DalControllers.InventoryControllers;
 
 import DataAccessLayer.DalControllers.DalController;
 import DataAccessLayer.DalObjects.InventoryObjects.Category;
-import DataAccessLayer.DalObjects.InventoryObjects.CategorySale;
 import DataAccessLayer.DalObjects.InventoryObjects.Item;
-import DataAccessLayer.DalObjects.InventoryObjects.ItemSale;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
+import java.sql.*;
 
 import static DataAccessLayer.DalControllers.InventoryControllers.CategoryDalController.CATEGORY_TABLE_NAME;
 
@@ -38,6 +33,7 @@ public class ItemDalController extends DalController<Item> {
         try (Connection conn = DriverManager.getConnection(connectionString)) {
             String command = "CREATE TABLE IF NOT EXISTS " + tableName + " (" +
                     Item.itemIdColumnName + " INTEGER NOT NULL," +
+                    Item.itemNameColumnName + "TEXT," +
                     Item.costPriceColumnName + " REAL DEFAULT 0 NOT NULL," +
                     Item.sellingPriceColumnName + " REAL DEFAULT 0 NOT NULL," +
                     Item.manufacturerIdColumnName + " INTEGER NOT NULL," +
@@ -49,7 +45,7 @@ public class ItemDalController extends DalController<Item> {
                     Item.categoryNameColumnName + " TEXT NOT NULL," +
                     "PRIMARY KEY (" + Item.itemIdColumnName + ")," +
                     "FOREIGN KEY (" + Item.categoryNameColumnName + ")" +
-                    "REFERENCES " + Category.categoryNameColumnName + " (" + CATEGORY_TABLE_NAME + ") ON DELETE NO ACTION," +
+                    "REFERENCES " + Category.categoryNameColumnName + " (" + CATEGORY_TABLE_NAME + ") ON DELETE CASCADE," +
                     "CONSTRAINT Natural_Number CHECK (" + Item.costPriceColumnName + ">= 0 AND " + Item.sellingPriceColumnName + ">=0 AND " +
                     Item.minAmountColumnName + ">=0 AND " + Item.shelfQuantityColumnName + ">=0 AND " + Item.storageQuantityColumnName + ">=0)" +
                     ");";
@@ -67,18 +63,19 @@ public class ItemDalController extends DalController<Item> {
     public boolean insert(Item item) throws SQLException {
         System.out.println("Initiating " + tableName + " insert.");
         try (Connection conn = DriverManager.getConnection(connectionString)) {
-            String query = "INSERT INTO " + tableName + " VALUES (?,?, ?, ?, ?, ?,?, ?, ?, ?)";
+            String query = "INSERT INTO " + tableName + " VALUES (?,?, ?, ?, ?, ?,?, ?, ?, ?, ?)";
             PreparedStatement stmt = conn.prepareStatement(query);
             stmt.setInt(1, item.getItemID());
-            stmt.setDouble(2, item.getCostPrice());
-            stmt.setDouble(3, item.getSellingPrice());
-            stmt.setInt(4, item.getManufacturerID());
-            stmt.setInt(5, item.getMinAmount());
-            stmt.setInt(6, item.getShelfQuantity());
-            stmt.setInt(7, item.getStorageQuantity());
-            stmt.setString(8, item.getShelfLocation());
-            stmt.setString(9, item.getStorageLocation());
-            stmt.setString(10, item.getCategoryName());
+            stmt.setString(2, item.getName());
+            stmt.setDouble(3, item.getCostPrice());
+            stmt.setDouble(4, item.getSellingPrice());
+            stmt.setInt(5, item.getManufacturerID());
+            stmt.setInt(6, item.getMinAmount());
+            stmt.setInt(7, item.getShelfQuantity());
+            stmt.setInt(8, item.getStorageQuantity());
+            stmt.setString(9, item.getShelfLocation());
+            stmt.setString(10, item.getStorageLocation());
+            stmt.setString(11, item.getCategoryName());
             System.out.println("Executing " + tableName + " insert.");
             stmt.executeUpdate();
         } catch (SQLException ex) {
@@ -104,24 +101,25 @@ public class ItemDalController extends DalController<Item> {
     @Override
     public boolean update(Item item) throws SQLException {
         try (Connection conn = DriverManager.getConnection(connectionString)) {
-            String query = "UPDATE " + tableName + " SET " + Item.costPriceColumnName + "=?, " +
-                    Item.sellingPriceColumnName + "=?, " + Item.manufacturerIdColumnName + "=?, " +
-                    Item.minAmountColumnName + "=?, " + Item.shelfQuantityColumnName + "=?, " +
-                    Item.storageQuantityColumnName + "=?, " + Item.shelfLocationColumnName + "=?, " +
-                    Item.storageLocationColumnName + "=?, " + Item.categoryNameColumnName +
-                    "=? WHERE(" + Item.itemIdColumnName + "=?)";
+            String query = "UPDATE " + tableName + " SET " + Item.itemNameColumnName + "=?," +
+                    Item.costPriceColumnName + "=?, " + Item.sellingPriceColumnName + "=?, " +
+                    Item.manufacturerIdColumnName + "=?, " + Item.minAmountColumnName + "=?, " +
+                    Item.shelfQuantityColumnName + "=?, " + Item.storageQuantityColumnName + "=?, " +
+                    Item.shelfLocationColumnName + "=?, " + Item.storageLocationColumnName + "=?, " +
+                    Item.categoryNameColumnName + "=? WHERE(" + Item.itemIdColumnName + "=?)";
             PreparedStatement stmt = conn.prepareStatement(query);
 
-            stmt.setDouble(1, item.getCostPrice());
-            stmt.setDouble(2, item.getSellingPrice());
-            stmt.setInt(3, item.getManufacturerID());
-            stmt.setInt(4, item.getMinAmount());
-            stmt.setInt(5, item.getShelfQuantity());
-            stmt.setInt(6, item.getStorageQuantity());
-            stmt.setString(7, item.getShelfLocation());
-            stmt.setString(8, item.getStorageLocation());
-            stmt.setString(9, item.getCategoryName());
-            stmt.setInt(10, item.getItemID());
+            stmt.setString(1, item.getName());
+            stmt.setDouble(2, item.getCostPrice());
+            stmt.setDouble(3, item.getSellingPrice());
+            stmt.setInt(4, item.getManufacturerID());
+            stmt.setInt(5, item.getMinAmount());
+            stmt.setInt(6, item.getShelfQuantity());
+            stmt.setInt(7, item.getStorageQuantity());
+            stmt.setString(8, item.getShelfLocation());
+            stmt.setString(9, item.getStorageLocation());
+            stmt.setString(10, item.getCategoryName());
+            stmt.setInt(11, item.getItemID());
             stmt.executeUpdate();
         } catch (SQLException ex) {
             throw new SQLException(ex.getMessage());
@@ -130,7 +128,33 @@ public class ItemDalController extends DalController<Item> {
     }
 
     @Override
-    public Item select(Item item) {
-        return null;
+    public Item select(Item item) throws SQLException {
+        Item savedItem = new Item(item.getItemID(), null, 0, 0, 0, 0, 0, 0,
+                null, null, null);
+        try (Connection conn = DriverManager.getConnection(connectionString)) {
+            String query = "SELECT * FROM " + tableName;
+            PreparedStatement stmt = conn.prepareStatement(query);
+            ResultSet resultSet = stmt.executeQuery(query);
+            while (resultSet.next())
+            {
+                boolean isDesired = resultSet.getInt(0) == item.getItemID();
+                if (isDesired) {
+                    savedItem.setName(resultSet.getString(1));
+                    savedItem.setCostPrice(resultSet.getDouble(2));
+                    savedItem.setSellingPrice(resultSet.getDouble(3));
+                    savedItem.setManufacturerID(resultSet.getInt(4));
+                    savedItem.setMinAmount(resultSet.getInt(5));
+                    savedItem.setShelfQuantity(resultSet.getInt(6));
+                    savedItem.setStorageQuantity(resultSet.getInt(7));
+                    savedItem.setShelfLocation(resultSet.getString(8));
+                    savedItem.setStorageLocation(resultSet.getString(9));
+                    savedItem.setCategoryName(resultSet.getString(10));
+                    break; //Desired item found
+                }
+            }
+        } catch (SQLException ex) {
+            throw new SQLException(ex.getMessage());
+        }
+        return savedItem;
     }
 }

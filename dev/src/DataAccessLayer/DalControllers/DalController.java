@@ -56,5 +56,5 @@ public abstract class DalController<T extends DalObject<T>>{
     </summary>
      <param name="dalObject">The object to select from the database.</param>
      <returns>Returns a DalObject that extends DalObject<T>.</returns> */
-    public abstract T select(T dalObject);
+    public abstract T select(T dalObject) throws SQLException;
 }

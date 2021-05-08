@@ -18,7 +18,7 @@ public class CategorySale extends DalObject<CategorySale> {
     private String endSaleDate;
     private String categoryName;
 
-    protected CategorySale(String name, double discount, String startSaleDate, String endSaleDate, String categoryName) throws SQLException {
+    public CategorySale(String name, double discount, String startSaleDate, String endSaleDate, String categoryName) throws SQLException {
         super(CategorySaleDalController.getInstance());
         this.name = name;
         this.discount = discount;

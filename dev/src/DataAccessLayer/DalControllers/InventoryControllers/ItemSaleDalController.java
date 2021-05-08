@@ -1,14 +1,10 @@
 package DataAccessLayer.DalControllers.InventoryControllers;
 
 import DataAccessLayer.DalControllers.DalController;
-import DataAccessLayer.DalObjects.InventoryObjects.CategorySale;
 import DataAccessLayer.DalObjects.InventoryObjects.Item;
 import DataAccessLayer.DalObjects.InventoryObjects.ItemSale;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
+import java.sql.*;
 
 import static DataAccessLayer.DalControllers.InventoryControllers.ItemDalController.ITEM_TABLE_NAME;
 
@@ -112,7 +108,26 @@ public class ItemSaleDalController extends DalController<ItemSale> {
     }
 
     @Override
-    public ItemSale select(ItemSale itemSale) {
-        return null;
+    public ItemSale select(ItemSale itemSale) throws SQLException {
+        ItemSale savedCategorySale = new ItemSale(itemSale.getName(), 0, null, null, 0);
+        try (Connection conn = DriverManager.getConnection(connectionString)) {
+            String query = "SELECT * FROM " + tableName;
+            PreparedStatement stmt = conn.prepareStatement(query);
+            ResultSet resultSet = stmt.executeQuery(query);
+            while (resultSet.next())
+            {
+                boolean isDesired = resultSet.getString(0).equals(itemSale.getName());
+                if (isDesired) {
+                    savedCategorySale.setDiscount(resultSet.getInt(1));
+                    savedCategorySale.setStartSaleDate(resultSet.getString(2));
+                    savedCategorySale.setEndSaleDate(resultSet.getString(3));
+                    savedCategorySale.setItemID(resultSet.getInt(4));
+                    break; //Desired item sale found
+                }
+            }
+        } catch (SQLException ex) {
+            throw new SQLException(ex.getMessage());
+        }
+        return savedCategorySale;
     }
 }

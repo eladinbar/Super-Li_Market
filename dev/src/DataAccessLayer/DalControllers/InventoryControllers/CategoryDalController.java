@@ -3,10 +3,7 @@ package DataAccessLayer.DalControllers.InventoryControllers;
 import DataAccessLayer.DalControllers.DalController;
 import DataAccessLayer.DalObjects.InventoryObjects.Category;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
+import java.sql.*;
 
 public class CategoryDalController extends DalController<Category> {
     private static CategoryDalController instance = null;
@@ -94,7 +91,23 @@ public class CategoryDalController extends DalController<Category> {
     }
 
     @Override
-    public Category select(Category category) {
-        return null;
+    public Category select(Category category) throws SQLException {
+        Category savedCategory = new Category(category.getName(), null);
+        try (Connection conn = DriverManager.getConnection(connectionString)) {
+            String query = "SELECT * FROM " + tableName;
+            PreparedStatement stmt = conn.prepareStatement(query);
+            ResultSet resultSet = stmt.executeQuery(query);
+            while (resultSet.next())
+            {
+                boolean isDesired = resultSet.getString(0).equals(category.getName());
+                if (isDesired) {
+                    savedCategory.setParentName(resultSet.getString(1));
+                    break; //Desired category found
+                }
+            }
+        } catch (SQLException ex) {
+            throw new SQLException(ex.getMessage());
+        }
+        return savedCategory;
     }
 }

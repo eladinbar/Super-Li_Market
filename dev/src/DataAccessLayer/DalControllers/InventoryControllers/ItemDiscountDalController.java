@@ -1,15 +1,11 @@
 package DataAccessLayer.DalControllers.InventoryControllers;
 
 import DataAccessLayer.DalControllers.DalController;
-import DataAccessLayer.DalObjects.InventoryObjects.CategoryDiscount;
 import DataAccessLayer.DalObjects.InventoryObjects.Item;
 import DataAccessLayer.DalObjects.InventoryObjects.ItemDiscount;
 import DataAccessLayer.DalObjects.SupplierObjects.SupplierCard;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
+import java.sql.*;
 
 import static DataAccessLayer.DalControllers.InventoryControllers.ItemDalController.ITEM_TABLE_NAME;
 import static DataAccessLayer.DalControllers.SupplierControllers.SupplierCardDalController.SUPPLIER_CARD_TABLE_NAME;
@@ -45,9 +41,9 @@ public class ItemDiscountDalController extends DalController<ItemDiscount> {
                     ItemDiscount.itemIdColumnName + " INTEGER NOT NULL," +
                     "PRIMARY KEY (" + ItemDiscount.discountDateColumnName + ")," +
                     "FOREIGN KEY (" + ItemDiscount.supplierIdColumnName + ")" +
-                    "REFERENCES " + SupplierCard.supplierIdColumnName + " (" + SUPPLIER_CARD_TABLE_NAME + ") ON DELETE CASCADE," +
+                    "REFERENCES " + SupplierCard.supplierIdColumnName + " (" + SUPPLIER_CARD_TABLE_NAME + ") ON DELETE NO ACTION," +
                     "FOREIGN KEY (" + ItemDiscount.itemIdColumnName + ")" +
-                    "REFERENCES " + Item.itemIdColumnName + " (" + ITEM_TABLE_NAME + ") ON DELETE CASCADE," +
+                    "REFERENCES " + Item.itemIdColumnName + " (" + ITEM_TABLE_NAME + ") ON DELETE NO ACTION," +
                     "CONSTRAINT Natural_Number CHECK (" + ItemDiscount.discountColumnName + ">=0 AND " + ItemDiscount.itemCountColumnName + ">=0)" +
                     ");";
             PreparedStatement stmt = conn.prepareStatement(command);
@@ -114,7 +110,26 @@ public class ItemDiscountDalController extends DalController<ItemDiscount> {
     }
 
     @Override
-    public ItemDiscount select(ItemDiscount itemDiscount) {
-        return null;
+    public ItemDiscount select(ItemDiscount itemDiscount) throws SQLException {
+        ItemDiscount savedItemDiscount = new ItemDiscount(itemDiscount.getDiscountDate(), 0, 0, 0, 0);
+        try (Connection conn = DriverManager.getConnection(connectionString)) {
+            String query = "SELECT * FROM " + tableName;
+            PreparedStatement stmt = conn.prepareStatement(query);
+            ResultSet resultSet = stmt.executeQuery(query);
+            while (resultSet.next())
+            {
+                boolean isDesired = resultSet.getString(0).equals(itemDiscount.getDiscountDate());
+                if (isDesired) {
+                    savedItemDiscount.setDiscount(resultSet.getInt(1));
+                    savedItemDiscount.setItemCount(resultSet.getInt(2));
+                    savedItemDiscount.setSupplierID(resultSet.getInt(3));
+                    savedItemDiscount.setItemID(resultSet.getInt(4));
+                    break; //Desired item discount found
+                }
+            }
+        } catch (SQLException ex) {
+            throw new SQLException(ex.getMessage());
+        }
+        return savedItemDiscount;
     }
 }

@@ -7,6 +7,7 @@ import java.sql.SQLException;
 
 public class Item extends DalObject<Item> {
     public static final String itemIdColumnName = "Item_ID"; //Primary Key
+    public static final String itemNameColumnName = "Name";
     public static final String costPriceColumnName = "Cost_Price";
     public static final String sellingPriceColumnName = "Selling_Price";
     public static final String manufacturerIdColumnName = "Manufacturer_ID";
@@ -29,8 +30,8 @@ public class Item extends DalObject<Item> {
     private String storageLocation;
     private String categoryName;
 
-    protected Item(int itemID, String name, double costPrice, double sellingPrice, int manufacturerID, int minAmount,
-                   int shelfQuantity, int storageQuantity, String shelfLocation, String storageLocation, String categoryName) throws SQLException {
+    public Item(int itemID, String name, double costPrice, double sellingPrice, int manufacturerID, int minAmount,
+                int shelfQuantity, int storageQuantity, String shelfLocation, String storageLocation, String categoryName) throws SQLException {
         super(ItemDalController.getInstance());
         this.itemID = itemID;
         this.name = name;

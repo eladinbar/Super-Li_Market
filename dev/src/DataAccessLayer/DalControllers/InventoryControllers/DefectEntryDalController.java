@@ -3,10 +3,7 @@ package DataAccessLayer.DalControllers.InventoryControllers;
 import DataAccessLayer.DalControllers.DalController;
 import DataAccessLayer.DalObjects.InventoryObjects.*;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
+import java.sql.*;
 
 import static DataAccessLayer.DalControllers.InventoryControllers.ItemDalController.ITEM_TABLE_NAME;
 
@@ -40,7 +37,7 @@ public class DefectEntryDalController extends DalController<DefectEntry> {
                     DefectEntry.itemIdColumnName + " INTEGER NOT NULL," +
                     "PRIMARY KEY (" + DefectEntry.entryDateColumnName + ")," +
                     "FOREIGN KEY (" + DefectEntry.itemIdColumnName + ")" +
-                    "REFERENCES " + Item.itemIdColumnName + " (" + ITEM_TABLE_NAME + ") ON DELETE CASCADE," +
+                    "REFERENCES " + Item.itemIdColumnName + " (" + ITEM_TABLE_NAME + ") ON DELETE NO ACTION," +
                     "CONSTRAINT Natural_Number CHECK (" + DefectEntry.quantityColumnName + ">=0)" +
                     ");";
             PreparedStatement stmt = conn.prepareStatement(command);
@@ -105,7 +102,25 @@ public class DefectEntryDalController extends DalController<DefectEntry> {
     }
 
     @Override
-    public DefectEntry select(DefectEntry defectEntry) {
-        return null;
+    public DefectEntry select(DefectEntry defectEntry) throws SQLException {
+        DefectEntry savedDefectEntry = new DefectEntry(defectEntry.getEntryDate(), null, 0, 0);
+        try (Connection conn = DriverManager.getConnection(connectionString)) {
+            String query = "SELECT * FROM " + tableName;
+            PreparedStatement stmt = conn.prepareStatement(query);
+            ResultSet resultSet = stmt.executeQuery(query);
+            while (resultSet.next())
+            {
+                boolean isDesired = resultSet.getString(0).equals(defectEntry.getEntryDate());
+                if (isDesired) {
+                    savedDefectEntry.setLocation(resultSet.getString(1));
+                    savedDefectEntry.setQuantity(resultSet.getInt(2));
+                    savedDefectEntry.setItemID(resultSet.getInt(3));
+                    break; //Desired defect entry found
+                }
+            }
+        } catch (SQLException ex) {
+            throw new SQLException(ex.getMessage());
+        }
+        return savedDefectEntry;
     }
 }
