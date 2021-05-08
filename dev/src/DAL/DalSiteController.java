@@ -5,6 +5,8 @@ import java.util.LinkedList;
 
 public class DalSiteController extends DalController{
 
+    private static DalSiteController controller;
+
     private DalSiteController(){//TODO - Check when tables created
         super();
         this.tableName="Sites";
@@ -13,7 +15,9 @@ public class DalSiteController extends DalController{
         columnNames[3]="deliverArea";columnNames[4]="contactName";columnNames[5]="phoneNumber";}
 
     public static DalSiteController getInstance() {
-        return new DalSiteController();
+        if (controller==null)
+        controller= new DalSiteController();
+        return controller;
     }
 
     public boolean insert(DalSite dalSite) throws SQLException {
@@ -76,11 +80,10 @@ public class DalSiteController extends DalController{
 
     public boolean delete(DalSite dalSite) throws SQLException {
         Connection conn=DriverManager.getConnection("jdbc:sqlite:/D:\\Year2\\ניתוצ\\עבודה 2\\database.db");
-        String query="DELETE FROM "+tableName+" WHERE ?=? ";
+        String query="DELETE FROM "+tableName+" WHERE("+columnNames[0]+"=? ";
         try {
             PreparedStatement st=conn.prepareStatement(query);
-            st.setString(1,columnNames[0]);
-            st.setInt(2,dalSite.getSiteID());
+            st.setInt(1,dalSite.getSiteID());
             st.executeUpdate();
         }
         catch (SQLException e)

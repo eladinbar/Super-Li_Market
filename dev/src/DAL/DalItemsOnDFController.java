@@ -5,6 +5,8 @@ import java.util.LinkedList;
 
 public class DalItemsOnDFController extends DalController{
 
+    private static DalItemsOnDFController controller;
+
     private DalItemsOnDFController(){//TODO - Check when tables created
         super();
         this.tableName="ItemsOnDF";
@@ -13,7 +15,9 @@ public class DalItemsOnDFController extends DalController{
         columnNames[1]="itemID";columnNames[2]="amount";}
 
     public static DalItemsOnDFController getInstance() {
-        return new DalItemsOnDFController();
+        if (controller==null)
+         controller=new DalItemsOnDFController();
+        return controller;
     }
 
     public boolean insert(DalItemsOnDF dalItemsOnDF) throws SQLException {

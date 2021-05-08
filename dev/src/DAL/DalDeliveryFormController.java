@@ -7,6 +7,8 @@ import java.util.LinkedList;
 
 public class DalDeliveryFormController extends DalController {
 
+    private static DalDeliveryFormController controller;
+
     private DalDeliveryFormController(){
         //TODO - Check when tables created
         super();
@@ -17,7 +19,8 @@ public class DalDeliveryFormController extends DalController {
     }
 
      public static DalDeliveryFormController getInstance() {
-        return new DalDeliveryFormController();
+        if (controller==null) controller=new DalDeliveryFormController();
+        return controller;
     }
 
 
@@ -85,11 +88,10 @@ public class DalDeliveryFormController extends DalController {
 
     public boolean delete(DalDeliveryForm deliveryForm) throws SQLException {
         Connection conn=DriverManager.getConnection("jdbc:sqlite:/D:\\Year2\\ניתוצ\\עבודה 2\\database.db");
-        String query="DELETE FROM "+tableName+" WHERE ?=?";
+        String query="DELETE FROM "+tableName+" WHERE("+columnNames[0]+"=?)";
         try {
             PreparedStatement st=conn.prepareStatement(query);
-            st.setString(1,columnNames[0]);
-            st.setInt(2,deliveryForm.getID());
+            st.setInt(1,deliveryForm.getID());
             st.executeUpdate();
         }
         catch (SQLException e)

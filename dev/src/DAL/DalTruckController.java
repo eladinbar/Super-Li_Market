@@ -5,6 +5,8 @@ import java.util.LinkedList;
 
 public class DalTruckController extends DalController{
 
+    private static DalTruckController controller;
+
     private DalTruckController(){//TODO - Check when tables created
         super();
         this.tableName="Trucks";
@@ -13,7 +15,9 @@ public class DalTruckController extends DalController{
         columnNames[3]="maxWeight";}
 
     public static DalTruckController getInstance() {
-        return new DalTruckController();
+        if (controller==null)
+            controller= new DalTruckController();
+        return controller;
     }
 
     public boolean insert(DalTruck dalTruck) throws SQLException {

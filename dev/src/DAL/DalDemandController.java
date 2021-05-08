@@ -5,6 +5,8 @@ import java.util.LinkedList;
 
 public class DalDemandController extends DalController{
 
+    private static DalDemandController controller;
+
     private DalDemandController()
     {//TODO - Check when tables created
         super();
@@ -14,8 +16,9 @@ public class DalDemandController extends DalController{
     }
 
     public static DalDemandController getInstance() {
-        return new DalDemandController();
-        //TODO change to return instance!
+        if (controller==null) controller=new DalDemandController();
+        return controller;
+
     }
 
 

@@ -8,6 +8,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.LinkedList;
 
 public class DalTruckingReportController extends DalController {
+    private static DalTruckingReportController controller;
 
     private DalTruckingReportController(){
         super();
@@ -16,10 +17,13 @@ public class DalTruckingReportController extends DalController {
         columnNames[0]="ID";columnNames[1]="leavingHour";columnNames[2]="date";
         columnNames[3]="truckNumber";columnNames[4]="driverID";columnNames[5]="origin";
         columnNames[6]="completed";columnNames[7]="replaceTRID";
+
     }
 
     public static DalTruckingReportController getInstance() {
-        return new DalTruckingReportController();
+        if (controller==null)
+        controller= new DalTruckingReportController();
+        return controller;
     }
 
     public boolean insert(DalTruckingReport truckingReport) throws SQLException {
@@ -95,13 +99,11 @@ public class DalTruckingReportController extends DalController {
     }
 
     public boolean delete(DalTruckingReport truckingReport) throws SQLException {
-        ResultSet resultSet;
         Connection conn=DriverManager.getConnection("jdbc:sqlite:/D:\\Year2\\ניתוצ\\עבודה 2\\database.db");
-        String query="DELETE FROM "+tableName+ " WHERE ID=1";
+        String query="DELETE FROM "+tableName+ " WHERE"+columnNames[0]+"=?";
         try {
             PreparedStatement st=conn.prepareStatement(query);
-            //st.setString(1,columnNames[0]);
-            //st.setInt(2,truckingReport.getID());
+            st.setInt(1,truckingReport.getID());
             st.executeUpdate();
         }
         catch (SQLException e)
