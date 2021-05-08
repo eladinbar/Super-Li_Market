@@ -2,9 +2,13 @@ package BusinessLayer.InventoryPackage.DefectsPackage;
 
 import BusinessLayer.InventoryPackage.Location;
 
+import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 public class DefectEntry {
+    private DataAccessLayer.DalObjects.InventoryObjects.DefectEntry dalCopyDefectEntry;
+
     private int itemID;
     private String itemName;
     private Calendar entryDate;
@@ -45,5 +49,14 @@ public class DefectEntry {
 
     public String getLocation() {
         return location.getShelfLocation() != null ? location.getShelfLocation() : location.getStorageLocation();
+    }
+
+    public void save() throws SQLException {
+        Calendar date = getEntryDate();
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        String formattedDate = format.format(date.getTime());
+
+        dalCopyDefectEntry = new DataAccessLayer.DalObjects.InventoryObjects.DefectEntry(formattedDate, itemID, getLocation(), quantity);
+        dalCopyDefectEntry.save();
     }
 }

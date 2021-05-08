@@ -1,8 +1,11 @@
 package BusinessLayer.InventoryPackage;
 
+import java.sql.SQLException;
 import java.util.List;
 
 public class Item {
+    private DataAccessLayer.DalObjects.InventoryObjects.Item dalCopyItem;
+
     private int ID;
     private String name;
     private double costPrice;
@@ -114,5 +117,11 @@ public class Item {
 
     public void setStorageLocation(String storageLocation) {
         this.location.setStorageLocation(storageLocation);
+    }
+
+    public void save(String categoryName) throws SQLException {
+        dalCopyItem = new DataAccessLayer.DalObjects.InventoryObjects.Item(ID, name, costPrice, sellingPrice, manufacturerID, minAmount,
+                getShelfQuantity(), getStorageQuantity(), getShelfLocation(), getStorageLocation(), categoryName);
+        dalCopyItem.save();
     }
 }

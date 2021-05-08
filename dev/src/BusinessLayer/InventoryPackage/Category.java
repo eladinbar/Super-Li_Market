@@ -1,9 +1,12 @@
 package BusinessLayer.InventoryPackage;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
 public class Category {
+    private DataAccessLayer.DalObjects.InventoryObjects.Category dalCopyCategory;
+
     private String name;
     private final List<Item> items;
     private Category parentCategory;
@@ -61,5 +64,10 @@ public class Category {
 
     public void removeSubCategory(Category subCategory) {
         this.subCategories.remove(subCategory);
+    }
+
+    public void save() throws SQLException {
+        dalCopyCategory = new DataAccessLayer.DalObjects.InventoryObjects.Category(this.name, this.parentCategory.name);
+        dalCopyCategory.save();
     }
 }

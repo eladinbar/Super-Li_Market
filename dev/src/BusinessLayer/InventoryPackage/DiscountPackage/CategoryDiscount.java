@@ -2,21 +2,17 @@ package BusinessLayer.InventoryPackage.DiscountPackage;
 
 import BusinessLayer.InventoryPackage.Category;
 
+import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 public class CategoryDiscount extends Discount{
+    private DataAccessLayer.DalObjects.InventoryObjects.CategoryDiscount dalCopyCategoryDiscount;
+
     Category category;
 
     public CategoryDiscount(int supplierID, double discount, Calendar date, int itemCount, Category category) {
-        this.supplierID = supplierID;
-        this.discount = discount;
-        this.date = date;
-        //Remove redundant time from dates
-        date.clear(Calendar.MILLISECOND);
-        date.clear(Calendar.SECOND);
-        date.clear(Calendar.MINUTE);
-        date.clear(Calendar.HOUR);
-        this.itemCount = itemCount;
+        super(supplierID, discount, date, itemCount);
         this.category = category;
     }
 
@@ -26,5 +22,14 @@ public class CategoryDiscount extends Discount{
 
     public void setCategory(Category category) {
         this.category = category;
+    }
+
+    public void save() throws SQLException {
+        Calendar date = getDate();
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        String formattedDate = format.format(date.getTime());
+
+        dalCopyCategoryDiscount = new DataAccessLayer.DalObjects.InventoryObjects.CategoryDiscount(formattedDate, supplierID, category.getName(), discount, itemCount);
+        dalCopyCategoryDiscount.save();
     }
 }
