@@ -13,7 +13,7 @@ public class Order extends DalObject<Order> {
     public static final String orderIdColumnName = "Order_ID";
     public static final String dateColumnName = "Date";
     public static final String deliveredColumnName = "Delivered";
-    private int id;
+    private int id; //primary key
     private LocalDate date;
     private boolean delivered;
 

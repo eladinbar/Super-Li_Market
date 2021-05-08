@@ -15,7 +15,7 @@ public class PersonCard extends DalObject<PersonCard> {
     private String firstName;
     private String lastName;
     private String email;
-    private String id;
+    private String id; //primary key
     private String phone;
 
     public PersonCard(String firstName, String lastName, String email, String id, String phone) throws SQLException {

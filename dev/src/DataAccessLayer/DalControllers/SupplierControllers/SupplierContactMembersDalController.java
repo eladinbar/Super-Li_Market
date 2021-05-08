@@ -1,8 +1,13 @@
 package DataAccessLayer.DalControllers.SupplierControllers;
 
 import DataAccessLayer.DalControllers.DalController;
+import DataAccessLayer.DalObjects.SupplierObjects.PersonCard;
+import DataAccessLayer.DalObjects.SupplierObjects.SupplierCard;
 import DataAccessLayer.DalObjects.SupplierObjects.SupplierContactMembers;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 public class SupplierContactMembersDalController extends DalController<SupplierContactMembers> {
@@ -21,6 +26,22 @@ public class SupplierContactMembersDalController extends DalController<SupplierC
 
     @Override
     public boolean createTable() throws SQLException {
+        System.out.println("Initiating create '" + tableName + "' table.");
+        try (Connection conn = DriverManager.getConnection(connectionString)) {
+            String command = "CREATE TABLE IF NOT EXISTS " + tableName + " (" +
+                    SupplierContactMembers.supplierIdColumnName + " INTEGER NOT NULL," +
+                    SupplierContactMembers.personIdColumnName + " INTEGET NOT NULL," +
+                    "FOREIGN KEY (" + SupplierContactMembers.supplierIdColumnName + ")" + "REFERENCES " + SupplierCard.supplierIdColumnName + " (" + SupplierCardDalController.SUPPLIER_CARD_TABLE_NAME +") ON DELETE NO ACTION "+
+                    "FOREIGN KEY (" + SupplierContactMembers.personIdColumnName + ")" + "REFERENCES " + PersonCard.idColumnName + " (" + PersonCardDalController.PERSON_CARD_TABLE_NAME +") ON DELETE NO ACTION "+
+                    ");";
+
+            PreparedStatement stmt = conn.prepareStatement(command);
+            System.out.println("Creating '" + tableName + "' table.");
+            stmt.executeUpdate();
+            System.out.println("Table '" + tableName + "' created.");
+        } catch (SQLException ex) {
+            throw new SQLException(ex.getMessage());
+        }
         return true;
     }
 
