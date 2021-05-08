@@ -35,6 +35,15 @@ public class Order {
         return products;
     }
 
+    public Supplier getSupplier() {
+        return supplier;
+    }
+
+    public LocalDate getDate() {
+        return date;
+    }
+
+
     @Override
     public String toString() {
         String proToString = "";

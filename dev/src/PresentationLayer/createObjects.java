@@ -1,6 +1,8 @@
 package PresentationLayer;
 
 import SerciveLayer.IService;
+
+import java.time.LocalDate;
 import java.time.Month;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -155,43 +157,24 @@ public class createObjects {
 
         //Adding sales
         //Guinness sale
-        Calendar start = Calendar.getInstance();
-        start.set(2021, Month.APRIL.getValue() - 1, 11);
-        Calendar end = Calendar.getInstance();
-        end.set(2021, Month.APRIL.getValue() - 1, 15);
-        service.addItemSale("Guinness Sale", 25285, 0.2, start, end);
+
+        service.addItemSale("Guinness Sale", 25285, 0.2, LocalDate.of(2021,4,11), LocalDate.of(2021,4,15));
 
         //vannila milk sale
         Calendar start2 = Calendar.getInstance();
         start2.set(2021, Month.APRIL.getValue() - 1, 22);
         Calendar end2 = Calendar.getInstance();
         end2.set(2021, Month.APRIL.getValue() - 1, 27);
-        service.addCategorySale("Yotvata Sale", "Yotvata", 0.25, start2, end2);
+        service.addCategorySale("Yotvata Sale", "Yotvata", 0.25,  LocalDate.of(2021,4,22), LocalDate.of(2021,4,27));
 
         //Adding suppliers discount
-        Calendar discDate = Calendar.getInstance();
-        discDate.set(2021, Month.MARCH.getValue() - 1, 3);
-        service.addItemDiscount(111, 0.12, discDate, 3, 845);
-
-        Calendar discDate2 = Calendar.getInstance();
-        discDate2.set(2021, Month.MARCH.getValue() - 1, 4);
-        service.addItemDiscount(111, 0.12, discDate2, 10, 846);
-
-        Calendar discDate3 = Calendar.getInstance();
-        discDate3.set(2021, Month.MARCH.getValue() - 1, 5);
-        service.addItemDiscount(113, 0.10, discDate3, 20, 11111);
-
-        Calendar defectTime = Calendar.getInstance();
-        defectTime.set(2021, Month.MARCH.getValue() - 1, 4);
+        LocalDate defectTime = LocalDate.of(2021,3,4);
         //Adding defect entries
         service.recordDefect(88435, defectTime, 4, "SH-A28-R-S3");
-
-        Calendar defectTime2 = Calendar.getInstance();
-        defectTime2.set(2021, Month.MARCH.getValue() - 1, 4);
+        LocalDate defectTime2 = LocalDate.of(2021,3,4);
         //Adding defect entries
         service.recordDefect(22285, defectTime2, 4, "ST-A7-L-S46");
-        Calendar defectTime3 = Calendar.getInstance();
-        defectTime3.set(2021, Month.MARCH.getValue() - 1, 4);
+        LocalDate defectTime3 = LocalDate.of(2021,3,4);
         //Adding defect entries
         service.recordDefect(98755, defectTime3, 2, "SH-A19-R-55");
 

@@ -7,7 +7,6 @@ import SerciveLayer.objects.*;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 import java.util.Map;
 
@@ -202,7 +201,13 @@ public class Service implements IService {
         ResponseT<Order> orderR = orderService.getOrder(orderID, inventoryService);
         if(orderR.errorOccurred())
             return orderR;
-        inventoryService.updateQuantityInventory(orderR.value.getProducts());
+        ArrayList<Product> productList = orderR.value.getProducts();
+        inventoryService.updateQuantityInventory(productList);
+        for (Product p : productList) {
+            if(p.getDiscount() > 0){
+                inventoryService.addItemDiscount(orderR.value.getSupplier().getSc().getId(), p.getDiscount(), orderR.value.getDate(), p.getAmount(), p.getProductID());
+            }
+        }
 
         return r;
     }
@@ -257,7 +262,7 @@ public class Service implements IService {
     }
 
     @Override
-    public Response addItem(int id, String name, String categoryName, double costPrice, double sellingPrice, int minAmount, String shelfLocation, String storageLocation, int shelfQuantity, int storageQuantity, int manufacturerId, List<Integer> suppliersIds) {
+    public Response addItem(int id, String name, String categoryName, double costPrice, double sellingPrice, int minAmount, String shelfLocation, String storageLocation, int shelfQuantity, int storageQuantity, int manufacturerId, List<String> suppliersIds) {
         return inventoryService.addItem(id,name,categoryName,costPrice,sellingPrice,minAmount,shelfLocation,storageLocation,shelfQuantity,storageQuantity,manufacturerId,suppliersIds);
     }
 
@@ -342,12 +347,12 @@ public class Service implements IService {
     }
 
     @Override
-    public Response addItemSale(String saleName, int itemID, double saleDiscount, Calendar startDate, Calendar endDate) {
+    public Response addItemSale(String saleName, int itemID, double saleDiscount, LocalDate startDate, LocalDate endDate) {
         return inventoryService.addItemSale(saleName, itemID, saleDiscount, startDate, endDate);
     }
 
     @Override
-    public Response addCategorySale(String saleName, String categoryName, double saleDiscount, Calendar startDate, Calendar endDate) {
+    public Response addCategorySale(String saleName, String categoryName, double saleDiscount, LocalDate startDate, LocalDate endDate) {
         return inventoryService.addCategorySale(saleName, categoryName, saleDiscount, startDate, endDate);
     }
 
@@ -362,27 +367,17 @@ public class Service implements IService {
     }
 
     @Override
-    public Response modifySaleDates(String saleName, Calendar startDate, Calendar endDate) {
+    public Response modifySaleDates(String saleName, LocalDate startDate, LocalDate endDate) {
         return inventoryService.modifySaleDates(saleName, startDate, endDate);
     }
 
     @Override
-    public <T extends SimpleEntity> ResponseT<List<Discount<T>>> getDiscount(int supplierId, Calendar discountDate) {
+    public <T extends SimpleEntity> ResponseT<List<Discount<T>>> getDiscount(String supplierId, LocalDate discountDate) {
         return inventoryService.getDiscount(supplierId,discountDate);
     }
 
     @Override
-    public Response addItemDiscount(int supplierId, double discount, Calendar discountDate, int itemCount, int itemId) {
-        return inventoryService.addItemDiscount(supplierId, discount, discountDate, itemCount, itemId);
-    }
-
-    @Override
-    public Response addCategoryDiscount(int supplierId, double discount, Calendar discountDate, int itemCount, String categoryName) {
-        return inventoryService.addCategoryDiscount(supplierId, discount, discountDate, itemCount, categoryName);
-    }
-
-    @Override
-    public Response recordDefect(int itemId, Calendar entryDate, int defectQuantity, String defectLocation) {
+    public Response recordDefect(int itemId, LocalDate entryDate, int defectQuantity, String defectLocation) {
         return inventoryService.recordDefect(itemId, entryDate, defectQuantity, defectLocation);
     }
 
@@ -402,7 +397,7 @@ public class Service implements IService {
     }
 
     @Override
-    public ResponseT<List<DefectEntry>> defectsReport(Calendar fromDate, Calendar toDate) {
+    public ResponseT<List<DefectEntry>> defectsReport(LocalDate fromDate, LocalDate toDate) {
         return inventoryService.defectsReport(fromDate, toDate);
     }
 

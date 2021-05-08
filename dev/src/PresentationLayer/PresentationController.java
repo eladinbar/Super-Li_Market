@@ -2,7 +2,6 @@ package PresentationLayer;
 
 import InfrastructurePackage.Pair;
 import SerciveLayer.IService;
-import SerciveLayer.InventoryServiceImpl;
 import SerciveLayer.Response.*;
 import SerciveLayer.Response.Response;
 import SerciveLayer.Service;
@@ -213,7 +212,7 @@ public class PresentationController implements Runnable {
     private void addItemSale() {
         String saleName = menu.instructAndReceive("Enter sale name: ");
         double saleDiscount = menu.instructAndReceive("Enter sale discount: (e.g. for 10% enter 0.1)", Double.class);
-        Pair<Calendar, Calendar> dates = getStartEndDates();
+        Pair<LocalDate, LocalDate> dates = getStartEndDates();
         if (dates == null) return;
         //getting the item to be applied on
         int applyOnItem = menu.instructAndReceive("Enter item ID for the sale: ", Integer.class);
@@ -235,7 +234,7 @@ public class PresentationController implements Runnable {
         String saleName = menu.instructAndReceive("Enter sale name: ");
         double saleDiscount = menu.instructAndReceive("Enter sale discount: (e.g. for 10% enter 0.1)", Double.class);
         //getting the dates
-        Pair<Calendar, Calendar> dates = getStartEndDates();
+        Pair<LocalDate, LocalDate> dates = getStartEndDates();
         if (dates == null) return;
         //getting the item to be applied on
         String applyOnItem = menu.instructAndReceive("Enter category name for the sale: ");
@@ -253,24 +252,12 @@ public class PresentationController implements Runnable {
         System.out.println("Sale added successfully");
     }
 
-    private Pair<Calendar, Calendar> getStartEndDates() {
-        String[] startDate = menu.instructAndReceive("Enter start date: use this format <YYYY-MM-DD>").split("-");
-        Calendar start = Calendar.getInstance();
-        try {
-            start.set(Integer.parseInt(startDate[0]), Integer.parseInt(startDate[1]) - 1, Integer.parseInt(startDate[2]));
-        } catch (Exception ex) {
-            menu.errorPrompt("Invalid input");
-            return null;
-        }
-        String[] endDate = menu.instructAndReceive("Enter end date: use this format <YYYY-MM-DD>").split("-");
-        Calendar end = Calendar.getInstance();
-        try {
-            end.set(Integer.parseInt(endDate[0]), Integer.parseInt(endDate[1]) - 1, Integer.parseInt(endDate[2]));
-        } catch (Exception ex) {
-            menu.errorPrompt("Invalid input");
-            return null;
-        }
-        Pair<Calendar, Calendar> dates = new Pair<>(start, end);
+    private Pair<LocalDate, LocalDate> getStartEndDates() {
+        System.out.println("Enter start date: ");
+        LocalDate start = getDateFromUser();
+        System.out.println("Enter end date: ");
+        LocalDate end = getDateFromUser();
+        Pair<LocalDate, LocalDate> dates = new Pair<>(start, end);
         //checking that the date makes sense
         if (start.compareTo(end) > 0) {
             menu.errorPrompt("End date is before start date");
@@ -301,7 +288,7 @@ public class PresentationController implements Runnable {
                 modResp = service.modifySaleDiscount(saleR.getValue().getName(), newDisc);
                 break;
             case "3":
-                Pair<Calendar, Calendar> dates = getStartEndDates();
+                Pair<LocalDate, LocalDate> dates = getStartEndDates();
                 if (dates == null)
                     return;
                 modResp = service.modifySaleDates(saleR.getValue().getName(), dates.getFirst(), dates.getSecond());
@@ -317,85 +304,72 @@ public class PresentationController implements Runnable {
     }
 
     private <T extends SimpleEntity> void showSupplierDiscount() {
-        int suppId = menu.instructAndReceive("Enter supplier ID: ", Integer.class);
-        String[] disDateS = menu.instructAndReceive("Enter the date of the discount: ").split("-");
-        Calendar date = Calendar.getInstance();
-        try {
-            date.set(Integer.parseInt(disDateS[0]), Integer.parseInt(disDateS[1]) - 1, Integer.parseInt(disDateS[2]));
-        } catch (Exception ex) {
-            menu.errorPrompt("Invalid input");
-            return;
-        }
-        ResponseT<List<Discount<T>>> discR = service.getDiscount(suppId, date);
+        String supplierID = readID();
+
+        LocalDate date = getDateFromUser();
+        ResponseT<List<Discount<T>>> discR = service.getDiscount(supplierID, date);
         for (Discount<T> d : discR.getValue()) {
             menu.printEntity(d);
         }
 
     }
 
-    private void addItemSupplierDiscount() {
-        //supplier Id
-        int suppId = menu.instructAndReceive("Enter supplier ID: ", Integer.class);
-        //item id
-        int itemId = menu.instructAndReceive("Enter item ID that the discount applies on: ", Integer.class);
-        //discount
-        double discountGiven = menu.instructAndReceive("Enter discount received for the item: (e.g. for 10% enter 0.1)", Double.class);
-        //dates
-        String[] dateS = menu.instructAndReceive("Enter discount date: use this format <YYYY-MM-DD>").split("-");
-        Calendar date = Calendar.getInstance();
-        try {
-            date.set(Integer.parseInt(dateS[0]), Integer.parseInt(dateS[1]) - 1, Integer.parseInt(dateS[2]));
-        } catch (Exception ex) {
-            menu.errorPrompt("Invalid input");
-            return;
-        }
-        //count
-        int itemCount = menu.instructAndReceive("Enter the amount the discount applied for: ", Integer.class);
-        if (itemCount <= 0) {
-            menu.errorPrompt("Item amount has to be at least 1.");
-            return;
-        }
-        Response r1 = service.addItemDiscount(suppId, discountGiven, date, itemCount, itemId);
-        if (r1.errorOccurred()) {
-            menu.errorPrompt(r1.getMessage());
-            return;
-        }
-        System.out.println("Discount added successfully");
-    }
-
-    private void addCategorySupplierDiscount() {
-        //supplier Id
-        String temp = menu.instructAndReceive("Enter supplier ID: ");
-        int suppId;
-        try {
-            suppId = Integer.parseInt(temp);
-        } catch (Exception ex) {
-            menu.errorPrompt("Invalid input");
-            return;
-        }
-        String catName = menu.instructAndReceive("Enter the category name that the discount applies on: ");
-        //discount
-        double discountGiven = menu.instructAndReceive("Enter discount received for the item: (e.g. for 10% enter 0.1)", Double.class);
-        //date
-        String[] dateS = menu.instructAndReceive("Enter discount date: use this format <YYYY-MM-DD>").split("-");
-        Calendar date = Calendar.getInstance();
-        date.set(Integer.parseInt(dateS[0]), Integer.parseInt(dateS[1]) - 1, Integer.parseInt(dateS[2]));
-        int itemCount = menu.instructAndReceive("Enter the amount the discount applied for: ", Integer.class);
-        if (itemCount <= 0) {
-            menu.errorPrompt("Item amount has to be at least 1.");
-            return;
-        }
-        Response r1 = service.addCategoryDiscount(suppId, discountGiven, date, itemCount, catName);
-        if (r1.errorOccurred()) {
-            menu.errorPrompt(r1.getMessage());
-            return;
-        }
-        System.out.println("Sale added successfully");
-
-    }
+//    private void addItemSupplierDiscount() {
+//        //supplier Id
+//        int suppId = menu.instructAndReceive("Enter supplier ID: ", Integer.class);
+//        //item id
+//        int itemId = menu.instructAndReceive("Enter item ID that the discount applies on: ", Integer.class);
+//        //discount
+//        double discountGiven = menu.instructAndReceive("Enter discount received for the item: (e.g. for 10% enter 0.1)", Double.class);
+//        //dates
+//        String[] dateS = menu.instructAndReceive("Enter discount date: use this format <YYYY-MM-DD>").split("-");
+//        Calendar date = Calendar.getInstance();
+//        try {
+//            date.set(Integer.parseInt(dateS[0]), Integer.parseInt(dateS[1]) - 1, Integer.parseInt(dateS[2]));
+//        } catch (Exception ex) {
+//            menu.errorPrompt("Invalid input");
+//            return;
+//        }
+//        //count
+//        int itemCount = menu.instructAndReceive("Enter the amount the discount applied for: ", Integer.class);
+//        if (itemCount <= 0) {
+//            menu.errorPrompt("Item amount has to be at least 1.");
+//            return;
+//        }
+//        Response r1 = service.addItemDiscount(suppId, discountGiven, date, itemCount, itemId);
+//        if (r1.errorOccurred()) {
+//            menu.errorPrompt(r1.getMessage());
+//            return;
+//        }
+//        System.out.println("Discount added successfully");
+//    }
+//
+//    private void addCategorySupplierDiscount() {
+//        //supplier Id
+//        String suppId = readID();
+//        String catName = menu.instructAndReceive("Enter the category name that the discount applies on: ");
+//        //discount
+//        double discountGiven = menu.instructAndReceive("Enter discount received for the item: (e.g. for 10% enter 0.1)", Double.class);
+//        //date
+//        String[] dateS = menu.instructAndReceive("Enter discount date: use this format <YYYY-MM-DD>").split("-");
+//        Calendar date = Calendar.getInstance();
+//        date.set(Integer.parseInt(dateS[0]), Integer.parseInt(dateS[1]) - 1, Integer.parseInt(dateS[2]));
+//        int itemCount = menu.instructAndReceive("Enter the amount the discount applied for: ", Integer.class);
+//        if (itemCount <= 0) {
+//            menu.errorPrompt("Item amount has to be at least 1.");
+//            return;
+//        }
+//        Response r1 = service.addCategoryDiscount(suppId, discountGiven, date, itemCount, catName);
+//        if (r1.errorOccurred()) {
+//            menu.errorPrompt(r1.getMessage());
+//            return;
+//        }
+//        System.out.println("Sale added successfully");
+//
+//    }
 
     private void recordDefect() {
-        Calendar date = Calendar.getInstance();
+        LocalDate date = LocalDate.now();
         //item id
         int itemID = menu.instructAndReceive("Enter item ID: ", Integer.class);
         //item amount
@@ -443,7 +417,7 @@ public class PresentationController implements Runnable {
     }
 
     private void defectsReport() {
-        Pair<Calendar, Calendar> interval = getStartEndDates();
+        Pair<LocalDate, LocalDate> interval = getStartEndDates();
         if (interval == null)
             return;
         ResponseT<List<DefectEntry>> defects = service.defectsReport(interval.getFirst(), interval.getSecond());
@@ -1057,12 +1031,6 @@ public class PresentationController implements Runnable {
         switch (choice) {
             case "1":
                 showSupplierDiscount();
-                break;
-            case "2":
-                addItemSupplierDiscount();
-                break;
-            case "3":
-                addCategorySupplierDiscount();
                 break;
             default:
                 menu.errorPrompt("invalid choice - " + choice);

@@ -2,12 +2,13 @@ package BusinessLayer.InventoryPackage.SalePackage;
 
 import InfrastructurePackage.Pair;
 
+import java.time.LocalDate;
 import java.util.Calendar;
 
 public abstract class Sale {
     protected String name;
     protected double discount;
-    protected Pair<Calendar, Calendar> saleDates;
+    protected Pair<LocalDate, LocalDate> saleDates;
 
     public double getDiscount() {
         return discount;
@@ -17,7 +18,7 @@ public abstract class Sale {
         this.discount = discount;
     }
 
-    public Pair<Calendar, Calendar> getSaleDates() {
+    public Pair<LocalDate, LocalDate> getSaleDates() {
         return saleDates;
     }
 
@@ -29,7 +30,7 @@ public abstract class Sale {
         this.name = name;
     }
 
-    public void setSaleDates(Calendar startDate, Calendar endDate) {
+    public void setSaleDates(LocalDate startDate, LocalDate endDate) {
         this.saleDates.setFirst(startDate);
         this.saleDates.setSecond(endDate);
     }

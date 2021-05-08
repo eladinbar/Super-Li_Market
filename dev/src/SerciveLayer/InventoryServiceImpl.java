@@ -9,6 +9,7 @@ import SerciveLayer.SimpleObjects.*;
 import SerciveLayer.SimpleObjects.DefectEntry;
 import SerciveLayer.objects.Product;
 
+import java.time.LocalDate;
 import java.util.*;
 
 public class InventoryServiceImpl implements InventoryService {
@@ -24,7 +25,7 @@ public class InventoryServiceImpl implements InventoryService {
     @Override
     public Response addItem(int id, String name, String categoryName, double costPrice, double sellingPrice,
                             int minAmount, String shelfLocation, String storageLocation, int shelfQuantity,
-                            int storageQuantity, int manufacturerId, List<Integer> suppliersIds) {
+                            int storageQuantity, int manufacturerId, List<String> suppliersIds) {
         Response response;
         //Check basic argument constraints
         if (id < 0 | name == null || name.trim().isEmpty() | costPrice < 0 | sellingPrice < 0 | minAmount < 0 |
@@ -212,10 +213,10 @@ public class InventoryServiceImpl implements InventoryService {
     }
 
     @Override
-    public Response addItemSupplier(int itemId, int supplierId) {
+    public Response addItemSupplier(int itemId, String supplierId) {
         Response response;
         //Check basic argument constraints
-        if (itemId < 0 | supplierId < 0) {
+        if (itemId < 0 | supplierId.isEmpty()) {
             response = new Response(true, "One or more of the given arguments is invalid.");
             return response;
         }
@@ -231,10 +232,10 @@ public class InventoryServiceImpl implements InventoryService {
     }
 
     @Override
-    public Response removeItemSupplier(int itemId, int supplierId) {
+    public Response removeItemSupplier(int itemId, String supplierId) {
         Response response;
         //Check basic argument constraints
-        if (itemId < 0 | supplierId < 0) {
+        if (itemId < 0 | supplierId.isEmpty()) {
             response = new Response(true, "One or more of the given arguments is invalid.");
             return response;
         }
@@ -419,7 +420,7 @@ public class InventoryServiceImpl implements InventoryService {
     }
 
     @Override
-    public Response addItemSale(String saleName, int itemID, double saleDiscount, Calendar startDate, Calendar endDate) {
+    public Response addItemSale(String saleName, int itemID, double saleDiscount, LocalDate startDate, LocalDate endDate) {
         clearDate(startDate, endDate);
         Response response;
         //Check basic argument constraints
@@ -439,7 +440,7 @@ public class InventoryServiceImpl implements InventoryService {
     }
 
     @Override
-    public Response addCategorySale(String saleName, String categoryName, double saleDiscount, Calendar startDate, Calendar endDate) {
+    public Response addCategorySale(String saleName, String categoryName, double saleDiscount, LocalDate startDate, LocalDate endDate) {
         clearDate(startDate, endDate);
         Response response;
         //Check basic argument constraints
@@ -487,7 +488,7 @@ public class InventoryServiceImpl implements InventoryService {
     }
 
     @Override
-    public Response modifySaleDates(String saleName, Calendar startDate, Calendar endDate) {
+    public Response modifySaleDates(String saleName, LocalDate startDate, LocalDate endDate) {
         clearDate(startDate, endDate);
         Response response;
         try {
@@ -503,14 +504,13 @@ public class InventoryServiceImpl implements InventoryService {
 
     //-------------------------------------------------------------------------Discount functions
 
-    @Override
     @SuppressWarnings("unchecked")
-    public <T extends SimpleEntity> ResponseT<List<Discount<T>>> getDiscount(int supplierId, Calendar discountDate) {
+    public <T extends SimpleEntity> ResponseT<List<Discount<T>>> getDiscount(String supplierId, LocalDate discountDate) {
         clearDate(discountDate);
         //response to return created
         ResponseT<List<Discount<T>>> responseT;
         List<Discount<T>> simpleDiscs = new ArrayList<>();
-        if (supplierId <= 0) {
+        if (supplierId.isEmpty()) {
             responseT = new ResponseT<>(true, "One oe more Arguments is invalid", null);
             return responseT;
         }
@@ -560,10 +560,10 @@ public class InventoryServiceImpl implements InventoryService {
 
 
     @Override
-    public Response addItemDiscount(int supplierId, double discount, Calendar discountDate, int itemCount, int itemId) {
+    public Response addItemDiscount(String supplierId, double discount, LocalDate discountDate, int itemCount, int itemId) {
         clearDate(discountDate);
         Response response;
-        if (supplierId <= 0 || (discount <= 0 || discount >= 1) || itemCount <= 0 || itemId <= 0) {
+        if (supplierId.isEmpty() || (discount <= 0 || discount >= 1) || itemCount <= 0 || itemId <= 0) {
             response = new Response(true, "One oe more Arguments is invalid");
             return response;
         }
@@ -578,10 +578,10 @@ public class InventoryServiceImpl implements InventoryService {
     }
 
     @Override
-    public Response addCategoryDiscount(int supplierId, double discount, Calendar discountDate, int itemCount, String categoryName) {
+    public Response addCategoryDiscount(String supplierId, double discount, LocalDate discountDate, int itemCount, String categoryName) {
         clearDate(discountDate);
         Response response;
-        if (supplierId <= 0 || (discount <= 0 || discount >= 1) || itemCount <= 0 || categoryName.isEmpty() || categoryName.isBlank()) {
+        if (supplierId.isEmpty() || (discount <= 0 || discount >= 1) || itemCount <= 0 || categoryName.isEmpty() || categoryName.isBlank()) {
             response = new Response(true, "One oe more Arguments is invalid");
             return response;
         }
@@ -598,7 +598,7 @@ public class InventoryServiceImpl implements InventoryService {
     //-------------------------------------------------------------------------Defect Functions
 
     @Override
-    public Response recordDefect(int itemId, Calendar entryDate, int defectQuantity, String defectLocation) {
+    public Response recordDefect(int itemId, LocalDate entryDate, int defectQuantity, String defectLocation) {
         clearDate(entryDate);
         Response response;
         if (itemId <= 0 || defectQuantity <= 0 || defectLocation.isEmpty() || defectLocation.isBlank()) {
@@ -672,7 +672,7 @@ public class InventoryServiceImpl implements InventoryService {
     }
 
     @Override
-    public ResponseT<List<DefectEntry>> defectsReport(Calendar fromDate, Calendar toDate) {
+    public ResponseT<List<DefectEntry>> defectsReport(LocalDate fromDate, LocalDate toDate) {
         clearDate(fromDate, toDate);
         ResponseT<List<DefectEntry>> defectResponse;
         List<DefectEntry> simpleEntries = new ArrayList<>();
@@ -711,12 +711,8 @@ public class InventoryServiceImpl implements InventoryService {
         return new Response(true, "inventory updated");
     }
 
-    private void clearDate(Calendar... calendars) {
-        for (Calendar cl : calendars) {
-            cl.clear(Calendar.MILLISECOND);
-            cl.clear(Calendar.SECOND);
-            cl.clear(Calendar.MINUTE);
-            cl.clear(Calendar.HOUR);
+    private void clearDate(LocalDate... dates) {
+        for (LocalDate cl : dates) {
         }
     }
 }

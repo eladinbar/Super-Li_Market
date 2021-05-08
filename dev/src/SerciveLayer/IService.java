@@ -5,7 +5,7 @@ import SerciveLayer.SimpleObjects.*;
 import SerciveLayer.objects.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Calendar;
+
 import java.util.List;
 import java.util.Map;
 
@@ -74,7 +74,7 @@ public interface IService {
     //-------------------------------------------------------------------------Item functions
 
     Response addItem(int id, String name, String categoryName, double costPrice, double sellingPrice, int minAmount,
-                     String shelfLocation, String storageLocation, int shelfQuantity, int storageQuantity, int manufacturerId, List<Integer> suppliersIds);
+                     String shelfLocation, String storageLocation, int shelfQuantity, int storageQuantity, int manufacturerId, List<String> suppliersIds);
     ResponseT<Item> getItem(int itemId);
     Response modifyItemName(int itemId, String newName);
     Response modifyItemCategory(int itemId, String newCategoryName);
@@ -107,31 +107,29 @@ public interface IService {
     Response changeParentCategory(String categoryName, String newParentName);
     //-------------------------------------------------------------------------Sale functions
     <T extends SimpleEntity> ResponseT<Sale<T>> getSale(String saleName);
-    Response addItemSale(String saleName, int itemID, double saleDiscount, Calendar startDate, Calendar endDate);
-    Response addCategorySale(String saleName, String categoryName, double saleDiscount, Calendar startDate, Calendar endDate);
+    Response addItemSale(String saleName, int itemID, double saleDiscount, LocalDate startDate, LocalDate endDate);
+    Response addCategorySale(String saleName, String categoryName, double saleDiscount, LocalDate startDate, LocalDate endDate);
 
 
 
     Response modifySaleName(String oldName, String newName);
     Response modifySaleDiscount(String saleName, double newDiscount);
-    Response modifySaleDates(String saleName, Calendar startDate, Calendar endDate);
+    Response modifySaleDates(String saleName, LocalDate startDate, LocalDate endDate);
 
     //-------------------------------------------------------------------------Discount functions
 
-    <T extends SimpleEntity> ResponseT<List<Discount<T>>> getDiscount(int supplierId, Calendar discountDate);
-    Response addItemDiscount(int supplierId, double discount, Calendar discountDate, int itemCount, int itemId);
-    Response addCategoryDiscount(int supplierId, double discount, Calendar discountDate, int itemCount, String categoryName);
+    <T extends SimpleEntity> ResponseT<List<Discount<T>>> getDiscount(String supplierId, LocalDate discountDate);
 
     //-------------------------------------------------------------------------Defect functions
 
-    Response recordDefect(int itemId, Calendar entryDate, int defectQuantity, String defectLocation);
+    Response recordDefect(int itemId, LocalDate entryDate, int defectQuantity, String defectLocation);
 
     //-------------------------------------------------------------------------Report functions
 
     ResponseT<List<Item>> inventoryReport();
     ResponseT<List<Item>> categoryReport(String categoryName);
     ResponseT<List<Item>> itemShortageReport();
-    ResponseT<List<DefectEntry>> defectsReport(Calendar fromDate, Calendar toDate);
+    ResponseT<List<DefectEntry>> defectsReport(LocalDate fromDate, LocalDate toDate);
 
     ResponseT<Map<Integer, Integer>> getItemsInShortAndQuantities();
 
