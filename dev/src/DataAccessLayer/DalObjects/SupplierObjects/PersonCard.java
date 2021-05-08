@@ -12,10 +12,10 @@ public class PersonCard extends DalObject<PersonCard> {
     public static final String lastNameColumnName = "Last_Name";
     public static final String emailColumnName = "Email";
     public static final String phoneColumnName = "Phone";
+    private String id; //primary key
     private String firstName;
     private String lastName;
     private String email;
-    private String id; //primary key
     private String phone;
 
     public PersonCard(String firstName, String lastName, String email, String id, String phone) throws SQLException {
@@ -25,5 +25,25 @@ public class PersonCard extends DalObject<PersonCard> {
         this.email = email;
         this.id = id;
         this.phone = phone;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public String getPhone() {
+        return phone;
     }
 }

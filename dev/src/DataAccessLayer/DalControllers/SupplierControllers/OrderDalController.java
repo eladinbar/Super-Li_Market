@@ -51,8 +51,20 @@ public class OrderDalController extends DalController<Order> {
     }
 
     @Override
-    public boolean insert(Order dalObject) {
-        return false;
+    public boolean insert(Order order) throws SQLException {
+        System.out.println("Initiating " + tableName + " insert.");
+        try (Connection conn = DriverManager.getConnection(connectionString)) {
+            String query = "INSERT INTO " + tableName + " VALUES (?,?,?)";
+            PreparedStatement stmt = conn.prepareStatement(query);
+            stmt.setInt(1, order.getId());
+            stmt.setString(2, order.getDate());
+            stmt.setInt(3, order.isDelivered());
+            System.out.println("Executing " + tableName + " insert.");
+            stmt.executeUpdate();
+        } catch (SQLException ex) {
+            throw new SQLException(ex.getMessage());
+        }
+        return true;
     }
 
     @Override

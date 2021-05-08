@@ -29,4 +29,28 @@ public class SupplierCard extends DalObject<SupplierCard> {
         this.selfDelivery = selfDelivery;
         this.payment = payment;
     }
+
+    public int getSupplierId() {
+        return supplierId;
+    }
+
+    public int getCompanyNumber() {
+        return companyNumber;
+    }
+
+    public int isPermanentDays() {
+        if (isPermanentDays)
+            return 1;
+        return 0;
+    }
+
+    public int isSelfDelivery() {
+        if (selfDelivery)
+            return 1;
+        return 0;
+    }
+
+    public String getPayment() {
+        return payment.toString();
+    }
 }

@@ -16,4 +16,12 @@ public class SupplierContactMembers extends DalObject<SupplierContactMembers> {
         this.supplierId = supplierId;
         this.personId = personId;
     }
+
+    public int getSupplierId() {
+        return supplierId;
+    }
+
+    public int getPersonId() {
+        return personId;
+    }
 }
