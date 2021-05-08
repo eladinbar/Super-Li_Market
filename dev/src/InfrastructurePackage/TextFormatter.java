@@ -53,12 +53,12 @@ public class TextFormatter {
     public <T extends SimpleEntity> void saleMenuFormat(Sale<T> sale) {
         System.out.println("Category Name: " + sale.getName() + "\n" +
                 "Discount: " + sale.getDiscount() + "\n" +
-                "Sale Dates: " + dateFormat(sale.getSaleDates().getFirst()) + " until " + dateFormat(sale.getSaleDates().getSecond()));
+                "Sale Dates: " + sale.getSaleDates().getFirst() + " until " + sale.getSaleDates().getSecond());
     }
     public <T extends SimpleEntity> void discountMenuFormat(Discount<T> discount) {
         System.out.println("Supplier ID: " + discount.getSupplierID() + "\n" +
                 "Discount: " + discount.getDiscount() + "\n" +
-                "Date: " + dateFormat(discount.getDate()) + "\n" +
+                "Date: " + discount.getDate() + "\n" +
                 "Count: " + discount.getItemCount() + "\n"+
                  "Applied On:");
     }

@@ -1,8 +1,6 @@
 package BusinessLayer.InventoryPackage.DiscountPackage;
 
-import java.sql.SQLException;
 import java.time.LocalDate;
-import java.util.Calendar;
 
 public abstract class Discount {
     protected String supplierID;
@@ -10,20 +8,14 @@ public abstract class Discount {
     protected LocalDate date;
     protected int itemCount;
 
-    public String getSupplierID() {
-    public Discount(int supplierID, double discount, Calendar date, int itemCount) {
+    public Discount(String supplierID, double discount, LocalDate date, int itemCount) {
         this.supplierID = supplierID;
         this.discount = discount;
         this.date = date;
-        //Remove redundant time from dates
-        date.clear(Calendar.MILLISECOND);
-        date.clear(Calendar.SECOND);
-        date.clear(Calendar.MINUTE);
-        date.clear(Calendar.HOUR);
         this.itemCount = itemCount;
     }
 
-    public int getSupplierID() {
+    public String getSupplierID() {
         return supplierID;
     }
 

@@ -3,9 +3,7 @@ package BusinessLayer.InventoryPackage.DefectsPackage;
 import BusinessLayer.InventoryPackage.Location;
 
 import java.sql.SQLException;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
-import java.util.Calendar;
 
 public class DefectEntry {
     private DataAccessLayer.DalObjects.InventoryObjects.DefectEntry dalCopyDefectEntry;
@@ -20,7 +18,6 @@ public class DefectEntry {
         this.itemID = itemID;
         this.itemName = itemName;
         this.entryDate = entryDate;
-        //Remove redundant time from dates
         this.quantity = quantity;
         if (location.startsWith("SH"))
             this.location = new Location(location, null);
@@ -49,11 +46,7 @@ public class DefectEntry {
     }
 
     public void save() throws SQLException {
-        Calendar date = getEntryDate();
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-        String formattedDate = format.format(date.getTime());
-
-        dalCopyDefectEntry = new DataAccessLayer.DalObjects.InventoryObjects.DefectEntry(formattedDate, itemID, getLocation(), quantity);
+        dalCopyDefectEntry = new DataAccessLayer.DalObjects.InventoryObjects.DefectEntry(entryDate.toString(), itemID, getLocation(), quantity);
         dalCopyDefectEntry.save();
     }
 }

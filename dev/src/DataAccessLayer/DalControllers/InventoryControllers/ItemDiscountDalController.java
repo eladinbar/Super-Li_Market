@@ -36,7 +36,7 @@ public class ItemDiscountDalController extends DalController<ItemDiscount> {
         try (Connection conn = DriverManager.getConnection(connectionString)) {
             String command = "CREATE TABLE IF NOT EXISTS " + tableName + " (" +
                     ItemDiscount.discountDateColumnName + " TEXT NOT NULL," +
-                    ItemDiscount.supplierIdColumnName + " INTEGER NOT NULL," +
+                    ItemDiscount.supplierIdColumnName + " TEXT NOT NULL," +
                     ItemDiscount.itemIdColumnName + " INTEGER NOT NULL," +
                     ItemDiscount.discountColumnName + " REAL DEFAULT 0 NOT NULL," +
                     ItemDiscount.itemCountColumnName + " INTEGER DEFAULT 0 NOT NULL," +
@@ -65,7 +65,7 @@ public class ItemDiscountDalController extends DalController<ItemDiscount> {
             PreparedStatement stmt = conn.prepareStatement(query);
 
             stmt.setString(1, itemDiscount.getDiscountDate());
-            stmt.setInt(2, itemDiscount.getSupplierID());
+            stmt.setString(2, itemDiscount.getSupplierID());
             stmt.setInt(3, itemDiscount.getItemID());
             stmt.setDouble(4, itemDiscount.getDiscount());
             stmt.setInt(5, itemDiscount.getItemCount());
@@ -85,7 +85,7 @@ public class ItemDiscountDalController extends DalController<ItemDiscount> {
             PreparedStatement stmt = conn.prepareStatement(query);
 
             stmt.setString(1, itemDiscount.getDiscountDate());
-            stmt.setInt(2, itemDiscount.getSupplierID());
+            stmt.setString(2, itemDiscount.getSupplierID());
             stmt.setInt(3, itemDiscount.getItemID());
             stmt.executeUpdate();
         } catch (SQLException ex) {
@@ -105,7 +105,7 @@ public class ItemDiscountDalController extends DalController<ItemDiscount> {
             stmt.setDouble(1, itemDiscount.getDiscount());
             stmt.setInt(2, itemDiscount.getItemCount());
             stmt.setString(3, itemDiscount.getDiscountDate());
-            stmt.setInt(4, itemDiscount.getSupplierID());
+            stmt.setString(4, itemDiscount.getSupplierID());
             stmt.setInt(5, itemDiscount.getItemID());
             stmt.executeUpdate();
         } catch (SQLException ex) {
@@ -124,7 +124,7 @@ public class ItemDiscountDalController extends DalController<ItemDiscount> {
             while (resultSet.next())
             {
                 boolean isDesired = resultSet.getString(0).equals(itemDiscount.getDiscountDate()) &&
-                        resultSet.getInt(1) == itemDiscount.getSupplierID() && resultSet.getInt(2) == itemDiscount.getItemID();
+                        resultSet.getString(1).equals(itemDiscount.getSupplierID()) && resultSet.getInt(2) == itemDiscount.getItemID();
                 if (isDesired) {
                     savedItemDiscount.setDiscount(resultSet.getInt(1));
                     savedItemDiscount.setItemCount(resultSet.getInt(2));

@@ -15,10 +15,10 @@ public class CategoryDiscount extends DalObject<CategoryDiscount> {
     private String discountDate;
     private double discount;
     private int itemCount;
-    private int supplierID;
+    private String supplierID;
     private String categoryName;
 
-    public CategoryDiscount(String discountDate, int supplierID, String categoryName, double discount, int itemCount) throws SQLException {
+    public CategoryDiscount(String discountDate, String supplierID, String categoryName, double discount, int itemCount) throws SQLException {
         super(CategoryDiscountDalController.getInstance());
         this.discountDate = discountDate;
         this.supplierID = supplierID;
@@ -49,7 +49,7 @@ public class CategoryDiscount extends DalObject<CategoryDiscount> {
         controller.update(this);
     }
 
-    public int getSupplierID() {
+    public String getSupplierID() {
         return supplierID;
     }
 
