@@ -48,10 +48,6 @@ public class Order {
         return delivered;
     }
 
-    public void setDelivered(boolean delivered) {
-        this.delivered = delivered;
-    }
-
     public Supplier getSupplier() {
         return supplier;
     }
@@ -66,7 +62,11 @@ public class Order {
         delivered = true;
     }
 
-    public void addProductToOrder(int orderId, int productId, int amount) throws Exception {
+    public void addProductToOrder(int productId, int amount) throws Exception {
+        if(!supplier.getAg().getProducts().containsKey(productId))
+            throw new Exception("supplier does not supply the product :"+ productId);
+        if(products.containsKey(productId))
+            throw new Exception("product " +productId + " already exists in the order " + this.id + ", check if you want to edit the amount or remove");
         if (delivered)
             throw new Exception("order already delivered");
         if (amount < 1)
@@ -78,7 +78,7 @@ public class Order {
         if (delivered)
             throw new Exception("order already delivered");
         if (!products.containsKey(productID))
-            throw new Exception("order does not contain choosen product");
+            throw new Exception("order does not contain the chosen product");
         products.remove(productID);
     }
 

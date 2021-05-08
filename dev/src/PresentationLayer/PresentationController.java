@@ -507,12 +507,12 @@ public class PresentationController implements Runnable {
         LocalDate lclDate = getDateFromUser();
         ResponseT<List<Order>> oo = service.createShortageOrder(lclDate);
         if (oo.errorOccurred()) {
-            System.out.println(oo.toString());
-        } else {
-            String order = service.createShortageOrder(lclDate).value.stream().
-                    map(o -> o.getId() + "").reduce("added orders", (acc, curr) -> acc + ", " + curr);
-            System.out.println(order.substring(0, order.length() - 1));
+            System.out.println(oo.getErrorMessage());
+            if(oo.value == null)
+                return;
         }
+        String order = oo.value.stream().map(o -> o.getId() + "").reduce("added orders", (acc, curr) -> acc + ", " + curr);
+        System.out.println(order.substring(0, order.length() - 1));
     }
 
     private void setPermanentOrder() { //case 7

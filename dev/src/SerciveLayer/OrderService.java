@@ -30,7 +30,7 @@ public class OrderService {
         return toReturn;
     }
 
-    public ResponseT<Order> createPernamentOrder(int day, String supplierID, SupplierController sp) {//todo: check if order exists
+    public ResponseT<Order> createPernamentOrder(int day, String supplierID, SupplierController sp) {
         ResponseT<Order> toReturn;
         try {
             toReturn= new ResponseT<>(new Order(oc.createPermOrder(day, sp.getSupplier(supplierID)), new ArrayList<>()));
@@ -138,7 +138,7 @@ public class OrderService {
         return toReturn;
     }
 
-    public ResponseT<List<Order>> createShortageOrders(Map<String,Map<Integer, Integer>> itemToOrder,LocalDate orderDate,SupplierController sp) {
+    public ResponseT<List<Order>> createShortageOrders(Map<String,Map<Integer, Integer>> itemToOrder,LocalDate orderDate,SupplierController sp) {//todo check again
         List<Order> orderList = new ArrayList<>();
         for (String suppID : itemToOrder.keySet()) {
             Map<Integer,Integer> tempMap = itemToOrder.get(suppID);
@@ -148,6 +148,9 @@ public class OrderService {
                 addProductToOrder(order.value.getId(),itemID,tempMap.get(itemID));
             }
             orderList.add(order.value);
+        }
+        if(orderList.isEmpty()){
+            return new ResponseT<>("there is no shortage in the store");
         }
         return new ResponseT<>(orderList);
     }
