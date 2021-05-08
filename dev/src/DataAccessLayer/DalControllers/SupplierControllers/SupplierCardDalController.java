@@ -26,22 +26,22 @@ public class SupplierCardDalController extends DalController<SupplierCard> {
     }
 
     @Override
-    public void CreateTable() throws SQLException {
+    public void createTable() throws SQLException {
 
     }
 
     @Override
-    public boolean Insert(SupplierCard dalObject) {
+    public boolean insert(SupplierCard dalObject) {
         return false;
     }
 
     @Override
-    public boolean Delete(SupplierCard dalObject) {
+    public boolean delete(SupplierCard dalObject) {
         return false;
     }
 
     @Override
-    public SupplierCard ConvertReaderToObject() {
+    public SupplierCard convertReaderToObject() {
         return null;
     }
 }

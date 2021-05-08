@@ -22,7 +22,7 @@ public abstract class DalController<T extends DalObject<T>>{
     <param name="tableName">The table name of the object this controller represents.</param> */
     protected DalController(String tableName) throws SQLException {
         this.tableName = tableName;
-        CreateTable();
+        createTable();
     }
 
     //abstract methods
@@ -30,28 +30,28 @@ public abstract class DalController<T extends DalObject<T>>{
     /** <summary>
     Creates a database table with the name initialized in the field '_tableName'.
     </summary> */
-    public abstract void CreateTable() throws SQLException;
+    public abstract void createTable() throws SQLException;
 
     /** <summary>
     Inserts the given object into its respective table in the database.
     </summary>
     <param name="dalObject">The data access layer object instance to insert into the database.</param>
     <returns>Returns true if the method changed more than 0 rows.</returns> */
-    public abstract boolean Insert(T dalObject);
+    public abstract boolean insert(T dalObject);
 
     /** <summary>
     Deletes the given object from its respective table in the database.
     </summary>
     <param name="dalObject">The data access layer object instance to delete from the database.</param>
     <returns>Returns true if the method changed more than 0 rows.</returns> */
-    public abstract boolean Delete(T dalObject);
+    public abstract boolean delete(T dalObject);
 
     /** <summary>
     Converts an SQLiteDataReader to a DalObject.
     </summary>
     <param name="reader">The SQLite reader to convert.</param>
     <returns>Returns a DalObject that extends DalObject<T>.</returns> */
-    public abstract T ConvertReaderToObject(/*SQLiteDataReader reader*/);
+    public abstract T convertReaderToObject(/*SQLiteDataReader reader*/);
 
 
     //implemented methods

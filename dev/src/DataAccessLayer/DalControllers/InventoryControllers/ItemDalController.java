@@ -2,8 +2,6 @@ package DataAccessLayer.DalControllers.InventoryControllers;
 
 import DataAccessLayer.DalControllers.DalController;
 import DataAccessLayer.DalObjects.InventoryObjects.Category;
-import DataAccessLayer.DalObjects.InventoryObjects.CategoryDiscount;
-import DataAccessLayer.DalObjects.InventoryObjects.DefectEntry;
 import DataAccessLayer.DalObjects.InventoryObjects.Item;
 
 import java.sql.Connection;
@@ -33,7 +31,7 @@ public class ItemDalController extends DalController<Item> {
     }
 
     @Override
-    public void CreateTable() throws SQLException {
+    public void createTable() throws SQLException {
         System.out.println("Initiating create '" + ITEM_TABLE_NAME + "' table.");
         try (Connection conn = DriverManager.getConnection(connectionString)) {
             String command = "CREATE TABLE IF NOT EXISTS " + ITEM_TABLE_NAME + " (" +
@@ -49,9 +47,9 @@ public class ItemDalController extends DalController<Item> {
                     Item.categoryNameColumnName + " TEXT NOT NULL," +
                     "PRIMARY KEY (" + Item.itemIdColumnName + ")," +
                     "FOREIGN KEY (" + Item.categoryNameColumnName + ")" +
-                    "REFERENCES " + Category.categoryNameColumnName + " (" + CATEGORY_TABLE_NAME + ") ON DELETE CASCADE" +
+                    "REFERENCES " + Category.categoryNameColumnName + " (" + CATEGORY_TABLE_NAME + ") ON DELETE CASCADE," +
                     "CONSTRAINT Natural_Number CHECK (" + Item.costPriceColumnName + ">= 0 AND " + Item.sellingPriceColumnName + ">=0 AND " +
-                    Item.minAmountColumnName + ">=0 AND " + Item.shelfQuantityColumnName + ">=0 AND" + Item.storageQuantityColumnName + ">=0)" +
+                    Item.minAmountColumnName + ">=0 AND " + Item.shelfQuantityColumnName + ">=0 AND " + Item.storageQuantityColumnName + ">=0)" +
                     ");";
             PreparedStatement stmt = conn.prepareStatement(command);
             System.out.println("Creating '" + ITEM_TABLE_NAME + "' table.");
@@ -63,17 +61,17 @@ public class ItemDalController extends DalController<Item> {
     }
 
     @Override
-    public boolean Insert(Item dalObject) {
+    public boolean insert(Item dalObject) {
         return false;
     }
 
     @Override
-    public boolean Delete(Item dalObject) {
+    public boolean delete(Item dalObject) {
         return false;
     }
 
     @Override
-    public Item ConvertReaderToObject() {
+    public Item convertReaderToObject() {
         return null;
     }
 }

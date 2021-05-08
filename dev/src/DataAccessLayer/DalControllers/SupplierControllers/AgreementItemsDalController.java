@@ -26,22 +26,22 @@ public class AgreementItemsDalController extends DalController<AgreementItems> {
     }
 
     @Override
-    public void CreateTable() throws SQLException {
+    public void createTable() throws SQLException {
 
     }
 
     @Override
-    public boolean Insert(AgreementItems dalObject) {
+    public boolean insert(AgreementItems dalObject) {
         return false;
     }
 
     @Override
-    public boolean Delete(AgreementItems dalObject) {
+    public boolean delete(AgreementItems dalObject) {
         return false;
     }
 
     @Override
-    public AgreementItems ConvertReaderToObject() {
+    public AgreementItems convertReaderToObject() {
         return null;
     }
 }

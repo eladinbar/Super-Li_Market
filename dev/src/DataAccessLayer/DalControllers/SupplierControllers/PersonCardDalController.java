@@ -26,22 +26,22 @@ public class PersonCardDalController extends DalController<PersonCard> {
     }
 
     @Override
-    public void CreateTable() throws SQLException {
+    public void createTable() throws SQLException {
 
     }
 
     @Override
-    public boolean Insert(PersonCard dalObject) {
+    public boolean insert(PersonCard dalObject) {
         return false;
     }
 
     @Override
-    public boolean Delete(PersonCard dalObject) {
+    public boolean delete(PersonCard dalObject) {
         return false;
     }
 
     @Override
-    public PersonCard ConvertReaderToObject() {
+    public PersonCard convertReaderToObject() {
         return null;
     }
 }

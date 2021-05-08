@@ -6,7 +6,7 @@ import DataAccessLayer.DalObjects.DalObject;
 import java.sql.SQLException;
 
 public class Item extends DalObject<Item> {
-    public static final String itemIdColumnName = "IID"; //Primary Key
+    public static final String itemIdColumnName = "Item_ID"; //Primary Key
     public static final String costPriceColumnName = "Cost_Price";
     public static final String sellingPriceColumnName = "Selling_Price";
     public static final String manufacturerIdColumnName = "Manufacturer_ID";

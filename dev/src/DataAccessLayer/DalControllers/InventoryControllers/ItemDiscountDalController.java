@@ -1,8 +1,6 @@
 package DataAccessLayer.DalControllers.InventoryControllers;
 
 import DataAccessLayer.DalControllers.DalController;
-import DataAccessLayer.DalObjects.InventoryObjects.Category;
-import DataAccessLayer.DalObjects.InventoryObjects.CategoryDiscount;
 import DataAccessLayer.DalObjects.InventoryObjects.Item;
 import DataAccessLayer.DalObjects.InventoryObjects.ItemDiscount;
 import DataAccessLayer.DalObjects.SupplierObjects.SupplierCard;
@@ -12,7 +10,6 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
-import static DataAccessLayer.DalControllers.InventoryControllers.CategoryDalController.CATEGORY_TABLE_NAME;
 import static DataAccessLayer.DalControllers.InventoryControllers.ItemDalController.ITEM_TABLE_NAME;
 import static DataAccessLayer.DalControllers.SupplierControllers.SupplierCardDalController.SUPPLIER_CARD_TABLE_NAME;
 
@@ -36,7 +33,7 @@ public class ItemDiscountDalController extends DalController<ItemDiscount> {
     }
 
     @Override
-    public void CreateTable() throws SQLException {
+    public void createTable() throws SQLException {
         System.out.println("Initiating create '" + ITEM_DISCOUNT_TABLE_NAME + "' table.");
         try (Connection conn = DriverManager.getConnection(connectionString)) {
             String command = "CREATE TABLE IF NOT EXISTS " + ITEM_DISCOUNT_TABLE_NAME + " (" +
@@ -62,17 +59,17 @@ public class ItemDiscountDalController extends DalController<ItemDiscount> {
     }
 
     @Override
-    public boolean Insert(ItemDiscount dalObject) {
+    public boolean insert(ItemDiscount dalObject) {
         return false;
     }
 
     @Override
-    public boolean Delete(ItemDiscount dalObject) {
+    public boolean delete(ItemDiscount dalObject) {
         return false;
     }
 
     @Override
-    public ItemDiscount ConvertReaderToObject() {
+    public ItemDiscount convertReaderToObject() {
         return null;
     }
 }

@@ -1,8 +1,6 @@
 package DataAccessLayer.DalControllers.InventoryControllers;
 
 import DataAccessLayer.DalControllers.DalController;
-import DataAccessLayer.DalObjects.InventoryObjects.Category;
-import DataAccessLayer.DalObjects.InventoryObjects.CategorySale;
 import DataAccessLayer.DalObjects.InventoryObjects.Item;
 import DataAccessLayer.DalObjects.InventoryObjects.ItemSale;
 
@@ -11,7 +9,6 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
-import static DataAccessLayer.DalControllers.InventoryControllers.CategoryDalController.CATEGORY_TABLE_NAME;
 import static DataAccessLayer.DalControllers.InventoryControllers.ItemDalController.ITEM_TABLE_NAME;
 
 public class ItemSaleDalController extends DalController<ItemSale> {
@@ -34,7 +31,7 @@ public class ItemSaleDalController extends DalController<ItemSale> {
     }
 
     @Override
-    public void CreateTable() throws SQLException {
+    public void createTable() throws SQLException {
         System.out.println("Initiating create '" + ITEM_SALE_TABLE_NAME + "' table.");
         try (Connection conn = DriverManager.getConnection(connectionString)) {
             String command = "CREATE TABLE IF NOT EXISTS " + ITEM_SALE_TABLE_NAME + " (" +
@@ -44,7 +41,7 @@ public class ItemSaleDalController extends DalController<ItemSale> {
                     ItemSale.endSaleDateColumnName + " TEXT NOT NULL," +
                     ItemSale.itemIdColumnName + " INTEGER NOT NULL," +
                     "PRIMARY KEY (" + ItemSale.itemSaleNameColumnName + ")," +
-                    "FOREIGN KEY (" + Item.itemIdColumnName + ")" +
+                    "FOREIGN KEY (" + ItemSale.itemIdColumnName + ")" +
                     "REFERENCES " + Item.itemIdColumnName + " (" + ITEM_TABLE_NAME + ") ON DELETE CASCADE," +
                     "CONSTRAINT Natural_Number CHECK (" + ItemSale.discountColumnName + " >= 0)," +
                     "CONSTRAINT End_Date CHECK (date(" + ItemSale.startSaleDateColumnName + ")>=date(" + ItemSale.endSaleDateColumnName + ") OR "
@@ -60,17 +57,17 @@ public class ItemSaleDalController extends DalController<ItemSale> {
     }
 
     @Override
-    public boolean Insert(ItemSale dalObject) {
+    public boolean insert(ItemSale dalObject) {
         return false;
     }
 
     @Override
-    public boolean Delete(ItemSale dalObject) {
+    public boolean delete(ItemSale dalObject) {
         return false;
     }
 
     @Override
-    public ItemSale ConvertReaderToObject() {
+    public ItemSale convertReaderToObject() {
         return null;
     }
 }

@@ -18,17 +18,17 @@ public abstract class DalObject<T extends DalObject<T>> {
     /// Inserts 'this' into the database.
     /// </summary>
     /// <returns>Returns true if 'Insert' was successful.</returns>
-    public boolean Save()
+    public boolean save()
     {
-        return controller.Insert((T) this);
+        return controller.insert((T) this);
     }
 
     /// <summary>
     /// Deletes the equivalent row of 'this' in the database.
     /// </summary>
     /// <returns>Returns true if the row was removed successfully.</returns>
-    public boolean Delete()
+    public boolean delete()
     {
-        return controller.Delete((T) this);
+        return controller.delete((T) this);
     }
 }

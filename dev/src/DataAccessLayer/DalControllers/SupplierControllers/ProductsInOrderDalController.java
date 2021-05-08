@@ -26,22 +26,22 @@ public class ProductsInOrderDalController extends DalController<ProductsInOrder>
     }
 
     @Override
-    public void CreateTable() throws SQLException {
+    public void createTable() throws SQLException {
 
     }
 
     @Override
-    public boolean Insert(ProductsInOrder dalObject) {
+    public boolean insert(ProductsInOrder dalObject) {
         return false;
     }
 
     @Override
-    public boolean Delete(ProductsInOrder dalObject) {
+    public boolean delete(ProductsInOrder dalObject) {
         return false;
     }
 
     @Override
-    public ProductsInOrder ConvertReaderToObject() {
+    public ProductsInOrder convertReaderToObject() {
         return null;
     }
 }

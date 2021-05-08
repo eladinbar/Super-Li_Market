@@ -28,7 +28,7 @@ public class CategoryDalController extends DalController<Category> {
     }
 
     @Override
-    public void CreateTable() throws SQLException {
+    public void createTable() throws SQLException {
         System.out.println("Initiating create '" + CATEGORY_TABLE_NAME + "' table.");
         try (Connection conn = DriverManager.getConnection(connectionString)) {
             String command = "CREATE TABLE IF NOT EXISTS " + CATEGORY_TABLE_NAME + " (" +
@@ -46,17 +46,17 @@ public class CategoryDalController extends DalController<Category> {
     }
 
     @Override
-    public boolean Insert(Category dalObject) {
+    public boolean insert(Category dalObject) {
         return false;
     }
 
     @Override
-    public boolean Delete(Category dalObject) {
+    public boolean delete(Category dalObject) {
         return false;
     }
 
     @Override
-    public Category ConvertReaderToObject() {
+    public Category convertReaderToObject() {
         return null;
     }
 }

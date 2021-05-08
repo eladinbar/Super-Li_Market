@@ -2,7 +2,6 @@ package DataAccessLayer.DalControllers.InventoryControllers;
 
 import DataAccessLayer.DalControllers.DalController;
 import DataAccessLayer.DalObjects.InventoryObjects.Category;
-import DataAccessLayer.DalObjects.InventoryObjects.CategoryDiscount;
 import DataAccessLayer.DalObjects.InventoryObjects.CategorySale;
 
 import java.sql.Connection;
@@ -32,7 +31,7 @@ public class CategorySaleDalController extends DalController<CategorySale> {
     }
 
     @Override
-    public void CreateTable() throws SQLException {
+    public void createTable() throws SQLException {
         System.out.println("Initiating create '" + CATEGORY_SALE_TABLE_NAME + "' table.");
         try (Connection conn = DriverManager.getConnection(connectionString)) {
             String command = "CREATE TABLE IF NOT EXISTS " + CATEGORY_SALE_TABLE_NAME + " (" +
@@ -58,17 +57,17 @@ public class CategorySaleDalController extends DalController<CategorySale> {
     }
 
     @Override
-    public boolean Insert(CategorySale dalObject) {
+    public boolean insert(CategorySale dalObject) {
         return false;
     }
 
     @Override
-    public boolean Delete(CategorySale dalObject) {
+    public boolean delete(CategorySale dalObject) {
         return false;
     }
 
     @Override
-    public CategorySale ConvertReaderToObject() {
+    public CategorySale convertReaderToObject() {
         return null;
     }
 }

@@ -20,22 +20,22 @@ public class SupplierContactMembersDalController extends DalController<SupplierC
     }
 
     @Override
-    public void CreateTable() throws SQLException {
+    public void createTable() throws SQLException {
 
     }
 
     @Override
-    public boolean Insert(SupplierContactMembers dalObject) {
+    public boolean insert(SupplierContactMembers dalObject) {
         return false;
     }
 
     @Override
-    public boolean Delete(SupplierContactMembers dalObject) {
+    public boolean delete(SupplierContactMembers dalObject) {
         return false;
     }
 
     @Override
-    public SupplierContactMembers ConvertReaderToObject() {
+    public SupplierContactMembers convertReaderToObject() {
         return null;
     }
 }

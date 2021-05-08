@@ -8,7 +8,6 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
-import static DataAccessLayer.DalControllers.InventoryControllers.CategoryDalController.CATEGORY_TABLE_NAME;
 import static DataAccessLayer.DalControllers.InventoryControllers.ItemDalController.ITEM_TABLE_NAME;
 
 public class DefectEntryDalController extends DalController<DefectEntry> {
@@ -31,7 +30,7 @@ public class DefectEntryDalController extends DalController<DefectEntry> {
     }
 
     @Override
-    public void CreateTable() throws SQLException {
+    public void createTable() throws SQLException {
         System.out.println("Initiating create '" + DEFECT_ENTRY_TABLE_NAME + "' table.");
         try (Connection conn = DriverManager.getConnection(connectionString)) {
             String command = "CREATE TABLE IF NOT EXISTS " + DEFECT_ENTRY_TABLE_NAME + " (" +
@@ -54,17 +53,17 @@ public class DefectEntryDalController extends DalController<DefectEntry> {
     }
 
     @Override
-    public boolean Insert(DefectEntry dalObject) {
+    public boolean insert(DefectEntry dalObject) {
         return false;
     }
 
     @Override
-    public boolean Delete(DefectEntry dalObject) {
+    public boolean delete(DefectEntry dalObject) {
         return false;
     }
 
     @Override
-    public DefectEntry ConvertReaderToObject() {
+    public DefectEntry convertReaderToObject() {
         return null;
     }
 }

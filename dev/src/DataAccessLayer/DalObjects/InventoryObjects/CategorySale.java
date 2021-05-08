@@ -2,7 +2,6 @@ package DataAccessLayer.DalObjects.InventoryObjects;
 
 import DataAccessLayer.DalControllers.InventoryControllers.CategorySaleDalController;
 import DataAccessLayer.DalObjects.DalObject;
-import InfrastructurePackage.Pair;
 
 import java.sql.SQLException;
 import java.util.Calendar;

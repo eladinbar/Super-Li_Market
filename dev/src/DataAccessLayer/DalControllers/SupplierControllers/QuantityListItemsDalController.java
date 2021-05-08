@@ -26,22 +26,22 @@ public class QuantityListItemsDalController extends DalController<QuantityListIt
     }
 
     @Override
-    public void CreateTable() throws SQLException {
+    public void createTable() throws SQLException {
 
     }
 
     @Override
-    public boolean Insert(QuantityListItems dalObject) {
+    public boolean insert(QuantityListItems dalObject) {
         return false;
     }
 
     @Override
-    public boolean Delete(QuantityListItems dalObject) {
+    public boolean delete(QuantityListItems dalObject) {
         return false;
     }
 
     @Override
-    public QuantityListItems ConvertReaderToObject() {
+    public QuantityListItems convertReaderToObject() {
         return null;
     }
 }
