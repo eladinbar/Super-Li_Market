@@ -48,13 +48,13 @@ public class CategoryDalController extends DalController<Category> {
 
     @Override
     public boolean insert(Category category) throws SQLException {
-        System.out.println("Initiating " + CATEGORY_TABLE_NAME + " insert.");
+        System.out.println("Initiating " + tableName + " insert.");
         try (Connection conn = DriverManager.getConnection(connectionString)) {
             String query = "INSERT INTO " + tableName + " VALUES (?,?)";
             PreparedStatement stmt = conn.prepareStatement(query);
             stmt.setString(1, category.getName());
             stmt.setString(2, category.getParentName());
-            System.out.println("Executing " + CATEGORY_TABLE_NAME + " insert.");
+            System.out.println("Executing " + tableName + " insert.");
             stmt.executeUpdate();
         } catch (SQLException ex) {
             throw new SQLException(ex.getMessage());
@@ -67,6 +67,7 @@ public class CategoryDalController extends DalController<Category> {
         try (Connection conn = DriverManager.getConnection(connectionString)) {
             String query = "DELETE FROM " + tableName + " WHERE ?=?";
             PreparedStatement stmt = conn.prepareStatement(query);
+
             stmt.setString(1, Category.categoryNameColumnName);
             stmt.setString(2, category.getName());
             stmt.executeUpdate();
@@ -77,8 +78,19 @@ public class CategoryDalController extends DalController<Category> {
     }
 
     @Override
-    public boolean update(Category category) {
-        return false;
+    public boolean update(Category category) throws SQLException {
+        try (Connection conn = DriverManager.getConnection(connectionString)) {
+            String query = "UPDATE " + tableName + " SET " + Category.parentNameColumnName +
+                    "=? WHERE(" + Category.categoryNameColumnName + "=?)";
+            PreparedStatement stmt = conn.prepareStatement(query);
+
+            stmt.setString(1, category.getParentName());
+            stmt.setString(2, category.getName());
+            stmt.executeUpdate();
+        } catch (SQLException ex) {
+            throw new SQLException(ex.getMessage());
+        }
+        return true;
     }
 
     @Override

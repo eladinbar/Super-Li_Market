@@ -93,8 +93,23 @@ public class CategoryDiscountDalController extends DalController<CategoryDiscoun
     }
 
     @Override
-    public boolean update(CategoryDiscount categoryDiscount) {
-        return false;
+    public boolean update(CategoryDiscount categoryDiscount) throws SQLException {
+        try (Connection conn = DriverManager.getConnection(connectionString)) {
+            String query = "UPDATE " + tableName + " SET " + CategoryDiscount.discountColumnName + "=?, " +
+                    CategoryDiscount.itemCountColumnName + "=?, " + CategoryDiscount.supplierIdColumnName + "=?, " +
+                    CategoryDiscount.categoryNameColumnName + "=? WHERE(" + CategoryDiscount.discountDateColumnName + "=?)";
+            PreparedStatement stmt = conn.prepareStatement(query);
+
+            stmt.setDouble(1, categoryDiscount.getDiscount());
+            stmt.setInt(2, categoryDiscount.getItemCount());
+            stmt.setInt(3, categoryDiscount.getSupplierID());
+            stmt.setString(4, categoryDiscount.getCategoryName());
+            stmt.setString(5, categoryDiscount.getDiscountDate());
+            stmt.executeUpdate();
+        } catch (SQLException ex) {
+            throw new SQLException(ex.getMessage());
+        }
+        return true;
     }
 
     @Override

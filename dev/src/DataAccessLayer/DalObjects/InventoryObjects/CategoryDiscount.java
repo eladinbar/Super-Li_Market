@@ -4,7 +4,6 @@ import DataAccessLayer.DalControllers.InventoryControllers.CategoryDiscountDalCo
 import DataAccessLayer.DalObjects.DalObject;
 
 import java.sql.SQLException;
-import java.util.Calendar;
 
 public class CategoryDiscount extends DalObject<CategoryDiscount> {
     public static final String discountDateColumnName = "Discount_Date"; //Primary Key

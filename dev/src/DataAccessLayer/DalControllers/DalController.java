@@ -49,7 +49,7 @@ public abstract class DalController<T extends DalObject<T>>{
      </summary>
      <param name="dalObject">The object to select from the database.</param>
      <returns>Returns a DalObject that extends DalObject<T>.</returns> */
-    public abstract boolean update(T dalObject);
+    public abstract boolean update(T dalObject) throws SQLException;
 
     /** <summary>
     A select command function to extract an object from database into RAM.

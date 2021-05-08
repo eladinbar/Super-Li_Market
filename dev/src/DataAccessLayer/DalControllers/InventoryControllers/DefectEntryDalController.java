@@ -86,8 +86,22 @@ public class DefectEntryDalController extends DalController<DefectEntry> {
     }
 
     @Override
-    public boolean update(DefectEntry defectEntry) {
-        return false;
+    public boolean update(DefectEntry defectEntry) throws SQLException {
+        try (Connection conn = DriverManager.getConnection(connectionString)) {
+            String query = "UPDATE " + tableName + " SET " + DefectEntry.locationColumnName + "=?, " +
+                    DefectEntry.quantityColumnName + "=?, " + DefectEntry.itemIdColumnName +
+                    "=? WHERE(" + DefectEntry.entryDateColumnName + "=?)";
+            PreparedStatement stmt = conn.prepareStatement(query);
+
+            stmt.setString(1, defectEntry.getLocation());
+            stmt.setInt(2, defectEntry.getQuantity());
+            stmt.setInt(3, defectEntry.getItemID());
+            stmt.setString(4, defectEntry.getEntryDate());
+            stmt.executeUpdate();
+        } catch (SQLException ex) {
+            throw new SQLException(ex.getMessage());
+        }
+        return true;
     }
 
     @Override

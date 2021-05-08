@@ -4,6 +4,7 @@ import DataAccessLayer.DalControllers.DalController;
 import DataAccessLayer.DalObjects.InventoryObjects.Category;
 import DataAccessLayer.DalObjects.InventoryObjects.CategorySale;
 import DataAccessLayer.DalObjects.InventoryObjects.Item;
+import DataAccessLayer.DalObjects.InventoryObjects.ItemSale;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -48,7 +49,7 @@ public class ItemDalController extends DalController<Item> {
                     Item.categoryNameColumnName + " TEXT NOT NULL," +
                     "PRIMARY KEY (" + Item.itemIdColumnName + ")," +
                     "FOREIGN KEY (" + Item.categoryNameColumnName + ")" +
-                    "REFERENCES " + Category.categoryNameColumnName + " (" + CATEGORY_TABLE_NAME + ") ON DELETE CASCADE," +
+                    "REFERENCES " + Category.categoryNameColumnName + " (" + CATEGORY_TABLE_NAME + ") ON DELETE NO ACTION," +
                     "CONSTRAINT Natural_Number CHECK (" + Item.costPriceColumnName + ">= 0 AND " + Item.sellingPriceColumnName + ">=0 AND " +
                     Item.minAmountColumnName + ">=0 AND " + Item.shelfQuantityColumnName + ">=0 AND " + Item.storageQuantityColumnName + ">=0)" +
                     ");";
@@ -101,8 +102,31 @@ public class ItemDalController extends DalController<Item> {
     }
 
     @Override
-    public boolean update(Item item) {
-        return false;
+    public boolean update(Item item) throws SQLException {
+        try (Connection conn = DriverManager.getConnection(connectionString)) {
+            String query = "UPDATE " + tableName + " SET " + Item.costPriceColumnName + "=?, " +
+                    Item.sellingPriceColumnName + "=?, " + Item.manufacturerIdColumnName + "=?, " +
+                    Item.minAmountColumnName + "=?, " + Item.shelfQuantityColumnName + "=?, " +
+                    Item.storageQuantityColumnName + "=?, " + Item.shelfLocationColumnName + "=?, " +
+                    Item.storageLocationColumnName + "=?, " + Item.categoryNameColumnName +
+                    "=? WHERE(" + Item.itemIdColumnName + "=?)";
+            PreparedStatement stmt = conn.prepareStatement(query);
+
+            stmt.setDouble(1, item.getCostPrice());
+            stmt.setDouble(2, item.getSellingPrice());
+            stmt.setInt(3, item.getManufacturerID());
+            stmt.setInt(4, item.getMinAmount());
+            stmt.setInt(5, item.getShelfQuantity());
+            stmt.setInt(6, item.getStorageQuantity());
+            stmt.setString(7, item.getShelfLocation());
+            stmt.setString(8, item.getStorageLocation());
+            stmt.setString(9, item.getCategoryName());
+            stmt.setInt(10, item.getItemID());
+            stmt.executeUpdate();
+        } catch (SQLException ex) {
+            throw new SQLException(ex.getMessage());
+        }
+        return true;
     }
 
     @Override

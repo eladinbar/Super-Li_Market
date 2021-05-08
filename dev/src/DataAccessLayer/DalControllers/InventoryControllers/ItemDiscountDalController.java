@@ -94,8 +94,23 @@ public class ItemDiscountDalController extends DalController<ItemDiscount> {
     }
 
     @Override
-    public boolean update(ItemDiscount itemDiscount) {
-        return false;
+    public boolean update(ItemDiscount itemDiscount) throws SQLException {
+        try (Connection conn = DriverManager.getConnection(connectionString)) {
+            String query = "UPDATE " + tableName + " SET " + ItemDiscount.discountColumnName + "=?, " +
+                    ItemDiscount.itemCountColumnName + "=?, " + ItemDiscount.supplierIdColumnName + "=?, " +
+                    ItemDiscount.itemIdColumnName + "=? WHERE(" + ItemDiscount.discountDateColumnName + "=?)";
+            PreparedStatement stmt = conn.prepareStatement(query);
+
+            stmt.setDouble(1, itemDiscount.getDiscount());
+            stmt.setInt(2, itemDiscount.getItemCount());
+            stmt.setInt(3, itemDiscount.getSupplierID());
+            stmt.setInt(4, itemDiscount.getItemID());
+            stmt.setString(5, itemDiscount.getDiscountDate());
+            stmt.executeUpdate();
+        } catch (SQLException ex) {
+            throw new SQLException(ex.getMessage());
+        }
+        return true;
     }
 
     @Override
