@@ -15,8 +15,10 @@ public class DalDriverController extends DalController{
         columnNames[0]="ID";columnNames[1]="name";columnNames[2]="license";
     }
 
-    public static DalDriverController getInstance() {
-        if (controller==null) controller=new DalDriverController();
+    public static DalDriverController getInstance() throws SQLException {
+        if (controller==null) {controller=new DalDriverController();
+            controller.createTable();
+        }
         return controller;
     }
 

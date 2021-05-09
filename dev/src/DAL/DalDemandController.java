@@ -18,8 +18,11 @@ public class DalDemandController extends DalController{
 
 
 
-    public static DalDemandController getInstance() {
-        if (controller==null) controller=new DalDemandController();
+    public static DalDemandController getInstance() throws SQLException {
+        if (controller==null) {
+            controller = new DalDemandController();
+            controller.createTable();
+        }
         return controller;
 
     }

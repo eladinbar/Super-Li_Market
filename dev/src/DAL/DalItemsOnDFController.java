@@ -14,9 +14,11 @@ public class DalItemsOnDFController extends DalController{
         columnNames[0]="DFID";
         columnNames[1]="itemID";columnNames[2]="amount";}
 
-    public static DalItemsOnDFController getInstance() {
-        if (controller==null)
-         controller=new DalItemsOnDFController();
+    public static DalItemsOnDFController getInstance() throws SQLException {
+        if (controller==null) {
+            controller = new DalItemsOnDFController();
+            controller.createTable();
+        }
         return controller;
     }
 

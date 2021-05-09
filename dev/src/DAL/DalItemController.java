@@ -13,9 +13,11 @@ public class DalItemController extends DalController{
         this.columnNames=new String[4];
         columnNames[0]="ID";columnNames[1]="weight";columnNames[2]="name";columnNames[3]="originSite";}
 
-    public static DalItemController getInstance() {
-        if (controller==null)
-            controller=new DalItemController();
+    public static DalItemController getInstance() throws SQLException {
+        if (controller==null) {
+            controller = new DalItemController();
+            controller.createTable();
+        }
         return controller;
     }
 

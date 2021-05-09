@@ -14,9 +14,11 @@ public class DalTruckController extends DalController{
         columnNames[1]="model";columnNames[0]="licenseNumber";columnNames[2]="weightNeto";
         columnNames[3]="maxWeight";}
 
-    public static DalTruckController getInstance() {
-        if (controller==null)
-            controller= new DalTruckController();
+    public static DalTruckController getInstance() throws SQLException {
+        if (controller==null) {
+            controller = new DalTruckController();
+            controller.createTable();
+        }
         return controller;
     }
 

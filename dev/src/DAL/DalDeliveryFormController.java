@@ -18,9 +18,12 @@ public class DalDeliveryFormController extends DalController {
         columnNames[3]="completed";columnNames[4]="leavingWeight";columnNames[5]="TRID";
     }
 
-     public static DalDeliveryFormController getInstance() {
-        if (controller==null) controller=new DalDeliveryFormController();
-        return controller;
+     public static DalDeliveryFormController getInstance() throws SQLException {
+         if (controller==null) {
+             controller = new DalDeliveryFormController();
+             controller.createTable();
+         }
+         return controller;
     }
 
 

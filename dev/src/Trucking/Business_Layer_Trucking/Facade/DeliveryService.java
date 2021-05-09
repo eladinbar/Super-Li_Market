@@ -297,7 +297,7 @@ public class DeliveryService {
         return dc.checkIfAllCompleted(trID);
     }
 
-    public void archive(int trID) {
+    public void archive(int trID) throws SQLException {
         dc.archive(trID);
     }
 

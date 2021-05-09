@@ -29,7 +29,6 @@
   <component name="ChangeListManager">
     <list default="true" id="05ca914f-9056-4de3-9869-7fdfaa880f2d" name="Default Changelist" comment="Singleton and delete methods fixed in all DallControllers">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dev/src/DAL/DalController.java" beforeDir="false" afterPath="$PROJECT_DIR$/dev/src/DAL/DalController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/dev/src/DAL/DalDeliveryFormController.java" beforeDir="false" afterPath="$PROJECT_DIR$/dev/src/DAL/DalDeliveryFormController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/dev/src/DAL/DalDemandController.java" beforeDir="false" afterPath="$PROJECT_DIR$/dev/src/DAL/DalDemandController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/dev/src/DAL/DalDriverController.java" beforeDir="false" afterPath="$PROJECT_DIR$/dev/src/DAL/DalDriverController.java" afterDir="false" />
@@ -40,12 +39,13 @@
       <change beforePath="$PROJECT_DIR$/dev/src/DAL/DalTruckingReportController.java" beforeDir="false" afterPath="$PROJECT_DIR$/dev/src/DAL/DalTruckingReportController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/dev/src/Employees/business_layer/Employee/EmployeeController.java" beforeDir="false" afterPath="$PROJECT_DIR$/dev/src/Employees/business_layer/Employee/EmployeeController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/dev/src/Employees/business_layer/facade/EmployeeService.java" beforeDir="false" afterPath="$PROJECT_DIR$/dev/src/Employees/business_layer/facade/EmployeeService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dev/src/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/dev/src/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dev/src/Trucking/Business_Layer_Trucking/Delivery/DeliveryController.java" beforeDir="false" afterPath="$PROJECT_DIR$/dev/src/Trucking/Business_Layer_Trucking/Delivery/DeliveryController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dev/src/Trucking/Business_Layer_Trucking/Delivery/DeliveryForm.java" beforeDir="false" afterPath="$PROJECT_DIR$/dev/src/Trucking/Business_Layer_Trucking/Delivery/DeliveryForm.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dev/src/Trucking/Business_Layer_Trucking/Delivery/TruckingReport.java" beforeDir="false" afterPath="$PROJECT_DIR$/dev/src/Trucking/Business_Layer_Trucking/Delivery/TruckingReport.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/dev/src/Trucking/Business_Layer_Trucking/Facade/DeliveryService.java" beforeDir="false" afterPath="$PROJECT_DIR$/dev/src/Trucking/Business_Layer_Trucking/Facade/DeliveryService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dev/src/Trucking/Business_Layer_Trucking/Facade/FacadeObject/ResourcesService.java" beforeDir="false" afterPath="$PROJECT_DIR$/dev/src/Trucking/Business_Layer_Trucking/Facade/FacadeObject/ResourcesService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/dev/src/Trucking/Business_Layer_Trucking/Facade/FacadeService.java" beforeDir="false" afterPath="$PROJECT_DIR$/dev/src/Trucking/Business_Layer_Trucking/Facade/FacadeService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dev/src/Trucking/Business_Layer_Trucking/Resources/ResourcesController.java" beforeDir="false" afterPath="$PROJECT_DIR$/dev/src/Trucking/Business_Layer_Trucking/Resources/ResourcesController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/dev/src/Trucking/Presentation_Layer_Trucking/Menu_Printer.java" beforeDir="false" afterPath="$PROJECT_DIR$/dev/src/Trucking/Presentation_Layer_Trucking/Menu_Printer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dev/src/Trucking/Presentation_Layer_Trucking/PresentationController.java" beforeDir="false" afterPath="$PROJECT_DIR$/dev/src/Trucking/Presentation_Layer_Trucking/PresentationController.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -63,7 +63,7 @@
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="DAL-Raz" />
+        <entry key="$PROJECT_DIR$" value="2.1_employees_ido" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -105,6 +105,13 @@
     </key>
   </component>
   <component name="RunManager" selected="Application.Main">
+    <configuration name="Main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="Main" />
+      <module name="ADSS_Group_G" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration default="true" type="ArquillianTestNG" factoryName="" nameIsGenerated="true">
       <option name="arquillianRunConfiguration">
         <value>
@@ -114,13 +121,6 @@
       <option name="TEST_OBJECT" value="CLASS" />
       <properties />
       <listeners />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="Main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="Main" />
-      <module name="ADSS_Group_G" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -575,22 +575,22 @@
       <breakpoints>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/dev/src/DAL/DalTruckingReportController.java</url>
-          <line>30</line>
+          <line>32</line>
           <option name="timeStamp" value="1" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/dev/src/DAL/DalTruckingReportController.java</url>
-          <line>104</line>
+          <line>106</line>
           <option name="timeStamp" value="7" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/dev/src/DAL/DalItemController.java</url>
-          <line>26</line>
+          <line>28</line>
           <option name="timeStamp" value="13" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/dev/src/DAL/DalItemController.java</url>
-          <line>52</line>
+          <line>54</line>
           <option name="timeStamp" value="14" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
@@ -600,7 +600,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/dev/src/DAL/DalDemandController.java</url>
-          <line>114</line>
+          <line>117</line>
           <option name="timeStamp" value="18" />
         </line-breakpoint>
       </breakpoints>
@@ -616,7 +616,7 @@
     </pin-to-top-manager>
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/Main_java$Main.ic" NAME="Main Coverage Results" MODIFIED="1620284345160" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
     <SUITE FILE_PATH="coverage/ADSS_Group_G$Main.ic" NAME="Main Coverage Results" MODIFIED="1617982326074" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
+    <SUITE FILE_PATH="coverage/Main_java$Main.ic" NAME="Main Coverage Results" MODIFIED="1620284345160" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
   </component>
 </project>

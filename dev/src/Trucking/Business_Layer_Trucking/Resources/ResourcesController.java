@@ -5,6 +5,7 @@ import Employees.business_layer.Shift.ShiftController;
 
 import javax.management.openmbean.KeyAlreadyExistsException;
 import java.awt.*;
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.*;
@@ -39,7 +40,7 @@ public class ResourcesController {
         return instance;
     }
 
-    public void addDriver(String id, String name, Driver.License licenseType) throws KeyAlreadyExistsException {
+    public void addDriver(String id, String name, Driver.License licenseType) throws KeyAlreadyExistsException, SQLException {
         if (!drivers.containsKey(id)) {
             Driver driver = new Driver(id, name, licenseType);
             drivers.put(id, driver);
@@ -230,7 +231,7 @@ public class ResourcesController {
 
     }
 
-    public void addTruck(String model, String licenseNumber, int weightNeto, int maxWeight) throws KeyAlreadyExistsException {
+    public void addTruck(String model, String licenseNumber, int weightNeto, int maxWeight) throws KeyAlreadyExistsException, SQLException {
         if (!trucks.containsKey(licenseNumber)) {
             Truck truck = new Truck(model, licenseNumber, weightNeto, maxWeight);
             trucks.put(licenseNumber, truck);

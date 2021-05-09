@@ -14,9 +14,11 @@ public class DalSiteController extends DalController{
         columnNames[0]="siteID";columnNames[1]="name";columnNames[2]="city";
         columnNames[3]="deliverArea";columnNames[4]="contactName";columnNames[5]="phoneNumber";}
 
-    public static DalSiteController getInstance() {
-        if (controller==null)
-        controller= new DalSiteController();
+    public static DalSiteController getInstance() throws SQLException {
+        if (controller==null) {
+            controller = new DalSiteController();
+            controller.createTable();
+        }
         return controller;
     }
 

@@ -20,9 +20,11 @@ public class DalTruckingReportController extends DalController {
 
     }
 
-    public static DalTruckingReportController getInstance() {
-        if (controller==null)
-        controller= new DalTruckingReportController();
+    public static DalTruckingReportController getInstance() throws SQLException {
+        if (controller==null) {
+            controller = new DalTruckingReportController();
+            controller.createTable();
+        }
         return controller;
     }
 

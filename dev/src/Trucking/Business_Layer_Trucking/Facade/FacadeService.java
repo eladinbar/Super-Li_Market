@@ -243,9 +243,9 @@ public class FacadeService {
 
         }
 
+
          if (deliveryService.checkIfAllCompleted(trID)){
              FacadeTruckingReport truckingReport = deliveryService.getTruckReport(trID);
-             // TODO need to think whether we want to implement somehow 2 deliveries in same shift
     /*         resourcesService.makeAvailable_Driver(truckingReport.getDriverID());
              resourcesService.makeAvailable_Truck(truckingReport.getTruckNumber());*/
              deliveryService.archive(trID);
