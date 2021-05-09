@@ -97,4 +97,25 @@ public class DalItemsOnDFController extends DalController{
         }
         return items;
     }
+    public boolean createTable() throws SQLException {
+        Connection conn = DriverManager.getConnection("jdbc:sqlite:/D:\\Year2\\ניתוצ\\עבודה 2\\database.db");
+        String query = "CREATE TABLE IF NOT EXISTS ItemsOnDFs("
+                +"DFID INTEGER,"
+                +"itemID INTEGER,"
+                +"amount INTEGER,"
+                +"FOREIGN KEY REFERENCES DeliveryForms(DFID),"
+                +"PRIMARY KEY (itemID));";
+        try {
+            PreparedStatement st=conn.prepareStatement(query);
+            System.out.println("Creating\n");
+            st.executeUpdate();
+        }
+        catch (SQLException e){
+            throw new SQLException(e.getMessage());
+        }
+        finally {
+            conn.close();
+        }
+        return true;
+    }
 }

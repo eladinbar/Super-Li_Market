@@ -122,4 +122,28 @@ public class DalDeliveryFormController extends DalController {
         }
         return reports;
     }
+    public boolean createTable() throws SQLException {
+        Connection conn = DriverManager.getConnection("jdbc:sqlite:/D:\\Year2\\ניתוצ\\עבודה 2\\database.db");
+        String query = "CREATE TABLE IF NOT EXISTS DeliveryForms("
+                +"ID INTEGER,"
+                +"origin INTEGER,"
+                +"destination INTEGER,"
+                +"completed INTEGER,"
+                +"leavingWeight INTEGER,"
+                +"TRID INTEGER,"
+                +"FOREIGN KEY (TRID) REFERENCES TruckingReports(ID),"
+                +"PRIMARY KEY (ID));";
+        try {
+            PreparedStatement st=conn.prepareStatement(query);
+            System.out.println("Creating\n");
+            st.executeUpdate();
+        }
+        catch (SQLException e){
+            throw new SQLException(e.getMessage());
+        }
+        finally {
+            conn.close();
+        }
+        return true;
+    }
 }

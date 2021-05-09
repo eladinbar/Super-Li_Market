@@ -7,6 +7,7 @@ import Employees.business_layer.facade.facadeObject.FacadeTermsOfEmployment;
 import Trucking.Business_Layer_Trucking.Resources.Driver;
 import Trucking.Business_Layer_Trucking.Resources.ResourcesController;
 
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -181,7 +182,7 @@ public class EmployeeController {
        return newEmployee;
     }
 
-    public Employee addDriver(FacadeEmployee e, String name) throws EmployeeException {
+    public Employee addDriver(FacadeEmployee e, String name) throws EmployeeException, SQLException {
         Employee driver = addEmployee ( e );
         ResourcesController.getInstance ().addDriver ( e.getID (), name, Driver.License.valueOf ( (e.getRole ().equals ( "driverC" )) ? "120000" : "200000" ) );
         return driver;

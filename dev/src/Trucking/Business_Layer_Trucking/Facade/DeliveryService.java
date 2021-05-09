@@ -56,12 +56,12 @@ public class DeliveryService {
 
 
 
-    public int  createTruckingReport() {
+    public int  createTruckingReport() throws SQLException {
         return dc.createNewTruckingReport();
 
     }
 
-    public void chooseLeavingHour(LocalTime leavingHour) throws IllegalArgumentException {
+    public void chooseLeavingHour(LocalTime leavingHour) throws IllegalArgumentException, SQLException {
 
         dc.chooseLeavingHour(leavingHour);
 
@@ -111,7 +111,7 @@ public class DeliveryService {
 
         dc.removeItemFromReport(new Demand(demand.getItemID(),demand.getSite(),amount));
     }
-    public void removeItemFromPool(int item) throws NoSuchElementException{
+    public void removeItemFromPool(int item) throws NoSuchElementException, SQLException {
         dc.removeItemFromPool(item);
     }
 
@@ -289,7 +289,7 @@ public class DeliveryService {
 
     }
 
-    public void updateDeliveryFormRealWeight(int trID,int dfID, int weight)throws IllegalStateException {
+    public void updateDeliveryFormRealWeight(int trID,int dfID, int weight) throws IllegalStateException, SQLException {
         dc.updateDeliveryFormRealWeight(trID,dfID,weight);
     }
 
@@ -313,11 +313,11 @@ public class DeliveryService {
         dc.removeSiteFromTruckReport(siteID,trID);
     }
 
-    public boolean addDemandToTruckReport(int itemNumber, int amount, int siteID, int trID) throws IllegalStateException{
+    public boolean addDemandToTruckReport(int itemNumber, int amount, int siteID, int trID) throws IllegalStateException, SQLException {
         return dc.addDemandToTruckReport(itemNumber, amount,siteID,trID);
     }
 
-    public void replaceDriver(int trID, String driverID) {
+    public void replaceDriver(int trID, String driverID) throws SQLException {
         dc.replaceDriver(trID,driverID);
     }
 
@@ -340,23 +340,23 @@ public class DeliveryService {
     }
 
 
-    public void chooseDateToCurrentTR(LocalDate chosen) {
+    public void chooseDateToCurrentTR(LocalDate chosen) throws SQLException {
         dc.chooseDateToCurrentTR(chosen);
     }
 
-    public void removeSiteFromPool(int siteID) throws NoSuchElementException, IllegalStateException{
+    public void removeSiteFromPool(int siteID) throws NoSuchElementException, IllegalStateException, SQLException {
         dc.removeSite(siteID);
     }
 
-    public void chooseDriver(String driver) {
+    public void chooseDriver(String driver) throws SQLException {
         dc.updateCurrTR_DriverID(driver);
     }
 
-    public void chooseTruck(String truck) {
+    public void chooseTruck(String truck) throws SQLException {
         dc.updateCurrTR_TruckNumber(truck);
     }
 
-    public void removeDemand(FacadeDemand d) {
+    public void removeDemand(FacadeDemand d) throws SQLException {
         dc.removeDemand(d.getItemID(), d.getSite());
     }
 
@@ -371,7 +371,7 @@ public class DeliveryService {
         return facadeDeliveryForms;
     }
 
-    public FacadeTruckingReport getNewTruckReport(FacadeTruckingReport oldTr) {
+    public FacadeTruckingReport getNewTruckReport(FacadeTruckingReport oldTr) throws SQLException {
         TruckingReport old = dc.getReplaceTruckingReport(oldTr.getID());
         if (old != null) {
             return new FacadeTruckingReport(old);
@@ -401,10 +401,10 @@ public class DeliveryService {
 
     }
 
-    public void setNewTruckToTR(int TRid, String truckNumber) {
+    public void setNewTruckToTR(int TRid, String truckNumber) throws SQLException {
         dc.setNewTruckToTR(TRid,truckNumber);
     }
-    public void setNewDriverToTR(int TRid, String driverID){
+    public void setNewDriverToTR(int TRid, String driverID) throws SQLException {
         dc.setNewDriverToTR(TRid,driverID);
     }
 
@@ -419,7 +419,7 @@ public class DeliveryService {
 
     }
 
-    public void makeDeliveryFormUncompleted(int trID, int dfID) {
+    public void makeDeliveryFormUncompleted(int trID, int dfID) throws SQLException {
         dc.makeDeliveryFormUncompleted(trID, dfID);
     }
 

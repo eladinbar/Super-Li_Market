@@ -7,7 +7,7 @@ public abstract class DalController {
 
     public DalController()
     {
-        connection=null;
+        connection=System.getProperty("user.dir");
     }
     // TODO need to decide whether we want to upload all data or upload only necessary data
     // TODO change connection
