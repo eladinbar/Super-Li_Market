@@ -1,5 +1,9 @@
 package BusinessLayer.SupliersPackage.supplierPackage;
 
+import DataAccessLayer.DalObjects.SupplierObjects.SupplierCardDal;
+import DataAccessLayer.DalObjects.SupplierObjects.agreementItemsDal;
+
+import java.sql.SQLException;
 import java.util.*;
 
 public class Agreement {

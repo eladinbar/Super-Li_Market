@@ -1,5 +1,8 @@
 package BusinessLayer.SupliersPackage.supplierPackage;
 
+import DataAccessLayer.DalObjects.SupplierObjects.SupplierCardDal;
+
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,14 +12,21 @@ public class SupplierCard extends PersonCard {
     private boolean selfDelivery;
     private Payment payment;
     private List<String> contactMembers;
+    private SupplierCardDal dalObject;
 
-    public SupplierCard(String firstName, String lastName, String email, String id, String phone, int companyNumber, boolean isPernamentDays, boolean selfDelivery, Payment payment) {
+    public SupplierCard(String firstName, String lastName, String email, String id, String phone, int companyNumber, boolean isPernamentDays, boolean selfDelivery, Payment payment) throws SQLException {
         super(firstName, lastName, email, id, phone);
         this.companyNumber = companyNumber;
         this.isPernamentDays = isPernamentDays;
         this.selfDelivery = selfDelivery;
         this.payment = payment;
         this.contactMembers = new ArrayList<>();
+        this.dalObject = toDalObject();
+        save();
+    }
+
+    public SupplierCard(String supplierId){
+        super(null, null, null, supplierId, null);
     }
 
     public int getCompanyNumber() {
@@ -57,5 +67,20 @@ public class SupplierCard extends PersonCard {
 
     public void setContactMembers(List<String> contactMembers) {
         this.contactMembers = contactMembers;
+    }
+
+    public boolean find() throws SQLException {
+        SupplierCardDal supplierCardDal = toDalObject();
+        return supplierCardDal.find();
+    }
+
+    public void save() throws SQLException {
+        toDalObject().save();
+    }
+
+
+
+    public SupplierCardDal toDalObject() throws SQLException {
+        return new SupplierCardDal(Integer.parseInt(id),companyNumber,isPernamentDays,selfDelivery,payment);
     }
 }

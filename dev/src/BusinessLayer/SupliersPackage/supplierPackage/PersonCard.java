@@ -1,11 +1,11 @@
 package BusinessLayer.SupliersPackage.supplierPackage;
 
 public class PersonCard {
-    private String firstName;
-    private String lastName;
-    private String email;
-    private String id;
-    private String phone;
+    protected String firstName;
+    protected String lastName;
+    protected String email;
+    protected String id;
+    protected String phone;
 
     public PersonCard(String firstName, String lastName, String email, String id, String phone) {
         this.firstName = firstName;
