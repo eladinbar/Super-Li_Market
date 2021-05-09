@@ -10,7 +10,7 @@ import java.util.LinkedList;
 
 public class DalConstraintController extends DalController {
     private static DalConstraintController instance = null;
-    private DalConstraintController(){
+    private DalConstraintController() throws SQLException{
         super();
         tableName = "Constraints";
         columnNames = new String[] {"EMPLOYEEID","REASON", "DATE",  "SHIFT"};
@@ -18,13 +18,13 @@ public class DalConstraintController extends DalController {
             createTable();
         }
         catch (SQLException e){
-
+            throw e;
         }
     }
 
     @Override
     protected boolean createTable() throws SQLException {
-        Connection conn = DriverManager.getConnection("jdbc:sqlite:/D:\\Year2\\ניתוצ\\עבודה 2\\database.db");
+        Connection conn = DriverManager.getConnection("jdbc:sqlite:Desktop\\database_nitoz.db");
         String query = "CREATE TABLE IF NOT EXISTS CONSTRAINTS("
                 +"EMPLOYEEID TEXT,"
                 +"REASON TEXT,"
@@ -38,7 +38,7 @@ public class DalConstraintController extends DalController {
             st.executeUpdate();
         }
         catch (SQLException e){
-            throw new SQLException(e.getMessage());
+            throw e;
         }
         finally {
             conn.close();
@@ -47,14 +47,14 @@ public class DalConstraintController extends DalController {
     }
 
 
-    public static DalConstraintController getInstance(){
+    public static DalConstraintController getInstance()throws SQLException{
         if(instance==null){ instance = new DalConstraintController();}
         return instance;
     }
     public boolean insert(DalConstraint dalConstraint) throws SQLException {
         //TODO - change URL
         System.out.println("starting insert");
-        Connection conn= DriverManager.getConnection("jdbc:sqlite:/D:\\Year2\\ניתוצ\\עבודה 2\\database.db");
+        Connection conn= DriverManager.getConnection("jdbc:sqlite:Desktop\\database_nitoz.db");
         String query= "INSERT INTO "+tableName+" VALUES (?,?,?,?)";
         try{
             PreparedStatement st=conn.prepareStatement(query);
@@ -68,7 +68,7 @@ public class DalConstraintController extends DalController {
 
         }
         catch (SQLException e){
-            throw new SQLException(e.getMessage());
+            throw e;
         }
         finally {
             conn.close();
@@ -80,7 +80,7 @@ public class DalConstraintController extends DalController {
     }
 
     public boolean update(DalConstraint dalConstraint) throws SQLException {
-        Connection conn=DriverManager.getConnection("jdbc:sqlite:/D:\\Year2\\ניתוצ\\עבודה 2\\database.db");
+        Connection conn=DriverManager.getConnection("jdbc:sqlite:Desktop\\database_nitoz.db");
         String query="UPDATE "+tableName+" SET "+columnNames[0]+"=?, "+columnNames[1]+"=?, "+columnNames[2]+"=?, "+columnNames[3]+"=?, WHERE ("+columnNames[0]+"=? AND "+columnNames[2]+"=?)";
         try{
             PreparedStatement st=conn.prepareStatement(query);
@@ -106,7 +106,7 @@ public class DalConstraintController extends DalController {
     }
 
     public boolean delete(DalConstraint dalConstraint) throws SQLException {
-        Connection conn=DriverManager.getConnection("jdbc:sqlite:/D:\\Year2\\ניתוצ\\עבודה 2\\database.db");
+        Connection conn=DriverManager.getConnection("jdbc:sqlite:Desktop\\database_nitoz.db");
         String query="DELETE FROM "+tableName+" WHERE ("+columnNames[0]+"=? AND "+columnNames[2]+"=?)";
         try {
             PreparedStatement st=conn.prepareStatement(query);
@@ -117,14 +117,14 @@ public class DalConstraintController extends DalController {
         }
         catch (SQLException e)
         {
-            throw new SQLException(e.getMessage());
+            throw e;
         }
         return true;
     }
     public LinkedList<DalConstraint> load () throws SQLException// Select From DB
     {
         LinkedList<DalConstraint> constraints = new LinkedList<>();
-        Connection conn = DriverManager.getConnection("jdbc:sqlite:/D:\\Year2\\ניתוצ\\עבודה 2\\database.db");
+        Connection conn = DriverManager.getConnection("jdbc:sqlite:Desktop\\database_nitoz.db");
         String query = "SELECT * FROM "+tableName;
         try {
             PreparedStatement st = conn.prepareStatement(query);
@@ -137,7 +137,7 @@ public class DalConstraintController extends DalController {
                 );
             }
         } catch (SQLException e) {
-            throw new SQLException(e.getMessage());
+            throw e;
         }
         return constraints;
     }

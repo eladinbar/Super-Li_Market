@@ -13,7 +13,7 @@ public class DalShiftController extends DalController {
 
     private static DalShiftController  instance = null;
 
-    public DalShiftController(){
+    public DalShiftController()throws SQLException{
         super();
         tableName = "SHIFTS";
         columnNames = new String[] {"EMPLOYEEID",  "TYPE","DATE", "SHIFT"};
@@ -21,13 +21,13 @@ public class DalShiftController extends DalController {
             createTable();
         }
         catch(SQLException e){
-
+            throw e;
         }
     }
 
     @Override
     protected boolean createTable() throws SQLException {
-        Connection conn = DriverManager.getConnection("jdbc:sqlite:/D:\\Year2\\ניתוצ\\עבודה 2\\database.db");
+        Connection conn = DriverManager.getConnection("jdbc:sqlite:Desktop\\database_nitoz.db");
         String query = "CREATE TABLE IF NOT EXISTS SHIFTS("
                 +"EMPLOYEEID TEXT,"
                 +"TYPE TEXT,"
@@ -41,7 +41,7 @@ public class DalShiftController extends DalController {
             st.executeUpdate();
         }
         catch (SQLException e){
-            throw new SQLException(e.getMessage());
+            throw e;
         }
         finally {
             conn.close();
@@ -49,7 +49,7 @@ public class DalShiftController extends DalController {
         return true;
     }
 
-    public static DalShiftController getInstance(){
+    public static DalShiftController getInstance()throws SQLException{
         if(instance == null){ instance = new DalShiftController(); }
         return instance;
     }
@@ -57,7 +57,7 @@ public class DalShiftController extends DalController {
     public boolean insert(DalShift dalShift) throws SQLException {
         //TODO - change URL
         System.out.println("starting insert");
-        Connection conn= DriverManager.getConnection("jdbc:sqlite:/D:\\Year2\\ניתוצ\\עבודה 2\\database.db");
+        Connection conn= DriverManager.getConnection("jdbc:sqlite:Desktop\\database_nitoz.db");
         String query= "INSERT INTO "+tableName+" VALUES (?,?,?,?)";
         try{
             PreparedStatement st=conn.prepareStatement(query);
@@ -71,7 +71,7 @@ public class DalShiftController extends DalController {
 
         }
         catch (SQLException e){
-            throw new SQLException(e.getMessage());
+            throw e;
         }
         finally {
             conn.close();
@@ -83,7 +83,7 @@ public class DalShiftController extends DalController {
     }
 
     public boolean update(DalShift dalShift) throws SQLException {
-        Connection conn=DriverManager.getConnection("jdbc:sqlite:/D:\\Year2\\ניתוצ\\עבודה 2\\database.db");
+        Connection conn=DriverManager.getConnection("jdbc:sqlite:Desktop\\database_nitoz.db");
         String query="UPDATE "+tableName+" SET "+columnNames[0]+"=?, "+columnNames[1]+"=?, "+columnNames[2]+"=?, "+columnNames[3]+"=?, WHERE ("+columnNames[0]+"=? AND " +columnNames[2]+ "=? AND "+columnNames[3]+"=? )";
         try{
             PreparedStatement st=conn.prepareStatement(query);
@@ -100,7 +100,7 @@ public class DalShiftController extends DalController {
 
         }
         catch (SQLException e){
-            throw new SQLException(e.getMessage());
+            throw e;
         }
         finally {
             conn.close();
@@ -109,7 +109,7 @@ public class DalShiftController extends DalController {
     }
 
     public boolean delete(DalShift dalShift) throws SQLException {
-        Connection conn=DriverManager.getConnection("jdbc:sqlite:/D:\\Year2\\ניתוצ\\עבודה 2\\database.db");
+        Connection conn=DriverManager.getConnection("jdbc:sqlite:Desktop\\database_nitoz.db");
         String query="DELETE FROM "+tableName+" WHERE ("+columnNames[0]+"=? AND " +columnNames[2]+ "=? AND "+columnNames[3]+"=? )";
         try {
             PreparedStatement st=conn.prepareStatement(query);
@@ -121,14 +121,14 @@ public class DalShiftController extends DalController {
         }
         catch (SQLException e)
         {
-            throw new SQLException(e.getMessage());
+            throw e;
         }
         return true;
     }
     public LinkedList<DalShift> load () throws SQLException// Select From DB
     {
         LinkedList<DalShift> shifts = new LinkedList<>();
-        Connection conn = DriverManager.getConnection("jdbc:sqlite:/D:\\Year2\\ניתוצ\\עבודה 2\\database.db");
+        Connection conn = DriverManager.getConnection("jdbc:sqlite:Desktop\\database_nitoz.db");
         String query = "SELECT * FROM "+tableName;
         try {
             PreparedStatement st = conn.prepareStatement(query);
@@ -141,7 +141,7 @@ public class DalShiftController extends DalController {
                 );
             }
         } catch (SQLException e) {
-            throw new SQLException(e.getMessage());
+            throw e;
         }
         return shifts;
     }

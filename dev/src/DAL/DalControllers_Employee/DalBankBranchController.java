@@ -12,7 +12,7 @@ import java.util.LinkedList;
 public class DalBankBranchController extends DalController {
     private static DalBankBranchController instance = null;
 
-    private DalBankBranchController(){
+    private DalBankBranchController() throws SQLException {
         super();
         tableName = "BANKS";
         columnNames = new String[] {"BANK", "BANKBRANCH",  "ACCOUNTNUMBER"};
@@ -20,13 +20,14 @@ public class DalBankBranchController extends DalController {
            createTable();
        }
        catch(SQLException e){
+           throw e;
        }
 
     }
 
     @Override
     protected boolean createTable() throws SQLException {
-        Connection conn = DriverManager.getConnection("jdbc:sqlite:/D:\\Year2\\ניתוצ\\עבודה 2\\database.db");
+        Connection conn = DriverManager.getConnection("jdbc:sqlite:Desktop\\database_nitoz.db");
         String query = "CREATE TABLE IF NOT EXISTS BANKS("
                 +"bank TEXT ,"
                 +"BANKBRANCH INTEGER,"
@@ -38,7 +39,7 @@ public class DalBankBranchController extends DalController {
             st.executeUpdate();
         }
         catch (SQLException e){
-            throw new SQLException(e.getMessage());
+            throw e;
         }
         finally {
             conn.close();
@@ -47,7 +48,8 @@ public class DalBankBranchController extends DalController {
     }
 
 
-    public static DalBankBranchController getInstance(){
+    public static DalBankBranchController getInstance() throws SQLException{
+
         if(instance==null){ instance = new DalBankBranchController();}
         return instance;
     }
@@ -55,7 +57,7 @@ public class DalBankBranchController extends DalController {
     public boolean insert(DalBankBranch dalBankBranch) throws SQLException {
         //TODO - change URL
         System.out.println("starting insert");
-        Connection conn= DriverManager.getConnection("jdbc:sqlite:/D:\\Year2\\ניתוצ\\עבודה 2\\database.db");
+        Connection conn= DriverManager.getConnection("jdbc:sqlite:Desktop\\database_nitoz.db");
         String query= "INSERT INTO "+tableName+" VALUES (?,?,?)";
         try{
             PreparedStatement st=conn.prepareStatement(query);
@@ -68,7 +70,7 @@ public class DalBankBranchController extends DalController {
 
         }
         catch (SQLException e){
-            throw new SQLException(e.getMessage());
+            throw e;
         }
         finally {
             conn.close();
@@ -78,7 +80,7 @@ public class DalBankBranchController extends DalController {
     }
 
     public boolean update(DalBankBranch dalBankBranch) throws SQLException {
-        Connection conn=DriverManager.getConnection("jdbc:sqlite:/D:\\Year2\\ניתוצ\\עבודה 2\\database.db");
+        Connection conn=DriverManager.getConnection("jdbc:sqlite:Desktop\\database_nitoz.db");
         String query="UPDATE "+tableName+" SET "+columnNames[0]+"=?, "+columnNames[1]+"=?, "+columnNames[2]+"=?, WHERE ("+columnNames[2]+"=?)";
         try{
             PreparedStatement st=conn.prepareStatement(query);
@@ -91,7 +93,7 @@ public class DalBankBranchController extends DalController {
 
         }
         catch (SQLException e){
-            throw new SQLException(e.getMessage());
+            throw e;
         }
         finally {
             conn.close();
@@ -100,7 +102,7 @@ public class DalBankBranchController extends DalController {
     }
 
     public boolean delete(DalBankBranch dalBankBranch) throws SQLException {
-        Connection conn=DriverManager.getConnection("jdbc:sqlite:/D:\\Year2\\ניתוצ\\עבודה 2\\database.db");
+        Connection conn=DriverManager.getConnection("jdbc:sqlite:Desktop\\database_nitoz.db");
         String query="DELETE FROM "+tableName+" WHERE"+columnNames[2]+"=?";
         try {
             PreparedStatement st=conn.prepareStatement(query);
@@ -109,14 +111,14 @@ public class DalBankBranchController extends DalController {
         }
         catch (SQLException e)
         {
-            throw new SQLException(e.getMessage());
+            throw e;
         }
         return true;
     }
     public LinkedList<DalBankBranch> load () throws SQLException// Select From DB
     {
         LinkedList<DalBankBranch > bankBranches = new LinkedList<>();
-        Connection conn = DriverManager.getConnection("jdbc:sqlite:/D:\\Year2\\ניתוצ\\עבודה 2\\database.db");
+        Connection conn = DriverManager.getConnection("jdbc:sqlite:Desktop\\database_nitoz.db");
         String query = "SELECT * FROM "+tableName;
         try {
             PreparedStatement st = conn.prepareStatement(query);
@@ -127,7 +129,7 @@ public class DalBankBranchController extends DalController {
                 );
             }
         } catch (SQLException e) {
-            throw new SQLException(e.getMessage());
+            throw e;
         }
         return bankBranches;
     }
