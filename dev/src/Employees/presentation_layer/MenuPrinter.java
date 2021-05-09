@@ -43,7 +43,7 @@ public class MenuPrinter {
 
     public String roleMenu(){
         System.out.println ("Choose role:\n1.branch manager\n2.branch manager assistant\n" +
-                "3.human resources manager\n4.cashier\n5.guard\n6.usher\n7.store keeper\n8.shift manager\n9.driver - license c1\n10.driver - license c1\n11.trucking manager\n12.back" );
+                "3.human resources manager\n4.cashier\n5.guard\n6.usher\n7.store keeper\n8.shift manager\n9.driver - license c\n10.driver - license c1\n11.trucking manager\n12.back" );
         int choice =  getInt ();
         switch (choice){
             case 1:
