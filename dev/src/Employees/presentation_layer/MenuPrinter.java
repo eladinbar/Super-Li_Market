@@ -221,7 +221,8 @@ public class MenuPrinter {
     public int createWeeklyShiftSchedule() {
         System.out.println ("Choose an option: \n" +
                 "1. Creating a shift schedule manually\n" +
-                "2. Getting a system recommendation." );
+                "2. Getting a system recommendation.\n" +
+                "3. back." );
         return getInt ();
     }
 
@@ -279,10 +280,10 @@ public class MenuPrinter {
 
     public String chooseShiftType(LocalDate date, int shiftNum) {
         System.out.println ("Choose the shift type you would like for " + date + "in " + shiftNum + " or type 0 to create a new one:\n");
-        return getShifTypes ();
+        return getShiftTypes ();
     }
 
-    public String getShifTypes()
+    public String getShiftTypes()
     {
         String[] shiftTypes = ShiftTypes.getInstance ().getShiftTypes();
         int i = 1;

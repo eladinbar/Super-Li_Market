@@ -133,6 +133,8 @@ public class EmployeeController {
         if (!loggedIn.isEmployed ( )) {
             throw new EmployeeException ( "The employee is not employed " );
         }
+        if(date.isBefore ( LocalDate.now () ))
+            throw new EmployeeException ( "date has already passed." );
         String reason = loggedIn.getConstraints ( ).get ( date ).getReason ( );
         loggedIn.deleteConstraint ( date, shift );
         if (loggedIn.getRole ( ).equals ( Role.driverC ) || loggedIn.getRole ( ).equals ( Role.driverC1 )) {
