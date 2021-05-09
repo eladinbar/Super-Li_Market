@@ -106,9 +106,8 @@ public class OrderDalController extends DalController<Order> {
             {
                 boolean isDesired = resultSet.getString(0).equals(order.getId());
                 if (isDesired) {
-                    //todo change set
-//                    order.setDate(resultSet.getString(1));
-//                    order.setDelivered(resultSet.getInt(2));
+                    order.setDate(resultSet.getString(1));
+                    order.setDelivered(resultSet.getInt(2));
                     break; //Desired category discount found
                 }
             }

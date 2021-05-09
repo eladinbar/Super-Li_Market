@@ -62,15 +62,21 @@ public class SupplierCard extends DalObject<SupplierCard> {
         this.companyNumber = companyNumber;
     }
 
-    public void setPermanentDays(boolean permanentDays) {
-        isPermanentDays = permanentDays;
+    public void setPermanentDays(int permanentDays) {
+        if (permanentDays==1)
+            this.isPermanentDays=true;
+        else
+            this.isPermanentDays=false;
     }
 
-    public void setSelfDelivery(boolean selfDelivery) {
-        this.selfDelivery = selfDelivery;
+    public void setSelfDelivery(int selfDelivery) {
+        if (selfDelivery==1)
+            this.selfDelivery=true;
+        else
+            this.selfDelivery=false;
     }
 
-    public void setPayment(Payment payment) {
-        this.payment = payment;
+    public void setPayment(String payment) {
+        this.payment = Payment.valueOf(payment);
     }
 }

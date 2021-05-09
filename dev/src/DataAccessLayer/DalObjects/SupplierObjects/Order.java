@@ -42,11 +42,14 @@ public class Order extends DalObject<Order> {
         this.id = id;
     }
 
-    public void setDate(LocalDate date) {
-        this.date = date;
+    public void setDate(String date) {
+        this.date = LocalDate.parse(date);
     }
 
-    public void setDelivered(boolean delivered) {
-        this.delivered = delivered;
+    public void setDelivered(int delivered) {
+        if (delivered==1)
+            this.delivered=true;
+        else
+            this.delivered=false;
     }
 }

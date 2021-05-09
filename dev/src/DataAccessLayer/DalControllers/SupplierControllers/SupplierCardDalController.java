@@ -110,9 +110,9 @@ public class SupplierCardDalController extends DalController<SupplierCard> {
                 boolean isDesired = resultSet.getString(0).equals(supplierCard.getSupplierId());
                 if (isDesired) {
                     supplierCard.setCompanyNumber(resultSet.getInt(1));
-//                    supplierCard.setPermanentDays(resultSet.getInt(2));
-//                    supplierCard.setSelfDelivery(resultSet.getInt(3));
-//                    supplierCard.setPayment(resultSet.getString(4));
+                    supplierCard.setPermanentDays(resultSet.getInt(2));
+                    supplierCard.setSelfDelivery(resultSet.getInt(3));
+                    supplierCard.setPayment(resultSet.getString(4));
                     break; //Desired category discount found
                 }
             }
