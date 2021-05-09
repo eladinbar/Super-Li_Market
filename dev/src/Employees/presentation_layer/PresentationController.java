@@ -32,8 +32,12 @@ public class PresentationController {
         int choice = menuPrinter.uploadProgram ();
         if(choice == 2)
             uploadClean ();
-        else
+        else if (choice == 1)
             uploadData ();
+        else {
+            menuPrinter.printChoiceException ();
+            start ( );
+        }
     }
 
     private void uploadClean(){
@@ -234,7 +238,7 @@ public class PresentationController {
     }
 
     private void createShiftTypes() {
-        menuPrinter.print ( "For continuing you have to create and characterize morning shift type and evening shift type.\n\n" +
+        menuPrinter.print ( "For continuing you have to create and characterize morning shift type and evening shift type.\n" +
                 "Create morning shift type:\n" );
         createShiftType(0);
         menuPrinter.print ( "Create evening shift type:" );
@@ -517,8 +521,10 @@ public class PresentationController {
                 return false;
             }
             if(employee.value.isManager ()) {
-                if(first)
+                if(first){
                     createShiftTypes();
+                    createTruckingManager();
+                }
                 choice = menuPrinter.managerMenu ( );
                 handleManagerChoice ( choice );
             } else if(role.equals ( "truckingManager" )){
@@ -534,6 +540,11 @@ public class PresentationController {
         }
         else
             return false;
+    }
+
+    private void createTruckingManager() {
+        menuPrinter.print ( "For continuing you have to write the trucking manager information.");
+        menuPrinter.getEmployeeDetails ( "truckingManager" );
     }
 
 

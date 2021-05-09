@@ -72,7 +72,7 @@ public class MenuPrinter {
                 return null;
             default:
                 System.out.println ("choice is illegal.");
-                return null;
+                return "illegal";
         }
     }
 
