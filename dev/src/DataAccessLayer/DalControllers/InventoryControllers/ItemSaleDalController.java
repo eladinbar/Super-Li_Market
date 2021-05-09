@@ -1,6 +1,7 @@
 package DataAccessLayer.DalControllers.InventoryControllers;
 
 import DataAccessLayer.DalControllers.DalController;
+import DataAccessLayer.DalObjects.InventoryObjects.CategorySale;
 import DataAccessLayer.DalObjects.InventoryObjects.Item;
 import DataAccessLayer.DalObjects.InventoryObjects.ItemSale;
 
@@ -55,8 +56,8 @@ public class ItemSaleDalController extends DalController<ItemSale> {
     public boolean insert(ItemSale itemSale) throws SQLException {
         System.out.println("Initiating " + tableName + " insert.");
         try (Connection conn = DriverManager.getConnection(connectionString)) {
-            String query = "INSERT OR IGNORE INTO " + tableName + " VALUES (?,?, ?, ?, ?)";
-            PreparedStatement stmt = conn.prepareStatement(query);
+            String command = "INSERT OR IGNORE INTO " + tableName + " VALUES (?,?, ?, ?, ?)";
+            PreparedStatement stmt = conn.prepareStatement(command);
             stmt.setString(1, itemSale.getName());
             stmt.setDouble(2, itemSale.getDiscount());
             stmt.setString(3, itemSale.getStartSaleDate());
@@ -73,8 +74,8 @@ public class ItemSaleDalController extends DalController<ItemSale> {
     @Override
     public boolean delete(ItemSale itemSale) throws SQLException {
         try (Connection conn = DriverManager.getConnection(connectionString)) {
-            String query = "DELETE FROM " + tableName + " WHERE (" + ItemSale.itemSaleNameColumnName + "=?)";
-            PreparedStatement stmt = conn.prepareStatement(query);
+            String command = "DELETE FROM " + tableName + " WHERE (" + ItemSale.itemSaleNameColumnName + "=?)";
+            PreparedStatement stmt = conn.prepareStatement(command);
 
             stmt.setString(1, itemSale.getName());
             stmt.executeUpdate();
@@ -87,16 +88,37 @@ public class ItemSaleDalController extends DalController<ItemSale> {
     @Override
     public boolean update(ItemSale itemSale) throws SQLException {
         try (Connection conn = DriverManager.getConnection(connectionString)) {
-            String query = "UPDATE " + tableName + " SET " + ItemSale.discountColumnName + "=?, " +
+            String command = "UPDATE " + tableName + " SET " + ItemSale.discountColumnName + "=?, " +
                     ItemSale.startSaleDateColumnName + "=?, " + ItemSale.endSaleDateColumnName + "=?, " +
                     ItemSale.itemIdColumnName + "=? WHERE(" + ItemSale.itemSaleNameColumnName + "=?)";
-            PreparedStatement stmt = conn.prepareStatement(query);
+            PreparedStatement stmt = conn.prepareStatement(command);
 
             stmt.setDouble(1, itemSale.getDiscount());
             stmt.setString(2, itemSale.getStartSaleDate());
             stmt.setString(3, itemSale.getEndSaleDate());
             stmt.setInt(4, itemSale.getItemID());
             stmt.setString(5, itemSale.getName());
+            stmt.executeUpdate();
+        } catch (SQLException ex) {
+            throw new SQLException(ex.getMessage());
+        }
+        return true;
+    }
+
+    @Override
+    public boolean update(ItemSale itemSale, String oldName) throws SQLException {
+        try (Connection conn = DriverManager.getConnection(connectionString)) {
+            String command = "UPDATE " + tableName + " SET " + ItemSale.itemSaleNameColumnName + "=?, " + ItemSale.discountColumnName + "=?, " +
+                    ItemSale.startSaleDateColumnName + "=?, " + ItemSale.endSaleDateColumnName + "=?, " +
+                    ItemSale.itemIdColumnName + "=? WHERE(" + ItemSale.itemSaleNameColumnName + "=?)";
+            PreparedStatement stmt = conn.prepareStatement(command);
+
+            stmt.setString(1, itemSale.getName());
+            stmt.setDouble(2, itemSale.getDiscount());
+            stmt.setString(3, itemSale.getStartSaleDate());
+            stmt.setString(4, itemSale.getEndSaleDate());
+            stmt.setInt(5, itemSale.getItemID());
+            stmt.setString(6, oldName);
             stmt.executeUpdate();
         } catch (SQLException ex) {
             throw new SQLException(ex.getMessage());

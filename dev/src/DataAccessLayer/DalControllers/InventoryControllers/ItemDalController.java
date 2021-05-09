@@ -61,8 +61,8 @@ public class ItemDalController extends DalController<Item> {
     public boolean insert(Item item) throws SQLException {
         System.out.println("Initiating " + tableName + " insert.");
         try (Connection conn = DriverManager.getConnection(connectionString)) {
-            String query = "INSERT OR IGNORE INTO " + tableName + " VALUES (?,?, ?, ?, ?, ?,?, ?, ?, ?, ?)";
-            PreparedStatement stmt = conn.prepareStatement(query);
+            String command = "INSERT OR IGNORE INTO " + tableName + " VALUES (?,?, ?, ?, ?, ?,?, ?, ?, ?, ?)";
+            PreparedStatement stmt = conn.prepareStatement(command);
             stmt.setInt(1, item.getItemID());
             stmt.setString(2, item.getName());
             stmt.setDouble(3, item.getCostPrice());
@@ -85,8 +85,8 @@ public class ItemDalController extends DalController<Item> {
     @Override
     public boolean delete(Item item) throws SQLException {
         try (Connection conn = DriverManager.getConnection(connectionString)) {
-            String query = "DELETE FROM " + tableName + " WHERE (" + Item.itemIdColumnName+ "=?)";
-            PreparedStatement stmt = conn.prepareStatement(query);
+            String command = "DELETE FROM " + tableName + " WHERE (" + Item.itemIdColumnName+ "=?)";
+            PreparedStatement stmt = conn.prepareStatement(command);
 
             stmt.setInt(1, item.getItemID());
             stmt.executeUpdate();
@@ -99,13 +99,13 @@ public class ItemDalController extends DalController<Item> {
     @Override
     public boolean update(Item item) throws SQLException {
         try (Connection conn = DriverManager.getConnection(connectionString)) {
-            String query = "UPDATE " + tableName + " SET " + Item.itemNameColumnName + "=?," +
+            String command = "UPDATE " + tableName + " SET " + Item.itemNameColumnName + "=?," +
                     Item.costPriceColumnName + "=?, " + Item.sellingPriceColumnName + "=?, " +
                     Item.manufacturerIdColumnName + "=?, " + Item.minAmountColumnName + "=?, " +
                     Item.shelfQuantityColumnName + "=?, " + Item.storageQuantityColumnName + "=?, " +
                     Item.shelfLocationColumnName + "=?, " + Item.storageLocationColumnName + "=?, " +
                     Item.categoryNameColumnName + "=? WHERE(" + Item.itemIdColumnName + "=?)";
-            PreparedStatement stmt = conn.prepareStatement(query);
+            PreparedStatement stmt = conn.prepareStatement(command);
 
             stmt.setString(1, item.getName());
             stmt.setDouble(2, item.getCostPrice());
@@ -118,6 +118,36 @@ public class ItemDalController extends DalController<Item> {
             stmt.setString(9, item.getStorageLocation());
             stmt.setString(10, item.getCategoryName());
             stmt.setInt(11, item.getItemID());
+            stmt.executeUpdate();
+        } catch (SQLException ex) {
+            throw new SQLException(ex.getMessage());
+        }
+        return true;
+    }
+
+    @Override
+    public boolean update(Item item, int oldId) throws SQLException {
+        try (Connection conn = DriverManager.getConnection(connectionString)) {
+            String command = "UPDATE " + tableName + " SET " + Item.itemIdColumnName + "=?, " + Item.itemNameColumnName + "=?," +
+                    Item.costPriceColumnName + "=?, " + Item.sellingPriceColumnName + "=?, " +
+                    Item.manufacturerIdColumnName + "=?, " + Item.minAmountColumnName + "=?, " +
+                    Item.shelfQuantityColumnName + "=?, " + Item.storageQuantityColumnName + "=?, " +
+                    Item.shelfLocationColumnName + "=?, " + Item.storageLocationColumnName + "=?, " +
+                    Item.categoryNameColumnName + "=? WHERE(" + Item.itemIdColumnName + "=?)";
+            PreparedStatement stmt = conn.prepareStatement(command);
+
+            stmt.setInt(1, item.getItemID());
+            stmt.setString(2, item.getName());
+            stmt.setDouble(3, item.getCostPrice());
+            stmt.setDouble(4, item.getSellingPrice());
+            stmt.setInt(5, item.getManufacturerID());
+            stmt.setInt(6, item.getMinAmount());
+            stmt.setInt(7, item.getShelfQuantity());
+            stmt.setInt(8, item.getStorageQuantity());
+            stmt.setString(9, item.getShelfLocation());
+            stmt.setString(10, item.getStorageLocation());
+            stmt.setString(11, item.getCategoryName());
+            stmt.setInt(12, oldId);
             stmt.executeUpdate();
         } catch (SQLException ex) {
             throw new SQLException(ex.getMessage());

@@ -47,8 +47,8 @@ public class CategoryDalController extends DalController<Category> {
     public boolean insert(Category category) throws SQLException {
         System.out.println("Initiating " + tableName + " insert.");
         try (Connection conn = DriverManager.getConnection(connectionString)) {
-            String query = "INSERT OR IGNORE INTO " + tableName + " VALUES (?,?)";
-            PreparedStatement stmt = conn.prepareStatement(query);
+            String command = "INSERT OR IGNORE INTO " + tableName + " VALUES (?,?)";
+            PreparedStatement stmt = conn.prepareStatement(command);
             stmt.setString(1, category.getName());
             stmt.setString(2, category.getParentName());
             System.out.println("Executing " + tableName + " insert.");
@@ -62,8 +62,8 @@ public class CategoryDalController extends DalController<Category> {
     @Override
     public boolean delete(Category category) throws SQLException {
         try (Connection conn = DriverManager.getConnection(connectionString)) {
-            String query = "DELETE FROM " + tableName + " WHERE (" + Category.categoryNameColumnName + "=?)";
-            PreparedStatement stmt = conn.prepareStatement(query);
+            String command = "DELETE FROM " + tableName + " WHERE (" + Category.categoryNameColumnName + "=?)";
+            PreparedStatement stmt = conn.prepareStatement(command);
 
             stmt.setString(1, category.getName());
             stmt.executeUpdate();
@@ -76,9 +76,9 @@ public class CategoryDalController extends DalController<Category> {
     @Override
     public boolean update(Category category) throws SQLException {
         try (Connection conn = DriverManager.getConnection(connectionString)) {
-            String query = "UPDATE " + tableName + " SET " + Category.parentNameColumnName +
+            String command = "UPDATE " + tableName + " SET " + Category.parentNameColumnName +
                     "=? WHERE(" + Category.categoryNameColumnName + "=?)";
-            PreparedStatement stmt = conn.prepareStatement(query);
+            PreparedStatement stmt = conn.prepareStatement(command);
 
             stmt.setString(1, category.getParentName());
             stmt.setString(2, category.getName());
@@ -89,11 +89,12 @@ public class CategoryDalController extends DalController<Category> {
         return true;
     }
 
+    @Override
     public boolean update(Category category, String oldName) throws SQLException {
         try (Connection conn = DriverManager.getConnection(connectionString)) {
-            String query = "UPDATE " + tableName + " SET " + Category.categoryNameColumnName + "=?," + Category.parentNameColumnName +
+            String command = "UPDATE " + tableName + " SET " + Category.categoryNameColumnName + "=?," + Category.parentNameColumnName +
                     "=? WHERE(" + Category.categoryNameColumnName + "=?)";
-            PreparedStatement stmt = conn.prepareStatement(query);
+            PreparedStatement stmt = conn.prepareStatement(command);
 
             stmt.setString(1, category.getName());
             stmt.setString(2, category.getParentName());

@@ -53,8 +53,8 @@ public class DefectEntryDalController extends DalController<DefectEntry> {
     public boolean insert(DefectEntry defectEntry) throws SQLException {
         System.out.println("Initiating " + tableName + " insert.");
         try (Connection conn = DriverManager.getConnection(connectionString)) {
-            String query = "INSERT OR IGNORE INTO " + tableName + " VALUES (?,?, ?, ?)";
-            PreparedStatement stmt = conn.prepareStatement(query);
+            String command = "INSERT OR IGNORE INTO " + tableName + " VALUES (?,?, ?, ?)";
+            PreparedStatement stmt = conn.prepareStatement(command);
             stmt.setString(1, defectEntry.getEntryDate());
             stmt.setInt(2, defectEntry.getItemID());
             stmt.setString(3, defectEntry.getLocation());
@@ -70,8 +70,8 @@ public class DefectEntryDalController extends DalController<DefectEntry> {
     @Override
     public boolean delete(DefectEntry defectEntry) throws SQLException {
         try (Connection conn = DriverManager.getConnection(connectionString)) {
-            String query = "DELETE FROM " + tableName + " WHERE ("+ DefectEntry.entryDateColumnName + "=? AND " + DefectEntry.itemIdColumnName + "=?)";
-            PreparedStatement stmt = conn.prepareStatement(query);
+            String command = "DELETE FROM " + tableName + " WHERE ("+ DefectEntry.entryDateColumnName + "=? AND " + DefectEntry.itemIdColumnName + "=?)";
+            PreparedStatement stmt = conn.prepareStatement(command);
             stmt.setString(1, defectEntry.getEntryDate());
             stmt.setInt(2, defectEntry.getItemID());
             stmt.executeUpdate();
@@ -84,15 +84,55 @@ public class DefectEntryDalController extends DalController<DefectEntry> {
     @Override
     public boolean update(DefectEntry defectEntry) throws SQLException {
         try (Connection conn = DriverManager.getConnection(connectionString)) {
-            String query = "UPDATE " + tableName + " SET " + DefectEntry.locationColumnName + "=?, " +
+            String command = "UPDATE " + tableName + " SET " + DefectEntry.locationColumnName + "=?, " +
                     DefectEntry.quantityColumnName + "=? " +
                     "WHERE(" + DefectEntry.entryDateColumnName + "=? AND " + DefectEntry.itemIdColumnName + "=?)";
-            PreparedStatement stmt = conn.prepareStatement(query);
+            PreparedStatement stmt = conn.prepareStatement(command);
 
             stmt.setString(1, defectEntry.getLocation());
             stmt.setInt(2, defectEntry.getQuantity());
             stmt.setString(3, defectEntry.getEntryDate());
             stmt.setInt(4, defectEntry.getItemID());
+            stmt.executeUpdate();
+        } catch (SQLException ex) {
+            throw new SQLException(ex.getMessage());
+        }
+        return true;
+    }
+
+    @Override
+    public boolean update(DefectEntry defectEntry, String oldDate) throws SQLException {
+        try (Connection conn = DriverManager.getConnection(connectionString)) {
+            String command = "UPDATE " + tableName + " SET " + DefectEntry.entryDateColumnName + "=?, " + DefectEntry.locationColumnName + "=?, " +
+                    DefectEntry.quantityColumnName + "=? " +
+                    "WHERE(" + DefectEntry.entryDateColumnName + "=? AND " + DefectEntry.itemIdColumnName + "=?)";
+            PreparedStatement stmt = conn.prepareStatement(command);
+
+            stmt.setString(1, defectEntry.getEntryDate());
+            stmt.setString(2, defectEntry.getLocation());
+            stmt.setInt(3, defectEntry.getQuantity());
+            stmt.setString(4, oldDate);
+            stmt.setInt(5, defectEntry.getItemID());
+            stmt.executeUpdate();
+        } catch (SQLException ex) {
+            throw new SQLException(ex.getMessage());
+        }
+        return true;
+    }
+
+    @Override
+    public boolean update(DefectEntry defectEntry, int oldId) throws SQLException {
+        try (Connection conn = DriverManager.getConnection(connectionString)) {
+            String command = "UPDATE " + tableName + " SET " + DefectEntry.itemIdColumnName + "=?, " + DefectEntry.locationColumnName + "=?, " +
+                    DefectEntry.quantityColumnName + "=? " +
+                    "WHERE(" + DefectEntry.entryDateColumnName + "=? AND " + DefectEntry.itemIdColumnName + "=?)";
+            PreparedStatement stmt = conn.prepareStatement(command);
+
+            stmt.setInt(1, defectEntry.getItemID());
+            stmt.setString(2, defectEntry.getLocation());
+            stmt.setInt(3, defectEntry.getQuantity());
+            stmt.setString(4, defectEntry.getEntryDate());
+            stmt.setInt(5, oldId);
             stmt.executeUpdate();
         } catch (SQLException ex) {
             throw new SQLException(ex.getMessage());

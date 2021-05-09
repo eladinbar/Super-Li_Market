@@ -60,8 +60,8 @@ public class CategoryDiscountDalController extends DalController<CategoryDiscoun
     public boolean insert(CategoryDiscount categoryDiscount) throws SQLException {
         System.out.println("Initiating " + tableName + " insert.");
         try (Connection conn = DriverManager.getConnection(connectionString)) {
-            String query = "INSERT OR IGNORE INTO " + tableName + " VALUES (?,?, ?, ?, ?)";
-            PreparedStatement stmt = conn.prepareStatement(query);
+            String command = "INSERT OR IGNORE INTO " + tableName + " VALUES (?,?, ?, ?, ?)";
+            PreparedStatement stmt = conn.prepareStatement(command);
 
             stmt.setString(1, categoryDiscount.getDiscountDate());
             stmt.setString(2, categoryDiscount.getSupplierID());
@@ -79,9 +79,9 @@ public class CategoryDiscountDalController extends DalController<CategoryDiscoun
     @Override
     public boolean delete(CategoryDiscount categoryDiscount) throws SQLException {
         try (Connection conn = DriverManager.getConnection(connectionString)) {
-            String query = "DELETE FROM " + tableName + " WHERE (" + CategoryDiscount.discountDateColumnName + "=? AND " + CategoryDiscount.supplierIdColumnName +
+            String command = "DELETE FROM " + tableName + " WHERE (" + CategoryDiscount.discountDateColumnName + "=? AND " + CategoryDiscount.supplierIdColumnName +
                     "=? AND " + CategoryDiscount.categoryNameColumnName + "=?)";
-            PreparedStatement stmt = conn.prepareStatement(query);
+            PreparedStatement stmt = conn.prepareStatement(command);
 
             stmt.setString(1, categoryDiscount.getDiscountDate());
             stmt.setString(2, categoryDiscount.getSupplierID());
@@ -96,10 +96,10 @@ public class CategoryDiscountDalController extends DalController<CategoryDiscoun
     @Override
     public boolean update(CategoryDiscount categoryDiscount) throws SQLException {
         try (Connection conn = DriverManager.getConnection(connectionString)) {
-            String query = "UPDATE " + tableName + " SET " + CategoryDiscount.discountColumnName + "=?, " + CategoryDiscount.itemCountColumnName +
+            String command = "UPDATE " + tableName + " SET " + CategoryDiscount.discountColumnName + "=?, " + CategoryDiscount.itemCountColumnName +
                      "=? WHERE(" + CategoryDiscount.discountDateColumnName + "=? AND " + CategoryDiscount.supplierIdColumnName
                     + "=? AND " + CategoryDiscount.categoryNameColumnName + "=?)";
-            PreparedStatement stmt = conn.prepareStatement(query);
+            PreparedStatement stmt = conn.prepareStatement(command);
 
             stmt.setDouble(1, categoryDiscount.getDiscount());
             stmt.setInt(2, categoryDiscount.getItemCount());
@@ -111,6 +111,88 @@ public class CategoryDiscountDalController extends DalController<CategoryDiscoun
             throw new SQLException(ex.getMessage());
         }
         return true;
+    }
+
+    @Override
+    public boolean update(CategoryDiscount categoryDiscount, String oldField) throws SQLException {
+        if (extractType(oldField) == 1)
+            return updateDate(categoryDiscount, oldField);
+        else if (extractType(oldField) == 2)
+            return updateID(categoryDiscount, oldField);
+        else //extractType(oldField) == 3
+            return updateName(categoryDiscount, oldField);
+    }
+
+    private boolean updateDate(CategoryDiscount categoryDiscount, String oldDate) throws SQLException {
+        try (Connection conn = DriverManager.getConnection(connectionString)) {
+            String command = "UPDATE " + tableName + " SET " + CategoryDiscount.discountDateColumnName + "=?, " +
+                    CategoryDiscount.discountColumnName + "=?, " + CategoryDiscount.itemCountColumnName +
+                    "=? WHERE(" + CategoryDiscount.discountDateColumnName + "=? AND " + CategoryDiscount.supplierIdColumnName
+                    + "=? AND " + CategoryDiscount.categoryNameColumnName + "=?)";
+            PreparedStatement stmt = conn.prepareStatement(command);
+
+            stmt.setString(1, categoryDiscount.getDiscountDate());
+            stmt.setDouble(2, categoryDiscount.getDiscount());
+            stmt.setInt(3, categoryDiscount.getItemCount());
+            stmt.setString(4, oldDate);
+            stmt.setString(5, categoryDiscount.getSupplierID());
+            stmt.setString(6, categoryDiscount.getCategoryName());
+            stmt.executeUpdate();
+        } catch (SQLException ex) {
+            throw new SQLException(ex.getMessage());
+        }
+        return true;
+    }
+
+    public boolean updateID(CategoryDiscount categoryDiscount, String oldId) throws SQLException {
+        try (Connection conn = DriverManager.getConnection(connectionString)) {
+            String command = "UPDATE " + tableName + " SET " + CategoryDiscount.supplierIdColumnName + "=?, " +
+                    CategoryDiscount.discountColumnName + "=?, " + CategoryDiscount.itemCountColumnName +
+                    "=? WHERE(" + CategoryDiscount.discountDateColumnName + "=? AND " + CategoryDiscount.supplierIdColumnName
+                    + "=? AND " + CategoryDiscount.categoryNameColumnName + "=?)";
+            PreparedStatement stmt = conn.prepareStatement(command);
+
+            stmt.setString(1, categoryDiscount.getSupplierID());
+            stmt.setDouble(2, categoryDiscount.getDiscount());
+            stmt.setInt(3, categoryDiscount.getItemCount());
+            stmt.setString(4, categoryDiscount.getDiscountDate());
+            stmt.setString(5, oldId);
+            stmt.setString(6, categoryDiscount.getCategoryName());
+            stmt.executeUpdate();
+        } catch (SQLException ex) {
+            throw new SQLException(ex.getMessage());
+        }
+        return true;
+    }
+
+    public boolean updateName(CategoryDiscount categoryDiscount, String oldName) throws SQLException {
+        try (Connection conn = DriverManager.getConnection(connectionString)) {
+            String command = "UPDATE " + tableName + " SET " + CategoryDiscount.categoryNameColumnName + "=?, " +
+                    CategoryDiscount.discountColumnName + "=?, " + CategoryDiscount.itemCountColumnName +
+                    "=? WHERE(" + CategoryDiscount.discountDateColumnName + "=? AND " + CategoryDiscount.supplierIdColumnName
+                    + "=? AND " + CategoryDiscount.categoryNameColumnName + "=?)";
+            PreparedStatement stmt = conn.prepareStatement(command);
+
+            stmt.setString(1, categoryDiscount.getCategoryName());
+            stmt.setDouble(2, categoryDiscount.getDiscount());
+            stmt.setInt(3, categoryDiscount.getItemCount());
+            stmt.setString(4, categoryDiscount.getDiscountDate());
+            stmt.setString(5, categoryDiscount.getSupplierID());
+            stmt.setString(6, oldName);
+            stmt.executeUpdate();
+        } catch (SQLException ex) {
+            throw new SQLException(ex.getMessage());
+        }
+        return true;
+    }
+
+    private int extractType(String oldParameter) { //Assumes valid input from business layer
+        if (oldParameter.indexOf("-") == 4)
+            return 1; //Parameter represents date
+        else if(oldParameter.charAt(0) >= 48 & oldParameter.charAt(0) <= 57)
+            return 2; //Parameter represents supplier id
+        else
+            return 3; //Parameter represents category name
     }
 
     @Override
