@@ -4,6 +4,7 @@ import Trucking.Business_Layer_Trucking.Delivery.*;
 import Trucking.Business_Layer_Trucking.Facade.FacadeObject.*;
 
 import javax.management.openmbean.KeyAlreadyExistsException;
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.HashMap;
@@ -16,14 +17,14 @@ public class DeliveryService {
     private static DeliveryService instace = null;
 
 
-    private DeliveryService() {
+    private DeliveryService(){
 
         this.dc = DeliveryController.getInstance();
     }
 
     public static DeliveryService getInstance() {
         if (instace == null)
-            instace = new DeliveryService();
+            instace =  new DeliveryService();
         return instace;
     }
 
@@ -54,12 +55,13 @@ public class DeliveryService {
     }
 
 
-    public int createTruckingReport() {
+
+    public int  createTruckingReport() throws SQLException {
         return dc.createNewTruckingReport();
 
     }
 
-    public void chooseLeavingHour(LocalTime leavingHour) throws IllegalArgumentException {
+    public void chooseLeavingHour(LocalTime leavingHour) throws IllegalArgumentException, SQLException {
 
         dc.chooseLeavingHour(leavingHour);
 
@@ -70,33 +72,34 @@ public class DeliveryService {
         return new FacadeTruckingReport(dc.getCurrTR());
     }
 
-    public void saveReport() {
+    public void saveReport() throws SQLException {
         dc.saveReport();
     }
 
 
-    public FacadeDemand continueAddDemandToReport(int itemID, int supplyAmount, int siteID) {
+
+    public FacadeDemand continueAddDemandToReport(int itemID, int supplyAmount, int siteID) throws SQLException {
         LinkedList<Demand> demands = dc.getDemands();
-        Demand d = null;
-        for (Demand curr : demands) {
-            if (curr.getItemID() == itemID && curr.getAmount() > supplyAmount && curr.getSite() == siteID) {
+        Demand d=null;
+        for (Demand curr:  demands) {
+            if (curr.getItemID() ==  itemID && curr.getAmount() > supplyAmount && curr.getSite() == siteID){
                 d = curr;
             }
         }
-        if (d == null) {
+        if (d == null){
             throw new IllegalArgumentException("one of arguments doesn't match");
         }
         FacadeDemand fc = new FacadeDemand(d);
-        dc.addItemToDeliveryForm(d, supplyAmount, true, siteID);
+        dc.addItemToDeliveryForm(d, supplyAmount, true,siteID);
         return fc;
     }
 
-    public FacadeTruckingReport getTruckReport(int trNumber) throws NoSuchElementException {
+    public FacadeTruckingReport getTruckReport(int trNumber) throws NoSuchElementException{
         return new FacadeTruckingReport(dc.getTruckReport(trNumber));
     }
 
-    public FacadeDeliveryForm getDeliveryForm(int dfNumber, int trNumber) throws IllegalArgumentException, NoSuchElementException {
-        return new FacadeDeliveryForm(dc.getDeliveryForm(dfNumber, trNumber));
+    public FacadeDeliveryForm getDeliveryForm(int dfNumber, int trNumber)throws IllegalArgumentException,NoSuchElementException {
+        return new FacadeDeliveryForm(dc.getDeliveryForm(dfNumber,trNumber));
     }
 
     public void removeDestination(int site) throws NoSuchElementException {
@@ -106,17 +109,17 @@ public class DeliveryService {
 
     public void removeItemFromReport(FacadeDemand demand, int amount) {
 
-        dc.removeItemFromReport(new Demand(demand.getItemID(), demand.getSite(), amount));
+        dc.removeItemFromReport(new Demand(demand.getItemID(),demand.getSite(),amount));
     }
-
-    public void removeItemFromPool(int item) throws NoSuchElementException {
+    public void removeItemFromPool(int item) throws NoSuchElementException, SQLException {
         dc.removeItemFromPool(item);
     }
 
     /**
+     *
      * @return a LinkedList of Facade Demands, that holds all the items in the current Trucking Report in build
      */
-    public LinkedList<FacadeDemand> getItemsOnTruck() {
+    public LinkedList<FacadeDemand> getItemsOnTruck() throws SQLException {
         LinkedList<Demand> demands = dc.getItemsOnTruck();
         LinkedList<FacadeDemand> output = new LinkedList<>();
         for (Demand d : demands) {
@@ -125,15 +128,14 @@ public class DeliveryService {
         return output;
     }
 
-    public void addSite(String city, int deliveryArea,
-                        String phoneNumber, String contactName, String name) throws KeyAlreadyExistsException {
+    public void addSite(String city,  int deliveryArea,
+                        String phoneNumber, String contactName,String name) throws KeyAlreadyExistsException, SQLException {
 
-        dc.addSite(city, deliveryArea, phoneNumber, contactName, name);
+        dc.addSite(city,  deliveryArea, phoneNumber, contactName,name );
     }
 
-    public void addItem(double weight, String name, int siteID) throws NoSuchElementException, KeyAlreadyExistsException {
-        dc.addItem(weight, name, siteID);
-    }
+    public void addItem( double weight, String name, int siteID) throws NoSuchElementException, KeyAlreadyExistsException, SQLException
+    {dc.addItem( weight,name,siteID);}
 
     public void displaySites() {
         dc.displaySites();
@@ -143,25 +145,28 @@ public class DeliveryService {
         return dc.getItemWeight(itemID);
     }
 
-    public LinkedList<FacadeDemand> showDemands() throws NoSuchElementException {
+    public LinkedList<FacadeDemand> showDemands() throws NoSuchElementException, SQLException {
         LinkedList<Demand> demands = new LinkedList<>();
         LinkedList<DeliveryForm> dfs = new LinkedList<>();
 
         demands = dc.getDemands();
-        dfs = dc.getCurrDF();
-        LinkedList<FacadeDemand> output = new LinkedList<>();
+        dfs= dc.getCurrDF();
+        LinkedList < FacadeDemand> output = new LinkedList<>();
 
-        if (!demands.isEmpty()) {
-            for (Demand d : demands) {
-                boolean added = false;
+        if (!demands.isEmpty())
+        {
+            for(Demand d: demands)
+            {
+                boolean added =false;
 
-                if (demands.isEmpty()) {
-                    for (Demand demand : demands) {
+                if (demands.isEmpty()){
+                    for(Demand demand:demands){
                         output.add((new FacadeDemand(demand)));
                         return output;
                     }
                 }
-                for (DeliveryForm df : dfs) {
+                for (DeliveryForm df:dfs)
+                {
                     if (!df.isCompleted()) {
                         if (df.getItems().containsKey(d.getItemID()) && df.getDestination() == d.getSite()) {
                             added = true;
@@ -198,16 +203,16 @@ public class DeliveryService {
     public LinkedList<FacadeSite> getSites() {
         HashMap<Integer, Site> sites = dc.getSites();
         LinkedList<FacadeSite> output = new LinkedList<>();
-        for (HashMap.Entry<Integer, Site> entry : sites.entrySet()) {
+        for (HashMap.Entry<Integer, Site> entry : sites.entrySet()){
             output.add(new FacadeSite(entry.getValue()));
         }
         return output;
     }
 
     public LinkedList<FacadeSite> getCurrentSites() {
-        LinkedList<Site> sites = dc.getCurrentSites();
-        LinkedList<FacadeSite> output = new LinkedList<>();
-        for (Site site : sites) {
+        LinkedList<Site>  sites = dc.getCurrentSites();
+        LinkedList<FacadeSite> output =  new LinkedList<>();
+        for (Site site: sites){
             output.add(new FacadeSite(site));
         }
 
@@ -215,13 +220,14 @@ public class DeliveryService {
     }
 
     /**
+     *
      * @param site
      * @return returns only demands associated to this site
      */
-    public LinkedList<FacadeDemand> getCurrentDemands(FacadeSite site) {
-        LinkedList<Demand> demands = dc.getCurrentDemands();
-        LinkedList<FacadeDemand> output = new LinkedList<>();
-        for (Demand d : demands) {
+    public LinkedList<FacadeDemand> getCurrentDemands(FacadeSite site) throws SQLException {
+        LinkedList<Demand> demands =  dc.getCurrentDemands();
+        LinkedList<FacadeDemand> output =  new LinkedList<>();
+        for (Demand d : demands){
             if (d.getSite() == site.getSiteID() || dc.getItemOrigin(d.getItemID()) == site.getSiteID())
                 output.add(new FacadeDemand(d));
         }
@@ -361,7 +367,7 @@ public class DeliveryService {
         return facadeDeliveryForms;
     }
 
-    public FacadeTruckingReport getNewTruckReport(FacadeTruckingReport oldTr) {
+    public FacadeTruckingReport getNewTruckReport(FacadeTruckingReport oldTr) throws SQLException {
         TruckingReport old = dc.getReplaceTruckingReport(oldTr.getID());
         if (old != null) {
             return new FacadeTruckingReport(old);
