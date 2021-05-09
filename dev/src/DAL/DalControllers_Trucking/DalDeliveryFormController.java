@@ -10,7 +10,9 @@ import java.util.LinkedList;
 
 public class DalDeliveryFormController extends DalController {
 
-    public DalDeliveryFormController(){
+    private static DalDeliveryFormController controller;
+
+    private DalDeliveryFormController(){
         //TODO - Check when tables created
         super();
         this.tableName="DeliveryForms";
@@ -19,10 +21,18 @@ public class DalDeliveryFormController extends DalController {
         columnNames[3]="completed";columnNames[4]="leavingWeight";columnNames[5]="TRID";
     }
 
+     public static DalDeliveryFormController getInstance() {
+        if (controller==null) controller=new DalDeliveryFormController();
+        return controller;
+    }
+
 
     public boolean insert(DalDeliveryForm deliveryForm) throws SQLException {
         //TODO - change URL
         System.out.println("starting insert");
+        int completed=0;
+        if (deliveryForm.isCompleted())
+            completed=1;
         Connection conn= DriverManager.getConnection("jdbc:sqlite:/D:\\Year2\\ניתוצ\\עבודה 2\\database.db");
         String query= "INSERT INTO "+tableName+" VALUES (?,?,?,?,?,?)";
         try{
@@ -30,7 +40,7 @@ public class DalDeliveryFormController extends DalController {
             st.setInt(1,deliveryForm.getID());
             st.setInt(2,deliveryForm.getOrigin());
             st.setInt(3,deliveryForm.getDestination());
-            st.setString(4,deliveryForm.getCompleted().toString());
+            st.setInt(4,completed);
             st.setInt(5,deliveryForm.getLeavingWeight());
             st.setInt(6,deliveryForm.getTRID());
 
@@ -51,6 +61,9 @@ public class DalDeliveryFormController extends DalController {
     }
 
     public boolean update(DalDeliveryForm deliveryForm) throws SQLException {
+        int completed=0;
+        if (deliveryForm.isCompleted())
+            completed=1;
         Connection conn=DriverManager.getConnection("jdbc:sqlite:/D:\\Year2\\ניתוצ\\עבודה 2\\database.db");
         String query="UPDATE "+tableName+" SET "+columnNames[1]+"=?,"+columnNames[2]+"=?,"+columnNames[3]+"=?,"+columnNames[4]+"=?,"+
                 columnNames[5]+"=? WHERE ("+columnNames[0]+"= ?)";
@@ -59,7 +72,7 @@ public class DalDeliveryFormController extends DalController {
 
             st.setInt(1,deliveryForm.getOrigin());
             st.setInt(2,deliveryForm.getDestination());
-            st.setString(3,deliveryForm.getCompleted().toString());
+            st.setInt(3,completed);
             st.setInt(4,deliveryForm.getLeavingWeight());
             st.setInt(5,deliveryForm.getTRID());
             st.setInt(6,deliveryForm.getID());
@@ -78,11 +91,10 @@ public class DalDeliveryFormController extends DalController {
 
     public boolean delete(DalDeliveryForm deliveryForm) throws SQLException {
         Connection conn=DriverManager.getConnection("jdbc:sqlite:/D:\\Year2\\ניתוצ\\עבודה 2\\database.db");
-        String query="DELETE FROM "+tableName+" WHERE ?=?";
+        String query="DELETE FROM "+tableName+" WHERE("+columnNames[0]+"=?)";
         try {
             PreparedStatement st=conn.prepareStatement(query);
-            st.setString(1,columnNames[0]);
-            st.setInt(2,deliveryForm.getID());
+            st.setInt(1,deliveryForm.getID());
             st.executeUpdate();
         }
         catch (SQLException e)

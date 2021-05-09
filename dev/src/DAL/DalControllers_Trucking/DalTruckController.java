@@ -7,13 +7,20 @@ import java.util.LinkedList;
 
 public class DalTruckController extends DalController {
 
-    public DalTruckController(){//TODO - Check when tables created
+    private static DalTruckController controller;
+
+    private DalTruckController(){//TODO - Check when tables created
         super();
         this.tableName="Trucks";
         this.columnNames=new String[4];
         columnNames[1]="model"; columnNames[0]="licenseNumber";columnNames[2]="weightNeto";
         columnNames[3]="maxWeight";}
 
+    public static DalTruckController getInstance() {
+        if (controller==null)
+            controller= new DalTruckController();
+        return controller;
+    }
 
     public boolean insert(DalTruck dalTruck) throws SQLException {
         //TODO - change URL
@@ -69,10 +76,9 @@ public class DalTruckController extends DalController {
 
     public boolean delete(DalTruck dalTruck) throws SQLException {
         Connection conn=DriverManager.getConnection("jdbc:sqlite:/D:\\Year2\\ניתוצ\\עבודה 2\\database.db");
-        String query="DELETE FROM "+tableName+" WHERE"+columnNames[0]+"=?";
+        String query="DELETE FROM "+tableName+" WHERE"+columnNames[0]+ "=? ";
         try {
             PreparedStatement st=conn.prepareStatement(query);
-
             st.setString(1,dalTruck.getLicenseNumber());
             st.executeUpdate();
         }

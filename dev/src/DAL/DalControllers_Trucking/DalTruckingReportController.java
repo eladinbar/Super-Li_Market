@@ -11,19 +11,30 @@ import java.time.format.DateTimeFormatter;
 import java.util.LinkedList;
 
 public class DalTruckingReportController extends DalController {
+    private static DalTruckingReportController controller;
 
-    public DalTruckingReportController(){
+    private DalTruckingReportController(){
         super();
         this.tableName="TruckingReports";
         this.columnNames=new String[8];
         columnNames[0]="ID";columnNames[1]="leavingHour";columnNames[2]="date";
         columnNames[3]="truckNumber";columnNames[4]="driverID";columnNames[5]="origin";
         columnNames[6]="completed";columnNames[7]="replaceTRID";
+
+    }
+
+    public static DalTruckingReportController getInstance() {
+        if (controller==null)
+        controller= new DalTruckingReportController();
+        return controller;
     }
 
     public boolean insert(DalTruckingReport truckingReport) throws SQLException {
         //TODO - change URL
         System.out.println("starting insert");
+        int completed=0;
+        if (truckingReport.isCompleted())
+            completed=1;
         Connection conn= DriverManager.getConnection("jdbc:sqlite:/D:\\Year2\\ניתוצ\\עבודה 2\\database.db");
         //String query= "INSERT INTO "+tableName+"("+columnNames[0]+columnNames[1]+columnNames[2]+columnNames[3]
         //        +columnNames[4]+columnNames[5]+columnNames[6]+columnNames[7]+") VALUES (? ? ? ? ? ? ? ?)";
@@ -38,7 +49,7 @@ public class DalTruckingReportController extends DalController {
             st.setString(4,truckingReport.getTruckNumber());
             st.setString(5,truckingReport.getDriverID());
             st.setInt(6,truckingReport.getOrigin());
-            st.setString(7,truckingReport.isCompleted().toString());
+            st.setInt(7,completed);
             st.setInt(8,truckingReport.getReplaceTRID());
 
             System.out.println("executing insert");
@@ -58,6 +69,9 @@ public class DalTruckingReportController extends DalController {
     }
 
     public boolean update(DalTruckingReport truckingReport) throws SQLException {
+        int completed=0;
+        if (truckingReport.isCompleted())
+            completed=1;
         Connection conn=DriverManager.getConnection("jdbc:sqlite:/D:\\Year2\\ניתוצ\\עבודה 2\\database.db");
         String query="UPDATE "+tableName +" SET "+columnNames[1]+"=?,"+
                 columnNames[2]+"=?,"+columnNames[3]+"=?,"+columnNames[4]+"=?,"+columnNames[5]+"=?,"+columnNames[6]+"=?,"+
@@ -71,7 +85,7 @@ public class DalTruckingReportController extends DalController {
             st.setString(3,truckingReport.getTruckNumber());
             st.setString(4,truckingReport.getDriverID());
             st.setInt(5,truckingReport.getOrigin());
-            st.setString(6,truckingReport.isCompleted().toString());
+            st.setInt(6,completed);
             st.setInt(7,truckingReport.getReplaceTRID());
             st.setInt(8,truckingReport.getID());
             st.executeUpdate();
@@ -88,13 +102,11 @@ public class DalTruckingReportController extends DalController {
     }
 
     public boolean delete(DalTruckingReport truckingReport) throws SQLException {
-        ResultSet resultSet;
         Connection conn=DriverManager.getConnection("jdbc:sqlite:/D:\\Year2\\ניתוצ\\עבודה 2\\database.db");
-        String query="DELETE FROM "+tableName+ " WHERE ID=1";
+        String query="DELETE FROM "+tableName+ " WHERE"+columnNames[0]+"=?";
         try {
             PreparedStatement st=conn.prepareStatement(query);
-            //st.setString(1,columnNames[0]);
-            //st.setInt(2,truckingReport.getID());
+            st.setInt(1,truckingReport.getID());
             st.executeUpdate();
         }
         catch (SQLException e)

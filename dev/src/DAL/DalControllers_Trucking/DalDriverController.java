@@ -8,12 +8,19 @@ import java.util.LinkedList;
 
 public class DalDriverController extends DalController {
 
-    public DalDriverController(){
+    private static DalDriverController controller;
+
+    private DalDriverController(){
         //TODO - Check when tables created
         super();
         this.tableName="Drivers";
         this.columnNames=new String[6];
         columnNames[0]="ID";columnNames[1]="name";columnNames[2]="license";
+    }
+
+    public static DalDriverController getInstance() {
+        if (controller==null) controller=new DalDriverController();
+        return controller;
     }
 
 
@@ -27,7 +34,6 @@ public class DalDriverController extends DalController {
             st.setString(1,dalDriver.getID());
             st.setString(2,dalDriver.getName());
             st.setString(3,dalDriver.getLicense());
-
             System.out.println("executing insert");
             st.executeUpdate();
 
@@ -67,12 +73,10 @@ public class DalDriverController extends DalController {
 
     public boolean delete(DalDriver dalDriver) throws SQLException {
         Connection conn=DriverManager.getConnection("jdbc:sqlite:/D:\\Year2\\ניתוצ\\עבודה 2\\database.db");
-        String query="DELETE FROM " +tableName+ " WHERE ?=?";
+        String query="DELETE FROM " +tableName+ " WHERE("+columnNames[0]+"=?)";
         try {
             PreparedStatement st=conn.prepareStatement(query);
-            st.setString(1,tableName);
-            st.setString(2,columnNames[0]);
-            st.setString(3,dalDriver.getID());
+            st.setString(1,dalDriver.getID());
             st.executeUpdate();
         }
         catch (SQLException e)

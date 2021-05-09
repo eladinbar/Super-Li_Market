@@ -8,12 +8,19 @@ import java.util.LinkedList;
 
 public class DalItemController extends DalController {
 
-    public DalItemController(){//TODO - Check when tables created
+    private static DalItemController controller;
+
+    private DalItemController(){//TODO - Check when tables created
         super();
         this.tableName="Items";
         this.columnNames=new String[4];
         columnNames[0]="ID";columnNames[1]="weight";columnNames[2]="name";columnNames[3]="originSite";}
 
+    public static DalItemController getInstance() {
+        if (controller==null)
+            controller=new DalItemController();
+        return controller;
+    }
 
     public boolean insert(DalItem dalItem) throws SQLException {
         //TODO - change URL
@@ -78,10 +85,9 @@ public class DalItemController extends DalController {
 
     public boolean delete(DalItem dalItem) throws SQLException {
         Connection conn=DriverManager.getConnection("jdbc:sqlite:/D:\\Year2\\ניתוצ\\עבודה 2\\database.db");
-        String query="DELETE FROM "+tableName+" WHERE ?=? ";
+        String query="DELETE FROM "+tableName+" WHERE("+columnNames[0]+"=?) ";
         try {
             PreparedStatement st=conn.prepareStatement(query);
-            st.setString(1,columnNames[0]);
             st.setInt(2,dalItem.getID());
             st.executeUpdate();
         }

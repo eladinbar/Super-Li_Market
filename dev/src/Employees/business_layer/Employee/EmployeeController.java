@@ -4,6 +4,8 @@ import Employees.EmployeeException;
 import Employees.business_layer.facade.facadeObject.FacadeBankAccountInfo;
 import Employees.business_layer.facade.facadeObject.FacadeEmployee;
 import Employees.business_layer.facade.facadeObject.FacadeTermsOfEmployment;
+import Trucking.Business_Layer_Trucking.Resources.Driver;
+import Trucking.Business_Layer_Trucking.Resources.ResourcesController;
 
 import java.time.LocalDate;
 import java.util.HashMap;
@@ -102,24 +104,44 @@ public class EmployeeController {
         if(!loggedIn.isEmployed()) {
             throw new EmployeeException("The employee is not employed ");
         }
+        try {
+            loggedIn.giveConstraint(date, shift, reason);
+            if(loggedIn.getRole ().equals ( Role.driverC) || loggedIn.getRole ().equals ( Role.driverC1))
+            {
+                try {
+                    ResourcesController.getInstance ( ).addDriverConstraint ( loggedIn.getID ( ), date, shift );
+                } catch (IllegalArgumentException e){
+                    deleteConstraint ( date,shift );
+                }
+            }
+        }catch (EmployeeException e){
+            if(loggedIn.getRole ().equals ( Role.driverC) || loggedIn.getRole ().equals ( Role.driverC1))
+                throw e;
+        }
 
-        loggedIn.giveConstraint(date, shift, reason);
     }
 
 
     public void deleteConstraint (LocalDate date, int shift) throws EmployeeException {
-        if(loggedIn==null){
-            throw new EmployeeException("No user is logged in");
+        if (loggedIn == null) {
+            throw new EmployeeException ( "No user is logged in" );
         }
 
-        if(loggedIn.getIsManager()){
-            throw new EmployeeException("The method 'giveConstraint' was called from a user in a managerial position");
+        if (loggedIn.getIsManager ( )) {
+            throw new EmployeeException ( "The method 'giveConstraint' was called from a user in a managerial position" );
         }
-        if(!loggedIn.isEmployed()){
-            throw new EmployeeException("The employee is not employed ");
+        if (!loggedIn.isEmployed ( )) {
+            throw new EmployeeException ( "The employee is not employed " );
         }
-
-        loggedIn.deleteConstraint(date, shift);
+        String reason = loggedIn.getConstraints ( ).get ( date ).getReason ( );
+        loggedIn.deleteConstraint ( date, shift );
+        if (loggedIn.getRole ( ).equals ( Role.driverC ) || loggedIn.getRole ( ).equals ( Role.driverC1 )) {
+            try {
+                ResourcesController.getInstance ( ).deleteDriverConstraint ( loggedIn.getID ( ), date, shift );
+            } catch (IllegalArgumentException e) {
+                giveConstraint ( date, shift, reason );
+            }
+        }
     }
 
     public HashMap<LocalDate, Constraint> getConstraints() throws EmployeeException {
@@ -153,9 +175,16 @@ public class EmployeeController {
         }
        TermsOfEmployment terms = creatTermsOfEmployment ( e.getFacadeTermsOfEmployment () );
        BankAccountInfo bank = createAccount ( e.getFacadeBankAccountInfo () );
+       if(!validId(e.getID())){throw new EmployeeException("An invalid ID was entered ");}
        Employee newEmployee = new Employee(e.getRole(), e.getID(),terms, e.getTransactionDate(), bank);
        employees.put(e.getID(), newEmployee);
        return newEmployee;
+    }
+
+    public Employee addDriver(FacadeEmployee e, String name) throws EmployeeException {
+        Employee driver = addEmployee ( e );
+        ResourcesController.getInstance ().addDriver ( e.getID (), name, Driver.License.valueOf ( (e.getRole ().equals ( "driverC" )) ? "120000" : "200000" ) );
+        return driver;
     }
 
     private void addEmplForExistingData(Employee e) throws EmployeeException {
@@ -180,6 +209,7 @@ public class EmployeeController {
         }
         TermsOfEmployment terms = creatTermsOfEmployment ( e.getFacadeTermsOfEmployment () );
         BankAccountInfo bank =createAccount ( e.getFacadeBankAccountInfo () );
+        if(!validId(e.getID())){ throw new EmployeeException("An invalid ID was entered "); }
         Employee newEmployee = new Employee(e.getRole(), e.getID(),terms, e.getTransactionDate(), bank);
         employees.put(e.getID(), newEmployee);
         return newEmployee;
@@ -253,15 +283,14 @@ public class EmployeeController {
             Employee employee = entry.getValue();
             if(employee.getRole()== roleName){
                 if(employee.getConstraints().containsKey(date)) {//Checks if the employee has a constraint on this day
-                  if(shift==0) {//Checks on morning shift
-                      if (!employee.getConstraints().get(date).isMorningShift())// If the employee is free on this shift
-                          specificRole.add(employee.getID());
-                  }
-                  if(shift==1) {//Checks on evening shift
-                      if (!employee.getConstraints().get(date).isEveningShift())// If the employee is free on this shift
-                          specificRole.add(employee.getID());
+                    if(shift==0) {//Checks on morning shift
+                        if (!employee.getConstraints().get(date).isMorningShift())// If the employee is free on this shift
+                            specificRole.add(employee.getID());
                     }
-                  if (shift == 2) {}
+                    else if(shift==1) {//Checks on evening shift
+                        if (!employee.getConstraints().get(date).isEveningShift())// If the employee is free on this shift
+                            specificRole.add(employee.getID());
+                    }
                 }
                 else{ // If the employee is free on this day
                     specificRole.add(employee.getID());
@@ -279,13 +308,15 @@ public class EmployeeController {
     }
 
     public void createData () throws EmployeeException {
-
             createUshers();
             createGuard();
             creatCashier();
             creatStoreKeeper();
             createManagers();
             createShiftManagers();
+            creatDriverC ();
+            creatDriverC1 ();
+            creatTruckingManager ();
     }
 
     private void createShiftManagers() throws EmployeeException {
@@ -332,11 +363,7 @@ public class EmployeeController {
         }
     }
 
-    private void giveConstrForExistingData(Employee employee, LocalDate date, int shift, String reason) throws EmployeeException {
-        employee.giveConstraint(date, shift, reason);
-    }
-
-    private void createGuard() throws EmployeeException {
+    private void createGuard()  {
         int accountNum = 356, bankBranch=10, salary=5500, educationFund=1232, sickDays=10, daysOff=30;
         String bankName = "Leumi";
         for(int i=0; i<2; i++){
@@ -352,7 +379,7 @@ public class EmployeeController {
         }
     }
 
-    private void creatCashier() throws EmployeeException {
+    private void creatCashier() {
         int accountNum = 256, bankBranch=13, salary=5500, educationFund=1232, sickDays=10, daysOff=30;
         String bankName = "Leumi";
         for(int i=0; i<4; i++){
@@ -376,6 +403,42 @@ public class EmployeeController {
             addEmplForExistingData(storeKeeper);
         }
     }
+
+    private void creatDriverC() throws EmployeeException {
+        int accountNum = 589, bankBranch=27, salary=6000, educationFund=1000, sickDays=21, daysOff=15;
+        String bankName = "Diskont";
+        for(int i=0; i<3; i++){
+            BankAccountInfo employeeAccountInfo = new BankAccountInfo(accountNum+i, bankBranch, bankName);
+            TermsOfEmployment termsOfEmployment = new TermsOfEmployment(salary+1, educationFund,sickDays, daysOff );
+            Employee storeKeeper = new Employee("driverC", "04444444"+i, termsOfEmployment, LocalDate.now(), employeeAccountInfo);
+            addEmplForExistingData(storeKeeper);
+        }
+    }
+
+    private void creatDriverC1() throws EmployeeException {
+        int accountNum = 663, bankBranch=54, salary=7000, educationFund=1000, sickDays=21, daysOff=15;
+        String bankName = "Diskont";
+        for(int i=0; i<3; i++){
+            BankAccountInfo employeeAccountInfo = new BankAccountInfo(accountNum+i, bankBranch, bankName);
+            TermsOfEmployment termsOfEmployment = new TermsOfEmployment(salary+1, educationFund,sickDays, daysOff );
+            Employee storeKeeper = new Employee("driverC1", "05555555"+i, termsOfEmployment, LocalDate.now(), employeeAccountInfo);
+            addEmplForExistingData(storeKeeper);
+        }
+    }
+
+    private void creatTruckingManager() throws EmployeeException {
+        int accountNum = 729, bankBranch = 27, salary = 9000, educationFund = 1000, sickDays = 21, daysOff = 15;
+        String bankName = "Diskont";
+        BankAccountInfo employeeAccountInfo = new BankAccountInfo ( accountNum, bankBranch, bankName );
+        TermsOfEmployment termsOfEmployment = new TermsOfEmployment ( salary + 1, educationFund, sickDays, daysOff );
+        Employee truckingManager = new Employee ( "truckingManager", "066666666", termsOfEmployment, LocalDate.now ( ), employeeAccountInfo );
+        addEmplForExistingData ( truckingManager );
+    }
+
+    private void giveConstrForExistingData(Employee employee, LocalDate date, int shift, String reason) throws EmployeeException {
+        employee.giveConstraint(date, shift, reason);
+    }
+
     // private methods
     private BankAccountInfo createAccount(FacadeBankAccountInfo f) throws EmployeeException {
         if(f.getAccountNumber () < 0 | f.getBankBranch () < 0 ){

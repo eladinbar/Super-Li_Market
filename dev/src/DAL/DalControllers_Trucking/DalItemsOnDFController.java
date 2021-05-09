@@ -8,22 +8,31 @@ import java.util.LinkedList;
 
 public class DalItemsOnDFController extends DalController {
 
-    public DalItemsOnDFController(){//TODO - Check when tables created
+    private static DalItemsOnDFController controller;
+
+    private DalItemsOnDFController(){//TODO - Check when tables created
         super();
         this.tableName="ItemsOnDF";
-        this.columnNames=new String[2];
-        columnNames[0]="itemID";columnNames[1]="amount";}
+        this.columnNames=new String[3];
+        columnNames[0]="DFID";
+        columnNames[1]="itemID";columnNames[2]="amount";}
 
+    public static DalItemsOnDFController getInstance() {
+        if (controller==null)
+         controller=new DalItemsOnDFController();
+        return controller;
+    }
 
     public boolean insert(DalItemsOnDF dalItemsOnDF) throws SQLException {
         //TODO - change URL
         System.out.println("starting insert");
         Connection conn= DriverManager.getConnection("jdbc:sqlite:/D:\\Year2\\ניתוצ\\עבודה 2\\database.db");
-        String query= "INSERT INTO "+tableName+" VALUES (?,?)";
+        String query= "INSERT INTO "+tableName+" VALUES (?,?,?)";
         try{
             PreparedStatement st=conn.prepareStatement(query);
-            st.setInt(1,dalItemsOnDF.getItemID());
-            st.setInt(2,dalItemsOnDF.getAmount());
+            st.setInt(1,dalItemsOnDF.getDFID());
+            st.setInt(2,dalItemsOnDF.getItemID());
+            st.setInt(3,dalItemsOnDF.getAmount());
 
             System.out.println("executing insert");
             st.executeUpdate();
@@ -43,11 +52,12 @@ public class DalItemsOnDFController extends DalController {
 
     public boolean update(DalItemsOnDF dalItemsOnDF) throws SQLException {
         Connection conn=DriverManager.getConnection("jdbc:sqlite:/D:\\Year2\\ניתוצ\\עבודה 2\\database.db");
-        String query="UPDATE "+tableName+" SET "+columnNames[1]+"=? WHERE ("+columnNames[0]+"= ?) ";
+        String query="UPDATE "+tableName+" SET "+columnNames[2]+"=? WHERE ("+columnNames[0]+"= ? AND"+columnNames[1]+"=?) ";
         try{
             PreparedStatement st=conn.prepareStatement(query);
-            st.setInt(2,dalItemsOnDF.getAmount());
-            st.setInt(4,dalItemsOnDF.getItemID());
+            st.setInt(1,dalItemsOnDF.getAmount());
+            st.setInt(2,dalItemsOnDF.getDFID());
+            st.setInt(3,dalItemsOnDF.getItemID());
             st.executeUpdate();
         }
         catch (SQLException e){
@@ -61,10 +71,10 @@ public class DalItemsOnDFController extends DalController {
 
     public boolean delete(DalItemsOnDF dalItemsOnDF) throws SQLException {
         Connection conn=DriverManager.getConnection("jdbc:sqlite:/D:\\Year2\\ניתוצ\\עבודה 2\\database.db");
-        String query="DELETE FROM "+tableName+" WHERE ?=? ";
+        String query="DELETE FROM "+tableName+" WHERE "+columnNames[0]+"=? AND "+columnNames[1]+"=?";
         try {
             PreparedStatement st=conn.prepareStatement(query);
-            st.setString(1,columnNames[0]);
+            st.setInt(1,dalItemsOnDF.getDFID());
             st.setInt(2,dalItemsOnDF.getItemID());
             st.executeUpdate();
         }
@@ -83,8 +93,7 @@ public class DalItemsOnDFController extends DalController {
             PreparedStatement st = conn.prepareStatement(query);
             ResultSet resultSet = st.executeQuery(query);
             while (resultSet.next()) {
-                boolean completed = resultSet.getString(4).equals("true");
-                items.add(new DalItemsOnDF(resultSet.getInt(1),resultSet.getInt(2)));
+                items.add(new DalItemsOnDF(resultSet.getInt(1),resultSet.getInt(2),resultSet.getInt(3)));
             }
         } catch (SQLException e) {
             throw new SQLException(e.getMessage());
