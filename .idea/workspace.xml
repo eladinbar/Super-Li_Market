@@ -27,16 +27,8 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="05ca914f-9056-4de3-9869-7fdfaa880f2d" name="Default Changelist" comment="fixed daysAndDriver's Trucking side">
+    <list default="true" id="05ca914f-9056-4de3-9869-7fdfaa880f2d" name="Default Changelist" comment="fixed bugs in trucking report dates.&#10;no more option to update Trucking report if not for todays.">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dev/src/Trucking/Business_Layer_Trucking/Delivery/DeliveryController.java" beforeDir="false" afterPath="$PROJECT_DIR$/dev/src/Trucking/Business_Layer_Trucking/Delivery/DeliveryController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dev/src/Trucking/Business_Layer_Trucking/Facade/DeliveryService.java" beforeDir="false" afterPath="$PROJECT_DIR$/dev/src/Trucking/Business_Layer_Trucking/Facade/DeliveryService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dev/src/Trucking/Business_Layer_Trucking/Facade/FacadeService.java" beforeDir="false" afterPath="$PROJECT_DIR$/dev/src/Trucking/Business_Layer_Trucking/Facade/FacadeService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dev/src/Trucking/Business_Layer_Trucking/Resources/ResourcesController.java" beforeDir="false" afterPath="$PROJECT_DIR$/dev/src/Trucking/Business_Layer_Trucking/Resources/ResourcesController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dev/src/Trucking/Presentation_Layer_Trucking/Menu_Printer.java" beforeDir="false" afterPath="$PROJECT_DIR$/dev/src/Trucking/Presentation_Layer_Trucking/Menu_Printer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dev/src/Trucking/Presentation_Layer_Trucking/PresentationController.java" beforeDir="false" afterPath="$PROJECT_DIR$/dev/src/Trucking/Presentation_Layer_Trucking/PresentationController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/ADSS_Group_G/Employees/presentation_layer/MenuPrinter.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/ADSS_Group_G/Employees/presentation_layer/MenuPrinter.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/ADSS_Group_G/Employees/presentation_layer/PresentationController.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/ADSS_Group_G/Employees/presentation_layer/PresentationController.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -161,14 +153,7 @@
       <workItem from="1620398620984" duration="1227000" />
       <workItem from="1620500109251" duration="1502000" />
       <workItem from="1620541443693" duration="3111000" />
-      <workItem from="1620546886851" duration="11823000" />
-    </task>
-    <task id="LOCAL-00006" summary="finished insert demand to report in menu printer">
-      <created>1617290764997</created>
-      <option name="number" value="00006" />
-      <option name="presentableId" value="LOCAL-00006" />
-      <option name="project" value="LOCAL" />
-      <updated>1617290764997</updated>
+      <workItem from="1620546886851" duration="14921000" />
     </task>
     <task id="LOCAL-00007" summary="finished writing Menu_Printer - need to check with businessLayer">
       <created>1617316526174</created>
@@ -506,7 +491,14 @@
       <option name="project" value="LOCAL" />
       <updated>1620566641844</updated>
     </task>
-    <option name="localTasksCounter" value="55" />
+    <task id="LOCAL-00055" summary="fixed bugs in trucking report dates.&#10;no more option to update Trucking report if not for todays.">
+      <created>1620573180083</created>
+      <option name="number" value="00055" />
+      <option name="presentableId" value="LOCAL-00055" />
+      <option name="project" value="LOCAL" />
+      <updated>1620573180083</updated>
+    </task>
+    <option name="localTasksCounter" value="56" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -525,7 +517,6 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="menu printer has been updated, all exception catched" />
     <MESSAGE value="menu printer method has been updated" />
     <MESSAGE value="remove site from pool option added" />
     <MESSAGE value="date added to AddDemand" />
@@ -550,7 +541,8 @@
     <MESSAGE value="merged bug fixed. &#10;still has date probs" />
     <MESSAGE value="initial state has been updated" />
     <MESSAGE value="fixed daysAndDriver's Trucking side" />
-    <option name="LAST_COMMIT_MESSAGE" value="fixed daysAndDriver's Trucking side" />
+    <MESSAGE value="fixed bugs in trucking report dates.&#10;no more option to update Trucking report if not for todays." />
+    <option name="LAST_COMMIT_MESSAGE" value="fixed bugs in trucking report dates.&#10;no more option to update Trucking report if not for todays." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
