@@ -7,6 +7,7 @@ import Trucking.Business_Layer_Trucking.Resources.Driver;
 
 import javax.management.openmbean.KeyAlreadyExistsException;
 import java.nio.file.ProviderMismatchException;
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.*;
@@ -26,7 +27,7 @@ public class PresentationController {
     }
 
 
-    public boolean addDemandToReport(int itemNumber, int amount, int siteID) throws IllegalStateException, IllegalArgumentException {
+    public boolean addDemandToReport(int itemNumber, int amount, int siteID) throws IllegalStateException, IllegalArgumentException, SQLException {
         if (itemNumber == 0) return false;
         facadeService.addDemandToReport(itemNumber, amount, siteID);
         return true;
@@ -34,12 +35,12 @@ public class PresentationController {
 
     }
 
-    public boolean continueAddDemandToReport(int itemNumber, int amount, int siteID) throws IllegalArgumentException {
+    public boolean continueAddDemandToReport(int itemNumber, int amount, int siteID) throws IllegalArgumentException, SQLException {
         facadeService.continueAddDemandToReport(itemNumber, amount, siteID);
         return true;
     }
 
-    public void CreateReport() {
+    public void CreateReport() throws SQLException {
         facadeService.createTruckingReport();
     }
 
@@ -50,33 +51,33 @@ public class PresentationController {
     }
 
 
-    public void addTruck(String model, String licenseNumber, int weightNeto, int maxWeight) throws KeyAlreadyExistsException {
+    public void addTruck(String model, String licenseNumber, int weightNeto, int maxWeight) throws KeyAlreadyExistsException,SQLException {
 
         facadeService.addTruck(model, licenseNumber, weightNeto, maxWeight);
 
     }
 
-    public void addDriver(String id, String name, Driver.License license) throws KeyAlreadyExistsException {
+    public void addDriver(String id, String name, Driver.License license) throws KeyAlreadyExistsException,SQLException {
 
         facadeService.addDriver(id, name, license);
     }
 
 
-    public void addSite(String city, int deliveryArea, String phoneNumber, String contactName, String name) throws KeyAlreadyExistsException {
+    public void addSite(String city, int deliveryArea, String phoneNumber, String contactName, String name) throws KeyAlreadyExistsException, SQLException {
         facadeService.addSite(city, deliveryArea, phoneNumber, contactName, name);
     }
 
-    public void addItem(double weight, String name, int siteID) throws NoSuchElementException, KeyAlreadyExistsException {
+    public void addItem(double weight, String name, int siteID) throws NoSuchElementException, KeyAlreadyExistsException, SQLException {
         facadeService.addItem(weight, name, siteID);
     }
 
 
-    public void RemoveItemFromPool(int item) throws NoSuchElementException {
+    public void RemoveItemFromPool(int item) throws NoSuchElementException, SQLException {
 
         facadeService.removeItemFromPool(item);
     }
 
-    public LinkedList<FacadeDemand> showDemands() throws NoSuchElementException {
+    public LinkedList<FacadeDemand> showDemands() throws NoSuchElementException, SQLException {
         return facadeService.showDemands();
     }
 
@@ -94,7 +95,7 @@ public class PresentationController {
 
     }
 
-    public FacadeTruck chooseTruck(String truck, LocalDate date, LocalTime shift) throws NoSuchElementException, IllegalStateException {
+    public FacadeTruck chooseTruck(String truck, LocalDate date, LocalTime shift) throws NoSuchElementException, IllegalStateException, SQLException {
         return facadeService.chooseTruck(truck, date, shift);
     }
 
@@ -103,15 +104,15 @@ public class PresentationController {
     }
 
 
-    public FacadeDriver chooseDriver(String driverID, LocalDate date, LocalTime shift) throws IllegalStateException, NoSuchElementException {
+    public FacadeDriver chooseDriver(String driverID, LocalDate date, LocalTime shift) throws IllegalStateException, NoSuchElementException, SQLException {
         return facadeService.chooseDriver(driverID, date, shift);
     }
 
-    public void chooseLeavingHour(LocalTime time) throws IllegalArgumentException {
+    public void chooseLeavingHour(LocalTime time) throws IllegalArgumentException, SQLException {
         facadeService.chooseLeavingHour(time);
     }
 
-    public void saveReport() {
+    public void saveReport() throws SQLException {
         facadeService.saveReport();
     }
 
@@ -132,7 +133,7 @@ public class PresentationController {
     }
 
 
-    public LinkedList<FacadeDemand> getCurrentDemandsBySite(FacadeSite site) {
+    public LinkedList<FacadeDemand> getCurrentDemandsBySite(FacadeSite site) throws SQLException {
         return facadeService.getCurrentDemandsBySite(site);
 
     }
@@ -148,17 +149,17 @@ public class PresentationController {
      * @return @returns true if succeed, throws exception otherwise
      * @throws NoSuchElementException
      */
-    public boolean removeDestination(int siteID) throws NoSuchElementException { //returns true in succeed
+    public boolean removeDestination(int siteID) throws NoSuchElementException, SQLException { //returns true in succeed
         facadeService.removeDestination(siteID);
         return false;
     }
 
-    public LinkedList<FacadeDemand> getItemsOnTruck() {
+    public LinkedList<FacadeDemand> getItemsOnTruck() throws SQLException {
         return facadeService.getItemsOnTruck();
 
     }
 
-    public void removeItemFromReport(FacadeDemand demand, int amount) {
+    public void removeItemFromReport(FacadeDemand demand, int amount) throws SQLException {
         facadeService.removeItemFromReport(demand, amount);
 
     }
@@ -175,7 +176,7 @@ public class PresentationController {
         return facadeService.getAllSites();
     }
 
-    public void addDemandToSystem(int itemId, int site, int amount) {
+    public void addDemandToSystem(int itemId, int site, int amount) throws SQLException {
         facadeService.addDemandToSystem(itemId, site, amount);
     }
 
@@ -187,16 +188,16 @@ public class PresentationController {
         return facadeService.getDeliveryForms(trID);
     }
 
-    public void updateDeliveryFormRealWeight(int trID, int dfID, int weight) throws IllegalStateException {
+    public void updateDeliveryFormRealWeight(int trID, int dfID, int weight) throws IllegalStateException, SQLException {
         facadeService.updateDeliveryFormRealWeight(trID, dfID, weight);
     }
 
-    public void removeSiteFromTruckReport(int siteID, int trID) throws NoSuchElementException {
+    public void removeSiteFromTruckReport(int siteID, int trID) throws NoSuchElementException, SQLException {
         facadeService.removeSiteFromTruckReport(siteID, trID);
     }
 
 
-    public void removeDemand(FacadeDemand d) {
+    public void removeDemand(FacadeDemand d) throws SQLException {
         facadeService.removeDemand(d);
     }
 
@@ -204,16 +205,16 @@ public class PresentationController {
         return facadeService.getUnComplitedDeliveryForms(trId);
     }
 
-    public FacadeTruckingReport getNewTruckReportID(FacadeTruckingReport oldTr) {
+    public FacadeTruckingReport getNewTruckReportID(FacadeTruckingReport oldTr) throws SQLException {
 
         return facadeService.getNewTruckReport(oldTr);
     }
 
-    public void moveDemandsFromCurrentToReport(FacadeTruckingReport tr) {
+    public void moveDemandsFromCurrentToReport(FacadeTruckingReport tr) throws SQLException {
         facadeService.moveDemandsFromCurrentToReport(tr);
     }
 
-    public void replaceTruckAndDriver(String truckNumber, String driverID, FacadeTruckingReport tr, int weight) throws InputMismatchException {
+    public void replaceTruckAndDriver(String truckNumber, String driverID, FacadeTruckingReport tr, int weight) throws InputMismatchException, SQLException {
         facadeService.replaceTruckAndDriver(truckNumber, driverID, tr, weight);
     }
 
@@ -271,18 +272,18 @@ public class PresentationController {
         facadeService.addTruckConstraint(id, date, leavingHour);
     }
 
-    public void chooseDateToCurrentTR(LocalDate chosen) {
+    public void chooseDateToCurrentTR(LocalDate chosen) throws SQLException {
         facadeService.chooseDateToCurrentTR(chosen);
     }
 
-    public void removeSiteFromPool(int siteID) throws NoSuchElementException, IllegalStateException {
+    public void removeSiteFromPool(int siteID) throws NoSuchElementException, IllegalStateException, SQLException {
         facadeService.removeSiteFromPool(siteID);
     }
 
     public int getSiteDeliveryArea(int site) {
         return facadeService.getSiteDeliveryArea(site);
     }
-    public void removeItemFromTruckingReport(int trID, FacadeDemand demand) {
+    public void removeItemFromTruckingReport(int trID, FacadeDemand demand) throws SQLException {
         facadeService.removeItemFromTruckingReport(trID,demand);
     }
 

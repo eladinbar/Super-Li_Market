@@ -103,4 +103,24 @@ public class DalDriverController extends DalController {
         }
         return drivers;
     }
+    public boolean createTable() throws SQLException {
+        Connection conn = DriverManager.getConnection("jdbc:sqlite:/D:\\Year2\\ניתוצ\\עבודה 2\\database.db");
+        String query = "CREATE TABLE IF NOT EXISTS Drivers("
+                +"ID INTEGER,"
+                +"name TEXT,"
+                +"license TEXT,"
+                +"PRIMARY KEY (ID));";
+        try {
+            PreparedStatement st=conn.prepareStatement(query);
+            System.out.println("Creating\n");
+            st.executeUpdate();
+        }
+        catch (SQLException e){
+            throw new SQLException(e.getMessage());
+        }
+        finally {
+            conn.close();
+        }
+        return true;
+    }
 }

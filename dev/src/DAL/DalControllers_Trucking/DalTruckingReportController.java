@@ -145,5 +145,30 @@ public class DalTruckingReportController extends DalController {
         }
         return reports;
     }
+    public boolean createTable() throws SQLException {
+        Connection conn = DriverManager.getConnection("jdbc:sqlite:/D:\\Year2\\ניתוצ\\עבודה 2\\database.db");
+        String query = "CREATE TABLE IF NOT EXISTS TruckingReports("
+                +"ID INTEGER,"
+                +"leavingHour TEXT,"
+                +"date TEXT,"
+                +"truckNumber TEXT,"
+                +"driverID TEXT,"
+                +"origin INTEGER,"
+                +"completed INTEGER,"
+                +"replaceTRID INTEGER,"
+                +"PRIMARY KEY (ID));";
+        try {
+            PreparedStatement st=conn.prepareStatement(query);
+            System.out.println("Creating\n");
+            st.executeUpdate();
+        }
+        catch (SQLException e){
+            throw new SQLException(e.getMessage());
+        }
+        finally {
+            conn.close();
+        }
+        return true;
+    }
 
 }

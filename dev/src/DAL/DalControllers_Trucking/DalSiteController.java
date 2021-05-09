@@ -114,4 +114,27 @@ public class DalSiteController extends DalController {
         }
         return sites;
     }
+    public boolean createTable() throws SQLException {
+        Connection conn = DriverManager.getConnection("jdbc:sqlite:/D:\\Year2\\ניתוצ\\עבודה 2\\database.db");
+        String query = "CREATE TABLE IF NOT EXISTS Sites("
+                +"siteID INTEGER,"
+                +"name TEXT,"
+                +"city TEXT,"
+                +"deliveryArea INTEGER,"
+                +"contactName TEXT,"
+                +"phoneNumber TEXT,"
+                +"PRIMARY KEY (siteID));";
+        try {
+            PreparedStatement st=conn.prepareStatement(query);
+            System.out.println("Creating\n");
+            st.executeUpdate();
+        }
+        catch (SQLException e){
+            throw new SQLException(e.getMessage());
+        }
+        finally {
+            conn.close();
+        }
+        return true;
+    }
 }

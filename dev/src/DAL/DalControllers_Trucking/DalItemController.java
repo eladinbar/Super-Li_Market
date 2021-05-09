@@ -114,4 +114,25 @@ public class DalItemController extends DalController {
         }
         return items;
     }
+    public boolean createTable() throws SQLException {
+        Connection conn = DriverManager.getConnection("jdbc:sqlite:/D:\\Year2\\ניתוצ\\עבודה 2\\database.db");
+        String query = "CREATE TABLE IF NOT EXISTS Items("
+                +"ID INTEGER,"
+                +"weight NUMERIC,"
+                +"name TEXT,"
+                +"originSite INTEGER,"
+                +"PRIMARY KEY (ID));";
+        try {
+            PreparedStatement st=conn.prepareStatement(query);
+            System.out.println("Creating\n");
+            st.executeUpdate();
+        }
+        catch (SQLException e){
+            throw new SQLException(e.getMessage());
+        }
+        finally {
+            conn.close();
+        }
+        return true;
+    }
 }

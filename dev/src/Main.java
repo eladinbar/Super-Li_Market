@@ -1,9 +1,9 @@
-import DAL.DalItem;
-import DAL.DalItemController;
-import DAL.DalTruckingReport;
-import DAL.DalTruckingReportController;
+import DAL.*;
 import Employees.presentation_layer.PresentationController;
+import Trucking.Business_Layer_Trucking.Resources.Truck;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -15,26 +15,13 @@ import java.util.Locale;
 public class Main {
 
     public static void main(String[] args) {
-        //PresentationController presentationController = new PresentationController ();
-        //presentationController.start ();
-        DalTruckingReport dtr=new DalTruckingReport(1, LocalTime.NOON,LocalDate.of(2022,5,5),
-                "21","12",5,true,0);
-        DalTruckingReportController d=DalTruckingReportController.getInstance();
-        //DalItemController d1=new DalItemController();
-        //DalItem item=new DalItem(1,1.5,"milki",2);
-
         try {
-//            d.insert(dtr);
-//            LinkedList<DalTruckingReport>result =d.load();
-//            for (DalTruckingReport tr:result)
-//            {
-//                System.out.println(tr.getID()+"     "+ tr.getOrigin());
-//                d.delete(tr);
-//            }
-            d.update(dtr);
-            //d1.update(item);
+            System.out.println("before\n");
+            DalTruckingReportController.getInstance().createTable();
         }
-        catch (SQLException se)
-        {}
-    }
+        catch (SQLException e){
+
+        }
+        System.out.println("After\n");
+        }
 }

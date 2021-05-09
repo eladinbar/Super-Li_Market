@@ -16,7 +16,10 @@ public class DalDemandController extends DalController {
         this.tableName="Demands";
         this.columnNames=new String[3];
         columnNames[0]="itemID";columnNames[1]="amount";columnNames[2]="siteID";
+
     }
+
+
 
     public static DalDemandController getInstance() {
         if (controller==null) controller=new DalDemandController();
@@ -109,5 +112,26 @@ public class DalDemandController extends DalController {
             throw new SQLException(e.getMessage());
         }
         return demands;
+    }
+
+    public boolean createTable() throws SQLException {
+        Connection conn = DriverManager.getConnection("jdbc:sqlite:/D:\\Year2\\ניתוצ\\עבודה 2\\database.db");
+        String query = "CREATE TABLE IF NOT EXISTS Demands("
+                +"itemID INTEGER,"
+                +"amount INTEGER,"
+                +"siteID INTEGER,"
+                +"PRIMARY KEY (itemID));";
+        try {
+            PreparedStatement st=conn.prepareStatement(query);
+            System.out.println("Creating\n");
+            st.executeUpdate();
+        }
+        catch (SQLException e){
+            throw new SQLException(e.getMessage());
+        }
+        finally {
+            conn.close();
+        }
+        return true;
     }
 }
