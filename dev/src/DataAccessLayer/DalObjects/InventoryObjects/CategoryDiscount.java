@@ -56,4 +56,22 @@ public class CategoryDiscount extends DalObject<CategoryDiscount> {
     public String getCategoryName() {
         return categoryName;
     }
+
+    public void setDiscountDate(String discountDate) throws SQLException {
+        String oldDate = this.discountDate;
+        this.discountDate = discountDate;
+        controller.update(this, oldDate);
+    }
+
+    public void setSupplierID(String supplierID) throws SQLException {
+        String oldSupplierId = this.supplierID;
+        this.supplierID = supplierID;
+        controller.update(this, oldSupplierId);
+    }
+
+    public void setCategoryName(String categoryName) throws SQLException {
+        String oldCategoryName = this.categoryName;
+        this.categoryName = categoryName;
+        controller.update(this, oldCategoryName);
+    }
 }

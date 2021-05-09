@@ -66,4 +66,10 @@ public class ItemSale extends DalObject<ItemSale> {
         this.itemID = itemID;
         controller.update(this);
     }
+
+    public void setName(String name) throws SQLException {
+        String oldName = this.name;
+        this.name = name;
+        controller.update(this, oldName);
+    }
 }

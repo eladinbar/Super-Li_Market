@@ -57,4 +57,22 @@ public class ItemDiscount extends DalObject<ItemDiscount> {
     public int getItemID() {
         return itemID;
     }
+
+    public void setDiscountDate(String discountDate) throws SQLException {
+        String oldDiscountDate = this.discountDate;
+        this.discountDate = discountDate;
+        controller.update(this, oldDiscountDate);
+    }
+
+    public void setSupplierID(String supplierID) throws SQLException {
+        String oldSupplierId = this.supplierID;
+        this.supplierID = supplierID;
+        controller.update(this, oldSupplierId);
+    }
+
+    public void setItemID(int itemID) throws SQLException {
+        int oldId = this.itemID;
+        this.itemID = itemID;
+        controller.update(this, oldId);
+    }
 }

@@ -139,4 +139,10 @@ public class Item extends DalObject<Item> {
         this.categoryName = categoryName;
         controller.update(this);
     }
+
+    public void setItemID(int itemID) throws SQLException {
+        int oldId = this.itemID;
+        this.itemID = itemID;
+        controller.update(this, oldId);
+    }
 }

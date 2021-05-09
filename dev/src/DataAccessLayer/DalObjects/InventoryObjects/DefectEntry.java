@@ -49,4 +49,16 @@ public class DefectEntry extends DalObject<DefectEntry> {
     public int getItemID() {
         return itemID;
     }
+
+    public void setEntryDate(String entryDate) throws SQLException {
+        String oldEntryDate = this.entryDate;
+        this.entryDate = entryDate;
+        controller.update(this, oldEntryDate);
+    }
+
+    public void setItemID(int itemID) throws SQLException {
+        int oldId = this.itemID;
+        this.itemID = itemID;
+        controller.update(this, oldId);
+    }
 }

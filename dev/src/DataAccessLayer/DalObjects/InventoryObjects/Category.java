@@ -22,10 +22,6 @@ public class Category extends DalObject<Category> {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public String getParentName() {
         return parentName;
     }
@@ -33,5 +29,11 @@ public class Category extends DalObject<Category> {
     public void setParentName(String parentName) throws SQLException {
         this.parentName = parentName;
         controller.update(this);
+    }
+
+    public void setName(String name) throws SQLException {
+        String oldName = this.name;
+        this.name = name;
+        controller.update(this, oldName);
     }
 }
