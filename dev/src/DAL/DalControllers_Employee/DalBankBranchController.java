@@ -27,7 +27,7 @@ public class DalBankBranchController extends DalController {
 
     @Override
     protected boolean createTable() throws SQLException {
-        Connection conn = DriverManager.getConnection("jdbc:sqlite:Desktop\\database_nitoz.db");
+        Connection conn = DriverManager.getConnection("jdbc:sqlite:/C:\\Users\\ofirp\\WorkJavaBGU\\second year\\Nitoz\\database.db");
         String query = "CREATE TABLE IF NOT EXISTS BANKS("
                 +"bank TEXT ,"
                 +"BANKBRANCH INTEGER,"
@@ -132,5 +132,19 @@ public class DalBankBranchController extends DalController {
             throw e;
         }
         return bankBranches;
+    }
+
+    public DalBankBranch loadBank(int accountNumber) throws SQLException{
+        Connection conn = DriverManager.getConnection("jdbc:sqlite:Desktop\\database_nitoz.db");
+        String query = "SELECT * FROM "+tableName+"WHERE  BANKACCOUNT=? ";
+        try {
+            PreparedStatement st=conn.prepareStatement(query);
+            st.setInt(1,accountNumber);
+            ResultSet resultSet = st.executeQuery(query);
+            return new DalBankBranch(resultSet.getString(1), resultSet.getInt(2), resultSet.getInt(3));
+        }
+        catch (SQLException e){
+            throw e;
+        }
     }
 }

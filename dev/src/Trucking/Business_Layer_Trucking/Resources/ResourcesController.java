@@ -1,6 +1,10 @@
 package Trucking.Business_Layer_Trucking.Resources;
 
 import DAL.*;
+import DAL.DalControllers_Trucking.DalDriverController;
+import DAL.DalControllers_Trucking.DalTruckController;
+import DAL.DalObjects_Trucking.DalDriver;
+import DAL.DalObjects_Trucking.DalTruck;
 import Employees.EmployeeException;
 import Employees.business_layer.Shift.ShiftController;
 

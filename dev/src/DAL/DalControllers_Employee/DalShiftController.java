@@ -34,7 +34,7 @@ public class DalShiftController extends DalController {
                 +"DATE DATE,"
                 +"SHIFT INTEGER,"
                 +"FOREIGN KEY (EMPLOYEEID) REFERENCES EMPLOYEES(ID),"
-                +"PRIMARY KEY (SHIFT, DATE));";
+                +"PRIMARY KEY (SHIFT, DATE, EMPLOYEEID));";
         try {
             PreparedStatement st=conn.prepareStatement(query);
             System.out.println("Creating\n");
@@ -136,13 +136,34 @@ public class DalShiftController extends DalController {
             while (resultSet.next()) {
                 Date date = resultSet.getDate(3);
                 LocalDate lDate = date.toLocalDate();
-                shifts.add(new DalShift(resultSet.getString(1),resultSet.getString(2),
-                        lDate,resultSet.getInt(4))
+                shifts.add(new DalShift(resultSet.getString(1), resultSet.getString(2),
+                        lDate, resultSet.getInt(4))
                 );
+
             }
         } catch (SQLException e) {
             throw e;
         }
         return shifts;
     }
+
+    public LinkedList<String> loadShiftManning (LocalDate date, String type )throws SQLException{
+        LinkedList<String> IDs = new LinkedList<>();
+        Connection conn = DriverManager.getConnection("jdbc:sqlite:Desktop\\database_nitoz.db");
+        String query = "SELECT EMPLOYEEID FROM "+tableName+"WHERE TYPE =? AND DATE=?";
+        try {
+            PreparedStatement st=conn.prepareStatement(query);
+            st.setString(1,type);
+            st.setDate(2, new Date(date.getYear(), date.getMonth().getValue(), date.getDayOfMonth()));
+            ResultSet resultSet = st.executeQuery(query);
+            while (resultSet.next()) {
+                IDs.add(resultSet.getString(1));
+            }
+        }
+        catch (SQLException e){
+            throw e;
+        }
+        return IDs;
+    }
+
 }

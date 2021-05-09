@@ -1,7 +1,8 @@
 package DAL.DalControllers_Trucking;
 
-import DAL.DalControllers_Employee.DalController;
-import DAL.DalObjects_Trucking.DalItemsOnDF;
+import DAL.DalController;
+import DAL.DalItemsOnDF;
+
 
 import java.sql.*;
 import java.util.LinkedList;

@@ -1,8 +1,8 @@
 package Trucking.Business_Layer_Trucking.Delivery;
 
-import DAL.DalDeliveryForm;
-import DAL.DalDeliveryFormController;
-import DAL.DalItem;
+import DAL.*;
+import DAL.DalControllers_Trucking.DalDeliveryFormController;
+import DAL.DalObjects_Trucking.DalDeliveryForm;
 
 import java.sql.SQLException;
 import java.util.HashMap;

@@ -31,7 +31,7 @@ public class DalConstraintController extends DalController {
                 +"DATE DATE,"
                 +"SHIFT INTEGER,"
                 +"FOREIGN KEY (EMPLOYEEID) REFERENCES EMPLOYEES(ID),"
-                +"PRIMARY KEY (DATE));";
+                +"PRIMARY KEY (DATE, EMPLOYEEID));";
         try {
             PreparedStatement st=conn.prepareStatement(query);
             System.out.println("Creating\n");
@@ -112,7 +112,6 @@ public class DalConstraintController extends DalController {
             PreparedStatement st=conn.prepareStatement(query);
             st.setString(1,dalConstraint.getEmployeeId());
             st.setDate(2, new Date(dalConstraint.getDate().getYear(), dalConstraint.getDate().getMonth().getValue(),dalConstraint.getDate().getDayOfMonth()));
-
             st.executeUpdate();
         }
         catch (SQLException e)
@@ -141,4 +140,6 @@ public class DalConstraintController extends DalController {
         }
         return constraints;
     }
-}
+
+    }
+

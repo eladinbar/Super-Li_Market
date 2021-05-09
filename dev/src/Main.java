@@ -1,4 +1,5 @@
 import DAL.*;
+import DAL.DalControllers_Employee.DalBankBranchController;
 import Employees.presentation_layer.PresentationController;
 import Trucking.Business_Layer_Trucking.Resources.Truck;
 
@@ -17,10 +18,10 @@ public class Main {
     public static void main(String[] args) {
         try {
             System.out.println("before\n");
-            DalTruckingReportController.getInstance().createTable();
+            DalBankBranchController.getInstance();
         }
         catch (SQLException e){
-
+            System.out.println(e.getMessage());
         }
         System.out.println("After\n");
         }

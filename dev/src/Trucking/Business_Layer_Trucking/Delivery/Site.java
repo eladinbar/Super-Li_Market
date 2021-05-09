@@ -1,8 +1,7 @@
 package Trucking.Business_Layer_Trucking.Delivery;
 
-import DAL.DalItem;
-import DAL.DalSite;
-import DAL.DalSiteController;
+import DAL.DalControllers_Trucking.DalSiteController;
+import DAL.DalObjects_Trucking.DalSite;
 
 import java.sql.SQLException;
 
