@@ -9,6 +9,7 @@ import SerciveLayer.objects.QuantityList;
 import SerciveLayer.objects.Supplier;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class SupplierService {
@@ -317,17 +318,23 @@ public class SupplierService {
 
     public ResponseT<Map<String, Map<Integer, Integer>>> createShortageOrders(Map<Integer, Integer> items) {
         Map<String, Map<Integer, Integer>> orders = new HashMap<>();
-        try {
+        String noSupplier = "";
+
             for (Integer itemId : items.keySet()) {
+                try {
                 String suppId = sp.getCheapestSupplier(itemId, items.get(itemId), false).getSc().getId();
                 if (!orders.containsKey(suppId)) {
                     orders.put(suppId, new HashMap<>());
                 }
                 orders.get(suppId).put(itemId, items.get(itemId));
+                } catch(Exception e){
+                    noSupplier += itemId + ", ";
             }
-        } catch(Exception e){
-            return new ResponseT<>(e.getMessage());
+
         }
-        return new ResponseT<>(orders);
+        if(noSupplier.isEmpty())
+            return new ResponseT<>(orders);
+        return new ResponseT<>(true,"The following Items have no supplier: " + noSupplier.substring(0, noSupplier.length()-2), orders);
+
     }
 }

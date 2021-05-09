@@ -38,6 +38,10 @@ public class Response {
         return message;
     }
 
+    public void setErrorMessage(String errorMessage) {
+        this.errorMessage = errorMessage;
+    }
+
     public String toString(){
         if (errorOccurred())
             return "\nError: "+getErrorMessage()+"\n";
