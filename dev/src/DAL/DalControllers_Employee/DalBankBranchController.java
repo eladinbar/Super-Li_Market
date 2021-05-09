@@ -14,9 +14,38 @@ public class DalBankBranchController extends DalController {
 
     private DalBankBranchController(){
         super();
-        tableName = "BankBranch";
-        columnNames = new String[] {"EMPLOYEE ID","BANK", "BANK BRANCH",  "ACCOUNT NUMBER"};
+        tableName = "BANKS";
+        columnNames = new String[] {"BANK", "BANKBRANCH",  "ACCOUNTNUMBER"};
+       try {
+           createTable();
+       }
+       catch(SQLException e){
+       }
+
     }
+
+    @Override
+    protected boolean createTable() throws SQLException {
+        Connection conn = DriverManager.getConnection("jdbc:sqlite:/D:\\Year2\\ניתוצ\\עבודה 2\\database.db");
+        String query = "CREATE TABLE IF NOT EXISTS BANKS("
+                +"bank TEXT ,"
+                +"BANKBRANCH INTEGER,"
+                +"ACCOUNTNUMBER INTEGER,"
+                +"PRIMARY KEY (ACCOUNTNUMBERS));";
+        try {
+            PreparedStatement st=conn.prepareStatement(query);
+            System.out.println("Creating\n");
+            st.executeUpdate();
+        }
+        catch (SQLException e){
+            throw new SQLException(e.getMessage());
+        }
+        finally {
+            conn.close();
+        }
+        return true;
+    }
+
 
     public static DalBankBranchController getInstance(){
         if(instance==null){ instance = new DalBankBranchController();}
@@ -46,8 +75,6 @@ public class DalBankBranchController extends DalController {
         }
 
         return true;
-
-
     }
 
     public boolean update(DalBankBranch dalBankBranch) throws SQLException {

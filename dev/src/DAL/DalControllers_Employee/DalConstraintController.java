@@ -12,9 +12,40 @@ public class DalConstraintController extends DalController {
     private static DalConstraintController instance = null;
     private DalConstraintController(){
         super();
-        tableName = "Constraint";
-        columnNames = new String[] {"EMPLOYEE ID","REASON", "DATE",  "SHIFT"};
+        tableName = "Constraints";
+        columnNames = new String[] {"EMPLOYEEID","REASON", "DATE",  "SHIFT"};
+        try{
+            createTable();
+        }
+        catch (SQLException e){
+
+        }
     }
+
+    @Override
+    protected boolean createTable() throws SQLException {
+        Connection conn = DriverManager.getConnection("jdbc:sqlite:/D:\\Year2\\ניתוצ\\עבודה 2\\database.db");
+        String query = "CREATE TABLE IF NOT EXISTS CONSTRAINTS("
+                +"EMPLOYEEID TEXT,"
+                +"REASON TEXT,"
+                +"DATE DATE,"
+                +"SHIFT INTEGER,"
+                +"FOREIGN KEY (EMPLOYEEID) REFERENCES EMPLOYEES(ID),"
+                +"PRIMARY KEY (DATE));";
+        try {
+            PreparedStatement st=conn.prepareStatement(query);
+            System.out.println("Creating\n");
+            st.executeUpdate();
+        }
+        catch (SQLException e){
+            throw new SQLException(e.getMessage());
+        }
+        finally {
+            conn.close();
+        }
+        return true;
+    }
+
 
     public static DalConstraintController getInstance(){
         if(instance==null){ instance = new DalConstraintController();}

@@ -15,9 +15,39 @@ public class DalShiftTypeController extends DalController {
 
     private DalShiftTypeController(){
         super();
-        tableName = "Shift";
-        columnNames = new String[] {"EMPLOYEE ID",  "TYPE","DATE", "SHIFT"};
+        tableName = "SHIFT";
+        columnNames = new String[] {"EMPLOYEEID",  "TYPE","DATE", "SHIFT"};
+        try{
+            createTable();
+        }
+        catch (SQLException e){
+
+        }
     }
+
+    @Override
+    protected boolean createTable() throws SQLException {
+        Connection conn = DriverManager.getConnection("jdbc:sqlite:/D:\\Year2\\ניתוצ\\עבודה 2\\database.db");
+            String query = "CREATE TABLE IF NOT EXISTS SHIFTTYPES("
+                +"AMOUNT INTEGER,"
+                +"TYPE INTEGER,"
+                +"ROLE TEXT,"
+                +"PRIMARY KEY (TYPE, ROLE));";
+        try {
+            PreparedStatement st=conn.prepareStatement(query);
+            System.out.println("Creating\n");
+            st.executeUpdate();
+        }
+        catch (SQLException e){
+            throw new SQLException(e.getMessage());
+        }
+        finally {
+            conn.close();
+        }
+        return true;
+
+    }
+
     public static DalShiftTypeController getInstance(){
         if(instance==null){ instance = new DalShiftTypeController();}
         return instance;

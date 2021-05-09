@@ -12,9 +12,42 @@ public class DalEmployeeController extends DalController {
 
     public DalEmployeeController(){
         super();
-        tableName = "Employees";
-            columnNames = new String[] {"ID","ROLE", "TRANSACTION DATE",  "DAYS OFF", "SALARY", "SICK  DAYS", "EDUCATION FUND"};
+            tableName = "EMPLOYEES";
+            columnNames = new String[] {"ID","ROLE", "TRANSACTIONDATE",  "DAYS OFF", "SALARY", "SICK  DAYS", "EDUCATION FUND"};
+            try{
+                createTable();
+            }
+            catch(SQLException e){
+
+            }
     }
+
+    @Override
+    protected boolean createTable() throws SQLException {
+        Connection conn = DriverManager.getConnection("jdbc:sqlite:/D:\\Year2\\ניתוצ\\עבודה 2\\database.db");
+        String query = "CREATE TABLE IF NOT EXISTS EMPLOYEES("
+                +"ID TEXT,"
+                +"ROLE TEXT,"
+                +"TRANSACTIONDATE DATE,"
+                +"DAYSOFF INTEGER,"
+                +"SALARY INTEGER,"
+                +"SICKDAYS INTEGER,"
+                +"EDUCATIONFUND INTEGER,"
+                +"PRIMARY KEY (ID));";
+        try {
+            PreparedStatement st=conn.prepareStatement(query);
+            System.out.println("Creating\n");
+            st.executeUpdate();
+        }
+        catch (SQLException e){
+            throw new SQLException(e.getMessage());
+        }
+        finally {
+            conn.close();
+        }
+        return true;
+    }
+
     public static DalEmployeeController getInstance(){
         if(instance==null){ instance = new DalEmployeeController();}
         return instance;
