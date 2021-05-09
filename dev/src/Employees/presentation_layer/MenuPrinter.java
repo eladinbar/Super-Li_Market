@@ -7,19 +7,26 @@ import Employees.business_layer.facade.facadeObject.FacadeTermsOfEmployment;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
-import java.io.Reader;
-import java.nio.Buffer;
 import java.time.LocalDate;
-import java.util.Scanner;
 
 public class MenuPrinter {
 
-BufferedReader sc = new BufferedReader(new InputStreamReader(System.in));
+    BufferedReader sc = new BufferedReader(new InputStreamReader(System.in));
 
-    //Scanner sc = new Scanner ( System.in );
+    private static MenuPrinter instance = null;
+
+    private MenuPrinter() {
+
+    }
+
+    public static MenuPrinter getInstance() {
+        if (instance == null) {
+            instance = new MenuPrinter();
+        }
+        return instance;
+    }
 
     public int uploadProgram(){
-        //sc.useDelimiter ( "\n" );
         System.out.println ("choose the option you'd like:\n1.upload a program with an existing data.\n2.upload a program without an existing data." );
         return getInt ();
     }
@@ -36,7 +43,7 @@ BufferedReader sc = new BufferedReader(new InputStreamReader(System.in));
 
     public String roleMenu(){
         System.out.println ("Choose role:\n1.branch manager\n2.branch manager assistant\n" +
-                "3.human resources manager\n4.cashier\n5.guard\n6.usher\n7.store keeper\n8.shift manager\n9.driver - license c1\n10.driver - license c1\n11.trucking manager\n12.back" );
+                "3.human resources manager\n4.cashier\n5.guard\n6.usher\n7.store keeper\n8.shift manager\n9.driver - license c\n10.driver - license c1\n11.trucking manager\n12.back" );
         int choice =  getInt ();
         switch (choice){
             case 1:

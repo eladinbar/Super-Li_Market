@@ -173,6 +173,8 @@ public class EmployeeController {
         if(employees.containsKey(e.getID())){
             throw new EmployeeException("Employee already added to the system");
         }
+        if(e.getTransactionDate ().isAfter ( LocalDate.now () ))
+            throw new EmployeeException ( "transaction date nust be before today." );
        TermsOfEmployment terms = creatTermsOfEmployment ( e.getFacadeTermsOfEmployment () );
        BankAccountInfo bank = createAccount ( e.getFacadeBankAccountInfo () );
        if(!validId(e.getID())){throw new EmployeeException("An invalid ID was entered ");}
@@ -183,7 +185,7 @@ public class EmployeeController {
 
     public Employee addDriver(FacadeEmployee e, String name) throws EmployeeException {
         Employee driver = addEmployee ( e );
-        ResourcesController.getInstance ().addDriver ( e.getID (), name, Driver.License.valueOf ( (e.getRole ().equals ( "driverC" )) ? "120000" : "200000" ) );
+        ResourcesController.getInstance ().addDriver ( e.getID (), name, Driver.License.valueOf ( (e.getRole ().equals ( "driverC" )) ? "C" : "C1" ) );
         return driver;
     }
 

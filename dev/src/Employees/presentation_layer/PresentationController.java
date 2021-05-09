@@ -24,7 +24,7 @@ public class PresentationController {
 
     public PresentationController(){
         facadeService = new FacadeService ();
-        menuPrinter = new MenuPrinter ();
+        menuPrinter = MenuPrinter.getInstance ();
         stringConverter = new StringConverter ();
     }
 
@@ -522,7 +522,8 @@ public class PresentationController {
                 choice = menuPrinter.managerMenu ( );
                 handleManagerChoice ( choice );
             } else if(role.equals ( "truckingManager" )){
-                Menu_Printer.getInstance().mainMenu();
+                //TODO - menu of trucking
+                Menu_Printer.getInstance ().mainMenu ();
                 logout ();
                 while(!login (false));
             } else {
