@@ -27,11 +27,8 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="05ca914f-9056-4de3-9869-7fdfaa880f2d" name="Default Changelist" comment="some bug fixed">
+    <list default="true" id="05ca914f-9056-4de3-9869-7fdfaa880f2d" name="Default Changelist" comment="merged bug fixed. &#10;still has date probs">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dev/src/Employees/business_layer/Employee/EmployeeController.java" beforeDir="false" afterPath="$PROJECT_DIR$/dev/src/Employees/business_layer/Employee/EmployeeController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/ADSS_Group_G/Employees/business_layer/Employee/EmployeeController.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/ADSS_Group_G/Employees/business_layer/Employee/EmployeeController.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/ADSS_Group_G/Employees/presentation_layer/MenuPrinter.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/ADSS_Group_G/Employees/presentation_layer/MenuPrinter.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -156,14 +153,7 @@
       <workItem from="1620398620984" duration="1227000" />
       <workItem from="1620500109251" duration="1502000" />
       <workItem from="1620541443693" duration="3111000" />
-      <workItem from="1620546886851" duration="849000" />
-    </task>
-    <task id="LOCAL-00003" summary="Skeleton half made">
-      <created>1617044361731</created>
-      <option name="number" value="00003" />
-      <option name="presentableId" value="LOCAL-00003" />
-      <option name="project" value="LOCAL" />
-      <updated>1617044361731</updated>
+      <workItem from="1620546886851" duration="2697000" />
     </task>
     <task id="LOCAL-00004" summary="3rd demand has been added">
       <created>1617046716000</created>
@@ -501,7 +491,14 @@
       <option name="project" value="LOCAL" />
       <updated>1620546940441</updated>
     </task>
-    <option name="localTasksCounter" value="52" />
+    <task id="LOCAL-00052" summary="merged bug fixed. &#10;still has date probs">
+      <created>1620547991416</created>
+      <option name="number" value="00052" />
+      <option name="presentableId" value="LOCAL-00052" />
+      <option name="project" value="LOCAL" />
+      <updated>1620547991416</updated>
+    </task>
+    <option name="localTasksCounter" value="53" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -520,7 +517,6 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="TODO has been added to both branche's job" />
     <MESSAGE value="DF active has been added" />
     <MESSAGE value="updateDeliveryForm has been added" />
     <MESSAGE value="menu printer has been updated, all exception catched" />
@@ -545,7 +541,8 @@
     <MESSAGE value="insert has been connected" />
     <MESSAGE value="&#10;delete and update has been connected" />
     <MESSAGE value="some bug fixed" />
-    <option name="LAST_COMMIT_MESSAGE" value="some bug fixed" />
+    <MESSAGE value="merged bug fixed. &#10;still has date probs" />
+    <option name="LAST_COMMIT_MESSAGE" value="merged bug fixed. &#10;still has date probs" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -604,6 +601,21 @@
           <url>file://$PROJECT_DIR$/dev/src/Trucking/Business_Layer_Trucking/Resources/ResourcesController.java</url>
           <line>158</line>
           <option name="timeStamp" value="29" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/dev/src/Trucking/Presentation_Layer_Trucking/Menu_Printer.java</url>
+          <line>205</line>
+          <option name="timeStamp" value="30" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/dev/src/Trucking/Presentation_Layer_Trucking/Menu_Printer.java</url>
+          <line>215</line>
+          <option name="timeStamp" value="31" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/dev/src/Trucking/Business_Layer_Trucking/Resources/ResourcesController.java</url>
+          <line>203</line>
+          <option name="timeStamp" value="32" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

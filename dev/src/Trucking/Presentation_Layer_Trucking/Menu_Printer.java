@@ -1076,9 +1076,7 @@ public class Menu_Printer {
 
 
     public void putInitialTestState() {
-        pc.addDriver("203834734", "Ido", Driver.License.C1);
-        pc.addDriver("123456789", "Shir", Driver.License.C);
-        pc.addDriver("987654321", "Ofir", Driver.License.C);
+
 
         pc.addTruck("Mercedes", "62321323", 2000, 12000);
         pc.addTruck("Man", "1231231", 1500, 8000);
