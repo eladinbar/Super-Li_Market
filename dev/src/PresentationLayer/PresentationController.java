@@ -440,6 +440,10 @@ public class PresentationController implements Runnable {
     public void run() {
         menu.printWelcomePrompt();
         setupSystem();
+        ResponseT<Map<Integer, Integer>> map = service.getItemsInShortAndQuantities();
+        for (int i : map.getValue().keySet()) {
+            System.out.println("id " + i + "\tamount " + map.value.get(i));
+        }
         while (!terminate) {
             mainMenu();
         }
@@ -516,12 +520,7 @@ public class PresentationController implements Runnable {
         while (true) {
             int itemID = menu.instructAndReceive("enter item ID to add to a scheduled order: ", Integer.class);
             int amount = menu.instructAndReceive("enter amount to order: ", Integer.class);
-            ResponseT<Order> newSchedOrder = service.createScheduledOrder(day, itemID, amount);
-            if(newSchedOrder.errorOccurred()) {
-                menu.errorPrompt(newSchedOrder.getErrorMessage());
-                return;
-            }
-            String order = newSchedOrder.value.toString();
+            String order = service.createScheduledOrder(day, itemID, amount).toString();//todo Exeption when fail
             System.out.println(order);
             String choice = menu.instructAndReceive("1. add more items.\nenter any other key for completing the order ");
             if (!choice.equals("1")) {
@@ -641,8 +640,9 @@ public class PresentationController implements Runnable {
                 if (opt == 1) {
                     System.out.println("choose items to agreement: ");
                     int productID = menu.instructAndReceive("Enter product id: ", Integer.class);
+                    int companyProductID=menu.instructAndReceive("enter your company product id: ", Integer.class);
                     int price = menu.instructAndReceive("enter price: ", Integer.class);
-                    System.out.println(service.addItemToAgreement(ID, productID, price).toString());
+                    System.out.println(service.addItemToAgreement(ID, productID,companyProductID, price).toString());
                 } else if (opt == 2) break;
                 else System.out.println("invalid option try again");
             }
@@ -862,7 +862,8 @@ public class PresentationController implements Runnable {
                 case 1 -> {//add new product
                     productId = menu.instructAndReceive("please enter system product id: ", Integer.class);
                     int price = menu.instructAndReceive("please enter price: ", Integer.class);
-                    menu.printEntity(service.addItemToAgreement(supplierId, productId, price).value);
+                    int companyProductID=menu.instructAndReceive("enter your company product id: ", Integer.class);
+                    menu.printEntity(service.addItemToAgreement(supplierId, productId,companyProductID, price).value);
                 }
                 case 2 -> {//delete product
                     productId = menu.instructAndReceive("please enter system product id: ", Integer.class);

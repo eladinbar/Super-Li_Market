@@ -10,21 +10,24 @@ public class Order {
     private LocalDate date;
     private boolean delivered;
     private Supplier supplier;
+    private String day;
 
-    public Order(int id, LocalDate date, Supplier supplier, ArrayList<Product> products, boolean delivered) {
+    public Order(int id, LocalDate date, Supplier supplier, ArrayList<Product> products, boolean delivered, int day) {
         this.id = id;
         this.products = products;
         this.date = date;
         this.delivered = delivered;
         this.supplier = supplier;
+        this.day = conNumToDay(day);
     }
 
-    public Order(BusinessLayer.SupliersPackage.orderPackage.Order order, ArrayList<Product> products) {
+    public Order(BusinessLayer.SupliersPackage.orderPackage.Order order, ArrayList<Product> products,int day) {
         this.id = order.getId();
         this.products = products;
         this.date = order.getDate();
         this.delivered = order.isDelivered();
         this.supplier = new Supplier(order.getSupplier());
+        this.day="";
     }
 
     public int getId() {
@@ -65,5 +68,19 @@ public class Order {
                 "\ndate: " + date.toString() +
                 "\ndelivered: " + delivered +
                 "\nsupplier: " + supplier.getName();
+    }
+
+    private String conNumToDay(int num) {
+        String toReturn = "";
+        switch (num) {
+            case 1 -> toReturn += "Sunday";
+            case 2 -> toReturn += "Monday";
+            case 3 -> toReturn += "Tuesday";
+            case 4 -> toReturn += "Wednesday";
+            case 5 -> toReturn += "Thursday";
+            case 6 -> toReturn += "Friday";
+            case 7 -> toReturn += "Saturday";
+        }
+        return toReturn;
     }
 }
