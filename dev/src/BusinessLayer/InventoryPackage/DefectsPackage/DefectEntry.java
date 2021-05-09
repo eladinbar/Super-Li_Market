@@ -2,24 +2,21 @@ package BusinessLayer.InventoryPackage.DefectsPackage;
 
 import BusinessLayer.InventoryPackage.Location;
 
+import java.time.LocalDate;
 import java.util.Calendar;
 
 public class DefectEntry {
     private int itemID;
     private String itemName;
-    private Calendar entryDate;
+    private LocalDate entryDate;
     private int quantity;
     private Location location; //can only be one - shelf or storage
 
-    public DefectEntry(int itemID, String itemName, Calendar entryDate, int quantity, String location) {
+    public DefectEntry(int itemID, String itemName, LocalDate entryDate, int quantity, String location) {
         this.itemID = itemID;
         this.itemName = itemName;
         this.entryDate = entryDate;
         //Remove redundant time from dates
-        entryDate.clear(Calendar.MILLISECOND);
-        entryDate.clear(Calendar.SECOND);
-        entryDate.clear(Calendar.MINUTE);
-        entryDate.clear(Calendar.HOUR);
         this.quantity = quantity;
         if (location.startsWith("SH"))
             this.location = new Location(location, null);
@@ -27,7 +24,7 @@ public class DefectEntry {
             this.location = new Location(null, location);
     }
 
-    public Calendar getEntryDate() {
+    public LocalDate getEntryDate() {
         return entryDate;
     }
 

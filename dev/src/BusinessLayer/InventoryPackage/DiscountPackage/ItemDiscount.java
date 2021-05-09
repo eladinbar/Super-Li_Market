@@ -2,20 +2,17 @@ package BusinessLayer.InventoryPackage.DiscountPackage;
 
 import BusinessLayer.InventoryPackage.Item;
 
+import java.time.LocalDate;
 import java.util.Calendar;
 
 public class ItemDiscount extends Discount{
     private Item item;
 
-    public ItemDiscount(int supplierID, double discount, Calendar date, int itemCount, Item item) {
+    public ItemDiscount(String supplierID, double discount, LocalDate date, int itemCount, Item item) {
         this.supplierID = supplierID;
         this.discount = discount;
         this.date = date;
         //Remove redundant time from dates
-        date.clear(Calendar.MILLISECOND);
-        date.clear(Calendar.SECOND);
-        date.clear(Calendar.MINUTE);
-        date.clear(Calendar.HOUR);
         this.itemCount = itemCount;
         this.item = item;
     }

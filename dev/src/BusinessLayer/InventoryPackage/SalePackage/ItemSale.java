@@ -3,24 +3,18 @@ package BusinessLayer.InventoryPackage.SalePackage;
 import InfrastructurePackage.Pair;
 import BusinessLayer.InventoryPackage.Item;
 
+import java.time.LocalDate;
 import java.util.Calendar;
 
 public class ItemSale extends Sale {
     private Item item;
 
-    public ItemSale(String name, double discount, Calendar startDate, Calendar endDate, Item item) {
+    public ItemSale(String name, double discount, LocalDate startDate, LocalDate endDate, Item item) {
         this.name = name;
         this.discount = discount;
         this.saleDates = new Pair<>(startDate, endDate);
         //Remove redundant time from dates
-        startDate.clear(Calendar.MILLISECOND);
-        startDate.clear(Calendar.SECOND);
-        startDate.clear(Calendar.MINUTE);
-        startDate.clear(Calendar.HOUR);
-        endDate.clear(Calendar.MILLISECOND);
-        endDate.clear(Calendar.SECOND);
-        endDate.clear(Calendar.MINUTE);
-        endDate.clear(Calendar.HOUR);
+
         this.item = item;
     }
 

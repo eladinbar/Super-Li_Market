@@ -1,19 +1,46 @@
 package SerciveLayer.objects;
 
-public class Product {
-    private String name;
-    private int productID;
-    private String manu;
+import SerciveLayer.SimpleObjects.SimpleEntity;
 
-    public Product(String name, int productID, String manu) {
-        this.name = name;
+public class Product extends SimpleEntity {
+    private int productID;
+    private String name;
+    private int amount;
+    private double sellingPrice;
+    private double discount;
+    private double finalPrice;
+
+    public Product(int productID, String name, int amount, double sellingPrice, double discount) {
         this.productID = productID;
-        this.manu = manu;
+        this.name = name;
+        this.amount = amount;
+        this.sellingPrice = sellingPrice;
+        this.discount = discount;
+        this.finalPrice = sellingPrice*amount*(1-discount/100);
     }
-    public Product(BusinessLayer.SupliersPackage.orderPackage.product p){
-        this.productID=p.getProductID();
-        this.name=p.getName();
-        this.manu=p.getManu().name();
+
+    public int getProductID() {
+        return productID;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public int getAmount() {
+        return amount;
+    }
+
+    public double getSellingPrice() {
+        return sellingPrice;
+    }
+
+    public double getDiscount() {
+        return discount;
+    }
+
+    public double getFinalPrice() {
+        return finalPrice;
     }
 
     @Override
@@ -21,6 +48,6 @@ public class Product {
         return "product: " +
                 "\nname: " + name  +
                 "\nproductID: " + productID +
-                "\nmanufacturer: " + manu  +"\n\n";
+                "\nmanufacturer: "  +"\n\n";
     }
 }

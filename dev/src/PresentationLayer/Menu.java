@@ -1,7 +1,8 @@
-package PresentationLayer.InventoryP;
+package PresentationLayer;
 
 import InfrastructurePackage.TextFormatter;
 import SerciveLayer.SimpleObjects.*;
+import SerciveLayer.objects.Product;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -106,8 +107,6 @@ public class Menu {
         list.add("Change item shelf location");
         list.add("Change item storage quantity");
         list.add("Change item shelf quantity");
-        list.add("Add supplier");
-        list.add("Remove supplier");
 
         return list;
     }
@@ -231,6 +230,9 @@ public class Menu {
     public void itemHeader() {
         System.out.println(tf.formatItemMenuColumns());
     }
+    public void productHeader(){
+        System.out.println(tf.formatProductMenuColumns());
+    }
 
     public void printEntity(Item item) {
         try {
@@ -244,6 +246,24 @@ public class Menu {
         itemHeader();
         for (Item i : itemList) {
             printEntity(i);
+        }
+    }
+
+    public void printEntity(Product orderProduct) throws NoSuchMethodException {
+        Method[] methods = {orderProduct.getClass().getMethod("getProductID"), orderProduct.getClass().getMethod("getName"),
+        orderProduct.getClass().getMethod("getAmount"),orderProduct.getClass().getMethod("getSellingPrice"),
+        orderProduct.getClass().getMethod("getDiscount"), orderProduct.getClass().getMethod("getFinalPrice")};
+        try {
+            handleEntityAliment(orderProduct, methods);
+        } catch (Exception e){
+            errorPrompt("Something went wrong...");
+        }
+    }
+
+    public void printEntity(ArrayList<Product> orderProduct)throws NoSuchMethodException {
+        System.out.println(tf.formatProductMenuColumns());
+        for (Product p :orderProduct) {
+            printEntity(p);
         }
     }
 
@@ -277,19 +297,19 @@ public class Menu {
 
     //User Input methods
     public String instructAndReceive(String instruction) {
-        System.out.println(instruction);
+        System.out.print(instruction);
         return scan.nextLine();
     }
-
+    
     public <T> T instructAndReceive(String instruction, Class<T> type) {
-        System.out.println(instruction);
+        System.out.print(instruction);
         String next = scan.nextLine();
         if (type == Integer.class) {
             Integer wantedInt;
             try {
-                while (!Pattern.matches("(^[1-9][0-9]+$)|0", next)) {
+                while (!Pattern.matches("(^[1-9][0-9]*$)|0", next)) {
                     System.out.println("invalid input: " + next);
-                    System.out.println(instruction);
+                    System.out.print(instruction);
                     next = scan.nextLine();
                 }
                 wantedInt = Integer.parseInt(next);
@@ -305,7 +325,7 @@ public class Menu {
             try {
                 while (!Pattern.matches("^\\d+(\\.\\d+)?", next)) {
                     System.out.println("invalid input: " + next);
-                    System.out.println(instruction);
+                    System.out.print(instruction);
                     next = scan.nextLine();
                 }
                 wantedDouble = Double.parseDouble(next);
@@ -336,9 +356,9 @@ public class Menu {
             Method currentMethod = getMethods[i];
             Object value = currentMethod.invoke(elem);
             String stringRep = value.toString();
-            if (value instanceof Calendar) {
-                stringRep = tf.dateFormat((Calendar) value);
-            }
+//            if (value instanceof Calendar) {
+//                stringRep = tf.dateFormat((Calendar) value);
+//            }
             output = output + tf.centerString(stringRep, tf.getPaddingSize()) + "|";
         }
         Object value = getMethods[getMethods.length - 1].invoke(elem);

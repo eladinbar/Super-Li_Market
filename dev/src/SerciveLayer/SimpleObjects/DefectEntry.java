@@ -1,15 +1,16 @@
 package SerciveLayer.SimpleObjects;
 
+import java.time.LocalDate;
 import java.util.Calendar;
 
 public class DefectEntry extends SimpleEntity {
-    private Calendar entryDate;
+    private LocalDate entryDate;
     private int itemId;
     private String itemName;
     private int quantity;
     private String location;
 
-    public DefectEntry(Calendar entryDate, int itemId, String itemName, int quantity, String location) {
+    public DefectEntry(LocalDate entryDate, int itemId, String itemName, int quantity, String location) {
         this.entryDate = entryDate;
         this.itemId = itemId;
         this.itemName = itemName;
@@ -17,7 +18,7 @@ public class DefectEntry extends SimpleEntity {
         this.location = location;
     }
 
-    public Calendar getEntryDate() {
+    public LocalDate getEntryDate() {
         return entryDate;
     }
 

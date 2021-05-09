@@ -2,12 +2,14 @@ package SerciveLayer;
 
 import BusinessLayer.SupliersPackage.supplierPackage.SupplierController;
 import SerciveLayer.Response.*;
+import SerciveLayer.SimpleObjects.Item;
 import SerciveLayer.objects.Agreement;
 import SerciveLayer.objects.Product;
 import SerciveLayer.objects.QuantityList;
 import SerciveLayer.objects.Supplier;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class SupplierService {
@@ -192,11 +194,11 @@ public class SupplierService {
         return toReturn;
     }
 
-    public ResponseT<Product> addQuantityListItem(String supplierID, int productID, int amount, int discount, OrderService oc) {
-        ResponseT<Product> toReturn;
+    public ResponseT<Item> addQuantityListItem(String supplierID, int productID, int amount, int discount, InventoryService inventoryService) {
+        ResponseT<Item> toReturn;
         try {
             sp.addQuantityListItem(supplierID, productID, amount, discount);
-            toReturn = oc.getProduct(productID);
+            toReturn = inventoryService.getItem(productID);
         } catch (Exception e) {
             toReturn = new ResponseT<>(e.getMessage());
         }
@@ -223,11 +225,11 @@ public class SupplierService {
         return toReturn;
     }
 
-    public ResponseT<Product> addItemToAgreement(String id, int productID, int companyProductID, int price, OrderService oc) {
-        ResponseT<Product> toReturn;
+    public ResponseT<Item> addItemToAgreement(String id, int productID, int companyProductID, int price, InventoryService inventoryService) {
+        ResponseT<Item> toReturn;
         try {
             sp.addItemToAgreement(id, productID, companyProductID,price);
-            toReturn = oc.getProduct(productID);
+            toReturn = inventoryService.getItem(productID);
         } catch (Exception e) {
             toReturn = new ResponseT<>(e.getMessage());
         }
@@ -316,17 +318,23 @@ public class SupplierService {
 
     public ResponseT<Map<String, Map<Integer, Integer>>> createShortageOrders(Map<Integer, Integer> items) {
         Map<String, Map<Integer, Integer>> orders = new HashMap<>();
-        try {
+        String noSupplier = "";
+
             for (Integer itemId : items.keySet()) {
+                try {
                 String suppId = sp.getCheapestSupplier(itemId, items.get(itemId), false).getSc().getId();
                 if (!orders.containsKey(suppId)) {
                     orders.put(suppId, new HashMap<>());
                 }
                 orders.get(suppId).put(itemId, items.get(itemId));
+                } catch(Exception e){
+                    noSupplier += itemId + ", ";
             }
-        } catch(Exception e){
-            return new ResponseT<>(e.getMessage());
+
         }
-        return new ResponseT<>(orders);
+        if(noSupplier.isEmpty())
+            return new ResponseT<>(orders);
+        return new ResponseT<>(true,"The following Items have no supplier: " + noSupplier.substring(0, noSupplier.length()-2), orders);
+
     }
 }

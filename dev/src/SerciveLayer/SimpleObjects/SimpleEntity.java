@@ -1,6 +1,6 @@
 package SerciveLayer.SimpleObjects;
 
-import PresentationLayer.InventoryP.Menu;
+import PresentationLayer.Menu;
 
 public abstract class SimpleEntity {
 

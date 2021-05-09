@@ -4,6 +4,7 @@ import BusinessLayer.SupliersPackage.orderPackage.OrderController;
 import BusinessLayer.SupliersPackage.supplierPackage.SupplierController;
 import SerciveLayer.Response.Response;
 import SerciveLayer.Response.ResponseT;
+import SerciveLayer.SimpleObjects.Item;
 import SerciveLayer.objects.Order;
 import SerciveLayer.objects.Product;
 
@@ -22,7 +23,7 @@ public class OrderService {
     public ResponseT<Order> createOrder(LocalDate date, String supplierID, SupplierController sp) {
         ResponseT<Order> toReturn;
         try {
-            toReturn = new ResponseT<>(new Order(oc.createOrder(date, sp.getSupplier(supplierID))));
+            toReturn = new ResponseT<>(new Order(oc.createOrder(date, sp.getSupplier(supplierID)), new ArrayList<>(),-1));
         } catch (Exception e) {
             toReturn = new ResponseT<>(e.getMessage());
         }
@@ -32,7 +33,7 @@ public class OrderService {
     public ResponseT<Order> createPernamentOrder(int day, String supplierID, SupplierController sp) {
         ResponseT<Order> toReturn;
         try {
-            toReturn= new ResponseT<>(new Order(oc.createPermOrder(day, sp.getSupplier(supplierID))));
+            toReturn= new ResponseT<>(new Order(oc.createPermOrder(day, sp.getSupplier(supplierID)), new ArrayList<>(),day));
         } catch (Exception e) {
             toReturn = new ResponseT<>(e.getMessage());
         }
@@ -49,35 +50,32 @@ public class OrderService {
         return toReturn;
     }
 
-    public ResponseT<Order> getOrder(int orderID) {
+    public ResponseT<Order> getOrder(int orderID, InventoryService is) {
         ResponseT<Order> toReturn;
         try {
-            toReturn=new ResponseT<>(new Order(oc.getOrder(orderID)));
+            ArrayList<Product> productList = new ArrayList<>();
+            BusinessLayer.SupliersPackage.orderPackage.Order o = oc.getOrder(orderID);
+            for (int id: o.getProducts().keySet()){
+                ResponseT<Item> itemR = is.getItem(id);
+                if(itemR.errorOccurred()){
+                    throw new Exception(itemR.getErrorMessage());
+                }
+                Item i = itemR.value;
+                Product newProd = new Product(i.getID(),i.getName(),
+                        o.getProducts().get(id),o.getSupplier().getPrice(1,id),
+                        o.getSupplier().getProductDiscount(o.getProducts().get(id),id));
+                productList.add(newProd);
+            }
+            toReturn=new ResponseT<>(new Order(o, productList,-1));
         } catch (Exception e) {
             toReturn = new ResponseT<>(e.getMessage());
         }
         return toReturn;
     }
 
-    public ResponseT<Product> createProduct(String name, String manufacturer) {
-        ResponseT<Product> toReturn;
-        try {
-            toReturn=new ResponseT<>(new Product(oc.createProduct(name, manufacturer)));
-        } catch (Exception e) {
-            toReturn = new ResponseT<>(e.getMessage());
-        }
-        return toReturn;
-    }
 
-    public ResponseT<Product> getProduct(int productID) {
-        ResponseT<Product> toReturn;
-        try {
-            toReturn = new ResponseT<>(new Product(oc.getProduct(productID)));
-        } catch (Exception e) {
-            toReturn = new ResponseT<>(e.getMessage());
-        }
-        return toReturn;
-    }
+
+
 
     public Response removeSupplier(String id) {
         Response toReturn = new Response();
@@ -140,16 +138,19 @@ public class OrderService {
         return toReturn;
     }
 
-    public ResponseT<List<Order>> createShortageOrders(Map<String,Map<Integer, Integer>> itemToOrder,LocalDate orderDate,SupplierController sp) {
+    public ResponseT<List<Order>> createShortageOrders(Map<String,Map<Integer, Integer>> itemToOrder,LocalDate orderDate,SupplierController sp) {//todo check again
         List<Order> orderList = new ArrayList<>();
         for (String suppID : itemToOrder.keySet()) {
             Map<Integer,Integer> tempMap = itemToOrder.get(suppID);
             ResponseT<Order> order = createOrder(orderDate,suppID,sp);
-            if(order.errorOccured()) return new ResponseT<>(order.getErrorMessage());
+            if(order.errorOccurred()) return new ResponseT<>(order.getErrorMessage());
             for (int itemID: tempMap.keySet()) {
                 addProductToOrder(order.value.getId(),itemID,tempMap.get(itemID));
             }
             orderList.add(order.value);
+        }
+        if(orderList.isEmpty()){
+            return new ResponseT<>("there is no shortage in the store");
         }
         return new ResponseT<>(orderList);
     }
