@@ -1,7 +1,6 @@
 package DataAccessLayer.DalControllers.InventoryControllers;
 
 import DataAccessLayer.DalControllers.DalController;
-import DataAccessLayer.DalObjects.InventoryObjects.CategorySale;
 import DataAccessLayer.DalObjects.InventoryObjects.Item;
 import DataAccessLayer.DalObjects.InventoryObjects.ItemSale;
 
@@ -128,13 +127,14 @@ public class ItemSaleDalController extends DalController<ItemSale> {
 
     @Override
     public ItemSale select(ItemSale itemSale) throws SQLException {
+        boolean isDesired = false;
         try (Connection conn = DriverManager.getConnection(connectionString)) {
             String query = "SELECT * FROM " + tableName;
             PreparedStatement stmt = conn.prepareStatement(query);
             ResultSet resultSet = stmt.executeQuery(query);
             while (resultSet.next())
             {
-                boolean isDesired = resultSet.getString(0).equals(itemSale.getName());
+                isDesired = resultSet.getString(0).equals(itemSale.getName());
                 if (isDesired) {
                     itemSale.setDiscount(resultSet.getInt(1));
                     itemSale.setStartSaleDate(resultSet.getString(2));
@@ -146,6 +146,6 @@ public class ItemSaleDalController extends DalController<ItemSale> {
         } catch (SQLException ex) {
             throw new SQLException(ex.getMessage());
         }
-        return itemSale;
+        return isDesired ? itemSale : null;
     }
 }

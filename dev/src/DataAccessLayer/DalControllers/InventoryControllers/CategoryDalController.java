@@ -108,13 +108,14 @@ public class CategoryDalController extends DalController<Category> {
 
     @Override
     public Category select(Category category) throws SQLException {
+        boolean isDesired = false;
         try (Connection conn = DriverManager.getConnection(connectionString)) {
             String query = "SELECT * FROM " + tableName;
             PreparedStatement stmt = conn.prepareStatement(query);
             ResultSet resultSet = stmt.executeQuery(query);
             while (resultSet.next())
             {
-                boolean isDesired = resultSet.getString(0).equals(category.getName());
+                isDesired = resultSet.getString(0).equals(category.getName());
                 if (isDesired) {
                     category.setParentName(resultSet.getString(1));
                     break; //Desired category found
@@ -123,6 +124,6 @@ public class CategoryDalController extends DalController<Category> {
         } catch (SQLException ex) {
             throw new SQLException(ex.getMessage());
         }
-        return category;
+        return isDesired ? category : null;
     }
 }

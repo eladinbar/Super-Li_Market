@@ -157,13 +157,14 @@ public class ItemDalController extends DalController<Item> {
 
     @Override
     public Item select(Item item) throws SQLException {
+        boolean isDesired = false;
         try (Connection conn = DriverManager.getConnection(connectionString)) {
             String query = "SELECT * FROM " + tableName;
             PreparedStatement stmt = conn.prepareStatement(query);
             ResultSet resultSet = stmt.executeQuery(query);
             while (resultSet.next())
             {
-                boolean isDesired = resultSet.getInt(0) == item.getItemID();
+                isDesired = resultSet.getInt(0) == item.getItemID();
                 if (isDesired) {
                     item.setName(resultSet.getString(1));
                     item.setCostPrice(resultSet.getDouble(2));
@@ -181,6 +182,6 @@ public class ItemDalController extends DalController<Item> {
         } catch (SQLException ex) {
             throw new SQLException(ex.getMessage());
         }
-        return item;
+        return isDesired ? item : null;
     }
 }

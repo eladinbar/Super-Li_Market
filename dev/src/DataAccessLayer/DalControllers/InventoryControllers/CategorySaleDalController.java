@@ -127,13 +127,14 @@ public class CategorySaleDalController extends DalController<CategorySale> {
 
     @Override
     public CategorySale select(CategorySale categorySale) throws SQLException {
+        boolean isDesired = false;
         try (Connection conn = DriverManager.getConnection(connectionString)) {
             String query = "SELECT * FROM " + tableName;
             PreparedStatement stmt = conn.prepareStatement(query);
             ResultSet resultSet = stmt.executeQuery(query);
             while (resultSet.next())
             {
-                boolean isDesired = resultSet.getString(0).equals(categorySale.getName());
+                isDesired = resultSet.getString(0).equals(categorySale.getName());
                 if (isDesired) {
                     categorySale.setDiscount(resultSet.getInt(1));
                     categorySale.setStartSaleDate(resultSet.getString(2));
@@ -145,6 +146,6 @@ public class CategorySaleDalController extends DalController<CategorySale> {
         } catch (SQLException ex) {
             throw new SQLException(ex.getMessage());
         }
-        return categorySale;
+        return isDesired ? categorySale : null;
     }
 }

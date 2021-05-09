@@ -4,8 +4,6 @@ import SerciveLayer.SimpleObjects.*;
 import SerciveLayer.objects.Product;
 
 import java.lang.reflect.Field;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
 
 public class TextFormatter {
     private int paddingSize = 20;
@@ -69,10 +67,5 @@ public class TextFormatter {
 
     public int getPaddingSize() {
         return paddingSize;
-    }
-
-    public String dateFormat(Calendar date){
-        SimpleDateFormat format1 = new SimpleDateFormat("yyyy-MM-dd");
-        return format1.format(date.getTime());
     }
 }

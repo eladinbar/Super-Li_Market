@@ -1,7 +1,6 @@
 package DataAccessLayer.DalControllers.InventoryControllers;
 
 import DataAccessLayer.DalControllers.DalController;
-import DataAccessLayer.DalObjects.InventoryObjects.CategoryDiscount;
 import DataAccessLayer.DalObjects.InventoryObjects.Item;
 import DataAccessLayer.DalObjects.InventoryObjects.ItemDiscount;
 import DataAccessLayer.DalObjects.SupplierObjects.SupplierCard;
@@ -195,13 +194,14 @@ public class ItemDiscountDalController extends DalController<ItemDiscount> {
 
     @Override
     public ItemDiscount select(ItemDiscount itemDiscount) throws SQLException {
+        boolean isDesired = false;
         try (Connection conn = DriverManager.getConnection(connectionString)) {
             String query = "SELECT * FROM " + tableName;
             PreparedStatement stmt = conn.prepareStatement(query);
             ResultSet resultSet = stmt.executeQuery(query);
             while (resultSet.next())
             {
-                boolean isDesired = resultSet.getString(0).equals(itemDiscount.getDiscountDate()) &&
+                isDesired = resultSet.getString(0).equals(itemDiscount.getDiscountDate()) &&
                         resultSet.getString(1).equals(itemDiscount.getSupplierID()) && resultSet.getInt(2) == itemDiscount.getItemID();
                 if (isDesired) {
                     itemDiscount.setDiscount(resultSet.getInt(1));
@@ -212,6 +212,6 @@ public class ItemDiscountDalController extends DalController<ItemDiscount> {
         } catch (SQLException ex) {
             throw new SQLException(ex.getMessage());
         }
-        return itemDiscount;
+        return isDesired ? itemDiscount : null;
     }
 }

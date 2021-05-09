@@ -142,13 +142,14 @@ public class DefectEntryDalController extends DalController<DefectEntry> {
 
     @Override
     public DefectEntry select(DefectEntry defectEntry) throws SQLException {
+        boolean isDesired = false;
         try (Connection conn = DriverManager.getConnection(connectionString)) {
             String query = "SELECT * FROM " + tableName;
             PreparedStatement stmt = conn.prepareStatement(query);
             ResultSet resultSet = stmt.executeQuery(query);
             while (resultSet.next())
             {
-                boolean isDesired = resultSet.getString(0).equals(defectEntry.getEntryDate()) &&
+                isDesired = resultSet.getString(0).equals(defectEntry.getEntryDate()) &&
                         resultSet.getInt(1) == defectEntry.getItemID();
                 if (isDesired) {
                     defectEntry.setLocation(resultSet.getString(1));
@@ -159,6 +160,6 @@ public class DefectEntryDalController extends DalController<DefectEntry> {
         } catch (SQLException ex) {
             throw new SQLException(ex.getMessage());
         }
-        return defectEntry;
+        return isDesired ? defectEntry : null;
     }
 }
