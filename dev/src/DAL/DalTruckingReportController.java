@@ -34,7 +34,7 @@ public class DalTruckingReportController extends DalController {
         int completed=0;
         if (truckingReport.isCompleted())
             completed=1;
-        Connection conn= DriverManager.getConnection("jdbc:sqlite:/D:\\Year2\\ניתוצ\\עבודה 2\\database.db");
+        Connection conn= DriverManager.getConnection(connection);
         //String query= "INSERT INTO "+tableName+"("+columnNames[0]+columnNames[1]+columnNames[2]+columnNames[3]
         //        +columnNames[4]+columnNames[5]+columnNames[6]+columnNames[7]+") VALUES (? ? ? ? ? ? ? ?)";
         String query="INSERT INTO "+tableName+" VALUES "+"(?,?,?,?,?,?,?,?)";
@@ -71,7 +71,7 @@ public class DalTruckingReportController extends DalController {
         int completed=0;
         if (truckingReport.isCompleted())
             completed=1;
-        Connection conn=DriverManager.getConnection("jdbc:sqlite:/D:\\Year2\\ניתוצ\\עבודה 2\\database.db");
+        Connection conn=DriverManager.getConnection(connection);
         String query="UPDATE "+tableName +" SET "+columnNames[1]+"=?,"+
                 columnNames[2]+"=?,"+columnNames[3]+"=?,"+columnNames[4]+"=?,"+columnNames[5]+"=?,"+columnNames[6]+"=?,"+
                 columnNames[7]+"=?  WHERE ("+columnNames[0]+"=?)";
@@ -101,7 +101,7 @@ public class DalTruckingReportController extends DalController {
     }
 
     public boolean delete(DalTruckingReport truckingReport) throws SQLException {
-        Connection conn=DriverManager.getConnection("jdbc:sqlite:/D:\\Year2\\ניתוצ\\עבודה 2\\database.db");
+        Connection conn=DriverManager.getConnection(connection);
         String query="DELETE FROM "+tableName+ " WHERE"+columnNames[0]+"=?";
         try {
             PreparedStatement st=conn.prepareStatement(query);
@@ -120,7 +120,7 @@ public class DalTruckingReportController extends DalController {
     public LinkedList<DalTruckingReport> load () throws SQLException// Select From DB
     {
         LinkedList<DalTruckingReport> reports=new LinkedList<>();
-        Connection conn=DriverManager.getConnection("jdbc:sqlite:/D:\\Year2\\ניתוצ\\עבודה 2\\database.db");
+        Connection conn=DriverManager.getConnection(connection);
         String query="SELECT * FROM "+tableName;
         try {
             PreparedStatement st=conn.prepareStatement(query);
@@ -145,7 +145,7 @@ public class DalTruckingReportController extends DalController {
         return reports;
     }
     public boolean createTable() throws SQLException {
-        Connection conn = DriverManager.getConnection("jdbc:sqlite:/D:\\Year2\\ניתוצ\\עבודה 2\\database.db");
+        Connection conn = DriverManager.getConnection(connection);
         String query = "CREATE TABLE IF NOT EXISTS TruckingReports("
                 +"ID INTEGER,"
                 +"leavingHour TEXT,"

@@ -25,7 +25,7 @@ public class DalItemsOnDFController extends DalController{
     public boolean insert(DalItemsOnDF dalItemsOnDF) throws SQLException {
         //TODO - change URL
         System.out.println("starting insert");
-        Connection conn= DriverManager.getConnection("jdbc:sqlite:/D:\\Year2\\ניתוצ\\עבודה 2\\database.db");
+        Connection conn= DriverManager.getConnection(connection);
         String query= "INSERT INTO "+tableName+" VALUES (?,?,?)";
         try{
             PreparedStatement st=conn.prepareStatement(query);
@@ -50,7 +50,7 @@ public class DalItemsOnDFController extends DalController{
     }
 
     public boolean update(DalItemsOnDF dalItemsOnDF) throws SQLException {
-        Connection conn=DriverManager.getConnection("jdbc:sqlite:/D:\\Year2\\ניתוצ\\עבודה 2\\database.db");
+        Connection conn=DriverManager.getConnection(connection);
         String query="UPDATE "+tableName+" SET "+columnNames[2]+"=? WHERE ("+columnNames[0]+"= ? AND"+columnNames[1]+"=?) ";
         try{
             PreparedStatement st=conn.prepareStatement(query);
@@ -69,7 +69,7 @@ public class DalItemsOnDFController extends DalController{
     }
 
     public boolean delete(DalItemsOnDF dalItemsOnDF) throws SQLException {
-        Connection conn=DriverManager.getConnection("jdbc:sqlite:/D:\\Year2\\ניתוצ\\עבודה 2\\database.db");
+        Connection conn=DriverManager.getConnection(connection);
         String query="DELETE FROM "+tableName+" WHERE "+columnNames[0]+"=? AND "+columnNames[1]+"=?";
         try {
             PreparedStatement st=conn.prepareStatement(query);
@@ -86,7 +86,7 @@ public class DalItemsOnDFController extends DalController{
     public LinkedList<DalItemsOnDF> load () throws SQLException// Select From DB
     {
         LinkedList<DalItemsOnDF> items = new LinkedList<>();
-        Connection conn = DriverManager.getConnection("jdbc:sqlite:/D:\\Year2\\ניתוצ\\עבודה 2\\database.db");
+        Connection conn = DriverManager.getConnection(connection);
         String query = "SELECT * FROM "+tableName;
         try {
             PreparedStatement st = conn.prepareStatement(query);
@@ -100,7 +100,7 @@ public class DalItemsOnDFController extends DalController{
         return items;
     }
     public boolean createTable() throws SQLException {
-        Connection conn = DriverManager.getConnection("jdbc:sqlite:/D:\\Year2\\ניתוצ\\עבודה 2\\database.db");
+        Connection conn = DriverManager.getConnection(connection);
         String query = "CREATE TABLE IF NOT EXISTS ItemsOnDFs("
                 +"DFID INTEGER,"
                 +"itemID INTEGER,"

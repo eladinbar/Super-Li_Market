@@ -25,7 +25,7 @@ public class DalTruckController extends DalController{
     public boolean insert(DalTruck dalTruck) throws SQLException {
         //TODO - change URL
         System.out.println("starting insert");
-        Connection conn= DriverManager.getConnection("jdbc:sqlite:/D:\\Year2\\ניתוצ\\עבודה 2\\database.db");
+        Connection conn= DriverManager.getConnection(connection);
         String query= "INSERT INTO "+tableName+" VALUES (?,?,?,?)";
         try{
             PreparedStatement st=conn.prepareStatement(query);
@@ -51,7 +51,7 @@ public class DalTruckController extends DalController{
     }
 
     public boolean update(DalTruck dalTruck) throws SQLException {
-        Connection conn=DriverManager.getConnection("jdbc:sqlite:/D:\\Year2\\ניתוצ\\עבודה 2\\database.db");
+        Connection conn=DriverManager.getConnection(connection);
         String query="UPDATE "+tableName+" SET "+columnNames[1]+"=?, "+columnNames[2]+"=?, "+columnNames[3]+"=? WHERE ("+columnNames[0]+"=?)";
         try{
             PreparedStatement st=conn.prepareStatement(query);
@@ -75,7 +75,7 @@ public class DalTruckController extends DalController{
     }
 
     public boolean delete(DalTruck dalTruck) throws SQLException {
-        Connection conn=DriverManager.getConnection("jdbc:sqlite:/D:\\Year2\\ניתוצ\\עבודה 2\\database.db");
+        Connection conn=DriverManager.getConnection(connection);
         String query="DELETE FROM "+tableName+" WHERE"+columnNames[0]+ "=? ";
         try {
             PreparedStatement st=conn.prepareStatement(query);
@@ -91,7 +91,7 @@ public class DalTruckController extends DalController{
     public LinkedList<DalTruck> load () throws SQLException// Select From DB
     {
         LinkedList<DalTruck> trucks = new LinkedList<>();
-        Connection conn = DriverManager.getConnection("jdbc:sqlite:/D:\\Year2\\ניתוצ\\עבודה 2\\database.db");
+        Connection conn = DriverManager.getConnection(connection);
         String query = "SELECT * FROM "+tableName;
         try {
             PreparedStatement st = conn.prepareStatement(query);
@@ -108,7 +108,7 @@ public class DalTruckController extends DalController{
     }
 
     public boolean createTable() throws SQLException {
-        Connection conn = DriverManager.getConnection("jdbc:sqlite:/D:\\Year2\\ניתוצ\\עבודה 2\\database.db");
+        Connection conn = DriverManager.getConnection(connection);
         String query = "CREATE TABLE IF NOT EXISTS Trucks("
                 +"licenseNumber TEXT,"
                 +"model TEXT,"

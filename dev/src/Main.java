@@ -12,16 +12,16 @@ import java.time.temporal.WeekFields;
 import java.util.LinkedList;
 import java.util.Locale;
 
+
+import Employees.presentation_layer.PresentationController;
+
 public class Main {
+    public Main() {
+    }
 
     public static void main(String[] args) {
-        try {
-            System.out.println("before\n");
-            DalTruckingReportController.getInstance().createTable();
-        }
-        catch (SQLException e){
-
-        }
-        System.out.println("After\n");
-        }
+        PresentationController presentationController = new PresentationController();
+        presentationController.start();
+    }
 }
+

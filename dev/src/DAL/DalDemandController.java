@@ -31,7 +31,7 @@ public class DalDemandController extends DalController{
     public boolean insert(DalDemand dalDemand) throws SQLException {
         //TODO - change URL
         System.out.println("starting insert");
-        Connection conn= DriverManager.getConnection("jdbc:sqlite:/D:\\Year2\\ניתוצ\\עבודה 2\\database.db");
+        Connection conn= DriverManager.getConnection(connection);
         String query= "INSERT INTO "+tableName+" VALUES (?,?,?)";
         try{
             PreparedStatement st=conn.prepareStatement(query);
@@ -56,7 +56,7 @@ public class DalDemandController extends DalController{
     }
 
     public boolean update(DalDemand dalDemand) throws SQLException {
-        Connection conn=DriverManager.getConnection("jdbc:sqlite:/D:\\Year2\\ניתוצ\\עבודה 2\\database.db");
+        Connection conn=DriverManager.getConnection(connection);
         String query="UPDATE "+tableName+" SET "+columnNames[1]+"=? WHERE "+columnNames[0]+"=? AND"+columnNames[2]+"=?";
         try{
             PreparedStatement st=conn.prepareStatement(query);
@@ -79,7 +79,7 @@ public class DalDemandController extends DalController{
 
     public boolean delete(DalDemand dalDemand) throws SQLException {
 
-        Connection conn=DriverManager.getConnection("jdbc:sqlite:/D:\\Year2\\ניתוצ\\עבודה 2\\database.db");
+        Connection conn=DriverManager.getConnection(connection);
         String query="DELETE FROM "+tableName+" WHERE ?=? AND ?=?";
         try {
             PreparedStatement st=conn.prepareStatement(query);
@@ -98,7 +98,7 @@ public class DalDemandController extends DalController{
     public LinkedList<DalDemand> load () throws SQLException// Select From DB
     {
         LinkedList<DalDemand> demands = new LinkedList<>();
-        Connection conn = DriverManager.getConnection("jdbc:sqlite:/D:\\Year2\\ניתוצ\\עבודה 2\\database.db");
+        Connection conn = DriverManager.getConnection(connection);
         String query = "SELECT * FROM "+tableName;
         try {
             PreparedStatement st = conn.prepareStatement(query);
@@ -115,7 +115,7 @@ public class DalDemandController extends DalController{
     }
 
     public boolean createTable() throws SQLException {
-        Connection conn = DriverManager.getConnection("jdbc:sqlite:/D:\\Year2\\ניתוצ\\עבודה 2\\database.db");
+        Connection conn = DriverManager.getConnection(connection);
         String query = "CREATE TABLE IF NOT EXISTS Demands("
                 +"itemID INTEGER,"
                 +"amount INTEGER,"

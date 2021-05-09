@@ -27,8 +27,7 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="05ca914f-9056-4de3-9869-7fdfaa880f2d" name="Default Changelist" comment="Singleton and delete methods fixed in all DallControllers">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    <list default="true" id="05ca914f-9056-4de3-9869-7fdfaa880f2d" name="Default Changelist" comment="merged DB with finished logics">
       <change beforePath="$PROJECT_DIR$/dev/src/DAL/DalDeliveryFormController.java" beforeDir="false" afterPath="$PROJECT_DIR$/dev/src/DAL/DalDeliveryFormController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/dev/src/DAL/DalDemandController.java" beforeDir="false" afterPath="$PROJECT_DIR$/dev/src/DAL/DalDemandController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/dev/src/DAL/DalDriverController.java" beforeDir="false" afterPath="$PROJECT_DIR$/dev/src/DAL/DalDriverController.java" afterDir="false" />
@@ -37,15 +36,6 @@
       <change beforePath="$PROJECT_DIR$/dev/src/DAL/DalSiteController.java" beforeDir="false" afterPath="$PROJECT_DIR$/dev/src/DAL/DalSiteController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/dev/src/DAL/DalTruckController.java" beforeDir="false" afterPath="$PROJECT_DIR$/dev/src/DAL/DalTruckController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/dev/src/DAL/DalTruckingReportController.java" beforeDir="false" afterPath="$PROJECT_DIR$/dev/src/DAL/DalTruckingReportController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dev/src/Employees/business_layer/Employee/EmployeeController.java" beforeDir="false" afterPath="$PROJECT_DIR$/dev/src/Employees/business_layer/Employee/EmployeeController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dev/src/Employees/business_layer/facade/EmployeeService.java" beforeDir="false" afterPath="$PROJECT_DIR$/dev/src/Employees/business_layer/facade/EmployeeService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dev/src/Trucking/Business_Layer_Trucking/Delivery/DeliveryController.java" beforeDir="false" afterPath="$PROJECT_DIR$/dev/src/Trucking/Business_Layer_Trucking/Delivery/DeliveryController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dev/src/Trucking/Business_Layer_Trucking/Delivery/DeliveryForm.java" beforeDir="false" afterPath="$PROJECT_DIR$/dev/src/Trucking/Business_Layer_Trucking/Delivery/DeliveryForm.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dev/src/Trucking/Business_Layer_Trucking/Delivery/TruckingReport.java" beforeDir="false" afterPath="$PROJECT_DIR$/dev/src/Trucking/Business_Layer_Trucking/Delivery/TruckingReport.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dev/src/Trucking/Business_Layer_Trucking/Facade/DeliveryService.java" beforeDir="false" afterPath="$PROJECT_DIR$/dev/src/Trucking/Business_Layer_Trucking/Facade/DeliveryService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dev/src/Trucking/Business_Layer_Trucking/Facade/FacadeService.java" beforeDir="false" afterPath="$PROJECT_DIR$/dev/src/Trucking/Business_Layer_Trucking/Facade/FacadeService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dev/src/Trucking/Business_Layer_Trucking/Resources/ResourcesController.java" beforeDir="false" afterPath="$PROJECT_DIR$/dev/src/Trucking/Business_Layer_Trucking/Resources/ResourcesController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dev/src/Trucking/Presentation_Layer_Trucking/Menu_Printer.java" beforeDir="false" afterPath="$PROJECT_DIR$/dev/src/Trucking/Presentation_Layer_Trucking/Menu_Printer.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -180,13 +170,6 @@
       <workItem from="1619330774077" duration="12857000" />
       <workItem from="1619792461374" duration="1895000" />
       <workItem from="1619794411025" duration="473000" />
-    </task>
-    <task id="LOCAL-00005" summary="skeleton has been fully completed, time to work :(">
-      <created>1617188946905</created>
-      <option name="number" value="00005" />
-      <option name="presentableId" value="LOCAL-00005" />
-      <option name="project" value="LOCAL" />
-      <updated>1617188946905</updated>
     </task>
     <task id="LOCAL-00006" summary="finished insert demand to report in menu printer">
       <created>1617290764997</created>
@@ -524,7 +507,14 @@
       <option name="project" value="LOCAL" />
       <updated>1620505069748</updated>
     </task>
-    <option name="localTasksCounter" value="54" />
+    <task id="LOCAL-00054" summary="merged DB with finished logics">
+      <created>1620595346070</created>
+      <option name="number" value="00054" />
+      <option name="presentableId" value="LOCAL-00054" />
+      <option name="project" value="LOCAL" />
+      <updated>1620595346070</updated>
+    </task>
+    <option name="localTasksCounter" value="55" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -543,7 +533,6 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="updateDeliveryForm has been added" />
     <MESSAGE value="menu printer has been updated, all exception catched" />
     <MESSAGE value="menu printer method has been updated" />
     <MESSAGE value="remove site from pool option added" />
@@ -568,7 +557,8 @@
     <MESSAGE value="completed field changed to int" />
     <MESSAGE value="TODO regard singleton added!" />
     <MESSAGE value="Singleton and delete methods fixed in all DallControllers" />
-    <option name="LAST_COMMIT_MESSAGE" value="Singleton and delete methods fixed in all DallControllers" />
+    <MESSAGE value="merged DB with finished logics" />
+    <option name="LAST_COMMIT_MESSAGE" value="merged DB with finished logics" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
