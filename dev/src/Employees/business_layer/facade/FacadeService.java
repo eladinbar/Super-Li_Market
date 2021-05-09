@@ -7,6 +7,8 @@ import Employees.business_layer.facade.facadeObject.FacadeConstraint;
 import Employees.business_layer.facade.facadeObject.FacadeEmployee;
 import Employees.business_layer.facade.facadeObject.FacadeShift;
 import Employees.business_layer.facade.facadeObject.FacadeWeeklyShiftSchedule;
+import Trucking.Business_Layer_Trucking.Resources.ResourcesController;
+import Trucking.Presentation_Layer_Trucking.Menu_Printer;
 
 import java.time.LocalDate;
 import java.util.HashMap;
@@ -147,6 +149,7 @@ public class FacadeService {
         employeeService.login ( "789000000", Role.humanResourcesManager );
         response = shiftService.createData ( );
         employeeService.logout ();
+        Menu_Printer.getInstance ().putInitialTestState ();
         return response;
     }
 }

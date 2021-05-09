@@ -15,6 +15,7 @@ import java.util.Map;
 
 public class ShiftController {
     private static ShiftController instance = null;
+    private boolean beginning = true;
 
     private HashMap<LocalDate, WeeklyShiftSchedule> shifts;
     EmployeeController employeeController;
@@ -31,7 +32,7 @@ public class ShiftController {
     }
 
     public WeeklyShiftSchedule getRecommendation(LocalDate startingDate) throws EmployeeException {
-        if (startingDate.isBefore ( LocalDate.now ( ) ))
+        if (!beginning && startingDate.isBefore ( LocalDate.now ( ) ))
             throw new EmployeeException ( "Starting date has already passed." );
         if (startingDate.getDayOfWeek ( ) != DayOfWeek.SUNDAY)
             throw new EmployeeException ( "Starting date is not Sunday." );
@@ -195,8 +196,16 @@ public class ShiftController {
             TemporalField field = WeekFields.of ( Locale.US ).dayOfWeek ( );
             sunday = temp.with ( field, 1 );
         }
+        temp = LocalDate.now ();
+        if(temp.getDayOfWeek ().equals ( DayOfWeek.SUNDAY ))
+            shifts.put ( temp, getRecommendation ( temp ) );
+        else{
+            temp = temp.minusDays ( temp.getDayOfWeek ().getValue () );
+            shifts.put ( temp, getRecommendation ( temp ) );
+        }
         shifts.put (sunday, getRecommendation ( sunday ));
         shifts.put (sunday.plusDays ( 7 ), getRecommendation ( sunday.plusDays ( 7 ) ));
+        beginning = false;
     }
 
     private void createShiftTypes() throws EmployeeException {
@@ -216,7 +225,7 @@ public class ShiftController {
          LocalDate date = LocalDate.now ();
          HashMap<LocalDate, HashMap<Integer, List<String>>> daysAndDrivers = new HashMap<> (  );
          WeeklyShiftSchedule cur;
-         while (isExist ( date )){
+         while (isExist (date )){
              cur = getWeeklyShiftSchedule ( date );
              cur.getDaysAndDrivers(date, daysAndDrivers);
              date = date.plusDays ( 7-(date.getDayOfWeek ().getValue () % 7) );

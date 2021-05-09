@@ -1,11 +1,7 @@
 package Trucking.Business_Layer_Trucking.Delivery;
 
 
-import DAL.*;
-import Trucking.Business_Layer_Trucking.Resources.Truck;
-
 import javax.management.openmbean.KeyAlreadyExistsException;
-import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.*;
@@ -57,10 +53,11 @@ public class DeliveryController {
         this.lastItemId = 1;
     }
 
-    public int createNewTruckingReport() throws SQLException {
+    public int createNewTruckingReport() {
 
         currDF = new LinkedList<>();
         currTR = new TruckingReport(lastReportID);
+        currTR.setID(lastReportID);
         lastReportID++;
         return lastReportID - 1;
 
@@ -72,7 +69,7 @@ public class DeliveryController {
      * @param date
      * @throws IllegalArgumentException
      */
-    public void updateCurrTR_Date(LocalDate date) throws IllegalArgumentException, SQLException {
+    public void updateCurrTR_Date(LocalDate date) throws IllegalArgumentException {
         LocalDate now = LocalDate.now();
         if (date.compareTo(now) != -1) {
             currTR.setDate(date);
@@ -88,7 +85,7 @@ public class DeliveryController {
      * @param leavingHour
      * @throws IllegalArgumentException
      */
-    public void updateCurrTR_LeavingHour(LocalTime leavingHour) throws IllegalArgumentException, SQLException {
+    public void updateCurrTR_LeavingHour(LocalTime leavingHour) throws IllegalArgumentException {
         LocalTime now = LocalTime.now();
         if (leavingHour.compareTo(now) != -1) {
             currTR.setLeavingHour(leavingHour);
@@ -103,7 +100,7 @@ public class DeliveryController {
      *
      * @param number
      */
-    public void updateCurrTR_TruckNumber(String number) throws SQLException {//facade service need to check availability
+    public void updateCurrTR_TruckNumber(String number) {//facade service need to check availability
         currTR.setTruckNumber(number);
     }
 
@@ -112,7 +109,7 @@ public class DeliveryController {
      *
      * @param id
      */
-    public void updateCurrTR_DriverID(String id) throws SQLException {//facade service need to check availability
+    public void updateCurrTR_DriverID(String id) {//facade service need to check availability
         currTR.setDriverID(id);
     }
 
@@ -126,7 +123,7 @@ public class DeliveryController {
         try {
             sites.get(origin);
             currTR.setOrigin(origin);
-        } catch (IllegalArgumentException | SQLException exception) {
+        } catch (IllegalArgumentException exception) {
             throw new IllegalArgumentException("SiteID does not exist");
         }
     }
@@ -149,11 +146,11 @@ public class DeliveryController {
      * @param tr_id
      * @throws NoSuchElementException
      */
-    public void updateCurrTR_TrReplaced(int tr_id) throws NoSuchElementException, SQLException {
+    public void updateCurrTR_TrReplaced(int tr_id) throws NoSuchElementException {
         if (oldTruckingReports.containsKey(tr_id)) {
-            currTR.setTRReplace(tr_id);
+            currTR.setTRReplace(oldTruckingReports.get(tr_id));
         } else if (activeTruckingReports.containsKey(tr_id)) {
-            currTR.setTRReplace(tr_id);
+            currTR.setTRReplace(activeTruckingReports.get(tr_id));
         } else throw new NoSuchElementException("TR was not found");
     }
 
@@ -166,7 +163,7 @@ public class DeliveryController {
      * @param siteID
      * @throws IllegalStateException
      */
-    public void addItemToDeliveryForm(Demand demand, int amount, boolean ignore, int siteID) throws IllegalStateException, SQLException {
+    public void addItemToDeliveryForm(Demand demand, int amount, boolean ignore, int siteID) throws IllegalStateException {
         if (currDF.isEmpty())//if list is empty
         {
             HashMap<Integer, Integer> itemsOnDF = new HashMap<>();
@@ -218,12 +215,12 @@ public class DeliveryController {
     }
 
 
-    public void updateCurrTR_ID(int id) throws SQLException {
+    public void updateCurrTR_ID(int id) {
         currTR.setID(id);
     }
 
 
-    public boolean addSite(String city, int deliveryArea, String phoneNumber, String contactName, String name) throws SQLException {
+    public boolean addSite(String city, int deliveryArea, String phoneNumber, String contactName, String name) {
 
         Site newSite = new Site(lastSiteID, city, deliveryArea, phoneNumber, contactName, name);
 
@@ -234,13 +231,11 @@ public class DeliveryController {
 
     }
 
-    public boolean removeSite(int siteID) throws NoSuchElementException, IllegalStateException, SQLException {
+    public boolean removeSite(int siteID) throws NoSuchElementException, IllegalStateException {
         if (!sites.containsKey(siteID)) {
             throw new NoSuchElementException("SiteID does not exist");
         } else {
-
-            Site s = sites.remove(siteID);
-            DalSiteController.getInstance().delete(new DalSite(s.getSiteID(),s.getName(),s.getCity(),s.getDeliveryArea(),s.getContactName(),s.getPhoneNumber()));
+            sites.remove(siteID);
             for (Map.Entry<Integer, Item> entry : items.entrySet()) {
                 if (entry.getValue().getOriginSiteId() == siteID) {
                     removeItemFromPool(entry.getKey());
@@ -252,7 +247,7 @@ public class DeliveryController {
     }
 
 
-    public void chooseLeavingHour(LocalTime leavingHour) throws IllegalArgumentException, SQLException {
+    public void chooseLeavingHour(LocalTime leavingHour) throws IllegalArgumentException {
 
         currTR.setLeavingHour(leavingHour);
 
@@ -261,22 +256,10 @@ public class DeliveryController {
     /**
      * Moving a TR that has been done from the active to the non active (old) zone.
      */
-    public void saveReport() throws SQLException {
+    public void saveReport() {
         removeCurrTakenDemandsFromTotal();
         activeTruckingReports.put(currTR.getID(), currTR);
         activeDeliveryForms.put(currTR.getID(), currDF);
-        for (DeliveryForm df: currDF){
-            HashMap<Integer,Integer> items =  df.getItems();
-            for(Map.Entry<Integer,Integer> entry: items.entrySet()) {
-                DalItemsOnDFController.getInstance().insert(new DalItemsOnDF(df.getID(), entry.getKey(),entry.getValue()));
-            }
-            DalDeliveryFormController.getInstance().insert(new DalDeliveryForm(df.getID(),df.getOrigin(),
-                    df.getDestination(),df.isCompleted(),df.getLeavingWeight(),df.getTrID()));
-
-        }
-        DalTruckingReportController.getInstance().insert(new DalTruckingReport(currTR.getID(),currTR.getLeavingHour(),
-                currTR.getDate(),currTR.getTruckNumber(),currTR.getDriverID(),currTR.getOrigin(),currTR.isCompleted(),currTR.getTRReplace()));
-
 
     }
 
@@ -322,7 +305,7 @@ public class DeliveryController {
      * @param site
      * @throws NoSuchElementException
      */
-    public void removeDestination(int site) throws NoSuchElementException, SQLException {
+    public void removeDestination(int site) throws NoSuchElementException {
         LinkedList<DeliveryForm> toRemove = new LinkedList();
         if (!currTR.getDestinations().contains(site)) {
             throw new NoSuchElementException("Site does not exist");
@@ -367,18 +350,15 @@ public class DeliveryController {
     /**
      * @param demand- says what item to remove,in which amount,from which site.
      */
-    public void removeItemFromReport(Demand demand) throws SQLException {
+    public void removeItemFromReport(Demand demand) {
 
         for (DeliveryForm df : currDF) {
             if (df.getDestination() == demand.getSite() && df.getItems().containsKey(demand.getItemID())) {
-                if (demand.getAmount() >= df.getItems().get(demand.getItemID())) {
+                if (demand.getAmount() >= df.getItems().get(demand.getItemID()))
                     df.getItems().remove(demand.getItemID());
-                    DalItemsOnDFController.getInstance().delete(new DalItemsOnDF(df.getID(),demand.getItemID(),0));
-                }
                 else for (Map.Entry<Integer, Integer> entry : df.getItems().entrySet()) {
                     if (entry.getKey() == demand.getItemID()) {
                         entry.setValue(entry.getValue() - demand.getAmount());
-                        DalItemsOnDFController.getInstance().update(new DalItemsOnDF(df.getID(),entry.getKey(),entry.getValue()));
                     }
                 }
             }
@@ -386,7 +366,7 @@ public class DeliveryController {
         updateTruckReportDestinations(currTR.getID());
     }
 
-    public void removeItemFromPool(int item) throws NoSuchElementException, IllegalStateException, SQLException {
+    public void removeItemFromPool(int item) throws NoSuchElementException, IllegalStateException {
 
 
         if (!items.containsKey(item)) {
@@ -406,12 +386,11 @@ public class DeliveryController {
             if (d.getItemID() == item)
                 throw new IllegalStateException("Cant delete item when there is a demand with it");
         }
-        Item i = items.remove(item);
-        DalItemController.getInstance().delete(new DalItem(i.getID(),i.getWeight(),i.getName(),i.getOriginSiteId()));
+        items.remove(item);
     }
 
 
-    public void addItem(double weight, String name, int siteID) throws NoSuchElementException, KeyAlreadyExistsException, SQLException {
+    public void addItem(double weight, String name, int siteID) throws NoSuchElementException, KeyAlreadyExistsException {
         if (items.containsKey(lastItemId))
             throw new KeyAlreadyExistsException("ID already taken");
         else if (!sites.containsKey(siteID))
@@ -444,7 +423,7 @@ public class DeliveryController {
      * @return LinkedList of demands that are not included in the current TR
      * @throws NoSuchElementException
      */
-    public LinkedList<Demand> showDemands() throws NoSuchElementException, SQLException {
+    public LinkedList<Demand> showDemands() throws NoSuchElementException {
 
         if (!demands.isEmpty()) {
             LinkedList<Demand> result = new LinkedList<>();
@@ -505,7 +484,7 @@ public class DeliveryController {
      * @return LinkedList with items in the Current in-build trucking Report.
      * no special order is returned
      */
-    public LinkedList<Demand> getItemsOnTruck() throws SQLException {
+    public LinkedList<Demand> getItemsOnTruck() {
         LinkedList<Demand> result = new LinkedList<>();
         for (DeliveryForm df : currDF) {
             for (Map.Entry<Integer, Integer> entry : df.getItems().entrySet()) {
@@ -543,7 +522,7 @@ public class DeliveryController {
      * @param site
      * @param amount
      */
-    public void addDemandToSystem(int itemId, int site, int amount) throws SQLException {
+    public void addDemandToSystem(int itemId, int site, int amount) {
         if (!items.containsKey(itemId)) {
             throw new NoSuchElementException("Entered wrong item id");
         }
@@ -623,7 +602,7 @@ public class DeliveryController {
     }
 
 
-    public void updateDeliveryFormRealWeight(int trID, int dfID, int weight) throws SQLException {
+    public void updateDeliveryFormRealWeight(int trID, int dfID, int weight) {
         LinkedList<DeliveryForm> deliveryForms = activeDeliveryForms.get(trID);
         for (DeliveryForm df : deliveryForms) {
             if (df.getID() == dfID) {
@@ -652,7 +631,7 @@ public class DeliveryController {
         activeDeliveryForms.remove(getDeliveryForms(trID));
     }
 
-    public void archiveNotCompleted(int trID) throws SQLException {
+    public void archiveNotCompleted(int trID) {
         TruckingReport truckReport = getTruckReport(trID);
         int newTrID = createNewTruckingReport();
         currTR.setDate(truckReport.getDate());
@@ -661,16 +640,14 @@ public class DeliveryController {
         currTR.setDriverID(truckReport.getDriverID());
         currTR.setOrigin(truckReport.getOrigin());
         currTR.setDestinations(truckReport.getDestinations());
-        currTR.setTRReplace(truckReport.getID());
+        currTR.setTRReplace(truckReport);
         // removing all Delivery forms
         LinkedList<DeliveryForm> oldDfs = activeDeliveryForms.get(truckReport.getID());
 
         for (DeliveryForm df : oldDfs) {
             DeliveryForm nd = new DeliveryForm(df);
-            nd.setIDWithoutSave(lastDeliveryForms);
+            nd.setID(lastDeliveryForms);
             lastDeliveryForms++;
-            DalDeliveryFormController.getInstance().insert(new DalDeliveryForm(nd.getID(),nd.getOrigin(),
-                    nd.getDestination(),nd.isCompleted(),nd.getLeavingWeight(),nd.getTrID()));
             currDF.add(nd);
         }
         activeDeliveryForms.remove(truckReport.getID());
@@ -686,7 +663,7 @@ public class DeliveryController {
         return sites.get(siteID).getDeliveryArea();
     }
 
-    public void removeSiteFromTruckReport(int siteID, int trID) throws NoSuchElementException, SQLException {
+    public void removeSiteFromTruckReport(int siteID, int trID) throws NoSuchElementException {
         boolean removed = false;
         LinkedList<DeliveryForm> ldfs = new LinkedList<>(currDF);
         for (DeliveryForm df : ldfs) {
@@ -714,10 +691,10 @@ public class DeliveryController {
     }
 
     public TruckingReport getReplaceTruckingReport(int trID) {
-        if (currTR.getTRReplace() == trID)
+        if (currTR.getTRReplace().getID() == trID)
             return currTR;
         for (Map.Entry<Integer, TruckingReport> act : activeTruckingReports.entrySet()) {
-            if (act.getValue().getTRReplace() == trID) {
+            if (act.getValue().getTRReplace().getID() == trID) {
                 return act.getValue();
             }
         }
@@ -725,7 +702,7 @@ public class DeliveryController {
         return null;
     }
 
-    public boolean addDemandToTruckReport(int itemNumber, int amount, int siteID, int trID) throws IllegalStateException, SQLException {
+    public boolean addDemandToTruckReport(int itemNumber, int amount, int siteID, int trID) throws IllegalStateException {
         TruckingReport tr = activeTruckingReports.get(trID);
         LinkedList<DeliveryForm> ldfs = activeDeliveryForms.get(trID);
         boolean added = false;
@@ -755,13 +732,13 @@ public class DeliveryController {
         return added;
     }
 
-    public void replaceDriver(int trID, String driverID) throws SQLException {
+    public void replaceDriver(int trID, String driverID) {
         TruckingReport tr = activeTruckingReports.get(trID);
         tr.setDriverID(driverID);
 
     }
 
-    public LinkedList<Demand> getItemOnReport(int trID) throws SQLException {
+    public LinkedList<Demand> getItemOnReport(int trID) {
         LinkedList<DeliveryForm> ldfs = getDeliveryFormsFromOld(trID);
         LinkedList<Demand> result = new LinkedList<>();
         for (DeliveryForm df : ldfs) {
@@ -775,13 +752,13 @@ public class DeliveryController {
     }
 
     private LinkedList<DeliveryForm> getDeliveryFormsFromOld(int trID) {
-        if (currTR.getTRReplace() == trID)
+        if (currTR.getTRReplace().getID() == trID)
             return currDF;
         TruckingReport tr = getReplaceTruckingReport(trID);
         return activeDeliveryForms.get(tr.getID());
     }
 
-    public void removeItemFromTruckingReport(int trID, int itemID, int siteID) throws SQLException {
+    public void removeItemFromTruckingReport(int trID, int itemID, int siteID) {
 
         LinkedList<DeliveryForm> deliveryForms = getUncompletedDeliveryFormsFromOld(trID);
         int origin = items.get(itemID).getOriginSiteId();
@@ -801,7 +778,7 @@ public class DeliveryController {
         saveReport();
     }
 
-    public boolean continueAddDemandToTruckReport(int itemNumber, int amount, int siteID, int trId) throws SQLException {
+    public boolean continueAddDemandToTruckReport(int itemNumber, int amount, int siteID, int trId) {
         LinkedList<DeliveryForm> ldfs = activeDeliveryForms.get(trId);
         boolean added = false;
         int origin = items.get(itemNumber).getOriginSiteId();
@@ -829,13 +806,13 @@ public class DeliveryController {
         return true;
     }
 
-    public void chooseDateToCurrentTR(LocalDate chosen) throws SQLException {
-        if ((chosen.compareTo(LocalDate.now()) == 0) && currTR.getLeavingHour().isBefore(LocalTime.now()) || chosen.isBefore(LocalDate.now()))
+    public void chooseDateToCurrentTR(LocalDate chosen) {
+        if (chosen.isBefore(LocalDate.now()))
             throw new IllegalArgumentException("time inserted is invalid.");
         currTR.setDate(chosen);
     }
 
-    private void updateTruckReportDestinations(int trID) throws SQLException {
+    private void updateTruckReportDestinations(int trID) {
         boolean active = false;
         TruckingReport tr = currTR;
         LinkedList<Integer> newDestinations = new LinkedList<>();
@@ -855,11 +832,10 @@ public class DeliveryController {
     }
 
 
-    public void removeDemand(int itemID, int site) throws SQLException {
+    public void removeDemand(int itemID, int site) {
         for (Demand d : demands) {
             if (d.getSite() == site && d.getItemID() == itemID) {
                 demands.remove(d);
-                DalDemandController.getInstance().delete(new DalDemand(d.getItemID(),d.getAmount(),d.getSite()));
                 break;
             }
         }
@@ -869,7 +845,7 @@ public class DeliveryController {
         return items.get(itemID).getOriginSiteId();
     }
 
-    public LinkedList<Demand> getCurrentDemands() throws SQLException {
+    public LinkedList<Demand> getCurrentDemands() {
         LinkedList<Demand> result = new LinkedList<>();
         for (DeliveryForm df : currDF) {
             for (Map.Entry<Integer, Integer> entry : df.getItems().entrySet()) {
@@ -886,7 +862,7 @@ public class DeliveryController {
         activeDeliveryForms.put(currTR.getID(), currDF);
     }
 
-    public int moveDemandsFromCurrentToReport(int replaceId) throws SQLException {
+    public int moveDemandsFromCurrentToReport(int replaceId) {
 
         /*TruckingReport replace = getReplaceTruckingReport(replaceId);
         if (replace != null){
@@ -907,7 +883,7 @@ public class DeliveryController {
         }
         else*/
 
-        currTR.setTRReplace(replaceId);
+        currTR.setTRReplace(getTruckReport(replaceId));
         int output = currTR.getID();
         saveReport();
         return output;
@@ -921,7 +897,7 @@ public class DeliveryController {
      * @param df
      * @param rdf
      */
-    private void mergeDeliveryForms(DeliveryForm df, DeliveryForm rdf) throws SQLException {
+    private void mergeDeliveryForms(DeliveryForm df, DeliveryForm rdf) {
         if (!(rdf.getOrigin() == df.getOrigin() && rdf.getDestination() == df.getDestination())) {
             throw new InputMismatchException("delivery forms do not has same origin or destination");
         }
@@ -942,7 +918,7 @@ public class DeliveryController {
 
     }
 
-    private void removeCurrTakenDemandsFromTotal() throws SQLException {
+    private void removeCurrTakenDemandsFromTotal() {
         for (DeliveryForm deliveryForm : currDF) {
             if (!deliveryForm.isCompleted()) {
                 HashMap<Integer, Integer> items = deliveryForm.getItems();
@@ -964,16 +940,16 @@ public class DeliveryController {
 
     }
 
-    public void setNewTruckToTR(int tRid, String truckNumber) throws SQLException {
+    public void setNewTruckToTR(int tRid, String truckNumber) {
         getTruckReport(tRid).setTruckNumber(truckNumber);
     }
 
-    public void setNewDriverToTR(int tRid, String driverID) throws SQLException {
+    public void setNewDriverToTR(int tRid, String driverID) {
         getTruckReport(tRid).setDriverID(driverID);
     }
 
 
-    public void makeDeliveryFormUncompleted(int trID, int dfID) throws SQLException {
+    public void makeDeliveryFormUncompleted(int trID, int dfID) {
         LinkedList<DeliveryForm> deliveryForms = activeDeliveryForms.get(trID);
         for (DeliveryForm df : deliveryForms) {
             if (df.getID() == dfID) {
@@ -992,143 +968,12 @@ public class DeliveryController {
         return activeDeliveryForms.get(replace.getID());
     }
 
-    public void upload() throws SQLException { // TODO need to change new to singleton usage
-        DalItemController dalItemController = DalItemController.getInstance();
-        DalDemandController dalDemandController = DalDemandController.getInstance();
-        DalItemsOnDFController itemsOnDF = DalItemsOnDFController.getInstance();
-        DalSiteController dsc = DalSiteController.getInstance();
-        DalDeliveryFormController delivery = DalDeliveryFormController.getInstance();
-        DalTruckingReportController truckingReport = DalTruckingReportController.getInstance();
-        LinkedList<DalItem> dalItems = dalItemController.load();
-        lastItemId = 0;
-        for (DalItem item : dalItems) {                        // item list create
-            items.put(item.getID(), new Item(item));
-            lastItemId = Math.max(lastItemId, item.getID());
-        }
-        lastItemId ++;
-        LinkedList<DalSite> dalSites = dsc.load();
-        lastSiteID = 0;
-        for (DalSite site : dalSites) {                        // site list create
-            sites.put(site.getSiteID(), new Site(site));
-            lastSiteID = Math.max(site.getSiteID(), lastSiteID);
-        }
-        lastSiteID++;
-
-        LinkedList<DalDemand> dalDemands = dalDemandController.load();
-        for (DalDemand demand : dalDemands) {                 // demand list create
-            demands.add(new Demand(demand));
-
-        }
-        lastReportID = 0;
-        // sets the Trucking reports in old/ active as needed
-
-        LinkedList<DalTruckingReport> d_truckingReports = truckingReport.load();
-        for (DalTruckingReport dr : d_truckingReports) {
-            activeTruckingReports.put(dr.getID(), new TruckingReport(dr));
-            activeDeliveryForms.put(dr.getID(), new LinkedList<>());
-            lastReportID = Math.max(lastReportID, dr.getID());
-        }
-        lastReportID++;
-        fixActiveAndOldTruckingReports();
-        lastDeliveryForms = 0;
-        LinkedList<DalDeliveryForm> deliveryForms = delivery.load();
-        for (DalDeliveryForm df : deliveryForms) {
-            lastDeliveryForms = Math.max(lastDeliveryForms, df.getID());
-            DeliveryForm deliveryForm = new DeliveryForm(df);
-            if (activeTruckingReports.containsKey(deliveryForm.getTrID())) {
-                if (activeDeliveryForms.get(deliveryForm.getTrID()) == null)
-                    activeDeliveryForms.put(deliveryForm.getTrID(), new LinkedList<>());
-                activeDeliveryForms.get(deliveryForm.getTrID()).add(deliveryForm);
-            } else {
-                if (oldDeliveryForms.get(deliveryForm.getTrID()) == null)
-                    oldDeliveryForms.put(deliveryForm.getTrID(), new LinkedList<>());
-                oldDeliveryForms.get(deliveryForm.getTrID()).add(deliveryForm);
-            }
-            getTruckReport(deliveryForm.getTrID()).addDestination(deliveryForm.getDestination());
-        }
-        lastDeliveryForms++;
-        LinkedList<DalItemsOnDF> itemsOnDFS = itemsOnDF.load();
-        for (DalItemsOnDF iod : itemsOnDFS) {
-            DeliveryForm df = getDF(iod.getDFID());
-            df.addItem(iod.getItemID(), iod.getAmount());
-        }
-
-
-    }
-
-    private DeliveryForm getDF(int ID) {
-        for (Map.Entry<Integer, LinkedList<DeliveryForm>> entry : activeDeliveryForms.entrySet()) {
-            for (DeliveryForm df : entry.getValue()) {
-                if (df.getID() == ID) {
-                    return df;
-                }
-            }
-        }
-        return null;
-    }
-
-    private void fixActiveAndOldTruckingReports() {
-        HashMap<Integer, TruckingReport> ids = new HashMap<>();
+    public LinkedList<TruckingReport> getTodayReports() {
+        LinkedList<TruckingReport> result = new LinkedList<>();
         for (Map.Entry<Integer, TruckingReport> entry : activeTruckingReports.entrySet()) {
-            int id = entry.getValue().getTRReplace();
-            if (id != -1) {
-                if (!ids.containsKey(id))
-                    ids.put(id, getTruckReport(id));
-            }
-            if (entry.getValue().isCompleted()) {
-                id = entry.getValue().getID();
-                if (!ids.containsKey(id))
-                    ids.put(id, getTruckReport(id));
-            }
-        }
-        oldTruckingReports = ids;
-        for (Map.Entry<Integer, TruckingReport> entry : ids.entrySet()) {
-            activeTruckingReports.remove(entry.getKey());
-            oldDeliveryForms.put(entry.getKey(), new LinkedList<>());
-        }
-    }
-
-
-    public HashMap<String, HashMap<LocalDate, Integer>> getTruckConstraintsFromUpload() {
-        HashMap<String, HashMap<LocalDate, Integer>> result = new HashMap<>();
-        for (Map.Entry<Integer, TruckingReport> entry : activeTruckingReports.entrySet()) {
-            TruckingReport report = getTruckReport(entry.getKey());
-            String truckNumber = report.getTruckNumber();
-            if (result.get(truckNumber) == null)  // checks if already exist for the specific truck
-            {
-                result.put(truckNumber, new HashMap<>());
-            }
-            LocalDate date = report.getDate();
-            int shift = turnTimeToShift(report.getLeavingHour());
-            if (result.get(truckNumber).get(date) == null) {
-                result.get(truckNumber).put(date, shift);
-            } else result.get(truckNumber).put(date, 2);
+            if (entry.getValue().equals(LocalDate.now()))
+                result.add(entry.getValue());
         }
         return result;
-    }
-
-    public HashMap<String, HashMap<LocalDate, Integer>> getDriverConstraintsFromUpload() {
-        HashMap<String, HashMap<LocalDate, Integer>> result = new HashMap<>();
-        for (Map.Entry<Integer, TruckingReport> entry : activeTruckingReports.entrySet()) {
-            TruckingReport report = getTruckReport(entry.getKey());
-            String driverID = report.getDriverID();
-            if (result.get(driverID) == null)  // checks if already exist for the specific truck
-            {
-                result.put(driverID, new HashMap<>());
-            }
-            LocalDate date = report.getDate();
-            int shift = turnTimeToShift(report.getLeavingHour());
-            if (result.get(driverID).get(date) == null) {
-                result.get(driverID).put(date, shift);
-            } else result.get(driverID).put(date, 2);
-        }
-        return result;
-    }
-
-    private int turnTimeToShift(LocalTime shift) {
-        if (shift.isBefore(LocalTime.of(14, 0)))
-            return 0;
-        else
-            return 1;
     }
 }

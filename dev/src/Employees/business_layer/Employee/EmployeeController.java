@@ -134,6 +134,8 @@ public class EmployeeController {
         if (!loggedIn.isEmployed ( )) {
             throw new EmployeeException ( "The employee is not employed " );
         }
+        if(date.isBefore ( LocalDate.now () ))
+            throw new EmployeeException ( "date has already passed." );
         String reason = loggedIn.getConstraints ( ).get ( date ).getReason ( );
         loggedIn.deleteConstraint ( date, shift );
         if (loggedIn.getRole ( ).equals ( Role.driverC ) || loggedIn.getRole ( ).equals ( Role.driverC1 )) {
@@ -174,6 +176,8 @@ public class EmployeeController {
         if(employees.containsKey(e.getID())){
             throw new EmployeeException("Employee already added to the system");
         }
+        if(e.getTransactionDate ().isAfter ( LocalDate.now () ))
+            throw new EmployeeException ( "transaction date nust be before today." );
        TermsOfEmployment terms = creatTermsOfEmployment ( e.getFacadeTermsOfEmployment () );
        BankAccountInfo bank = createAccount ( e.getFacadeBankAccountInfo () );
        if(!validId(e.getID())){throw new EmployeeException("An invalid ID was entered ");}
@@ -184,7 +188,7 @@ public class EmployeeController {
 
     public Employee addDriver(FacadeEmployee e, String name) throws EmployeeException, SQLException {
         Employee driver = addEmployee ( e );
-        ResourcesController.getInstance ().addDriver ( e.getID (), name, Driver.License.valueOf ( (e.getRole ().equals ( "driverC" )) ? "120000" : "200000" ) );
+        ResourcesController.getInstance ().addDriver ( e.getID (), name, Driver.License.valueOf ( (e.getRole ().equals ( "driverC" )) ? "C" : "C1" ) );
         return driver;
     }
 
@@ -407,23 +411,27 @@ public class EmployeeController {
 
     private void creatDriverC() throws EmployeeException {
         int accountNum = 589, bankBranch=27, salary=6000, educationFund=1000, sickDays=21, daysOff=15;
+        String[] names = {"Meni", "Avi", "Ronen"};
         String bankName = "Diskont";
         for(int i=0; i<3; i++){
             BankAccountInfo employeeAccountInfo = new BankAccountInfo(accountNum+i, bankBranch, bankName);
             TermsOfEmployment termsOfEmployment = new TermsOfEmployment(salary+1, educationFund,sickDays, daysOff );
-            Employee storeKeeper = new Employee("driverC", "04444444"+i, termsOfEmployment, LocalDate.now(), employeeAccountInfo);
-            addEmplForExistingData(storeKeeper);
+            Employee driverC = new Employee("driverC", "04444444"+i, termsOfEmployment, LocalDate.now(), employeeAccountInfo);
+            addEmplForExistingData(driverC);
+            ResourcesController.getInstance ().addDriver ( driverC.getID (), names[i], Driver.License.C );
         }
     }
 
     private void creatDriverC1() throws EmployeeException {
         int accountNum = 663, bankBranch=54, salary=7000, educationFund=1000, sickDays=21, daysOff=15;
+        String[] names = {"Moshe", "Rami", "Yossef"};
         String bankName = "Diskont";
         for(int i=0; i<3; i++){
             BankAccountInfo employeeAccountInfo = new BankAccountInfo(accountNum+i, bankBranch, bankName);
             TermsOfEmployment termsOfEmployment = new TermsOfEmployment(salary+1, educationFund,sickDays, daysOff );
-            Employee storeKeeper = new Employee("driverC1", "05555555"+i, termsOfEmployment, LocalDate.now(), employeeAccountInfo);
-            addEmplForExistingData(storeKeeper);
+            Employee driverC1 = new Employee("driverC1", "05555555"+i, termsOfEmployment, LocalDate.now(), employeeAccountInfo);
+            addEmplForExistingData(driverC1);
+            ResourcesController.getInstance ().addDriver ( driverC1.getID (), names[i], Driver.License.C1 );
         }
     }
 
