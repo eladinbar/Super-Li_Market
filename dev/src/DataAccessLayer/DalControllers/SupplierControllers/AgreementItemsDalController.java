@@ -2,15 +2,10 @@ package DataAccessLayer.DalControllers.SupplierControllers;
 
 import DataAccessLayer.DalControllers.DalController;
 import DataAccessLayer.DalControllers.InventoryControllers.ItemDalController;
-import DataAccessLayer.DalObjects.InventoryObjects.Category;
-import DataAccessLayer.DalObjects.InventoryObjects.CategoryDiscount;
 import DataAccessLayer.DalObjects.InventoryObjects.Item;
 import DataAccessLayer.DalObjects.SupplierObjects.AgreementItems;
-import DataAccessLayer.DalObjects.SupplierObjects.SupplierCard;
 
 import java.sql.*;
-
-import static DataAccessLayer.DalControllers.SupplierControllers.SupplierCardDalController.SUPPLIER_CARD_TABLE_NAME;
 
 public class AgreementItemsDalController extends DalController<AgreementItems> {
     private static AgreementItemsDalController instance = null;
@@ -101,14 +96,15 @@ public class AgreementItemsDalController extends DalController<AgreementItems> {
     }
 
     @Override
-    public AgreementItems select(AgreementItems agreementItem) throws SQLException {
+    public boolean select(AgreementItems agreementItem) throws SQLException {
+        boolean isDesired = false;
         try (Connection conn = DriverManager.getConnection(connectionString)) {
             String query = "SELECT * FROM " + tableName;
             PreparedStatement stmt = conn.prepareStatement(query);
             ResultSet resultSet = stmt.executeQuery(query);
             while (resultSet.next())
             {
-                boolean isDesired = resultSet.getString(0).equals(agreementItem.getProductId());
+                isDesired = resultSet.getInt(0) == agreementItem.getProductId();
                 if (isDesired) {
                     agreementItem.setProductCompId(resultSet.getInt(1));
                     agreementItem.setPrice(resultSet.getInt(2));
@@ -118,6 +114,6 @@ public class AgreementItemsDalController extends DalController<AgreementItems> {
         } catch (SQLException ex) {
             throw new SQLException(ex.getMessage());
         }
-        return agreementItem;
+        return isDesired;
     }
 }

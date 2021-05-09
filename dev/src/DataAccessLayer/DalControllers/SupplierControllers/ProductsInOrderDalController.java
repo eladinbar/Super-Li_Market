@@ -3,9 +3,6 @@ package DataAccessLayer.DalControllers.SupplierControllers;
 import DataAccessLayer.DalControllers.DalController;
 import DataAccessLayer.DalControllers.InventoryControllers.ItemDalController;
 import DataAccessLayer.DalObjects.InventoryObjects.Item;
-import DataAccessLayer.DalObjects.SupplierObjects.AgreementItems;
-import DataAccessLayer.DalObjects.SupplierObjects.Order;
-import DataAccessLayer.DalObjects.SupplierObjects.PersonCard;
 import DataAccessLayer.DalObjects.SupplierObjects.ProductsInOrder;
 
 import java.sql.*;
@@ -96,14 +93,15 @@ public class ProductsInOrderDalController extends DalController<ProductsInOrder>
     }
 
     @Override
-    public ProductsInOrder select(ProductsInOrder productInOrder) throws SQLException {
+    public boolean select(ProductsInOrder productInOrder) throws SQLException {
+        boolean isDesired = false;
         try (Connection conn = DriverManager.getConnection(connectionString)) {
             String query = "SELECT * FROM " + tableName;
             PreparedStatement stmt = conn.prepareStatement(query);
             ResultSet resultSet = stmt.executeQuery(query);
             while (resultSet.next())
             {
-                boolean isDesired = resultSet.getString(0).equals(productInOrder.getProductId());
+                isDesired = resultSet.getInt(0) == productInOrder.getProductId();
                 if (isDesired) {
                     productInOrder.setAmount(resultSet.getInt(1));
                     break; //Desired category discount found
@@ -112,6 +110,6 @@ public class ProductsInOrderDalController extends DalController<ProductsInOrder>
         } catch (SQLException ex) {
             throw new SQLException(ex.getMessage());
         }
-        return productInOrder;
+        return isDesired;
     }
 }

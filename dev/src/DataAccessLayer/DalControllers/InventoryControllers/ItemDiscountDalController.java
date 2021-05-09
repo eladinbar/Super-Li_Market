@@ -193,7 +193,7 @@ public class ItemDiscountDalController extends DalController<ItemDiscount> {
     }
 
     @Override
-    public ItemDiscount select(ItemDiscount itemDiscount) throws SQLException {
+    public boolean select(ItemDiscount itemDiscount) throws SQLException {
         boolean isDesired = false;
         try (Connection conn = DriverManager.getConnection(connectionString)) {
             String query = "SELECT * FROM " + tableName;
@@ -212,6 +212,6 @@ public class ItemDiscountDalController extends DalController<ItemDiscount> {
         } catch (SQLException ex) {
             throw new SQLException(ex.getMessage());
         }
-        return isDesired ? itemDiscount : null;
+        return isDesired;
     }
 }

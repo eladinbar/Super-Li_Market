@@ -1,8 +1,6 @@
 package DataAccessLayer.DalControllers.SupplierControllers;
 
 import DataAccessLayer.DalControllers.DalController;
-import DataAccessLayer.DalControllers.InventoryControllers.ItemDalController;
-import DataAccessLayer.DalObjects.InventoryObjects.Item;
 import DataAccessLayer.DalObjects.SupplierObjects.*;
 
 import java.sql.*;
@@ -100,14 +98,15 @@ public class SupplierCardDalController extends DalController<SupplierCard> {
     }
 
     @Override
-    public SupplierCard select(SupplierCard supplierCard) throws SQLException {
+    public boolean select(SupplierCard supplierCard) throws SQLException {
+        boolean isDesired = false;
         try (Connection conn = DriverManager.getConnection(connectionString)) {
             String query = "SELECT * FROM " + tableName;
             PreparedStatement stmt = conn.prepareStatement(query);
             ResultSet resultSet = stmt.executeQuery(query);
             while (resultSet.next())
             {
-                boolean isDesired = resultSet.getString(0).equals(supplierCard.getSupplierId());
+                isDesired = resultSet.getString(0).equals(supplierCard.getSupplierId());
                 if (isDesired) {
                     supplierCard.setCompanyNumber(resultSet.getInt(1));
                     supplierCard.setPermanentDays(resultSet.getInt(2));
@@ -119,6 +118,6 @@ public class SupplierCardDalController extends DalController<SupplierCard> {
         } catch (SQLException ex) {
             throw new SQLException(ex.getMessage());
         }
-        return supplierCard;
+        return isDesired;
     }
 }

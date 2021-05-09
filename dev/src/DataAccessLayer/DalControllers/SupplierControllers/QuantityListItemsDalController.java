@@ -3,8 +3,6 @@ package DataAccessLayer.DalControllers.SupplierControllers;
 import DataAccessLayer.DalControllers.DalController;
 import DataAccessLayer.DalControllers.InventoryControllers.ItemDalController;
 import DataAccessLayer.DalObjects.InventoryObjects.Item;
-import DataAccessLayer.DalObjects.SupplierObjects.AgreementItems;
-import DataAccessLayer.DalObjects.SupplierObjects.Order;
 import DataAccessLayer.DalObjects.SupplierObjects.ProductsInOrder;
 import DataAccessLayer.DalObjects.SupplierObjects.QuantityListItems;
 
@@ -99,14 +97,15 @@ public class QuantityListItemsDalController extends DalController<QuantityListIt
     }
 
     @Override
-    public QuantityListItems select(QuantityListItems quantityListItem) throws SQLException {
+    public boolean select(QuantityListItems quantityListItem) throws SQLException {
+        boolean isDesired = false;
         try (Connection conn = DriverManager.getConnection(connectionString)) {
             String query = "SELECT * FROM " + tableName;
             PreparedStatement stmt = conn.prepareStatement(query);
             ResultSet resultSet = stmt.executeQuery(query);
             while (resultSet.next())
             {
-                boolean isDesired = resultSet.getString(0).equals(quantityListItem.getProductId());
+                isDesired = resultSet.getInt(0) == quantityListItem.getProductId();
                 if (isDesired) {
                     quantityListItem.setAmount(resultSet.getInt(1));
                     quantityListItem.setDiscount(resultSet.getInt(2));
@@ -116,6 +115,6 @@ public class QuantityListItemsDalController extends DalController<QuantityListIt
         } catch (SQLException ex) {
             throw new SQLException(ex.getMessage());
         }
-        return quantityListItem;
+        return isDesired;
     }
 }
