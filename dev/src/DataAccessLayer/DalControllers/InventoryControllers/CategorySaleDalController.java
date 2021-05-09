@@ -126,7 +126,7 @@ public class CategorySaleDalController extends DalController<CategorySale> {
     }
 
     @Override
-    public CategorySale select(CategorySale categorySale) throws SQLException {
+    public boolean select(CategorySale categorySale) throws SQLException {
         boolean isDesired = false;
         try (Connection conn = DriverManager.getConnection(connectionString)) {
             String query = "SELECT * FROM " + tableName;
@@ -146,6 +146,6 @@ public class CategorySaleDalController extends DalController<CategorySale> {
         } catch (SQLException ex) {
             throw new SQLException(ex.getMessage());
         }
-        return isDesired ? categorySale : null;
+        return isDesired;
     }
 }

@@ -1,7 +1,6 @@
 package DataAccessLayer.DalControllers.SupplierControllers;
 
 import DataAccessLayer.DalControllers.DalController;
-import DataAccessLayer.DalObjects.SupplierObjects.AgreementItems;
 import DataAccessLayer.DalObjects.SupplierObjects.PersonCard;
 import DataAccessLayer.DalObjects.SupplierObjects.SupplierCard;
 import DataAccessLayer.DalObjects.SupplierObjects.SupplierContactMembers;
@@ -82,7 +81,7 @@ public class SupplierContactMembersDalController extends DalController<SupplierC
     }
 
     @Override
-    public SupplierContactMembers select(SupplierContactMembers supplierContactMember) {
-        return supplierContactMember;
+    public boolean select(SupplierContactMembers supplierContactMember) {
+        return true;
     }
 }

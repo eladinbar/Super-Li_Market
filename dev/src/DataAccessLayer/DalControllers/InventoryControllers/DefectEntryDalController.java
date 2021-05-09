@@ -141,7 +141,7 @@ public class DefectEntryDalController extends DalController<DefectEntry> {
     }
 
     @Override
-    public DefectEntry select(DefectEntry defectEntry) throws SQLException {
+    public boolean select(DefectEntry defectEntry) throws SQLException {
         boolean isDesired = false;
         try (Connection conn = DriverManager.getConnection(connectionString)) {
             String query = "SELECT * FROM " + tableName;
@@ -160,6 +160,6 @@ public class DefectEntryDalController extends DalController<DefectEntry> {
         } catch (SQLException ex) {
             throw new SQLException(ex.getMessage());
         }
-        return isDesired ? defectEntry : null;
+        return isDesired;
     }
 }

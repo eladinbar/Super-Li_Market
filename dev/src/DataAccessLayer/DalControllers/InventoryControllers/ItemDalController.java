@@ -5,6 +5,7 @@ import DataAccessLayer.DalObjects.InventoryObjects.Category;
 import DataAccessLayer.DalObjects.InventoryObjects.Item;
 
 import java.sql.*;
+import java.util.List;
 
 import static DataAccessLayer.DalControllers.InventoryControllers.CategoryDalController.CATEGORY_TABLE_NAME;
 
@@ -156,7 +157,7 @@ public class ItemDalController extends DalController<Item> {
     }
 
     @Override
-    public Item select(Item item) throws SQLException {
+    public boolean select(Item item) throws SQLException {
         boolean isDesired = false;
         try (Connection conn = DriverManager.getConnection(connectionString)) {
             String query = "SELECT * FROM " + tableName;
@@ -182,6 +183,36 @@ public class ItemDalController extends DalController<Item> {
         } catch (SQLException ex) {
             throw new SQLException(ex.getMessage());
         }
-        return isDesired ? item : null;
+        return isDesired;
+    }
+
+    public boolean select(Item item, List<Item> items) throws SQLException {
+        boolean isDesired = false;
+        Item savedItem = new Item();
+        try (Connection conn = DriverManager.getConnection(connectionString)) {
+            String query = "SELECT * FROM " + tableName;
+            PreparedStatement stmt = conn.prepareStatement(query);
+            ResultSet resultSet = stmt.executeQuery(query);
+            while (resultSet.next())
+            {
+                isDesired = resultSet.getString(11).equals(item.getCategoryName());
+                if (isDesired) {
+                    savedItem.setName(resultSet.getString(1));
+                    savedItem.setCostPrice(resultSet.getDouble(2));
+                    savedItem.setSellingPrice(resultSet.getDouble(3));
+                    savedItem.setManufacturerID(resultSet.getInt(4));
+                    savedItem.setMinAmount(resultSet.getInt(5));
+                    savedItem.setShelfQuantity(resultSet.getInt(6));
+                    savedItem.setStorageQuantity(resultSet.getInt(7));
+                    savedItem.setShelfLocation(resultSet.getString(8));
+                    savedItem.setStorageLocation(resultSet.getString(9));
+                    savedItem.setCategoryName(resultSet.getString(10));
+                    items.add(savedItem);
+                }
+            }
+        } catch (SQLException ex) {
+            throw new SQLException(ex.getMessage());
+        }
+        return isDesired;
     }
 }

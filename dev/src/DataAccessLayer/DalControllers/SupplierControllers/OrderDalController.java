@@ -1,10 +1,6 @@
 package DataAccessLayer.DalControllers.SupplierControllers;
 
 import DataAccessLayer.DalControllers.DalController;
-import DataAccessLayer.DalControllers.InventoryControllers.ItemDalController;
-import DataAccessLayer.DalObjects.InventoryObjects.Category;
-import DataAccessLayer.DalObjects.InventoryObjects.Item;
-import DataAccessLayer.DalObjects.SupplierObjects.AgreementItems;
 import DataAccessLayer.DalObjects.SupplierObjects.Order;
 
 import java.sql.*;
@@ -97,14 +93,15 @@ public class OrderDalController extends DalController<Order> {
     }
 
     @Override
-    public Order select(Order order) throws SQLException {
+    public boolean select(Order order) throws SQLException {
+        boolean isDesired = false;
         try (Connection conn = DriverManager.getConnection(connectionString)) {
             String query = "SELECT * FROM " + tableName;
             PreparedStatement stmt = conn.prepareStatement(query);
             ResultSet resultSet = stmt.executeQuery(query);
             while (resultSet.next())
             {
-                boolean isDesired = resultSet.getString(0).equals(order.getId());
+                isDesired = resultSet.getString(0).equals(order.getId());
                 if (isDesired) {
                     order.setDate(resultSet.getString(1));
                     order.setDelivered(resultSet.getInt(2));
@@ -114,6 +111,6 @@ public class OrderDalController extends DalController<Order> {
         } catch (SQLException ex) {
             throw new SQLException(ex.getMessage());
         }
-        return order;
+        return isDesired;
     }
 }

@@ -3,6 +3,7 @@ package DataAccessLayer.DalControllers;
 import DataAccessLayer.DalObjects.DalObject;
 
 import java.sql.SQLException;
+import java.util.List;
 
 /** <summary>
 An abstract class used as the basis to form connections with the database for reading and writing purposes.
@@ -75,6 +76,18 @@ public abstract class DalController<T extends DalObject<T>>{
     A select command function to extract an object from database into RAM.
     </summary>
      <param name="dalObject">The object to select from the database.</param>
-     <returns>Returns a DalObject that extends DalObject<T>.</returns> */
-    public abstract T select(T dalObject) throws SQLException;
+     <returns>Returns a DalObject that extends DalObject<T>.</returns>
+     * @return*/
+    public abstract boolean select(T dalObject) throws SQLException;
+
+    /** <summary>
+     A select command function to extract an object from database into RAM.
+     </summary>
+     <param name="dalObject">The object with the key to be used to select with.</param>
+     <param name="dalObjects">The objects to select from the database.</param>
+     <returns>Returns a DalObject that extends DalObject<T>.</returns>
+     * @return*/
+    public boolean select(T dalObject, List<T> dalObjects) throws SQLException {
+         return false;
+    }
 }

@@ -1,8 +1,6 @@
 package DataAccessLayer.DalControllers.SupplierControllers;
 
 import DataAccessLayer.DalControllers.DalController;
-import DataAccessLayer.DalObjects.SupplierObjects.AgreementItems;
-import DataAccessLayer.DalObjects.SupplierObjects.Order;
 import DataAccessLayer.DalObjects.SupplierObjects.PersonCard;
 
 import java.sql.*;
@@ -101,14 +99,15 @@ public class PersonCardDalController extends DalController<PersonCard> {
     }
 
     @Override
-    public PersonCard select(PersonCard personCard) throws SQLException {
+    public boolean select(PersonCard personCard) throws SQLException {
+        boolean isDesired = false;
         try (Connection conn = DriverManager.getConnection(connectionString)) {
             String query = "SELECT * FROM " + tableName;
             PreparedStatement stmt = conn.prepareStatement(query);
             ResultSet resultSet = stmt.executeQuery(query);
             while (resultSet.next())
             {
-                boolean isDesired = resultSet.getString(0).equals(personCard.getId());
+                isDesired = resultSet.getString(0).equals(personCard.getId());
                 if (isDesired) {
                     personCard.setFirstName(resultSet.getString(1));
                     personCard.setLastName(resultSet.getString(2));
@@ -120,6 +119,6 @@ public class PersonCardDalController extends DalController<PersonCard> {
         } catch (SQLException ex) {
             throw new SQLException(ex.getMessage());
         }
-        return personCard;
+        return isDesired;
     }
 }
