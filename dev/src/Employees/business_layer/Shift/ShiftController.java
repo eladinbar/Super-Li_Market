@@ -101,7 +101,7 @@ public class ShiftController {
     }
 
     public WeeklyShiftSchedule createEmptyWeeklyShiftSchedule(LocalDate startingDate) throws EmployeeException {
-        if(startingDate.isBefore ( LocalDate.now () ))
+        if(!beginning && startingDate.isBefore ( LocalDate.now () ))
             throw new EmployeeException ( "starting day has already passed." );
         if(startingDate.getDayOfWeek () != DayOfWeek.SUNDAY)
             throw new EmployeeException ( "Starting date is not sunday." );
