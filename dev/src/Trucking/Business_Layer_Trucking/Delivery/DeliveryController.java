@@ -971,9 +971,11 @@ public class DeliveryController {
     public LinkedList<TruckingReport> getTodayReports() {
         LinkedList<TruckingReport> result = new LinkedList<>();
         for (Map.Entry<Integer, TruckingReport> entry : activeTruckingReports.entrySet()) {
-            if (entry.getValue().equals(LocalDate.now()))
+            if (entry.getValue().getDate().equals(LocalDate.now()))
                 result.add(entry.getValue());
         }
         return result;
     }
+
+
 }

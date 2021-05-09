@@ -116,7 +116,8 @@ public class ResourcesController {
             }
 
         }
-        throw new IllegalArgumentException("couldn't find " + obj + " with such " + idn);
+        else
+            throw new IllegalArgumentException("couldn't find " + obj + " with such " + idn);
 
     }
 
