@@ -4,9 +4,11 @@ import Employees.EmployeeException;
 import Employees.business_layer.Shift.ShiftController;
 
 import javax.management.openmbean.KeyAlreadyExistsException;
+import java.awt.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.*;
+import java.util.List;
 
 public class ResourcesController {
     private HashMap<String, Driver> drivers;
@@ -317,16 +319,26 @@ public class ResourcesController {
     }
 
     public LinkedList<Driver> getAvailableDrivers(LocalDate date, int shift) {
+        LinkedList<String> working_drivers = getDriversForDate(date,shift);
         LinkedList<Driver> output = new LinkedList<>();
         for (Map.Entry<String, HashMap<LocalDate, Integer>> entry : drivers_constraints.entrySet()) {
-            if (!entry.getValue().containsKey(date))
-                output.add(getDriver(entry.getKey()));
-            else {
-                if (!entry.getValue().get(date).equals(2) && !entry.getValue().get(date).equals(shift)) {
+            if(working_drivers.contains(entry.getKey())) {
+                if (!entry.getValue().containsKey(date))
                     output.add(getDriver(entry.getKey()));
+                else {
+                    if (!entry.getValue().get(date).equals(2) && !entry.getValue().get(date).equals(shift)) {
+                        output.add(getDriver(entry.getKey()));
+                    }
                 }
             }
         }
+        return output;
+    }
+
+    private LinkedList<String> getDriversForDate(LocalDate date, int shift) {
+        HashMap<LocalDate, HashMap<Integer,LinkedList<String >>> all = getDaysAndDrivers();
+        LinkedList<String> output ;
+        output = all.get(date).get(shift);
         return output;
     }
 

@@ -435,7 +435,6 @@ public class FacadeService {
     }
 
     public LinkedList<FacadeDriver> getAvailableDrivers(LocalDate date, LocalTime shift) {
-        FacadeTruckingReport tr =  deliveryService.getCurrTruckingReport();
 
 
         return resourcesService.getAvailableDrivers(date, turnTimeToShift(shift));
@@ -463,6 +462,10 @@ public class FacadeService {
 
     public void addTruckConstraint(String id, LocalDate date, LocalTime leavingHour) {
         resourcesService.addTruckConstraint(id,date,turnTimeToShift(leavingHour));
+    }
+
+    public LinkedList<FacadeTruckingReport> getTodayReports() {
+        return deliveryService.getTodayReports();
     }
 }
 

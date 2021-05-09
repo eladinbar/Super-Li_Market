@@ -293,7 +293,7 @@ public class Menu_Printer {
     private void printDateOptions(LocalDate date, HashMap<Integer, LinkedList<String>> shiftAndDrivers, int spot) {
         for (Map.Entry<Integer, LinkedList<String>> entry : shiftAndDrivers.entrySet()) {
             System.out.println(spot + ".\t" + date + "\tshift start time:" + turnShiftToTimes(entry.getKey()));
-            System.out.println("\nThe Drivers available for this shift:");
+            System.out.println("\nThe Drivers working in this this shift:");
             for (String id : entry.getValue()) {
                 printDriverDetails(pc.getDriver(id));
             }
@@ -312,7 +312,7 @@ public class Menu_Printer {
     // <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< methods >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
     private LocalTime turnShiftToTimes(int shift) {
-        if (shift == 1)
+        if (shift == 0)
             return LocalTime.of(6, 0);
         else
             return LocalTime.of(14, 0);
@@ -402,7 +402,7 @@ public class Menu_Printer {
         LocalDate toInsert;
         spot = 1;
         for (Map.Entry<LocalDate, HashMap<Integer, LinkedList<String>>> entry : daysAndDrivers.entrySet()) {
-            if (spot == chose-1) {
+            if (spot == chose) {
                 System.out.println("The date you choose: " + entry.getKey());
                 LocalTime time = null;
                 int c;
@@ -430,6 +430,7 @@ public class Menu_Printer {
 
 
             }
+            spot ++;
 
         }
 
@@ -844,46 +845,12 @@ public class Menu_Printer {
         return pc.sortDemandsBySite(demands);
     }
 
-    private void removeSite(Scanner scanner) throws ReflectiveOperationException {
-        boolean con = true;
-        while (con) {
-            LinkedList<FacadeSite> sites = pc.showCurrentSites();
-            System.out.println("\nchoose a site you'd like to remove\n");
-            int spot = 1;
-            for (FacadeSite site : sites) {
-                System.out.println(spot + ")Site Name: " + site.getName() + "\tSite ID: " + site.getSiteID() + "\tSite city: " + site.getCity() +
-                        "\tSite: Delivery area: " + site.getDeliveryArea() + "\n products:");
-                LinkedList<FacadeDemand> siteDemands = pc.getCurrentDemandsBySite(site);
-                for (FacadeDemand demand : siteDemands) {
 
-                    System.out.println(pc.getItemName(demand.getItemID()) + ": " +
-                            "item ID: " + demand.getItemID() + "\tamount: " + demand.getAmount());
-                }
-                spot++;
-            }
-            int siteID = getIntFromUser(scanner);
-            while (siteID < 1 || siteID > sites.size()) {
-                System.out.println("option out of bounds, please try again");
-                siteID = getIntFromUser(scanner);
-            }
-            siteID = sites.get(siteID - 1).getSiteID();
-            try {
-                con = pc.removeDestination(siteID);
-                if (pc.showCurrentSites().isEmpty()) {
-                    throw new ReflectiveOperationException("no more demands left in this report, aborting..");
-                }
-            } catch (NoSuchElementException ne) {
-                System.out.println(ne.getMessage());
-
-            }
-
-        }
-    }
 
     void updateDeliveryForm(Scanner scanner) throws ReflectiveOperationException {
-        LinkedList<FacadeTruckingReport> truckingReports = pc.getActiveTruckingReports();
+        LinkedList<FacadeTruckingReport> truckingReports = pc.showTodayReports();
         if (truckingReports.isEmpty()) {
-            throw new ReflectiveOperationException("There is no active reports to update");
+            throw new ReflectiveOperationException("There is no active reports for today to update");
         }
         System.out.println("please choose the report you'd like to advance");
         int spot = 1;
@@ -931,6 +898,8 @@ public class Menu_Printer {
         }
 
     }
+
+
 
     private void rePlanAfterWeight(Scanner scanner, FacadeTruckingReport tr, int weight, FacadeDeliveryForm fdf) throws ReflectiveOperationException {
 
@@ -1013,6 +982,10 @@ public class Menu_Printer {
 
     private String chooseDriver(Scanner scanner, LocalDate date, LocalTime shift) throws ReflectiveOperationException {
         LinkedList<FacadeDriver> drivers = pc.getAvailableDrivers(date, shift);
+        if (drivers.isEmpty()){
+            throw new ReflectiveOperationException("no are possible for this date.");
+
+        }
         System.out.println("available Drivers:");
         int spot = 1;
         for (FacadeDriver d : drivers) {
@@ -1217,7 +1190,47 @@ public class Menu_Printer {
         return output;
 
     }
-// old methods
+
+
+
+// old methods that may be used in the next projects
+
+    /*private void removeSite(Scanner scanner) throws ReflectiveOperationException {
+        boolean con = true;
+        while (con) {
+            LinkedList<FacadeSite> sites = pc.showCurrentSites();
+            System.out.println("\nchoose a site you'd like to remove\n");
+            int spot = 1;
+            for (FacadeSite site : sites) {
+                System.out.println(spot + ")Site Name: " + site.getName() + "\tSite ID: " + site.getSiteID() + "\tSite city: " + site.getCity() +
+                        "\tSite: Delivery area: " + site.getDeliveryArea() + "\n products:");
+                LinkedList<FacadeDemand> siteDemands = pc.getCurrentDemandsBySite(site);
+                for (FacadeDemand demand : siteDemands) {
+
+                    System.out.println(pc.getItemName(demand.getItemID()) + ": " +
+                            "item ID: " + demand.getItemID() + "\tamount: " + demand.getAmount());
+                }
+                spot++;
+            }
+            int siteID = getIntFromUser(scanner);
+            while (siteID < 1 || siteID > sites.size()) {
+                System.out.println("option out of bounds, please try again");
+                siteID = getIntFromUser(scanner);
+            }
+            siteID = sites.get(siteID - 1).getSiteID();
+            try {
+                con = pc.removeDestination(siteID);
+                if (pc.showCurrentSites().isEmpty()) {
+                    throw new ReflectiveOperationException("no more demands left in this report, aborting..");
+                }
+            } catch (NoSuchElementException ne) {
+                System.out.println(ne.getMessage());
+
+            }
+
+        }
+    }*/
+
     /*
 
     private void chooseLeavingHour(Scanner scanner) throws ReflectiveOperationException {

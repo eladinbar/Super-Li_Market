@@ -449,6 +449,13 @@ public class DeliveryService {
         }
         return  output;
     }
+
+    public LinkedList<FacadeTruckingReport> getTodayReports() {
+        LinkedList<FacadeTruckingReport> ftr = new LinkedList<>();
+        for (TruckingReport tr: dc.getTodayReports())
+            ftr.add(new FacadeTruckingReport(tr));
+        return ftr;
+    }
 }
 
 

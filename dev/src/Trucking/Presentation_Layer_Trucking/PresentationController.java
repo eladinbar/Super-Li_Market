@@ -286,6 +286,10 @@ public class PresentationController {
         facadeService.removeItemFromTruckingReport(trID,demand);
     }
 
+    public LinkedList<FacadeTruckingReport> showTodayReports() {
+        return facadeService.getTodayReports();
+    }
+
 
     // Not in use for now
 
