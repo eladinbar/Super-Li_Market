@@ -440,10 +440,6 @@ public class PresentationController implements Runnable {
     public void run() {
         menu.printWelcomePrompt();
         setupSystem();
-        ResponseT<Map<Integer, Integer>> map = service.getItemsInShortAndQuantities();
-        for (int i : map.getValue().keySet()) {
-            System.out.println("id " + i + "\tamount " + map.value.get(i));
-        }
         while (!terminate) {
             mainMenu();
         }
