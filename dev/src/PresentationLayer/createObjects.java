@@ -42,7 +42,7 @@ public class createObjects {
             service.addSupplier("Supplier", "LastName", "email" + i + "@gmail.com", "" + id, "0" + phone, 1, true, true, "cash");
             suppliers.add(id);
             service.addQuantityList(""+id);
-            service.addItemToAgreement(""+id, i, i, i);
+            service.addItemToAgreement(""+id, i, i);
             service.addQuantityListItem(""+id, i, i, i+3);
         }
         for (int i = 10; i < 20; i++, phone++, id++) {
