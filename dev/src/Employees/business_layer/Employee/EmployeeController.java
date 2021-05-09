@@ -455,6 +455,10 @@ public class EmployeeController {
         }
         if(f.getBank () == null || Character.isDigit (f.getBank ().charAt ( 0 )))
             throw new EmployeeException ( "Bank name is illegal." );
+        for( Map.Entry<String, Employee> entry : employees.entrySet ()){
+            if(entry.getValue ( ).getBank ().getAccountNumber () == f.getAccountNumber ())
+                throw new EmployeeException ( "Same bank account number is already exist." );
+        }
         return new BankAccountInfo(f.getAccountNumber (), f.getBankBranch (), f.getBank ());
     }
 
