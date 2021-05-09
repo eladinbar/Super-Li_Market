@@ -414,7 +414,10 @@ public class EmployeeController {
             TermsOfEmployment termsOfEmployment = new TermsOfEmployment(salary+1, educationFund,sickDays, daysOff );
             Employee storeKeeper = new Employee("driverC", "04444444"+i, termsOfEmployment, LocalDate.now(), employeeAccountInfo);
             addEmplForExistingData(storeKeeper);
+            ResourcesController.getInstance().addDriver(storeKeeper.getID(),"moshe" , Driver.License.C);
+
         }
+
     }
 
     private void creatDriverC1() throws EmployeeException {
@@ -425,6 +428,7 @@ public class EmployeeController {
             TermsOfEmployment termsOfEmployment = new TermsOfEmployment(salary+1, educationFund,sickDays, daysOff );
             Employee storeKeeper = new Employee("driverC1", "05555555"+i, termsOfEmployment, LocalDate.now(), employeeAccountInfo);
             addEmplForExistingData(storeKeeper);
+            ResourcesController.getInstance().addDriver(storeKeeper.getID(),"avi" , Driver.License.C1);
         }
     }
 

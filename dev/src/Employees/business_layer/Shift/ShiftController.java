@@ -216,7 +216,7 @@ public class ShiftController {
          LocalDate date = LocalDate.now ();
          HashMap<LocalDate, HashMap<Integer, List<String>>> daysAndDrivers = new HashMap<> (  );
          WeeklyShiftSchedule cur;
-         while (isExist ( date )){
+         while (isExist (date )){
              cur = getWeeklyShiftSchedule ( date );
              cur.getDaysAndDrivers(date, daysAndDrivers);
              date = date.plusDays ( 7-(date.getDayOfWeek ().getValue () % 7) );
