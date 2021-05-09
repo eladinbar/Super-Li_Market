@@ -23,7 +23,7 @@ public class OrderService {
     public ResponseT<Order> createOrder(LocalDate date, String supplierID, SupplierController sp) {
         ResponseT<Order> toReturn;
         try {
-            toReturn = new ResponseT<>(new Order(oc.createOrder(date, sp.getSupplier(supplierID)), new ArrayList<>()));
+            toReturn = new ResponseT<>(new Order(oc.createOrder(date, sp.getSupplier(supplierID)), new ArrayList<>(),-1));
         } catch (Exception e) {
             toReturn = new ResponseT<>(e.getMessage());
         }
@@ -33,7 +33,7 @@ public class OrderService {
     public ResponseT<Order> createPernamentOrder(int day, String supplierID, SupplierController sp) {
         ResponseT<Order> toReturn;
         try {
-            toReturn= new ResponseT<>(new Order(oc.createPermOrder(day, sp.getSupplier(supplierID)), new ArrayList<>()));
+            toReturn= new ResponseT<>(new Order(oc.createPermOrder(day, sp.getSupplier(supplierID)), new ArrayList<>(),day));
         } catch (Exception e) {
             toReturn = new ResponseT<>(e.getMessage());
         }
@@ -66,7 +66,7 @@ public class OrderService {
                         o.getSupplier().getProductDiscount(o.getProducts().get(id),id));
                 productList.add(newProd);
             }
-            toReturn=new ResponseT<>(new Order(o, productList));
+            toReturn=new ResponseT<>(new Order(o, productList,-1));
         } catch (Exception e) {
             toReturn = new ResponseT<>(e.getMessage());
         }
