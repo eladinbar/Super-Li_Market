@@ -124,10 +124,10 @@ public class Service implements IService {
         return r;
     }
 
-    public ResponseT<Item> addItemToAgreement(String id, int productID, int companyProductID, int price) {
+    public ResponseT<Item> addItemToAgreement(String id, int productID, int price) {
         ResponseT<Item> r = inventoryService.getItem(productID);
         if (!r.errorOccurred()) {
-            ResponseT<Item> rp = supplierService.addItemToAgreement(id, productID, companyProductID, price, inventoryService);
+            ResponseT<Item> rp = supplierService.addItemToAgreement(id, productID, r.value.getManufacturerID(), price, inventoryService);
             if(rp.errorOccurred())
                 return new ResponseT<>(rp.getErrorMessage());
         }

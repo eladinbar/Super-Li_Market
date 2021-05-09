@@ -45,7 +45,7 @@ public interface IService {
     Response removeProductFromOrder(int orderID, int productID);
 
     //agreement
-    ResponseT<Item> addItemToAgreement(String id, int productID, int companyProductID, int price);
+    ResponseT<Item> addItemToAgreement(String id, int productID, int price);
     Response removeItemFromAgreement(String supplierId, int productId);
     Response editAgreementItemCompanyProductID(String supplierID, int productID, int companyProductID);
     Response editAgreementItemPrice(String supplierID, int productID, int companyProductID);
