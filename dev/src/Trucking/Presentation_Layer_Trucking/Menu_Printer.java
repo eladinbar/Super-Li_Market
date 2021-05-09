@@ -292,11 +292,12 @@ public class Menu_Printer {
 
     private void printDateOptions(LocalDate date, HashMap<Integer, LinkedList<String>> shiftAndDrivers, int spot) {
         for (Map.Entry<Integer, LinkedList<String>> entry : shiftAndDrivers.entrySet()) {
-            System.out.println(spot + "./t" + date + "\tshift start time:" + turnShiftToTimes(entry.getKey()));
-            System.out.println("The Drivers available for this shift:");
+            System.out.println(spot + ".\t" + date + "\tshift start time:" + turnShiftToTimes(entry.getKey()));
+            System.out.println("\nThe Drivers available for this shift:");
             for (String id : entry.getValue()) {
                 printDriverDetails(pc.getDriver(id));
             }
+            System.out.println("\n\n");
 
         }
 
@@ -391,13 +392,17 @@ public class Menu_Printer {
             spot++;
 
         }
+        System.out.println("please insert your choice here or -1 to quit");
+
         int chose = getIntFromUser(scanner);
-        while (chose < 1 || chose > daysAndDrivers.size())
+        while (chose < 1 || chose > daysAndDrivers.size()) {
+            System.out.println("option is out of bounds, please try again");
             chose = getIntFromUser(scanner);
+        }
         LocalDate toInsert;
         spot = 1;
         for (Map.Entry<LocalDate, HashMap<Integer, LinkedList<String>>> entry : daysAndDrivers.entrySet()) {
-            if (spot == chose) {
+            if (spot == chose-1) {
                 System.out.println("The date you choose: " + entry.getKey());
                 LocalTime time = null;
                 int c;

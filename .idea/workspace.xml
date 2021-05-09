@@ -27,8 +27,10 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="05ca914f-9056-4de3-9869-7fdfaa880f2d" name="Default Changelist" comment="merged bug fixed. &#10;still has date probs">
+    <list default="true" id="05ca914f-9056-4de3-9869-7fdfaa880f2d" name="Default Changelist" comment="initial state has been updated">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dev/src/Trucking/Business_Layer_Trucking/Resources/ResourcesController.java" beforeDir="false" afterPath="$PROJECT_DIR$/dev/src/Trucking/Business_Layer_Trucking/Resources/ResourcesController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dev/src/Trucking/Presentation_Layer_Trucking/Menu_Printer.java" beforeDir="false" afterPath="$PROJECT_DIR$/dev/src/Trucking/Presentation_Layer_Trucking/Menu_Printer.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -153,14 +155,7 @@
       <workItem from="1620398620984" duration="1227000" />
       <workItem from="1620500109251" duration="1502000" />
       <workItem from="1620541443693" duration="3111000" />
-      <workItem from="1620546886851" duration="2697000" />
-    </task>
-    <task id="LOCAL-00004" summary="3rd demand has been added">
-      <created>1617046716000</created>
-      <option name="number" value="00004" />
-      <option name="presentableId" value="LOCAL-00004" />
-      <option name="project" value="LOCAL" />
-      <updated>1617046716000</updated>
+      <workItem from="1620546886851" duration="5207000" />
     </task>
     <task id="LOCAL-00005" summary="skeleton has been fully completed, time to work :(">
       <created>1617188946905</created>
@@ -498,7 +493,14 @@
       <option name="project" value="LOCAL" />
       <updated>1620547991416</updated>
     </task>
-    <option name="localTasksCounter" value="53" />
+    <task id="LOCAL-00053" summary="initial state has been updated">
+      <created>1620564101627</created>
+      <option name="number" value="00053" />
+      <option name="presentableId" value="LOCAL-00053" />
+      <option name="project" value="LOCAL" />
+      <updated>1620564101627</updated>
+    </task>
+    <option name="localTasksCounter" value="54" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -517,7 +519,6 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="DF active has been added" />
     <MESSAGE value="updateDeliveryForm has been added" />
     <MESSAGE value="menu printer has been updated, all exception catched" />
     <MESSAGE value="menu printer method has been updated" />
@@ -542,7 +543,8 @@
     <MESSAGE value="&#10;delete and update has been connected" />
     <MESSAGE value="some bug fixed" />
     <MESSAGE value="merged bug fixed. &#10;still has date probs" />
-    <option name="LAST_COMMIT_MESSAGE" value="merged bug fixed. &#10;still has date probs" />
+    <MESSAGE value="initial state has been updated" />
+    <option name="LAST_COMMIT_MESSAGE" value="initial state has been updated" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -614,8 +616,13 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/dev/src/Trucking/Business_Layer_Trucking/Resources/ResourcesController.java</url>
-          <line>203</line>
+          <line>211</line>
           <option name="timeStamp" value="32" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/dev/src/Trucking/Presentation_Layer_Trucking/Menu_Printer.java</url>
+          <line>396</line>
+          <option name="timeStamp" value="33" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
