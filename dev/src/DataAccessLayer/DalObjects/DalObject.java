@@ -38,6 +38,14 @@ public abstract class DalObject<T extends DalObject<T>> {
     }
 
     /// <summary>
+    /// Updates the equivalent row of 'this' in the database.
+    /// </summary>
+    /// <returns>Returns true if the row was updated successfully.</returns>
+    public void update() throws SQLException {
+        controller.update((T) this);
+    }
+
+    /// <summary>
     /// Retrieves the equivalent row of 'this' from the database.
     /// </summary>
     /// <returns>Returns true if the row was removed successfully.</returns>
