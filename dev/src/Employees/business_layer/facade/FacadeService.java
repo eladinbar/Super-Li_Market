@@ -89,11 +89,11 @@ public class FacadeService {
         return employeeService.logout ();
     }
 
-    public Response giveConstraint(LocalDate date, int shift, String reason) {
+    public Response giveConstraint(LocalDate date, int shift, String reason) throws SQLException {
         return employeeService.giveConstraint (date, shift, reason );
     }
 
-    public Response deleteConstraint (LocalDate date, int shift)  {
+    public Response deleteConstraint (LocalDate date, int shift) throws SQLException {
         return employeeService.deleteConstraint (date, shift );
     }
 
@@ -105,11 +105,11 @@ public class FacadeService {
         return employeeService.updateBankAccount ( Id,accountNum,bankBranch,bank );
 }
 
-    public Response updateTermsOfEmployee(String Id, int salary, int educationFund, int sickDays, int daysOff) {
+    public Response updateTermsOfEmployee(String Id, int salary, int educationFund, int sickDays, int daysOff) throws SQLException {
         return employeeService.updateTermsOfEmployee ( Id,salary,educationFund,sickDays,daysOff );
     }
 
-    public Response addEmployee(FacadeEmployee employee) {
+    public Response addEmployee(FacadeEmployee employee) throws SQLException {
         return employeeService.addEmployee ( employee );
     }
 
@@ -142,7 +142,7 @@ public class FacadeService {
         return employeeService.getEmployees();
     }
 
-    public Response createData() {
+    public Response createData() throws SQLException {
         Response response = employeeService.createData ( );
         if(response.errorOccured ())
             return response;

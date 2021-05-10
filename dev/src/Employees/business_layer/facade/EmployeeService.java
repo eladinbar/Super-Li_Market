@@ -40,7 +40,7 @@ public class EmployeeService {
         }
     }
 
-    public Response giveConstraint(LocalDate date, int shift, String reason) {
+    public Response giveConstraint(LocalDate date, int shift, String reason) throws SQLException {
         try{
             employeeController.giveConstraint(date, shift, reason);
             return new Response();
@@ -52,7 +52,7 @@ public class EmployeeService {
 
 
 
-    public Response deleteConstraint (LocalDate date, int shift)  {
+    public Response deleteConstraint (LocalDate date, int shift) throws SQLException {
         try{
             employeeController.deleteConstraint(date, shift);
             return new Response();
@@ -62,7 +62,7 @@ public class EmployeeService {
         }
     }
 
-    public ResponseT<FacadeEmployee> addEmployee(FacadeEmployee employee) {
+    public ResponseT<FacadeEmployee> addEmployee(FacadeEmployee employee) throws SQLException {
         try{
             employeeController.addEmployee ( employee );
             return new ResponseT<>(employee);
@@ -86,7 +86,7 @@ public class EmployeeService {
         try{
             return new ResponseT(new FacadeEmployee(employeeController.addManager(manager)));
         }
-        catch (EmployeeException e){
+        catch (EmployeeException | SQLException e){
             return new ResponseT(e.getMessage());
         }
     }
@@ -95,7 +95,7 @@ public class EmployeeService {
         try{
             return new ResponseT(new FacadeEmployee(employeeController.removeEmployee(Id)));
         }
-        catch (EmployeeException e){
+        catch (EmployeeException | SQLException e){
             return new ResponseT(e.getMessage());
         }
     }
@@ -105,12 +105,12 @@ public class EmployeeService {
             employeeController.updateBankAccount(Id,accountNum,bankBranch,bank);
             return new Response();
         }
-        catch (EmployeeException e){
+        catch (EmployeeException | SQLException e){
             return new Response(e.getMessage());
         }
     }
 
-    public Response updateTermsOfEmployee(String Id, int salary, int educationFund, int sickDays, int daysOff) {
+    public Response updateTermsOfEmployee(String Id, int salary, int educationFund, int sickDays, int daysOff) throws SQLException {
         try{
             employeeController.updateTermsOfEmployee(Id,salary, educationFund, sickDays,daysOff);
             return new Response();
@@ -184,7 +184,7 @@ public class EmployeeService {
         }
     }
 
-    public Response createData (){
+    public Response createData () throws SQLException {
         try {
             employeeController.createData();
             return new Response();

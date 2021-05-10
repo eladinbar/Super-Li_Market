@@ -284,21 +284,21 @@ public class ShiftController {
         }
     }
 
-    private void createWeek(LinkedList<DalShift> shifts, Integer j){
+    private void createWeek(LinkedList<DalShift> shifts, Integer j) {
         LinkedList<DalShift> shift;
         Shift[][] week = new Shift[7][2];
         Shift newShift;
         DalShift temp = shifts.get ( j++ );
-        if(temp == null)
+        if (temp == null)
             return;
-        for(int i = 0; i < 5; i ++) {
-            for(int k = 0; k < 2; k ++) {
+        for ( int i = 0 ; i < 5 ; i++ ) {
+            for ( int k = 0 ; k < 2 ; k++ ) {
                 shift = getListOfShift ( shifts, temp, j );
                 newShift = createShift ( shift );
                 week[i][k] = newShift;
-                temp = shifts.get ( j++ );
-                }
+                temp = shifts.get ( j );
             }
+        }
         shift = getListOfShift ( shifts, temp, j );
         newShift = createShift ( shift );
         week[5][0] = newShift;
@@ -306,8 +306,8 @@ public class ShiftController {
         shift = getListOfShift ( shifts, temp, j );
         newShift = createShift ( shift );
         week[6][1] = newShift;
-        WeeklyShiftSchedule weeklyShiftSchedule = new WeeklyShiftSchedule( week[0][0].getDate (), week);
-        this.shifts.put ( weeklyShiftSchedule.getDate (), weeklyShiftSchedule );
+        WeeklyShiftSchedule weeklyShiftSchedule = new WeeklyShiftSchedule ( week[0][0].getDate ( ), week );
+        this.shifts.put ( weeklyShiftSchedule.getDate ( ), weeklyShiftSchedule );
     }
 
 

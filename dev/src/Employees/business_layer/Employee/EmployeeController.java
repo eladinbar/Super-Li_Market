@@ -99,37 +99,31 @@ public class EmployeeController {
         return employees.get(Id);
     }
 
-    public void giveConstraint(LocalDate date, int shift, String reason) throws EmployeeException {
-        if(loggedIn==null){
-            throw new EmployeeException("No user is logged in");
+    public void giveConstraint(LocalDate date, int shift, String reason) throws EmployeeException, SQLException {
+        if (loggedIn == null) {
+            throw new EmployeeException ( "No user is logged in" );
         }
 
-        if(loggedIn.getIsManager()){
-            throw new EmployeeException("The method 'giveConstraint' was called from a user in a managerial position");
+        if (loggedIn.getIsManager ( )) {
+            throw new EmployeeException ( "The method 'giveConstraint' was called from a user in a managerial position" );
         }
 
-        if(!loggedIn.isEmployed()) {
-            throw new EmployeeException("The employee is not employed ");
+        if (!loggedIn.isEmployed ( )) {
+            throw new EmployeeException ( "The employee is not employed " );
         }
-        try {
-            loggedIn.giveConstraint(date, shift, reason);
-            if(loggedIn.getRole ().equals ( Role.driverC) || loggedIn.getRole ().equals ( Role.driverC1))
-            {
-                try {
-                    ResourcesController.getInstance ( ).addDriverConstraint ( loggedIn.getID ( ), date, shift );
-                } catch (IllegalArgumentException e){
-                    deleteConstraint ( date,shift );
-                }
+
+        loggedIn.giveConstraint ( date, shift, reason );
+        if (loggedIn.getRole ( ).equals ( Role.driverC ) || loggedIn.getRole ( ).equals ( Role.driverC1 )) {
+            try {
+                ResourcesController.getInstance ( ).addDriverConstraint ( loggedIn.getID ( ), date, shift );
+            } catch (IllegalArgumentException e) {
+                deleteConstraint ( date, shift );
             }
-        }catch (EmployeeException e){
-            if(loggedIn.getRole ().equals ( Role.driverC) || loggedIn.getRole ().equals ( Role.driverC1))
-                throw e;
         }
-
     }
 
 
-    public void deleteConstraint (LocalDate date, int shift) throws EmployeeException {
+    public void deleteConstraint (LocalDate date, int shift) throws EmployeeException, SQLException {
         if (loggedIn == null) {
             throw new EmployeeException ( "No user is logged in" );
         }
@@ -145,6 +139,7 @@ public class EmployeeController {
         if (loggedIn.getRole ( ).equals ( Role.driverC ) || loggedIn.getRole ( ).equals ( Role.driverC1 )) {
             try {
                 ResourcesController.getInstance ( ).deleteDriverConstraint ( loggedIn.getID ( ), date, shift );
+                DalConstraintController.getInstance ().delete ( new DalConstraint ( loggedIn.getID (), "", date, 0 ) );
             } catch (IllegalArgumentException e) {
                 giveConstraint ( date, shift, reason );
             }
@@ -165,7 +160,7 @@ public class EmployeeController {
         return employees.get(Id).getConstraints();
     }
 
-    public Employee addEmployee(FacadeEmployee e) throws EmployeeException {
+    public Employee addEmployee(FacadeEmployee e) throws EmployeeException, SQLException {
 
         if(loggedIn==null){
             throw new EmployeeException("No user is logged in");
@@ -182,9 +177,14 @@ public class EmployeeController {
         }
        TermsOfEmployment terms = creatTermsOfEmployment ( e.getFacadeTermsOfEmployment () );
        BankAccountInfo bank = createAccount ( e.getFacadeBankAccountInfo () );
-       if(!validId(e.getID())){throw new EmployeeException("An invalid ID was entered ");}
+       if(!validId(e.getID())){
+           throw new EmployeeException("An invalid ID was entered ");
+       }
        Employee newEmployee = new Employee(e.getRole(), e.getID(),terms, e.getTransactionDate(), bank);
        employees.put(e.getID(), newEmployee);
+       DalEmployeeController.getInstance ().insert ( new DalEmployee ( newEmployee.getID (), newEmployee.getRole ().name (), newEmployee.getTransactionDate (),
+               newEmployee.getTerms ().getDaysOff (), newEmployee.getTerms ().getSalary (), newEmployee.getTerms ().getSickDays (), newEmployee.getTerms ().getEducationFund (), newEmployee.isEmployed ()  ));
+       DalBankBranchController.getInstance ().insert ( new DalBankBranch ( newEmployee.getID (), newEmployee.getBank ().getBank (), newEmployee.getBank ().getBankBranch (), newEmployee.getBank ().getAccountNumber () ) );
        return newEmployee;
     }
 
@@ -194,7 +194,7 @@ public class EmployeeController {
         return driver;
     }
 
-    private void addEmplForExistingData(Employee e) throws EmployeeException {
+    private void addEmplForExistingData(Employee e) throws EmployeeException, SQLException {
         if(!validId(e.getID())){
             throw new EmployeeException("An invalid ID was entered ");
         }
@@ -202,9 +202,12 @@ public class EmployeeController {
             throw new EmployeeException("Employee already added to the system");
         }
         employees.put(e.getID(), e);
+        DalEmployeeController.getInstance ().insert ( new DalEmployee ( e.getID (), e.getRole ().name (), e.getTransactionDate (),
+                e.getTerms ().getDaysOff (), e.getTerms ().getSalary (), e.getTerms ().getSickDays (), e.getTerms ().getEducationFund (), e.isEmployed ()  ));
+        DalBankBranchController.getInstance ().insert ( new DalBankBranch ( e.getID (), e.getBank ().getBank (), e.getBank ().getBankBranch (), e.getBank ().getAccountNumber () ) );
     }
 
-    public Employee addManager(FacadeEmployee e) throws EmployeeException {
+    public Employee addManager(FacadeEmployee e) throws EmployeeException, SQLException {
         if(!e.isManager ()){
             throw new EmployeeException("Only an administrator can perform this operation");
         }
@@ -219,10 +222,13 @@ public class EmployeeController {
         if(!validId(e.getID())){ throw new EmployeeException("An invalid ID was entered "); }
         Employee newEmployee = new Employee(e.getRole(), e.getID(),terms, e.getTransactionDate(), bank);
         employees.put(e.getID(), newEmployee);
+        DalEmployeeController.getInstance ().insert ( new DalEmployee ( newEmployee.getID (), newEmployee.getRole ().name (), newEmployee.getTransactionDate (),
+                newEmployee.getTerms ().getDaysOff (), newEmployee.getTerms ().getSalary (), newEmployee.getTerms ().getSickDays (), newEmployee.getTerms ().getEducationFund (), newEmployee.isEmployed ()  ));
+        DalBankBranchController.getInstance ().insert ( new DalBankBranch ( newEmployee.getID (), newEmployee.getBank ().getBank (), newEmployee.getBank ().getBankBranch (), newEmployee.getBank ().getAccountNumber () ) );
         return newEmployee;
     }
 
-    public Employee removeEmployee(String Id) throws EmployeeException {
+    public Employee removeEmployee(String Id) throws EmployeeException, SQLException {
         if(loggedIn==null){
             throw new EmployeeException("No user is logged in");
         }
@@ -235,12 +241,14 @@ public class EmployeeController {
                 throw new EmployeeException("Employee is not in the system");
         }
         if(Id.equals(loggedIn.getID())){ logout();}
-        employees.get(Id).setEmployed(false);
+        Employee fired = employees.get(Id);
+        fired.setEmployed(false);
+        DalEmployeeController.getInstance ().update ( new DalEmployee ( Id, fired.getRole ().name (), fired.getTransactionDate (), fired.getTerms ().getDaysOff (), fired.getTerms ().getSalary (), fired.getTerms ().getSickDays (), fired.getTerms ().getEducationFund (), fired.isEmployed ()) );
         return employees.get(Id);
     }
 
 
-    public void updateBankAccount(String Id, int accountNum, int bankBranch, String bank) throws EmployeeException {
+    public void updateBankAccount(String Id, int accountNum, int bankBranch, String bank) throws EmployeeException, SQLException {
         if(loggedIn==null){
             throw new EmployeeException("No user is logged in");
         }
@@ -255,9 +263,10 @@ public class EmployeeController {
         toUpdate.setAccountNumber(accountNum);
         toUpdate.setBankBranch(bankBranch);
         toUpdate.setBank(bank);
+        DalBankBranchController.getInstance ().update ( new DalBankBranch ( Id, bank, bankBranch, accountNum ) );
     }
 
-    public void updateTermsOfEmployee(String Id, int salary, int educationFund, int sickDays, int daysOff) throws EmployeeException {
+    public void updateTermsOfEmployee(String Id, int salary, int educationFund, int sickDays, int daysOff) throws EmployeeException, SQLException {
         if(loggedIn==null){
             throw new EmployeeException("No user is logged in");
         }
@@ -273,6 +282,9 @@ public class EmployeeController {
         toUpdate.setEducationFund(educationFund);
         toUpdate.setSickDays(sickDays);
         toUpdate.setDaysOff(daysOff);
+        DalEmployeeController.getInstance ().update ( new DalEmployee ( loggedIn.getID (), loggedIn.getRole ().name (), loggedIn.getTransactionDate (),
+                daysOff, salary, sickDays,educationFund, loggedIn.isEmployed ()));
+
     }
 
     public LinkedList<String> getRoleInDate(LocalDate date, Role roleName, int shift) throws EmployeeException {
@@ -288,7 +300,7 @@ public class EmployeeController {
         LinkedList<String> specificRole = new LinkedList<>();
         for (Map.Entry<String, Employee> entry : employees.entrySet()) {
             Employee employee = entry.getValue();
-            if(employee.getRole()== roleName){
+            if(employee.isEmployed () && employee.getRole()== roleName){
                 if(employee.getConstraints().containsKey(date)) {//Checks if the employee has a constraint on this day
                     if(shift==0) {//Checks on morning shift
                         if (!employee.getConstraints().get(date).isMorningShift())// If the employee is free on this shift
@@ -326,7 +338,7 @@ public class EmployeeController {
             creatTruckingManager ();
     }
 
-    private void createShiftManagers() throws EmployeeException {
+    private void createShiftManagers() throws EmployeeException, SQLException {
         int accountNum = 476, bankBranch=11, salary=7000, educationFund=1232, sickDays=10, daysOff=30;
         String bankName = "Otzar hachayal";
         for(int i=0; i<2; i++){
@@ -338,7 +350,7 @@ public class EmployeeController {
         }
     }
 
-    private void createManagers() throws EmployeeException {
+    private void createManagers() throws EmployeeException, SQLException {
         int accountNum = 546, bankBranch=11, salary=8000, educationFund=1232, sickDays=10, daysOff=40;
         String bankName = "Hpoalim";
         FacadeBankAccountInfo employeeAccountInfo1 = new FacadeBankAccountInfo(accountNum, bankBranch, bankName);
@@ -358,7 +370,7 @@ public class EmployeeController {
     }
 
 
-    private void createUshers() throws EmployeeException {
+    private void createUshers() throws EmployeeException, SQLException {
         int accountNum = 456, bankBranch=11, salary=5000, educationFund=1232, sickDays=10, daysOff=30;
         String bankName = "Hpoalim";
         for(int i=0; i<4; i++){
@@ -370,7 +382,7 @@ public class EmployeeController {
         }
     }
 
-    private void createGuard()  {
+    private void createGuard() throws SQLException {
         int accountNum = 356, bankBranch=10, salary=5500, educationFund=1232, sickDays=10, daysOff=30;
         String bankName = "Leumi";
         for(int i=0; i<2; i++){
@@ -386,7 +398,7 @@ public class EmployeeController {
         }
     }
 
-    private void creatCashier() {
+    private void creatCashier() throws SQLException {
         int accountNum = 256, bankBranch=13, salary=5500, educationFund=1232, sickDays=10, daysOff=30;
         String bankName = "Leumi";
         for(int i=0; i<4; i++){
@@ -400,7 +412,7 @@ public class EmployeeController {
         }
     }
 
-    private void creatStoreKeeper() throws EmployeeException {
+    private void creatStoreKeeper() throws EmployeeException, SQLException {
         int accountNum = 156, bankBranch=13, salary=6000, educationFund=1232, sickDays=10, daysOff=30;
         String bankName = "Leumi";
         for(int i=0; i<2; i++){
@@ -433,7 +445,7 @@ public class EmployeeController {
         }
     }
 
-    private void creatTruckingManager() throws EmployeeException {
+    private void creatTruckingManager() throws EmployeeException, SQLException {
         int accountNum = 729, bankBranch = 27, salary = 9000, educationFund = 1000, sickDays = 21, daysOff = 15;
         String bankName = "Diskont";
         BankAccountInfo employeeAccountInfo = new BankAccountInfo ( accountNum, bankBranch, bankName );
@@ -442,7 +454,7 @@ public class EmployeeController {
         addEmplForExistingData ( truckingManager );
     }
 
-    private void giveConstrForExistingData(Employee employee, LocalDate date, int shift, String reason) throws EmployeeException {
+    private void giveConstrForExistingData(Employee employee, LocalDate date, int shift, String reason) throws EmployeeException, SQLException {
         employee.giveConstraint(date, shift, reason);
     }
 
@@ -486,13 +498,13 @@ public class EmployeeController {
         DalBankBranch dalBank = null;
         for(DalEmployee emp : employees){
             for(DalBankBranch cur : bankBranches){
-                if(emp.getId ().equals ( cur.getId() )){
+                if(emp.getId ().equals ( cur.getEmployeeId() )){
                     dalBank = cur;
                     break;
                 }
             }
             if(dalBank == null)
-                throw new EmployeeException ( "There is no bank account to Employrr - " +emp.getId ());
+                throw new EmployeeException ( "There is no bank account to Employee - " +emp.getId ());
             bank = new BankAccountInfo ( dalBank.getAccountNumber (), dalBank.getBankBranch (), dalBank.getBank ());
             employee = new Employee ( emp.getRole (), emp.getId (), new TermsOfEmployment ( emp.getSalary (), emp.getEducationFund (), emp.getSickDays (), emp.getDaysOff () ), emp.getTransactionDate (), bank );
             for(DalConstraint cons : constraints){
