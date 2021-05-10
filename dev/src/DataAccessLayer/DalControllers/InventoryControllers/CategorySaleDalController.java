@@ -134,12 +134,12 @@ public class CategorySaleDalController extends DalController<CategorySale> {
             ResultSet resultSet = stmt.executeQuery();
             while (resultSet.next())
             {
-                isDesired = resultSet.getString(0).equals(categorySale.getName());
+                isDesired = resultSet.getString(1).equals(categorySale.getName());
                 if (isDesired) {
-                    categorySale.setDiscount(resultSet.getInt(1));
-                    categorySale.setStartSaleDate(resultSet.getString(2));
-                    categorySale.setEndSaleDate(resultSet.getString(3));
-                    categorySale.setCategoryName(resultSet.getString(4));
+                    categorySale.setDiscount(resultSet.getInt(2));
+                    categorySale.setStartSaleDate(resultSet.getString(3));
+                    categorySale.setEndSaleDate(resultSet.getString(4));
+                    categorySale.setCategoryName(resultSet.getString(5));
                     break; //Desired category sale found
                 }
             }

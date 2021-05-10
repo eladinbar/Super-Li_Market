@@ -116,9 +116,9 @@ public class CategoryDalController extends DalController<Category> {
             ResultSet resultSet = stmt.executeQuery();
             while (resultSet.next())
             {
-                isDesired = resultSet.getString(0).equals(category.getName());
+                isDesired = resultSet.getString(1).equals(category.getName());
                 if (isDesired) {
-                    category.setParentName(resultSet.getString(1));
+                    category.setParentName(resultSet.getString(2));
                     break; //Desired category found
                 }
             }
@@ -138,13 +138,13 @@ public class CategoryDalController extends DalController<Category> {
             ResultSet resultSet = stmt.executeQuery();
             while (resultSet.next())
             {
-                isDesired = category.getName() == null ? resultSet.getString(1).equals(category.getParentName()) :
-                resultSet.getString(0).equals(category.getName());
+                isDesired = category.getName() == null ? resultSet.getString(2).equals(category.getParentName()) :
+                resultSet.getString(1).equals(category.getName());
                 if (isDesired) {
                     if (category.getName() == null)
-                        savedCategory.setName(resultSet.getString(0));
+                        savedCategory.setName(resultSet.getString(1));
                     else
-                        savedCategory.setParentName(resultSet.getString(1));
+                        savedCategory.setParentName(resultSet.getString(2));
                     categories.add(savedCategory);
                 }
             }
@@ -163,8 +163,8 @@ public class CategoryDalController extends DalController<Category> {
             ResultSet resultSet = stmt.executeQuery();
             while (resultSet.next())
             {
-                savedCategory.setName(resultSet.getString(0));
-                savedCategory.setParentName(resultSet.getString(1));
+                savedCategory.setName(resultSet.getString(1));
+                savedCategory.setParentName(resultSet.getString(2));
                 categories.add(savedCategory);
             }
         } catch (SQLException ex) {

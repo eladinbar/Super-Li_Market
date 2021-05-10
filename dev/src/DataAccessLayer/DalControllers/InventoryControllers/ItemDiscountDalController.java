@@ -202,11 +202,11 @@ public class ItemDiscountDalController extends DalController<ItemDiscount> {
             ResultSet resultSet = stmt.executeQuery();
             while (resultSet.next())
             {
-                isDesired = resultSet.getString(0).equals(itemDiscount.getDiscountDate()) &&
-                        resultSet.getString(1).equals(itemDiscount.getSupplierID()) && resultSet.getInt(2) == itemDiscount.getItemID();
+                isDesired = resultSet.getString(1).equals(itemDiscount.getDiscountDate()) &&
+                        resultSet.getString(2).equals(itemDiscount.getSupplierID()) && resultSet.getInt(3) == itemDiscount.getItemID();
                 if (isDesired) {
-                    itemDiscount.setDiscount(resultSet.getInt(3));
-                    itemDiscount.setItemCount(resultSet.getInt(4));
+                    itemDiscount.setDiscount(resultSet.getInt(4));
+                    itemDiscount.setItemCount(resultSet.getInt(5));
                     break; //Desired item discount found
                 }
             }
@@ -226,12 +226,12 @@ public class ItemDiscountDalController extends DalController<ItemDiscount> {
             ResultSet resultSet = stmt.executeQuery();
             while (resultSet.next())
             {
-                isDesired = resultSet.getString(0).equals(itemDiscount.getDiscountDate()) &&
-                        resultSet.getString(1).equals(itemDiscount.getSupplierID());
+                isDesired = resultSet.getString(1).equals(itemDiscount.getDiscountDate()) &&
+                        resultSet.getString(2).equals(itemDiscount.getSupplierID());
                 if (isDesired) {
-                    itemDiscount.setItemID(resultSet.getInt(2));
-                    itemDiscount.setDiscount(resultSet.getInt(3));
-                    itemDiscount.setItemCount(resultSet.getInt(4));
+                    itemDiscount.setItemID(resultSet.getInt(3));
+                    itemDiscount.setDiscount(resultSet.getInt(4));
+                    itemDiscount.setItemCount(resultSet.getInt(5));
                     itemDiscounts.add(savedItemDiscount);
                 }
             }

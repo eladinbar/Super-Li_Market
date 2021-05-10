@@ -160,9 +160,9 @@ public class DefectEntryDalController extends DalController<DefectEntry> {
                 isDesired = resultSet.getString(0).equals(defectEntry.getEntryDate()) &&
                         resultSet.getInt(1) == defectEntry.getItemID();
                 if (isDesired) {
-                    defectEntry.setItemName(resultSet.getString(1));
-                    defectEntry.setLocation(resultSet.getString(2));
-                    defectEntry.setQuantity(resultSet.getInt(3));
+                    defectEntry.setItemName(resultSet.getString(2));
+                    defectEntry.setLocation(resultSet.getString(3));
+                    defectEntry.setQuantity(resultSet.getInt(4));
                     break; //Desired defect entry found
                 }
             }
@@ -181,9 +181,9 @@ public class DefectEntryDalController extends DalController<DefectEntry> {
             ResultSet resultSet = stmt.executeQuery();
             while (resultSet.next())
             {
-                savedDefectEntry.setItemName(resultSet.getString(1));
-                savedDefectEntry.setLocation(resultSet.getString(2));
-                savedDefectEntry.setQuantity(resultSet.getInt(3));
+                savedDefectEntry.setItemName(resultSet.getString(2));
+                savedDefectEntry.setLocation(resultSet.getString(3));
+                savedDefectEntry.setQuantity(resultSet.getInt(4));
                 defectEntries.add(savedDefectEntry);
             }
         } catch (SQLException ex) {

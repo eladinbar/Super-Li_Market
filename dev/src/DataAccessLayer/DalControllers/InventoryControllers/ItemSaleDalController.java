@@ -57,6 +57,7 @@ public class ItemSaleDalController extends DalController<ItemSale> {
         try (Connection conn = DriverManager.getConnection(connectionString)) {
             String command = "INSERT OR IGNORE INTO " + tableName + " VALUES (?,?, ?, ?, ?)";
             PreparedStatement stmt = conn.prepareStatement(command);
+
             stmt.setString(1, itemSale.getName());
             stmt.setDouble(2, itemSale.getDiscount());
             stmt.setString(3, itemSale.getStartSaleDate());
@@ -134,12 +135,12 @@ public class ItemSaleDalController extends DalController<ItemSale> {
             ResultSet resultSet = stmt.executeQuery();
             while (resultSet.next())
             {
-                isDesired = resultSet.getString(0).equals(itemSale.getName());
+                isDesired = resultSet.getString(1).equals(itemSale.getName());
                 if (isDesired) {
-                    itemSale.setDiscount(resultSet.getInt(1));
-                    itemSale.setStartSaleDate(resultSet.getString(2));
-                    itemSale.setEndSaleDate(resultSet.getString(3));
-                    itemSale.setItemID(resultSet.getInt(4));
+                    itemSale.setDiscount(resultSet.getInt(2));
+                    itemSale.setStartSaleDate(resultSet.getString(3));
+                    itemSale.setEndSaleDate(resultSet.getString(4));
+                    itemSale.setItemID(resultSet.getInt(5));
                     break; //Desired item sale found
                 }
             }

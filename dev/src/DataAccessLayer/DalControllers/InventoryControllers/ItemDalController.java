@@ -165,18 +165,18 @@ public class ItemDalController extends DalController<Item> {
             ResultSet resultSet = stmt.executeQuery();
             while (resultSet.next())
             {
-                isDesired = resultSet.getInt(0) == item.getItemID();
+                isDesired = resultSet.getInt(1) == item.getItemID();
                 if (isDesired) {
-                    item.setName(resultSet.getString(1));
-                    item.setCostPrice(resultSet.getDouble(2));
-                    item.setSellingPrice(resultSet.getDouble(3));
-                    item.setManufacturerID(resultSet.getInt(4));
-                    item.setMinAmount(resultSet.getInt(5));
-                    item.setShelfQuantity(resultSet.getInt(6));
-                    item.setStorageQuantity(resultSet.getInt(7));
-                    item.setShelfLocation(resultSet.getString(8));
-                    item.setStorageLocation(resultSet.getString(9));
-                    item.setCategoryName(resultSet.getString(10));
+                    item.setName(resultSet.getString(2));
+                    item.setCostPrice(resultSet.getDouble(3));
+                    item.setSellingPrice(resultSet.getDouble(4));
+                    item.setManufacturerID(resultSet.getInt(5));
+                    item.setMinAmount(resultSet.getInt(6));
+                    item.setShelfQuantity(resultSet.getInt(7));
+                    item.setStorageQuantity(resultSet.getInt(8));
+                    item.setShelfLocation(resultSet.getString(9));
+                    item.setStorageLocation(resultSet.getString(10));
+                    item.setCategoryName(resultSet.getString(11));
                     break; //Desired item found
                 }
             }
@@ -198,16 +198,16 @@ public class ItemDalController extends DalController<Item> {
             {
                 isDesired = resultSet.getString(11).equals(item.getCategoryName());
                 if (isDesired) {
-                    savedItem.setName(resultSet.getString(1));
-                    savedItem.setCostPrice(resultSet.getDouble(2));
-                    savedItem.setSellingPrice(resultSet.getDouble(3));
-                    savedItem.setManufacturerID(resultSet.getInt(4));
-                    savedItem.setMinAmount(resultSet.getInt(5));
-                    savedItem.setShelfQuantity(resultSet.getInt(6));
-                    savedItem.setStorageQuantity(resultSet.getInt(7));
-                    savedItem.setShelfLocation(resultSet.getString(8));
-                    savedItem.setStorageLocation(resultSet.getString(9));
-                    savedItem.setCategoryName(resultSet.getString(10));
+                    savedItem.setName(resultSet.getString(2));
+                    savedItem.setCostPrice(resultSet.getDouble(3));
+                    savedItem.setSellingPrice(resultSet.getDouble(4));
+                    savedItem.setManufacturerID(resultSet.getInt(5));
+                    savedItem.setMinAmount(resultSet.getInt(6));
+                    savedItem.setShelfQuantity(resultSet.getInt(7));
+                    savedItem.setStorageQuantity(resultSet.getInt(8));
+                    savedItem.setShelfLocation(resultSet.getString(9));
+                    savedItem.setStorageLocation(resultSet.getString(10));
+                    savedItem.setCategoryName(resultSet.getString(11));
                     items.add(savedItem);
                 }
             }

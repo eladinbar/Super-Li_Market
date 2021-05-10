@@ -205,11 +205,11 @@ public class CategoryDiscountDalController extends DalController<CategoryDiscoun
             ResultSet resultSet = stmt.executeQuery();
             while (resultSet.next())
             {
-                isDesired = resultSet.getString(0).equals(categoryDiscount.getDiscountDate()) &&
-                        resultSet.getString(1).equals(categoryDiscount.getSupplierID()) && resultSet.getString(2).equals(categoryDiscount.getCategoryName());
+                isDesired = resultSet.getString(1).equals(categoryDiscount.getDiscountDate()) &&
+                        resultSet.getString(2).equals(categoryDiscount.getSupplierID()) && resultSet.getString(3).equals(categoryDiscount.getCategoryName());
                 if (isDesired) {
-                    categoryDiscount.setDiscount(resultSet.getInt(3));
-                    categoryDiscount.setItemCount(resultSet.getInt(4));
+                    categoryDiscount.setDiscount(resultSet.getInt(4));
+                    categoryDiscount.setItemCount(resultSet.getInt(5));
                     break; //Desired category discount found
                 }
             }
@@ -229,12 +229,12 @@ public class CategoryDiscountDalController extends DalController<CategoryDiscoun
             ResultSet resultSet = stmt.executeQuery();
             while (resultSet.next())
             {
-                isDesired = resultSet.getString(0).equals(categoryDiscount.getDiscountDate()) &&
-                resultSet.getString(1).equals(categoryDiscount.getSupplierID());
+                isDesired = resultSet.getString(1).equals(categoryDiscount.getDiscountDate()) &&
+                resultSet.getString(2).equals(categoryDiscount.getSupplierID());
                 if (isDesired) {
-                    categoryDiscount.setCategoryName(resultSet.getString(2));
-                    categoryDiscount.setDiscount(resultSet.getInt(3));
-                    categoryDiscount.setItemCount(resultSet.getInt(4));
+                    categoryDiscount.setCategoryName(resultSet.getString(3));
+                    categoryDiscount.setDiscount(resultSet.getInt(4));
+                    categoryDiscount.setItemCount(resultSet.getInt(5));
                     categoryDiscounts.add(savedCategoryDiscount);
                 }
             }
