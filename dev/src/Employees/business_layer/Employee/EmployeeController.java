@@ -498,7 +498,7 @@ public class EmployeeController {
         DalBankBranch dalBank = null;
         for(DalEmployee emp : employees){
             for(DalBankBranch cur : bankBranches){
-                if(emp.getId ().equals ( cur.getId() )){
+                if(emp.getId ().equals ( cur.getEmployeeId() )){
                     dalBank = cur;
                     break;
                 }
