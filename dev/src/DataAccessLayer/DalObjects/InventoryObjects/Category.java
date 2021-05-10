@@ -12,8 +12,8 @@ public class Category extends DalObject<Category> {
     private String name;
     private String parentName;
 
-    public Category(String parentName) {
-        parentName = parentName;
+    public Category(String name) {
+        this.name = name;
     }
 
     public Category(String name, String parentName) throws SQLException {

@@ -77,36 +77,49 @@ public class Category {
         this.subCategories.remove(subCategory);
     }
 
-    public void save() throws SQLException {
-        dalCopyCategory = new DataAccessLayer.DalObjects.InventoryObjects.Category(this.name, this.parentCategory.name);
-        dalCopyCategory.save();
+    public void save() {
+        try {
+            dalCopyCategory = new DataAccessLayer.DalObjects.InventoryObjects.Category(this.name, this.parentCategory.name);
+            dalCopyCategory.save();
+        } catch (SQLException ex) {
+            throw new RuntimeException("Something went wrong.");
+        }
     }
 
-    public void delete() throws SQLException {
-        dalCopyCategory.delete();
+    public void delete() {
+        try {
+            dalCopyCategory.delete();
+        } catch (SQLException ex) {
+            throw new RuntimeException("Something went wrong.");
+        }
     }
 
     public void update() throws SQLException {
         dalCopyCategory.update();
     }
 
-    public boolean find() throws SQLException {
-        dalCopyCategory = new DataAccessLayer.DalObjects.InventoryObjects.Category(name, null);
+    public boolean find() {
+        boolean found;
+        try {
+            dalCopyCategory = new DataAccessLayer.DalObjects.InventoryObjects.Category(name);
 
-        boolean found = dalCopyCategory.find(); //Retrieves DAL Category from the database
-        //Set the fields according to the retrieved data
-        if (found) {
-            this.name = dalCopyCategory.getName();
+            found = dalCopyCategory.find(); //Retrieves DAL Category from the database
+            //Set the fields according to the retrieved data
+            if (found) {
+                this.name = dalCopyCategory.getName();
 
-            List<Item> savedItems = new ArrayList<>();
-            Item item = new Item();
-            item.find(savedItems, name);
-            this.items = savedItems;
+                List<Item> savedItems = new ArrayList<>();
+                Item item = new Item();
+                item.find(savedItems, name);
+                this.items = savedItems;
 
-            if (dalCopyCategory.getParentName() != null) {
-                this.parentCategory = new Category(dalCopyCategory.getName());
-                parentCategory.addSubCategory(this);
+                if (dalCopyCategory.getParentName() != null) {
+                    this.parentCategory = new Category(dalCopyCategory.getName());
+                    parentCategory.addSubCategory(this);
+                }
             }
+        } catch (SQLException ex) {
+            throw new RuntimeException("Something went wrong.");
         }
 
         return found;

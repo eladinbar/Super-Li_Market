@@ -172,56 +172,74 @@ public class Item {
         }
     }
 
-    public void save(String categoryName) throws SQLException {
-        dalCopyItem = new DataAccessLayer.DalObjects.InventoryObjects.Item(ID, name, costPrice, sellingPrice, manufacturerID, minAmount,
-                getShelfQuantity(), getStorageQuantity(), getShelfLocation(), getStorageLocation(), categoryName);
-        dalCopyItem.save();
+    public void save(String categoryName) {
+        try {
+            dalCopyItem = new DataAccessLayer.DalObjects.InventoryObjects.Item(ID, name, costPrice, sellingPrice, manufacturerID, minAmount,
+                    getShelfQuantity(), getStorageQuantity(), getShelfLocation(), getStorageLocation(), categoryName);
+            dalCopyItem.save();
+        } catch (SQLException ex) {
+            throw new RuntimeException("Something went wrong.");
+        }
     }
 
-    public void delete() throws SQLException {
-        dalCopyItem.delete();
+    public void delete() {
+        try {
+            dalCopyItem.delete();
+        } catch (SQLException ex) {
+            throw new RuntimeException("Something went wrong.");
+        }
     }
 
     public void update() throws SQLException {
         dalCopyItem.update();
     }
 
-    public boolean find() throws SQLException {
-        dalCopyItem = new DataAccessLayer.DalObjects.InventoryObjects.Item(ID);
+    public boolean find() {
+        boolean found;
+        try {
+            dalCopyItem = new DataAccessLayer.DalObjects.InventoryObjects.Item(ID);
 
-        boolean found = dalCopyItem.find(); //Retrieves DAL Item from the database
-        //Set the fields according to the retrieved data
-        if (found) {
-            this.name = dalCopyItem.getName();
-            this.costPrice = dalCopyItem.getCostPrice();
-            this.sellingPrice = dalCopyItem.getSellingPrice();
-            this.minAmount = dalCopyItem.getMinAmount();
-            this.manufacturerID = dalCopyItem.getManufacturerID();
-            this.setShelfQuantity(dalCopyItem.getShelfQuantity());
-            this.setStorageQuantity(dalCopyItem.getStorageQuantity());
-            this.setShelfLocation(dalCopyItem.getShelfLocation());
-            this.setStorageLocation(dalCopyItem.getStorageLocation());
+            found = dalCopyItem.find(); //Retrieves DAL Item from the database
+            //Set the fields according to the retrieved data
+            if (found) {
+                this.name = dalCopyItem.getName();
+                this.costPrice = dalCopyItem.getCostPrice();
+                this.sellingPrice = dalCopyItem.getSellingPrice();
+                this.minAmount = dalCopyItem.getMinAmount();
+                this.manufacturerID = dalCopyItem.getManufacturerID();
+                this.setShelfQuantity(dalCopyItem.getShelfQuantity());
+                this.setStorageQuantity(dalCopyItem.getStorageQuantity());
+                this.setShelfLocation(dalCopyItem.getShelfLocation());
+                this.setStorageLocation(dalCopyItem.getStorageLocation());
 
-            //Extract supplier IDs
+                //Extract supplier IDs
+            }
+        } catch (SQLException ex) {
+            throw new RuntimeException("Something went wrong.");
         }
 
         return found;
     }
 
-    public boolean find(List<Item> items, String categoryName) throws SQLException {
-        List<DataAccessLayer.DalObjects.InventoryObjects.Item> dalCopyItems = new ArrayList<>();
-        dalCopyItem = new DataAccessLayer.DalObjects.InventoryObjects.Item(categoryName);
+    public boolean find(List<Item> items, String categoryName) {
+        boolean found;
+        try {
+            List<DataAccessLayer.DalObjects.InventoryObjects.Item> dalCopyItems = new ArrayList<>();
+            dalCopyItem = new DataAccessLayer.DalObjects.InventoryObjects.Item(categoryName);
 
-        boolean found = dalCopyItem.find(dalCopyItems); //Retrieves DAL Items from the database
-        //Set the fields according to the retrieved data
-        if (found) {
-            for (DataAccessLayer.DalObjects.InventoryObjects.Item item : dalCopyItems) {
-                Item savedItem = new Item(item.getItemID(), item.getName(), item.getCostPrice(), item.getSellingPrice(), item.getMinAmount(),
-                        item.getManufacturerID(), null, item.getShelfQuantity(), item.getStorageQuantity(), item.getShelfLocation(), item.getStorageLocation());
-                items.add(savedItem);
+            found = dalCopyItem.find(dalCopyItems); //Retrieves DAL Items from the database
+            //Set the fields according to the retrieved data
+            if (found) {
+                for (DataAccessLayer.DalObjects.InventoryObjects.Item item : dalCopyItems) {
+                    Item savedItem = new Item(item.getItemID(), item.getName(), item.getCostPrice(), item.getSellingPrice(), item.getMinAmount(),
+                            item.getManufacturerID(), null, item.getShelfQuantity(), item.getStorageQuantity(), item.getShelfLocation(), item.getStorageLocation());
+                    items.add(savedItem);
 
-                //Extract supplier IDs
+                    //Extract supplier IDs
+                }
             }
+        } catch (SQLException ex) {
+            throw new RuntimeException("Something went wrong.");
         }
 
         return found;

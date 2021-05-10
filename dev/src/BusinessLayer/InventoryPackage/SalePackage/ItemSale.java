@@ -90,31 +90,44 @@ public class ItemSale extends Sale {
         }
     }
 
-    public void save() throws SQLException {
-         dalCopyItemSale = new DataAccessLayer.DalObjects.InventoryObjects.ItemSale(name, discount,
-                 saleDates.getFirst().toString(), saleDates.getSecond().toString(), item.getID());
-        dalCopyItemSale.save();
+    public void save() {
+        try {
+            dalCopyItemSale = new DataAccessLayer.DalObjects.InventoryObjects.ItemSale(name, discount,
+                    saleDates.getFirst().toString(), saleDates.getSecond().toString(), item.getID());
+            dalCopyItemSale.save();
+        } catch (SQLException ex) {
+            throw new RuntimeException("Something went wrong.");
+        }
     }
 
     public void update() throws SQLException {
         dalCopyItemSale.update();
     }
 
-    public void delete() throws SQLException {
-        dalCopyItemSale.delete();
+    public void delete() {
+        try {
+            dalCopyItemSale.delete();
+        } catch (SQLException ex) {
+            throw new RuntimeException("Something went wrong.");
+        }
     }
 
-    public boolean find() throws SQLException {
-        dalCopyItemSale = new DataAccessLayer.DalObjects.InventoryObjects.ItemSale(name);
+    public boolean find() {
+        boolean found;
+        try {
+            dalCopyItemSale = new DataAccessLayer.DalObjects.InventoryObjects.ItemSale(name);
 
-        boolean found = dalCopyItemSale.find(); //Retrieves DAL Category Sale from the database
-        //Set the fields according to the retrieved data
-        if (found) {
-            this.name = dalCopyItemSale.getName();
-            this.discount = dalCopyItemSale.getDiscount();
-            this.setStartDate(LocalDate.parse(dalCopyItemSale.getStartSaleDate()));
-            this.setEndDate(LocalDate.parse(dalCopyItemSale.getEndSaleDate()));
-            this.setItem(new Item(dalCopyItemSale.getItemID())); //Create new item with primary key to be replaced
+            found = dalCopyItemSale.find(); //Retrieves DAL Category Sale from the database
+            //Set the fields according to the retrieved data
+            if (found) {
+                this.name = dalCopyItemSale.getName();
+                this.discount = dalCopyItemSale.getDiscount();
+                this.setStartDate(LocalDate.parse(dalCopyItemSale.getStartSaleDate()));
+                this.setEndDate(LocalDate.parse(dalCopyItemSale.getEndSaleDate()));
+                this.setItem(new Item(dalCopyItemSale.getItemID())); //Create new item with primary key to be replaced
+            }
+        } catch (SQLException ex) {
+            throw new RuntimeException("Something went wrong.");
         }
 
         return found;
