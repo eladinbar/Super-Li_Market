@@ -100,15 +100,7 @@ public class InventoryController {
         if (!found)
             throw new IllegalArgumentException("No item with ID: " + itemId + " was found in the system.");
 
-        Category savedCategory = new Category(savedItem.getDalCopyItem().getCategoryName());
-        found = savedCategory.find();
-        if (found) {
-            categories.add(savedCategory); //Add to RAM
-            return savedCategory;
-        }
-
-        //!found
-        throw new RuntimeException("Something went wrong.");
+        return getCategory(savedItem.getDalCopyItem().getCategoryName());
     }
 
     public void modifyItemName(int itemId, String newName) {
