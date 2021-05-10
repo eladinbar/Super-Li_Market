@@ -11,8 +11,9 @@ public class DalEmployee {
     private int salary;
     private int sickDays;
     private int educationFund;
+    private boolean employed;
 
-    public DalEmployee( String Id, String role, LocalDate transactionDate, int daysOff, int salary, int sickDays, int educationFund){
+    public DalEmployee( String Id, String role, LocalDate transactionDate, int daysOff, int salary, int sickDays, int educationFund, boolean employed){
         this.Id = Id;
         this.role = role;
         this.transactionDate = transactionDate;
@@ -20,6 +21,7 @@ public class DalEmployee {
         this.salary = salary;
         this.sickDays = sickDays;
         this.educationFund = educationFund;
+        this.employed = employed;
     }
 
     // getters
@@ -53,8 +55,10 @@ public class DalEmployee {
         return educationFund;
     }
 
+    public boolean getEmployed() {
+        return employed;
+    }
     //setters
-
 
     public void setId(String id) {
         Id = id;
@@ -82,5 +86,9 @@ public class DalEmployee {
 
     public void setSickDays(int sickDays) {
         this.sickDays = sickDays;
+    }
+
+    public void setEmployed(boolean employed) {
+        this.employed = employed;
     }
 }

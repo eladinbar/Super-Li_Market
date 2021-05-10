@@ -125,7 +125,7 @@ public class DalShiftTypeController extends DalController {
         String query = "SELECT * FROM "+tableName;
         try {
             PreparedStatement st = conn.prepareStatement(query);
-            ResultSet resultSet = st.executeQuery(query);
+            ResultSet resultSet = st.executeQuery();
             while (resultSet.next()) {
                 shiftTypes.add(new DalShiftType(resultSet.getInt(1),resultSet.getString(2), resultSet.getString(3))
                 );
