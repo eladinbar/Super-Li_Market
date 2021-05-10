@@ -138,9 +138,13 @@ public class CategoryDalController extends DalController<Category> {
             ResultSet resultSet = stmt.executeQuery(query);
             while (resultSet.next())
             {
-                isDesired = resultSet.getString(1).equals(category.getParentName());
+                isDesired = category.getName() == null ? resultSet.getString(1).equals(category.getParentName()) :
+                resultSet.getString(0).equals(category.getName());
                 if (isDesired) {
-                    savedCategory.setName(resultSet.getString(0));
+                    if (category.getName() == null)
+                        savedCategory.setName(resultSet.getString(0));
+                    else
+                        savedCategory.setParentName(resultSet.getString(1));
                     categories.add(savedCategory);
                 }
             }
@@ -148,5 +152,24 @@ public class CategoryDalController extends DalController<Category> {
             throw new SQLException(ex.getMessage());
         }
         return isDesired;
+    }
+
+    @Override
+    public boolean select(List<Category> categories) throws SQLException {
+        Category savedCategory = new Category();
+        try (Connection conn = DriverManager.getConnection(connectionString)) {
+            String query = "SELECT * FROM " + tableName;
+            PreparedStatement stmt = conn.prepareStatement(query);
+            ResultSet resultSet = stmt.executeQuery(query);
+            while (resultSet.next())
+            {
+                savedCategory.setName(resultSet.getString(0));
+                savedCategory.setParentName(resultSet.getString(1));
+                categories.add(savedCategory);
+            }
+        } catch (SQLException ex) {
+            throw new SQLException(ex.getMessage());
+        }
+        return true;
     }
 }

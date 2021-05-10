@@ -563,6 +563,8 @@ public class InventoryController {
     //-------------------------------------------------------------------------Report functions
 
     public List<Item> inventoryReport() {
+        loadCategories(); //Ensure all categories are loaded into the system
+
         List<Item> inventoryReportList = new ArrayList<>();
         for (Category category : categories) {
             inventoryReportList.addAll(category.getItems());
@@ -572,6 +574,22 @@ public class InventoryController {
         return inventoryReportList;
     }
 
+    private void loadCategories() {
+        List<Category> savedCategories = new ArrayList<>();
+        Category loadCategory = new Category();
+        loadCategory.find(savedCategories);
+
+        for (Category category : savedCategories) {
+            for (Category someCategory : savedCategories) {
+                if (category.getName().equals(someCategory.getParentCategory().getName()))
+                    category.addSubCategory(someCategory);
+                else if (category.getParentCategory().getName().equals(someCategory.getName()))
+                    category.setParentCategory(someCategory);
+            }
+            categories.add(category);
+        }
+    }
+
     public List<Item> categoryReport(String categoryName) {
         Category category = getCategory(categoryName);
         List<Item> inventoryCategoryReportList = new ArrayList<>(category.getItems());
@@ -579,6 +597,8 @@ public class InventoryController {
     }
 
     public List<Item> itemShortageReport() {
+        loadCategories(); //Ensure all categories are loaded into the system
+
         List<Item> shortageReportList = new ArrayList<>();
         for (Category category : categories) {
             for (Item item : category.getItems()) {
@@ -595,6 +615,8 @@ public class InventoryController {
     }
 
     public List<DefectEntry> defectsReport(LocalDate fromDate, LocalDate toDate) {
+        loadDefects(); //Ensure all defect entries are loaded into the system
+
         List<DefectEntry> defectEntryList = new ArrayList<>();
         for (DefectEntry defectEntry : defectsLogger.getDefectEntries()) {
             LocalDate entryDate = defectEntry.getEntryDate();
@@ -602,5 +624,11 @@ public class InventoryController {
                 defectEntryList.add(defectEntry);
         }
         return defectEntryList;
+    }
+
+    private void loadDefects() {
+        List<DefectEntry> savedDefectEntries = new ArrayList<>();
+        DefectEntry loadDefectEntry = new DefectEntry();
+        loadDefectEntry.find(savedDefectEntries);
     }
 }

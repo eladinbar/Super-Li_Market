@@ -1,6 +1,7 @@
 package DataAccessLayer.DalControllers;
 
 import DataAccessLayer.DalObjects.DalObject;
+import DataAccessLayer.DalObjects.InventoryObjects.Category;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -90,4 +91,11 @@ public abstract class DalController<T extends DalObject<T>>{
     public boolean select(T dalObject, List<T> dalObjects) throws SQLException {
          return false;
     }
+
+    /** <summary>
+     A select command function to extract all objects from database into RAM.
+     </summary>
+     <returns>Returns a DalObject that extends DalObject<T>.</returns>
+     * @return*/
+    public abstract boolean select(List<T> dalObjects) throws SQLException;
 }
