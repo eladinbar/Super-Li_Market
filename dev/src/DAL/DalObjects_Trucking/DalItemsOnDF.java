@@ -7,6 +7,7 @@ public class DalItemsOnDF implements DalObject{
 
     public  DalItemsOnDF (int DFID,int itemID,int amount)
     {
+        this.DFID=DFID;
         this.itemID=itemID;
         this.amount=amount;
     }

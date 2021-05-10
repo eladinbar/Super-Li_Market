@@ -95,7 +95,6 @@ public class DalDriverController extends DalController {
             PreparedStatement st = conn.prepareStatement(query);
             ResultSet resultSet = st.executeQuery();
             while (resultSet.next()) {
-                boolean completed = resultSet.getString(4).equals("true");
                 drivers.add(new DalDriver(resultSet.getString(1), resultSet.getString(2),
                         resultSet.getString(3)));
             }

@@ -2,9 +2,6 @@ package Trucking.Business_Layer_Trucking.Delivery;
 
 
 import DAL.*;
-import DAL.DalControllers_Trucking.*;
-import DAL.DalItemsOnDF;
-import DAL.DalObjects_Trucking.*;
 
 import javax.management.openmbean.KeyAlreadyExistsException;
 import java.sql.SQLException;
@@ -241,14 +238,13 @@ public class DeliveryController {
         if (!sites.containsKey(siteID)) {
             throw new NoSuchElementException("SiteID does not exist");
         } else {
-            Site s=sites.remove(siteID);
-
-            DalSiteController.getInstance().delete(new DalSite (siteID,s.getName(),s.getCity(),s.getDeliveryArea(),s.getContactName(),s.getPhoneNumber()));
             for (Map.Entry<Integer, Item> entry : items.entrySet()) {
                 if (entry.getValue().getOriginSiteId() == siteID) {
                     removeItemFromPool(entry.getKey());
                 }
             }
+            Site s=sites.remove(siteID);
+            DalSiteController.getInstance().delete(new DalSite(siteID,s.getName(),s.getCity(),s.getDeliveryArea(),s.getContactName(),s.getPhoneNumber()));
             return true;
         }
 
@@ -400,7 +396,7 @@ public class DeliveryController {
                 throw new IllegalStateException("Cant delete item when there is a demand with it");
         }
         Item i=items.remove(item);
-        DalItemController.getInstance().delete(new DalItem (item,i.getWeight(),i.getName(),i.getOriginSiteId()));
+        DalItemController.getInstance().delete(new DalItem(item,i.getWeight(),i.getName(),i.getOriginSiteId()));
     }
 
 
@@ -560,9 +556,9 @@ public class DeliveryController {
                 throw new InputMismatchException("the demand has 2 delivery area in it\n" +
                         "you may remove it through menu or you can procced.\n" +
                         "please notice, if you proceed");
-
+            DalDemandController.getInstance().insert(new DalDemand(itemId, amount, site));
         }
-        DalDemandController.getInstance().insert(new DalDemand (itemId, amount, site));
+
 
 
     }
@@ -647,6 +643,7 @@ public class DeliveryController {
         activeTruckingReports.remove(trID);
         activeDeliveryForms.remove(trID);
         activeDeliveryForms.remove(getDeliveryForms(trID));
+        getTruckReport(trID).setCompleted();
         updateTruckingReportDB(getTruckReport(trID));
     }
 
@@ -1046,7 +1043,7 @@ public class DeliveryController {
             return 1;
     }
 
-    public void upload() throws SQLException { // TODO need to change new to singleton usage
+    public void upload() throws SQLException {
         DalItemController dalItemController = DalItemController.getInstance();
         DalDemandController dalDemandController = DalDemandController.getInstance();
         DalItemsOnDFController itemsOnDF = DalItemsOnDFController.getInstance();
@@ -1064,7 +1061,6 @@ public class DeliveryController {
         LinkedList<DalDemand> dalDemands = dalDemandController.load();
         for (DalDemand demand : dalDemands) {                 // demand list create
             demands.add(new Demand(demand));
-
         }
         for (DalTruckingReport dr : d_truckingReports) {
             activeTruckingReports.put(dr.getID(), new TruckingReport(dr));

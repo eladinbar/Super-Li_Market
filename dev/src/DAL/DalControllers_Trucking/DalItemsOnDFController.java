@@ -13,7 +13,7 @@ public class DalItemsOnDFController extends DalController {
 
     private DalItemsOnDFController(){//TODO - Check when tables created
         super();
-        this.tableName="ItemsOnDF";
+        this.tableName="ItemsOnDFs";
         this.columnNames=new String[3];
         columnNames[0]="DFID";
         columnNames[1]="itemID";columnNames[2]="amount";}
@@ -108,7 +108,7 @@ public class DalItemsOnDFController extends DalController {
                 +"amount INTEGER,"
                 +"FOREIGN KEY (DFID) REFERENCES DeliveryForms(DFID),"
                 +"FOREIGN KEY (itemID) REFERENCES Items (ID) ON DELETE NO ACTION ON UPDATE CASCADE,"
-                +"PRIMARY KEY (itemID));";
+                +"PRIMARY KEY (itemID , DFID));";
         try {
             PreparedStatement st=conn.prepareStatement(query);
 

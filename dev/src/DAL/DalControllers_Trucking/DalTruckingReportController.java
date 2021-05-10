@@ -1,7 +1,4 @@
-package DAL.DalControllers_Trucking;
-
-import DAL.DalController;
-import DAL.DalObjects_Trucking.DalTruckingReport;
+package DAL;
 
 
 import java.sql.*;
@@ -23,9 +20,11 @@ public class DalTruckingReportController extends DalController {
 
     }
 
-    public static DalTruckingReportController getInstance() {
-        if (controller==null)
-        controller= new DalTruckingReportController();
+    public static DalTruckingReportController getInstance() throws SQLException {
+        if (controller==null) {
+            controller = new DalTruckingReportController();
+            controller.createTable();
+        }
         return controller;
     }
 
@@ -33,17 +32,15 @@ public class DalTruckingReportController extends DalController {
         int completed=0;
         if (truckingReport.isCompleted())
             completed=1;
-        Connection conn= DriverManager.getConnection("jdbc:sqlite:/D:\\Year2\\ניתוצ\\עבודה 2\\database.db");
-        //String query= "INSERT INTO "+tableName+"("+columnNames[0]+columnNames[1]+columnNames[2]+columnNames[3]
-        //        +columnNames[4]+columnNames[5]+columnNames[6]+columnNames[7]+") VALUES (? ? ? ? ? ? ? ?)";
+        Connection conn= DriverManager.getConnection(connection);
         String query="INSERT INTO "+tableName+" VALUES "+"(?,?,?,?,?,?,?,?)";
+        String year=truckingReport.getDate().toString();
         try{
             PreparedStatement st=conn.prepareStatement(query);
             st.setInt(1,truckingReport.getID());
             st.setString(2,new Time(truckingReport.getLeavingHour().getHour(),truckingReport.getLeavingHour().getMinute(),
                     truckingReport.getLeavingHour().getSecond()).toString());
-            st.setString(3,new Date(truckingReport.getDate().getYear(),truckingReport.getDate().getMonth().getValue()
-                    ,truckingReport.getDate().getDayOfYear()).toString());
+            st.setString(3,year);
             st.setString(4,truckingReport.getTruckNumber());
             st.setString(5,truckingReport.getDriverID());
             st.setInt(6,truckingReport.getOrigin());
@@ -68,7 +65,7 @@ public class DalTruckingReportController extends DalController {
         int completed=0;
         if (truckingReport.isCompleted())
             completed=1;
-        Connection conn=DriverManager.getConnection("jdbc:sqlite:/D:\\Year2\\ניתוצ\\עבודה 2\\database.db");
+        Connection conn=DriverManager.getConnection(connection);
         String query="UPDATE "+tableName +" SET "+columnNames[1]+"=?,"+
                 columnNames[2]+"=?,"+columnNames[3]+"=?,"+columnNames[4]+"=?,"+columnNames[5]+"=?,"+columnNames[6]+"=?,"+
                 columnNames[7]+"=?  WHERE ("+columnNames[0]+"=?)";
@@ -98,7 +95,7 @@ public class DalTruckingReportController extends DalController {
     }
 
     public boolean delete(DalTruckingReport truckingReport) throws SQLException {
-        Connection conn=DriverManager.getConnection("jdbc:sqlite:/D:\\Year2\\ניתוצ\\עבודה 2\\database.db");
+        Connection conn=DriverManager.getConnection(connection);
         String query="DELETE FROM "+tableName+ " WHERE"+columnNames[0]+"=?";
         try {
             PreparedStatement st=conn.prepareStatement(query);
@@ -117,7 +114,7 @@ public class DalTruckingReportController extends DalController {
     public LinkedList<DalTruckingReport> load () throws SQLException// Select From DB
     {
         LinkedList<DalTruckingReport> reports=new LinkedList<>();
-        Connection conn=DriverManager.getConnection("jdbc:sqlite:/D:\\Year2\\ניתוצ\\עבודה 2\\database.db");
+        Connection conn=DriverManager.getConnection(connection);
         String query="SELECT * FROM "+tableName;
         try {
             PreparedStatement st=conn.prepareStatement(query);
@@ -142,7 +139,7 @@ public class DalTruckingReportController extends DalController {
         return reports;
     }
     public boolean createTable() throws SQLException {
-        Connection conn = DriverManager.getConnection("jdbc:sqlite:/D:\\Year2\\ניתוצ\\עבודה 2\\database.db");
+        Connection conn = DriverManager.getConnection(connection);
         String query = "CREATE TABLE IF NOT EXISTS TruckingReports("
                 +"ID INTEGER,"
                 +"leavingHour TEXT,"

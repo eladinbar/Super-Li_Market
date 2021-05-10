@@ -6,12 +6,10 @@ import Trucking.Business_Layer_Trucking.Resources.Driver;
 
 import javax.management.openmbean.KeyAlreadyExistsException;
 import java.sql.SQLException;
-import java.time.DateTimeException;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.*;
 import java.util.Scanner;
-import java.util.prefs.PreferenceChangeListener;
 
 public class Menu_Printer {
     PresentationController pc;
@@ -31,53 +29,53 @@ public class Menu_Printer {
     //<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< Menus >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>.
 
 
-    public void mainMenu(Scanner scanner) {
+    public void mainMenu() {
+        /*try {
+            pc.upload();
+        }catch (SQLException sqlException){
+            System.out.println(sqlException.getMessage());
+        }*/
+        Scanner scanner = new Scanner(System.in);
+        scanner.useDelimiter("[\\,\\n\\r]+");
         boolean keepGoing = true;
         while (keepGoing) {
             System.out.println("\n\nWelcome to Trucking Menu!\nplease choose the option you'd like:");
-            int spot =1;
+            int spot = 1;
             System.out.println(spot + ".\tAdd/Edit Trucking Reports");
             spot++;
             System.out.println(spot + ".\tCurrent Status");
             spot++;
-            System.out.println(spot + ".\tManager Options");
-
+            System.out.println(spot + ".\tManager Options - Drivers and Trucks");
+            spot++;
 
             System.out.println(spot + ".\tGo back To Main Menu");
             int choose = getIntFromUserMain(scanner);
+            switch (choose) {
+                case 1:
+                    while (truckingReportMenu(scanner)) ;
+                    break;
+                case 2:
+                    while (currentStatusMenu(scanner)) ;
+                    break;
+                case 3:
+                    while (managerDriverAndTrucks(scanner)) ;
+                    break;
+                case 4:
+                    keepGoing = false;
+                    break;
 
-            boolean inside = true;
-            while (inside) {
-                switch (choose) {
-                    case 1:
-                        while (truckingReportMenu(scanner));
-                        break;
-                    case 2:
-                        while(currentStatusMenu(scanner));
-                        break;
-                    case 3:
-                        while(managerDriverAndTrucks(scanner));
-                        break;
-                    case 4:
-                        inside =false;
-                        break;
-
-                    default:
-                        System.out.println("option is out of bounds, please try again");
-                        break;
-                }
-
+                default:
+                    System.out.println("option is out of bounds, please try again");
+                    break;
             }
-
-
 
 
         }
 
     }
 
-    private boolean managerDriverAndTrucks(Scanner scanner){
-        int spot =1;
+    private boolean managerDriverAndTrucks(Scanner scanner) {
+        int spot = 1;
         System.out.println(spot + "\tAdd new Truck to the System");
         spot++;
 
@@ -96,10 +94,11 @@ public class Menu_Printer {
         spot++;
         System.out.println(spot + ".\tRemove Demand from the system");
         spot++;
+
         System.out.println(spot + ".\tGo back To Main Menu");
 
         int chose = getIntFromUserMain(scanner);
-        switch (chose){
+        switch (chose) {
             case 1:
                 try {
                     addNewTruck(scanner);
@@ -134,8 +133,8 @@ public class Menu_Printer {
             case 5:
                 try {
                     removeItemFromPool(scanner);
-                } catch (ReflectiveOperationException |SQLException re) {
-                    System.out.println(re.getMessage());
+                } catch (ReflectiveOperationException |SQLException e) {
+                    System.out.println(e.getMessage());
                 }
                 break;
             case 6:
@@ -152,6 +151,7 @@ public class Menu_Printer {
                 } catch (ReflectiveOperationException |SQLException e) {
                     System.out.println(e.getMessage());
                 }
+                break;
 
 
             case 8:
@@ -165,8 +165,8 @@ public class Menu_Printer {
 
     }
 
-    private boolean currentStatusMenu(Scanner scanner){
-        int spot =1;
+    private boolean currentStatusMenu(Scanner scanner) {
+        int spot = 1;
         System.out.println(spot + ".\tShow Drivers");
         spot++;
         System.out.println(spot + ".\tShow Trucks");
@@ -180,7 +180,7 @@ public class Menu_Printer {
         System.out.println(spot + ".\tGo back To Main Menu");
 
         int chose = getIntFromUserMain(scanner);
-        switch (chose){
+        switch (chose) {
             case 1:
                 printDrivers();
                 break;
@@ -207,18 +207,17 @@ public class Menu_Printer {
     }
 
 
-
-    private boolean truckingReportMenu(Scanner scanner){
-        int spot =1;
+    private boolean truckingReportMenu(Scanner scanner) {
+        int spot = 1;
         System.out.println(spot + ".\tCreate new Trucking Report");
         spot++;
         System.out.println(spot + "\tUpdate a Trucking report and its Delivery Form's leaving weight");
         spot++;
         System.out.println(spot + "\tGo back To Trucking Main Menu");
-        spot ++;
-        System.out.print("please choose the option you'd like: " );
+        spot++;
+        System.out.print("please choose the option you'd like: ");
         int chose = getIntFromUserMain(scanner);
-        switch (chose){
+        switch (chose) {
             case 1:
                 try {
                     pc.CreateReport();
@@ -227,20 +226,20 @@ public class Menu_Printer {
                     chooseDemands(scanner);
                     LocalDate date = pc.getCurrentTruckReport().getDate();
                     LocalTime shift = pc.getCurrTruckReport().getLeavingHour();
-                    chooseTruckAndDriver(scanner, date,shift);
+                    chooseTruckAndDriver(scanner, date, shift);
 
                     pc.saveReport();
 
 
-                } catch (ReflectiveOperationException |SQLException re) {
-                    System.out.println(re.getMessage());
+                } catch (ReflectiveOperationException| SQLException e) {
+                    System.out.println(e.getMessage());
                 }
                 break;
             case 2:
                 try {
                     updateDeliveryForm(scanner);
-                } catch (ReflectiveOperationException |SQLException e) {
-                    System.out.println(e.getMessage());
+                } catch (ReflectiveOperationException re) {
+                    System.out.println(re.getMessage());
                 }
                 break;
             case 3:
@@ -252,7 +251,6 @@ public class Menu_Printer {
         return true;
 
 
-
     }
 
 
@@ -260,10 +258,14 @@ public class Menu_Printer {
 
     private void printTrucks() {
         LinkedList<FacadeTruck> trucks = pc.getTrucks();
-        for (FacadeTruck truck : trucks) {
-            System.out.println("Trucks License Number: " + truck.getLicenseNumber() +
-                    "\nmodel: " + truck.getModel() + " maxWeight: " + truck.getMaxWeight());
+        if (trucks == null || trucks.isEmpty())
+            System.out.println("no Trucks in the system yet");
+        else {
+            for (FacadeTruck truck : trucks) {
+                System.out.println("Trucks License Number: " + truck.getLicenseNumber() +
+                        "\nmodel: " + truck.getModel() + " maxWeight: " + truck.getMaxWeight());
 
+            }
         }
     }
 
@@ -283,7 +285,7 @@ public class Menu_Printer {
 
     private void printDrivers() {
         LinkedList<FacadeDriver> drivers = pc.getDrivers();
-        if (drivers == null) System.out.println("no Drivers in the system yet");
+        if (drivers == null || drivers.isEmpty()) System.out.println("no Drivers in the system yet");
         else {
             for (FacadeDriver facadeDriver : drivers) {
                 System.out.print("\t");
@@ -293,36 +295,35 @@ public class Menu_Printer {
     }
 
 
-
-
     private void printDateOptions(LocalDate date, HashMap<Integer, LinkedList<String>> shiftAndDrivers, int spot) {
-        for (Map.Entry<Integer, LinkedList<String>> entry: shiftAndDrivers.entrySet()){
-            System.out.println(spot+"./t"+date + "\tshift start time:"+ turnShiftToTimes(entry.getKey()));
-            System.out.println("The Drivers available for this shift:");
-            for (String id: entry.getValue()){
+        for (Map.Entry<Integer, LinkedList<String>> entry : shiftAndDrivers.entrySet()) {
+            System.out.println(spot + ".\t" + date + "\tshift start time:" + turnShiftToTimes(entry.getKey()));
+            System.out.println("\nThe Drivers working in this this shift:");
+            for (String id : entry.getValue()) {
                 printDriverDetails(pc.getDriver(id));
             }
+            System.out.println("\n\n");
 
         }
 
     }
 
-    private void printDriverDetails(FacadeDriver driver){
+    private void printDriverDetails(FacadeDriver driver) {
         System.out.println(driver.getName() + ":\n\t" + "Driver ID: " + driver.getID() +
                 "\tLicense Type: " + driver.getLicenseType());
     }
 
 
-
     // <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< methods >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
-    private LocalTime turnShiftToTimes(int shift){
-        if (shift == 1)
-            return LocalTime.of(6,0);
+    private LocalTime turnShiftToTimes(int shift) {
+        if (shift == 0)
+            return LocalTime.of(6, 0);
         else
-            return LocalTime.of(14,0);
+            return LocalTime.of(14, 0);
 
     }
+
     private void showOldDeliveryForm() {
         LinkedList<FacadeTruckingReport> truckingReports = pc.getOldTruckingReport();
         if (truckingReports.isEmpty())
@@ -336,7 +337,7 @@ public class Menu_Printer {
                 }
                 System.out.println(spot + ")\tTrucking report ID: " + tr.getID() + "\nOrigin site:" + tr.getOrigin() + "\tDate" + tr.getDate() +
                         "\tLeaveing Hour:" + tr.getLeavingHour() + "\nreplaced:" + rep);
-                System.out.println("related delivery form");
+
 
                 spot++;
             }
@@ -364,14 +365,14 @@ public class Menu_Printer {
         }
     }
 
-    private void checkAvailableTrucksAndDrivers(LocalDate date,  LocalTime shift) throws ReflectiveOperationException {
-        if (pc.getAvailableTrucks(date,shift).isEmpty())
+    private void checkAvailableTrucksAndDrivers(LocalDate date, LocalTime shift) throws ReflectiveOperationException {
+        if (pc.getAvailableTrucks(date, shift).isEmpty())
             throw new ReflectiveOperationException("no trucks left to deliver with, please try later");
         if (pc.getAvailableDrivers(date, shift).isEmpty())
             throw new ReflectiveOperationException("no drivers left to deliver with, please try later");
     }
 
-    private void removeDemandFromPool(Scanner scanner) throws ReflectiveOperationException, SQLException {
+    private void removeDemandFromPool(Scanner scanner) throws ReflectiveOperationException,SQLException {
         LinkedList<FacadeDemand> demands = pc.showDemands();
         demands = sortDemandsBySite(demands);
         printDemands(demands);
@@ -384,44 +385,46 @@ public class Menu_Printer {
 
     }
 
-    private LinkedList<String> chooseDate(Scanner scanner) throws  IllegalArgumentException, ReflectiveOperationException, SQLException {
+    private LinkedList<String> chooseDate(Scanner scanner) throws IllegalArgumentException, ReflectiveOperationException, SQLException {
 
         HashMap<LocalDate, HashMap<Integer, LinkedList<String>>> daysAndDrivers = pc.getDaysAndDrivers();
-        int spot =1;
-        if (daysAndDrivers.isEmpty()){
+        int spot = 1;
+        if (daysAndDrivers.isEmpty()) {
             throw new ReflectiveOperationException("no possible dates to deliver.");
         }
-        for (Map.Entry<LocalDate, HashMap<Integer, LinkedList<String>>> entry: daysAndDrivers.entrySet()){
-            printDateOptions(entry.getKey(),entry.getValue() ,spot);
-            spot ++;
+        for (Map.Entry<LocalDate, HashMap<Integer, LinkedList<String>>> entry : daysAndDrivers.entrySet()) {
+            printDateOptions(entry.getKey(), entry.getValue(), spot);
+            spot++;
 
         }
+        System.out.println("please insert your choice here or -1 to quit");
+
         int chose = getIntFromUser(scanner);
-        while (chose <1 || chose > daysAndDrivers.size())
+        while (chose < 1 || chose > daysAndDrivers.size()) {
+            System.out.println("option is out of bounds, please try again");
             chose = getIntFromUser(scanner);
+        }
         LocalDate toInsert;
-        spot =1;
-        for (Map.Entry<LocalDate, HashMap<Integer, LinkedList<String>>> entry: daysAndDrivers.entrySet()){
+        spot = 1;
+        for (Map.Entry<LocalDate, HashMap<Integer, LinkedList<String>>> entry : daysAndDrivers.entrySet()) {
             if (spot == chose) {
                 System.out.println("The date you choose: " + entry.getKey());
                 LocalTime time = null;
                 int c;
-                if (entry.getValue().size()>1){
+                if (entry.getValue().size() > 1) {
                     System.out.print("please choose the shift for this date:\n1.\tmorning shift\n2.\tafter-noon shift");
                     c = getIntFromUser(scanner);
-                    while (c<1 || c> 2) {
+                    while (c < 1 || c > 2) {
                         c = getIntFromUser(scanner);
                     }
-                    c = c-1;
-                    time  = turnShiftToTimes(c);
+                    c = c - 1;
+                    time = turnShiftToTimes(c);
 
 
-
-                }
-                else{
-                    c =0;
-                    for (Map.Entry<Integer,LinkedList<String >> shift: entry.getValue().entrySet()){
-                        c= shift.getKey();
+                } else {
+                    c = 0;
+                    for (Map.Entry<Integer, LinkedList<String>> shift : entry.getValue().entrySet()) {
+                        c = shift.getKey();
                     }
                     time = turnShiftToTimes(c);
                 }
@@ -432,13 +435,13 @@ public class Menu_Printer {
 
 
             }
+            spot ++;
 
         }
 
         return null;
 
     }
-
 
 
     private void removeSiteFromPool(Scanner scanner) throws ReflectiveOperationException {
@@ -457,7 +460,7 @@ public class Menu_Printer {
         int siteID = sites.get(chose - 1).getSiteID();
         try {
             pc.removeSiteFromPool(siteID);
-        } catch (NoSuchElementException | IllegalStateException |SQLException e) {
+        } catch (NoSuchElementException | IllegalStateException|SQLException e) {
             System.out.println(e.getMessage());
         }
 
@@ -502,7 +505,7 @@ public class Menu_Printer {
                     System.out.print("please choose the amount you'd like to Deliver:");
                     amount = getIntFromUser(scanner);
                     pc.addDemandToSystem(itemId, site, amount);
-                } catch (NoSuchElementException |SQLException ne) {
+                } catch (NoSuchElementException|SQLException ne) {
                     System.out.println(ne.getMessage());
                 }
 
@@ -517,9 +520,7 @@ public class Menu_Printer {
     }
 
 
-
-
-    private void removeItemFromPool(Scanner scanner) throws ReflectiveOperationException,SQLException {
+    private void removeItemFromPool(Scanner scanner) throws ReflectiveOperationException, SQLException {
         LinkedList<FacadeItem> items = pc.getAllItems();
         int counter = 1;
         for (FacadeItem item : items) {
@@ -531,7 +532,12 @@ public class Menu_Printer {
         if (choice < 1 || choice > items.size()) {
             System.out.println("option is out of bounds, going back to menu");
         } else {
-            pc.RemoveItemFromPool(items.get(choice - 1).getID());
+            try{
+                pc.RemoveItemFromPool(items.get(choice - 1).getID());
+
+            }catch (IllegalStateException e){
+                throw new ReflectiveOperationException(e.getMessage());
+            }
         }
     }
 
@@ -562,7 +568,7 @@ public class Menu_Printer {
             try {
                 pc.addItem(weight, name, siteID);
                 con = false;
-            } catch (KeyAlreadyExistsException | NoSuchElementException |SQLException ke) {
+            } catch (KeyAlreadyExistsException | NoSuchElementException|SQLException ke) {
                 System.out.println(ke.getMessage());
             }
         }
@@ -593,7 +599,7 @@ public class Menu_Printer {
             try {
                 pc.addSite(city, deliveryArea, phoneNumber, contactName, name);
                 con = false;
-            } catch (KeyAlreadyExistsException |SQLException e) {
+            } catch (KeyAlreadyExistsException|SQLException e) {
                 System.out.println(e.getMessage());
             }
         }
@@ -623,7 +629,7 @@ public class Menu_Printer {
             try {
                 pc.addTruck(model, licenseNumber, weightNeto, maxWeight);
                 con = false;
-            } catch (KeyAlreadyExistsException |SQLException e) {
+            } catch (KeyAlreadyExistsException|SQLException e) {
                 System.out.println(e.getMessage());
             }
         }
@@ -667,14 +673,14 @@ public class Menu_Printer {
             pc.addDriver(ID, name, licenseType);
 
 
-        } catch (KeyAlreadyExistsException |SQLException e) {
+        } catch (KeyAlreadyExistsException|SQLException e) {
             System.out.println(e.getMessage());
             System.out.println("");
         }
 
     }
 
-    private void chooseDemands(Scanner scanner) throws ReflectiveOperationException,SQLException{
+    private void chooseDemands(Scanner scanner) throws ReflectiveOperationException {
         boolean con = true;
         while (con) {
             try {
@@ -704,7 +710,7 @@ public class Menu_Printer {
                         con = pc.addDemandToReport(itemNumber, amount, siteID);
 
                     }
-                } catch (IllegalStateException e) { // different delivery area
+                } catch (IllegalStateException|SQLException e) { // different delivery area
                     System.out.println("you chose different delivery area from the currents," +
                             " would you like to continue? y for yes, n for not");
                     String answer = getStringFromUser(scanner);
@@ -738,8 +744,8 @@ public class Menu_Printer {
                                     int siteID = demands.get(chose - 1).getSite(); // destination to delivery to
                                     try {
                                         pc.continueAddDemandToReport(itemNumber, amount, siteID);
-                                    } catch (IllegalArgumentException illegalArgumentException) {
-                                        System.out.println(illegalArgumentException.getMessage());
+                                    } catch (IllegalArgumentException|SQLException exception) {
+                                        System.out.println(exception.getMessage());
                                     }
 
                                 }
@@ -759,7 +765,7 @@ public class Menu_Printer {
                 }
 
 
-            } catch (NoSuchElementException ne) {
+            } catch (NoSuchElementException|SQLException ne) {
                 System.out.println(ne.getMessage());
                 con = false;
             }
@@ -778,14 +784,18 @@ public class Menu_Printer {
         }
     }
 
-    private void chooseTruckAndDriver(Scanner scanner, LocalDate date , LocalTime shift) throws ReflectiveOperationException,SQLException {
+    private void chooseTruckAndDriver(Scanner scanner, LocalDate date, LocalTime shift) throws ReflectiveOperationException {
         System.out.println("please choose the Truck you'd like to deliver it with:");
         String truckNumber = chooseTruck(scanner, date, shift);
-
-        pc.chooseTruck(truckNumber,date,shift);
-        String driverID = chooseDriver(scanner,date,shift);
-        pc.chooseDriver(driverID,date,shift);
-
+        try {
+            pc.chooseTruck(truckNumber, date, shift);
+            String driverID = chooseDriver(scanner, date, shift);
+            pc.chooseDriver(driverID, date, shift);
+        }
+        catch (SQLException e)
+        {
+            System.out.println(e.getMessage());
+        }
 
        /* LinkedList<FacadeTruck> trucks =  pc.getAvailableTrucks();
         int weight=pc.getWeightOfCurrReport();
@@ -845,51 +855,16 @@ public class Menu_Printer {
     }
 
 
-
     private LinkedList<FacadeDemand> sortDemandsBySite(LinkedList<FacadeDemand> demands) {
         return pc.sortDemandsBySite(demands);
     }
 
-    private void removeSite(Scanner scanner) throws ReflectiveOperationException ,SQLException{
-        boolean con = true;
-        while (con) {
-            LinkedList<FacadeSite> sites = pc.showCurrentSites();
-            System.out.println("\nchoose a site you'd like to remove\n");
-            int spot = 1;
-            for (FacadeSite site : sites) {
-                System.out.println(spot + ")Site Name: " + site.getName() + "\tSite ID: " + site.getSiteID() + "\tSite city: " + site.getCity() +
-                        "\tSite: Delivery area: " + site.getDeliveryArea() + "\n products:");
-                LinkedList<FacadeDemand> siteDemands = pc.getCurrentDemandsBySite(site);
-                for (FacadeDemand demand : siteDemands) {
 
-                    System.out.println(pc.getItemName(demand.getItemID()) + ": " +
-                            "item ID: " + demand.getItemID() + "\tamount: " + demand.getAmount());
-                }
-                spot++;
-            }
-            int siteID = getIntFromUser(scanner);
-            while (siteID < 1 || siteID > sites.size()) {
-                System.out.println("option out of bounds, please try again");
-                siteID = getIntFromUser(scanner);
-            }
-            siteID = sites.get(siteID - 1).getSiteID();
-            try {
-                con = pc.removeDestination(siteID);
-                if (pc.showCurrentSites().isEmpty()) {
-                    throw new ReflectiveOperationException("no more demands left in this report, aborting..");
-                }
-            } catch (NoSuchElementException ne) {
-                System.out.println(ne.getMessage());
 
-            }
-
-        }
-    }
-
-    void updateDeliveryForm(Scanner scanner) throws ReflectiveOperationException,SQLException {
-        LinkedList<FacadeTruckingReport> truckingReports = pc.getActiveTruckingReports();
+    void updateDeliveryForm(Scanner scanner) throws ReflectiveOperationException {
+        LinkedList<FacadeTruckingReport> truckingReports = pc.showTodayReports();
         if (truckingReports.isEmpty()) {
-            throw new ReflectiveOperationException("There is no active reports to update");
+            throw new ReflectiveOperationException("There is no active reports for today to update");
         }
         System.out.println("please choose the report you'd like to advance");
         int spot = 1;
@@ -931,14 +906,14 @@ public class Menu_Printer {
         int weight = getIntFromUser(scanner);
         try {
             pc.updateDeliveryFormRealWeight(ftr.getID(), fdf.getID(), weight);
-        } catch (IllegalStateException |SQLException e) {
+        } catch (IllegalStateException| SQLException e) {
             System.out.println(e.getMessage());
             rePlanAfterWeight(scanner, ftr, weight, fdf);
         }
 
     }
-    // TODO need to deal with Truck report change - id in Delivery forms.
-    private void rePlanAfterWeight(Scanner scanner, FacadeTruckingReport tr, int weight, FacadeDeliveryForm fdf) throws ReflectiveOperationException,SQLException {
+
+    private void rePlanAfterWeight(Scanner scanner, FacadeTruckingReport tr, int weight, FacadeDeliveryForm fdf) throws ReflectiveOperationException {
 
         System.out.println("Welcome to replan menu! please choose the option you'd like to re plan the report with:");
         int spot = 1;
@@ -962,9 +937,16 @@ public class Menu_Printer {
 
             // remove site and add new items
             case 2: {
-                removeSiteFromTruckReport(scanner, tr);
-                chooseDemands(scanner);
-                pc.moveDemandsFromCurrentToReport(tr);
+                try {
+                    removeSiteFromTruckReport(scanner, tr);
+                    chooseDemands(scanner);
+                    pc.moveDemandsFromCurrentToReport(tr);
+
+                }
+                catch (SQLException e)
+                {
+                 e.getMessage();
+                }
                 break;
             }
 
@@ -980,14 +962,14 @@ public class Menu_Printer {
                     pc.deleteDriverConstarint(oldD, tr.getDate(), tr.getLeavingHour());
                     pc.deleteTruckConstarint(oldT, tr.getDate(), tr.getLeavingHour());
 
-                    String truckNumber = chooseTruck(scanner,tr.getDate(),tr.getLeavingHour());
-                    String DriverID = chooseDriver(scanner,tr.getDate(),tr.getLeavingHour());
-                    pc.replaceTruckAndDriver(truckNumber, DriverID, tr, weight);
-                    pc.updateDeliveryFormRealWeight(fdf.getTrID(), fdf.getID(), weight);
-                } catch (InputMismatchException e) {
+                    String truckNumber = chooseTruck(scanner, tr.getDate(), tr.getLeavingHour());
+                    String DriverID = chooseDriver(scanner, tr.getDate(), tr.getLeavingHour());
+                    pc.replaceTruckAndDriver(truckNumber, DriverID, pc.getCurrentTruckReport(), weight);
+                    pc.updateDeliveryFormRealWeight(pc.getCurrTruckReport().getID(), fdf.getID(), weight);
+                } catch (IllegalStateException|InputMismatchException|SQLException e) {
                     System.out.println(e.getMessage());
-                    pc.addDriverConstraint(oldD,tr.getDate(),tr.getLeavingHour());
-                    pc.addTruckConstraint(oldD,tr.getDate(),tr.getLeavingHour());
+                    pc.addDriverConstraint(oldD, tr.getDate(), tr.getLeavingHour());
+                    pc.addTruckConstraint(oldT, tr.getDate(), tr.getLeavingHour());
                 }
                 break;
 
@@ -1007,7 +989,14 @@ public class Menu_Printer {
                 }
 
                 FacadeDemand demand = items.get(chose - 1);
-                pc.removeItemFromTruckingReport(tr.getID(), demand);
+                try{
+                    pc.removeItemFromTruckingReport(tr.getID(), demand);
+                }
+                catch (SQLException e)
+                {
+                    System.out.println(e.getMessage());
+                }
+
                 break;
             }
             default:
@@ -1017,13 +1006,17 @@ public class Menu_Printer {
 
     }
 
-    private String chooseDriver(Scanner scanner, LocalDate date,  LocalTime shift) throws ReflectiveOperationException {
+    private String chooseDriver(Scanner scanner, LocalDate date, LocalTime shift) throws ReflectiveOperationException {
         LinkedList<FacadeDriver> drivers = pc.getAvailableDrivers(date, shift);
+        if (drivers.isEmpty()){
+            throw new ReflectiveOperationException("no are possible for this date.");
+
+        }
         System.out.println("available Drivers:");
         int spot = 1;
         for (FacadeDriver d : drivers) {
-            FacadeDriver driver  = pc.getDriver(d.getID());
-            System.out.print(spot+".\t");
+            FacadeDriver driver = pc.getDriver(d.getID());
+            System.out.print(spot + ".\t");
             printDriverDetails(driver);
 
             spot++;
@@ -1039,24 +1032,29 @@ public class Menu_Printer {
 
     private String chooseTruck(Scanner scanner, LocalDate date, LocalTime shift) throws ReflectiveOperationException {
         LinkedList<FacadeTruck> trucks = pc.getAvailableTrucks(date, shift);
+        if (trucks == null || trucks.isEmpty())
+            throw new ReflectiveOperationException("no trucks available for this shift");
+        else {
 
-        System.out.println("available trucks:");
-        int spot = 1;
-        for (FacadeTruck truck : trucks) {
-            System.out.println(spot + ") truck LicenseNumber: " + truck.getLicenseNumber() + " max Weight :" + truck.getMaxWeight());
-            spot++;
+            System.out.println("available trucks:");
+            int spot = 1;
+            for (FacadeTruck truck : trucks) {
+                System.out.println(spot + ") truck LicenseNumber: " + truck.getLicenseNumber() + " max Weight :" + truck.getMaxWeight());
+                spot++;
+            }
+            int chose = getIntFromUser(scanner);
+            while (chose < 1 || chose > trucks.size()) {
+                System.out.println("option out of bounds, please try again");
+
+                chose = getIntFromUser(scanner);
+            }
+
+
+            return trucks.get(chose - 1).getLicenseNumber();
         }
-        int chose = getIntFromUser(scanner);
-        while (chose < 1 || chose > trucks.size()) {
-            System.out.println("option out of bounds, please try again");
-
-            chose = getIntFromUser(scanner);
-        }
-
-        return trucks.get(chose - 1).getLicenseNumber();
     }
 
-    private void removeSiteFromTruckReport(Scanner scanner, FacadeTruckingReport tr) throws ReflectiveOperationException,SQLException {
+    private void removeSiteFromTruckReport(Scanner scanner, FacadeTruckingReport tr) throws ReflectiveOperationException {
         int spot;
         LinkedList<FacadeDeliveryForm> dfs = pc.getUncompletedDeliveryFormsFromOld(tr.getID());
         LinkedList<Integer> sites = new LinkedList<>();
@@ -1076,47 +1074,56 @@ public class Menu_Printer {
         while (siteID < 1 || siteID > sites.size())
             siteID = getIntFromUser(scanner);
         siteID = sites.get((siteID - 1));
-        pc.removeSiteFromTruckReport(siteID, tr.getID());
+        try {
+            pc.removeSiteFromTruckReport(siteID, tr.getID());
+        }
+        catch (SQLException e){
+            System.out.println(e.getMessage());
+        }
+
 
     }
 
+    public void putInitialTestState() {
 
-    public void putInitialTestState() throws SQLException{
-        pc.addDriver("203834734", "Ido", Driver.License.C1);
-        pc.addDriver("123456789", "Shir", Driver.License.C);
-        pc.addDriver("987654321", "Ofir", Driver.License.C);
+        try {
 
-        pc.addTruck("Mercedes", "62321323", 2000, 12000);
-        pc.addTruck("Man", "1231231", 1500, 8000);
-        pc.addTruck("Volvo", "123", 1000, 10000);
-        pc.addTruck("Volvo", "12121", 1000, 14000);
+            pc.addTruck("Mercedes", "62321323", 2000, 12000);
+            pc.addTruck("Man", "1231231", 1500, 8000);
+            pc.addTruck("Volvo", "123", 1000, 10000);
+            pc.addTruck("Volvo", "12121", 1000, 14000);
 
-        pc.addSite("Haifa", 1, "0502008216", "Shimi", "SuperLee-Haifa");
-        pc.addSite("Nazareth", 1, "0522002123", "Esti", "Suber-LNazerath");
-        pc.addSite("Beer Sheva", 2, "0502008217", "Yotam", "superLee-BeerSheva");
-        pc.addSite("Rahat", 2, "0502008214", "Mohamad", "MilkHere");
-        pc.addSite("Afula", 3, "0502008215", "Raz", "Tnuva");
-        pc.addSite("Geva", 3, "0503988883", "ShirHayafa", "Dubi");
-        pc.addSite("Tveria", 1, "0503988883", "Yaron", "Dagim");
-        pc.addSite("Qiryat Shemona", 1, "0503988883", "Shimi", "Macolet");
+            pc.addSite("Beer-Sheba", 3, "0503123465", "Ido", "Super-Lee");
+            pc.addSite("Haifa", 1, "0502008216", "Shimi", "Tnuva-Haifa");
+            pc.addSite("Qiryat Shemona", 1, "0503988883", "Ofir", "Tara-North");
+            pc.addSite("Tel-Aviv", 2, "0504123465", "Raz", "Meat-Bar");
+            pc.addSite("Rahat", 3, "0502008214", "Mohamad", "Wheat-Farmers");
+            pc.addSite("Sderot", 3, "0523123465", "Shaked", "Klil");
 
 
-        pc.addItem(1, "milk", 1);
-        pc.addItem(2, "cream cheese", 1);
-        pc.addItem(4, "cottage", 2);
-        pc.addItem(2, "banana", 2);
-        pc.addItem(3, "cucumber", 3);
-        pc.addItem(0.1, "chocolate", 5);
 
-        pc.addDemandToSystem(1, 2, 1000);
-        pc.addDemandToSystem(3, 1, 100);
-        pc.addDemandToSystem(5, 4, 1000);
-        pc.addDemandToSystem(6, 6, 500);
+            pc.addItem(1, "milk", 2);
+            pc.addItem(2, "cream cheese", 2);
+            pc.addItem(4, "cottage", 3);
+            pc.addItem(2, "banana", 5);
+            pc.addItem(3, "cucumber", 5);
+            pc.addItem(0.1, "chocolate", 6);
+
+
+            pc.addDemandToSystem(6, 1, 100);
+            pc.addDemandToSystem(4, 1, 1000);
+            pc.addDemandToSystem(5, 1, 500);
+        }
+        catch (SQLException e)
+        {
+            System.out.println(e.getMessage());
+        }
     }
 
     /**
      * ask the user for int input, if not int, asks again with a message
      * this method, does not receive -1 as special case
+     *
      * @param scanner Scanner from java utils
      * @return the user's int
      */
@@ -1145,6 +1152,7 @@ public class Menu_Printer {
 
     /**
      * ask the user for int input, if not int, asks again with a message
+     *
      * @param scanner
      * @return
      * @throws ReflectiveOperationException if -1 received
@@ -1218,7 +1226,47 @@ public class Menu_Printer {
         return output;
 
     }
-// old methods
+
+
+
+// old methods that may be used in the next projects
+
+    /*private void removeSite(Scanner scanner) throws ReflectiveOperationException {
+        boolean con = true;
+        while (con) {
+            LinkedList<FacadeSite> sites = pc.showCurrentSites();
+            System.out.println("\nchoose a site you'd like to remove\n");
+            int spot = 1;
+            for (FacadeSite site : sites) {
+                System.out.println(spot + ")Site Name: " + site.getName() + "\tSite ID: " + site.getSiteID() + "\tSite city: " + site.getCity() +
+                        "\tSite: Delivery area: " + site.getDeliveryArea() + "\n products:");
+                LinkedList<FacadeDemand> siteDemands = pc.getCurrentDemandsBySite(site);
+                for (FacadeDemand demand : siteDemands) {
+
+                    System.out.println(pc.getItemName(demand.getItemID()) + ": " +
+                            "item ID: " + demand.getItemID() + "\tamount: " + demand.getAmount());
+                }
+                spot++;
+            }
+            int siteID = getIntFromUser(scanner);
+            while (siteID < 1 || siteID > sites.size()) {
+                System.out.println("option out of bounds, please try again");
+                siteID = getIntFromUser(scanner);
+            }
+            siteID = sites.get(siteID - 1).getSiteID();
+            try {
+                con = pc.removeDestination(siteID);
+                if (pc.showCurrentSites().isEmpty()) {
+                    throw new ReflectiveOperationException("no more demands left in this report, aborting..");
+                }
+            } catch (NoSuchElementException ne) {
+                System.out.println(ne.getMessage());
+
+            }
+
+        }
+    }*/
+
     /*
 
     private void chooseLeavingHour(Scanner scanner) throws ReflectiveOperationException {
