@@ -20,6 +20,11 @@ public class ProductsInOrderDal extends DalObject<ProductsInOrderDal> {
         this.amount = amount;
     }
 
+    public ProductsInOrderDal(int orderId) throws SQLException {
+        super(ProductsInOrderDalController.getInstance());
+        this.orderId = orderId;
+    }
+
     public int getProductId() {
         return productId;
     }

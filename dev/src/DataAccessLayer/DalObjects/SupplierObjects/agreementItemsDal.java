@@ -23,6 +23,11 @@ public class agreementItemsDal extends DalObject<agreementItemsDal> {
         this.price = price;
     }
 
+    public agreementItemsDal(String supplierId) throws SQLException {
+        super(AgreementItemsDalController.getInstance());
+        this.supplierId = Integer.parseInt(supplierId);
+    }
+
     public int getProductId() {
         return productId;
     }

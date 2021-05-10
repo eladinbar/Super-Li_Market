@@ -34,6 +34,7 @@ public class SupplierCardDal extends DalObject<SupplierCardDal> {
         this.supplierId = supplierId;
     }
 
+
     public int getSupplierId() {
         return supplierId;
     }

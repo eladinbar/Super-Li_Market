@@ -218,7 +218,7 @@ public class Service implements IService {
         Response r = orderService.approveOrder(orderID);
         if(r.errorOccurred())
             return r;
-        ResponseT<Order> orderR = orderService.getOrder(orderID, inventoryService);
+        ResponseT<Order> orderR = orderService.getOrder(orderID, inventoryService,supplierService);
         if(orderR.errorOccurred())
             return orderR;
         ArrayList<Product> productList = orderR.value.getProducts();
@@ -234,7 +234,7 @@ public class Service implements IService {
 
     @Override
     public ResponseT<Order> getOrder(int orderID) {
-        return orderService.getOrder(orderID, inventoryService);
+        return orderService.getOrder(orderID, inventoryService,supplierService);
     }
 
     @Override

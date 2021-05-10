@@ -22,6 +22,10 @@ public class QuantityListItemsDal extends DalObject<QuantityListItemsDal> {
         this.amount = amount;
         this.discount = discount;
     }
+    public QuantityListItemsDal(String supplierId) throws SQLException {
+        super(QuantityListItemsDalController.getInstance());
+        this.supplierId = supplierId;
+    }
 
     public int getProductId() {
         return productId;

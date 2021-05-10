@@ -1,6 +1,10 @@
 package BusinessLayer.SupliersPackage.orderPackage;
 
 import BusinessLayer.SupliersPackage.supplierPackage.Supplier;
+import BusinessLayer.SupliersPackage.supplierPackage.SupplierCard;
+import DataAccessLayer.DalObjects.SupplierObjects.OrderDal;
+import DataAccessLayer.DalObjects.SupplierObjects.PersonCardDal;
+import DataAccessLayer.DalObjects.SupplierObjects.SupplierCardDal;
 
 import java.time.LocalDate;
 import java.util.*;
@@ -58,9 +62,24 @@ public class OrderController {
             throw new Exception("product " + productId + " does not exist");
     }
 
-    public Order getOrder(int orderID) throws Exception {
+    public Order getOrder(int orderID, Supplier supplier) throws Exception {
         orderExist(orderID);
-        return orders.get(orderID);
+        Order toReturn = orders.get(orderID);
+        if (toReturn != null)
+            return toReturn;
+        OrderDal orderDal = new OrderDal(orderID);
+        orderDal.find();
+        return new Order(orderDal,supplier);
+    }
+
+    public String getOrderSupID(int orderID) throws Exception {
+        orderExist(orderID);
+        Order toReturn = orders.get(orderID);
+        if (toReturn != null)
+            return orders.get(orderID).getSupplier().getSc().getId();
+        OrderDal orderDal = new OrderDal(orderID);
+        orderDal.find();
+        return orderDal.getSupplierId();
     }
 
     public void addProductToOrder(int orderId, int productId, int amount) throws Exception {
@@ -70,7 +89,7 @@ public class OrderController {
 
     public Order createPermOrder(int day, Supplier supplier) throws Exception {
         for (Order o : pernamentOrders.get(day)) {
-            if(o.getSupplier().getSc().getId().equals(supplier.getSc().getId())){
+            if (o.getSupplier().getSc().getId().equals(supplier.getSc().getId())) {
                 return o;
             }
         }

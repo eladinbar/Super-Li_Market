@@ -1,6 +1,9 @@
 package BusinessLayer.SupliersPackage.supplierPackage;
 
+import DataAccessLayer.DalObjects.SupplierObjects.PersonCardDal;
+import DataAccessLayer.DalObjects.SupplierObjects.QuantityListItemsDal;
 import DataAccessLayer.DalObjects.SupplierObjects.SupplierCardDal;
+import DataAccessLayer.DalObjects.SupplierObjects.SupplierContactMembersDal;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -27,6 +30,27 @@ public class SupplierCard extends PersonCard {
 
     public SupplierCard(String supplierId) throws SQLException {
         super(null, null, null, supplierId, null);
+    }
+
+    public SupplierCard(SupplierCardDal supplierCardDal, PersonCardDal personCardDal) throws SQLException {
+        super(personCardDal.getFirstName() , personCardDal.getLastName() , personCardDal.getEmail(), personCardDal.getId(), personCardDal.getPhone());
+        this.companyNumber = supplierCardDal.getCompanyNumber();
+        this.isPernamentDays = supplierCardDal.isPermanentDays() ==1 ? true : false;
+        this.selfDelivery = supplierCardDal.isSelfDelivery() ==1 ? true : false;
+        this.payment = Payment.valueOf(supplierCardDal.getPayment());
+        readContactMembers();
+        this.dalObject = supplierCardDal;
+    }
+
+    private void readContactMembers() throws SQLException {
+        List<SupplierContactMembersDal> contactMemberList = new ArrayList();
+        SupplierContactMembersDal contactMemberDal = new SupplierContactMembersDal(Integer.parseInt(id));
+        contactMemberDal.find(contactMemberList);
+        List<String> cmStrings = new ArrayList<>();
+        for (SupplierContactMembersDal cm : contactMemberList) {
+            cmStrings.add(""+cm.getPersonId());
+        }
+        this.contactMembers = cmStrings;
     }
 
     public int getCompanyNumber() {

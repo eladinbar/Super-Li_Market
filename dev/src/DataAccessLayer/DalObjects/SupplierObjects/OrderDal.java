@@ -26,6 +26,11 @@ public class OrderDal extends DalObject<OrderDal> {
         this.delivered = delivered;
     }
 
+    public OrderDal(int orderId) throws SQLException {
+        super(OrderDalController.getInstance());
+        this.orderId = orderId;
+    }
+
     public int getOrderId() {
         return orderId;
     }
