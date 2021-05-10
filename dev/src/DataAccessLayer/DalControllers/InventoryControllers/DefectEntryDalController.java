@@ -4,6 +4,7 @@ import DataAccessLayer.DalControllers.DalController;
 import DataAccessLayer.DalObjects.InventoryObjects.*;
 
 import java.sql.*;
+import java.util.List;
 
 import static DataAccessLayer.DalControllers.InventoryControllers.ItemDalController.ITEM_TABLE_NAME;
 
@@ -169,5 +170,25 @@ public class DefectEntryDalController extends DalController<DefectEntry> {
             throw new SQLException(ex.getMessage());
         }
         return isDesired;
+    }
+
+    @Override
+    public boolean select(List<DefectEntry> defectEntries) throws SQLException {
+        DefectEntry savedDefectEntry = new DefectEntry();
+        try (Connection conn = DriverManager.getConnection(connectionString)) {
+            String query = "SELECT * FROM " + tableName;
+            PreparedStatement stmt = conn.prepareStatement(query);
+            ResultSet resultSet = stmt.executeQuery(query);
+            while (resultSet.next())
+            {
+                savedDefectEntry.setItemName(resultSet.getString(1));
+                savedDefectEntry.setLocation(resultSet.getString(2));
+                savedDefectEntry.setQuantity(resultSet.getInt(3));
+                defectEntries.add(savedDefectEntry);
+            }
+        } catch (SQLException ex) {
+            throw new SQLException(ex.getMessage());
+        }
+        return true;
     }
 }

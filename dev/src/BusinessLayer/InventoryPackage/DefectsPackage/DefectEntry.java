@@ -1,9 +1,13 @@
 package BusinessLayer.InventoryPackage.DefectsPackage;
 
+import BusinessLayer.InventoryPackage.Item;
 import BusinessLayer.InventoryPackage.Location;
+import DataAccessLayer.DalObjects.InventoryObjects.Category;
 
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 public class DefectEntry {
     private DataAccessLayer.DalObjects.InventoryObjects.DefectEntry dalCopyDefectEntry;
@@ -13,6 +17,8 @@ public class DefectEntry {
     private LocalDate entryDate;
     private int quantity;
     private Location location; //can only be one - shelf or storage
+
+    public DefectEntry() {}
 
     public DefectEntry(int itemID, LocalDate entryDate) {
         this.itemID = itemID;
@@ -28,6 +34,14 @@ public class DefectEntry {
             this.location = new Location(location, null);
         else //if (location.startsWith("ST")
             this.location = new Location(null, location);
+    }
+
+    public DefectEntry(int itemID, String itemName, LocalDate entryDate, int quantity, Location location) {
+        this.itemID = itemID;
+        this.itemName = itemName;
+        this.entryDate = entryDate;
+        this.quantity = quantity;
+        this.location = location;
     }
 
     public LocalDate getEntryDate() {
@@ -92,6 +106,33 @@ public class DefectEntry {
             throw new RuntimeException("Something went wrong.");
         }
 
+        return found;
+    }
+
+    public boolean find(List<DefectEntry> defectEntries) {
+        boolean found;
+        try {
+            List<DataAccessLayer.DalObjects.InventoryObjects.DefectEntry> dalCopyDefectEntries = new ArrayList<>();
+            dalCopyDefectEntry = new DataAccessLayer.DalObjects.InventoryObjects.DefectEntry();
+
+            found = dalCopyDefectEntry.findAll(dalCopyDefectEntries); //Retrieves all DAL defect entries from the database
+            //Set the fields according to the retrieved data
+            if (found) {
+                for (DataAccessLayer.DalObjects.InventoryObjects.DefectEntry defectEntry : dalCopyDefectEntries) {
+                    Location savedLocation;
+                    if (dalCopyDefectEntry.getLocation().startsWith("SH"))
+                        savedLocation = new Location(dalCopyDefectEntry.getLocation(), null);
+                    else //if (dalCopyDefectEntry.getLocation().startsWith("ST")
+                        savedLocation = new Location(null, dalCopyDefectEntry.getLocation());
+                    DefectEntry savedDefectEntry = new DefectEntry(dalCopyDefectEntry.getItemID(), dalCopyDefectEntry.getItemName(),
+                            LocalDate.parse(dalCopyDefectEntry.getEntryDate()), dalCopyDefectEntry.getQuantity(), savedLocation);
+
+                    defectEntries.add(savedDefectEntry);
+                }
+            }
+        } catch (SQLException ex) {
+            throw new RuntimeException("Something went wrong.");
+        }
         return found;
     }
 }

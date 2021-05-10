@@ -18,6 +18,8 @@ public class DefectEntry extends DalObject<DefectEntry> {
     private String location;
     private int quantity;
 
+    public DefectEntry() {}
+
     public DefectEntry(String entryDate, int itemID) {
         this.entryDate = entryDate;
         this.itemID = itemID;
