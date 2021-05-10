@@ -5,6 +5,7 @@ import Trucking.Business_Layer_Trucking.Facade.FacadeObject.*;
 import Trucking.Business_Layer_Trucking.Resources.Driver;
 
 import javax.management.openmbean.KeyAlreadyExistsException;
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.*;
@@ -26,10 +27,14 @@ public class Menu_Printer {
     }
 
     //<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< Menus >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>.
-    //<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< Menus >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>.
 
 
     public void mainMenu() {
+        try {
+            pc.upload();
+        }catch (SQLException sqlException){
+            System.out.println(sqlException.getMessage());
+        }
         Scanner scanner = new Scanner(System.in);
         scanner.useDelimiter("[\\,\\n\\r]+");
         boolean keepGoing = true;
@@ -128,8 +133,8 @@ public class Menu_Printer {
             case 5:
                 try {
                     removeItemFromPool(scanner);
-                } catch (ReflectiveOperationException re) {
-                    System.out.println(re.getMessage());
+                } catch (ReflectiveOperationException |SQLException e) {
+                    System.out.println(e.getMessage());
                 }
                 break;
             case 6:
@@ -143,7 +148,7 @@ public class Menu_Printer {
             case 7:
                 try {
                     removeDemandFromPool(scanner);
-                } catch (ReflectiveOperationException e) {
+                } catch (ReflectiveOperationException |SQLException e) {
                     System.out.println(e.getMessage());
                 }
                 break;
@@ -226,8 +231,8 @@ public class Menu_Printer {
                     pc.saveReport();
 
 
-                } catch (ReflectiveOperationException re) {
-                    System.out.println(re.getMessage());
+                } catch (ReflectiveOperationException| SQLException e) {
+                    System.out.println(e.getMessage());
                 }
                 break;
             case 2:
@@ -367,7 +372,7 @@ public class Menu_Printer {
             throw new ReflectiveOperationException("no drivers left to deliver with, please try later");
     }
 
-    private void removeDemandFromPool(Scanner scanner) throws ReflectiveOperationException {
+    private void removeDemandFromPool(Scanner scanner) throws ReflectiveOperationException,SQLException {
         LinkedList<FacadeDemand> demands = pc.showDemands();
         demands = sortDemandsBySite(demands);
         printDemands(demands);
@@ -380,7 +385,7 @@ public class Menu_Printer {
 
     }
 
-    private LinkedList<String> chooseDate(Scanner scanner) throws IllegalArgumentException, ReflectiveOperationException {
+    private LinkedList<String> chooseDate(Scanner scanner) throws IllegalArgumentException, ReflectiveOperationException, SQLException {
 
         HashMap<LocalDate, HashMap<Integer, LinkedList<String>>> daysAndDrivers = pc.getDaysAndDrivers();
         int spot = 1;
@@ -455,7 +460,7 @@ public class Menu_Printer {
         int siteID = sites.get(chose - 1).getSiteID();
         try {
             pc.removeSiteFromPool(siteID);
-        } catch (NoSuchElementException | IllegalStateException e) {
+        } catch (NoSuchElementException | IllegalStateException|SQLException e) {
             System.out.println(e.getMessage());
         }
 
@@ -500,7 +505,7 @@ public class Menu_Printer {
                     System.out.print("please choose the amount you'd like to Deliver:");
                     amount = getIntFromUser(scanner);
                     pc.addDemandToSystem(itemId, site, amount);
-                } catch (NoSuchElementException ne) {
+                } catch (NoSuchElementException|SQLException ne) {
                     System.out.println(ne.getMessage());
                 }
 
@@ -515,7 +520,7 @@ public class Menu_Printer {
     }
 
 
-    private void removeItemFromPool(Scanner scanner) throws ReflectiveOperationException {
+    private void removeItemFromPool(Scanner scanner) throws ReflectiveOperationException, SQLException {
         LinkedList<FacadeItem> items = pc.getAllItems();
         int counter = 1;
         for (FacadeItem item : items) {
@@ -558,7 +563,7 @@ public class Menu_Printer {
             try {
                 pc.addItem(weight, name, siteID);
                 con = false;
-            } catch (KeyAlreadyExistsException | NoSuchElementException ke) {
+            } catch (KeyAlreadyExistsException | NoSuchElementException|SQLException ke) {
                 System.out.println(ke.getMessage());
             }
         }
@@ -589,7 +594,7 @@ public class Menu_Printer {
             try {
                 pc.addSite(city, deliveryArea, phoneNumber, contactName, name);
                 con = false;
-            } catch (KeyAlreadyExistsException e) {
+            } catch (KeyAlreadyExistsException|SQLException e) {
                 System.out.println(e.getMessage());
             }
         }
@@ -619,7 +624,7 @@ public class Menu_Printer {
             try {
                 pc.addTruck(model, licenseNumber, weightNeto, maxWeight);
                 con = false;
-            } catch (KeyAlreadyExistsException e) {
+            } catch (KeyAlreadyExistsException|SQLException e) {
                 System.out.println(e.getMessage());
             }
         }
@@ -663,7 +668,7 @@ public class Menu_Printer {
             pc.addDriver(ID, name, licenseType);
 
 
-        } catch (KeyAlreadyExistsException e) {
+        } catch (KeyAlreadyExistsException|SQLException e) {
             System.out.println(e.getMessage());
             System.out.println("");
         }
@@ -700,7 +705,7 @@ public class Menu_Printer {
                         con = pc.addDemandToReport(itemNumber, amount, siteID);
 
                     }
-                } catch (IllegalStateException e) { // different delivery area
+                } catch (IllegalStateException|SQLException e) { // different delivery area
                     System.out.println("you chose different delivery area from the currents," +
                             " would you like to continue? y for yes, n for not");
                     String answer = getStringFromUser(scanner);
@@ -734,8 +739,8 @@ public class Menu_Printer {
                                     int siteID = demands.get(chose - 1).getSite(); // destination to delivery to
                                     try {
                                         pc.continueAddDemandToReport(itemNumber, amount, siteID);
-                                    } catch (IllegalArgumentException illegalArgumentException) {
-                                        System.out.println(illegalArgumentException.getMessage());
+                                    } catch (IllegalArgumentException|SQLException exception) {
+                                        System.out.println(exception.getMessage());
                                     }
 
                                 }
@@ -755,7 +760,7 @@ public class Menu_Printer {
                 }
 
 
-            } catch (NoSuchElementException ne) {
+            } catch (NoSuchElementException|SQLException ne) {
                 System.out.println(ne.getMessage());
                 con = false;
             }
@@ -777,11 +782,15 @@ public class Menu_Printer {
     private void chooseTruckAndDriver(Scanner scanner, LocalDate date, LocalTime shift) throws ReflectiveOperationException {
         System.out.println("please choose the Truck you'd like to deliver it with:");
         String truckNumber = chooseTruck(scanner, date, shift);
-
-        pc.chooseTruck(truckNumber, date, shift);
-        String driverID = chooseDriver(scanner, date, shift);
-        pc.chooseDriver(driverID, date, shift);
-
+        try {
+            pc.chooseTruck(truckNumber, date, shift);
+            String driverID = chooseDriver(scanner, date, shift);
+            pc.chooseDriver(driverID, date, shift);
+        }
+        catch (SQLException e)
+        {
+            System.out.println(e.getMessage());
+        }
 
        /* LinkedList<FacadeTruck> trucks =  pc.getAvailableTrucks();
         int weight=pc.getWeightOfCurrReport();
@@ -892,14 +901,12 @@ public class Menu_Printer {
         int weight = getIntFromUser(scanner);
         try {
             pc.updateDeliveryFormRealWeight(ftr.getID(), fdf.getID(), weight);
-        } catch (IllegalStateException illegalStateException) {
-            System.out.println(illegalStateException.getMessage());
+        } catch (IllegalStateException| SQLException e) {
+            System.out.println(e.getMessage());
             rePlanAfterWeight(scanner, ftr, weight, fdf);
         }
 
     }
-
-
 
     private void rePlanAfterWeight(Scanner scanner, FacadeTruckingReport tr, int weight, FacadeDeliveryForm fdf) throws ReflectiveOperationException {
 
@@ -925,9 +932,16 @@ public class Menu_Printer {
 
             // remove site and add new items
             case 2: {
-                removeSiteFromTruckReport(scanner, tr);
-                chooseDemands(scanner);
-                pc.moveDemandsFromCurrentToReport(tr);
+                try {
+                    removeSiteFromTruckReport(scanner, tr);
+                    chooseDemands(scanner);
+                    pc.moveDemandsFromCurrentToReport(tr);
+
+                }
+                catch (SQLException e)
+                {
+                 e.getMessage();
+                }
                 break;
             }
 
@@ -947,7 +961,7 @@ public class Menu_Printer {
                     String DriverID = chooseDriver(scanner, tr.getDate(), tr.getLeavingHour());
                     pc.replaceTruckAndDriver(truckNumber, DriverID, tr, weight);
                     pc.updateDeliveryFormRealWeight(fdf.getTrID(), fdf.getID(), weight);
-                } catch (InputMismatchException e) {
+                } catch (InputMismatchException|SQLException e) {
                     System.out.println(e.getMessage());
                     pc.addDriverConstraint(oldD, tr.getDate(), tr.getLeavingHour());
                     pc.addTruckConstraint(oldD, tr.getDate(), tr.getLeavingHour());
@@ -970,7 +984,14 @@ public class Menu_Printer {
                 }
 
                 FacadeDemand demand = items.get(chose - 1);
-                pc.removeItemFromTruckingReport(tr.getID(), demand);
+                try{
+                    pc.removeItemFromTruckingReport(tr.getID(), demand);
+                }
+                catch (SQLException e)
+                {
+                    System.out.println(e.getMessage());
+                }
+
                 break;
             }
             default:
@@ -1048,40 +1069,52 @@ public class Menu_Printer {
         while (siteID < 1 || siteID > sites.size())
             siteID = getIntFromUser(scanner);
         siteID = sites.get((siteID - 1));
-        pc.removeSiteFromTruckReport(siteID, tr.getID());
+        try {
+            pc.removeSiteFromTruckReport(siteID, tr.getID());
+        }
+        catch (SQLException e){
+            System.out.println(e.getMessage());
+        }
+
 
     }
 
 
     public void putInitialTestState() {
 
+        try {
 
-        pc.addTruck("Mercedes", "62321323", 2000, 12000);
-        pc.addTruck("Man", "1231231", 1500, 8000);
-        pc.addTruck("Volvo", "123", 1000, 10000);
-        pc.addTruck("Volvo", "12121", 1000, 14000);
+            pc.addTruck("Mercedes", "62321323", 2000, 12000);
+            pc.addTruck("Man", "1231231", 1500, 8000);
+            pc.addTruck("Volvo", "123", 1000, 10000);
+            pc.addTruck("Volvo", "12121", 1000, 14000);
 
-        pc.addSite("Haifa", 1, "0502008216", "Shimi", "SuperLee-Haifa");
-        pc.addSite("Nazareth", 1, "0522002123", "Esti", "Suber-LNazerath");
-        pc.addSite("Beer Sheva", 2, "0502008217", "Yotam", "superLee-BeerSheva");
-        pc.addSite("Rahat", 2, "0502008214", "Mohamad", "MilkHere");
-        pc.addSite("Afula", 3, "0502008215", "Raz", "Tnuva");
-        pc.addSite("Geva", 3, "0503988883", "ShirHayafa", "Dubi");
-        pc.addSite("Tveria", 1, "0503988883", "Yaron", "Dagim");
-        pc.addSite("Qiryat Shemona", 1, "0503988883", "Shimi", "Macolet");
+            pc.addSite("Haifa", 1, "0502008216", "Shimi", "SuperLee-Haifa");
+            pc.addSite("Nazareth", 1, "0522002123", "Esti", "Suber-LNazerath");
+            pc.addSite("Beer Sheva", 2, "0502008217", "Yotam", "superLee-BeerSheva");
+            pc.addSite("Rahat", 2, "0502008214", "Mohamad", "MilkHere");
+            pc.addSite("Afula", 3, "0502008215", "Raz", "Tnuva");
+            pc.addSite("Geva", 3, "0503988883", "ShirHayafa", "Dubi");
+            pc.addSite("Tveria", 1, "0503988883", "Yaron", "Dagim");
+            pc.addSite("Qiryat Shemona", 1, "0503988883", "Shimi", "Macolet");
 
 
-        pc.addItem(1, "milk", 1);
-        pc.addItem(2, "cream cheese", 1);
-        pc.addItem(4, "cottage", 2);
-        pc.addItem(2, "banana", 2);
-        pc.addItem(3, "cucumber", 3);
-        pc.addItem(0.1, "chocolate", 5);
+            pc.addItem(1, "milk", 1);
+            pc.addItem(2, "cream cheese", 1);
+            pc.addItem(4, "cottage", 2);
+            pc.addItem(2, "banana", 2);
+            pc.addItem(3, "cucumber", 3);
+            pc.addItem(0.1, "chocolate", 5);
 
-        pc.addDemandToSystem(1, 2, 1000);
-        pc.addDemandToSystem(3, 1, 100);
-        pc.addDemandToSystem(5, 4, 1000);
-        pc.addDemandToSystem(6, 6, 500);
+            pc.addDemandToSystem(1, 2, 1000);
+            pc.addDemandToSystem(3, 1, 100);
+            pc.addDemandToSystem(5, 4, 1000);
+            pc.addDemandToSystem(6, 6, 500);
+        }
+        catch (SQLException e)
+        {
+            System.out.println(e.getMessage());
+        }
     }
 
     /**

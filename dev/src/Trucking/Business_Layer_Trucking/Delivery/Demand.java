@@ -1,14 +1,28 @@
 package Trucking.Business_Layer_Trucking.Delivery;
 
+import DAL.DalDeliveryFormController;
+import DAL.DalDemand;
+import DAL.DalDemandController;
+import DAL.DalItem;
+
+import java.sql.SQLException;
+
 public class Demand {
     private int itemID;
     private int site;//the destination - who raised the demand
     private int amount;
 
-    public Demand(int itemID, int site_id, int amount){
+    public Demand(int itemID, int site_id, int amount) throws SQLException {
         this.itemID=itemID;
         this.site=site_id;
         this.amount=amount;
+        DalDemandController.getInstance().insert(new DalDemand(itemID,amount,site_id));
+
+    }
+    public Demand(DalDemand demand){
+        this.itemID=demand.getItemID();
+        this.amount=demand.getAmount();
+        this.site=demand.getSiteID();
     }
 
     public int getAmount() {
@@ -23,15 +37,21 @@ public class Demand {
         return site;
     }
 
-    public void setAmount(int amount) {
+    public void setAmount(int amount) throws SQLException {
         this.amount = amount;
+        DalDemandController.getInstance().update(new DalDemand(itemID,amount,site));
+
     }
 
-    public void setItemID(int itemID) {
+    public void setItemID(int itemID) throws SQLException {
         this.itemID = itemID;
+        DalDemandController.getInstance().update(new DalDemand(itemID,amount,site));
+
     }
 
-    public void setSite(int site) {
+    public void setSite(int site) throws SQLException {
         site = site;
+        DalDemandController.getInstance().update(new DalDemand(itemID,amount,site));
+
     }
 }

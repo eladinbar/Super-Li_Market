@@ -1,5 +1,9 @@
 package Trucking.Business_Layer_Trucking.Delivery;
 
+import DAL.DalTruckingReport;
+import DAL.DalTruckingReportController;
+
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.LinkedList;
@@ -12,12 +16,12 @@ public class TruckingReport {
     private String  driverID;
     private int origin;
     private LinkedList<Integer> destinations;
-    private TruckingReport TRReplace;
+    private int TRReplace;
     private boolean completed;
 
 
     public TruckingReport(int ID, LocalDate date, LocalTime leavingHour, String  truckNumber, String driverID,
-                          int origin, LinkedList<Integer> destinations, TruckingReport TRReplace)
+                          int origin, LinkedList<Integer> destinations)
     {
         this.ID=ID;
         this.date=date;
@@ -26,12 +30,25 @@ public class TruckingReport {
         this.driverID=driverID;
         this.origin=origin;
         this.destinations=destinations;
-        this.TRReplace=TRReplace;
+        this.TRReplace=-1;
     }
     public TruckingReport(int ID){
         this.ID=ID;
         this.destinations = new LinkedList<>();
+        this.TRReplace=-1;
 
+    }
+
+    public TruckingReport(DalTruckingReport dtr) throws SQLException {
+        this.ID=dtr.getID();
+        this.date=dtr.getDate();
+        this.leavingHour=dtr.getLeavingHour();
+        this.destinations=new LinkedList<>();
+        this.truckNumber=dtr.getTruckNumber();
+        this.completed=dtr.isCompleted();
+        this.driverID=dtr.getDriverID();
+        this.origin=dtr.getOrigin();
+        this.TRReplace=dtr.getReplaceTRID();
     }
 
     public TruckingReport(int lastReportID, TruckingReport oldTr) {
@@ -42,7 +59,7 @@ public class TruckingReport {
         this.driverID=oldTr.driverID;
         this.origin=oldTr.origin;
         this.destinations=oldTr.destinations;
-        this.TRReplace=oldTr;
+        this.TRReplace=oldTr.getID();
     }
 
     public int getID() {
@@ -73,48 +90,64 @@ public class TruckingReport {
         return destinations;
     }
 
-    public TruckingReport getTRReplace() {
+    public int getTRReplace() {
         return TRReplace;
     }
 
-    public void setCompleted() {
+    public void setCompleted() throws SQLException {
+
         this.completed = true;
     }
 
-    public void setID(int ID) {
+    public void setID(int ID) throws SQLException {
         this.ID = ID;
+
     }
 
-    public void setOrigin(int origin) {
+    public void setOrigin(int origin) throws SQLException {
         this.origin = origin;
+
     }
 
-    public void setDate(LocalDate date) {
+    public void setDate(LocalDate date) throws SQLException {
         this.date = date;
+
     }
 
-    public void setDestinations(LinkedList<Integer> destinations) {
+    public void setDestinations(LinkedList<Integer> destinations) throws SQLException {
         this.destinations = destinations;
+
     }
 
-    public void setDriverID(String driverID) {
+    public void setDriverID(String driverID) throws SQLException {
         this.driverID = driverID;
+
     }
 
-    public void setLeavingHour(LocalTime leavingHour) {
+    public void setLeavingHour(LocalTime leavingHour) throws SQLException {
         this.leavingHour = leavingHour;
+
     }
 
-    public void setTRReplace(TruckingReport TRReplace) {
+    public void setTRReplace(int TRReplace) throws SQLException {
         this.TRReplace = TRReplace;
+/*
+        DalTruckingReportController.getInstance().update(new DalTruckingReport(ID,leavingHour,date,truckNumber,driverID,origin,completed,TRReplace));
+*/
+
     }
 
-    public void setTruckNumber(String truckNumber) {
+    public void setTruckNumber(String truckNumber) throws SQLException {
         this.truckNumber = truckNumber;
+/*
+        DalTruckingReportController.getInstance().update(new DalTruckingReport(ID,leavingHour,date,truckNumber,driverID,origin,completed,TRReplace));
+*/
+
     }
 
     public void addDestination(int destination)  {
         destinations.add(destination);
+
     }
 
     public boolean isCompleted() {

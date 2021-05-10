@@ -6,6 +6,7 @@ import Trucking.Business_Layer_Trucking.Resources.ResourcesController;
 import Trucking.Business_Layer_Trucking.Resources.Truck;
 
 import javax.management.openmbean.KeyAlreadyExistsException;
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.HashMap;
@@ -45,11 +46,11 @@ public class ResourcesService {
 
 
 
-    public void addTruck(String model, String licenseNumber, int weightNeto, int maxWeight) throws KeyAlreadyExistsException {
+    public void addTruck(String model, String licenseNumber, int weightNeto, int maxWeight) throws KeyAlreadyExistsException, SQLException {
         rc.addTruck(model, licenseNumber, weightNeto, maxWeight);
     }
 
-    public void addDriver(String id, String name, Driver.License licenseType) throws KeyAlreadyExistsException {
+    public void addDriver(String id, String name, Driver.License licenseType) throws KeyAlreadyExistsException,SQLException {
 
         rc.addDriver(id, name, licenseType);
 
@@ -127,6 +128,10 @@ public class ResourcesService {
 
     public void addTruckConstraint(String id, LocalDate date, int leavingHour) {
         rc.addTruckConstraint(id,date,leavingHour);
+    }
+
+    public void upload(HashMap driver_cons, HashMap trucks_cons) throws SQLException {
+        rc.upload(driver_cons, trucks_cons);
     }
 }
 

@@ -7,6 +7,7 @@ import Employees.business_layer.facade.facadeObject.FacadeTermsOfEmployment;
 import Trucking.Business_Layer_Trucking.Resources.Driver;
 import Trucking.Business_Layer_Trucking.Resources.ResourcesController;
 
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -185,7 +186,7 @@ public class EmployeeController {
        return newEmployee;
     }
 
-    public Employee addDriver(FacadeEmployee e, String name) throws EmployeeException {
+    public Employee addDriver(FacadeEmployee e, String name) throws EmployeeException, SQLException {
         Employee driver = addEmployee ( e );
         ResourcesController.getInstance ().addDriver ( e.getID (), name, Driver.License.valueOf ( (e.getRole ().equals ( "driverC" )) ? "C" : "C1" ) );
         return driver;
@@ -311,7 +312,7 @@ public class EmployeeController {
         return isExist &&employees.get ( Id ).getRole ().name ().equals ( role );
     }
 
-    public void createData () throws EmployeeException {
+    public void createData () throws EmployeeException, SQLException {
             createUshers();
             createGuard();
             creatCashier();
@@ -408,7 +409,7 @@ public class EmployeeController {
         }
     }
 
-    private void creatDriverC() throws EmployeeException {
+    private void creatDriverC() throws EmployeeException, SQLException {
         int accountNum = 589, bankBranch=27, salary=6000, educationFund=1000, sickDays=21, daysOff=15;
         String[] names = {"Meni", "Avi", "Ronen"};
         String bankName = "Diskont";
@@ -421,7 +422,7 @@ public class EmployeeController {
         }
     }
 
-    private void creatDriverC1() throws EmployeeException {
+    private void creatDriverC1() throws EmployeeException, SQLException {
         int accountNum = 663, bankBranch=54, salary=7000, educationFund=1000, sickDays=21, daysOff=15;
         String[] names = {"Moshe", "Rami", "Yossef"};
         String bankName = "Diskont";
