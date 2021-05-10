@@ -135,7 +135,7 @@ public class DalShiftController extends DalController {
         String query = "SELECT * FROM "+tableName;
         try {
             PreparedStatement st = conn.prepareStatement(query);
-            ResultSet resultSet = st.executeQuery(query);
+            ResultSet resultSet = st.executeQuery();
             while (resultSet.next()) {
                 Date date = resultSet.getDate(3);
                 LocalDate lDate = date.toLocalDate();

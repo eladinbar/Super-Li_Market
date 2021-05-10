@@ -125,7 +125,7 @@ public class DalBankBranchController extends DalController {
         String query = "SELECT * FROM "+tableName;
         try {
             PreparedStatement st = conn.prepareStatement(query);
-            ResultSet resultSet = st.executeQuery(query);
+            ResultSet resultSet = st.executeQuery();
             while (resultSet.next()) {
                 bankBranches.add(new DalBankBranch(resultSet.getString(1), resultSet.getString(2),
                         resultSet.getInt(3),resultSet.getInt(4))
