@@ -10,6 +10,7 @@ import Employees.business_layer.facade.facadeObject.FacadeShift;
 import Employees.business_layer.facade.facadeObject.FacadeWeeklyShiftSchedule;
 import Trucking.Presentation_Layer_Trucking.Menu_Printer;
 
+import java.sql.SQLException;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -42,6 +43,7 @@ public class PresentationController {
 
     private void uploadClean(){
         char choice = menuPrinter.uploadClean ();
+        boolean start = loadData();
         FacadeEmployee manager;
         if(choice == 'y') {
             manager = menuPrinter.createManagerAccountMenu ( );
@@ -60,6 +62,10 @@ public class PresentationController {
         }
         else
             menuPrinter.print ("Only a manager can start a clean program." );
+    }
+
+    private boolean loadData() throws SQLException {
+        return facadeService.loadData();
     }
 
     private void uploadData(){

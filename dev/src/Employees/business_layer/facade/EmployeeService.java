@@ -8,6 +8,7 @@ import Employees.business_layer.Employee.Role;
 import Employees.business_layer.facade.facadeObject.FacadeConstraint;
 import Employees.business_layer.facade.facadeObject.FacadeEmployee;
 
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -76,7 +77,7 @@ public class EmployeeService {
             employeeController.addDriver ( employee, name );
             return new ResponseT<>(employee);
         }
-        catch (EmployeeException e){
+        catch (EmployeeException | SQLException e){
             return new ResponseT<>(e.getMessage());
         }
     }
@@ -200,5 +201,9 @@ public class EmployeeService {
             converted.put(date, facadeConstraint );
         }
         return converted;
+    }
+
+    public boolean loadData() {
+
     }
 }

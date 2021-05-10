@@ -10,6 +10,7 @@ import Employees.business_layer.facade.facadeObject.FacadeWeeklyShiftSchedule;
 import Trucking.Business_Layer_Trucking.Resources.ResourcesController;
 import Trucking.Presentation_Layer_Trucking.Menu_Printer;
 
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
@@ -151,5 +152,10 @@ public class FacadeService {
         employeeService.logout ();
         Menu_Printer.getInstance ().putInitialTestState ();
         return response;
+    }
+
+    public boolean loadData() throws SQLException {
+        shiftService.loadData();
+        return employeeService.loadData();
     }
 }
