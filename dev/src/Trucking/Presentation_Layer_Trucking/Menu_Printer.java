@@ -30,11 +30,11 @@ public class Menu_Printer {
 
 
     public void mainMenu() {
-        try {
+        /*try {
             pc.upload();
         }catch (SQLException sqlException){
             System.out.println(sqlException.getMessage());
-        }
+        }*/
         Scanner scanner = new Scanner(System.in);
         scanner.useDelimiter("[\\,\\n\\r]+");
         boolean keepGoing = true;
@@ -337,7 +337,7 @@ public class Menu_Printer {
                 }
                 System.out.println(spot + ")\tTrucking report ID: " + tr.getID() + "\nOrigin site:" + tr.getOrigin() + "\tDate" + tr.getDate() +
                         "\tLeaveing Hour:" + tr.getLeavingHour() + "\nreplaced:" + rep);
-                System.out.println("related delivery form");
+
 
                 spot++;
             }
@@ -532,7 +532,12 @@ public class Menu_Printer {
         if (choice < 1 || choice > items.size()) {
             System.out.println("option is out of bounds, going back to menu");
         } else {
-            pc.RemoveItemFromPool(items.get(choice - 1).getID());
+            try{
+                pc.RemoveItemFromPool(items.get(choice - 1).getID());
+
+            }catch (IllegalStateException e){
+                throw new ReflectiveOperationException(e.getMessage());
+            }
         }
     }
 

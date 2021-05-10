@@ -80,7 +80,7 @@ public class DalItemController extends DalController{
         String query="DELETE FROM "+tableName+" WHERE("+columnNames[0]+"=?) ";
         try {
             PreparedStatement st=conn.prepareStatement(query);
-            st.setInt(2,dalItem.getID());
+            st.setInt(1,dalItem.getID());
             st.executeUpdate();
         }
         catch (SQLException e)

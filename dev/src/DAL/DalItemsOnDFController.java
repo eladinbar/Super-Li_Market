@@ -9,7 +9,7 @@ public class DalItemsOnDFController extends DalController{
 
     private DalItemsOnDFController(){//TODO - Check when tables created
         super();
-        this.tableName="ItemsOnDF";
+        this.tableName="ItemsOnDFs";
         this.columnNames=new String[3];
         columnNames[0]="DFID";
         columnNames[1]="itemID";columnNames[2]="amount";}

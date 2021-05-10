@@ -33,16 +33,14 @@ public class DalTruckingReportController extends DalController {
         if (truckingReport.isCompleted())
             completed=1;
         Connection conn= DriverManager.getConnection(connection);
-        //String query= "INSERT INTO "+tableName+"("+columnNames[0]+columnNames[1]+columnNames[2]+columnNames[3]
-        //        +columnNames[4]+columnNames[5]+columnNames[6]+columnNames[7]+") VALUES (? ? ? ? ? ? ? ?)";
         String query="INSERT INTO "+tableName+" VALUES "+"(?,?,?,?,?,?,?,?)";
+        String year=truckingReport.getDate().toString();
         try{
             PreparedStatement st=conn.prepareStatement(query);
             st.setInt(1,truckingReport.getID());
             st.setString(2,new Time(truckingReport.getLeavingHour().getHour(),truckingReport.getLeavingHour().getMinute(),
                     truckingReport.getLeavingHour().getSecond()).toString());
-            st.setString(3,new Date(truckingReport.getDate().getYear(),truckingReport.getDate().getMonth().getValue()
-                    ,truckingReport.getDate().getDayOfYear()).toString());
+            st.setString(3,year);
             st.setString(4,truckingReport.getTruckNumber());
             st.setString(5,truckingReport.getDriverID());
             st.setInt(6,truckingReport.getOrigin());
