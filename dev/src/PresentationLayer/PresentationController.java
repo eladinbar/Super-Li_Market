@@ -394,7 +394,7 @@ public class PresentationController implements Runnable {
 
     private void setupSystem() {
         String toSetup = menu.instructAndReceive("would you like to load the system with data? [y/n]\n 'no' will start up a clean system ");
-        toSetup.toLowerCase();
+        toSetup = toSetup.toLowerCase();
         if (toSetup.compareTo("y") != 0) {
             System.out.println("Starting clean system");
             return;
