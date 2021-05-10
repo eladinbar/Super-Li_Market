@@ -113,7 +113,7 @@ public class CategoryDalController extends DalController<Category> {
         try (Connection conn = DriverManager.getConnection(connectionString)) {
             String query = "SELECT * FROM " + tableName;
             PreparedStatement stmt = conn.prepareStatement(query);
-            ResultSet resultSet = stmt.executeQuery(query);
+            ResultSet resultSet = stmt.executeQuery();
             while (resultSet.next())
             {
                 isDesired = resultSet.getString(0).equals(category.getName());
@@ -135,7 +135,7 @@ public class CategoryDalController extends DalController<Category> {
         try (Connection conn = DriverManager.getConnection(connectionString)) {
             String query = "SELECT * FROM " + tableName;
             PreparedStatement stmt = conn.prepareStatement(query);
-            ResultSet resultSet = stmt.executeQuery(query);
+            ResultSet resultSet = stmt.executeQuery();
             while (resultSet.next())
             {
                 isDesired = category.getName() == null ? resultSet.getString(1).equals(category.getParentName()) :
@@ -160,7 +160,7 @@ public class CategoryDalController extends DalController<Category> {
         try (Connection conn = DriverManager.getConnection(connectionString)) {
             String query = "SELECT * FROM " + tableName;
             PreparedStatement stmt = conn.prepareStatement(query);
-            ResultSet resultSet = stmt.executeQuery(query);
+            ResultSet resultSet = stmt.executeQuery();
             while (resultSet.next())
             {
                 savedCategory.setName(resultSet.getString(0));

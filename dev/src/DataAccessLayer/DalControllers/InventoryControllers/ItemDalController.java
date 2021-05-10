@@ -162,7 +162,7 @@ public class ItemDalController extends DalController<Item> {
         try (Connection conn = DriverManager.getConnection(connectionString)) {
             String query = "SELECT * FROM " + tableName;
             PreparedStatement stmt = conn.prepareStatement(query);
-            ResultSet resultSet = stmt.executeQuery(query);
+            ResultSet resultSet = stmt.executeQuery();
             while (resultSet.next())
             {
                 isDesired = resultSet.getInt(0) == item.getItemID();
@@ -193,7 +193,7 @@ public class ItemDalController extends DalController<Item> {
         try (Connection conn = DriverManager.getConnection(connectionString)) {
             String query = "SELECT * FROM " + tableName;
             PreparedStatement stmt = conn.prepareStatement(query);
-            ResultSet resultSet = stmt.executeQuery(query);
+            ResultSet resultSet = stmt.executeQuery();
             while (resultSet.next())
             {
                 isDesired = resultSet.getString(11).equals(item.getCategoryName());

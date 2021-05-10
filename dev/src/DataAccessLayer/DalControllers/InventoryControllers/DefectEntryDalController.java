@@ -154,7 +154,7 @@ public class DefectEntryDalController extends DalController<DefectEntry> {
         try (Connection conn = DriverManager.getConnection(connectionString)) {
             String query = "SELECT * FROM " + tableName;
             PreparedStatement stmt = conn.prepareStatement(query);
-            ResultSet resultSet = stmt.executeQuery(query);
+            ResultSet resultSet = stmt.executeQuery();
             while (resultSet.next())
             {
                 isDesired = resultSet.getString(0).equals(defectEntry.getEntryDate()) &&
@@ -178,7 +178,7 @@ public class DefectEntryDalController extends DalController<DefectEntry> {
         try (Connection conn = DriverManager.getConnection(connectionString)) {
             String query = "SELECT * FROM " + tableName;
             PreparedStatement stmt = conn.prepareStatement(query);
-            ResultSet resultSet = stmt.executeQuery(query);
+            ResultSet resultSet = stmt.executeQuery();
             while (resultSet.next())
             {
                 savedDefectEntry.setItemName(resultSet.getString(1));

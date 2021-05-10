@@ -199,7 +199,7 @@ public class ItemDiscountDalController extends DalController<ItemDiscount> {
         try (Connection conn = DriverManager.getConnection(connectionString)) {
             String query = "SELECT * FROM " + tableName;
             PreparedStatement stmt = conn.prepareStatement(query);
-            ResultSet resultSet = stmt.executeQuery(query);
+            ResultSet resultSet = stmt.executeQuery();
             while (resultSet.next())
             {
                 isDesired = resultSet.getString(0).equals(itemDiscount.getDiscountDate()) &&
@@ -223,7 +223,7 @@ public class ItemDiscountDalController extends DalController<ItemDiscount> {
         try (Connection conn = DriverManager.getConnection(connectionString)) {
             String query = "SELECT * FROM " + tableName;
             PreparedStatement stmt = conn.prepareStatement(query);
-            ResultSet resultSet = stmt.executeQuery(query);
+            ResultSet resultSet = stmt.executeQuery();
             while (resultSet.next())
             {
                 isDesired = resultSet.getString(0).equals(itemDiscount.getDiscountDate()) &&
