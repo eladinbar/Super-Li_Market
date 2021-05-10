@@ -1,5 +1,6 @@
 package DataAccessLayer.DalObjects.InventoryObjects;
 
+import DataAccessLayer.DalControllers.InventoryControllers.CategoryDalController;
 import DataAccessLayer.DalControllers.InventoryControllers.CategoryDiscountDalController;
 import DataAccessLayer.DalObjects.DalObject;
 
@@ -18,7 +19,9 @@ public class CategoryDiscount extends DalObject<CategoryDiscount> {
     private String supplierID;
     private String categoryName;
 
-    public CategoryDiscount() {}
+    public CategoryDiscount() throws SQLException {
+        super(CategoryDiscountDalController.getInstance());
+    }
 
     public CategoryDiscount(String supplierId, String discountDate) throws SQLException {
         super(CategoryDiscountDalController.getInstance());
