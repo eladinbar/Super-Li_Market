@@ -32,15 +32,20 @@ public class ShiftController {
         return instance;
     }
 
-    public WeeklyShiftSchedule getRecommendation(LocalDate startingDate) throws EmployeeException, SQLException {
+    public WeeklyShiftSchedule getRecommendation(LocalDate startingDate, boolean start) throws EmployeeException, SQLException {
         if (startingDate.isBefore ( LocalDate.now ( ) ))
             throw new EmployeeException ( "Starting date has already passed." );
-        if (startingDate.getDayOfWeek ( ) != DayOfWeek.SUNDAY)
+        if (!start && startingDate.getDayOfWeek ( ) != DayOfWeek.SUNDAY)
             throw new EmployeeException ( "Starting date is not Sunday." );
         if (this.shifts.containsKey ( startingDate ))
             throw new EmployeeException ( "Weekly shift schedule is already exists in the system. \nYou can watch it and edit if you would like." );
-        WeeklyShiftSchedule output = createEmptyWeeklyShiftSchedule ( startingDate );
-        for ( int i = 0 ; i < 7 ; i++ ) {
+        int day = startingDate.getDayOfWeek ().getValue () % 7;
+        WeeklyShiftSchedule output = createEmptyWeeklyShiftSchedule ( startingDate.minusDays ( day ), start );
+        for(int i = 0; i < day; i++ ){
+            output.getShifts ()[i][0] = null;
+            output.getShifts ()[i][1] = null;
+        }
+        for ( int i = day ; i < 7 ; i++ ) {
             output.recommendShifts ( employeeController, i );
         }
         shifts.put ( startingDate, output );
@@ -130,10 +135,10 @@ public class ShiftController {
                 throw new EmployeeException ( "Shift has driver/s without having a store keeper." );
     }
 
-    public WeeklyShiftSchedule createEmptyWeeklyShiftSchedule(LocalDate startingDate) throws EmployeeException {
-        if(startingDate.isBefore ( LocalDate.now () ))
+    public WeeklyShiftSchedule createEmptyWeeklyShiftSchedule(LocalDate startingDate, boolean start) throws EmployeeException {
+        if(!start && startingDate.isBefore ( LocalDate.now () ))
             throw new EmployeeException ( "starting day has already passed." );
-        if(startingDate.getDayOfWeek () != DayOfWeek.SUNDAY)
+        if(! start && startingDate.getDayOfWeek () != DayOfWeek.SUNDAY)
             throw new EmployeeException ( "Starting date is not sunday." );
         return new WeeklyShiftSchedule ( startingDate );
     }
@@ -229,8 +234,8 @@ public class ShiftController {
             TemporalField field = WeekFields.of ( Locale.US ).dayOfWeek ( );
             sunday = temp.with ( field, 1 );
         }
-        shifts.put (sunday, getRecommendation ( sunday ));
-        shifts.put (sunday.plusDays ( 7 ), getRecommendation ( sunday.plusDays ( 7 ) ));
+        shifts.put (sunday, getRecommendation ( sunday, true));
+        shifts.put (sunday.plusDays ( 7 ), getRecommendation ( sunday.plusDays ( 7 ), false ));
     }
 
     private void createShiftTypes() throws EmployeeException, SQLException {
@@ -311,6 +316,15 @@ public class ShiftController {
     private void LoadShifts() throws SQLException {
         LinkedList<DalShift> shifts = DalShiftController.getInstance ().load ();
         Integer j = 0;
+        try {
+            shifts.get ( j );
+        }catch (IndexOutOfBoundsException e){
+            this.shifts = new HashMap<> (  );
+            return;
+        }
+        if (shifts.size () >= j && !shifts.get ( j ).getDate ().getDayOfWeek ().equals ( DayOfWeek.SUNDAY )){
+            j = createPartlyWeek(shifts);
+        }
         DalShift cur;
         try {
             cur = shifts.get ( j );
@@ -325,6 +339,47 @@ public class ShiftController {
                 cur = null;
             }
         }
+    }
+
+    private Integer createPartlyWeek(LinkedList<DalShift> shifts) {
+        int cur = 0;
+        LinkedList<DalShift> shift;
+        Shift newShift;
+        int day = shifts.get ( 0 ).getDate ().getDayOfWeek ().getValue () % 7;
+        DalShift temp = shifts.get ( 0 );
+        Shift[][] week = new Shift[7][2];
+        for(int i = 0; i < day; i ++){
+            week[i][0] =null;
+            week[i][1] = null;
+        }
+        for(int j = day; j < 5; j ++){
+            for ( int k = 0 ; k < 2 ; k++ ) {
+                shift = getListOfShift ( shifts, temp, cur );
+                cur = cur + shift.size ();
+                newShift = createShift ( shift );
+                week[j][k] = newShift;
+                try {
+                    temp = shifts.get ( cur );
+                }catch (IndexOutOfBoundsException e){
+                    return cur;
+                }
+            }
+        }
+        if(day < 5) {
+            if(day < 4) {
+                shift = getListOfShift ( shifts, temp, cur );
+                cur = cur + shift.size ( );
+                newShift = createShift ( shift );
+                week[5][0] = newShift;
+                temp = shifts.get ( cur );
+            }
+            shift = getListOfShift ( shifts, temp, cur );
+            newShift = createShift ( shift );
+            week[6][1] = newShift;
+            WeeklyShiftSchedule weeklyShiftSchedule = new WeeklyShiftSchedule ( week[0][0].getDate ( ), week );
+            this.shifts.put ( weeklyShiftSchedule.getDate ( ), weeklyShiftSchedule );
+        }
+        return cur;
     }
 
     private Integer createWeek(LinkedList<DalShift> shifts, Integer j) {

@@ -26,8 +26,8 @@ public class FacadeService {
 
     //shift service responsibility
 
-    public ResponseT<FacadeWeeklyShiftSchedule> getRecommendation(LocalDate startingDate) throws SQLException {
-        return shiftService.getRecommendation ( startingDate );
+    public ResponseT<FacadeWeeklyShiftSchedule> getRecommendation(LocalDate startingDate, boolean start) throws SQLException {
+        return shiftService.getRecommendation ( startingDate, start );
     }
 
     public ResponseT<FacadeWeeklyShiftSchedule> createWeeklyShiftSchedule(LocalDate startingDate, FacadeShift[][] shifts) throws SQLException {
