@@ -95,7 +95,7 @@ public class FacadeService {
         return employeeService.giveConstraint (date, shift, reason );
     }
 
-    public Response deleteConstraint (LocalDate date, int shift)  {
+    public Response deleteConstraint (LocalDate date, int shift) throws SQLException {
         return employeeService.deleteConstraint (date, shift );
     }
 

@@ -680,7 +680,7 @@ public class PresentationController {
         menuPrinter.print ( "Constraint added successfully." );
     }
 
-    private void deleteConstraint ()  {
+    private void deleteConstraint () throws SQLException {
         LocalDate date = menuPrinter.dateMenu ();
         if(date == null)
             return;

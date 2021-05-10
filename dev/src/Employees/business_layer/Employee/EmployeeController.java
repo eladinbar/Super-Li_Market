@@ -99,37 +99,32 @@ public class EmployeeController {
         return employees.get(Id);
     }
 
-    public void giveConstraint(LocalDate date, int shift, String reason) throws EmployeeException {
-        if(loggedIn==null){
-            throw new EmployeeException("No user is logged in");
+    public void giveConstraint(LocalDate date, int shift, String reason) throws EmployeeException, SQLException {
+        if (loggedIn == null) {
+            throw new EmployeeException ( "No user is logged in" );
         }
 
-        if(loggedIn.getIsManager()){
-            throw new EmployeeException("The method 'giveConstraint' was called from a user in a managerial position");
+        if (loggedIn.getIsManager ( )) {
+            throw new EmployeeException ( "The method 'giveConstraint' was called from a user in a managerial position" );
         }
 
-        if(!loggedIn.isEmployed()) {
-            throw new EmployeeException("The employee is not employed ");
+        if (!loggedIn.isEmployed ( )) {
+            throw new EmployeeException ( "The employee is not employed " );
         }
-        try {
-            loggedIn.giveConstraint(date, shift, reason);
-            if(loggedIn.getRole ().equals ( Role.driverC) || loggedIn.getRole ().equals ( Role.driverC1))
-            {
-                try {
-                    ResourcesController.getInstance ( ).addDriverConstraint ( loggedIn.getID ( ), date, shift );
-                } catch (IllegalArgumentException e){
-                    deleteConstraint ( date,shift );
-                }
+
+        loggedIn.giveConstraint ( date, shift, reason );
+        if (loggedIn.getRole ( ).equals ( Role.driverC ) || loggedIn.getRole ( ).equals ( Role.driverC1 )) {
+            try {
+                ResourcesController.getInstance ( ).addDriverConstraint ( loggedIn.getID ( ), date, shift );
+                DalConstraintController.getInstance ().insert ( new DalConstraint ( loggedIn.getID (), reason, date, shift ) );
+            } catch (IllegalArgumentException e) {
+                deleteConstraint ( date, shift );
             }
-        }catch (EmployeeException e){
-            if(loggedIn.getRole ().equals ( Role.driverC) || loggedIn.getRole ().equals ( Role.driverC1))
-                throw e;
         }
-
     }
 
 
-    public void deleteConstraint (LocalDate date, int shift) throws EmployeeException {
+    public void deleteConstraint (LocalDate date, int shift) throws EmployeeException, SQLException {
         if (loggedIn == null) {
             throw new EmployeeException ( "No user is logged in" );
         }
@@ -147,6 +142,7 @@ public class EmployeeController {
         if (loggedIn.getRole ( ).equals ( Role.driverC ) || loggedIn.getRole ( ).equals ( Role.driverC1 )) {
             try {
                 ResourcesController.getInstance ( ).deleteDriverConstraint ( loggedIn.getID ( ), date, shift );
+                DalConstraintController.getInstance ().delete ( new DalConstraint ( loggedIn.getID (), "", date, 0 ) );
             } catch (IllegalArgumentException e) {
                 giveConstraint ( date, shift, reason );
             }
@@ -167,7 +163,7 @@ public class EmployeeController {
         return employees.get(Id).getConstraints();
     }
 
-    public Employee addEmployee(FacadeEmployee e) throws EmployeeException {
+    public Employee addEmployee(FacadeEmployee e) throws EmployeeException, SQLException {
 
         if(loggedIn==null){
             throw new EmployeeException("No user is logged in");
@@ -186,9 +182,14 @@ public class EmployeeController {
             throw new EmployeeException ( "transaction date nust be before today." );
        TermsOfEmployment terms = creatTermsOfEmployment ( e.getFacadeTermsOfEmployment () );
        BankAccountInfo bank = createAccount ( e.getFacadeBankAccountInfo () );
-       if(!validId(e.getID())){throw new EmployeeException("An invalid ID was entered ");}
+       if(!validId(e.getID())){
+           throw new EmployeeException("An invalid ID was entered ");
+       }
        Employee newEmployee = new Employee(e.getRole(), e.getID(),terms, e.getTransactionDate(), bank);
        employees.put(e.getID(), newEmployee);
+       DalEmployeeController.getInstance ().insert ( new DalEmployee ( newEmployee.getID (), newEmployee.getRole ().name (), newEmployee.getTransactionDate (),
+               newEmployee.getTerms ().getDaysOff (), newEmployee.getTerms ().getSalary (), newEmployee.getTerms ().getSickDays (), newEmployee.getTerms ().getEducationFund (), newEmployee.isEmployed ()  ));
+       DalBankBranchController.getInstance ().insert ( new DalBankBranch ( newEmployee.getID (), newEmployee.getBank ().getBank (), newEmployee.getBank ().getBankBranch (), newEmployee.getBank ().getAccountNumber () ) );
        return newEmployee;
     }
 
@@ -504,7 +505,7 @@ public class EmployeeController {
                 }
             }
             if(dalBank == null)
-                throw new EmployeeException ( "There is no bank account to Employrr - " +emp.getId ());
+                throw new EmployeeException ( "There is no bank account to Employee - " +emp.getId ());
             bank = new BankAccountInfo ( dalBank.getAccountNumber (), dalBank.getBankBranch (), dalBank.getBank ());
             employee = new Employee ( emp.getRole (), emp.getId (), new TermsOfEmployment ( emp.getSalary (), emp.getEducationFund (), emp.getSickDays (), emp.getDaysOff () ), emp.getTransactionDate (), bank );
             for(DalConstraint cons : constraints){

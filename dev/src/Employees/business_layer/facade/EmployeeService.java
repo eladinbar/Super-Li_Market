@@ -52,7 +52,7 @@ public class EmployeeService {
 
 
 
-    public Response deleteConstraint (LocalDate date, int shift)  {
+    public Response deleteConstraint (LocalDate date, int shift) throws SQLException {
         try{
             employeeController.deleteConstraint(date, shift);
             return new Response();
