@@ -1,5 +1,6 @@
 package Employees.business_layer.facade;
 
+import Employees.EmployeeException;
 import Employees.business_layer.Employee.EmployeeController;
 import Employees.business_layer.Employee.Role;
 import Employees.business_layer.Shift.ShiftController;
@@ -151,8 +152,13 @@ public class FacadeService {
         return response;
     }
 
-    public boolean loadData() throws SQLException {
+    public ResponseT<Boolean> loadData() throws SQLException {
         shiftService.loadData();
-        return employeeService.loadData();
+        try {
+            Boolean b = employeeService.loadData();
+            return new ResponseT<> ( b );
+        }catch (EmployeeException e){
+            return new ResponseT<> ( e.getMessage () );
+        }
     }
 }

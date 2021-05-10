@@ -28,7 +28,7 @@ public class PresentationController {
         stringConverter = new StringConverter ();
     }
 
-    public void start(){
+    public void start() throws SQLException {
         int choice = menuPrinter.uploadProgram ();
         if(choice == 2)
             uploadClean ();
@@ -36,30 +36,34 @@ public class PresentationController {
             uploadData ();
     }
 
-    private void uploadClean(){
+    private Response uploadClean() throws SQLException {
         char choice = menuPrinter.uploadClean ();
-        boolean start = loadData();
-        FacadeEmployee manager;
-        if(choice == 'y') {
-            manager = menuPrinter.createManagerAccountMenu ( );
-            while (manager == null)
-            {
-                manager = menuPrinter.createManagerAccountMenu ();
-            }
-            ResponseT<FacadeEmployee> facadeEmployee = facadeService.addManager ( manager );
-            if(facadeEmployee.errorOccured ())
-            {
-                menuPrinter.print ( facadeEmployee.getErrorMessage () );
-                return;
-            }
-            login ( true );
-            while(!login (false));
+        ResponseT<Boolean> start = loadData();
+        if(start.errorOccured ())
+            return new Response ( start.getErrorMessage () );
+        if(start.value == false) {
+            FacadeEmployee manager;
+            if (choice == 'y') {
+                manager = menuPrinter.createManagerAccountMenu ( );
+                while (manager == null) {
+                    manager = menuPrinter.createManagerAccountMenu ( );
+                }
+                ResponseT<FacadeEmployee> facadeEmployee = facadeService.addManager ( manager );
+                if (facadeEmployee.errorOccured ( )) {
+                    menuPrinter.print ( facadeEmployee.getErrorMessage ( ) );
+                    return new Response ( facadeEmployee.getErrorMessage () );
+                }
+                login ( true );
+                while (!login ( false )) ;
+            } else
+                menuPrinter.print ( "Only a manager can start a clean program." );
         }
         else
-            menuPrinter.print ("Only a manager can start a clean program." );
+            while (!login ( false ));
+        return new Response (  );
     }
 
-    private boolean loadData() throws SQLException {
+    private ResponseT<Boolean> loadData() throws SQLException {
         return facadeService.loadData();
     }
 
