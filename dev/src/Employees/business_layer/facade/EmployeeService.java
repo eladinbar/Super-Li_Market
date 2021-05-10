@@ -202,4 +202,8 @@ public class EmployeeService {
         }
         return converted;
     }
+
+    public boolean loadData() {
+
+    }
 }

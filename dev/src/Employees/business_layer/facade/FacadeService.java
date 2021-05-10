@@ -8,6 +8,7 @@ import Employees.business_layer.facade.facadeObject.FacadeEmployee;
 import Employees.business_layer.facade.facadeObject.FacadeShift;
 import Employees.business_layer.facade.facadeObject.FacadeWeeklyShiftSchedule;
 
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
@@ -148,5 +149,10 @@ public class FacadeService {
         response = shiftService.createData ( );
         employeeService.logout ();
         return response;
+    }
+
+    public boolean loadData() throws SQLException {
+        shiftService.loadData();
+        return employeeService.loadData();
     }
 }
