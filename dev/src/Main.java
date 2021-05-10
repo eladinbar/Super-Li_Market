@@ -16,10 +16,9 @@ import java.util.Locale;
 import Employees.presentation_layer.PresentationController;
 
 public class Main {
-    public Main() {
-    }
-
     public static void main(String[] args) throws SQLException {
+        PresentationController presentationController = new PresentationController();
+        presentationController.start();
     }
 }
 
