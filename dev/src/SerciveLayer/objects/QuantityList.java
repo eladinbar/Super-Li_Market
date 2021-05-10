@@ -1,5 +1,7 @@
 package SerciveLayer.objects;
 
+import InfrastructurePackage.TextFormatter;
+
 import java.util.Map;
 
 public class QuantityList {
@@ -17,10 +19,15 @@ public class QuantityList {
 
     @Override
     public String toString() {
-        String amounts="quantity List details :\nPID\t|\tamount\t|\tdiscount\n";
+        String amounts=String.format("quantity List details :\n%s\t|\t%s\t|\t%s\n",formatFix("product id"),formatFix("amount"),formatFix("discount"));
         for (Map.Entry<Integer,Integer> entry: amount.entrySet()) {
-            amounts+=entry.getKey()+"\t|\t"+entry.getValue()+"\t|\t"+discount.get(entry.getKey())+"\n";
+            amounts+=formatFix(""+entry.getKey())+"\t|\t"+formatFix(""+entry.getValue())+"\t|\t"+formatFix(""+discount.get(entry.getKey()))+"\n";
         }
         return amounts;
+    }
+
+    private String formatFix(String toFormat){
+        TextFormatter tf=new TextFormatter();
+        return tf.centerString(toFormat,tf.getPaddingSize());
     }
 }

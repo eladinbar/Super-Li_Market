@@ -1,5 +1,6 @@
 package SerciveLayer.objects;
 
+import InfrastructurePackage.TextFormatter;
 import SerciveLayer.SimpleObjects.SimpleEntity;
 
 import java.lang.reflect.Field;
@@ -47,6 +48,7 @@ public class Product extends SimpleEntity {
 
     @Override
     public String toString() {
-        return String.format("%s\t|\t%s\t|\t%d\t|\t%d\t|\t%d\t|\t%d\n",productID,name,amount,sellingPrice,discount,finalPrice);
+        TextFormatter tf = new TextFormatter();
+        return String.format("%s\t|\t%s\t|\t%s\t|\t%s\t|\t%s\t|\t%s\n",tf.centerString(""+productID,20),tf.centerString(""+name,20),tf.centerString(""+amount,20),tf.centerString(""+sellingPrice,20),tf.centerString(""+discount,20),tf.centerString(""+finalPrice,20));
     }
 }

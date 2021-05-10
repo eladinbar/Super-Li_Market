@@ -12,9 +12,10 @@ public class createObjects {
     private IService service;
     private List<Integer> suppliers;
     private List<Integer> products;
+
     public createObjects(IService service) {
-        suppliers=new ArrayList<>();
-        products=new ArrayList<>();
+        suppliers = new ArrayList<>();
+        products = new ArrayList<>();
         this.service = service;
     }
 
@@ -41,9 +42,9 @@ public class createObjects {
         for (int i = 0; i < 10; i++, phone++, id++) {
             service.addSupplier("Supplier", "LastName", "email" + i + "@gmail.com", "" + id, "0" + phone, 1, true, true, "cash");
             suppliers.add(id);
-            service.addQuantityList(""+id);
-            service.addItemToAgreement(""+id, i, i, i);
-            service.addQuantityListItem(""+id, i, i, i+3);
+            service.addQuantityList("" + id);
+            service.addItemToAgreement("" + id, i, i, i);
+            service.addQuantityListItem("" + id, i, i, i + 3);
         }
         for (int i = 10; i < 20; i++, phone++, id++) {
             service.addSupplier("Supplier", "LastName", "email" + i + "@gmail.com", "" + id, "0" + phone, 1, false, true, "check");
@@ -158,26 +159,32 @@ public class createObjects {
         //Adding sales
         //Guinness sale
 
-        service.addItemSale("Guinness Sale", 25285, 0.2, LocalDate.of(2021,4,11), LocalDate.of(2021,4,15));
+        service.addItemSale("Guinness Sale", 25285, 0.2, LocalDate.of(2021, 4, 11), LocalDate.of(2021, 4, 15));
 
         //vannila milk sale
         Calendar start2 = Calendar.getInstance();
         start2.set(2021, Month.APRIL.getValue() - 1, 22);
         Calendar end2 = Calendar.getInstance();
         end2.set(2021, Month.APRIL.getValue() - 1, 27);
-        service.addCategorySale("Yotvata Sale", "Yotvata", 0.25,  LocalDate.of(2021,4,22), LocalDate.of(2021,4,27));
+        service.addCategorySale("Yotvata Sale", "Yotvata", 0.25, LocalDate.of(2021, 4, 22), LocalDate.of(2021, 4, 27));
 
         //Adding suppliers discount
-        LocalDate defectTime = LocalDate.of(2021,3,4);
+        LocalDate defectTime = LocalDate.of(2021, 3, 4);
         //Adding defect entries
         service.recordDefect(88435, defectTime, 4, "SH-A28-R-S3");
-        LocalDate defectTime2 = LocalDate.of(2021,3,4);
+        LocalDate defectTime2 = LocalDate.of(2021, 3, 4);
         //Adding defect entries
         service.recordDefect(22285, defectTime2, 4, "ST-A7-L-S46");
-        LocalDate defectTime3 = LocalDate.of(2021,3,4);
+        LocalDate defectTime3 = LocalDate.of(2021, 3, 4);
         //Adding defect entries
         service.recordDefect(98755, defectTime3, 2, "SH-A19-R-55");
 
+        service.addItemToAgreement("333333333", 11115, 12, 100);
+        service.addItemToAgreement("333333334", 11115, 12, 100);
+        service.addItemToAgreement("333333334", 265, 16, 100);
+        service.addItemToAgreement("333333334", 846, 13, 100);
+        service.addItemToAgreement("333333334", 847, 14, 100);
+        service.addItemToAgreement("333333334", 845, 15, 100);
     }
 
 }

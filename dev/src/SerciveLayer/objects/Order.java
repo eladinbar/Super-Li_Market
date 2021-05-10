@@ -1,5 +1,7 @@
 package SerciveLayer.objects;
 
+import InfrastructurePackage.TextFormatter;
+
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Map;
@@ -11,7 +13,7 @@ public class Order {
     private boolean delivered;
     private Supplier supplier;
     private String day;
-
+    //todo make sure adress added !! in to string too
     public Order(int id, LocalDate date, Supplier supplier, ArrayList<Product> products, boolean delivered, int day) {
         this.id = id;
         this.products = products;
@@ -28,6 +30,8 @@ public class Order {
         this.delivered = order.isDelivered();
         this.supplier = new Supplier(order.getSupplier());
         this.day = "";
+        if(date==null)
+            this.day=conNumToDay(day);
     }
 
     public int getId() {
@@ -49,14 +53,19 @@ public class Order {
 
     @Override
     public String toString() {
-        String proToString = "order products:\n";
+        String proToString = "";
         for (Product en : products) {
             proToString += en.toString() + "\n";
         }
 
         if (date == null)
-            return String.format("order details:\nsupplier name: %s\t|\tadress:%s\t|\torder id : %d\nsupplier id: %s\t|\tpermanentDay: %s\t|\tphone number: %s\nitem id\t|\tname\t|\tquantity\t|\tselling price\t|\tdiscount\t|\tfinal price\n", supplier.getName(), "**insertaddress**", id, supplier.getSc().id, day, supplier.getSc().phone) + proToString;
-        return String.format("order details:\nsupplier name: %s\t|\tadress:%s\t|\torder id : %d\nsupplier id: %s\t|\tdate: %s\t|\tphone number: %s\nitem id\t|\tname\t|\tquantity\t|\tselling price\t|\tdiscount\t|\tfinal price\n", supplier.getName(), "**insertaddress**", id, supplier.getSc().id, date, supplier.getSc().phone) + proToString;
+            return String.format("order details:\nsupplier name: %s\t|\taddress:%s\t|\torder id : %d\nsupplier id: %s\t|\tpermanentDay: %s\t|\tphone number: %s\norder products:\n%s\t|\t%s\t|\t%s\t|\t%s\t|\t%s\t|\t%s\n", supplier.getName(), "**insertaddress**", id, supplier.getSc().id, day, supplier.getSc().phone,formatFix("item id"),formatFix("name"),formatFix("quantity"),formatFix("selling price"),formatFix("discount"),formatFix("final price")) + proToString;
+        return String.format("order details:\nsupplier name: %s\t|\taddress:%s\t|\torder id : %d\nsupplier id: %s\t|\tdate: %s\t|\tphone number: %s\norder products:\n%s\t|\t%s\t|\t%s\t|\t%s\t|\t%s\t|\t%s\n", supplier.getName(), "**insertaddress**", id, supplier.getSc().id, date, supplier.getSc().phone,formatFix("item id"),formatFix("name"),formatFix("quantity"),formatFix("selling price"),formatFix("discount"),formatFix("final price")) + proToString;
+    }
+
+    private String formatFix(String toFormat){
+        TextFormatter tf=new TextFormatter();
+        return tf.centerString(toFormat,tf.getPaddingSize());
     }
 
     private String conNumToDay(int num) {

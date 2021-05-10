@@ -512,13 +512,13 @@ public class PresentationController implements Runnable {
     }
 
     private void setPermanentOrder() { //case 7
-        int day = menu.instructAndReceive("day (1-7) in a week to get the order", Integer.class);
+        int day = menu.instructAndReceive("day (1-7) in a week to get the order: ", Integer.class);
         while (true) {
             int itemID = menu.instructAndReceive("enter item ID to add to a scheduled order: ", Integer.class);
             int amount = menu.instructAndReceive("enter amount to order: ", Integer.class);
             String order = service.createScheduledOrder(day, itemID, amount).toString();//todo Exeption when fail
             System.out.println(order);
-            String choice = menu.instructAndReceive("1. add more items.\nenter any other key for completing the order ");
+            String choice = menu.instructAndReceive("*) press 1 to add more items\n*) press anything else to complete \n");
             if (!choice.equals("1")) {
                 break;
             }

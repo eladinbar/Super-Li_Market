@@ -66,7 +66,7 @@ public class OrderService {
                         o.getSupplier().getProductDiscount(o.getProducts().get(id),id));
                 productList.add(newProd);
             }
-            toReturn=new ResponseT<>(new Order(o, productList,-1));
+            toReturn=new ResponseT<>(new Order(o, productList,oc.getOrderDay(orderID)));
         } catch (Exception e) {
             toReturn = new ResponseT<>(e.getMessage());
         }

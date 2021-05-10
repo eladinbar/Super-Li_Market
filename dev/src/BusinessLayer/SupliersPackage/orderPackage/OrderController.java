@@ -86,7 +86,7 @@ public class OrderController {
 
     public Order createPermOrder(int day, Supplier supplier) throws Exception {
         for (Order o : pernamentOrders.get(day)) {
-            if(o.getSupplier().getSc().getId().equals(supplier.getSc().getId())){
+            if (o.getSupplier().getSc().getId().equals(supplier.getSc().getId())) {
                 return o;
             }
         }
@@ -109,5 +109,15 @@ public class OrderController {
     public Double getOrderTotalDiscount(int orderID) throws Exception {
         orderExist(orderID);
         return orders.get(orderID).getOrderTotalDiscount();
+    }
+
+    public int getOrderDay(int orderID) {
+        for (int i = 1; i < 8; i++) {
+            for (Order o : pernamentOrders.get(i)) {
+                if (o.getId() == orderID)
+                    return i;
+            }
+        }
+        return -1;
     }
 }

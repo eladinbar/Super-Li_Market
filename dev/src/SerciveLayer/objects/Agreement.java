@@ -1,5 +1,7 @@
 package SerciveLayer.objects;
 
+import InfrastructurePackage.TextFormatter;
+
 import java.util.Map;
 
 public class Agreement {
