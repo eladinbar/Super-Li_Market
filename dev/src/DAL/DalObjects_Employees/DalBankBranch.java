@@ -1,17 +1,23 @@
 package DAL.DalObjects_Employees;
 
 public class DalBankBranch {
+    private String employeeId;
     private String bank;
     private int bankBranch;
     private int accountNumber;
 
 
-    public DalBankBranch( String bank, int bankBranch, int accountNumber){
+    public DalBankBranch( String employeeId, String bank, int bankBranch, int accountNumber){
+        this.employeeId = employeeId;
         this.bank = bank;
         this.bankBranch = bankBranch;
         this.accountNumber = accountNumber;
     }
 // getters
+
+    public String getEmployeeId() {
+        return employeeId;
+    }
 
     public String getBank() {
         return bank;
@@ -26,6 +32,10 @@ public class DalBankBranch {
     }
 
 // setters
+
+    public void setEmployeeId(String employeeId) {
+        this.employeeId = employeeId;
+    }
 
     public void setBank(String bank) {
         this.bank = bank;
