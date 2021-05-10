@@ -24,7 +24,7 @@ public class ShiftService {
         shiftController = ShiftController.getInstance ();
     }
 
-    public ResponseT<FacadeWeeklyShiftSchedule> getRecommendation(LocalDate startingDate) {
+    public ResponseT<FacadeWeeklyShiftSchedule> getRecommendation(LocalDate startingDate) throws SQLException {
         try {
             WeeklyShiftSchedule weeklyShiftSchedule = shiftController.getRecommendation ( startingDate );
             FacadeWeeklyShiftSchedule facadeWeeklyShiftSchedule = new FacadeWeeklyShiftSchedule ( weeklyShiftSchedule );
@@ -35,8 +35,7 @@ public class ShiftService {
         }
     }
 
-    public ResponseT<FacadeWeeklyShiftSchedule> createWeeklyShiftSchedule(LocalDate startingDate, FacadeShift[][] shifts)
-    {
+    public ResponseT<FacadeWeeklyShiftSchedule> createWeeklyShiftSchedule(LocalDate startingDate, FacadeShift[][] shifts) throws SQLException {
         try{
             Shift[][] newShifts = new Shift[7][2];
             for ( int i = 0; i < 7; i ++ )
@@ -144,7 +143,7 @@ public class ShiftService {
         }
     }
 
-    public Response createShiftType(String shiftype, HashMap<String, Integer> manning){
+    public Response createShiftType(String shiftype, HashMap<String, Integer> manning) throws SQLException {
         try {
             shiftController.createShiftType ( shiftype, manning );
             return new Response (  );
@@ -212,7 +211,7 @@ public class ShiftService {
         }
     }
 
-    public Response createData() {
+    public Response createData() throws SQLException {
         try {
             shiftController.createData ( );
             return new Response (  );

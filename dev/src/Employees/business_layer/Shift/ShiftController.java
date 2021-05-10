@@ -9,6 +9,7 @@ import Employees.EmployeeException;
 import Employees.business_layer.Employee.EmployeeController;
 import Employees.business_layer.Employee.Role;
 
+import javax.swing.text.html.parser.Entity;
 import java.sql.SQLException;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
@@ -33,7 +34,7 @@ public class ShiftController {
         return instance;
     }
 
-    public WeeklyShiftSchedule getRecommendation(LocalDate startingDate) throws EmployeeException {
+    public WeeklyShiftSchedule getRecommendation(LocalDate startingDate) throws EmployeeException, SQLException {
         if (startingDate.isBefore ( LocalDate.now ( ) ))
             throw new EmployeeException ( "Starting date has already passed." );
         if (startingDate.getDayOfWeek ( ) != DayOfWeek.SUNDAY)
@@ -45,10 +46,11 @@ public class ShiftController {
             output.recommendShifts ( employeeController, i );
         }
         shifts.put ( startingDate, output );
+        saveToDB ( output );
         return output;
     }
 
-    public WeeklyShiftSchedule createWeeklyShiftSchedule(LocalDate startingDate, Shift[][] shifts) throws EmployeeException {
+    public WeeklyShiftSchedule createWeeklyShiftSchedule(LocalDate startingDate, Shift[][] shifts) throws EmployeeException, SQLException {
         if (startingDate.isBefore ( LocalDate.now ( ) ))
             throw new EmployeeException ( "Starting date has already passed." );
         if (startingDate.getDayOfWeek ( ) != DayOfWeek.SUNDAY)
@@ -68,8 +70,31 @@ public class ShiftController {
         checkManningVallidity2 ( shifts[6][1].getManning ( ) );
         checkDriverVallidity ( shifts[6][1].getManning () );
         WeeklyShiftSchedule weeklyShiftSchedule = new WeeklyShiftSchedule ( startingDate, shifts );
+        saveToDB(weeklyShiftSchedule);
         this.shifts.put ( startingDate, weeklyShiftSchedule );
         return weeklyShiftSchedule;
+    }
+
+    private void saveToDB(WeeklyShiftSchedule weeklyShiftSchedule) throws SQLException {
+        Shift temp;
+        for(int i = 0; i < 5; i++)
+        {
+            for(int j = 0; j < 2; j++) {
+                temp = weeklyShiftSchedule.getShifts ( )[i][j];
+                for ( Map.Entry<Role, List<String>> entry : temp.getManning ( ).entrySet ( ) )
+                    for ( String id : entry.getValue ( ) )
+                        DalShiftController.getInstance ( ).insert ( new DalShift ( id, temp.getType ( ), temp.getDate ( ), temp.getmORe ( ), entry.getKey ( ).name () ) );
+            }
+        }
+        temp = weeklyShiftSchedule.getShifts ( )[5][0];
+        for ( Map.Entry<Role, List<String>> entry : temp.getManning ( ).entrySet ( ) )
+            for ( String id : entry.getValue ( ) )
+                DalShiftController.getInstance ( ).insert ( new DalShift ( id, temp.getType ( ), temp.getDate ( ), temp.getmORe ( ), entry.getKey ( ).name () ) );
+        temp = weeklyShiftSchedule.getShifts ( )[6][1];
+        for ( Map.Entry<Role, List<String>> entry : temp.getManning ( ).entrySet ( ) )
+            for ( String id : entry.getValue ( ) )
+                DalShiftController.getInstance ( ).insert ( new DalShift ( id, temp.getType ( ), temp.getDate ( ), temp.getmORe ( ), entry.getKey ( ).name () ) );
+
     }
 
     private void checkManningVallidity(HashMap<String, List<String>> manning) throws EmployeeException {
@@ -155,8 +180,10 @@ public class ShiftController {
         getWeeklyShiftSchedule ( date ).changeShiftType ( date, shift, shiftType );
     }
 
-    public void createShiftType(String shiftype, HashMap<String, Integer> manning) throws EmployeeException {
+    public void createShiftType(String shiftype, HashMap<String, Integer> manning) throws EmployeeException, SQLException {
         ShiftTypes.getInstance ().addShiftType ( shiftype, manning );
+        for( Map.Entry <String, Integer> entry : manning.entrySet ())
+            DalShiftTypeController.getInstance ().insert ( new DalShiftType ( entry.getValue (), shiftype, entry.getKey () ) );
     }
 
     public void updateRoleManning(String shiftType, String role, int num) throws EmployeeException {
@@ -191,7 +218,7 @@ public class ShiftController {
         ShiftTypes.getInstance ().deleteRole(shiftType, role);
     }
 
-    public void createData() throws EmployeeException {
+    public void createData() throws EmployeeException, SQLException {
         createShiftTypes ();
         LocalDate temp = LocalDate.now ().plusDays ( 7 );
         LocalDate sunday = temp;
@@ -203,7 +230,7 @@ public class ShiftController {
         shifts.put (sunday.plusDays ( 7 ), getRecommendation ( sunday.plusDays ( 7 ) ));
     }
 
-    private void createShiftTypes() throws EmployeeException {
+    private void createShiftTypes() throws EmployeeException, SQLException {
         HashMap<String, Integer> manning = new HashMap<> (  );
         manning.put ( "shiftManager", 1 );
         manning.put ( "cashier", 2 );
@@ -349,9 +376,5 @@ public class ShiftController {
         }
         newShift = new Shift ( shift.get(0).getDate (), manning, shift.get(0).getType (), shift.get(0).getShift () );
         return newShift;
-    }
-
-    private void createWeekly(LinkedList<DalShift> week) {
-
     }
 }

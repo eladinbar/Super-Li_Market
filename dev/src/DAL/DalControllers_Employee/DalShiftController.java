@@ -57,7 +57,6 @@ public class DalShiftController extends DalController {
 
     public boolean insert(DalShift dalShift) throws SQLException {
         //TODO - change URL
-        System.out.println("starting insert");
         Connection conn= DriverManager.getConnection(connection);
         String query= "INSERT INTO "+tableName+" VALUES (?,?,?,?,?)";
         try{
@@ -67,8 +66,6 @@ public class DalShiftController extends DalController {
             st.setDate(3, new Date(dalShift.getDate().getYear(), dalShift.getDate().getMonth().getValue(), dalShift.getDate().getDayOfMonth()));
             st.setInt(4,dalShift.getShift());
             st.setString(5, dalShift.getRole());
-
-            System.out.println("executing insert");
             st.executeUpdate();
 
         }

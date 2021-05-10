@@ -54,17 +54,13 @@ public class DalShiftTypeController extends DalController {
     }
 
     public boolean insert(DalShiftType dalShiftType) throws SQLException {
-        //TODO - change URL
-        System.out.println("starting insert");
         Connection conn= DriverManager.getConnection(connection);
         String query= "INSERT INTO "+tableName+" VALUES (?,?,?)";
         try{
             PreparedStatement st=conn.prepareStatement(query);
             st.setInt(1,dalShiftType.getAmount());
             st.setString(2,dalShiftType.getType());
-            st.setString(4,dalShiftType.getRole());
-
-            System.out.println("executing insert");
+            st.setString(3,dalShiftType.getRole());
             st.executeUpdate();
 
         }
