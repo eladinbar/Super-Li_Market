@@ -1,20 +1,70 @@
 package BusinessLayer.InventoryPackage.SalePackage;
 
-import InfrastructurePackage.Pair;
 import BusinessLayer.InventoryPackage.Category;
 
 import java.time.LocalDate;
-import java.util.Calendar;
+import java.sql.SQLException;
 
 public class CategorySale extends Sale{
+    private DataAccessLayer.DalObjects.InventoryObjects.CategorySale dalCopyCategorySale;
+
     private Category category;
 
+    public CategorySale(String name) {
+        super(name);
+    }
+
     public CategorySale(String name, double discount, LocalDate startDate, LocalDate endDate, Category category) {
-        this.name = name;
-        this.discount = discount;
-        this.saleDates = new Pair<>(startDate, endDate);
-        //Remove redundant time from dates
+        super(name, discount, startDate, endDate);
         this.category = category;
+    }
+
+    @Override
+    public void setName(String name) {
+        dalCopyCategorySale.setName(name);
+        try {
+            dalCopyCategorySale.update();
+            this.name = name;
+        } catch (SQLException ex) {
+            dalCopyCategorySale.setName(this.name);
+            throw new RuntimeException("Something went wrong.");
+        }
+    }
+
+    @Override
+    public void setDiscount(double discount) {
+        dalCopyCategorySale.setDiscount(discount);
+        try {
+            dalCopyCategorySale.update();
+            this.discount = discount;
+        } catch (SQLException ex) {
+            dalCopyCategorySale.setDiscount(this.discount);
+            throw new RuntimeException("Something went wrong.");
+        }
+    }
+
+    @Override
+    public void setStartDate(LocalDate startDate) {
+        dalCopyCategorySale.setStartSaleDate(startDate.toString());
+        try {
+            dalCopyCategorySale.update();
+            this.saleDates.setFirst(startDate);
+        } catch (SQLException ex) {
+            dalCopyCategorySale.setStartSaleDate(this.saleDates.getFirst().toString());
+            throw new RuntimeException("Something went wrong.");
+        }
+    }
+
+    @Override
+    public void setEndDate(LocalDate endDate) {
+        dalCopyCategorySale.setEndSaleDate(endDate.toString());
+        try {
+            dalCopyCategorySale.update();
+            this.saleDates.setSecond(endDate);
+        } catch (SQLException ex) {
+            dalCopyCategorySale.setEndSaleDate(this.saleDates.getSecond().toString());
+            throw new RuntimeException("Something went wrong.");
+        }
     }
 
     public Category getCategory() {
@@ -22,6 +72,56 @@ public class CategorySale extends Sale{
     }
 
     public void setCategory(Category category) {
-        this.category = category;
+        dalCopyCategorySale.setCategoryName(category.getName());
+        try {
+            dalCopyCategorySale.update();
+            this.category = category;
+        } catch (SQLException ex) {
+            dalCopyCategorySale.setCategoryName(this.category.getName());
+            throw new RuntimeException("Something went wrong.");
+        }
+    }
+
+    public void save() {
+        try {
+            dalCopyCategorySale = new DataAccessLayer.DalObjects.InventoryObjects.CategorySale(name, discount,
+                    saleDates.getFirst().toString(), saleDates.getSecond().toString(), category.getName());
+            dalCopyCategorySale.save();
+        } catch (SQLException ex) {
+            throw new RuntimeException("Something went wrong.");
+        }
+    }
+
+    public void update() throws SQLException {
+        dalCopyCategorySale.update();
+    }
+
+    public void delete() {
+        try {
+            dalCopyCategorySale.delete();
+        } catch (SQLException ex) {
+            throw new RuntimeException("Something went wrong.");
+        }
+    }
+
+    public boolean find() {
+        boolean found;
+        try {
+            dalCopyCategorySale = new DataAccessLayer.DalObjects.InventoryObjects.CategorySale(name);
+
+            found = dalCopyCategorySale.find(); //Retrieves DAL Category Sale from the database
+            //Set the fields according to the retrieved data
+            if (found) {
+                this.name = dalCopyCategorySale.getName();
+                this.discount = dalCopyCategorySale.getDiscount();
+                this.setStartDate(LocalDate.parse(dalCopyCategorySale.getStartSaleDate()));
+                this.setEndDate(LocalDate.parse(dalCopyCategorySale.getEndSaleDate()));
+                this.setCategory(new Category(dalCopyCategorySale.getCategoryName())); //Create new Category with primary key to be replaced
+            }
+        } catch (SQLException ex) {
+            throw new RuntimeException("Something went wrong.");
+        }
+
+        return found;
     }
 }

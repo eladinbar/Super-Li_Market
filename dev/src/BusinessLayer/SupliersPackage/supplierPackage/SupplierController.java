@@ -21,7 +21,8 @@ public class SupplierController {
 
     //checks if the supplier exists in the system
     private void existSupplier(String id) throws Exception {
-        if (!suppliers.containsKey(id))
+        SupplierCard supplierCard = new SupplierCard(id);
+        if (!suppliers.containsKey(id) && !supplierCard.find())
             throw new Exception("system does not have user with the id :" + id);
     }
 
@@ -41,6 +42,7 @@ public class SupplierController {
 
     public void removeSupplier(String id) throws Exception {
         existSupplier(id);
+        new SupplierCard(id).delete();
         suppliers.remove(id);
     }
 
@@ -137,7 +139,7 @@ public class SupplierController {
     //todo add method to order controller
     public void addQuantityListItem(String supplierID, int productID, int amount, int discount) throws Exception {
         existSupplier(supplierID);
-        suppliers.get(supplierID).addQuantityListItem(productID, amount, discount);
+        suppliers.get(supplierID).addQuantityListItem(productID, amount, discount, supplierID);
     }
 
     public void deleteQuantityListItem(String supplierID, int productID) throws Exception {

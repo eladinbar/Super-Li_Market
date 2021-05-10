@@ -13,7 +13,6 @@ public class OrderController {
     private int productCounter;
     private int orderCounter;
 
-
     public OrderController() {
         pernamentOrders = new HashMap<>();
         for (int i = 1; i <= days; i++) {
@@ -29,7 +28,7 @@ public class OrderController {
         for (int i = 1; i <= days; i++) {
             for (Order o : pernamentOrders.get(i)) {
                 if (o.getSupplier().getSc().getId().equals(id))
-                    pernamentOrders.get(i).remove(o);
+                    pernamentOrders.get(i).remove(o); //remove the order from the list
             }
         }
     }
@@ -49,11 +48,12 @@ public class OrderController {
     }
 
     private void orderExist(int orderId) throws Exception {
-        if (!orders.containsKey(orderId))
+        if (!orders.containsKey(orderId) && !(new Order(orderId).find()))
             throw new Exception("order does not exist");
     }
 
     public void productExist(int productId) throws Exception {
+        //todo check if product is in dal
         if (!products.containsKey(productId))
             throw new Exception("product " + productId + " does not exist");
     }
@@ -66,22 +66,6 @@ public class OrderController {
     public void addProductToOrder(int orderId, int productId, int amount) throws Exception {
         orderExist(orderId);
         orders.get(orderId).addProductToOrder(productId, amount);
-    }
-
-    public product createProduct(String name, String manufacturer) throws Exception {
-        manufacturers manu = manufacturers.valueOf(manufacturer);
-        for (product p : products.values())
-            if (p.getName().equals(name) && p.getManu().name().equals(manufacturer))
-                throw new Exception("product already exists in the system");
-        product p = new product(name, productCounter, manu);
-        products.put(productCounter, p);
-        productCounter++;
-        return p;
-    }
-
-    public product getProduct(int productID) throws Exception {
-        productExist(productID);
-        return products.get(productID);
     }
 
     public Order createPermOrder(int day, Supplier supplier) throws Exception {

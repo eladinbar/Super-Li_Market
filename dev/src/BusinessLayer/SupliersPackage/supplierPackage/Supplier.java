@@ -1,5 +1,9 @@
 package BusinessLayer.SupliersPackage.supplierPackage;
 
+import BusinessLayer.InventoryPackage.Item;
+
+import java.sql.SQLException;
+
 public class Supplier {
     private SupplierCard sc;
     private Agreement ag;
@@ -27,7 +31,7 @@ public class Supplier {
         return Payment.valueOf(pay);//checks if pay belongs to enum
     }
 
-    protected PersonCard createPersonCard(String firstName, String lastName, String email, String id, String phone){
+    protected PersonCard createPersonCard(String firstName, String lastName, String email, String id, String phone) throws SQLException {
         return new PersonCard(firstName, lastName, email, id, phone);
     }
 
@@ -38,17 +42,23 @@ public class Supplier {
         if(memberID.equals(sc.getId()))
             throw new Exception("cannot add supplier to his contact members");
         sc.getContactMembers().add(memberID);
+        sc.save(sc.getId(),memberID); //dal
     }
 
     public void deleteContactMember(String memberID) throws Exception {
         if (!sc.getContactMembers().contains(memberID))
             throw new Exception("contact member with the id " + memberID + " does not exists");
         sc.getContactMembers().remove(memberID);
+        sc.delete(sc.getId(),memberID); //dal
     }
 
     public void deleteQuantityList() throws Exception {
         if (ag.getQl() == null)
             throw new Exception("quantityList does not exist");
+        //delete all products in quantityListItems in dal
+        for (Integer item: ag.getQl().getAmount().keySet()) {
+            ag.deleteQuantityListItem(item);
+        }
         ag.setQl(null);
     }
 
@@ -56,8 +66,8 @@ public class Supplier {
         ag.deleteQuantityListItem(productID);
     }
 
-    public void addQuantityListItem(int productID, int amount, int discount) throws Exception {
-        ag.addQuantityListItem(productID, amount, discount);
+    public void addQuantityListItem(int productID, int amount, int discount, String supplierId) throws Exception {
+        ag.addQuantityListItem(productID, amount, discount, supplierId);
     }
 
     public QuantityList addQuantityList() throws Exception {
@@ -79,7 +89,7 @@ public class Supplier {
     }
 
     public void addItemToAgreement(int productID, int companyProductID,int price) throws Exception {
-        ag.addItemToAgreement(productID,companyProductID,price);
+        ag.addItemToAgreement(productID,companyProductID,price, sc.getId());
     }
 
     public void removeItemFromAgreement(int productId) throws Exception {

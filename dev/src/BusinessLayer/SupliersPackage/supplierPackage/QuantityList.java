@@ -1,5 +1,8 @@
 package BusinessLayer.SupliersPackage.supplierPackage;
 
+import DataAccessLayer.DalObjects.SupplierObjects.QuantityListItemsDal;
+
+import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -7,10 +10,12 @@ public class QuantityList {
     private final int maxDiscount = 100;
     private Map<Integer, Integer> amount;
     private Map<Integer, Integer> discount;
+    private Map<Integer, QuantityListItemsDal> dalObjects;
 
     public QuantityList() {
         amount = new HashMap<>();
         discount = new HashMap<>();
+        dalObjects = new HashMap<>();
     }
 
     public Map<Integer, Integer> getAmount() {
@@ -21,17 +26,22 @@ public class QuantityList {
         return discount;
     }
 
-    public void addQuantityListItem(int productID, int amount, int discount) throws Exception {
+    public Map<Integer, QuantityListItemsDal> getDalObjects() {
+        return dalObjects;
+    }
+
+    public void addQuantityListItem(int productID, int amount, int discount, String supplierId) throws Exception {
         checkAmount(amount);
         checkDiscount(discount);
         if (this.amount.containsKey(productID))
             throw new Exception("product already exists in quantity list");
         this.amount.put(productID, amount);
         this.discount.put(productID, discount);
+        saveItem(productID, supplierId); //dal
     }
 
     private void productExists(int productID) throws Exception {
-        if (!amount.containsKey(productID))
+        if (!amount.containsKey(productID) && !dalObjects.get(productID).find()) //dal
             throw new Exception("quantity list does not have the product " + productID);
     }
 
@@ -50,6 +60,7 @@ public class QuantityList {
         checkAmount(amount);
         this.amount.remove(productID);
         this.amount.put(productID, amount);
+        dalObjects.get(productID).setAmount(amount);//dal
     }
 
     public void editQuantityListDiscount(int productID, int discount) throws Exception {
@@ -57,11 +68,29 @@ public class QuantityList {
         checkAmount(discount);
         this.discount.remove(productID);
         this.discount.put(productID, discount);
+        dalObjects.get(productID).setDiscount(discount);//dal
     }
 
     public double getPrice(int productID, int amount, double price) {
         if (this.amount.containsKey(productID) && amount >= this.amount.get(productID))
             price = price - price * discount.get(productID) / 100;
         return price;
+    }
+
+    public boolean deleteItem(int itemId) throws SQLException {
+        return dalObjects.get(itemId).delete();
+    }
+
+    public boolean saveItem(int itemId, String supplierId) throws SQLException {
+        dalObjects.put(itemId,new QuantityListItemsDal(itemId,supplierId,amount.get(itemId),discount.get(itemId)));
+        return dalObjects.get(itemId).save();
+    }
+
+//    public void update(int itemId) throws SQLException {
+//        dalObjects.get(itemId).update();
+//    }
+
+    public boolean find(int itemId) throws SQLException {
+        return dalObjects.get(itemId).find();
     }
 }

@@ -363,9 +363,6 @@ public class Menu {
         }
         Object value = getMethods[getMethods.length - 1].invoke(elem);
         String stringRep = value.toString();
-        if (value instanceof Calendar) {
-            stringRep = tf.dateFormat((Calendar) value);
-        }
         System.out.println(output + tf.centerString(stringRep, tf.getPaddingSize()));
     }
 

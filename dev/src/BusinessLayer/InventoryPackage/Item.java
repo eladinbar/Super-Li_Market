@@ -1,8 +1,12 @@
 package BusinessLayer.InventoryPackage;
 
+import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class Item {
+    private DataAccessLayer.DalObjects.InventoryObjects.Item dalCopyItem;
+
     private int ID;
     private String name;
     private double costPrice;
@@ -12,6 +16,19 @@ public class Item {
     private final List<String> supplierIDs;
     private final Quantity quantity;
     private final Location location;
+
+    public Item() {
+        supplierIDs = new ArrayList<>();
+        quantity = new Quantity();
+        location = new Location();
+    }
+
+    public Item(int ID) {
+        this.ID = ID;
+        supplierIDs = new ArrayList<>();
+        quantity = new Quantity();
+        location = new Location();
+    }
 
     public Item(int ID, String name, double costPrice, double sellingPrice, int minAmount, int manufacturerID, List<String> supplierIDs,
                 int shelfQuantity, int storageQuantity, String shelfLocation, String storageLocation) {
@@ -35,7 +52,14 @@ public class Item {
     }
 
     public void setName(String name) {
-        this.name = name;
+        dalCopyItem.setName(name);
+        try {
+            dalCopyItem.update();
+            this.name = name;
+        } catch (SQLException ex) {
+            dalCopyItem.setName(this.name);
+            throw new RuntimeException("Something went wrong.");
+        }
     }
 
     public double getCostPrice() {
@@ -43,7 +67,14 @@ public class Item {
     }
 
     public void setCostPrice(double costPrice) {
-        this.costPrice = costPrice;
+        dalCopyItem.setCostPrice(costPrice);
+        try {
+            dalCopyItem.update();
+            this.costPrice = costPrice;
+        } catch (SQLException ex) {
+            dalCopyItem.setCostPrice(this.costPrice);
+            throw new RuntimeException("Something went wrong.");
+        }
     }
 
     public double getSellingPrice() {
@@ -51,7 +82,14 @@ public class Item {
     }
 
     public void setSellingPrice(double sellingPrice) {
-        this.sellingPrice = sellingPrice;
+        dalCopyItem.setSellingPrice(sellingPrice);
+        try {
+            dalCopyItem.update();
+            this.sellingPrice = sellingPrice;
+        } catch (SQLException ex) {
+            dalCopyItem.setSellingPrice(this.sellingPrice);
+            throw new RuntimeException("Something went wrong.");
+        }
     }
 
     public int getMinAmount() {
@@ -82,17 +120,26 @@ public class Item {
         return quantity.getStorageQuantity();
     }
 
-    public void setQuantity(int shelfQuantity, int storageQuantity) {
-        this.quantity.setShelfQuantity(shelfQuantity);
-        this.quantity.setStorageQuantity(storageQuantity);
-    }
-
     public void setShelfQuantity(int shelfQuantity) {
-        this.quantity.setShelfQuantity(shelfQuantity);
+        dalCopyItem.setShelfQuantity(shelfQuantity);
+        try {
+            dalCopyItem.update();
+            this.quantity.setShelfQuantity(shelfQuantity);
+        } catch (SQLException ex) {
+            dalCopyItem.setShelfQuantity(this.getShelfQuantity());
+            throw new RuntimeException("Something went wrong.");
+        }
     }
 
     public void setStorageQuantity(int storageQuantity) {
-        this.quantity.setStorageQuantity(storageQuantity);
+        dalCopyItem.setStorageQuantity(storageQuantity);
+        try {
+            dalCopyItem.update();
+            this.quantity.setStorageQuantity(storageQuantity);
+        } catch (SQLException ex) {
+            dalCopyItem.setStorageQuantity(this.getStorageQuantity());
+            throw new RuntimeException("Something went wrong.");
+        }
     }
 
     public String getShelfLocation() {
@@ -103,16 +150,102 @@ public class Item {
         return location.getStorageLocation();
     }
 
-    public void setLocation(String shelfLocation, String storageLocation) {
-        this.location.setShelfLocation(shelfLocation);
-        this.location.setStorageLocation(storageLocation);
-    }
-
     public void setShelfLocation(String shelfLocation) {
-        this.location.setShelfLocation(shelfLocation);
+        dalCopyItem.setShelfLocation(shelfLocation);
+        try {
+            dalCopyItem.update();
+            this.location.setShelfLocation(shelfLocation);
+        } catch(SQLException ex) {
+            dalCopyItem.setShelfLocation(this.getShelfLocation());
+            throw new RuntimeException("Something went wrong.");
+        }
     }
 
     public void setStorageLocation(String storageLocation) {
-        this.location.setStorageLocation(storageLocation);
+        dalCopyItem.setStorageLocation(storageLocation);
+        try {
+            dalCopyItem.update();
+            this.location.setStorageLocation(storageLocation);
+        } catch (SQLException ex) {
+            dalCopyItem.setStorageLocation(this.getStorageLocation());
+            throw new RuntimeException("Something went wrong.");
+        }
+    }
+
+    DataAccessLayer.DalObjects.InventoryObjects.Item getDalCopyItem() {
+        return dalCopyItem;
+    }
+
+    public void save(String categoryName) {
+        try {
+            dalCopyItem = new DataAccessLayer.DalObjects.InventoryObjects.Item(ID, name, costPrice, sellingPrice, manufacturerID, minAmount,
+                    getShelfQuantity(), getStorageQuantity(), getShelfLocation(), getStorageLocation(), categoryName);
+            dalCopyItem.save();
+        } catch (SQLException ex) {
+            throw new RuntimeException("Something went wrong.");
+        }
+    }
+
+    public void delete() {
+        try {
+            dalCopyItem.delete();
+        } catch (SQLException ex) {
+            throw new RuntimeException("Something went wrong.");
+        }
+    }
+
+    public void update() throws SQLException {
+        dalCopyItem.update();
+    }
+
+    public boolean find() {
+        boolean found;
+        try {
+            dalCopyItem = new DataAccessLayer.DalObjects.InventoryObjects.Item(ID);
+
+            found = dalCopyItem.find(); //Retrieves DAL Item from the database
+            //Set the fields according to the retrieved data
+            if (found) {
+                this.name = dalCopyItem.getName();
+                this.costPrice = dalCopyItem.getCostPrice();
+                this.sellingPrice = dalCopyItem.getSellingPrice();
+                this.minAmount = dalCopyItem.getMinAmount();
+                this.manufacturerID = dalCopyItem.getManufacturerID();
+                this.setShelfQuantity(dalCopyItem.getShelfQuantity());
+                this.setStorageQuantity(dalCopyItem.getStorageQuantity());
+                this.setShelfLocation(dalCopyItem.getShelfLocation());
+                this.setStorageLocation(dalCopyItem.getStorageLocation());
+
+                //Extract supplier IDs
+            }
+        } catch (SQLException ex) {
+            throw new RuntimeException("Something went wrong.");
+        }
+
+        return found;
+    }
+
+    public boolean find(List<Item> items, String categoryName) {
+        boolean found;
+        try {
+            List<DataAccessLayer.DalObjects.InventoryObjects.Item> dalCopyItems = new ArrayList<>();
+            dalCopyItem = new DataAccessLayer.DalObjects.InventoryObjects.Item(categoryName);
+
+            found = dalCopyItem.find(dalCopyItems); //Retrieves DAL Items from the database
+            //Set the fields according to the retrieved data
+            if (found) {
+                for (DataAccessLayer.DalObjects.InventoryObjects.Item item : dalCopyItems) {
+                    Item savedItem = new Item(item.getItemID(), item.getName(), item.getCostPrice(), item.getSellingPrice(), item.getMinAmount(),
+                            item.getManufacturerID(), null, item.getShelfQuantity(), item.getStorageQuantity(), item.getShelfLocation(), item.getStorageLocation());
+                    items.add(savedItem);
+
+                    //Extract supplier IDs
+                }
+            }
+        } catch (SQLException ex) {
+            throw new RuntimeException("Something went wrong.");
+        }
+
+        return found;
     }
 }
