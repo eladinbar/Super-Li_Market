@@ -97,5 +97,7 @@ public abstract class DalController<T extends DalObject<T>>{
      </summary>
      <returns>Returns a DalObject that extends DalObject<T>.</returns>
      * @return*/
-    public abstract boolean select(List<T> dalObjects) throws SQLException;
+    public boolean select(List<T> dalObjects) throws SQLException {
+         return false;
+    }
 }
