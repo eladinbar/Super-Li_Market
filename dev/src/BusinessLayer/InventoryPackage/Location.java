@@ -4,6 +4,8 @@ public class Location {
     private String shelfLocation;
     private String storageLocation;
 
+    public Location() {}
+
     public Location(String shelfLocation, String storageLocation) {
         this.shelfLocation = shelfLocation;
         this.storageLocation = storageLocation;

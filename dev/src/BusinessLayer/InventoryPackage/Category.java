@@ -8,9 +8,11 @@ public class Category {
     private DataAccessLayer.DalObjects.InventoryObjects.Category dalCopyCategory;
 
     private String name;
-    private final List<Item> items;
+    private List<Item> items;
     private Category parentCategory;
-    private final List<Category> subCategories;
+    private List<Category> subCategories;
+
+    public Category() {}
 
     public Category(String name) {
         this.name = name;
@@ -30,8 +32,9 @@ public class Category {
         return name;
     }
 
-    public void setName(String name) {
+    public void setName(String name) throws SQLException {
         this.name = name;
+        dalCopyCategory.setName(name);
     }
 
     public List<Item> getItems() {
@@ -50,8 +53,9 @@ public class Category {
         return parentCategory;
     }
 
-    public void setParentCategory(Category parentCategory) {
+    public void setParentCategory(Category parentCategory) throws SQLException {
         this.parentCategory = parentCategory;
+        dalCopyCategory.setParentName(parentCategory.name);
     }
 
     public List<Category> getSubCategories() {
@@ -69,5 +73,35 @@ public class Category {
     public void save() throws SQLException {
         dalCopyCategory = new DataAccessLayer.DalObjects.InventoryObjects.Category(this.name, this.parentCategory.name);
         dalCopyCategory.save();
+    }
+
+    public void delete() throws SQLException {
+        dalCopyCategory.delete();
+    }
+
+    public void update() throws SQLException {
+        dalCopyCategory.update();
+    }
+
+    public boolean find() throws SQLException {
+        dalCopyCategory = new DataAccessLayer.DalObjects.InventoryObjects.Category(name, null);
+
+        boolean found = dalCopyCategory.find(); //Retrieves DAL Category from the database
+        //Set the fields according to the retrieved data
+        if (found) {
+            this.name = dalCopyCategory.getName();
+
+            List<Item> savedItems = new ArrayList<>();
+            Item item = new Item();
+            item.find(savedItems, name);
+            this.items = savedItems;
+
+            if (dalCopyCategory.getParentName() != null) {
+                this.parentCategory = new Category(dalCopyCategory.getName());
+                parentCategory.addSubCategory(this);
+            }
+        }
+
+        return found;
     }
 }

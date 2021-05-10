@@ -5,6 +5,8 @@ public class Quantity {
     private int shelfQuantity;
     private int storageQuantity;
 
+    public Quantity() {}
+
     public Quantity(int shelfQuantity, int storageQuantity) {
         this.shelfQuantity = shelfQuantity;
         this.storageQuantity = storageQuantity;

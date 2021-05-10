@@ -1,6 +1,7 @@
 package BusinessLayer.InventoryPackage;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class Item {
@@ -15,6 +16,19 @@ public class Item {
     private final List<String> supplierIDs;
     private final Quantity quantity;
     private final Location location;
+
+    public Item() {
+        supplierIDs = new ArrayList<>();
+        quantity = new Quantity();
+        location = new Location();
+    }
+
+    public Item(int ID) {
+        this.ID = ID;
+        supplierIDs = new ArrayList<>();
+        quantity = new Quantity();
+        location = new Location();
+    }
 
     public Item(int ID, String name, double costPrice, double sellingPrice, int minAmount, int manufacturerID, List<String> supplierIDs,
                 int shelfQuantity, int storageQuantity, String shelfLocation, String storageLocation) {
@@ -37,24 +51,30 @@ public class Item {
         return name;
     }
 
-    public void setName(String name) {
+    public void setName(String name) throws SQLException {
         this.name = name;
+        dalCopyItem.setName(name);
+        dalCopyItem.update();
     }
 
     public double getCostPrice() {
         return costPrice;
     }
 
-    public void setCostPrice(double costPrice) {
+    public void setCostPrice(double costPrice) throws SQLException {
         this.costPrice = costPrice;
+        dalCopyItem.setCostPrice(costPrice);
+        dalCopyItem.update();
     }
 
     public double getSellingPrice() {
         return sellingPrice;
     }
 
-    public void setSellingPrice(double sellingPrice) {
+    public void setSellingPrice(double sellingPrice) throws SQLException {
         this.sellingPrice = sellingPrice;
+        dalCopyItem.setSellingPrice(sellingPrice);
+        dalCopyItem.update();
     }
 
     public int getMinAmount() {
@@ -85,17 +105,16 @@ public class Item {
         return quantity.getStorageQuantity();
     }
 
-    public void setQuantity(int shelfQuantity, int storageQuantity) {
+    public void setShelfQuantity(int shelfQuantity) throws SQLException {
         this.quantity.setShelfQuantity(shelfQuantity);
-        this.quantity.setStorageQuantity(storageQuantity);
+        dalCopyItem.setShelfQuantity(shelfQuantity);
+        dalCopyItem.update();
     }
 
-    public void setShelfQuantity(int shelfQuantity) {
-        this.quantity.setShelfQuantity(shelfQuantity);
-    }
-
-    public void setStorageQuantity(int storageQuantity) {
+    public void setStorageQuantity(int storageQuantity) throws SQLException {
         this.quantity.setStorageQuantity(storageQuantity);
+        dalCopyItem.setStorageQuantity(storageQuantity);
+        dalCopyItem.update();
     }
 
     public String getShelfLocation() {
@@ -106,22 +125,70 @@ public class Item {
         return location.getStorageLocation();
     }
 
-    public void setLocation(String shelfLocation, String storageLocation) {
+    public void setShelfLocation(String shelfLocation) throws SQLException {
         this.location.setShelfLocation(shelfLocation);
-        this.location.setStorageLocation(storageLocation);
+        dalCopyItem.setShelfLocation(shelfLocation);
+        dalCopyItem.update();
     }
 
-    public void setShelfLocation(String shelfLocation) {
-        this.location.setShelfLocation(shelfLocation);
-    }
-
-    public void setStorageLocation(String storageLocation) {
+    public void setStorageLocation(String storageLocation) throws SQLException {
         this.location.setStorageLocation(storageLocation);
+        dalCopyItem.setStorageLocation(storageLocation);
+        dalCopyItem.update();
     }
 
     public void save(String categoryName) throws SQLException {
         dalCopyItem = new DataAccessLayer.DalObjects.InventoryObjects.Item(ID, name, costPrice, sellingPrice, manufacturerID, minAmount,
                 getShelfQuantity(), getStorageQuantity(), getShelfLocation(), getStorageLocation(), categoryName);
         dalCopyItem.save();
+    }
+
+    public void delete() throws SQLException {
+        dalCopyItem.delete();
+    }
+
+    public void update() throws SQLException {
+        dalCopyItem.update();
+    }
+
+    public boolean find() throws SQLException {
+        dalCopyItem = new DataAccessLayer.DalObjects.InventoryObjects.Item(ID);
+
+        boolean found = dalCopyItem.find(); //Retrieves DAL Item from the database
+        //Set the fields according to the retrieved data
+        if (found) {
+            this.name = dalCopyItem.getName();
+            this.costPrice = dalCopyItem.getCostPrice();
+            this.sellingPrice = dalCopyItem.getSellingPrice();
+            this.minAmount = dalCopyItem.getMinAmount();
+            this.manufacturerID = dalCopyItem.getManufacturerID();
+            this.setShelfQuantity(dalCopyItem.getShelfQuantity());
+            this.setStorageQuantity(dalCopyItem.getStorageQuantity());
+            this.setShelfLocation(dalCopyItem.getShelfLocation());
+            this.setStorageLocation(dalCopyItem.getStorageLocation());
+
+            //Extract supplier IDs
+        }
+
+        return found;
+    }
+
+    public boolean find(List<Item> items, String categoryName) throws SQLException {
+        List<DataAccessLayer.DalObjects.InventoryObjects.Item> dalCopyItems = new ArrayList<>();
+        dalCopyItem = new DataAccessLayer.DalObjects.InventoryObjects.Item(categoryName);
+
+        boolean found = dalCopyItem.find(dalCopyItems); //Retrieves DAL Items from the database
+        //Set the fields according to the retrieved data
+        if (found) {
+            for (DataAccessLayer.DalObjects.InventoryObjects.Item item : dalCopyItems) {
+                Item savedItem = new Item(item.getItemID(), item.getName(), item.getCostPrice(), item.getSellingPrice(), item.getMinAmount(),
+                        item.getManufacturerID(), null, item.getShelfQuantity(), item.getStorageQuantity(), item.getShelfLocation(), item.getStorageLocation());
+                items.add(savedItem);
+
+                //Extract supplier IDs
+            }
+        }
+
+        return found;
     }
 }
