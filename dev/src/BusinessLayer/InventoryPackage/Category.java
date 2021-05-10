@@ -33,8 +33,9 @@ public class Category {
     }
 
     public void setName(String name) throws SQLException {
+        dalCopyCategory.setName(name); //Primary Key fields auto-update and auto-check
         this.name = name;
-        dalCopyCategory.setName(name);
+
     }
 
     public List<Item> getItems() {
@@ -54,8 +55,14 @@ public class Category {
     }
 
     public void setParentCategory(Category parentCategory) throws SQLException {
-        this.parentCategory = parentCategory;
         dalCopyCategory.setParentName(parentCategory.name);
+        try {
+            dalCopyCategory.update();
+            this.parentCategory = parentCategory;
+        } catch (SQLException ex) {
+            dalCopyCategory.setParentName(this.parentCategory.name);
+            throw ex;
+        }
     }
 
     public List<Category> getSubCategories() {

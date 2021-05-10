@@ -52,9 +52,14 @@ public class Item {
     }
 
     public void setName(String name) throws SQLException {
-        this.name = name;
         dalCopyItem.setName(name);
-        dalCopyItem.update();
+        try {
+            dalCopyItem.update();
+            this.name = name;
+        } catch (SQLException ex) {
+            dalCopyItem.setName(this.name);
+            throw ex;
+        }
     }
 
     public double getCostPrice() {
@@ -62,9 +67,14 @@ public class Item {
     }
 
     public void setCostPrice(double costPrice) throws SQLException {
-        this.costPrice = costPrice;
         dalCopyItem.setCostPrice(costPrice);
-        dalCopyItem.update();
+        try {
+            dalCopyItem.update();
+            this.costPrice = costPrice;
+        } catch (SQLException ex) {
+            dalCopyItem.setCostPrice(this.costPrice);
+            throw ex;
+        }
     }
 
     public double getSellingPrice() {
@@ -72,9 +82,14 @@ public class Item {
     }
 
     public void setSellingPrice(double sellingPrice) throws SQLException {
-        this.sellingPrice = sellingPrice;
         dalCopyItem.setSellingPrice(sellingPrice);
-        dalCopyItem.update();
+        try {
+            dalCopyItem.update();
+            this.sellingPrice = sellingPrice;
+        } catch (SQLException ex) {
+            dalCopyItem.setSellingPrice(this.sellingPrice);
+            throw ex;
+        }
     }
 
     public int getMinAmount() {
@@ -106,15 +121,25 @@ public class Item {
     }
 
     public void setShelfQuantity(int shelfQuantity) throws SQLException {
-        this.quantity.setShelfQuantity(shelfQuantity);
         dalCopyItem.setShelfQuantity(shelfQuantity);
-        dalCopyItem.update();
+        try {
+            dalCopyItem.update();
+            this.quantity.setShelfQuantity(shelfQuantity);
+        } catch (SQLException ex) {
+            dalCopyItem.setShelfQuantity(this.getShelfQuantity());
+            throw ex;
+        }
     }
 
     public void setStorageQuantity(int storageQuantity) throws SQLException {
-        this.quantity.setStorageQuantity(storageQuantity);
         dalCopyItem.setStorageQuantity(storageQuantity);
-        dalCopyItem.update();
+        try {
+            dalCopyItem.update();
+            this.quantity.setStorageQuantity(storageQuantity);
+        } catch (SQLException ex) {
+            dalCopyItem.setStorageQuantity(this.getStorageQuantity());
+            throw ex;
+        }
     }
 
     public String getShelfLocation() {
@@ -126,15 +151,25 @@ public class Item {
     }
 
     public void setShelfLocation(String shelfLocation) throws SQLException {
-        this.location.setShelfLocation(shelfLocation);
         dalCopyItem.setShelfLocation(shelfLocation);
-        dalCopyItem.update();
+        try {
+            dalCopyItem.update();
+            this.location.setShelfLocation(shelfLocation);
+        } catch(SQLException ex) {
+            dalCopyItem.setShelfLocation(this.getShelfLocation());
+            throw ex;
+        }
     }
 
     public void setStorageLocation(String storageLocation) throws SQLException {
-        this.location.setStorageLocation(storageLocation);
         dalCopyItem.setStorageLocation(storageLocation);
-        dalCopyItem.update();
+        try {
+            dalCopyItem.update();
+            this.location.setStorageLocation(storageLocation);
+        } catch (SQLException ex) {
+            dalCopyItem.setStorageLocation(this.getStorageLocation());
+            throw ex;
+        }
     }
 
     public void save(String categoryName) throws SQLException {
