@@ -13,6 +13,7 @@ public class Order {
     private boolean delivered;
     private Supplier supplier;
     private String day;
+    private String address;
     //todo make sure adress added !! in to string too
     public Order(int id, LocalDate date, Supplier supplier, ArrayList<Product> products, boolean delivered, int day) {
         this.id = id;

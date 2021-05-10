@@ -462,6 +462,7 @@ public class PresentationController implements Runnable {
         while (true) {
             int itemID = menu.instructAndReceive("enter item ID to add to a scheduled order: ", Integer.class);
             int amount = menu.instructAndReceive("enter amount to order: ", Integer.class);
+            String address = menu.instructAndReceive("enter the shipping address of the order");
             String order = service.createScheduledOrder(day, itemID, amount).toString();//todo Exeption when fail
             System.out.println(order);
             String choice = menu.instructAndReceive("*) press 1 to add more items\n*) press anything else to complete \n");
@@ -484,7 +485,7 @@ public class PresentationController implements Runnable {
         System.out.println(service.getOrder(orderID).toString());
     }
 
-    //todo: check what kind of id is checked (company/System)
+    //todo: check what kind of id is checked (company/System) Answer: System. the supper li item id
     //a helper function to add a product to an order
     private void addProductToOrder() {
         int orderID = menu.instructAndReceive("please enter order ID: ", Integer.class);

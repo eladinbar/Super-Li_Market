@@ -167,20 +167,19 @@ public class Service implements IService {
 
     @Override
     public ResponseT<List<Order>> createShortageOrder(LocalDate date) {
-        ResponseT<Pair<Map<Integer, Integer >,Map<Integer, String>>> itemInShort = inventoryService.getItemsInShortAndQuantities();
+        ResponseT<Pair<Map<Integer, Integer>, Map<Integer, String>>> itemInShort = inventoryService.getItemsInShortAndQuantities();
         if (itemInShort.errorOccurred())
             return new ResponseT<>(itemInShort.getErrorMessage());
-        //todo check if there is always value
-        ResponseT<Map<String, Map<Integer, Integer>>> r = supplierService.createShortageOrders(itemInShort.value.getFirst());
-        ResponseT<List<Order>> orderR=null;//todo check
+        ResponseT<Map<String, Map<Integer, Integer>>> r = supplierService.createShortageOrders(itemInShort.value.getFirst()); //yes always returns a value;
+        ResponseT<List<Order>> orderR;
         try {
-            orderR = orderService.createShortageOrders(r.value,itemInShort.value.getSecond() , date, supplierService.getSp());
-        } catch (Exception e)//todo check the exeption !!
+            orderR = orderService.createShortageOrders(r.value, itemInShort.value.getSecond(), date, supplierService.getSp());
+        } catch (Exception e)
         {
-
+            orderR = new ResponseT<>(e.getMessage());
         }
         if (r.errorOccurred())
-            orderR.setErrorMessage(r.getErrorMessage());
+            orderR.setErrorMessage(orderR.getErrorMessage() + "\n" + r.getErrorMessage());
         return orderR;
     }
 
