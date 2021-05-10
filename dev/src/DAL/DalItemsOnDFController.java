@@ -87,7 +87,7 @@ public class DalItemsOnDFController extends DalController{
         String query = "SELECT * FROM "+tableName;
         try {
             PreparedStatement st = conn.prepareStatement(query);
-            ResultSet resultSet = st.executeQuery(query);
+            ResultSet resultSet = st.executeQuery();
             while (resultSet.next()) {
                 items.add(new DalItemsOnDF(resultSet.getInt(1),resultSet.getInt(2),resultSet.getInt(3)));
             }

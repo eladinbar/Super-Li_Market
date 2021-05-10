@@ -91,7 +91,7 @@ public class DalTruckController extends DalController{
         String query = "SELECT * FROM "+tableName;
         try {
             PreparedStatement st = conn.prepareStatement(query);
-            ResultSet resultSet = st.executeQuery(query);
+            ResultSet resultSet = st.executeQuery();
             while (resultSet.next()) {
                 trucks.add(new DalTruck(resultSet.getString(1),resultSet.getString(2),
                         resultSet.getInt(3),resultSet.getInt(4)                    )
@@ -113,7 +113,6 @@ public class DalTruckController extends DalController{
                 +"PRIMARY KEY (licenseNumber));";
         try {
             PreparedStatement st=conn.prepareStatement(query);
-            System.out.println("Creating\n");
             st.executeUpdate();
         }
         catch (SQLException e){

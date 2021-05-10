@@ -100,9 +100,8 @@ public class DalDemandController extends DalController{
         String query = "SELECT * FROM "+tableName;
         try {
             PreparedStatement st = conn.prepareStatement(query);
-            ResultSet resultSet = st.executeQuery(query);
+            ResultSet resultSet = st.executeQuery();
             while (resultSet.next()) {
-                boolean completed = resultSet.getString(4).equals("true");
                 demands.add(new DalDemand(resultSet.getInt(1), resultSet.getInt(2),
                         resultSet.getInt(3)));
             }

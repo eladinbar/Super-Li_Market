@@ -97,7 +97,7 @@ public class DalSiteController extends DalController{
         String query = "SELECT * FROM "+tableName;
         try {
             PreparedStatement st = conn.prepareStatement(query);
-            ResultSet resultSet = st.executeQuery(query);
+            ResultSet resultSet = st.executeQuery();
             while (resultSet.next()) {
                 sites.add(new DalSite(resultSet.getInt(1),resultSet.getString(2),
                         resultSet.getString(3),resultSet.getInt(4),resultSet.getString(5)
@@ -121,7 +121,6 @@ public class DalSiteController extends DalController{
                 +"PRIMARY KEY (siteID));";
         try {
             PreparedStatement st=conn.prepareStatement(query);
-            System.out.println("Creating\n");
             st.executeUpdate();
         }
         catch (SQLException e){

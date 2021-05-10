@@ -7,7 +7,7 @@ public class DalItemController extends DalController{
 
     private static DalItemController controller;
 
-    private DalItemController(){//TODO - Check when tables created
+    private DalItemController(){
         super();
         this.tableName="Items";
         this.columnNames=new String[4];
@@ -96,10 +96,10 @@ public class DalItemController extends DalController{
         String query = "SELECT * FROM "+tableName;
         try {
             PreparedStatement st = conn.prepareStatement(query);
-            ResultSet resultSet = st.executeQuery(query);
+            ResultSet resultSet = st.executeQuery();
             while (resultSet.next()) {
-                boolean completed = resultSet.getString(4).equals("true");
-                items.add(new DalItem(resultSet.getInt(1),  resultSet.getDouble(2),resultSet.getString(3),resultSet.getInt(4)));
+                DalItem di=new DalItem(resultSet.getInt(1),  resultSet.getDouble(2),resultSet.getString(3),resultSet.getInt(4));
+                items.add(di);
             }
         } catch (SQLException e) {
             throw new SQLException(e.getMessage());
