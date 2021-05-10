@@ -328,9 +328,9 @@ public class ShiftController {
         Shift newShift;
         HashMap <Role, List<String>> manning = new HashMap<> (  );
         for(DalShift cur: shift){
-            if(!manning.containsKey (cur.getRole()))
-                manning.put ( cur.getRole(), new ArrayList<> (  ) );
-            manning.get ( cur.getRole() ).add ( cur.getEmployeeId () );
+            if(!manning.containsKey (Role.valueOf (cur.getRole())))
+                manning.put ( Role.valueOf (cur.getRole()), new ArrayList<> (  ) );
+            manning.get ( Role.valueOf (cur.getRole()) ).add ( cur.getEmployeeId () );
         }
         newShift = new Shift ( shift.get(0).getDate (), manning, shift.get(0).getType (), shift.get(0).getShift () );
         return newShift;
