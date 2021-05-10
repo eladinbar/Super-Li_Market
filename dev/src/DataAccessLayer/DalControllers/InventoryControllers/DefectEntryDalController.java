@@ -33,6 +33,7 @@ public class DefectEntryDalController extends DalController<DefectEntry> {
             String command = "CREATE TABLE IF NOT EXISTS " + tableName + " (" +
                     DefectEntry.entryDateColumnName + " TEXT NOT NULL," +
                     DefectEntry.itemIdColumnName + " INTEGER NOT NULL," +
+                    DefectEntry.itemNameColumnName + " TEXT NOT NULL," +
                     DefectEntry.locationColumnName + " TEXT NOT NULL," +
                     DefectEntry.quantityColumnName + " INTEGER DEFAULT 0 NOT NULL," +
                     "PRIMARY KEY (" + DefectEntry.entryDateColumnName + ", " + DefectEntry.itemIdColumnName + ")," +
@@ -53,12 +54,15 @@ public class DefectEntryDalController extends DalController<DefectEntry> {
     public boolean insert(DefectEntry defectEntry) throws SQLException {
         System.out.println("Initiating " + tableName + " insert.");
         try (Connection conn = DriverManager.getConnection(connectionString)) {
-            String command = "INSERT OR IGNORE INTO " + tableName + " VALUES (?,?, ?, ?)";
+            String command = "INSERT OR IGNORE INTO " + tableName + " VALUES (?,?, ?, ?, ?)";
             PreparedStatement stmt = conn.prepareStatement(command);
+
             stmt.setString(1, defectEntry.getEntryDate());
             stmt.setInt(2, defectEntry.getItemID());
-            stmt.setString(3, defectEntry.getLocation());
-            stmt.setInt(4, defectEntry.getQuantity());
+            stmt.setString(3, defectEntry.getItemName());
+            stmt.setString(4, defectEntry.getLocation());
+            stmt.setInt(5, defectEntry.getQuantity());
+
             System.out.println("Executing " + tableName + " insert.");
             stmt.executeUpdate();
         } catch (SQLException ex) {
@@ -84,15 +88,16 @@ public class DefectEntryDalController extends DalController<DefectEntry> {
     @Override
     public boolean update(DefectEntry defectEntry) throws SQLException {
         try (Connection conn = DriverManager.getConnection(connectionString)) {
-            String command = "UPDATE " + tableName + " SET " + DefectEntry.locationColumnName + "=?, " +
-                    DefectEntry.quantityColumnName + "=? " +
+            String command = "UPDATE " + tableName + " SET " + DefectEntry.itemNameColumnName + "=?, " +
+                    DefectEntry.locationColumnName + "=?, " + DefectEntry.quantityColumnName + "=? " +
                     "WHERE(" + DefectEntry.entryDateColumnName + "=? AND " + DefectEntry.itemIdColumnName + "=?)";
             PreparedStatement stmt = conn.prepareStatement(command);
 
-            stmt.setString(1, defectEntry.getLocation());
-            stmt.setInt(2, defectEntry.getQuantity());
-            stmt.setString(3, defectEntry.getEntryDate());
-            stmt.setInt(4, defectEntry.getItemID());
+            stmt.setString(1, defectEntry.getItemName());
+            stmt.setString(2, defectEntry.getLocation());
+            stmt.setInt(3, defectEntry.getQuantity());
+            stmt.setString(4, defectEntry.getEntryDate());
+            stmt.setInt(5, defectEntry.getItemID());
             stmt.executeUpdate();
         } catch (SQLException ex) {
             throw new SQLException(ex.getMessage());
@@ -103,16 +108,17 @@ public class DefectEntryDalController extends DalController<DefectEntry> {
     @Override
     public boolean update(DefectEntry defectEntry, String oldDate) throws SQLException {
         try (Connection conn = DriverManager.getConnection(connectionString)) {
-            String command = "UPDATE " + tableName + " SET " + DefectEntry.entryDateColumnName + "=?, " + DefectEntry.locationColumnName + "=?, " +
-                    DefectEntry.quantityColumnName + "=? " +
+            String command = "UPDATE " + tableName + " SET " + DefectEntry.entryDateColumnName + "=?, " +
+                    DefectEntry.itemNameColumnName + "=?, " +DefectEntry.locationColumnName + "=?, " + DefectEntry.quantityColumnName + "=? " +
                     "WHERE(" + DefectEntry.entryDateColumnName + "=? AND " + DefectEntry.itemIdColumnName + "=?)";
             PreparedStatement stmt = conn.prepareStatement(command);
 
             stmt.setString(1, defectEntry.getEntryDate());
-            stmt.setString(2, defectEntry.getLocation());
-            stmt.setInt(3, defectEntry.getQuantity());
-            stmt.setString(4, oldDate);
-            stmt.setInt(5, defectEntry.getItemID());
+            stmt.setString(2, defectEntry.getItemName());
+            stmt.setString(3, defectEntry.getLocation());
+            stmt.setInt(4, defectEntry.getQuantity());
+            stmt.setString(5, oldDate);
+            stmt.setInt(6, defectEntry.getItemID());
             stmt.executeUpdate();
         } catch (SQLException ex) {
             throw new SQLException(ex.getMessage());
@@ -123,16 +129,17 @@ public class DefectEntryDalController extends DalController<DefectEntry> {
     @Override
     public boolean update(DefectEntry defectEntry, int oldId) throws SQLException {
         try (Connection conn = DriverManager.getConnection(connectionString)) {
-            String command = "UPDATE " + tableName + " SET " + DefectEntry.itemIdColumnName + "=?, " + DefectEntry.locationColumnName + "=?, " +
-                    DefectEntry.quantityColumnName + "=? " +
+            String command = "UPDATE " + tableName + " SET " + DefectEntry.itemIdColumnName + "=?, " + DefectEntry.itemNameColumnName + "=?, " +
+                    DefectEntry.locationColumnName + "=?, " + DefectEntry.quantityColumnName + "=? " +
                     "WHERE(" + DefectEntry.entryDateColumnName + "=? AND " + DefectEntry.itemIdColumnName + "=?)";
             PreparedStatement stmt = conn.prepareStatement(command);
 
             stmt.setInt(1, defectEntry.getItemID());
-            stmt.setString(2, defectEntry.getLocation());
-            stmt.setInt(3, defectEntry.getQuantity());
-            stmt.setString(4, defectEntry.getEntryDate());
-            stmt.setInt(5, oldId);
+            stmt.setString(2, defectEntry.getItemName());
+            stmt.setString(3, defectEntry.getLocation());
+            stmt.setInt(4, defectEntry.getQuantity());
+            stmt.setString(5, defectEntry.getEntryDate());
+            stmt.setInt(6, oldId);
             stmt.executeUpdate();
         } catch (SQLException ex) {
             throw new SQLException(ex.getMessage());
@@ -152,8 +159,9 @@ public class DefectEntryDalController extends DalController<DefectEntry> {
                 isDesired = resultSet.getString(0).equals(defectEntry.getEntryDate()) &&
                         resultSet.getInt(1) == defectEntry.getItemID();
                 if (isDesired) {
-                    defectEntry.setLocation(resultSet.getString(1));
-                    defectEntry.setQuantity(resultSet.getInt(2));
+                    defectEntry.setItemName(resultSet.getString(1));
+                    defectEntry.setLocation(resultSet.getString(2));
+                    defectEntry.setQuantity(resultSet.getInt(3));
                     break; //Desired defect entry found
                 }
             }

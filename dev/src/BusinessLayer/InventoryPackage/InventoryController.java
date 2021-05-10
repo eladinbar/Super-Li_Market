@@ -48,12 +48,8 @@ public class InventoryController {
         //Create a new item with the given attributes and add it to the appropriate category
         Item newItem = new Item(id, name, costPrice, sellingPrice, minAmount, manufacturerId, suppliersIds,
                 shelfQuantity, storageQuantity, shelfLocation, storageLocation);
-        try {
-            newItem.save(itemCategory.getName());
-            itemCategory.addItem(newItem);
-        } catch (SQLException ex) {
-            throw new RuntimeException("Something went wrong.");
-        }
+        newItem.save(itemCategory.getName());
+        itemCategory.addItem(newItem);
     }
 
     public Item getItem(int itemId) {
@@ -71,11 +67,7 @@ public class InventoryController {
         //Retrieve from database
         Item savedItem = new Item(itemId);
         boolean found;
-        try {
-            found = savedItem.find();
-        } catch (SQLException ex) {
-            throw new RuntimeException("Something went wrong.");
-        }
+        found = savedItem.find();
         if (found)
             return savedItem;
 
@@ -140,11 +132,7 @@ public class InventoryController {
                 if (newCategoryName.trim().equals("") | newCategoryName.trim().equals("Uncategorized"))
                     return; //Item is already in the base category
                 else {
-                    try {
-                        item.delete(); //Remove item with outdated category from database
-                    } catch (SQLException ex) {
-                        throw new RuntimeException("Something went wrong");
-                    }
+                    item.delete(); //Remove item with outdated category from database
                     BASE_CATEGORY.removeItem(item);
                     oldCategory = BASE_CATEGORY; //Save old category in case new category does not exist for rollback
                 }
@@ -162,11 +150,7 @@ public class InventoryController {
                     if (category.getName().equals(newCategoryName))
                         return; //Item is already in the given category
                     else {
-                        try {
-                            item.delete(); //Remove item with outdated category from database
-                        } catch (SQLException ex) {
-                            throw new RuntimeException("Something went wrong");
-                        }
+                        item.delete(); //Remove item with outdated category from database
                         category.removeItem(item);
                         oldCategory = category; //Save old category in case new category does not exist for rollback
                     }
@@ -176,41 +160,26 @@ public class InventoryController {
             }
             if (count == categories.size() & newCategory == null) {
                 if (oldCategory != null) {
-                    try {
-                        modItem.save(oldCategory.getName());
-                    } catch (SQLException ex) {
-                        throw new RuntimeException("Something went wrong");
-                    }
+                    modItem.save(oldCategory.getName());
                     oldCategory.addItem(modItem); //Rollback item category modification
                 }
                 throw new IllegalArgumentException("No category with name: " + newCategoryName + " was found in the system");
             }
             if (modItem != null & newCategory != null) {
-                try {
-                    modItem.save(oldCategory.getName());
-                } catch (SQLException ex) {
-                    throw new RuntimeException("Something went wrong");
-                }
+                modItem.save(oldCategory.getName());
                 newCategory.addItem(modItem);
                 return; //Item was successfully modified
             }
         }
         if (count == categories.size() & newCategory == null) {
-            if (oldCategory != null)
-                try {
-                    modItem.save(oldCategory.getName());
-                } catch (SQLException ex) {
-                    throw new RuntimeException("Something went wrong");
-                }
+            if (oldCategory != null) {
+                modItem.save(oldCategory.getName());
+            }
                 oldCategory.addItem(modItem); //Rollback item category modification
             throw new IllegalArgumentException("No category with name: " + newCategoryName + " was found in the system");
         }
         if (modItem != null & newCategory != null) {
-            try {
-                modItem.save(oldCategory.getName());
-            } catch (SQLException ex) {
-                throw new RuntimeException("Something went wrong");
-            }
+            modItem.save(oldCategory.getName());
             newCategory.addItem(modItem);
             return; //Item was successfully modified
         }
@@ -261,11 +230,7 @@ public class InventoryController {
         for (Category category : categories) {
             for (Item item : category.getItems()) {
                 if (item.getID() == itemId) {
-                    try {
-                        item.delete();
-                    } catch (SQLException ex) {
-                        throw new RuntimeException("Something went wrong.");
-                    }
+                    item.delete();
                     category.removeItem(item);
                 }
             }
@@ -295,11 +260,7 @@ public class InventoryController {
                 for (Category parentCategory : categories) {
                     if (parentCategory.getName().equals(parentCategoryName)) {
                         newCategory = new Category(categoryName, new ArrayList<>(), parentCategory, new ArrayList<>());
-                        try {
-                            newCategory.save();
-                        } catch (SQLException e) {
-                            throw new RuntimeException("Something went wrong.");
-                        }
+                        newCategory.save();
                         categories.add(newCategory);
                         parentCategory.addSubCategory(newCategory);
                         return;
@@ -310,11 +271,7 @@ public class InventoryController {
             else {
                 //If parent category is null or empty, add new category with "Uncategorized" as its parent category
                 newCategory = new Category(categoryName, new ArrayList<>(), BASE_CATEGORY, new ArrayList<>());
-                try {
-                    newCategory.save();
-                } catch (SQLException e) {
-                    throw new RuntimeException("Something went wrong.");
-                }
+                newCategory.save();
                 categories.add(newCategory);
             }
         }
@@ -332,11 +289,7 @@ public class InventoryController {
         //Retrieve from database
         Category savedCategory = new Category(categoryName);
         boolean found;
-        try {
-            found = savedCategory.find();
-        } catch (SQLException ex) {
-            throw new RuntimeException("Something went wrong.");
-        }
+        found = savedCategory.find();
         if (found) {
             categories.add(savedCategory);
             categories.addAll(savedCategory.getSubCategories());
@@ -398,16 +351,8 @@ public class InventoryController {
         Category oldCategory = getCategory(categoryName);
         Category parentCategory = oldCategory.getParentCategory();
         for (Item item : oldCategory.getItems()) {
-            try {
-                item.delete();
-            } catch (SQLException ex) {
-                throw new RuntimeException("Something went wrong.");
-            }
-            try {
-                item.save(oldCategory.getName());
-            } catch (SQLException ex) {
-                throw new RuntimeException("Something went wrong.");
-            }
+            item.delete();
+            item.save(oldCategory.getName());
             parentCategory.addItem(item);
             oldCategory.removeItem(item);
         }
@@ -415,11 +360,7 @@ public class InventoryController {
             parentCategory.addSubCategory(subCategory);
             oldCategory.removeSubCategory(subCategory);
         }
-        try {
-            oldCategory.delete();
-        } catch (SQLException ex) {
-            throw new RuntimeException("Something went wrong.");
-        }
+        oldCategory.delete();
         categories.remove(oldCategory);
     }
 
@@ -436,11 +377,7 @@ public class InventoryController {
                 throw ex; //Rethrow exception thrown in 'try' block (different error message)
 
             ItemSale newSale = new ItemSale(saleName, saleDiscount, startDate, endDate, item);
-            try {
-                newSale.save();
-            } catch (SQLException e) {
-                throw new RuntimeException("Something went wrong.");
-            }
+            newSale.save();
             sales.add(newSale);
         }
     }
@@ -455,11 +392,7 @@ public class InventoryController {
                 throw ex; //Rethrow exception thrown in 'try' block (different error message)
 
             CategorySale newSale = new CategorySale(saleName, saleDiscount, startDate, endDate, getCategory(categoryName));
-            try {
-                newSale.save();
-            } catch (SQLException e) {
-                throw new RuntimeException("Something went wrong.");
-            }
+            newSale.save();
             sales.add(newSale);
         }
     }
@@ -473,11 +406,7 @@ public class InventoryController {
         //Retrieve from database
         CategorySale savedCategorySale = new CategorySale(saleName);
         boolean found;
-        try {
-            found = savedCategorySale.find();
-        } catch (SQLException ex) {
-            throw new RuntimeException("Something went wrong.");
-        }
+        found = savedCategorySale.find();
         if (found) {
             savedCategorySale.setCategory(getCategory(savedCategorySale.getCategory().getName()));
             sales.add(savedCategorySale);
@@ -485,11 +414,7 @@ public class InventoryController {
         }
 
         ItemSale savedItemSale = new ItemSale(saleName);
-        try {
-            found = savedItemSale.find();
-        } catch (SQLException ex) {
-            throw new RuntimeException("Something went wrong.");
-        }
+        found = savedItemSale.find();
         if (found) {
             savedItemSale.setItem(getItem(savedItemSale.getItem().getID()));
             sales.add(savedItemSale);
@@ -570,15 +495,26 @@ public class InventoryController {
                 throw ex; //Rethrow exception thrown in 'try' block (different error message)
 
             DefectEntry newDefect = new DefectEntry(itemId, item.getName(), entryDate, defectQuantity, defectLocation);
+            newDefect.save();
             defectsLogger.addDefectEntry(newDefect);
         }
     }
 
     public DefectEntry getDefectEntry(int itemId, LocalDate entryDate) {
         DefectEntry defectEntry = defectsLogger.getDefectEntry(itemId, entryDate);
-        if (defectEntry == null)
-            throw new IllegalArgumentException("No defect entry with ID: " + itemId + " and date recorded: " + entryDate + " were found in the system");
-        return defectEntry;
+        if (defectEntry != null)
+            return defectEntry;
+
+        //Retrieve from database
+        defectEntry = new DefectEntry(itemId, entryDate);
+        boolean found;
+        found = defectEntry.find();
+        if (found) {
+            defectsLogger.addDefectEntry(defectEntry);
+            return defectEntry;
+        }
+
+        throw new IllegalArgumentException("No defect entry with ID: " + itemId + " and date recorded: " + entryDate + " were found in the system");
     }
 
 
