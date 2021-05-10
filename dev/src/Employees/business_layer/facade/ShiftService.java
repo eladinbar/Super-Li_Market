@@ -10,6 +10,7 @@ import Employees.business_layer.Shift.WeeklyShiftSchedule;
 import Employees.business_layer.facade.facadeObject.FacadeShift;
 import Employees.business_layer.facade.facadeObject.FacadeWeeklyShiftSchedule;
 
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
@@ -217,6 +218,15 @@ public class ShiftService {
             return new Response (  );
         } catch (EmployeeException e) {
             return new Response ( e.getMessage ( ) );
+        }
+    }
+
+    public Response loadData() throws SQLException {
+        try {
+            shiftController.loadData();
+            return new Response (  );
+        } catch (EmployeeException e){
+            return new Response ( e.getMessage () );
         }
     }
 }
