@@ -1,5 +1,11 @@
 package Employees.business_layer.Employee;
 
+import DAL.DalControllers_Employee.DalBankBranchController;
+import DAL.DalControllers_Employee.DalConstraintController;
+import DAL.DalControllers_Employee.DalEmployeeController;
+import DAL.DalObjects_Employees.DalBankBranch;
+import DAL.DalObjects_Employees.DalConstraint;
+import DAL.DalObjects_Employees.DalEmployee;
 import Employees.EmployeeException;
 import Employees.business_layer.facade.facadeObject.FacadeBankAccountInfo;
 import Employees.business_layer.facade.facadeObject.FacadeEmployee;
@@ -481,4 +487,38 @@ public class EmployeeController {
     }
 
 
+    public boolean loadData() throws SQLException, EmployeeException {
+        LinkedList<DalEmployee> employees = DalEmployeeController.getInstance ( ).load ( );
+        if(employees == null)
+            return false;
+        LinkedList<DalBankBranch> bankBranches = DalBankBranchController.getInstance ( ).load ( );
+        LinkedList<DalConstraint> constraints = DalConstraintController.getInstance ( ).load ( );
+        Employee employee;
+        BankAccountInfo bank;
+        DalBankBranch dalBank = null;
+        for(DalEmployee emp : employees){
+            for(DalBankBranch cur : bankBranches){
+                if(emp.getId ().equals ( cur.getId() )){
+                    dalBank = cur;
+                    break;
+                }
+            }
+            if(dalBank == null)
+                throw new EmployeeException ( "There is no bank account to Employrr - " +emp.getId ());
+            bank = new BankAccountInfo ( dalBank.getAccountNumber (), dalBank.getBankBranch (), dalBank.getBank ());
+            employee = new Employee ( emp.getRole (), emp.getId (), new TermsOfEmployment ( emp.getSalary (), emp.getEducationFund (), emp.getSickDays (), emp.getDaysOff () ), emp.getTransactionDate (), bank );
+            for(DalConstraint cons : constraints){
+                if(cons.getEmployeeId ().equals ( emp.getId ())) {
+                    if(cons.getShift () == 0)
+                        employee.getConstraints ( ).put ( cons.getDate ( ), new Constraint ( cons.getDate ( ), true, false, cons.getReason ()) );
+                    else if(cons.getShift () == 1)
+                        employee.getConstraints ( ).put ( cons.getDate ( ), new Constraint ( cons.getDate ( ), false, true, cons.getReason ()) );
+                    else
+                        employee.getConstraints ( ).put ( cons.getDate ( ), new Constraint ( cons.getDate ( ), true, true, cons.getReason ()) );
+                }
+            }
+            this.employees.put ( employee.getID (), employee );
+        }
+        return true;
+    }
 }

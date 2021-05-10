@@ -64,7 +64,7 @@ public class PresentationController {
             menuPrinter.print ("Only a manager can start a clean program." );
     }
 
-    private boolean loadData() throws SQLException {
+    private ResponseT<Boolean> loadData() throws SQLException {
         return facadeService.loadData();
     }
 

@@ -203,7 +203,7 @@ public class EmployeeService {
         return converted;
     }
 
-    public boolean loadData() {
-
+    public boolean loadData() throws EmployeeException, SQLException {
+        return employeeController.loadData();
     }
 }
