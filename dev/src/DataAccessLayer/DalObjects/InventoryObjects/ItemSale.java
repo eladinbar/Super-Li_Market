@@ -18,6 +18,10 @@ public class ItemSale extends DalObject<ItemSale> {
     private String endSaleDate;
     private int itemID;
 
+    public ItemSale(String name) {
+        this.name = name;
+    }
+
     public ItemSale(String name, double discount, String startSaleDate, String endSaleDate, int itemID) throws SQLException {
         super(ItemSaleDalController.getInstance());
         this.name = name;
@@ -37,7 +41,6 @@ public class ItemSale extends DalObject<ItemSale> {
 
     public void setDiscount(double discount) throws SQLException {
         this.discount = discount;
-        controller.update(this);
     }
 
     public String getStartSaleDate() {
@@ -46,7 +49,6 @@ public class ItemSale extends DalObject<ItemSale> {
 
     public void setStartSaleDate(String startSaleDate) throws SQLException {
         this.startSaleDate = startSaleDate;
-        controller.update(this);
     }
 
     public String getEndSaleDate() {
@@ -55,7 +57,6 @@ public class ItemSale extends DalObject<ItemSale> {
 
     public void setEndSaleDate(String endSaleDate) throws SQLException {
         this.endSaleDate = endSaleDate;
-        controller.update(this);
     }
 
     public int getItemID() {
@@ -64,12 +65,16 @@ public class ItemSale extends DalObject<ItemSale> {
 
     public void setItemID(int itemID) throws SQLException {
         this.itemID = itemID;
-        controller.update(this);
     }
 
     public void setName(String name) throws SQLException {
         String oldName = this.name;
         this.name = name;
-        controller.update(this, oldName);
+        try {
+            controller.update(this, oldName);
+        } catch (SQLException ex) {
+            this.name = name;
+            throw ex;
+        }
     }
 }

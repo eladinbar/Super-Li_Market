@@ -56,7 +56,6 @@ public class Item extends DalObject<Item> {
         this.categoryName = categoryName;
     }
 
-    public Item(){}
     public int getItemID() {
         return itemID;
     }
@@ -141,11 +140,14 @@ public class Item extends DalObject<Item> {
         this.categoryName = categoryName;
     }
 
-    public void setItemID(int itemID) {
+    public void setItemID(int itemID) throws SQLException {
+        int oldId = this.itemID;
         this.itemID = itemID;
-    }
-
-    public void updateItemID(int oldId) throws SQLException {
-        controller.update(this, oldId);
+        try {
+            controller.update(this);
+        } catch (SQLException ex) {
+            this.itemID = oldId;
+            throw ex;
+        }
     }
 }
