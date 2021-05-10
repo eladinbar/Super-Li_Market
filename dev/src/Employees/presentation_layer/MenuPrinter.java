@@ -7,26 +7,19 @@ import Employees.business_layer.facade.facadeObject.FacadeTermsOfEmployment;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.io.Reader;
+import java.nio.Buffer;
 import java.time.LocalDate;
+import java.util.Scanner;
 
 public class MenuPrinter {
 
-    BufferedReader sc = new BufferedReader(new InputStreamReader(System.in));
+BufferedReader sc = new BufferedReader(new InputStreamReader(System.in));
 
-    private static MenuPrinter instance = null;
-
-    private MenuPrinter() {
-
-    }
-
-    public static MenuPrinter getInstance() {
-        if (instance == null) {
-            instance = new MenuPrinter();
-        }
-        return instance;
-    }
+    //Scanner sc = new Scanner ( System.in );
 
     public int uploadProgram(){
+        //sc.useDelimiter ( "\n" );
         System.out.println ("choose the option you'd like:\n1.upload a program with an existing data.\n2.upload a program without an existing data." );
         return getInt ();
     }
@@ -43,7 +36,7 @@ public class MenuPrinter {
 
     public String roleMenu(){
         System.out.println ("Choose role:\n1.branch manager\n2.branch manager assistant\n" +
-                "3.human resources manager\n4.cashier\n5.guard\n6.usher\n7.store keeper\n8.shift manager\n9.driver - license c\n10.driver - license c1\n11.trucking manager\n12.back" );
+                "3.human resources manager\n4.cashier\n5.guard\n6.usher\n7.store keeper\n8.shift manager\n9.driver - license c1\n10.driver - license c1\n11.trucking manager\n12.back" );
         int choice =  getInt ();
         switch (choice){
             case 1:
@@ -72,7 +65,7 @@ public class MenuPrinter {
                 return null;
             default:
                 System.out.println ("choice is illegal.");
-                return "illegal";
+                return null;
         }
     }
 
@@ -221,8 +214,7 @@ public class MenuPrinter {
     public int createWeeklyShiftSchedule() {
         System.out.println ("Choose an option: \n" +
                 "1. Creating a shift schedule manually\n" +
-                "2. Getting a system recommendation.\n" +
-                "3. back." );
+                "2. Getting a system recommendation." );
         return getInt ();
     }
 
@@ -280,10 +272,10 @@ public class MenuPrinter {
 
     public String chooseShiftType(LocalDate date, int shiftNum) {
         System.out.println ("Choose the shift type you would like for " + date + "in " + shiftNum + " or type 0 to create a new one:\n");
-        return getShiftTypes ();
+        return getShifTypes ();
     }
 
-    public String getShiftTypes()
+    public String getShifTypes()
     {
         String[] shiftTypes = ShiftTypes.getInstance ().getShiftTypes();
         int i = 1;

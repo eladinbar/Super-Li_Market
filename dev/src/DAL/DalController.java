@@ -1,5 +1,7 @@
 package DAL;
 
+import java.sql.SQLException;
+
 public abstract class DalController {
     protected String connection;
     protected String tableName;
@@ -12,5 +14,5 @@ public abstract class DalController {
     }
     // TODO need to decide whether we want to upload all data or upload only necessary data
     // TODO change connection
-
+    protected abstract boolean createTable () throws SQLException ;
 }

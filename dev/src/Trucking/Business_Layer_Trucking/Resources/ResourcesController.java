@@ -12,7 +12,6 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.*;
-import java.util.List;
 
 public class ResourcesController {
     private HashMap<String, Driver> drivers;

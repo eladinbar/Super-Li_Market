@@ -31,17 +31,13 @@ public class ShiftTypes {
     public void updateRoleManning(String shiftType, String role, int num) throws EmployeeException {
         if (!shiftTypes.containsKey ( shiftType ))
             throw new EmployeeException ( "no such shift type to update." );
-        if(num < 0)
-            throw new EmployeeException ( "manning has to be positive." );
         Role newRole = Role.valueOf ( role );
         if(newRole == null)
             throw new EmployeeException ( "Illegal role name." );
         if (!shiftTypes.get ( shiftType ).containsKey ( newRole ))
             shiftTypes.get ( shiftType ).put ( newRole, num );
-        else if(num > 0 )
-            shiftTypes.get ( shiftType ).replace ( newRole, num );
         else
-            shiftTypes.get ( shiftType ).remove ( newRole );
+            shiftTypes.get ( shiftType ).replace ( newRole, num );
     }
 
     public void addRoleManning(String shiftType, String role, int num) throws EmployeeException {
@@ -50,8 +46,6 @@ public class ShiftTypes {
         Role newRole = Role.valueOf ( role );
         if(newRole == null)
             throw new EmployeeException ( "Illegal role name." );
-        if(num < 1)
-            throw new EmployeeException ( "manning has to be positive." );
         if (shiftTypes.get ( shiftType ).containsKey ( newRole ))
             throw new EmployeeException ( "role is already exsits in manning." );
         shiftTypes.get ( shiftType ).put ( newRole, num );

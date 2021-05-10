@@ -1,21 +1,23 @@
 package Employees.business_layer.Shift;
 
+import DAL.DalController;
+import DAL.DalControllers_Employee.DalShiftController;
+import DAL.DalControllers_Employee.DalShiftTypeController;
+import DAL.DalObjects_Employees.DalShift;
+import DAL.DalObjects_Employees.DalShiftType;
 import Employees.EmployeeException;
 import Employees.business_layer.Employee.EmployeeController;
 import Employees.business_layer.Employee.Role;
 
+import java.sql.SQLException;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.temporal.TemporalField;
 import java.time.temporal.WeekFields;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
+import java.util.*;
 
 public class ShiftController {
     private static ShiftController instance = null;
-    private boolean beginning = true;
 
     private HashMap<LocalDate, WeeklyShiftSchedule> shifts;
     EmployeeController employeeController;
@@ -32,7 +34,7 @@ public class ShiftController {
     }
 
     public WeeklyShiftSchedule getRecommendation(LocalDate startingDate) throws EmployeeException {
-        if (!beginning && startingDate.isBefore ( LocalDate.now ( ) ))
+        if (startingDate.isBefore ( LocalDate.now ( ) ))
             throw new EmployeeException ( "Starting date has already passed." );
         if (startingDate.getDayOfWeek ( ) != DayOfWeek.SUNDAY)
             throw new EmployeeException ( "Starting date is not Sunday." );
@@ -101,7 +103,7 @@ public class ShiftController {
     }
 
     public WeeklyShiftSchedule createEmptyWeeklyShiftSchedule(LocalDate startingDate) throws EmployeeException {
-        if(!beginning && startingDate.isBefore ( LocalDate.now () ))
+        if(startingDate.isBefore ( LocalDate.now () ))
             throw new EmployeeException ( "starting day has already passed." );
         if(startingDate.getDayOfWeek () != DayOfWeek.SUNDAY)
             throw new EmployeeException ( "Starting date is not sunday." );
@@ -196,16 +198,8 @@ public class ShiftController {
             TemporalField field = WeekFields.of ( Locale.US ).dayOfWeek ( );
             sunday = temp.with ( field, 1 );
         }
-        temp = LocalDate.now ();
-        if(temp.getDayOfWeek ().equals ( DayOfWeek.SUNDAY ))
-            shifts.put ( temp, getRecommendation ( temp ) );
-        else{
-            temp = temp.minusDays ( temp.getDayOfWeek ().getValue () );
-            shifts.put ( temp, getRecommendation ( temp ) );
-        }
         shifts.put (sunday, getRecommendation ( sunday ));
         shifts.put (sunday.plusDays ( 7 ), getRecommendation ( sunday.plusDays ( 7 ) ));
-        beginning = false;
     }
 
     private void createShiftTypes() throws EmployeeException {
@@ -225,7 +219,7 @@ public class ShiftController {
          LocalDate date = LocalDate.now ();
          HashMap<LocalDate, HashMap<Integer, List<String>>> daysAndDrivers = new HashMap<> (  );
          WeeklyShiftSchedule cur;
-         while (isExist (date )){
+         while (isExist ( date )){
              cur = getWeeklyShiftSchedule ( date );
              cur.getDaysAndDrivers(date, daysAndDrivers);
              date = date.plusDays ( 7-(date.getDayOfWeek ().getValue () % 7) );
@@ -257,4 +251,92 @@ public class ShiftController {
         }
     }
 
+    public void loadData() throws SQLException, EmployeeException {
+        LoadShifts ();
+        LoadShiftTypes();
+    }
+
+    private void LoadShiftTypes() throws SQLException, EmployeeException {
+        LinkedList<DalShiftType> types = DalShiftTypeController.getInstance ().load ();
+        HashMap<String, Integer> manning = new HashMap<> (  );
+        String type = types.get ( 0 ).getType ();
+        for(DalShiftType cur : types){
+            if(!cur.getType ().equals ( type ))
+            {
+                ShiftTypes.getInstance ().addShiftType ( type, manning );
+                manning = new HashMap<> (  );
+                type = cur.getType ();
+            }
+            if(manning.containsKey ( cur.getRole () ))
+                manning.put ( cur.getRole () , manning.get ( cur.getRole () ) + 1);
+            else
+                manning.put ( cur.getRole (), 1);
+        }
+    }
+
+    private void LoadShifts() throws SQLException {
+        LinkedList<DalShift> shifts = DalShiftController.getInstance ().load ();
+        Integer j = 0;
+        DalShift cur = shifts.get ( j );
+        while (cur != null){
+            createWeek ( shifts, j );
+            cur = shifts.get ( j );
+        }
+    }
+
+    private void createWeek(LinkedList<DalShift> shifts, Integer j) {
+        LinkedList<DalShift> shift;
+        Shift[][] week = new Shift[7][2];
+        Shift newShift;
+        DalShift temp = shifts.get ( j++ );
+        if (temp == null)
+            return;
+        for ( int i = 0 ; i < 5 ; i++ ) {
+            for ( int k = 0 ; k < 2 ; k++ ) {
+                shift = getListOfShift ( shifts, temp, j );
+                newShift = createShift ( shift );
+                week[i][k] = newShift;
+                temp = shifts.get ( j );
+            }
+        }
+        shift = getListOfShift ( shifts, temp, j );
+        newShift = createShift ( shift );
+        week[5][0] = newShift;
+        temp = shifts.get ( j++ );
+        shift = getListOfShift ( shifts, temp, j );
+        newShift = createShift ( shift );
+        week[6][1] = newShift;
+        WeeklyShiftSchedule weeklyShiftSchedule = new WeeklyShiftSchedule ( week[0][0].getDate ( ), week );
+        this.shifts.put ( weeklyShiftSchedule.getDate ( ), weeklyShiftSchedule );
+    }
+
+
+    private LinkedList<DalShift> getListOfShift(LinkedList<DalShift> shifts,DalShift cur, Integer j){
+        LinkedList<DalShift> output = new LinkedList<> (  );
+        if(cur != null) {
+            LocalDate tempDate = cur.getDate ( );
+            int tempShift = cur.getShift ( );
+            while (cur.getDate ( ).equals ( tempDate ) && cur.getShift ( ) == tempShift) {
+                output.add ( cur );
+                cur = shifts.get ( j++ );
+            }
+        }
+        return output;
+    }
+
+    private Shift createShift(List<DalShift> shift) {
+        Shift newShift;
+        HashMap <Role, List<String>> manning = new HashMap<> (  );
+        for(DalShift cur: shift){
+            if(!manning.containsKey (Role.valueOf (cur.getRole())))
+                manning.put ( Role.valueOf (cur.getRole()), new ArrayList<> (  ) );
+            manning.get ( Role.valueOf (cur.getRole()) ).add ( cur.getEmployeeId () );
+        }
+        newShift = new Shift ( shift.get(0).getDate (), manning, shift.get(0).getType (), shift.get(0).getShift () );
+        return newShift;
+    }
+
+    private void createWeekly(LinkedList<DalShift> week) {
+
+    }
 }

@@ -14,16 +14,14 @@ import java.util.Locale;
 
 
 import Employees.presentation_layer.PresentationController;
-import Trucking.Presentation_Layer_Trucking.Menu_Printer;
 
 public class Main {
     public Main() {
     }
 
-    public static void main(String[] args) {
-//        PresentationController presentationController = new PresentationController();
-//        presentationController.start();
-        Menu_Printer.getInstance().mainMenu();
+    public static void main(String[] args) throws SQLException {
+        PresentationController presentationController = new PresentationController();
+        presentationController.start();
     }
 }
 

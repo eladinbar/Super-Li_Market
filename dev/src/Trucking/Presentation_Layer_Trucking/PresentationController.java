@@ -287,14 +287,6 @@ public class PresentationController {
         facadeService.removeItemFromTruckingReport(trID,demand);
     }
 
-    public LinkedList<FacadeTruckingReport> showTodayReports() {
-        return facadeService.getTodayReports();
-    }
-
-    public void upload() throws SQLException {
-        facadeService.upload();
-    }
-
 
     // Not in use for now
 

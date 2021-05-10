@@ -129,10 +129,6 @@ public class ResourcesService {
     public void addTruckConstraint(String id, LocalDate date, int leavingHour) {
         rc.addTruckConstraint(id,date,leavingHour);
     }
-
-    public void upload(HashMap driver_cons, HashMap trucks_cons) throws SQLException {
-        rc.upload(driver_cons, trucks_cons);
-    }
 }
 
 /*
