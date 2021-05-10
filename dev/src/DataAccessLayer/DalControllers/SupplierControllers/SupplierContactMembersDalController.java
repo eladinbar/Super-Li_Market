@@ -30,8 +30,8 @@ public class SupplierContactMembersDalController extends DalController<SupplierC
                     SupplierContactMembersDal.personIdColumnName + " INTEGET NOT NULL," +
                     "PRIMARY KEY ("+ SupplierContactMembersDal.supplierIdColumnName+
                     ", "+ SupplierContactMembersDal.personIdColumnName+"),"+
-                    "FOREIGN KEY (" + SupplierContactMembersDal.supplierIdColumnName + ")" + "REFERENCES " + SupplierCardDal.supplierIdColumnName + " (" + SupplierCardDalController.SUPPLIER_CARD_TABLE_NAME +") ON DELETE NO ACTION "+
-                    "FOREIGN KEY (" + SupplierContactMembersDal.personIdColumnName + ")" + "REFERENCES " + PersonCardDal.idColumnName + " (" + PersonCardDalController.PERSON_CARD_TABLE_NAME +") ON DELETE NO ACTION "+
+                    "FOREIGN KEY (" + SupplierContactMembersDal.supplierIdColumnName + ")" + "REFERENCES " + SupplierCardDal.supplierIdColumnName + " (" + SupplierCardDalController.SUPPLIER_CARD_TABLE_NAME +") ON DELETE CASCADE "+
+                    "FOREIGN KEY (" + SupplierContactMembersDal.personIdColumnName + ")" + "REFERENCES " + PersonCardDal.idColumnName + " (" + PersonCardDalController.PERSON_CARD_TABLE_NAME +") ON DELETE CASCADE "+
                     ");";
 
             PreparedStatement stmt = conn.prepareStatement(command);
@@ -81,7 +81,24 @@ public class SupplierContactMembersDalController extends DalController<SupplierC
     }
 
     @Override
-    public boolean select(SupplierContactMembersDal supplierContactMember) {
-        return true;
+    public boolean select(SupplierContactMembersDal supplierContactMember) throws SQLException {
+        boolean isDesired = false;
+        try (Connection conn = DriverManager.getConnection(connectionString)) {
+            String query = "SELECT * FROM " + tableName;
+            PreparedStatement stmt = conn.prepareStatement(query);
+            ResultSet resultSet = stmt.executeQuery(query);
+            while (resultSet.next())
+            {
+                isDesired = resultSet.getInt(0) == (supplierContactMember.getSupplierId())
+                && resultSet.getInt(1) == supplierContactMember.getPersonId();
+                if (isDesired) {
+                    //todo
+                    break; //Desired category discount found
+                }
+            }
+        } catch (SQLException ex) {
+            throw new SQLException(ex.getMessage());
+        }
+        return isDesired;
     }
 }

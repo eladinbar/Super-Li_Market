@@ -46,23 +46,28 @@ public class PersonCardDal extends DalObject<PersonCardDal> {
         return phone;
     }
 
-    public void setId(String id) {
+    public void setId(String id) throws SQLException {
         this.id = id;
+        update();
     }
 
-    public void setFirstName(String firstName) {
+    public void setFirstName(String firstName) throws SQLException {
         this.firstName = firstName;
+        update();
     }
 
-    public void setLastName(String lastName) {
+    public void setLastName(String lastName) throws SQLException {
         this.lastName = lastName;
+        update();
     }
 
-    public void setEmail(String email) {
+    public void setEmail(String email) throws SQLException {
         this.email = email;
+        update();
     }
 
-    public void setPhone(String phone) {
+    public void setPhone(String phone) throws SQLException {
         this.phone = phone;
+        update();
     }
 }

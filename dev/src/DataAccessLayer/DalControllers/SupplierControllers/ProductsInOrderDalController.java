@@ -3,6 +3,7 @@ package DataAccessLayer.DalControllers.SupplierControllers;
 import DataAccessLayer.DalControllers.DalController;
 import DataAccessLayer.DalControllers.InventoryControllers.ItemDalController;
 import DataAccessLayer.DalObjects.InventoryObjects.Item;
+import DataAccessLayer.DalObjects.SupplierObjects.OrderDal;
 import DataAccessLayer.DalObjects.SupplierObjects.ProductsInOrderDal;
 
 import java.sql.*;
@@ -32,9 +33,11 @@ public class ProductsInOrderDalController extends DalController<ProductsInOrderD
         try (Connection conn = DriverManager.getConnection(connectionString)) {
             String command = "CREATE TABLE IF NOT EXISTS " + tableName + " (" +
                     ProductsInOrderDal.productIdColumnName + " INTEGER NOT NULL," +
+                    ProductsInOrderDal.orderIdColumnName + " INTEGER NOT NULL," +
                     ProductsInOrderDal.amountColumnName + " INTEGET NOT NULL," +
-                    "PRIMARY KEY ("+ ProductsInOrderDal.productIdColumnName + "),"+
-                    "FOREIGN KEY (" + ProductsInOrderDal.productIdColumnName + ")" + "REFERENCES " + Item.itemIdColumnName + " (" + ItemDalController.ITEM_TABLE_NAME +") ON DELETE NO ACTION "+
+                    "PRIMARY KEY ("+ ProductsInOrderDal.productIdColumnName +", "+ProductsInOrderDal.orderIdColumnName+ "),"+
+                    "FOREIGN KEY (" + ProductsInOrderDal.productIdColumnName + ")" + "REFERENCES " + Item.itemIdColumnName + " (" + ItemDalController.ITEM_TABLE_NAME +") ON DELETE CASCADE "+
+                    "FOREIGN KEY (" + ProductsInOrderDal.orderIdColumnName + ")" + "REFERENCES " + OrderDal.orderIdColumnName + " (" + OrderDalController.ORDER_TABLE_NAME +") ON DELETE CASCADE "+
                     ");";
 
             PreparedStatement stmt = conn.prepareStatement(command);
@@ -51,10 +54,11 @@ public class ProductsInOrderDalController extends DalController<ProductsInOrderD
     public boolean insert(ProductsInOrderDal productsInOrder) throws SQLException {
         System.out.println("Initiating " + tableName + " insert.");
         try (Connection conn = DriverManager.getConnection(connectionString)) {
-            String query = "INSERT INTO " + tableName + " VALUES (?,?)";
+            String query = "INSERT INTO " + tableName + " VALUES (?,?,?)";
             PreparedStatement stmt = conn.prepareStatement(query);
             stmt.setInt(1, productsInOrder.getProductId());
-            stmt.setInt(2, productsInOrder.getAmount());
+            stmt.setInt(2, productsInOrder.getOrderId());
+            stmt.setInt(3, productsInOrder.getAmount());
             System.out.println("Executing " + tableName + " insert.");
             stmt.executeUpdate();
         } catch (SQLException ex) {
@@ -66,9 +70,10 @@ public class ProductsInOrderDalController extends DalController<ProductsInOrderD
     @Override
     public boolean delete(ProductsInOrderDal productsInOrder) throws SQLException {
         try (Connection conn = DriverManager.getConnection(connectionString)) {
-            String query = "DELETE FROM " + tableName + " WHERE (" + ProductsInOrderDal.productIdColumnName + "=?)";
+            String query = "DELETE FROM " + tableName + " WHERE (" + ProductsInOrderDal.productIdColumnName +"=? AND "+ProductsInOrderDal.orderIdColumnName+ "=?)";
             PreparedStatement stmt = conn.prepareStatement(query);
             stmt.setInt(1, productsInOrder.getProductId());
+            stmt.setInt(2, productsInOrder.getOrderId());
             stmt.executeUpdate();
         } catch (SQLException ex) {
             throw new SQLException(ex.getMessage());
@@ -80,11 +85,12 @@ public class ProductsInOrderDalController extends DalController<ProductsInOrderD
     public boolean update(ProductsInOrderDal productInOrder) throws SQLException {
         try (Connection conn = DriverManager.getConnection(connectionString)) {
             String query = "UPDATE " + tableName + " SET " + ProductsInOrderDal.amountColumnName +
-                    "=? WHERE(" + ProductsInOrderDal.productIdColumnName + "=?)";
+                    "=? WHERE(" + ProductsInOrderDal.productIdColumnName +"=? AND "+ProductsInOrderDal.orderIdColumnName+ "=?)";
             PreparedStatement stmt = conn.prepareStatement(query);
 
             stmt.setInt(1, productInOrder.getAmount());
             stmt.setInt(2, productInOrder.getProductId());
+            stmt.setInt(3, productInOrder.getOrderId());
             stmt.executeUpdate();
         } catch (SQLException ex) {
             throw new SQLException(ex.getMessage());
@@ -101,9 +107,10 @@ public class ProductsInOrderDalController extends DalController<ProductsInOrderD
             ResultSet resultSet = stmt.executeQuery(query);
             while (resultSet.next())
             {
-                isDesired = resultSet.getInt(0) == productInOrder.getProductId();
+                isDesired = resultSet.getInt(0) == productInOrder.getProductId()
+                && resultSet.getInt(1) == productInOrder.getOrderId();
                 if (isDesired) {
-                    productInOrder.setAmount(resultSet.getInt(1));
+                    productInOrder.setAmount(resultSet.getInt(2));
                     break; //Desired category discount found
                 }
             }

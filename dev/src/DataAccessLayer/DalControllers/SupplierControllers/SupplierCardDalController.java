@@ -32,7 +32,7 @@ public class SupplierCardDalController extends DalController<SupplierCardDal> {
                     SupplierCardDal.supplierIdColumnName + " INTEGER NOT NULL," +
                     SupplierCardDal.companyNumberColumnName + " INTEGET NOT NULL," + SupplierCardDal.isPermanentDaysColumnName +" INTEGER NOT NULL," + SupplierCardDal.selfDeliveryColumnName+ " INTEGER NOT NULL,"+ SupplierCardDal.paymentColumnName+" TEXT NOT NULL,"+
                     "PRIMARY KEY ("+ SupplierCardDal.supplierIdColumnName+"),"+
-                    "FOREIGN KEY (" + SupplierCardDal.supplierIdColumnName + ")" + "REFERENCES " + PersonCardDal.idColumnName + " (" + PersonCardDalController.PERSON_CARD_TABLE_NAME +") ON DELETE NO ACTION "+
+                    "FOREIGN KEY (" + SupplierCardDal.supplierIdColumnName + ")" + "REFERENCES " + PersonCardDal.idColumnName + " (" + PersonCardDalController.PERSON_CARD_TABLE_NAME +") ON DELETE CASCADE "+
                     ");";
 
             PreparedStatement stmt = conn.prepareStatement(command);

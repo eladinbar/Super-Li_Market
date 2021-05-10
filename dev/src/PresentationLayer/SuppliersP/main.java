@@ -1,6 +1,7 @@
 package PresentationLayer.SuppliersP;
 
 import DataAccessLayer.DalControllers.SupplierControllers.*;
+import DataAccessLayer.DalObjects.SupplierObjects.OrderDal;
 import DataAccessLayer.DalObjects.SupplierObjects.PersonCardDal;
 
 
@@ -27,18 +28,18 @@ public class main {
 //        agreementItemsController.delete(ag);
 
         //order
-//        Order order = new Order(1, LocalDate.now(), true);
+        OrderDal order = new OrderDal(1,"2", LocalDate.now(), true);
 //        orderDalController.insert(order);
 //        order.setDelivered(0);
 //        orderDalController.update(order);
-//        orderDalController.delete(order);
+        orderDalController.delete(order);
 //
         //Person Card
-        PersonCardDal pc = new PersonCardDal("shaked", "dollberg", "s@gmail.com", "208677682", "0547972797");
+//        PersonCardDal pc = new PersonCardDal("shaked", "dollberg", "s@gmail.com", "208677682", "0547972797");
 //        personCardDalController.insert(pc);
 //        pc.setPhone("0522434934");
 //        personCardDalController.update(pc);
-        personCardDalController.delete(pc);
+//        personCardDalController.delete(pc);
 
     }
 }

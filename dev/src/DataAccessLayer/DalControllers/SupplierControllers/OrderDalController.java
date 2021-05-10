@@ -2,7 +2,11 @@ package DataAccessLayer.DalControllers.SupplierControllers;
 
 
 import DataAccessLayer.DalControllers.DalController;
+import DataAccessLayer.DalControllers.InventoryControllers.ItemDalController;
+import DataAccessLayer.DalObjects.InventoryObjects.Item;
 import DataAccessLayer.DalObjects.SupplierObjects.OrderDal;
+import DataAccessLayer.DalObjects.SupplierObjects.SupplierCardDal;
+import DataAccessLayer.DalObjects.SupplierObjects.agreementItemsDal;
 
 import java.sql.*;
 
@@ -31,8 +35,11 @@ public class OrderDalController extends DalController<OrderDal> {
         try (Connection conn = DriverManager.getConnection(connectionString)) {
             String command = "CREATE TABLE IF NOT EXISTS " + tableName + " (" +
                     OrderDal.orderIdColumnName + " INTEGER NOT NULL," +
-                    OrderDal.dateColumnName + " TEXT NOT NULL," + OrderDal.deliveredColumnName +" INTEGER NOT NULL,"+
-                    "PRIMARY KEY (" + OrderDal.orderIdColumnName + ")" +
+                    OrderDal.supplierIdColumnName + " TEXT NOT NULL," +
+                    OrderDal.dateColumnName + " TEXT NOT NULL," +
+                    OrderDal.deliveredColumnName +" INTEGER NOT NULL,"+
+                    "PRIMARY KEY (" + OrderDal.orderIdColumnName + ")," +
+                    "FOREIGN KEY (" + OrderDal.supplierIdColumnName + ")" + "REFERENCES " + SupplierCardDal.supplierIdColumnName + " (" + SupplierCardDalController.SUPPLIER_CARD_TABLE_NAME + ") ON DELETE CASCADE " +
                     ");";
 
             PreparedStatement stmt = conn.prepareStatement(command);
@@ -49,11 +56,12 @@ public class OrderDalController extends DalController<OrderDal> {
     public boolean insert(OrderDal order) throws SQLException {
         System.out.println("Initiating " + tableName + " insert.");
         try (Connection conn = DriverManager.getConnection(connectionString)) {
-            String query = "INSERT INTO " + tableName + " VALUES (?,?,?)";
+            String query = "INSERT INTO " + tableName + " VALUES (?,?,?,?)";
             PreparedStatement stmt = conn.prepareStatement(query);
-            stmt.setInt(1, order.getId());
-            stmt.setString(2, order.getDate());
-            stmt.setInt(3, order.isDelivered());
+            stmt.setInt(1, order.getOrderId());
+            stmt.setString(2, order.getSupplierId());
+            stmt.setString(3, order.getDate());
+            stmt.setInt(4, order.isDelivered());
             System.out.println("Executing " + tableName + " insert.");
             stmt.executeUpdate();
         } catch (SQLException ex) {
@@ -68,7 +76,7 @@ public class OrderDalController extends DalController<OrderDal> {
             String query = "DELETE FROM " + tableName + " WHERE (" + OrderDal.orderIdColumnName + "=?)";
             PreparedStatement stmt = conn.prepareStatement(query);
 
-            stmt.setInt(1, order.getId());
+            stmt.setInt(1, order.getOrderId());
             stmt.executeUpdate();
         } catch (SQLException ex) {
             throw new SQLException(ex.getMessage());
@@ -85,7 +93,7 @@ public class OrderDalController extends DalController<OrderDal> {
 
             stmt.setString(1, order.getDate());
             stmt.setInt(2, order.isDelivered());
-            stmt.setInt(3, order.getId());
+            stmt.setInt(3, order.getOrderId());
             stmt.executeUpdate();
         } catch (SQLException ex) {
             throw new SQLException(ex.getMessage());
@@ -102,11 +110,12 @@ public class OrderDalController extends DalController<OrderDal> {
             ResultSet resultSet = stmt.executeQuery(query);
             while (resultSet.next())
             {
-                isDesired = resultSet.getString(0).equals(order.getId());
+                isDesired = resultSet.getInt(0)==(order.getOrderId());
                 if (isDesired) {
-                    order.setDate(resultSet.getString(1));
-                    order.setDelivered(resultSet.getInt(2));
-                    break; //Desired category discount found
+                    order.setSupplierId(resultSet.getString(1));
+                    order.setDate(resultSet.getString(2));
+                    order.setDelivered(resultSet.getInt(3));
+                    break;
                 }
             }
         } catch (SQLException ex) {
