@@ -24,7 +24,7 @@ public class DalConstraintController extends DalController {
 
     @Override
     protected boolean createTable() throws SQLException {
-        Connection conn = DriverManager.getConnection("jdbc:sqlite:Desktop\\database_nitoz.db");
+        Connection conn = DriverManager.getConnection(connection);
         String query = "CREATE TABLE IF NOT EXISTS CONSTRAINTS("
                 +"EMPLOYEEID TEXT,"
                 +"REASON TEXT,"
@@ -54,7 +54,7 @@ public class DalConstraintController extends DalController {
     public boolean insert(DalConstraint dalConstraint) throws SQLException {
         //TODO - change URL
         System.out.println("starting insert");
-        Connection conn= DriverManager.getConnection("jdbc:sqlite:Desktop\\database_nitoz.db");
+        Connection conn= DriverManager.getConnection(connection);
         String query= "INSERT INTO "+tableName+" VALUES (?,?,?,?)";
         try{
             PreparedStatement st=conn.prepareStatement(query);
@@ -80,7 +80,7 @@ public class DalConstraintController extends DalController {
     }
 
     public boolean update(DalConstraint dalConstraint) throws SQLException {
-        Connection conn=DriverManager.getConnection("jdbc:sqlite:Desktop\\database_nitoz.db");
+        Connection conn=DriverManager.getConnection(connection);
         String query="UPDATE "+tableName+" SET "+columnNames[0]+"=?, "+columnNames[1]+"=?, "+columnNames[2]+"=?, "+columnNames[3]+"=?, WHERE ("+columnNames[0]+"=? AND "+columnNames[2]+"=?)";
         try{
             PreparedStatement st=conn.prepareStatement(query);
@@ -106,7 +106,7 @@ public class DalConstraintController extends DalController {
     }
 
     public boolean delete(DalConstraint dalConstraint) throws SQLException {
-        Connection conn=DriverManager.getConnection("jdbc:sqlite:Desktop\\database_nitoz.db");
+        Connection conn=DriverManager.getConnection(connection);
         String query="DELETE FROM "+tableName+" WHERE ("+columnNames[0]+"=? AND "+columnNames[2]+"=?)";
         try {
             PreparedStatement st=conn.prepareStatement(query);
@@ -123,7 +123,7 @@ public class DalConstraintController extends DalController {
     public LinkedList<DalConstraint> load () throws SQLException// Select From DB
     {
         LinkedList<DalConstraint> constraints = new LinkedList<>();
-        Connection conn = DriverManager.getConnection("jdbc:sqlite:Desktop\\database_nitoz.db");
+        Connection conn = DriverManager.getConnection(connection);
         String query = "SELECT * FROM "+tableName;
         try {
             PreparedStatement st = conn.prepareStatement(query);

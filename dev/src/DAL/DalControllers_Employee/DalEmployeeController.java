@@ -24,7 +24,7 @@ public class DalEmployeeController extends DalController {
 
     @Override
     protected boolean createTable() throws SQLException {
-        Connection conn = DriverManager.getConnection("jdbc:sqlite:Desktop\\database_nitoz.db");
+        Connection conn = DriverManager.getConnection(connection);
         String query = "CREATE TABLE IF NOT EXISTS EMPLOYEES("
                 +"ID TEXT,"
                 +"ROLE TEXT,"
@@ -56,7 +56,7 @@ public class DalEmployeeController extends DalController {
     public boolean insert(DalEmployee dalEmployee) throws SQLException {
         //TODO - change URL
         System.out.println("starting insert");
-        Connection conn= DriverManager.getConnection("jdbc:sqlite:Desktop\\database_nitoz.db");
+        Connection conn= DriverManager.getConnection(connection);
         String query= "INSERT INTO "+tableName+" VALUES (?,?,?,?,?,?,?,?)";
         try{
             PreparedStatement st=conn.prepareStatement(query);
@@ -88,7 +88,7 @@ public class DalEmployeeController extends DalController {
     }
 
     public boolean update(DalEmployee dalEmployee) throws SQLException {
-        Connection conn=DriverManager.getConnection("jdbc:sqlite:Desktop\\database_nitoz.db");
+        Connection conn=DriverManager.getConnection(connection);
         String query="UPDATE "+tableName+" SET "+columnNames[0]+"=?"+columnNames[1]+"=?, "+columnNames[2]+"=?, "+columnNames[3]+"=?, "+columnNames[4]+"=?, "+columnNames[5]+"=?, "+columnNames[6]+"=?"+columnNames[7]+"=?, WHERE ("+columnNames[0]+"=?)";
         try{
             PreparedStatement st=conn.prepareStatement(query);
@@ -118,7 +118,7 @@ public class DalEmployeeController extends DalController {
     }
 
     public boolean delete(DalEmployee dalEmployee) throws SQLException {
-        Connection conn=DriverManager.getConnection("jdbc:sqlite:Desktop\\database_nitoz.db");
+        Connection conn=DriverManager.getConnection(connection);
         String query="DELETE FROM "+tableName+" WHERE"+columnNames[0]+"=?";
         try {
             PreparedStatement st=conn.prepareStatement(query);
@@ -134,7 +134,7 @@ public class DalEmployeeController extends DalController {
     public LinkedList<DalEmployee> load () throws SQLException// Select From DB
     {
         LinkedList<DalEmployee> employees = new LinkedList<>();
-        Connection conn = DriverManager.getConnection("jdbc:sqlite:Desktop\\database_nitoz.db");
+        Connection conn = DriverManager.getConnection(connection);
         String query = "SELECT * FROM "+tableName;
         try {
             PreparedStatement st = conn.prepareStatement(query);

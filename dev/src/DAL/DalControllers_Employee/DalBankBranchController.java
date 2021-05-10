@@ -27,7 +27,7 @@ public class DalBankBranchController extends DalController {
 
     @Override
     protected boolean createTable() throws SQLException {
-        Connection conn = DriverManager.getConnection("jdbc:sqlite:/C:\\Users\\ofirp\\WorkJavaBGU\\second year\\Nitoz\\database.db");
+        Connection conn = DriverManager.getConnection(connection);
         String query = "CREATE TABLE IF NOT EXISTS BANKS("
                 +"EMPLOYEEID TEXT,"
                 +"bank TEXT ,"
@@ -58,7 +58,7 @@ public class DalBankBranchController extends DalController {
     public boolean insert(DalBankBranch dalBankBranch) throws SQLException {
         //TODO - change URL
         System.out.println("starting insert");
-        Connection conn= DriverManager.getConnection("jdbc:sqlite:Desktop\\database_nitoz.db");
+        Connection conn= DriverManager.getConnection(connection);
         String query= "INSERT INTO "+tableName+" VALUES (?,?,?,?)";
         try{
             PreparedStatement st=conn.prepareStatement(query);
@@ -82,7 +82,7 @@ public class DalBankBranchController extends DalController {
     }
 
     public boolean update(DalBankBranch dalBankBranch) throws SQLException {
-        Connection conn=DriverManager.getConnection("jdbc:sqlite:Desktop\\database_nitoz.db");
+        Connection conn=DriverManager.getConnection(connection);
         String query="UPDATE "+tableName+" SET "+columnNames[0]+"=?, "+columnNames[1]+"=?, "+columnNames[2]+"=?," +columnNames[3]+"=?, WHERE ("+columnNames[2]+"=?)";
         try{
             PreparedStatement st=conn.prepareStatement(query);
@@ -105,7 +105,7 @@ public class DalBankBranchController extends DalController {
     }
 
     public boolean delete(DalBankBranch dalBankBranch) throws SQLException {
-        Connection conn=DriverManager.getConnection("jdbc:sqlite:Desktop\\database_nitoz.db");
+        Connection conn=DriverManager.getConnection(connection);
         String query="DELETE FROM "+tableName+" WHERE"+columnNames[2]+"=?";
         try {
             PreparedStatement st=conn.prepareStatement(query);
@@ -121,7 +121,7 @@ public class DalBankBranchController extends DalController {
     public LinkedList<DalBankBranch> load () throws SQLException// Select From DB
     {
         LinkedList<DalBankBranch > bankBranches = new LinkedList<>();
-        Connection conn = DriverManager.getConnection("jdbc:sqlite:Desktop\\database_nitoz.db");
+        Connection conn = DriverManager.getConnection(connection);
         String query = "SELECT * FROM "+tableName;
         try {
             PreparedStatement st = conn.prepareStatement(query);
@@ -138,7 +138,7 @@ public class DalBankBranchController extends DalController {
     }
 
     public DalBankBranch loadBank(int accountNumber) throws SQLException{
-        Connection conn = DriverManager.getConnection("jdbc:sqlite:Desktop\\database_nitoz.db");
+        Connection conn = DriverManager.getConnection(connection);
         String query = "SELECT * FROM "+tableName+"WHERE  BANKACCOUNT=? ";
         try {
             PreparedStatement st=conn.prepareStatement(query);

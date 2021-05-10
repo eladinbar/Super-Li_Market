@@ -27,7 +27,7 @@ public class DalShiftTypeController extends DalController {
 
     @Override
     protected boolean createTable() throws SQLException {
-        Connection conn = DriverManager.getConnection("jdbc:sqlite:Desktop\\database_nitoz.db");
+        Connection conn = DriverManager.getConnection(connection);
             String query = "CREATE TABLE IF NOT EXISTS SHIFTTYPES("
                 +"AMOUNT INTEGER,"
                 +"TYPE INTEGER,"
@@ -56,7 +56,7 @@ public class DalShiftTypeController extends DalController {
     public boolean insert(DalShiftType dalShiftType) throws SQLException {
         //TODO - change URL
         System.out.println("starting insert");
-        Connection conn= DriverManager.getConnection("jdbc:sqlite:Desktop\\database_nitoz.db");
+        Connection conn= DriverManager.getConnection(connection);
         String query= "INSERT INTO "+tableName+" VALUES (?,?,?)";
         try{
             PreparedStatement st=conn.prepareStatement(query);
@@ -81,7 +81,7 @@ public class DalShiftTypeController extends DalController {
     }
 
     public boolean update(DalShiftType dalShiftType) throws SQLException {
-        Connection conn=DriverManager.getConnection("jdbc:sqlite:Desktop\\database_nitoz.db");
+        Connection conn=DriverManager.getConnection(connection);
         String query="UPDATE "+tableName+" SET "+columnNames[0]+"=?, "+columnNames[1]+"=?, "+columnNames[2]+"=?, WHERE ("+columnNames[1]+"=? AND "+columnNames[2]+"=?)";
         try{
             PreparedStatement st=conn.prepareStatement(query);
@@ -105,7 +105,7 @@ public class DalShiftTypeController extends DalController {
     }
 
     public boolean delete(DalShiftType dalShiftType) throws SQLException {
-        Connection conn=DriverManager.getConnection("jdbc:sqlite:Desktop\\database_nitoz.db");
+        Connection conn=DriverManager.getConnection(connection);
         String query="DELETE FROM "+tableName+"WHERE ("+columnNames[1]+"=? AND "+columnNames[2]+"=?)";
         try {
             PreparedStatement st=conn.prepareStatement(query);
@@ -121,7 +121,7 @@ public class DalShiftTypeController extends DalController {
     public LinkedList<DalShiftType> load () throws SQLException// Select From DB
     {
         LinkedList<DalShiftType> shiftTypes = new LinkedList<>();
-        Connection conn = DriverManager.getConnection("jdbc:sqlite:Desktop\\database_nitoz.db");
+        Connection conn = DriverManager.getConnection(connection);
         String query = "SELECT * FROM "+tableName;
         try {
             PreparedStatement st = conn.prepareStatement(query);
