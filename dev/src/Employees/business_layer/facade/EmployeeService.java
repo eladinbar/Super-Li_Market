@@ -62,7 +62,7 @@ public class EmployeeService {
         }
     }
 
-    public ResponseT<FacadeEmployee> addEmployee(FacadeEmployee employee) {
+    public ResponseT<FacadeEmployee> addEmployee(FacadeEmployee employee) throws SQLException {
         try{
             employeeController.addEmployee ( employee );
             return new ResponseT<>(employee);
@@ -105,12 +105,12 @@ public class EmployeeService {
             employeeController.updateBankAccount(Id,accountNum,bankBranch,bank);
             return new Response();
         }
-        catch (EmployeeException e){
+        catch (EmployeeException | SQLException e){
             return new Response(e.getMessage());
         }
     }
 
-    public Response updateTermsOfEmployee(String Id, int salary, int educationFund, int sickDays, int daysOff) {
+    public Response updateTermsOfEmployee(String Id, int salary, int educationFund, int sickDays, int daysOff) throws SQLException {
         try{
             employeeController.updateTermsOfEmployee(Id,salary, educationFund, sickDays,daysOff);
             return new Response();
@@ -184,7 +184,7 @@ public class EmployeeService {
         }
     }
 
-    public Response createData (){
+    public Response createData () throws SQLException {
         try {
             employeeController.createData();
             return new Response();

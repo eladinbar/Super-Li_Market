@@ -107,11 +107,11 @@ public class FacadeService {
         return employeeService.updateBankAccount ( Id,accountNum,bankBranch,bank );
 }
 
-    public Response updateTermsOfEmployee(String Id, int salary, int educationFund, int sickDays, int daysOff) {
+    public Response updateTermsOfEmployee(String Id, int salary, int educationFund, int sickDays, int daysOff) throws SQLException {
         return employeeService.updateTermsOfEmployee ( Id,salary,educationFund,sickDays,daysOff );
     }
 
-    public Response addEmployee(FacadeEmployee employee) {
+    public Response addEmployee(FacadeEmployee employee) throws SQLException {
         return employeeService.addEmployee ( employee );
     }
 
@@ -144,7 +144,7 @@ public class FacadeService {
         return employeeService.getEmployees();
     }
 
-    public Response createData() {
+    public Response createData() throws SQLException {
         Response response = employeeService.createData ( );
         if(response.errorOccured ())
             return response;

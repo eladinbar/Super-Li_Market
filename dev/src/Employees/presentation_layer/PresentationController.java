@@ -72,13 +72,13 @@ public class PresentationController {
         return facadeService.loadData();
     }
 
-    private void uploadData(){
+    private void uploadData() throws SQLException {
         if(!createData())
             return;
         while (!login ( false ));
     }
 
-    private boolean createData() {
+    private boolean createData() throws SQLException {
         Response response = facadeService.createData();
         if (response.errorOccured ())
         {
@@ -697,7 +697,7 @@ public class PresentationController {
         menuPrinter.print ( "Constraint deleted successfully.\n" );
     }
 
-    private void addEmployee() {
+    private void addEmployee() throws SQLException {
         menuPrinter.print ( "Write the new employee details:" );
         String role = menuPrinter.roleMenu ( );
         while (role.equals ( "illegal" ))
@@ -748,7 +748,7 @@ public class PresentationController {
         menuPrinter.print ( "Bank account changed successfully." );
     }
 
-    private void updateTermsOfEmployee(String ID) {
+    private void updateTermsOfEmployee(String ID) throws SQLException {
         menuPrinter.print ( "Write salary: " );
         int salary = menuPrinter.getInt ();
         menuPrinter.print ( "Write education fund: " );
