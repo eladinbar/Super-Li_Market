@@ -1,7 +1,5 @@
 package Trucking.Business_Layer_Trucking.Delivery;
 
-import DAL.*;
-import DAL.DalControllers_Trucking.DalDeliveryFormController;
 import DAL.DalObjects_Trucking.DalDeliveryForm;
 
 import java.sql.SQLException;
@@ -87,44 +85,39 @@ public class DeliveryForm {
 
     public void setCompleted() throws SQLException {
         this.completed = true;
-        DalDeliveryFormController.getInstance().update(new DalDeliveryForm(ID, origin, destination, completed, leavingWeight, trID));
     }
 
     public void setDestination(int destination) throws SQLException {
         this.destination = destination;
-        DalDeliveryFormController.getInstance().update(new DalDeliveryForm(ID, origin, destination, completed,leavingWeight,trID));
 
     }
 
     public void setID(int ID) throws SQLException {
         this.ID = ID;
-        DalDeliveryFormController.getInstance().update(new DalDeliveryForm(ID, origin, destination, completed,leavingWeight,trID));
 
     }
 
     public void setItems(HashMap<Integer, Integer> items) throws SQLException {
         this.items = items;
-        DalDeliveryFormController.getInstance().update(new DalDeliveryForm(ID, origin, destination, completed,leavingWeight,trID));
     }
 
     public void setLeavingWeight(int leavingWeight) throws SQLException {
         this.leavingWeight = leavingWeight;
-        DalDeliveryFormController.getInstance().update(new DalDeliveryForm(ID, origin, destination, completed,leavingWeight,trID));
     }
 
     public void setOrigin(int origin) throws SQLException {
         this.origin = origin;
-        DalDeliveryFormController.getInstance().update(new DalDeliveryForm(ID, origin, destination, completed,leavingWeight,trID));
     }
 
     public void setTrID(int trID) throws SQLException {
         this.trID = trID;
-        DalDeliveryFormController.getInstance().update(new DalDeliveryForm(ID, origin, destination, completed,leavingWeight,trID));
     }
 
     public void setUncompleted() throws SQLException {
         completed = false;
+/*
         DalDeliveryFormController.getInstance().update(new DalDeliveryForm(ID, origin, destination, completed,leavingWeight,trID));
+*/
     }
 
     public void setIDWithoutSave(int lastDeliveryForms) {

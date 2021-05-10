@@ -945,7 +945,7 @@ public class Menu_Printer {
                 }
                 catch (SQLException e)
                 {
-                 e.getMessage();
+                    e.getMessage();
                 }
                 break;
             }

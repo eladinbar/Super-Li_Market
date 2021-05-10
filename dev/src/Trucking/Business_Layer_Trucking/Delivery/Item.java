@@ -1,6 +1,5 @@
 package Trucking.Business_Layer_Trucking.Delivery;
 
-import DAL.*;
 import DAL.DalControllers_Trucking.DalItemController;
 import DAL.DalObjects_Trucking.DalItem;
 
@@ -17,7 +16,7 @@ public class Item {
         this.name=name;
         this.weight=weight;
         this.originSiteId = originSiteID;
-        DalItemController.getInstance().insert(new DalItem(ID,weight,name,originSiteID));
+        DalItemController.getInstance().insert(new DalItem (ID,weight,name,originSiteID));
 
     }
     public Item(DalItem dalItem){

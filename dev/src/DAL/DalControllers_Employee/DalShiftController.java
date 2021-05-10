@@ -25,7 +25,6 @@ public class DalShiftController extends DalController {
         }
     }
 
-    @Override
     protected boolean createTable() throws SQLException {
         Connection conn = DriverManager.getConnection(connection);
         String query = "CREATE TABLE IF NOT EXISTS SHIFTS("
