@@ -16,7 +16,7 @@ public class DalShiftController extends DalController {
     public DalShiftController()throws SQLException{
         super();
         tableName = "SHIFTS";
-        columnNames = new String[] {"EMPLOYEEID",  "TYPE","DATE", "SHIFT"};
+        columnNames = new String[] {"EMPLOYEEID",  "TYPE","DATE", "SHIFT", "ROLE"};
         try{
             createTable();
         }
@@ -33,6 +33,7 @@ public class DalShiftController extends DalController {
                 +"TYPE TEXT,"
                 +"DATE DATE,"
                 +"SHIFT INTEGER,"
+                +"ROLE TEXT,"
                 +"FOREIGN KEY (EMPLOYEEID) REFERENCES EMPLOYEES(ID),"
                 +"PRIMARY KEY (SHIFT, DATE, EMPLOYEEID));";
         try {
@@ -58,13 +59,14 @@ public class DalShiftController extends DalController {
         //TODO - change URL
         System.out.println("starting insert");
         Connection conn= DriverManager.getConnection("jdbc:sqlite:Desktop\\database_nitoz.db");
-        String query= "INSERT INTO "+tableName+" VALUES (?,?,?,?)";
+        String query= "INSERT INTO "+tableName+" VALUES (?,?,?,?,?)";
         try{
             PreparedStatement st=conn.prepareStatement(query);
             st.setString(1,dalShift.getEmployeeId());
             st.setString(2,dalShift.getType());
             st.setDate(3, new Date(dalShift.getDate().getYear(), dalShift.getDate().getMonth().getValue(), dalShift.getDate().getDayOfMonth()));
             st.setInt(4,dalShift.getShift());
+            st.setString(5, dalShift.getRole());
 
             System.out.println("executing insert");
             st.executeUpdate();
@@ -84,16 +86,17 @@ public class DalShiftController extends DalController {
 
     public boolean update(DalShift dalShift) throws SQLException {
         Connection conn=DriverManager.getConnection("jdbc:sqlite:Desktop\\database_nitoz.db");
-        String query="UPDATE "+tableName+" SET "+columnNames[0]+"=?, "+columnNames[1]+"=?, "+columnNames[2]+"=?, "+columnNames[3]+"=?, WHERE ("+columnNames[0]+"=? AND " +columnNames[2]+ "=? AND "+columnNames[3]+"=? )";
+        String query="UPDATE "+tableName+" SET "+columnNames[0]+"=?, "+columnNames[1]+"=?, "+columnNames[2]+"=?, "+columnNames[3]+"=?"+columnNames[4]+"=?, WHERE ("+columnNames[0]+"=? AND " +columnNames[2]+ "=? AND "+columnNames[3]+"=? )";
         try{
             PreparedStatement st=conn.prepareStatement(query);
             st.setString(1,dalShift.getEmployeeId());
             st.setString(2,dalShift.getType());
             st.setDate(3, new Date(dalShift.getDate().getYear(), dalShift.getDate().getMonth().getValue(), dalShift.getDate().getDayOfMonth()));
             st.setInt(4,dalShift.getShift());
-            st.setString(5,dalShift.getEmployeeId());
-            st.setDate(6, new Date(dalShift.getDate().getYear(), dalShift.getDate().getMonth().getValue(), dalShift.getDate().getDayOfMonth()));
-            st.setInt(7,dalShift.getShift());
+            st.setString(5, dalShift.getRole());
+            st.setString(6,dalShift.getEmployeeId());
+            st.setDate(7, new Date(dalShift.getDate().getYear(), dalShift.getDate().getMonth().getValue(), dalShift.getDate().getDayOfMonth()));
+            st.setInt(8,dalShift.getShift());
 
             st.executeUpdate();
 
@@ -137,7 +140,7 @@ public class DalShiftController extends DalController {
                 Date date = resultSet.getDate(3);
                 LocalDate lDate = date.toLocalDate();
                 shifts.add(new DalShift(resultSet.getString(1), resultSet.getString(2),
-                        lDate, resultSet.getInt(4))
+                        lDate, resultSet.getInt(4), resultSet.getString(5))
                 );
 
             }
