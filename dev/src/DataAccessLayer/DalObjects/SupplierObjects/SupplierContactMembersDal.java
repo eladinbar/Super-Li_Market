@@ -25,11 +25,13 @@ public class SupplierContactMembersDal extends DalObject<SupplierContactMembersD
         return personId;
     }
 
-    public void setSupplierId(int supplierId) {
+    public void setSupplierId(int supplierId) throws SQLException {
         this.supplierId = supplierId;
+        update();
     }
 
-    public void setPersonId(int personId) {
+    public void setPersonId(int personId) throws SQLException {
         this.personId = personId;
+        update();
     }
 }

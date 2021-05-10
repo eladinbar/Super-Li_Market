@@ -21,11 +21,11 @@ public class SupplierCard extends PersonCard {
         this.selfDelivery = selfDelivery;
         this.payment = payment;
         this.contactMembers = new ArrayList<>();
-        this.dalObject = toDalObject();
+        this.dalObject = toDalObjectSupplierCard();
         save();
     }
 
-    public SupplierCard(String supplierId){
+    public SupplierCard(String supplierId) throws SQLException {
         super(null, null, null, supplierId, null);
     }
 
@@ -51,42 +51,45 @@ public class SupplierCard extends PersonCard {
 
     public void setCompanyNumber(int companyNumber) throws SQLException {
         this.companyNumber = companyNumber;
-        dalObject.update();
+        dalObject.setCompanyNumber(companyNumber);
     }
 
     public void setPernamentDays(boolean pernamentDays) throws SQLException {
         isPernamentDays = pernamentDays;
-        dalObject.update();
+        dalObject.setPermanentDays(pernamentDays);
     }
 
     public void setSelfDelivery(boolean selfDelivery) throws SQLException {
         this.selfDelivery = selfDelivery;
-        dalObject.update();
+        dalObject.setSelfDelivery(selfDelivery);
     }
 
     public void setPayment(Payment payment) throws SQLException {
         this.payment = payment;
-        dalObject.update();
+        dalObject.setPayment(payment);
     }
 
     public boolean find() throws SQLException {
-        SupplierCardDal supplierCardDal = toDalObject();
-        return supplierCardDal.find();
+        return dalObject.find();
     }
 
     public void save() throws SQLException {
-        toDalObject().save();
+        dalObject.save();
     }
 
     public void save(String id,String memberID) throws SQLException {
-        toDalObject().save(id,memberID);
+        dalObject.save(id,memberID);
     }
 
-    public SupplierCardDal toDalObject() throws SQLException {
+    public SupplierCardDal toDalObjectSupplierCard() throws SQLException {
         return new SupplierCardDal(Integer.parseInt(id),companyNumber,isPernamentDays,selfDelivery,payment);
     }
 
     public void delete(String id, String memberID) throws SQLException {
         dalObject.delete(id, memberID);
+    }
+
+    public void delete() throws SQLException {
+        dalObject.delete();
     }
 }
