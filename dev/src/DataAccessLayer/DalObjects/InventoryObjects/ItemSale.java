@@ -39,7 +39,7 @@ public class ItemSale extends DalObject<ItemSale> {
         return discount;
     }
 
-    public void setDiscount(double discount) throws SQLException {
+    public void setDiscount(double discount) {
         this.discount = discount;
     }
 
@@ -47,7 +47,7 @@ public class ItemSale extends DalObject<ItemSale> {
         return startSaleDate;
     }
 
-    public void setStartSaleDate(String startSaleDate) throws SQLException {
+    public void setStartSaleDate(String startSaleDate) {
         this.startSaleDate = startSaleDate;
     }
 
@@ -55,7 +55,7 @@ public class ItemSale extends DalObject<ItemSale> {
         return endSaleDate;
     }
 
-    public void setEndSaleDate(String endSaleDate) throws SQLException {
+    public void setEndSaleDate(String endSaleDate) {
         this.endSaleDate = endSaleDate;
     }
 
@@ -63,7 +63,7 @@ public class ItemSale extends DalObject<ItemSale> {
         return itemID;
     }
 
-    public void setItemID(int itemID) throws SQLException {
+    public void setItemID(int itemID) {
         this.itemID = itemID;
     }
 

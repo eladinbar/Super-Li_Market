@@ -35,7 +35,7 @@ public class CategoryDiscount extends DalObject<CategoryDiscount> {
         return discount;
     }
 
-    public void setDiscount(double discount) throws SQLException {
+    public void setDiscount(double discount) {
         this.discount = discount;
     }
 
@@ -43,7 +43,7 @@ public class CategoryDiscount extends DalObject<CategoryDiscount> {
         return itemCount;
     }
 
-    public void setItemCount(int itemCount) throws SQLException {
+    public void setItemCount(int itemCount) {
         this.itemCount = itemCount;
     }
 

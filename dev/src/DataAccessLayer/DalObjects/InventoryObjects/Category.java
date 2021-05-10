@@ -30,7 +30,7 @@ public class Category extends DalObject<Category> {
         return parentName;
     }
 
-    public void setParentName(String parentName) throws SQLException {
+    public void setParentName(String parentName) {
         this.parentName = parentName;
     }
 

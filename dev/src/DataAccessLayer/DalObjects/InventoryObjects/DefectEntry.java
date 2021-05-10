@@ -32,7 +32,7 @@ public class DefectEntry extends DalObject<DefectEntry> {
         return location;
     }
 
-    public void setLocation(String location) throws SQLException {
+    public void setLocation(String location) {
         this.location = location;
     }
 
@@ -40,7 +40,7 @@ public class DefectEntry extends DalObject<DefectEntry> {
         return quantity;
     }
 
-    public void setQuantity(int quantity) throws SQLException {
+    public void setQuantity(int quantity) {
         this.quantity = quantity;
     }
 
