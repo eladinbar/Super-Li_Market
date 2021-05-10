@@ -33,7 +33,7 @@ public class DalBankBranchController extends DalController {
                 +"bank TEXT ,"
                 +"BANKBRANCH INTEGER,"
                 +"ACCOUNTNUMBER INTEGER,"
-                +"PRIMARY KEY (ACCOUNTNUMBERS));";
+                +"PRIMARY KEY (ACCOUNTNUMBER));";
         try {
             PreparedStatement st=conn.prepareStatement(query);
             System.out.println("Creating\n");

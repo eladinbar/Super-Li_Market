@@ -44,6 +44,7 @@ public class ShiftController {
         for ( int i = 0 ; i < 7 ; i++ ) {
             output.recommendShifts ( employeeController, i );
         }
+        shifts.put ( startingDate, output );
         return output;
     }
 
@@ -259,7 +260,12 @@ public class ShiftController {
     private void LoadShiftTypes() throws SQLException, EmployeeException {
         LinkedList<DalShiftType> types = DalShiftTypeController.getInstance ().load ();
         HashMap<String, Integer> manning = new HashMap<> (  );
-        String type = types.get ( 0 ).getType ();
+        String type;
+        try {
+            type = types.get ( 0 ).getType ();
+        } catch (IndexOutOfBoundsException e){
+            return;
+        }
         for(DalShiftType cur : types){
             if(!cur.getType ().equals ( type ))
             {
@@ -277,10 +283,19 @@ public class ShiftController {
     private void LoadShifts() throws SQLException {
         LinkedList<DalShift> shifts = DalShiftController.getInstance ().load ();
         Integer j = 0;
-        DalShift cur = shifts.get ( j );
+        DalShift cur;
+        try {
+            cur = shifts.get ( j );
+        }catch (IndexOutOfBoundsException e){
+            cur = null;
+        }
         while (cur != null){
             createWeek ( shifts, j );
-            cur = shifts.get ( j );
+            try {
+                cur = shifts.get ( j );
+            }catch (IndexOutOfBoundsException e){
+                cur = null;
+            }
         }
     }
 

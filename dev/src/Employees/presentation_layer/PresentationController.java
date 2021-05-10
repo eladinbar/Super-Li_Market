@@ -1,6 +1,7 @@
 package Employees.presentation_layer;
 
 import Employees.business_layer.Employee.Role;
+import Employees.business_layer.Shift.ShiftTypes;
 import Employees.business_layer.facade.FacadeService;
 import Employees.business_layer.facade.Response;
 import Employees.business_layer.facade.ResponseT;
@@ -37,12 +38,14 @@ public class PresentationController {
             uploadData ();
     }
 
-    private Response uploadClean() throws SQLException {
-        char choice = menuPrinter.uploadClean ();
+    private void uploadClean() throws SQLException {
         ResponseT<Boolean> start = loadData();
-        if(start.errorOccured ())
-            return new Response ( start.getErrorMessage () );
+        if(start.errorOccured ()) {
+            menuPrinter.print ( start.getErrorMessage ( ) );
+            return;
+        }
         if(start.value == false) {
+            char choice = menuPrinter.uploadClean ();
             FacadeEmployee manager;
             if (choice == 'y') {
                 manager = menuPrinter.createManagerAccountMenu ( );
@@ -52,16 +55,21 @@ public class PresentationController {
                 ResponseT<FacadeEmployee> facadeEmployee = facadeService.addManager ( manager );
                 if (facadeEmployee.errorOccured ( )) {
                     menuPrinter.print ( facadeEmployee.getErrorMessage ( ) );
-                    return new Response ( facadeEmployee.getErrorMessage () );
+                    return;
                 }
                 login ( true );
                 while (!login ( false )) ;
             } else
                 menuPrinter.print ( "Only a manager can start a clean program." );
+        } else if(ShiftTypes.getInstance ().getShiftTypes ().length < 2) {
+            char choice = menuPrinter.uploadClean ();
+            if (choice == 'y'){
+                while (!login ( true ));
+            } else
+                menuPrinter.print ( "Only a manager can start a program without shift types." );
         }
         else
             while (!login ( false ));
-        return new Response (  );
     }
 
     private ResponseT<Boolean> loadData() throws SQLException {
