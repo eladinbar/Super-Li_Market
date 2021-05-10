@@ -111,7 +111,7 @@ public class DeliveryService {
 
         dc.removeItemFromReport(new Demand(demand.getItemID(), demand.getSite(), amount));
     }
-    public void removeItemFromPool(int item) throws NoSuchElementException{
+    public void removeItemFromPool(int item) throws NoSuchElementException,SQLException{
         dc.removeItemFromPool(item);
     }
 
@@ -334,7 +334,7 @@ public class DeliveryService {
         dc.chooseDateToCurrentTR(chosen);
     }
 
-    public void removeSiteFromPool(int siteID) throws NoSuchElementException, IllegalStateException{
+    public void removeSiteFromPool(int siteID) throws NoSuchElementException, IllegalStateException,SQLException{
         dc.removeSite(siteID);
     }
 
@@ -346,7 +346,7 @@ public class DeliveryService {
         dc.updateCurrTR_TruckNumber(truck);
     }
 
-    public void removeDemand(FacadeDemand d) {
+    public void removeDemand(FacadeDemand d) throws SQLException{
         dc.removeDemand(d.getItemID(), d.getSite());
     }
 

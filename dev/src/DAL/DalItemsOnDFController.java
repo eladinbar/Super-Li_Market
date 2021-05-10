@@ -23,8 +23,6 @@ public class DalItemsOnDFController extends DalController{
     }
 
     public boolean insert(DalItemsOnDF dalItemsOnDF) throws SQLException {
-        //TODO - change URL
-        System.out.println("starting insert");
         Connection conn= DriverManager.getConnection(connection);
         String query= "INSERT INTO "+tableName+" VALUES (?,?,?)";
         try{
@@ -33,7 +31,6 @@ public class DalItemsOnDFController extends DalController{
             st.setInt(2,dalItemsOnDF.getItemID());
             st.setInt(3,dalItemsOnDF.getAmount());
 
-            System.out.println("executing insert");
             st.executeUpdate();
 
         }
@@ -105,11 +102,12 @@ public class DalItemsOnDFController extends DalController{
                 +"DFID INTEGER,"
                 +"itemID INTEGER,"
                 +"amount INTEGER,"
-                +"FOREIGN KEY REFERENCES DeliveryForms(DFID),"
+                +"FOREIGN KEY (DFID) REFERENCES DeliveryForms(DFID),"
+                +"FOREIGN KEY (itemID) REFERENCES Items (ID) ON DELETE NO ACTION ON UPDATE CASCADE,"
                 +"PRIMARY KEY (itemID));";
         try {
             PreparedStatement st=conn.prepareStatement(query);
-            System.out.println("Creating\n");
+
             st.executeUpdate();
         }
         catch (SQLException e){

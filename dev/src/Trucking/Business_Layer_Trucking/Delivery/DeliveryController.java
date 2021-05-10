@@ -234,11 +234,13 @@ public class DeliveryController {
 
     }
 
-    public boolean removeSite(int siteID) throws NoSuchElementException, IllegalStateException {
+    public boolean removeSite(int siteID) throws NoSuchElementException, IllegalStateException,SQLException {
         if (!sites.containsKey(siteID)) {
             throw new NoSuchElementException("SiteID does not exist");
         } else {
-            sites.remove(siteID);
+            Site s=sites.remove(siteID);
+
+            DalSiteController.getInstance().delete(new DalSite(siteID,s.getName(),s.getCity(),s.getDeliveryArea(),s.getContactName(),s.getPhoneNumber()));
             for (Map.Entry<Integer, Item> entry : items.entrySet()) {
                 if (entry.getValue().getOriginSiteId() == siteID) {
                     removeItemFromPool(entry.getKey());
@@ -374,7 +376,7 @@ public class DeliveryController {
         updateTruckReportDestinations(currTR.getID());
     }
 
-    public void removeItemFromPool(int item) throws NoSuchElementException, IllegalStateException {
+    public void removeItemFromPool(int item) throws NoSuchElementException, IllegalStateException,SQLException {
 
 
         if (!items.containsKey(item)) {
@@ -394,7 +396,8 @@ public class DeliveryController {
             if (d.getItemID() == item)
                 throw new IllegalStateException("Cant delete item when there is a demand with it");
         }
-        items.remove(item);
+        Item i=items.remove(item);
+        DalItemController.getInstance().delete(new DalItem(item,i.getWeight(),i.getName(),i.getOriginSiteId()));
     }
 
 
@@ -845,10 +848,11 @@ public class DeliveryController {
     }
 
 
-    public void removeDemand(int itemID, int site) {
+    public void removeDemand(int itemID, int site) throws SQLException {
         for (Demand d : demands) {
             if (d.getSite() == site && d.getItemID() == itemID) {
                 demands.remove(d);
+                DalDemandController.getInstance().delete(new DalDemand(itemID,d.getAmount(),site));
                 break;
             }
         }
@@ -1128,6 +1132,11 @@ public class DeliveryController {
     private void updateDeliveryFormDB(DeliveryForm df) throws SQLException {
         DalDeliveryFormController.getInstance().update(new DalDeliveryForm
                 (df.getID(), df.getOrigin(), df.getDestination(), df.isCompleted(), df.getLeavingWeight(), df.getTrID()));
+        DalItemsOnDFController controller=DalItemsOnDFController.getInstance();
+        for (Map.Entry<Integer,Integer> entry:df.getItems().entrySet())
+        {
+            controller.update(new DalItemsOnDF(df.getID(),entry.getKey(),entry.getValue()));
+        }
     }
 
     private void updateTruckingReportDB(TruckingReport tr) throws SQLException {
@@ -1137,6 +1146,11 @@ public class DeliveryController {
 
     private void saveDeliveryFormDB(DeliveryForm df) throws SQLException {
         DalDeliveryFormController.getInstance().insert(new DalDeliveryForm(df.getID(), df.getOrigin(), df.getDestination(), df.isCompleted(), df.getLeavingWeight(), df.getTrID()));
+        DalItemsOnDFController controller=DalItemsOnDFController.getInstance();
+        for (Map.Entry<Integer,Integer> entry:df.getItems().entrySet())
+        {
+            controller.insert(new DalItemsOnDF(df.getID(),entry.getKey(),entry.getValue()));
+        }
     }
 
     private void saveTruckReportDB(TruckingReport currTR) throws SQLException {

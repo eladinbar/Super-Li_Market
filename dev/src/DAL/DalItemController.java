@@ -22,8 +22,6 @@ public class DalItemController extends DalController{
     }
 
     public boolean insert(DalItem dalItem) throws SQLException {
-        //TODO - change URL
-        System.out.println("starting insert");
         Connection conn= DriverManager.getConnection(connection);
 
         String query= "INSERT INTO "+tableName+" VALUES (?,?,?,?)";
@@ -34,7 +32,6 @@ public class DalItemController extends DalController{
             st.setString(3,dalItem.getName());
             st.setInt(4,dalItem.getOriginSite());
 
-            System.out.println("executing insert");
             st.executeUpdate();
 
         }
@@ -56,18 +53,14 @@ public class DalItemController extends DalController{
         try{
             PreparedStatement st=conn.prepareStatement(query);
 
-            //st.setString(1,columnNames[1]);
 
-            //st.setString(3,columnNames[2]);
             st.setDouble(1,dalItem.getWeight());
 
             st.setString(2,dalItem.getName());
-            //st.setString(5,columnNames[3]);
             st.setInt(3,dalItem.getOriginSite());
 
-            //st.setString(7,columnNames[0]);
             st.setInt(4,dalItem.getID());
-            System.out.println("executing insert");
+
 
             st.executeUpdate();
 
@@ -120,10 +113,11 @@ public class DalItemController extends DalController{
                 +"weight NUMERIC,"
                 +"name TEXT,"
                 +"originSite INTEGER,"
+                +"FOREIGN KEY (originSite) REFERENCES Sites (siteID) ON DELETE NO ACTION ON UPDATE CASCADE,"
                 +"PRIMARY KEY (ID));";
         try {
             PreparedStatement st=conn.prepareStatement(query);
-            System.out.println("Creating\n");
+
             st.executeUpdate();
         }
         catch (SQLException e){

@@ -28,8 +28,6 @@ public class DalDeliveryFormController extends DalController {
 
 
     public boolean insert(DalDeliveryForm deliveryForm) throws SQLException {
-        //TODO - change URL
-        System.out.println("starting insert");
         int completed=0;
         if (deliveryForm.isCompleted())
             completed=1;
@@ -44,7 +42,6 @@ public class DalDeliveryFormController extends DalController {
             st.setInt(5,deliveryForm.getLeavingWeight());
             st.setInt(6,deliveryForm.getTRID());
 
-            System.out.println("executing insert");
             st.executeUpdate();
 
         }
@@ -134,11 +131,14 @@ public class DalDeliveryFormController extends DalController {
                 +"completed INTEGER,"
                 +"leavingWeight INTEGER,"
                 +"TRID INTEGER,"
-                +"FOREIGN KEY (TRID) REFERENCES TruckingReports(ID),"
+                +"FOREIGN KEY (TRID) REFERENCES TruckingReports(ID) ON DELETE NO ACTION ON UPDATE CASCADE,"
+                +"FOREIGN KEY (origin) REFERENCES Sites (siteID) ON DELETE NO ACTION ON UPDATE CASCADE,"
+                +"FOREIGN KEY (destination) REFERENCES Sites (siteID) ON DELETE NO ACTION ON UPDATE CASCADE,"
+
                 +"PRIMARY KEY (ID));";
         try {
             PreparedStatement st=conn.prepareStatement(query);
-            System.out.println("Creating\n");
+
             st.executeUpdate();
         }
         catch (SQLException e){

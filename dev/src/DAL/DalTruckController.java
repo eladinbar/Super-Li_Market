@@ -7,7 +7,7 @@ public class DalTruckController extends DalController{
 
     private static DalTruckController controller;
 
-    private DalTruckController(){//TODO - Check when tables created
+    private DalTruckController(){
         super();
         this.tableName="Trucks";
         this.columnNames=new String[4];
@@ -23,8 +23,6 @@ public class DalTruckController extends DalController{
     }
 
     public boolean insert(DalTruck dalTruck) throws SQLException {
-        //TODO - change URL
-        System.out.println("starting insert");
         Connection conn= DriverManager.getConnection(connection);
         String query= "INSERT INTO "+tableName+" VALUES (?,?,?,?)";
         try{
@@ -33,8 +31,6 @@ public class DalTruckController extends DalController{
             st.setString(2,dalTruck.getModel());
             st.setInt(3,dalTruck.getWeightNeto());
             st.setInt(4,dalTruck.getMaxWeight());
-
-            System.out.println("executing insert");
             st.executeUpdate();
 
         }

@@ -24,8 +24,7 @@ public class DalDriverController extends DalController{
 
 
     public boolean insert(DalDriver dalDriver) throws SQLException {
-        //TODO - change URL
-        System.out.println("starting insert");
+
         Connection conn= DriverManager.getConnection(connection);
         String query= "INSERT INTO "+tableName+" VALUES (?,?,?)";
         try{
@@ -33,7 +32,7 @@ public class DalDriverController extends DalController{
             st.setString(1,dalDriver.getID());
             st.setString(2,dalDriver.getName());
             st.setString(3,dalDriver.getLicense());
-            System.out.println("executing insert");
+
             st.executeUpdate();
 
         }
@@ -111,7 +110,7 @@ public class DalDriverController extends DalController{
                 +"PRIMARY KEY (ID));";
         try {
             PreparedStatement st=conn.prepareStatement(query);
-            System.out.println("Creating\n");
+
             st.executeUpdate();
         }
         catch (SQLException e){

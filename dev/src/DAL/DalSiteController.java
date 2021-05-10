@@ -7,7 +7,7 @@ public class DalSiteController extends DalController{
 
     private static DalSiteController controller;
 
-    private DalSiteController(){//TODO - Check when tables created
+    private DalSiteController(){
         super();
         this.tableName="Sites";
         this.columnNames=new String[6];
@@ -23,8 +23,6 @@ public class DalSiteController extends DalController{
     }
 
     public boolean insert(DalSite dalSite) throws SQLException {
-        //TODO - change URL
-        System.out.println("starting insert");
         Connection conn= DriverManager.getConnection(connection);
         String query= "INSERT INTO "+tableName+" VALUES (?,?,?,?,?,?)";
         try{
@@ -35,8 +33,6 @@ public class DalSiteController extends DalController{
             st.setInt(4,dalSite.getDeliveryArea());
             st.setString(5,dalSite.getContactName());
             st.setString(6,dalSite.getPhoneNumber());
-
-            System.out.println("executing update");
             st.executeUpdate();
 
         }

@@ -27,12 +27,19 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="05ca914f-9056-4de3-9869-7fdfaa880f2d" name="Default Changelist" comment="small bug fixed in data base connections">
+    <list default="true" id="05ca914f-9056-4de3-9869-7fdfaa880f2d" name="Default Changelist" comment="Code for creating tables has been added. Need to test">
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_4_23_2021_3_54_PM__Default_Changelist_.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_4_23_2021_3_54_PM__Default_Changelist_.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dev/src/DAL/DalDeliveryFormController.java" beforeDir="false" afterPath="$PROJECT_DIR$/dev/src/DAL/DalDeliveryFormController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/dev/src/DAL/DalDemandController.java" beforeDir="false" afterPath="$PROJECT_DIR$/dev/src/DAL/DalDemandController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dev/src/DAL/DalDriverController.java" beforeDir="false" afterPath="$PROJECT_DIR$/dev/src/DAL/DalDriverController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dev/src/DAL/DalItemController.java" beforeDir="false" afterPath="$PROJECT_DIR$/dev/src/DAL/DalItemController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/dev/src/DAL/DalItemsOnDFController.java" beforeDir="false" afterPath="$PROJECT_DIR$/dev/src/DAL/DalItemsOnDFController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dev/src/DAL/DalSiteController.java" beforeDir="false" afterPath="$PROJECT_DIR$/dev/src/DAL/DalSiteController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dev/src/DAL/DalTruckController.java" beforeDir="false" afterPath="$PROJECT_DIR$/dev/src/DAL/DalTruckController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dev/src/DAL/DalTruckingReportController.java" beforeDir="false" afterPath="$PROJECT_DIR$/dev/src/DAL/DalTruckingReportController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/dev/src/Trucking/Business_Layer_Trucking/Delivery/DeliveryController.java" beforeDir="false" afterPath="$PROJECT_DIR$/dev/src/Trucking/Business_Layer_Trucking/Delivery/DeliveryController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dev/src/Trucking/Business_Layer_Trucking/Delivery/Demand.java" beforeDir="false" afterPath="$PROJECT_DIR$/dev/src/Trucking/Business_Layer_Trucking/Delivery/Demand.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dev/src/Trucking/Business_Layer_Trucking/Facade/DeliveryService.java" beforeDir="false" afterPath="$PROJECT_DIR$/dev/src/Trucking/Business_Layer_Trucking/Facade/DeliveryService.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -76,12 +83,13 @@
     <property name="Repository.Attach.Sources" value="false" />
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
     <property name="extract.method.default.visibility" value="private" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/sqlite-jdbc-3.32.3.2.jar" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/dev/sqlite-jdbc-3.32.3.2.jar" />
     <property name="nodejs_package_manager_path" value="npm" />
-    <property name="project.structure.last.edited" value="Modules" />
+    <property name="project.structure.last.edited" value="Libraries" />
     <property name="project.structure.proportion" value="0.15332031" />
     <property name="project.structure.side.proportion" value="0.2" />
     <property name="settings.editor.selected.configurable" value="preferences.lookFeel" />
@@ -92,13 +100,6 @@
     </key>
   </component>
   <component name="RunManager" selected="Application.Main">
-    <configuration name="Main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="Main" />
-      <module name="ADSS_Group_G" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
     <configuration default="true" type="ArquillianTestNG" factoryName="" nameIsGenerated="true">
       <option name="arquillianRunConfiguration">
         <value>
@@ -108,6 +109,13 @@
       <option name="TEST_OBJECT" value="CLASS" />
       <properties />
       <listeners />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="Main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="Main" />
+      <module name="ADSS_Group_G" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -167,10 +175,13 @@
       <workItem from="1619330774077" duration="12857000" />
       <workItem from="1619792461374" duration="1895000" />
       <workItem from="1619794411025" duration="473000" />
-      <workItem from="1620398620984" duration="1227000" />
-      <workItem from="1620500109251" duration="1502000" />
-      <workItem from="1620541443693" duration="3111000" />
-      <workItem from="1620546886851" duration="14921000" />
+    </task>
+    <task id="LOCAL-00007" summary="finished writing Menu_Printer - need to check with businessLayer">
+      <created>1617316526174</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1617316526174</updated>
     </task>
     <task id="LOCAL-00008" summary="done with PresentationController by now, new methods added to bussiness layer">
       <created>1617355495108</created>
@@ -445,77 +456,70 @@
       <option name="project" value="LOCAL" />
       <updated>1620238888480</updated>
     </task>
-    <task id="LOCAL-00047" summary="bug fixed in Dal Truck Controller">
-      <created>1620370006844</created>
+    <task id="LOCAL-00047" summary="DAL insert&amp; update methods has been made. Time to test">
+      <created>1620289584903</created>
       <option name="number" value="00047" />
       <option name="presentableId" value="LOCAL-00047" />
       <option name="project" value="LOCAL" />
-      <updated>1620370006844</updated>
+      <updated>1620289584904</updated>
     </task>
-    <task id="LOCAL-00048" summary="methods skeleton for constructors">
-      <created>1620371578848</created>
+    <task id="LOCAL-00048" summary="Little fix in TruckController">
+      <created>1620367911739</created>
       <option name="number" value="00048" />
       <option name="presentableId" value="LOCAL-00048" />
       <option name="project" value="LOCAL" />
-      <updated>1620371578848</updated>
+      <updated>1620367911739</updated>
     </task>
-    <task id="LOCAL-00049" summary="insert has been connected">
-      <created>1620382644023</created>
+    <task id="LOCAL-00049" summary="upload method for DC">
+      <created>1620376554747</created>
       <option name="number" value="00049" />
       <option name="presentableId" value="LOCAL-00049" />
       <option name="project" value="LOCAL" />
-      <updated>1620382644023</updated>
+      <updated>1620376554747</updated>
     </task>
-    <task id="LOCAL-00050" summary="&#10;delete and update has been connected">
-      <created>1620388154782</created>
+    <task id="LOCAL-00050" summary="upload method for RC">
+      <created>1620378566312</created>
       <option name="number" value="00050" />
       <option name="presentableId" value="LOCAL-00050" />
       <option name="project" value="LOCAL" />
-      <updated>1620388154782</updated>
+      <updated>1620378566312</updated>
     </task>
-    <task id="LOCAL-00051" summary="some bug fixed">
-      <created>1620546940440</created>
+    <task id="LOCAL-00051" summary="completed field changed to int">
+      <created>1620382663504</created>
       <option name="number" value="00051" />
       <option name="presentableId" value="LOCAL-00051" />
       <option name="project" value="LOCAL" />
-      <updated>1620546940441</updated>
+      <updated>1620382663504</updated>
     </task>
-    <task id="LOCAL-00052" summary="merged bug fixed. &#10;still has date probs">
-      <created>1620547991416</created>
+    <task id="LOCAL-00052" summary="TODO regard singleton added!">
+      <created>1620392242208</created>
       <option name="number" value="00052" />
       <option name="presentableId" value="LOCAL-00052" />
       <option name="project" value="LOCAL" />
-      <updated>1620547991416</updated>
+      <updated>1620392242209</updated>
     </task>
-    <task id="LOCAL-00053" summary="initial state has been updated">
-      <created>1620564101627</created>
+    <task id="LOCAL-00053" summary="Singleton and delete methods fixed in all DallControllers">
+      <created>1620505069747</created>
       <option name="number" value="00053" />
       <option name="presentableId" value="LOCAL-00053" />
       <option name="project" value="LOCAL" />
-      <updated>1620564101627</updated>
+      <updated>1620505069748</updated>
     </task>
-    <task id="LOCAL-00054" summary="fixed daysAndDriver's Trucking side">
-      <created>1620566641844</created>
+    <task id="LOCAL-00054" summary="Code for creating tables has been added. Need to test">
+      <created>1620574149838</created>
       <option name="number" value="00054" />
       <option name="presentableId" value="LOCAL-00054" />
       <option name="project" value="LOCAL" />
-      <updated>1620566641844</updated>
+      <updated>1620574149839</updated>
     </task>
-    <task id="LOCAL-00055" summary="fixed bugs in trucking report dates.&#10;no more option to update Trucking report if not for todays.">
-      <created>1620573180083</created>
+    <task id="LOCAL-00055" summary="Code for creating tables has been added. Need to test">
+      <created>1620601782743</created>
       <option name="number" value="00055" />
       <option name="presentableId" value="LOCAL-00055" />
       <option name="project" value="LOCAL" />
-      <updated>1620573180083</updated>
+      <updated>1620601782743</updated>
     </task>
-    <task id="LOCAL-00056" summary="small bug fixed in data base connections">
-      <created>1620599178565</created>
-      <option name="number" value="00056" />
-      <option name="presentableId" value="LOCAL-00056" />
-      <option name="project" value="LOCAL" />
-      <updated>1620599178566</updated>
-    </task>
-    <option name="localTasksCounter" value="57" />
+    <option name="localTasksCounter" value="56" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -534,6 +538,8 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
+    <MESSAGE value="menu printer has been updated, all exception catched" />
+    <MESSAGE value="menu printer method has been updated" />
     <MESSAGE value="remove site from pool option added" />
     <MESSAGE value="date added to AddDemand" />
     <MESSAGE value="Finnally merged, re testing" />
@@ -549,85 +555,78 @@
     <MESSAGE value="DalTruckingReportController insert method made." />
     <MESSAGE value="DAL Trucking classes almost done!" />
     <MESSAGE value="DAL Load &amp; delete methods working" />
-    <MESSAGE value="bug fixed in Dal Truck Controller" />
-    <MESSAGE value="methods skeleton for constructors" />
-    <MESSAGE value="insert has been connected" />
-    <MESSAGE value="&#10;delete and update has been connected" />
-    <MESSAGE value="some bug fixed" />
-    <MESSAGE value="merged bug fixed. &#10;still has date probs" />
-    <MESSAGE value="initial state has been updated" />
-    <MESSAGE value="fixed daysAndDriver's Trucking side" />
-    <MESSAGE value="fixed bugs in trucking report dates.&#10;no more option to update Trucking report if not for todays." />
-    <MESSAGE value="small bug fixed in data base connections" />
-    <option name="LAST_COMMIT_MESSAGE" value="small bug fixed in data base connections" />
+    <MESSAGE value="DAL insert&amp; update methods has been made. Time to test" />
+    <MESSAGE value="Little fix in TruckController" />
+    <MESSAGE value="upload method for DC" />
+    <MESSAGE value="upload method for RC" />
+    <MESSAGE value="completed field changed to int" />
+    <MESSAGE value="TODO regard singleton added!" />
+    <MESSAGE value="Singleton and delete methods fixed in all DallControllers" />
+    <MESSAGE value="Code for creating tables has been added. Need to test" />
+    <option name="LAST_COMMIT_MESSAGE" value="Code for creating tables has been added. Need to test" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/dev/src/DAL/DalTruckingReportController.java</url>
-          <line>26</line>
+          <line>32</line>
           <option name="timeStamp" value="1" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/dev/src/DAL/DalTruckingReportController.java</url>
-          <line>44</line>
-          <option name="timeStamp" value="2" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/dev/src/DAL/DalTruckingReportController.java</url>
-          <line>101</line>
+          <line>106</line>
           <option name="timeStamp" value="7" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/dev/src/DAL/DalItemController.java</url>
-          <line>22</line>
+          <line>28</line>
           <option name="timeStamp" value="13" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/dev/src/DAL/DalItemController.java</url>
-          <line>48</line>
+          <line>54</line>
           <option name="timeStamp" value="14" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/dev/src/Main.java</url>
-          <line>24</line>
-          <option name="timeStamp" value="15" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/dev/src/Trucking/Presentation_Layer_Trucking/Menu_Printer.java</url>
-          <line>286</line>
-          <option name="timeStamp" value="17" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/dev/src/Trucking/Presentation_Layer_Trucking/Menu_Printer.java</url>
-          <line>259</line>
+          <url>file://$PROJECT_DIR$/dev/src/DAL/DalDemandController.java</url>
+          <line>117</line>
           <option name="timeStamp" value="18" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/dev/src/Trucking/Presentation_Layer_Trucking/Menu_Printer.java</url>
-          <line>182</line>
+          <url>file://$PROJECT_DIR$/dev/src/Main.java</url>
+          <line>23</line>
+          <option name="timeStamp" value="19" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/dev/src/Employees/presentation_layer/PresentationController.java</url>
+          <line>71</line>
           <option name="timeStamp" value="20" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/dev/src/Trucking/Business_Layer_Trucking/Facade/FacadeObject/ResourcesService.java</url>
-          <line>54</line>
+          <url>file://$PROJECT_DIR$/dev/src/Trucking/Business_Layer_Trucking/Resources/ResourcesController.java</url>
+          <line>48</line>
+          <option name="timeStamp" value="23" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/dev/src/Trucking/Business_Layer_Trucking/Resources/Driver.java</url>
+          <line>43</line>
+          <option name="timeStamp" value="24" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/dev/src/DAL/DalDriverController.java</url>
+          <line>27</line>
+          <option name="timeStamp" value="25" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/dev/src/DAL/DalDriverController.java</url>
+          <line>18</line>
           <option name="timeStamp" value="26" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/dev/src/Trucking/Presentation_Layer_Trucking/Menu_Printer.java</url>
-          <line>912</line>
-          <option name="timeStamp" value="56" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/dev/src/Trucking/Presentation_Layer_Trucking/Menu_Printer.java</url>
-          <line>925</line>
-          <option name="timeStamp" value="57" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/dev/src/Trucking/Business_Layer_Trucking/Delivery/DeliveryController.java</url>
-          <line>262</line>
-          <option name="timeStamp" value="63" />
+          <url>file://$PROJECT_DIR$/dev/src/DAL/DalDriverController.java</url>
+          <line>105</line>
+          <option name="timeStamp" value="28" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
@@ -640,16 +639,9 @@
         <PinnedItemInfo parentTag="Business_Layer_Trucking.Facade.DeliveryService" memberName="dc" />
       </pinned-members>
     </pin-to-top-manager>
-    <watches-manager>
-      <configuration name="Application">
-        <watch expression="((HashMap)((ResourcesController)((ResourcesService)((FacadeService)((PresentationController)((Menu_Printer)this).pc).facadeService).resourcesService).rc).drivers_constraints).entrySet().toArray()[1]" custom="Trucking.Presentation_Layer_Trucking.Menu_Printer,Trucking.Business_Layer_Trucking.Resources.ResourcesController,Trucking.Business_Layer_Trucking.Facade.FacadeService,Trucking.Business_Layer_Trucking.Facade.FacadeObject.ResourcesService,Trucking.Presentation_Layer_Trucking.PresentationController,java.util.HashMap" />
-        <watch expression="all.entrySet().toArray()[17]" />
-        <watch expression="all.entrySet().toArray()[17]" language="JAVA" />
-      </configuration>
-    </watches-manager>
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/ADSS_Group_G$Main.ic" NAME="Main Coverage Results" MODIFIED="1617982326074" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
     <SUITE FILE_PATH="coverage/Main_java$Main.ic" NAME="Main Coverage Results" MODIFIED="1620284345160" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
+    <SUITE FILE_PATH="coverage/ADSS_Group_G$Main.ic" NAME="Main Coverage Results" MODIFIED="1617982326074" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
   </component>
 </project>

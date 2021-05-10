@@ -29,8 +29,6 @@ public class DalDemandController extends DalController{
 
 
     public boolean insert(DalDemand dalDemand) throws SQLException {
-        //TODO - change URL
-        System.out.println("starting insert");
         Connection conn= DriverManager.getConnection(connection);
         String query= "INSERT INTO "+tableName+" VALUES (?,?,?)";
         try{
@@ -39,7 +37,7 @@ public class DalDemandController extends DalController{
             st.setInt(2,dalDemand.getAmount());
             st.setInt(3,dalDemand.getSiteID());
 
-            System.out.println("executing insert");
+
             st.executeUpdate();
 
         }
@@ -120,10 +118,11 @@ public class DalDemandController extends DalController{
                 +"itemID INTEGER,"
                 +"amount INTEGER,"
                 +"siteID INTEGER,"
+                +"FOREIGN KEY (itemID) REFERENCES Items (ID) ON DELETE NO ACTION ON UPDATE CASCADE,"
+                +"FOREIGN KEY (siteID) REFERENCES Sites (siteID) ON DELETE NO ACTION ON UPDATE CASCADE,"
                 +"PRIMARY KEY (itemID));";
         try {
             PreparedStatement st=conn.prepareStatement(query);
-            System.out.println("Creating\n");
             st.executeUpdate();
         }
         catch (SQLException e){

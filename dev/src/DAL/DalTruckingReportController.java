@@ -29,8 +29,6 @@ public class DalTruckingReportController extends DalController {
     }
 
     public boolean insert(DalTruckingReport truckingReport) throws SQLException {
-        //TODO - change URL
-        System.out.println("starting insert");
         int completed=0;
         if (truckingReport.isCompleted())
             completed=1;
@@ -50,8 +48,6 @@ public class DalTruckingReportController extends DalController {
             st.setInt(6,truckingReport.getOrigin());
             st.setInt(7,completed);
             st.setInt(8,truckingReport.getReplaceTRID());
-
-            System.out.println("executing insert");
             st.executeUpdate();
 
         }
@@ -155,10 +151,12 @@ public class DalTruckingReportController extends DalController {
                 +"origin INTEGER,"
                 +"completed INTEGER,"
                 +"replaceTRID INTEGER,"
+                +"FOREIGN KEY (driverID) REFERENCES Drivers(ID) ON DELETE NO ACTION ON UPDATE CASCADE,"
+                +"FOREIGN KEY (truckNumber) REFERENCES Trucks(licenseNumber) ON DELETE NO ACTION ON UPDATE CASCADE,"
+                +"FOREIGN KEY (origin) REFERENCES Sites (siteID) ON DELETE NO ACTION ON UPDATE CASCADE,"
                 +"PRIMARY KEY (ID));";
         try {
             PreparedStatement st=conn.prepareStatement(query);
-            System.out.println("Creating\n");
             st.executeUpdate();
         }
         catch (SQLException e){
