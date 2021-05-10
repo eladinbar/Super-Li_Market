@@ -291,6 +291,10 @@ public class PresentationController {
         return facadeService.getTodayReports();
     }
 
+    public void upload() throws SQLException {
+        facadeService.upload();
+    }
+
 
     // Not in use for now
 

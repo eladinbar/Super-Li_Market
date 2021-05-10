@@ -1,9 +1,5 @@
 package Trucking.Business_Layer_Trucking.Facade;
 
-import DAL.DalDeliveryForm;
-import DAL.DalDeliveryFormController;
-import DAL.DalTruckingReport;
-import DAL.DalTruckingReportController;
 import Trucking.Business_Layer_Trucking.Delivery.*;
 import Trucking.Business_Layer_Trucking.Facade.FacadeObject.*;
 
@@ -454,7 +450,18 @@ public class DeliveryService {
     }
 
 
+    public void upload() throws SQLException {
+        dc.upload();
 
+    }
+
+    public HashMap<String, HashMap<LocalDate, Integer>> getDriverConstraintsFromUpload(){
+        return dc.getDriverConstraintsFromUpload();
+    }
+
+    public HashMap<String, HashMap<LocalDate, Integer>> getTruckConstraintsFromUpload() {
+        return dc.getTruckConstraintsFromUpload();
+    }
 }
 
 
