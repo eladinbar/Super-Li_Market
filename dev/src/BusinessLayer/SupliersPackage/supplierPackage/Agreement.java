@@ -133,7 +133,7 @@ public class Agreement {
     public double getPrice(int amount, int productID) throws Exception {
         if (!products.containsKey(productID))
             throw new Exception("item does not exists in agreement");
-        if (amount < 0)//todo check in presentation
+        if (amount < 0)
             throw new Exception("price must be positive number");
         double price = prices.get(productID) * amount;
         if (ql != null)
@@ -144,7 +144,7 @@ public class Agreement {
     public Double getProductDiscount(int amount, int productID) throws Exception {
         if (!products.containsKey(productID))
             throw new Exception("item does not exists in agreement");
-        if (amount < 0)//todo check in presentation
+        if (amount < 0)
             throw new Exception("price must be positive number");
         double agreementPrice=amount*prices.get(productID);
         double afterDiscountPrice=getPrice(amount,productID);

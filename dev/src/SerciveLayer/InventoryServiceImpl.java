@@ -3,6 +3,7 @@ package SerciveLayer;
 import BusinessLayer.InventoryPackage.DiscountPackage.CategoryDiscount;
 import BusinessLayer.InventoryPackage.DiscountPackage.ItemDiscount;
 import BusinessLayer.InventoryPackage.InventoryController;
+import InfrastructurePackage.Pair;
 import SerciveLayer.Response.*;
 import SerciveLayer.Response.ResponseT;
 import SerciveLayer.SimpleObjects.*;
@@ -690,16 +691,18 @@ public class InventoryServiceImpl implements InventoryService {
     }
 
     @Override
-    public ResponseT<Map<Integer, Integer>> getItemsInShortAndQuantities() {
+    public ResponseT<Pair<Map<Integer, Integer>, Map<Integer, String>>> getItemsInShortAndQuantities() {
         ResponseT<List<Item>> itemsInShort = itemShortageReport();
         if (itemsInShort.errorOccurred()) {
             return new ResponseT<>(false, itemsInShort.getMessage(), null);
         }
         Map<Integer, Integer> itemQuantityMap = new HashMap<>();
+        Map<Integer, String> itemNameMap = new HashMap<>();
         for (Item i : itemsInShort.value) {
             itemQuantityMap.put(i.getID(), i.getMinAmount() * MIN_AMOUNT_MULTIPIER - i.getShelfQuantity() - i.getStorageQuantity());
+            itemNameMap.put(i.getID(),i.getName());
         }
-        return new ResponseT<>(itemQuantityMap);
+        return new ResponseT<>(new Pair(itemQuantityMap,itemNameMap));
     }
 
     @Override

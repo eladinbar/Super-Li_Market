@@ -1,5 +1,6 @@
 package SerciveLayer;
 
+import InfrastructurePackage.Pair;
 import SerciveLayer.Response.Response;
 import SerciveLayer.Response.ResponseT;
 import SerciveLayer.SimpleObjects.*;
@@ -166,16 +167,17 @@ public class Service implements IService {
 
     @Override
     public ResponseT<List<Order>> createShortageOrder(LocalDate date) {
-        ResponseT<Map<Integer, Integer>> itemInShort = inventoryService.getItemsInShortAndQuantities();
+        ResponseT<Pair<Map<Integer, Integer >,Map<Integer, String>>> itemInShort = inventoryService.getItemsInShortAndQuantities();
         if (itemInShort.errorOccurred())
             return new ResponseT<>(itemInShort.getErrorMessage());
         //todo check if there is always value
-        ResponseT<Map<String, Map<Integer, Integer>>> r = supplierService.createShortageOrders(itemInShort.value);
+        ResponseT<Map<String, Map<Integer, Integer>>> r = supplierService.createShortageOrders(itemInShort.value.getFirst());
         ResponseT<List<Order>> orderR=null;//todo check
         try {
-            orderR = orderService.createShortageOrders(r.value, date, supplierService.getSp());
+            orderR = orderService.createShortageOrders(r.value,itemInShort.value.getSecond() , date, supplierService.getSp());
         } catch (Exception e)//todo check the exeption !!
         {
+
         }
         if (r.errorOccurred())
             orderR.setErrorMessage(r.getErrorMessage());
@@ -439,7 +441,7 @@ public class Service implements IService {
     }
 
     @Override
-    public ResponseT<Map<Integer, Integer>> getItemsInShortAndQuantities() {
+    public ResponseT<Pair<Map<Integer, Integer>, Map<Integer, String>>> getItemsInShortAndQuantities() {
         return inventoryService.getItemsInShortAndQuantities();
     }
 

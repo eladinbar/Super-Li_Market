@@ -314,60 +314,6 @@ public class PresentationController implements Runnable {
 
     }
 
-//    private void addItemSupplierDiscount() {
-//        //supplier Id
-//        int suppId = menu.instructAndReceive("Enter supplier ID: ", Integer.class);
-//        //item id
-//        int itemId = menu.instructAndReceive("Enter item ID that the discount applies on: ", Integer.class);
-//        //discount
-//        double discountGiven = menu.instructAndReceive("Enter discount received for the item: (e.g. for 10% enter 0.1)", Double.class);
-//        //dates
-//        String[] dateS = menu.instructAndReceive("Enter discount date: use this format <YYYY-MM-DD>").split("-");
-//        Calendar date = Calendar.getInstance();
-//        try {
-//            date.set(Integer.parseInt(dateS[0]), Integer.parseInt(dateS[1]) - 1, Integer.parseInt(dateS[2]));
-//        } catch (Exception ex) {
-//            menu.errorPrompt("Invalid input");
-//            return;
-//        }
-//        //count
-//        int itemCount = menu.instructAndReceive("Enter the amount the discount applied for: ", Integer.class);
-//        if (itemCount <= 0) {
-//            menu.errorPrompt("Item amount has to be at least 1.");
-//            return;
-//        }
-//        Response r1 = service.addItemDiscount(suppId, discountGiven, date, itemCount, itemId);
-//        if (r1.errorOccurred()) {
-//            menu.errorPrompt(r1.getMessage());
-//            return;
-//        }
-//        System.out.println("Discount added successfully");
-//    }
-//
-//    private void addCategorySupplierDiscount() {
-//        //supplier Id
-//        String suppId = readID();
-//        String catName = menu.instructAndReceive("Enter the category name that the discount applies on: ");
-//        //discount
-//        double discountGiven = menu.instructAndReceive("Enter discount received for the item: (e.g. for 10% enter 0.1)", Double.class);
-//        //date
-//        String[] dateS = menu.instructAndReceive("Enter discount date: use this format <YYYY-MM-DD>").split("-");
-//        Calendar date = Calendar.getInstance();
-//        date.set(Integer.parseInt(dateS[0]), Integer.parseInt(dateS[1]) - 1, Integer.parseInt(dateS[2]));
-//        int itemCount = menu.instructAndReceive("Enter the amount the discount applied for: ", Integer.class);
-//        if (itemCount <= 0) {
-//            menu.errorPrompt("Item amount has to be at least 1.");
-//            return;
-//        }
-//        Response r1 = service.addCategoryDiscount(suppId, discountGiven, date, itemCount, catName);
-//        if (r1.errorOccurred()) {
-//            menu.errorPrompt(r1.getMessage());
-//            return;
-//        }
-//        System.out.println("Sale added successfully");
-//
-//    }
-
     private void recordDefect() {
         LocalDate date = LocalDate.now();
         //item id

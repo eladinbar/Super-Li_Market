@@ -1,5 +1,6 @@
 package SerciveLayer;
 
+import InfrastructurePackage.Pair;
 import SerciveLayer.Response.Response;
 import SerciveLayer.Response.ResponseT;
 import SerciveLayer.SimpleObjects.*;
@@ -76,7 +77,7 @@ public interface InventoryService {
     ResponseT<List<Item>> itemShortageReport();
     ResponseT<List<DefectEntry>> defectsReport(LocalDate fromDate, LocalDate toDate);
 
-    ResponseT<Map<Integer, Integer>> getItemsInShortAndQuantities();
+    ResponseT<Pair<Map<Integer, Integer >,Map<Integer, String>>> getItemsInShortAndQuantities();
 
     Response updateQuantityInventory(ArrayList<Product> items);
 }
