@@ -188,7 +188,7 @@ public class EmployeeService {
         try {
             employeeController.createData();
             return new Response();
-        } catch (EmployeeException e) {
+        } catch (EmployeeException | SQLException e) {
             return new Response ( e.getMessage () );
         }
     }

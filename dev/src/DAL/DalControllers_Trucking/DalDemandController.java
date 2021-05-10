@@ -21,17 +21,18 @@ public class DalDemandController extends DalController {
 
 
 
-    public static DalDemandController getInstance() {
-        if (controller==null) controller=new DalDemandController();
+    public static DalDemandController getInstance() throws SQLException {
+        if (controller==null) {
+            controller = new DalDemandController();
+            controller.createTable();
+        }
         return controller;
 
     }
 
 
     public boolean insert(DalDemand dalDemand) throws SQLException {
-        //TODO - change URL
-        System.out.println("starting insert");
-        Connection conn= DriverManager.getConnection("jdbc:sqlite:/D:\\Year2\\ניתוצ\\עבודה 2\\database.db");
+        Connection conn= DriverManager.getConnection(connection);
         String query= "INSERT INTO "+tableName+" VALUES (?,?,?)";
         try{
             PreparedStatement st=conn.prepareStatement(query);
@@ -39,7 +40,7 @@ public class DalDemandController extends DalController {
             st.setInt(2,dalDemand.getAmount());
             st.setInt(3,dalDemand.getSiteID());
 
-            System.out.println("executing insert");
+
             st.executeUpdate();
 
         }
@@ -56,8 +57,8 @@ public class DalDemandController extends DalController {
     }
 
     public boolean update(DalDemand dalDemand) throws SQLException {
-        Connection conn=DriverManager.getConnection("jdbc:sqlite:/D:\\Year2\\ניתוצ\\עבודה 2\\database.db");
-        String query="UPDATE "+tableName+" SET "+columnNames[1]+"=? WHERE "+columnNames[0]+"=? AND"+columnNames[2]+"=?";
+        Connection conn=DriverManager.getConnection(connection);
+        String query="UPDATE "+tableName+" SET "+columnNames[1]+"=? WHERE "+columnNames[0]+"=? AND "+columnNames[2]+"=?";
         try{
             PreparedStatement st=conn.prepareStatement(query);
 
@@ -79,7 +80,7 @@ public class DalDemandController extends DalController {
 
     public boolean delete(DalDemand dalDemand) throws SQLException {
 
-        Connection conn=DriverManager.getConnection("jdbc:sqlite:/D:\\Year2\\ניתוצ\\עבודה 2\\database.db");
+        Connection conn=DriverManager.getConnection(connection);
         String query="DELETE FROM "+tableName+" WHERE ?=? AND ?=?";
         try {
             PreparedStatement st=conn.prepareStatement(query);
@@ -98,13 +99,12 @@ public class DalDemandController extends DalController {
     public LinkedList<DalDemand> load () throws SQLException// Select From DB
     {
         LinkedList<DalDemand> demands = new LinkedList<>();
-        Connection conn = DriverManager.getConnection("jdbc:sqlite:/D:\\Year2\\ניתוצ\\עבודה 2\\database.db");
+        Connection conn = DriverManager.getConnection(connection);
         String query = "SELECT * FROM "+tableName;
         try {
             PreparedStatement st = conn.prepareStatement(query);
-            ResultSet resultSet = st.executeQuery(query);
+            ResultSet resultSet = st.executeQuery();
             while (resultSet.next()) {
-                boolean completed = resultSet.getString(4).equals("true");
                 demands.add(new DalDemand(resultSet.getInt(1), resultSet.getInt(2),
                         resultSet.getInt(3)));
             }
@@ -115,15 +115,16 @@ public class DalDemandController extends DalController {
     }
 
     public boolean createTable() throws SQLException {
-        Connection conn = DriverManager.getConnection("jdbc:sqlite:/D:\\Year2\\ניתוצ\\עבודה 2\\database.db");
+        Connection conn = DriverManager.getConnection(connection);
         String query = "CREATE TABLE IF NOT EXISTS Demands("
                 +"itemID INTEGER,"
                 +"amount INTEGER,"
                 +"siteID INTEGER,"
+                +"FOREIGN KEY (itemID) REFERENCES Items (ID) ON DELETE NO ACTION ON UPDATE CASCADE,"
+                +"FOREIGN KEY (siteID) REFERENCES Sites (siteID) ON DELETE NO ACTION ON UPDATE CASCADE,"
                 +"PRIMARY KEY (itemID));";
         try {
             PreparedStatement st=conn.prepareStatement(query);
-            System.out.println("Creating\n");
             st.executeUpdate();
         }
         catch (SQLException e){

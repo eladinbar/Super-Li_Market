@@ -23,19 +23,19 @@ public class DalTruckingReportController extends DalController {
 
     }
 
-    public static DalTruckingReportController getInstance() {
-        if (controller==null)
-        controller= new DalTruckingReportController();
+    public static DalTruckingReportController getInstance() throws SQLException {
+        if (controller==null) {
+            controller = new DalTruckingReportController();
+            controller.createTable();
+        }
         return controller;
     }
 
     public boolean insert(DalTruckingReport truckingReport) throws SQLException {
-        //TODO - change URL
-        System.out.println("starting insert");
         int completed=0;
         if (truckingReport.isCompleted())
             completed=1;
-        Connection conn= DriverManager.getConnection("jdbc:sqlite:/D:\\Year2\\ניתוצ\\עבודה 2\\database.db");
+        Connection conn= DriverManager.getConnection(connection);
         //String query= "INSERT INTO "+tableName+"("+columnNames[0]+columnNames[1]+columnNames[2]+columnNames[3]
         //        +columnNames[4]+columnNames[5]+columnNames[6]+columnNames[7]+") VALUES (? ? ? ? ? ? ? ?)";
         String query="INSERT INTO "+tableName+" VALUES "+"(?,?,?,?,?,?,?,?)";
@@ -51,8 +51,6 @@ public class DalTruckingReportController extends DalController {
             st.setInt(6,truckingReport.getOrigin());
             st.setInt(7,completed);
             st.setInt(8,truckingReport.getReplaceTRID());
-
-            System.out.println("executing insert");
             st.executeUpdate();
 
         }
@@ -72,7 +70,7 @@ public class DalTruckingReportController extends DalController {
         int completed=0;
         if (truckingReport.isCompleted())
             completed=1;
-        Connection conn=DriverManager.getConnection("jdbc:sqlite:/D:\\Year2\\ניתוצ\\עבודה 2\\database.db");
+        Connection conn=DriverManager.getConnection(connection);
         String query="UPDATE "+tableName +" SET "+columnNames[1]+"=?,"+
                 columnNames[2]+"=?,"+columnNames[3]+"=?,"+columnNames[4]+"=?,"+columnNames[5]+"=?,"+columnNames[6]+"=?,"+
                 columnNames[7]+"=?  WHERE ("+columnNames[0]+"=?)";
@@ -102,7 +100,7 @@ public class DalTruckingReportController extends DalController {
     }
 
     public boolean delete(DalTruckingReport truckingReport) throws SQLException {
-        Connection conn=DriverManager.getConnection("jdbc:sqlite:/D:\\Year2\\ניתוצ\\עבודה 2\\database.db");
+        Connection conn=DriverManager.getConnection(connection);
         String query="DELETE FROM "+tableName+ " WHERE"+columnNames[0]+"=?";
         try {
             PreparedStatement st=conn.prepareStatement(query);
@@ -121,7 +119,7 @@ public class DalTruckingReportController extends DalController {
     public LinkedList<DalTruckingReport> load () throws SQLException// Select From DB
     {
         LinkedList<DalTruckingReport> reports=new LinkedList<>();
-        Connection conn=DriverManager.getConnection("jdbc:sqlite:/D:\\Year2\\ניתוצ\\עבודה 2\\database.db");
+        Connection conn=DriverManager.getConnection(connection);
         String query="SELECT * FROM "+tableName;
         try {
             PreparedStatement st=conn.prepareStatement(query);
@@ -146,7 +144,7 @@ public class DalTruckingReportController extends DalController {
         return reports;
     }
     public boolean createTable() throws SQLException {
-        Connection conn = DriverManager.getConnection("jdbc:sqlite:/D:\\Year2\\ניתוצ\\עבודה 2\\database.db");
+        Connection conn = DriverManager.getConnection(connection);
         String query = "CREATE TABLE IF NOT EXISTS TruckingReports("
                 +"ID INTEGER,"
                 +"leavingHour TEXT,"
@@ -156,10 +154,12 @@ public class DalTruckingReportController extends DalController {
                 +"origin INTEGER,"
                 +"completed INTEGER,"
                 +"replaceTRID INTEGER,"
+                +"FOREIGN KEY (driverID) REFERENCES Drivers(ID) ON DELETE NO ACTION ON UPDATE CASCADE,"
+                +"FOREIGN KEY (truckNumber) REFERENCES Trucks(licenseNumber) ON DELETE NO ACTION ON UPDATE CASCADE,"
+                +"FOREIGN KEY (origin) REFERENCES Sites (siteID) ON DELETE NO ACTION ON UPDATE CASCADE,"
                 +"PRIMARY KEY (ID));";
         try {
             PreparedStatement st=conn.prepareStatement(query);
-            System.out.println("Creating\n");
             st.executeUpdate();
         }
         catch (SQLException e){
