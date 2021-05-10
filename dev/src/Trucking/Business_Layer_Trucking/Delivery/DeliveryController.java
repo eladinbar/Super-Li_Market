@@ -267,17 +267,10 @@ public class DeliveryController {
         for (DeliveryForm df : currDF) {
             saveDeliveryFormDB(df);
         }
+        updateDemandsOnDB(demands);
 
     }
 
-    private void saveDeliveryFormDB(DeliveryForm df) throws SQLException {
-        DalDeliveryFormController.getInstance().insert(new DalDeliveryForm(df.getID(), df.getOrigin(), df.getDestination(), df.isCompleted(), df.getLeavingWeight(), df.getTrID()));
-    }
-
-    private void saveTruckReportDB(TruckingReport currTR) throws SQLException {
-        DalTruckingReportController.getInstance().insert(new DalTruckingReport(currTR.getID(), currTR.getLeavingHour(),
-                currTR.getDate(), currTR.getTruckNumber(), currTR.getDriverID(), currTR.getOrigin(), currTR.isCompleted(), currTR.getTRReplace()));
-    }
 
     public TruckingReport getTruckReport(int trNumber) throws NoSuchElementException {
         if (currTR.getID() == trNumber)
@@ -338,7 +331,6 @@ public class DeliveryController {
                     }
                     toRemove.add(df);
                 }
-
 
             }
             int counter = 0;
@@ -564,6 +556,8 @@ public class DeliveryController {
                         "please notice, if you proceed");
 
         }
+        DalDemandController.getInstance().insert(new DalDemand(itemId, amount, site));
+
 
     }
 
@@ -630,15 +624,6 @@ public class DeliveryController {
         }
     }
 
-    private void updateDeliveryFormDB(DeliveryForm df) throws SQLException {
-        DalDeliveryFormController.getInstance().update(new DalDeliveryForm
-                (df.getID(), df.getOrigin(), df.getDestination(), df.isCompleted(), df.getLeavingWeight(), df.getTrID()));
-    }
-
-    private void updateTruckingReportDB(TruckingReport tr) throws SQLException {
-        DalTruckingReportController.getInstance().update(new DalTruckingReport
-                (tr.getID(), tr.getLeavingHour(), tr.getDate(), tr.getTruckNumber(), tr.getDriverID(), tr.getOrigin(), tr.isCompleted(), tr.getTRReplace()));
-    }
 
     public boolean checkIfAllCompleted(int trID) {
         LinkedList<DeliveryForm> dfs = activeDeliveryForms.get(trID);
@@ -892,6 +877,7 @@ public class DeliveryController {
         for (DeliveryForm deliveryForm : currDF) {
             saveDeliveryFormDB(deliveryForm);
         }
+        updateDemandsOnDB(demands);
     }
 
     public int moveDemandsFromCurrentToReport(int replaceId) throws SQLException {
@@ -1137,4 +1123,39 @@ public class DeliveryController {
             oldDeliveryForms.put(entry.getKey(), new LinkedList<>());
         }
     }
+
+
+    private void updateDeliveryFormDB(DeliveryForm df) throws SQLException {
+        DalDeliveryFormController.getInstance().update(new DalDeliveryForm
+                (df.getID(), df.getOrigin(), df.getDestination(), df.isCompleted(), df.getLeavingWeight(), df.getTrID()));
+    }
+
+    private void updateTruckingReportDB(TruckingReport tr) throws SQLException {
+        DalTruckingReportController.getInstance().update(new DalTruckingReport
+                (tr.getID(), tr.getLeavingHour(), tr.getDate(), tr.getTruckNumber(), tr.getDriverID(), tr.getOrigin(), tr.isCompleted(), tr.getTRReplace()));
+    }
+
+    private void saveDeliveryFormDB(DeliveryForm df) throws SQLException {
+        DalDeliveryFormController.getInstance().insert(new DalDeliveryForm(df.getID(), df.getOrigin(), df.getDestination(), df.isCompleted(), df.getLeavingWeight(), df.getTrID()));
+    }
+
+    private void saveTruckReportDB(TruckingReport currTR) throws SQLException {
+        DalTruckingReportController.getInstance().insert(new DalTruckingReport(currTR.getID(), currTR.getLeavingHour(),
+                currTR.getDate(), currTR.getTruckNumber(), currTR.getDriverID(), currTR.getOrigin(), currTR.isCompleted(), currTR.getTRReplace()));
+    }
+
+    private void saveDemandDB(Demand demand) throws SQLException {
+        DalDemandController.getInstance().insert(new DalDemand(demand.getItemID(), demand.getAmount(), demand.getSite()));
+    }
+
+    private void updateDemandDB(Demand demand) throws SQLException {
+        DalDemandController.getInstance().update(new DalDemand(demand.getItemID(), demand.getAmount(), demand.getSite()));
+    }
+
+    private void updateDemandsOnDB(LinkedList<Demand> ds) throws SQLException {
+        for (Demand d : ds) {
+            updateDemandDB(d);
+        }
+    }
+
 }

@@ -51,7 +51,7 @@ public class DalItemsOnDFController extends DalController{
 
     public boolean update(DalItemsOnDF dalItemsOnDF) throws SQLException {
         Connection conn=DriverManager.getConnection(connection);
-        String query="UPDATE "+tableName+" SET "+columnNames[2]+"=? WHERE ("+columnNames[0]+"= ? AND"+columnNames[1]+"=?) ";
+        String query="UPDATE "+tableName+" SET "+columnNames[2]+"=? WHERE ("+columnNames[0]+"= ? AND "+columnNames[1]+"=?) ";
         try{
             PreparedStatement st=conn.prepareStatement(query);
             st.setInt(1,dalItemsOnDF.getAmount());

@@ -57,7 +57,7 @@ public class DalDemandController extends DalController{
 
     public boolean update(DalDemand dalDemand) throws SQLException {
         Connection conn=DriverManager.getConnection(connection);
-        String query="UPDATE "+tableName+" SET "+columnNames[1]+"=? WHERE "+columnNames[0]+"=? AND"+columnNames[2]+"=?";
+        String query="UPDATE "+tableName+" SET "+columnNames[1]+"=? WHERE "+columnNames[0]+"=? AND "+columnNames[2]+"=?";
         try{
             PreparedStatement st=conn.prepareStatement(query);
 

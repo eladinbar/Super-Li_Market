@@ -28,8 +28,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="05ca914f-9056-4de3-9869-7fdfaa880f2d" name="Default Changelist" comment="small bug fixed in data base connections">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dev/src/DAL/DalDemandController.java" beforeDir="false" afterPath="$PROJECT_DIR$/dev/src/DAL/DalDemandController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dev/src/DAL/DalItemsOnDFController.java" beforeDir="false" afterPath="$PROJECT_DIR$/dev/src/DAL/DalItemsOnDFController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/dev/src/Trucking/Business_Layer_Trucking/Delivery/DeliveryController.java" beforeDir="false" afterPath="$PROJECT_DIR$/dev/src/Trucking/Business_Layer_Trucking/Delivery/DeliveryController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dev/src/Trucking/Business_Layer_Trucking/Facade/DeliveryService.java" beforeDir="false" afterPath="$PROJECT_DIR$/dev/src/Trucking/Business_Layer_Trucking/Facade/DeliveryService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dev/src/Trucking/Business_Layer_Trucking/Delivery/Demand.java" beforeDir="false" afterPath="$PROJECT_DIR$/dev/src/Trucking/Business_Layer_Trucking/Delivery/Demand.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -92,6 +95,19 @@
     <configuration name="Main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="Main" />
       <module name="ADSS_Group_G" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration default="true" type="ArquillianTestNG" factoryName="" nameIsGenerated="true">
+      <option name="arquillianRunConfiguration">
+        <value>
+          <option name="containerStateName" value="" />
+        </value>
+      </option>
+      <option name="TEST_OBJECT" value="CLASS" />
+      <properties />
+      <listeners />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -575,43 +591,43 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/dev/src/Main.java</url>
-          <line>12</line>
+          <line>24</line>
           <option name="timeStamp" value="15" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/dev/src/Trucking/Presentation_Layer_Trucking/Menu_Printer.java</url>
-          <line>281</line>
+          <line>286</line>
           <option name="timeStamp" value="17" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/dev/src/Trucking/Presentation_Layer_Trucking/Menu_Printer.java</url>
-          <line>254</line>
+          <line>259</line>
           <option name="timeStamp" value="18" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/dev/src/Trucking/Presentation_Layer_Trucking/Menu_Printer.java</url>
-          <line>177</line>
+          <line>182</line>
           <option name="timeStamp" value="20" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/dev/src/Trucking/Business_Layer_Trucking/Facade/FacadeObject/ResourcesService.java</url>
-          <line>53</line>
+          <line>54</line>
           <option name="timeStamp" value="26" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/dev/src/Trucking/Presentation_Layer_Trucking/Menu_Printer.java</url>
-          <line>215</line>
-          <option name="timeStamp" value="31" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/dev/src/Trucking/Presentation_Layer_Trucking/Menu_Printer.java</url>
-          <line>905</line>
+          <line>912</line>
           <option name="timeStamp" value="56" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/dev/src/Trucking/Presentation_Layer_Trucking/Menu_Printer.java</url>
-          <line>918</line>
+          <line>925</line>
           <option name="timeStamp" value="57" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/dev/src/Trucking/Business_Layer_Trucking/Delivery/DeliveryController.java</url>
+          <line>262</line>
+          <option name="timeStamp" value="63" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

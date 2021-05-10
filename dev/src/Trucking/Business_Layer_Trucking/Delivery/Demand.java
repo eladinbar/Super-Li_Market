@@ -16,7 +16,6 @@ public class Demand {
         this.itemID=itemID;
         this.site=site_id;
         this.amount=amount;
-        DalDemandController.getInstance().insert(new DalDemand(itemID,amount,site_id));
 
     }
     public Demand(DalDemand demand){
