@@ -37,7 +37,6 @@ public class DalEmployeeController extends DalController {
                 +"PRIMARY KEY (ID));";
         try {
             PreparedStatement st=conn.prepareStatement(query);
-            System.out.println("Creating\n");
             st.executeUpdate();
         }
         catch (SQLException e){
@@ -54,8 +53,6 @@ public class DalEmployeeController extends DalController {
         return instance;
     }
     public boolean insert(DalEmployee dalEmployee) throws SQLException {
-        //TODO - change URL
-        System.out.println("starting insert");
         Connection conn= DriverManager.getConnection(connection);
         String query= "INSERT INTO "+tableName+" VALUES (?,?,?,?,?,?,?,?)";
         try{
@@ -71,7 +68,6 @@ public class DalEmployeeController extends DalController {
             if(dalEmployee.getEmployed()) {bool =1;}
             st.setInt(8,bool);
 
-            System.out.println("executing insert");
             st.executeUpdate();
 
         }

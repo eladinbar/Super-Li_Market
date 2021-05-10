@@ -36,7 +36,6 @@ public class DalBankBranchController extends DalController {
                 +"PRIMARY KEY (ACCOUNTNUMBER));";
         try {
             PreparedStatement st=conn.prepareStatement(query);
-            System.out.println("Creating\n");
             st.executeUpdate();
         }
         catch (SQLException e){
@@ -56,8 +55,6 @@ public class DalBankBranchController extends DalController {
     }
 
     public boolean insert(DalBankBranch dalBankBranch) throws SQLException {
-        //TODO - change URL
-        System.out.println("starting insert");
         Connection conn= DriverManager.getConnection(connection);
         String query= "INSERT INTO "+tableName+" VALUES (?,?,?,?)";
         try{
@@ -66,8 +63,6 @@ public class DalBankBranchController extends DalController {
             st.setString(2,dalBankBranch.getBank());
             st.setInt(3,dalBankBranch.getBankBranch());
             st.setInt(4,dalBankBranch.getAccountNumber());
-
-            System.out.println("executing insert");
             st.executeUpdate();
 
         }

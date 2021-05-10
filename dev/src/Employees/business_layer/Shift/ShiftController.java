@@ -1,6 +1,5 @@
 package Employees.business_layer.Shift;
 
-import DAL.DalController;
 import DAL.DalControllers_Employee.DalShiftController;
 import DAL.DalControllers_Employee.DalShiftTypeController;
 import DAL.DalObjects_Employees.DalShift;
@@ -9,7 +8,6 @@ import Employees.EmployeeException;
 import Employees.business_layer.Employee.EmployeeController;
 import Employees.business_layer.Employee.Role;
 
-import javax.swing.text.html.parser.Entity;
 import java.sql.SQLException;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
@@ -83,7 +81,12 @@ public class ShiftController {
                 temp = weeklyShiftSchedule.getShifts ( )[i][j];
                 for ( Map.Entry<Role, List<String>> entry : temp.getManning ( ).entrySet ( ) )
                     for ( String id : entry.getValue ( ) )
-                        DalShiftController.getInstance ( ).insert ( new DalShift ( id, temp.getType ( ), temp.getDate ( ), temp.getmORe ( ), entry.getKey ( ).name () ) );
+                        try {
+                            DalShiftController.getInstance ( ).insert ( new DalShift ( id, temp.getType ( ), temp.getDate ( ), temp.getmORe ( ), entry.getKey ( ).name () ) );
+                        } catch (SQLException e)
+                        {
+                            DalShiftController.getInstance ().update ( new DalShift ( id, temp.getType ( ), temp.getDate ( ), temp.getmORe ( ), entry.getKey ( ).name () ) );
+                        }
             }
         }
         temp = weeklyShiftSchedule.getShifts ( )[5][0];
@@ -136,7 +139,7 @@ public class ShiftController {
         return new WeeklyShiftSchedule ( startingDate );
     }
 
-    public void changeShift(LocalDate date, int shift, HashMap<String, List<String>> manning) throws EmployeeException {
+    public void changeShift(LocalDate date, int shift, HashMap<String, List<String>> manning) throws EmployeeException, SQLException {
         if(date.isBefore ( LocalDate.now () ))
             throw new EmployeeException ( "the date has already passed." );
         if((date.getDayOfWeek ().getValue ()== 5 && shift == 1 )| (date.getDayOfWeek ().getValue ()== 6 && shift == 0 ))
@@ -146,7 +149,7 @@ public class ShiftController {
         getWeeklyShiftSchedule ( date ).changeShift(date, shift, manning);
     }
 
-    public void addEmployeeToShift(String role, String ID, LocalDate date, int shift) throws EmployeeException {
+    public void addEmployeeToShift(String role, String ID, LocalDate date, int shift) throws EmployeeException, SQLException {
         if(date.isBefore ( LocalDate.now () ))
             throw new EmployeeException ( "the date has already passed." );
         if((date.getDayOfWeek ().getValue ()== 5 && shift == 1 )| (date.getDayOfWeek ().getValue ()== 6 && shift == 0 ))
@@ -164,7 +167,7 @@ public class ShiftController {
         getWeeklyShiftSchedule ( date ).addEmployeeToShift ( role, ID, date, shift );
     }
 
-    public void deleteEmployeeFromShift(String role, String ID, LocalDate date, int shift) throws EmployeeException {
+    public void deleteEmployeeFromShift(String role, String ID, LocalDate date, int shift) throws EmployeeException, SQLException {
         if(date.isBefore ( LocalDate.now () ))
             throw new EmployeeException ( "the date has already passed." );
         if((date.getDayOfWeek ().getValue ()== 5 && shift == 1 )| (date.getDayOfWeek ().getValue ()== 6 && shift == 0 ))
@@ -172,7 +175,7 @@ public class ShiftController {
         getWeeklyShiftSchedule ( date ).deleteEmployeeFromShift (role, ID, date, shift );
     }
 
-    public void changeShiftType(LocalDate date, int shift, String shiftType) throws EmployeeException {
+    public void changeShiftType(LocalDate date, int shift, String shiftType) throws EmployeeException, SQLException {
         if(date.isBefore ( LocalDate.now () ))
             throw new EmployeeException ( "the date has already passed." );
         if((date.getDayOfWeek ().getValue ()== 5 && shift == 1 )| (date.getDayOfWeek ().getValue ()== 6 && shift == 0 ))
@@ -180,10 +183,11 @@ public class ShiftController {
         getWeeklyShiftSchedule ( date ).changeShiftType ( date, shift, shiftType );
     }
 
-    public void createShiftType(String shiftype, HashMap<String, Integer> manning) throws EmployeeException, SQLException {
-        ShiftTypes.getInstance ().addShiftType ( shiftype, manning );
+    public void createShiftType(String shiftType, HashMap<String, Integer> manning) throws EmployeeException, SQLException {
+        if(!ShiftTypes.getInstance ().contains(shiftType))
+            ShiftTypes.getInstance ().addShiftType ( shiftType, manning );
         for( Map.Entry <String, Integer> entry : manning.entrySet ())
-            DalShiftTypeController.getInstance ().insert ( new DalShiftType ( entry.getValue (), shiftype, entry.getKey () ) );
+            DalShiftTypeController.getInstance ().insert ( new DalShiftType ( entry.getValue (), shiftType, entry.getKey () ) );
     }
 
     public void updateRoleManning(String shiftType, String role, int num) throws EmployeeException {
@@ -255,7 +259,7 @@ public class ShiftController {
          return daysAndDrivers;
     }
 
-    public void addDriverToShift(String id, LocalDate date, int shift) throws EmployeeException {
+    public void addDriverToShift(String id, LocalDate date, int shift) throws EmployeeException, SQLException {
         if (shift == 1) {
             if (getShift ( date, 0 ).isWorking ( "driver", id ))
                 throw new EmployeeException ( "the driver is already manning the morning shift." );
@@ -300,11 +304,9 @@ public class ShiftController {
                 manning = new HashMap<> (  );
                 type = cur.getType ();
             }
-            if(manning.containsKey ( cur.getRole () ))
-                manning.put ( cur.getRole () , manning.get ( cur.getRole () ) + 1);
-            else
-                manning.put ( cur.getRole (), 1);
+            manning.put ( cur.getRole (),cur.getAmount ());
         }
+        ShiftTypes.getInstance ().addShiftType ( type, manning );
     }
 
     private void LoadShifts() throws SQLException {
@@ -317,7 +319,7 @@ public class ShiftController {
             cur = null;
         }
         while (cur != null){
-            createWeek ( shifts, j );
+            j = createWeek ( shifts, j );
             try {
                 cur = shifts.get ( j );
             }catch (IndexOutOfBoundsException e){
@@ -326,30 +328,37 @@ public class ShiftController {
         }
     }
 
-    private void createWeek(LinkedList<DalShift> shifts, Integer j) {
+    private Integer createWeek(LinkedList<DalShift> shifts, Integer j) {
         LinkedList<DalShift> shift;
         Shift[][] week = new Shift[7][2];
         Shift newShift;
-        DalShift temp = shifts.get ( j++ );
+        DalShift temp = shifts.get ( j );
         if (temp == null)
-            return;
+            return j;
         for ( int i = 0 ; i < 5 ; i++ ) {
             for ( int k = 0 ; k < 2 ; k++ ) {
                 shift = getListOfShift ( shifts, temp, j );
+                j = j + shift.size ();
                 newShift = createShift ( shift );
                 week[i][k] = newShift;
-                temp = shifts.get ( j );
+                try {
+                    temp = shifts.get ( j );
+                }catch (IndexOutOfBoundsException e){
+                    return j;
+                }
             }
         }
         shift = getListOfShift ( shifts, temp, j );
+        j = j + shift.size ();
         newShift = createShift ( shift );
         week[5][0] = newShift;
-        temp = shifts.get ( j++ );
+        temp = shifts.get ( j );
         shift = getListOfShift ( shifts, temp, j );
         newShift = createShift ( shift );
         week[6][1] = newShift;
         WeeklyShiftSchedule weeklyShiftSchedule = new WeeklyShiftSchedule ( week[0][0].getDate ( ), week );
         this.shifts.put ( weeklyShiftSchedule.getDate ( ), weeklyShiftSchedule );
+        return j;
     }
 
 
@@ -358,9 +367,13 @@ public class ShiftController {
         if(cur != null) {
             LocalDate tempDate = cur.getDate ( );
             int tempShift = cur.getShift ( );
-            while (cur.getDate ( ).equals ( tempDate ) && cur.getShift ( ) == tempShift) {
+            while (cur != null && cur.getDate ( ).equals ( tempDate ) && cur.getShift ( ) == tempShift) {
                 output.add ( cur );
-                cur = shifts.get ( j++ );
+                try {
+                    cur = shifts.get ( ++j );
+                }catch (IndexOutOfBoundsException e){
+                    cur = null;
+                }
             }
         }
         return output;

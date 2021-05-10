@@ -35,7 +35,6 @@ public class DalShiftTypeController extends DalController {
                 +"PRIMARY KEY (TYPE, ROLE));";
         try {
             PreparedStatement st=conn.prepareStatement(query);
-            System.out.println("Creating\n");
             st.executeUpdate();
         }
         catch (SQLException e){

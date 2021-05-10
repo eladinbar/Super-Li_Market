@@ -1,5 +1,6 @@
 package Employees.presentation_layer;
 
+import Employees.business_layer.Employee.EmployeeController;
 import Employees.business_layer.facade.facadeObject.*;
 
 import java.time.LocalDate;
@@ -7,7 +8,15 @@ import java.util.LinkedList;
 
 
 public class StringConverter {
+    private static StringConverter instance = null;
 
+    private StringConverter(){}
+
+    public static StringConverter getInstance(){
+        if(instance == null)
+            instance = new StringConverter ();
+        return instance;
+    }
     private String convertBankAccountInfo( FacadeBankAccountInfo facadeBankAccountInfo){
          return "Account Number: " + facadeBankAccountInfo.getAccountNumber()+"\n"
                 + "Bank branch: " + facadeBankAccountInfo.getBankBranch ()+"\n"
@@ -41,7 +50,7 @@ public class StringConverter {
         if(facadeShift.isMissing()){isFull="No";}
         else{isFull="Yes";}
         String manning="";
-        if(!facadeShift.getManning ().containsKey ( "shiftManager" ))
+        if(!facadeShift.getManning ().containsKey ( "shiftManager" ) || facadeShift.getManning ().get ( "shiftManager").isEmpty ())
             isFull += "\nNOTE: THERE IS NO SHIFT MANAGER IN THIS SHIFT!";
         for (String role: facadeShift.getManning().keySet()) {
             manning+= role+":\n ";

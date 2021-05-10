@@ -52,18 +52,14 @@ public class DalConstraintController extends DalController {
         return instance;
     }
     public boolean insert(DalConstraint dalConstraint) throws SQLException {
-        //TODO - change URL
-        System.out.println("starting insert");
         Connection conn= DriverManager.getConnection(connection);
         String query= "INSERT INTO "+tableName+" VALUES (?,?,?,?)";
         try{
             PreparedStatement st=conn.prepareStatement(query);
             st.setString(1,dalConstraint.getEmployeeId());
             st.setString(2,dalConstraint.getReason());
-            st.setDate(3, new Date(dalConstraint.getDate().getYear(), dalConstraint.getDate().getMonth().getValue(),dalConstraint.getDate().getDayOfMonth()));
+            st.setString (3, dalConstraint.getDate ().toString ());
             st.setInt(4,dalConstraint.getShift());
-
-            System.out.println("executing insert");
             st.executeUpdate();
 
         }
@@ -86,10 +82,10 @@ public class DalConstraintController extends DalController {
             PreparedStatement st=conn.prepareStatement(query);
             st.setString(1,dalConstraint.getEmployeeId());
             st.setString(2,dalConstraint.getReason());
-            st.setDate(3, new Date(dalConstraint.getDate().getYear(), dalConstraint.getDate().getMonth().getValue(),dalConstraint.getDate().getDayOfMonth()));
+            st.setString (3, dalConstraint.getDate ().toString ());
             st.setInt(4,dalConstraint.getShift());
             st.setString(5,dalConstraint.getEmployeeId());
-            st.setDate(6, new Date(dalConstraint.getDate().getYear(), dalConstraint.getDate().getMonth().getValue(),dalConstraint.getDate().getDayOfMonth()));
+            st.setString (6, dalConstraint.getDate ().toString ());
 
 
             st.executeUpdate();
@@ -111,7 +107,7 @@ public class DalConstraintController extends DalController {
         try {
             PreparedStatement st=conn.prepareStatement(query);
             st.setString(1,dalConstraint.getEmployeeId());
-            st.setDate(2, new Date(dalConstraint.getDate().getYear(), dalConstraint.getDate().getMonth().getValue(),dalConstraint.getDate().getDayOfMonth()));
+            st.setString (2,dalConstraint.getDate ().toString ());
             st.executeUpdate();
         }
         catch (SQLException e)
@@ -129,8 +125,8 @@ public class DalConstraintController extends DalController {
             PreparedStatement st = conn.prepareStatement(query);
             ResultSet resultSet = st.executeQuery();
             while (resultSet.next()) {
-                Date date = resultSet.getDate(3);
-                LocalDate lDate = date.toLocalDate();
+                String date = resultSet.getString (3);
+                LocalDate lDate = LocalDate.parse ( date );
                 constraints.add(new DalConstraint(resultSet.getString(1),resultSet.getString(2),
                         lDate,resultSet.getInt(4))
                 );

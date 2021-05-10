@@ -4,6 +4,7 @@ import Employees.EmployeeException;
 import Employees.business_layer.Employee.EmployeeController;
 import Employees.business_layer.Employee.Role;
 
+import java.sql.SQLException;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -37,7 +38,7 @@ public class WeeklyShiftSchedule {
         shifts[5][1] = null;
     }
 
-    public void addEmployeeToShift(String role, String ID, LocalDate date, int shift) throws EmployeeException {
+    public void addEmployeeToShift(String role, String ID, LocalDate date, int shift) throws EmployeeException, SQLException {
         if(shift > 2 || shift < 1 || !checkDatesValidity ( this.date, date ))
             throw new EmployeeException ( "no such shift to add the employee." );
         if(date.isBefore ( LocalDate.now () ))
@@ -48,7 +49,7 @@ public class WeeklyShiftSchedule {
         getShift ( date, shift ).addEmployee ( role, ID );
     }
 
-    public void deleteEmployeeFromShift(String role, String ID, LocalDate date, int shift) throws EmployeeException {
+    public void deleteEmployeeFromShift(String role, String ID, LocalDate date, int shift) throws EmployeeException, SQLException {
         if(shift > 2 || shift < 1 || !checkDatesValidity ( this.date, date ))
             throw new EmployeeException ( "no such shift to delete the employee from." );
         if(date.isBefore ( LocalDate.now () ))
@@ -56,7 +57,7 @@ public class WeeklyShiftSchedule {
         getShift ( date, shift ).deleteEmployee ( role, ID );
     }
 
-    public void changeShiftType(LocalDate date, int shift, String shiftType) throws EmployeeException {
+    public void changeShiftType(LocalDate date, int shift, String shiftType) throws EmployeeException, SQLException {
         if(date.isBefore ( LocalDate.now () ))
             throw new EmployeeException ( "Date is already passed." );
         getShift ( date, shift ).changeShiftType(shiftType);
@@ -76,13 +77,13 @@ public class WeeklyShiftSchedule {
         return shifts[date.getDayOfWeek ().getValue () % 7][shift];
     }
 
-    public void changeShift(LocalDate date, int shift, HashMap<String, List<String>> manning) throws EmployeeException {
+    public void changeShift(LocalDate date, int shift, HashMap<String, List<String>> manning) throws EmployeeException, SQLException {
         if(date.isBefore ( LocalDate.now () ))
             throw new EmployeeException ( "Date is already passed." );
         shifts[date.getDayOfWeek ().getValue ()][shift].changeManning( manning );
     }
 
-    public void recommendShifts(EmployeeController employeeController, int i) throws EmployeeException {
+    public void recommendShifts(EmployeeController employeeController, int i) throws EmployeeException, SQLException {
         if(i<5) {
             shifts[i][0].createManning ( employeeController, null );
             shifts[i][1].createManning ( employeeController, shifts[i][0] );

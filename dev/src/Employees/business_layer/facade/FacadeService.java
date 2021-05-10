@@ -34,19 +34,19 @@ public class FacadeService {
         return shiftService.createWeeklyShiftSchedule ( startingDate, shifts );
     }
 
-    public Response changeShift(LocalDate date, int shift, HashMap<String, List<String>> manning) {
+    public Response changeShift(LocalDate date, int shift, HashMap<String, List<String>> manning) throws SQLException {
         return shiftService.changeShift ( date, shift, manning);
     }
 
-    public Response addEmployeeToShift(String role, String ID, LocalDate date, int shift){
+    public Response addEmployeeToShift(String role, String ID, LocalDate date, int shift) throws SQLException {
         return shiftService.addEmployeeToShift ( role, ID, date, shift );
     }
 
-    public Response deleteEmployeeFromShift(String role, String ID, LocalDate date, int shift)  {
+    public Response deleteEmployeeFromShift(String role, String ID, LocalDate date, int shift) throws SQLException {
         return shiftService.deleteEmployeeFromShift ( role, ID, date, shift );
     }
 
-    public Response changeShiftType(LocalDate date, int shift, String shiftType) {
+    public Response changeShiftType(LocalDate date, int shift, String shiftType) throws SQLException {
         return shiftService.changeShiftType ( date, shift, shiftType);
     }
 

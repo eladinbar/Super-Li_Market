@@ -1,10 +1,13 @@
 package Employees.business_layer.Shift;
 
+import DAL.DalControllers_Employee.DalShiftController;
+import DAL.DalObjects_Employees.DalShift;
 import Employees.EmployeeException;
 import Employees.business_layer.Employee.EmployeeController;
 import Employees.business_layer.Employee.Role;
 import Employees.business_layer.facade.facadeObject.FacadeShift;
 
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.*;
 
@@ -74,16 +77,18 @@ public class Shift {
         return (needed > manning.get ( role ).size ());
     }
 
-    public void deleteEmployee(String role, String ID) throws EmployeeException {
+    public void deleteEmployee(String role, String ID) throws EmployeeException, SQLException {
         Role newRole = Role.valueOf ( role );
-        if(manning.containsKey ( newRole ) && manning.get ( newRole ).contains ( ID ))
+        if(manning.containsKey ( newRole ) && manning.get ( newRole ).contains ( ID )) {
             manning.get ( newRole ).remove ( ID );
-        else
+            if(manning.get ( newRole ).isEmpty ())
+                manning.remove ( newRole );
+            DalShiftController.getInstance ().delete ( new DalShift ( ID, type, date, mORe, role) );
+        } else
             throw new EmployeeException ( "no such employee to delete in the current shift." );
     }
 
-    public void addEmployee(String role, String ID) throws EmployeeException
-    {
+    public void addEmployee(String role, String ID) throws EmployeeException, SQLException {
         Role newRole = Role.valueOf ( role );
         if(!manning.containsKey ( newRole )){
             manning.put ( newRole, new ArrayList<> () );
@@ -91,21 +96,29 @@ public class Shift {
         if(manning.get ( newRole ).contains ( ID ))
             throw new EmployeeException ( "this employee already exists in shift." );
         manning.get ( newRole ).add ( ID );
+        DalShiftController.getInstance ().insert ( new DalShift ( ID, type, date, mORe, role) );
     }
 
-    public void changeShiftType(String shiftType) {
+    public void changeShiftType(String shiftType) throws SQLException {
         this.type = shiftType;
+        for( Map.Entry<Role, List<String>> entry : manning.entrySet () ){
+            for(String ID :entry.getValue ())
+                DalShiftController.getInstance ().update ( new DalShift ( ID, shiftType, date, mORe, entry.getKey ().name () ) );
+        }
     }
 
-    public void changeManning(HashMap<String,List<String>> manning) {
-
+    public void changeManning(HashMap<String,List<String>> manning) throws SQLException {
+        for( Map.Entry<Role, List<String>> entry : this.manning.entrySet () ){
+            for(String ID :entry.getValue ())
+                DalShiftController.getInstance ().delete ( new DalShift ( ID, type, date, mORe, entry.getKey ().name () ) );
+        }
         this.manning = new HashMap<> (  );
         for( Map.Entry<String, List<String >> entry : manning.entrySet () ){
             this.manning.put ( Role.valueOf ( entry.getKey () ), entry.getValue () );
         }
     }
 
-    public void createManning(EmployeeController employeeController, Shift shift) throws EmployeeException {
+    public void createManning(EmployeeController employeeController, Shift shift) throws EmployeeException, SQLException {
         HashMap<Role, Integer> manning = ShiftTypes.getInstance ().getShiftTypeManning ( type );
         List<String> free;
         List<String> work = new ArrayList<> (  );
@@ -128,10 +141,14 @@ public class Shift {
             this.manning.put ( role, new ArrayList<> ( work ) );
             work.clear ();
         }
-        if(!manning.containsKey ( Role.storeKeeper ))
+        if(!this.manning.containsKey ( Role.storeKeeper ) || this.manning.get ( Role.storeKeeper ).isEmpty ())
         {
-            manning.remove ( Role.driverC1 );
-            manning.remove ( Role.driverC );
+            this.manning.remove ( Role.driverC1 );
+            this.manning.remove ( Role.driverC );
+        }
+        for( Map.Entry<Role, List<String>> entry : this.manning.entrySet () ){
+            for(String ID :entry.getValue ())
+                DalShiftController.getInstance ().insert ( new DalShift ( ID, type, date, mORe, entry.getKey ().name () ) );
         }
     }
 

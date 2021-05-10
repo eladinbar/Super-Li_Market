@@ -63,7 +63,7 @@ public class DalShiftController extends DalController {
             PreparedStatement st=conn.prepareStatement(query);
             st.setString(1,dalShift.getEmployeeId());
             st.setString(2,dalShift.getType());
-            st.setDate(3, new Date(dalShift.getDate().getYear(), dalShift.getDate().getMonth().getValue(), dalShift.getDate().getDayOfMonth()));
+            st.setString (3, dalShift.getDate ().toString ());
             st.setInt(4,dalShift.getShift());
             st.setString(5, dalShift.getRole());
             st.executeUpdate();
@@ -88,7 +88,7 @@ public class DalShiftController extends DalController {
             PreparedStatement st=conn.prepareStatement(query);
             st.setString(1,dalShift.getEmployeeId());
             st.setString(2,dalShift.getType());
-            st.setDate(3, new Date(dalShift.getDate().getYear(), dalShift.getDate().getMonth().getValue(), dalShift.getDate().getDayOfMonth()));
+            st.setString (3, dalShift.getDate ().toString ());
             st.setInt(4,dalShift.getShift());
             st.setString(5, dalShift.getRole());
             st.setString(6,dalShift.getEmployeeId());
@@ -114,7 +114,7 @@ public class DalShiftController extends DalController {
         try {
             PreparedStatement st=conn.prepareStatement(query);
             st.setString(1,dalShift.getEmployeeId());
-            st.setDate(2, new Date(dalShift.getDate().getYear(), dalShift.getDate().getMonth().getValue(), dalShift.getDate().getDayOfMonth()));
+            st.setString (2, dalShift.getDate ().toString ());
             st.setInt(3,dalShift.getShift());
 
             st.executeUpdate();
@@ -134,8 +134,8 @@ public class DalShiftController extends DalController {
             PreparedStatement st = conn.prepareStatement(query);
             ResultSet resultSet = st.executeQuery();
             while (resultSet.next()) {
-                Date date = resultSet.getDate(3);
-                LocalDate lDate = date.toLocalDate();
+                String date = resultSet.getString ( 3 );
+                LocalDate lDate = LocalDate.parse ( date );
                 shifts.add(new DalShift(resultSet.getString(1), resultSet.getString(2),
                         lDate, resultSet.getInt(4), resultSet.getString(5))
                 );
@@ -145,25 +145,6 @@ public class DalShiftController extends DalController {
             throw e;
         }
         return shifts;
-    }
-
-    public LinkedList<String> loadShiftManning (LocalDate date, String type )throws SQLException{
-        LinkedList<String> IDs = new LinkedList<>();
-        Connection conn = DriverManager.getConnection("jdbc:sqlite:Desktop\\database_nitoz.db");
-        String query = "SELECT EMPLOYEEID FROM "+tableName+"WHERE TYPE =? AND DATE=?";
-        try {
-            PreparedStatement st=conn.prepareStatement(query);
-            st.setString(1,type);
-            st.setDate(2, new Date(date.getYear(), date.getMonth().getValue(), date.getDayOfMonth()));
-            ResultSet resultSet = st.executeQuery(query);
-            while (resultSet.next()) {
-                IDs.add(resultSet.getString(1));
-            }
-        }
-        catch (SQLException e){
-            throw e;
-        }
-        return IDs;
     }
 
 }

@@ -24,28 +24,28 @@ public class PresentationController {
     MenuPrinter menuPrinter;
     StringConverter stringConverter;
 
-    public PresentationController(){
-        facadeService = new FacadeService ();
-        menuPrinter = new MenuPrinter ();
-        stringConverter = new StringConverter ();
+    public PresentationController() {
+        facadeService = new FacadeService ( );
+        menuPrinter = new MenuPrinter ( );
+        stringConverter =  StringConverter.getInstance ( );
     }
 
     public void start() throws SQLException {
-        int choice = menuPrinter.uploadProgram ();
-        if(choice == 2)
-            uploadClean ();
+        int choice = menuPrinter.uploadProgram ( );
+        if (choice == 2)
+            uploadClean ( );
         else
-            uploadData ();
+            uploadData ( );
     }
 
     private void uploadClean() throws SQLException {
-        ResponseT<Boolean> start = loadData();
-        if(start.errorOccured ()) {
+        ResponseT<Boolean> start = loadData ( );
+        if (start.errorOccured ( )) {
             menuPrinter.print ( start.getErrorMessage ( ) );
             return;
         }
-        if(start.value == false) {
-            char choice = menuPrinter.uploadClean ();
+        if (start.value == false) {
+            char choice = menuPrinter.uploadClean ( );
             FacadeEmployee manager;
             if (choice == 'y') {
                 manager = menuPrinter.createManagerAccountMenu ( );
@@ -61,15 +61,17 @@ public class PresentationController {
                 while (!login ( false )) ;
             } else
                 menuPrinter.print ( "Only a manager can start a clean program." );
-        } else if(ShiftTypes.getInstance ().getShiftTypes ().length < 2) {
-            char choice = menuPrinter.uploadClean ();
-            if (choice == 'y'){
-                while (!login ( true ));
-            } else
-                menuPrinter.print ( "Only a manager can start a program without shift types." );
+        } else {
+            if (ShiftTypes.getInstance ().numOfShiftTypes () < 2) {
+                char choice = menuPrinter.uploadClean ( );
+                if (choice == 'y') {
+                    while (!login ( true )) ;
+                } else
+                    menuPrinter.print ( "Only a manager can start a program without shift types." );
+            } else {
+                while (!login ( false )) ;
+            }
         }
-        else
-            while (!login ( false ));
     }
 
     private ResponseT<Boolean> loadData() throws SQLException {
@@ -194,7 +196,7 @@ public class PresentationController {
         }
     }
 
-    private void handleManagerScheduleChoice(LocalDate date, int shift, int choice) {
+    private void handleManagerScheduleChoice(LocalDate date, int shift, int choice) throws SQLException {
         if(shift != 1 & shift != 2)
             menuPrinter.printChoiceException ();
         switch (choice) {
@@ -400,7 +402,7 @@ public class PresentationController {
         return manning;
     }
 
-    private void changeShift(LocalDate date, int shift) {
+    private void changeShift(LocalDate date, int shift) throws SQLException {
         HashMap<String, List<String>> manning = createManning ();
         Response response = facadeService.changeShift ( date, shift, manning );
         if(response.errorOccured ())
@@ -411,7 +413,7 @@ public class PresentationController {
         menuPrinter.print ( "Shift changed successfully.\n" );
     }
 
-    private void addEmployeeToShift(LocalDate date, int shift) {
+    private void addEmployeeToShift(LocalDate date, int shift) throws SQLException {
         String role = menuPrinter.roleMenu ( );
         if(role == null)
             return;
@@ -425,7 +427,7 @@ public class PresentationController {
         menuPrinter.print ( "Employee added to shift successfully.\n" );
     }
 
-    private void deleteEmployeeFromShift(LocalDate date, int shift)  {
+    private void deleteEmployeeFromShift(LocalDate date, int shift) throws SQLException {
         String role = menuPrinter.roleMenu ( );
         if(role == null)
             return;
@@ -439,7 +441,7 @@ public class PresentationController {
         menuPrinter.print ( "Employee deleted from shift successfully.\n" );
     }
 
-    private void changeShiftType(LocalDate date, int shift) {
+    private void changeShiftType(LocalDate date, int shift) throws SQLException {
         menuPrinter.print ( "choose shift type you would like to change: " );
         String shiftType = menuPrinter.getShifTypes ();
         Response response = facadeService.changeShiftType ( date, shift, shiftType );
@@ -738,13 +740,13 @@ public class PresentationController {
         menuPrinter.print ( s );
     }
 
-    private void getWeeklyShiftScheduleManager() {
+    private void getWeeklyShiftScheduleManager() throws SQLException {
         boolean succeed = getWeeklyShiftSchedule ();
         if(succeed)
             editSchedule ();
     }
 
-    private void editSchedule(){
+    private void editSchedule() throws SQLException {
         menuPrinter.print ( "Would you like to edit one of the shifts? n\\y" );
         char c = menuPrinter.getChar ( );
         if (c == 'y') {
