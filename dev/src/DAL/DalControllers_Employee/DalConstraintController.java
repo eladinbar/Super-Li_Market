@@ -34,7 +34,6 @@ public class DalConstraintController extends DalController {
                 +"PRIMARY KEY (DATE, EMPLOYEEID));";
         try {
             PreparedStatement st=conn.prepareStatement(query);
-            System.out.println("Creating\n");
             st.executeUpdate();
         }
         catch (SQLException e){

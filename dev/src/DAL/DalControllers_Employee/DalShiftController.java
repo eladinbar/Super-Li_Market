@@ -38,7 +38,6 @@ public class DalShiftController extends DalController {
                 +"PRIMARY KEY (SHIFT, DATE, EMPLOYEEID));";
         try {
             PreparedStatement st=conn.prepareStatement(query);
-            System.out.println("Creating\n");
             st.executeUpdate();
         }
         catch (SQLException e){
