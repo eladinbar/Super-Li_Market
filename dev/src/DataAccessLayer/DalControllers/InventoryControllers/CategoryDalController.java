@@ -140,6 +140,7 @@ public class CategoryDalController extends DalController<Category> {
                 isDesired = category.getName() == null ? resultSet.getString(2).equals(category.getParentName()) :
                 resultSet.getString(1).equals(category.getName());
                 if (isDesired) {
+                    savedCategory = new Category();
                     if (category.getName() == null)
                         savedCategory.setName(resultSet.getString(1));
                     else
@@ -162,6 +163,7 @@ public class CategoryDalController extends DalController<Category> {
             ResultSet resultSet = stmt.executeQuery();
             while (resultSet.next())
             {
+                savedCategory = new Category();
                 savedCategory.setName(resultSet.getString(1));
                 savedCategory.setParentName(resultSet.getString(2));
                 categories.add(savedCategory);

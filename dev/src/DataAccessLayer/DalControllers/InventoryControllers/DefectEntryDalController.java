@@ -181,6 +181,7 @@ public class DefectEntryDalController extends DalController<DefectEntry> {
             ResultSet resultSet = stmt.executeQuery();
             while (resultSet.next())
             {
+                savedDefectEntry = new DefectEntry();
                 savedDefectEntry.setItemName(resultSet.getString(2));
                 savedDefectEntry.setLocation(resultSet.getString(3));
                 savedDefectEntry.setQuantity(resultSet.getInt(4));

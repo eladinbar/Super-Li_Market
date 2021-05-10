@@ -232,6 +232,7 @@ public class CategoryDiscountDalController extends DalController<CategoryDiscoun
                 isDesired = resultSet.getString(1).equals(categoryDiscount.getDiscountDate()) &&
                 resultSet.getString(2).equals(categoryDiscount.getSupplierID());
                 if (isDesired) {
+                    savedCategoryDiscount = new CategoryDiscount();
                     categoryDiscount.setCategoryName(resultSet.getString(3));
                     categoryDiscount.setDiscount(resultSet.getInt(4));
                     categoryDiscount.setItemCount(resultSet.getInt(5));

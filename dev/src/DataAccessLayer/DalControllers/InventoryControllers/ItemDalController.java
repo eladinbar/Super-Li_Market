@@ -198,6 +198,7 @@ public class ItemDalController extends DalController<Item> {
             {
                 isDesired = resultSet.getString(11).equals(item.getCategoryName());
                 if (isDesired) {
+                    savedItem = new Item();
                     savedItem.setName(resultSet.getString(2));
                     savedItem.setCostPrice(resultSet.getDouble(3));
                     savedItem.setSellingPrice(resultSet.getDouble(4));

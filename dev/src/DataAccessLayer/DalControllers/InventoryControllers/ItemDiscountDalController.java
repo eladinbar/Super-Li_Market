@@ -229,6 +229,7 @@ public class ItemDiscountDalController extends DalController<ItemDiscount> {
                 isDesired = resultSet.getString(1).equals(itemDiscount.getDiscountDate()) &&
                         resultSet.getString(2).equals(itemDiscount.getSupplierID());
                 if (isDesired) {
+                    savedItemDiscount = new ItemDiscount();
                     itemDiscount.setItemID(resultSet.getInt(3));
                     itemDiscount.setDiscount(resultSet.getInt(4));
                     itemDiscount.setItemCount(resultSet.getInt(5));
