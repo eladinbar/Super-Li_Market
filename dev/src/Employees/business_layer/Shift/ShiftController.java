@@ -44,7 +44,6 @@ public class ShiftController {
             output.recommendShifts ( employeeController, i );
         }
         shifts.put ( startingDate, output );
-        saveToDB ( output );
         return output;
     }
 

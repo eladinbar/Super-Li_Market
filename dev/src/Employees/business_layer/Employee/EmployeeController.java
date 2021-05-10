@@ -190,7 +190,7 @@ public class EmployeeController {
 
     public Employee addDriver(FacadeEmployee e, String name) throws EmployeeException, SQLException {
         Employee driver = addEmployee ( e );
-        ResourcesController.getInstance ().addDriver ( e.getID (), name, Driver.License.valueOf ( (e.getRole ().equals ( "driverC" )) ? "120000" : "200000" ) );
+        ResourcesController.getInstance ().addDriver ( e.getID (), name, Driver.License.valueOf ( (e.getRole ().equals ( "driverC" )) ? "C" : "C1" ) );
         return driver;
     }
 
@@ -260,10 +260,11 @@ public class EmployeeController {
             throw new EmployeeException("Employee not found");
         }
         BankAccountInfo toUpdate = employees.get(Id).getBank();
+        DalBankBranchController.getInstance ().delete ( new DalBankBranch ( Id, bank, bankBranch, accountNum ) );
         toUpdate.setAccountNumber(accountNum);
         toUpdate.setBankBranch(bankBranch);
         toUpdate.setBank(bank);
-        DalBankBranchController.getInstance ().update ( new DalBankBranch ( Id, bank, bankBranch, accountNum ) );
+        DalBankBranchController.getInstance ().insert ( new DalBankBranch ( Id, bank, bankBranch, accountNum ) );
     }
 
     public void updateTermsOfEmployee(String Id, int salary, int educationFund, int sickDays, int daysOff) throws EmployeeException, SQLException {
@@ -278,11 +279,13 @@ public class EmployeeController {
             throw new EmployeeException("Employee not found");
         }
         TermsOfEmployment toUpdate = employees.get(Id).getTerms();
+        DalEmployeeController.getInstance ().delete ( new DalEmployee ( loggedIn.getID (), loggedIn.getRole ().name (), loggedIn.getTransactionDate (),
+                daysOff, salary, sickDays,educationFund, loggedIn.isEmployed ()));
         toUpdate.setSalary(salary);
         toUpdate.setEducationFund(educationFund);
         toUpdate.setSickDays(sickDays);
         toUpdate.setDaysOff(daysOff);
-        DalEmployeeController.getInstance ().update ( new DalEmployee ( loggedIn.getID (), loggedIn.getRole ().name (), loggedIn.getTransactionDate (),
+        DalEmployeeController.getInstance ().insert ( new DalEmployee ( loggedIn.getID (), loggedIn.getRole ().name (), loggedIn.getTransactionDate (),
                 daysOff, salary, sickDays,educationFund, loggedIn.isEmployed ()));
 
     }

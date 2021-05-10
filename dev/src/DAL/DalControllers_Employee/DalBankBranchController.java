@@ -30,7 +30,7 @@ public class DalBankBranchController extends DalController {
         Connection conn = DriverManager.getConnection(connection);
         String query = "CREATE TABLE IF NOT EXISTS BANKS("
                 +"EMPLOYEEID TEXT,"
-                +"bank TEXT ,"
+                +"BANK TEXT ,"
                 +"BANKBRANCH INTEGER,"
                 +"ACCOUNTNUMBER INTEGER,"
                 +"PRIMARY KEY (ACCOUNTNUMBER));";
@@ -78,7 +78,7 @@ public class DalBankBranchController extends DalController {
 
     public boolean update(DalBankBranch dalBankBranch) throws SQLException {
         Connection conn=DriverManager.getConnection(connection);
-        String query="UPDATE "+tableName+" SET "+columnNames[0]+"=?, "+columnNames[1]+"=?, "+columnNames[2]+"=?," +columnNames[3]+"=?, WHERE ("+columnNames[2]+"=?)";
+        String query="UPDATE "+tableName+" SET "+columnNames[0]+"=?, "+columnNames[1]+"=?, "+columnNames[2]+"=?," +columnNames[3]+"=?, WHERE ("+columnNames[3]+"=?)";
         try{
             PreparedStatement st=conn.prepareStatement(query);
             st.setString(1,dalBankBranch.getEmployeeId());
@@ -101,7 +101,7 @@ public class DalBankBranchController extends DalController {
 
     public boolean delete(DalBankBranch dalBankBranch) throws SQLException {
         Connection conn=DriverManager.getConnection(connection);
-        String query="DELETE FROM "+tableName+" WHERE"+columnNames[2]+"=?";
+        String query="DELETE FROM "+tableName+" WHERE "+columnNames[2]+"=?";
         try {
             PreparedStatement st=conn.prepareStatement(query);
             st.setInt(1,dalBankBranch.getAccountNumber());

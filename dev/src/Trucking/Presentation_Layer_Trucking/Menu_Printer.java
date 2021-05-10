@@ -30,11 +30,6 @@ public class Menu_Printer {
 
 
     public void mainMenu() {
-        try {
-            pc.upload();
-        }catch (SQLException sqlException){
-            System.out.println(sqlException.getMessage());
-        }
         Scanner scanner = new Scanner(System.in);
         scanner.useDelimiter("[\\,\\n\\r]+");
         boolean keepGoing = true;

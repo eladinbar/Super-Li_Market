@@ -28,7 +28,7 @@ public class DalConstraintController extends DalController {
         String query = "CREATE TABLE IF NOT EXISTS CONSTRAINTS("
                 +"EMPLOYEEID TEXT,"
                 +"REASON TEXT,"
-                +"DATE DATE,"
+                +"DATE TEXT,"
                 +"SHIFT INTEGER,"
                 +"FOREIGN KEY (EMPLOYEEID) REFERENCES EMPLOYEES(ID),"
                 +"PRIMARY KEY (DATE, EMPLOYEEID));";

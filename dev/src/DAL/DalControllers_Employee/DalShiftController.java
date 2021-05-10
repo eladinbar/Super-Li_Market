@@ -31,7 +31,7 @@ public class DalShiftController extends DalController {
         String query = "CREATE TABLE IF NOT EXISTS SHIFTS("
                 +"EMPLOYEEID TEXT,"
                 +"TYPE TEXT,"
-                +"DATE DATE,"
+                +"DATE TEXT,"
                 +"SHIFT INTEGER,"
                 +"ROLE TEXT,"
                 +"FOREIGN KEY (EMPLOYEEID) REFERENCES EMPLOYEES(ID),"
@@ -55,7 +55,6 @@ public class DalShiftController extends DalController {
     }
 
     public boolean insert(DalShift dalShift) throws SQLException {
-        //TODO - change URL
         Connection conn= DriverManager.getConnection(connection);
         String query= "INSERT INTO "+tableName+" VALUES (?,?,?,?,?)";
         try{
@@ -82,7 +81,7 @@ public class DalShiftController extends DalController {
 
     public boolean update(DalShift dalShift) throws SQLException {
         Connection conn=DriverManager.getConnection(connection);
-        String query="UPDATE "+tableName+" SET "+columnNames[0]+"=?, "+columnNames[1]+"=?, "+columnNames[2]+"=?, "+columnNames[3]+"=?"+columnNames[4]+"=?, WHERE ("+columnNames[0]+"=? AND " +columnNames[2]+ "=? AND "+columnNames[3]+"=? )";
+        String query="UPDATE "+tableName+" SET "+columnNames[0]+"=?, "+columnNames[1]+"=?, "+columnNames[2]+"=?, "+columnNames[3]+"=?, "+columnNames[4]+"=?, WHERE ("+columnNames[0]+"=? AND " +columnNames[2]+ "=? AND "+columnNames[3]+"=? )";
         try{
             PreparedStatement st=conn.prepareStatement(query);
             st.setString(1,dalShift.getEmployeeId());
@@ -91,7 +90,7 @@ public class DalShiftController extends DalController {
             st.setInt(4,dalShift.getShift());
             st.setString(5, dalShift.getRole());
             st.setString(6,dalShift.getEmployeeId());
-            st.setDate(7, new Date(dalShift.getDate().getYear(), dalShift.getDate().getMonth().getValue(), dalShift.getDate().getDayOfMonth()));
+            st.setString (7, dalShift.getDate ().toString ());
             st.setInt(8,dalShift.getShift());
 
             st.executeUpdate();

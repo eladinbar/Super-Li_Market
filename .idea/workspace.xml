@@ -28,9 +28,16 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="05ca914f-9056-4de3-9869-7fdfaa880f2d" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dev/src/DAL/DalControllers_Employee/DalBankBranchController.java" beforeDir="false" afterPath="$PROJECT_DIR$/dev/src/DAL/DalControllers_Employee/DalBankBranchController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/dev/src/DAL/DalControllers_Employee/DalConstraintController.java" beforeDir="false" afterPath="$PROJECT_DIR$/dev/src/DAL/DalControllers_Employee/DalConstraintController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dev/src/DAL/DalControllers_Employee/DalEmployeeController.java" beforeDir="false" afterPath="$PROJECT_DIR$/dev/src/DAL/DalControllers_Employee/DalEmployeeController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/dev/src/DAL/DalControllers_Employee/DalShiftController.java" beforeDir="false" afterPath="$PROJECT_DIR$/dev/src/DAL/DalControllers_Employee/DalShiftController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/ADSS_Group_G/Employees/business_layer/Shift/Shift.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/ADSS_Group_G/Employees/business_layer/Shift/Shift.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dev/src/Employees/business_layer/Employee/EmployeeController.java" beforeDir="false" afterPath="$PROJECT_DIR$/dev/src/Employees/business_layer/Employee/EmployeeController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dev/src/Employees/business_layer/Shift/ShiftController.java" beforeDir="false" afterPath="$PROJECT_DIR$/dev/src/Employees/business_layer/Shift/ShiftController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dev/src/Employees/presentation_layer/MenuPrinter.java" beforeDir="false" afterPath="$PROJECT_DIR$/dev/src/Employees/presentation_layer/MenuPrinter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dev/src/Trucking/Presentation_Layer_Trucking/Menu_Printer.java" beforeDir="false" afterPath="$PROJECT_DIR$/dev/src/Trucking/Presentation_Layer_Trucking/Menu_Printer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/ADSS_Group_G/Employees/business_layer/Employee/EmployeeController.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/ADSS_Group_G/Employees/business_layer/Employee/EmployeeController.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -172,13 +179,6 @@
       <workItem from="1619330774077" duration="12857000" />
       <workItem from="1619792461374" duration="1895000" />
       <workItem from="1619794411025" duration="473000" />
-    </task>
-    <task id="LOCAL-00016" summary="First test has been done - ido left to do Menu test.&#10;Raz has left with everything else because he is such a dick&#10;Love you raz">
-      <created>1617566004636</created>
-      <option name="number" value="00016" />
-      <option name="presentableId" value="LOCAL-00016" />
-      <option name="project" value="LOCAL" />
-      <updated>1617566004636</updated>
     </task>
     <task id="LOCAL-00017" summary="fixed input exceptions">
       <created>1617711142345</created>
@@ -516,7 +516,14 @@
       <option name="project" value="LOCAL" />
       <updated>1620680988684</updated>
     </task>
-    <option name="localTasksCounter" value="65" />
+    <task id="LOCAL-00065" summary="deleting &quot;creating&quot;">
+      <created>1620682095113</created>
+      <option name="number" value="00065" />
+      <option name="presentableId" value="LOCAL-00065" />
+      <option name="project" value="LOCAL" />
+      <updated>1620682095113</updated>
+    </task>
+    <option name="localTasksCounter" value="66" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -535,7 +542,6 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="finished to upload" />
     <MESSAGE value="Fixed intiate method" />
     <MESSAGE value="last update" />
     <MESSAGE value="Started DAL" />
@@ -560,7 +566,8 @@
     <MESSAGE value="fixing dal employees and load data" />
     <MESSAGE value="fixing insert" />
     <MESSAGE value="everything" />
-    <option name="LAST_COMMIT_MESSAGE" value="everything" />
+    <MESSAGE value="deleting &quot;creating&quot;" />
+    <option name="LAST_COMMIT_MESSAGE" value="deleting &quot;creating&quot;" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -602,7 +609,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/dev/src/Trucking/Presentation_Layer_Trucking/Menu_Printer.java</url>
-          <line>940</line>
+          <line>935</line>
           <option name="timeStamp" value="49" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
@@ -612,12 +619,12 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/dev/src/Trucking/Presentation_Layer_Trucking/Menu_Printer.java</url>
-          <line>969</line>
+          <line>964</line>
           <option name="timeStamp" value="55" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/dev/src/Trucking/Presentation_Layer_Trucking/Menu_Printer.java</url>
-          <line>961</line>
+          <line>956</line>
           <option name="timeStamp" value="56" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
@@ -627,7 +634,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/dev/src/Trucking/Presentation_Layer_Trucking/Menu_Printer.java</url>
-          <line>966</line>
+          <line>961</line>
           <option name="timeStamp" value="59" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
@@ -637,23 +644,8 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/dev/src/Employees/business_layer/Shift/ShiftController.java</url>
-          <line>343</line>
+          <line>342</line>
           <option name="timeStamp" value="80" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/dev/src/Employees/business_layer/Shift/ShiftController.java</url>
-          <line>46</line>
-          <option name="timeStamp" value="86" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/dev/src/Employees/business_layer/Shift/WeeklyShiftSchedule.java</url>
-          <line>87</line>
-          <option name="timeStamp" value="90" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/dev/src/Employees/business_layer/Shift/ShiftController.java</url>
-          <line>186</line>
-          <option name="timeStamp" value="92" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/dev/src/Employees/presentation_layer/PresentationController.java</url>
@@ -669,6 +661,31 @@
           <url>file://$PROJECT_DIR$/dev/src/Employees/business_layer/Shift/WeeklyShiftSchedule.java</url>
           <line>52</line>
           <option name="timeStamp" value="97" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/dev/src/DAL/DalControllers_Employee/DalBankBranchController.java</url>
+          <line>80</line>
+          <option name="timeStamp" value="98" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/dev/src/DAL/DalControllers_Employee/DalBankBranchController.java</url>
+          <line>82</line>
+          <option name="timeStamp" value="99" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/dev/src/DAL/DalControllers_Employee/DalShiftController.java</url>
+          <line>82</line>
+          <option name="timeStamp" value="100" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/dev/src/Employees/business_layer/Shift/ShiftController.java</url>
+          <line>83</line>
+          <option name="timeStamp" value="101" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/dev/src/DAL/DalControllers_Employee/DalShiftController.java</url>
+          <line>57</line>
+          <option name="timeStamp" value="102" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
