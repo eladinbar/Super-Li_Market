@@ -249,12 +249,22 @@ public class Menu {
         }
     }
 
-    public void printEntity(Product orderProduct){
-
+    public void printEntity(Product orderProduct) throws NoSuchMethodException {
+        Method[] methods = {orderProduct.getClass().getMethod("getProductID"), orderProduct.getClass().getMethod("getName"),
+        orderProduct.getClass().getMethod("getAmount"),orderProduct.getClass().getMethod("getSellingPrice"),
+        orderProduct.getClass().getMethod("getDiscount"), orderProduct.getClass().getMethod("getFinalPrice")};
+        try {
+            handleEntityAliment(orderProduct, methods);
+        } catch (Exception e){
+            errorPrompt("Something went wrong...");
+        }
     }
 
-    public void printEntity(ArrayList<Product> orderProduct){
-
+    public void printEntity(ArrayList<Product> orderProduct)throws NoSuchMethodException {
+        System.out.println(tf.formatProductMenuColumns());
+        for (Product p :orderProduct) {
+            printEntity(p);
+        }
     }
 
     public void printEntity(Category category) {
@@ -346,6 +356,9 @@ public class Menu {
             Method currentMethod = getMethods[i];
             Object value = currentMethod.invoke(elem);
             String stringRep = value.toString();
+//            if (value instanceof Calendar) {
+//                stringRep = tf.dateFormat((Calendar) value);
+//            }
             output = output + tf.centerString(stringRep, tf.getPaddingSize()) + "|";
         }
         Object value = getMethods[getMethods.length - 1].invoke(elem);

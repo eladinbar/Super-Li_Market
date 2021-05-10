@@ -21,7 +21,8 @@ public class SupplierController {
 
     //checks if the supplier exists in the system
     private void existSupplier(String id) throws Exception {
-        if (!suppliers.containsKey(id))
+        SupplierCard supplierCard = new SupplierCard(id);
+        if (!suppliers.containsKey(id) && supplierCard.find())
             throw new Exception("system does not have user with the id :" + id);
     }
 

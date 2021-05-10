@@ -1,0 +1,46 @@
+package DataAccessLayer.DalObjects.SupplierObjects;
+
+import DataAccessLayer.DalControllers.SupplierControllers.QuantityListItemsDalController;
+import DataAccessLayer.DalObjects.DalObject;
+
+import java.sql.SQLException;
+
+public class QuantityListItemsDal extends DalObject<QuantityListItemsDal> {
+    public static final String productIdColumnName = "Product_Id";
+    public static final String amountColumnName = "Amount";
+    public static final String discountColumnName = "Discount";
+    private int productId; // foreign key (item)
+    private int amount;
+    private double discount;
+
+    public QuantityListItemsDal(int productId, int amount, int discount) throws SQLException {
+        super(QuantityListItemsDalController.getInstance());
+        this.productId = productId;
+        this.amount = amount;
+        this.discount = discount;
+    }
+
+    public int getProductId() {
+        return productId;
+    }
+
+    public int getAmount() {
+        return amount;
+    }
+
+    public double getDiscount() {
+        return discount;
+    }
+
+    public void setProductId(int productId) {
+        this.productId = productId;
+    }
+
+    public void setAmount(int amount) {
+        this.amount = amount;
+    }
+
+    public void setDiscount(double discount) {
+        this.discount = discount;
+    }
+}

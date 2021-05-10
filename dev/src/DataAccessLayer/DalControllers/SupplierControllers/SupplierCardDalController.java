@@ -5,7 +5,7 @@ import DataAccessLayer.DalObjects.SupplierObjects.*;
 
 import java.sql.*;
 
-public class SupplierCardDalController extends DalController<SupplierCard> {
+public class SupplierCardDalController extends DalController<SupplierCardDal> {
     private static SupplierCardDalController instance = null;
     public final static String SUPPLIER_CARD_TABLE_NAME = "Supplier_Cards";
 
@@ -29,10 +29,10 @@ public class SupplierCardDalController extends DalController<SupplierCard> {
         System.out.println("Initiating create '" + tableName + "' table.");
         try (Connection conn = DriverManager.getConnection(connectionString)) {
             String command = "CREATE TABLE IF NOT EXISTS " + tableName + " (" +
-                    SupplierCard.supplierIdColumnName + " INTEGER NOT NULL," +
-                    SupplierCard.companyNumberColumnName + " INTEGET NOT NULL," + SupplierCard.isPermanentDaysColumnName +" INTEGER NOT NULL," + SupplierCard.selfDeliveryColumnName+ " INTEGER NOT NULL,"+ SupplierCard.paymentColumnName+" TEXT NOT NULL,"+
-                    "PRIMARY KEY ("+ SupplierCard.supplierIdColumnName+"),"+
-                    "FOREIGN KEY (" + SupplierCard.supplierIdColumnName + ")" + "REFERENCES " + PersonCard.idColumnName + " (" + PersonCardDalController.PERSON_CARD_TABLE_NAME +") ON DELETE NO ACTION "+
+                    SupplierCardDal.supplierIdColumnName + " INTEGER NOT NULL," +
+                    SupplierCardDal.companyNumberColumnName + " INTEGET NOT NULL," + SupplierCardDal.isPermanentDaysColumnName +" INTEGER NOT NULL," + SupplierCardDal.selfDeliveryColumnName+ " INTEGER NOT NULL,"+ SupplierCardDal.paymentColumnName+" TEXT NOT NULL,"+
+                    "PRIMARY KEY ("+ SupplierCardDal.supplierIdColumnName+"),"+
+                    "FOREIGN KEY (" + SupplierCardDal.supplierIdColumnName + ")" + "REFERENCES " + PersonCardDal.idColumnName + " (" + PersonCardDalController.PERSON_CARD_TABLE_NAME +") ON DELETE NO ACTION "+
                     ");";
 
             PreparedStatement stmt = conn.prepareStatement(command);
@@ -46,7 +46,7 @@ public class SupplierCardDalController extends DalController<SupplierCard> {
     }
 
     @Override
-    public boolean insert(SupplierCard supplierCard) throws SQLException {
+    public boolean insert(SupplierCardDal supplierCard) throws SQLException {
         System.out.println("Initiating " + tableName + " insert.");
         try (Connection conn = DriverManager.getConnection(connectionString)) {
             String query = "INSERT INTO " + tableName + " VALUES (?,?,?,?,?)";
@@ -65,9 +65,9 @@ public class SupplierCardDalController extends DalController<SupplierCard> {
     }
 
     @Override
-    public boolean delete(SupplierCard supplierCard) throws SQLException {
+    public boolean delete(SupplierCardDal supplierCard) throws SQLException {
         try (Connection conn = DriverManager.getConnection(connectionString)) {
-            String query = "DELETE FROM " + tableName + " WHERE (" + SupplierCard.supplierIdColumnName + "=?)";
+            String query = "DELETE FROM " + tableName + " WHERE (" + SupplierCardDal.supplierIdColumnName + "=?)";
             PreparedStatement stmt = conn.prepareStatement(query);
 
             stmt.setInt(1, supplierCard.getSupplierId());
@@ -79,10 +79,10 @@ public class SupplierCardDalController extends DalController<SupplierCard> {
     }
 
     @Override
-    public boolean update(SupplierCard supplierCard) throws SQLException {
+    public boolean update(SupplierCardDal supplierCard) throws SQLException {
         try (Connection conn = DriverManager.getConnection(connectionString)) {
-            String query = "UPDATE " + tableName + " SET " + SupplierCard.companyNumberColumnName +
-                    "=?, "+ SupplierCard.isPermanentDaysColumnName +"=?, "+ SupplierCard.selfDeliveryColumnName +"=?, "+SupplierCard.paymentColumnName+"=? WHERE(" + SupplierCard.supplierIdColumnName + "=?)";
+            String query = "UPDATE " + tableName + " SET " + SupplierCardDal.companyNumberColumnName +
+                    "=?, "+ SupplierCardDal.isPermanentDaysColumnName +"=?, "+ SupplierCardDal.selfDeliveryColumnName +"=?, "+SupplierCardDal.paymentColumnName+"=? WHERE(" + SupplierCardDal.supplierIdColumnName + "=?)";
             PreparedStatement stmt = conn.prepareStatement(query);
 
             stmt.setInt(1, supplierCard.getCompanyNumber());
@@ -98,7 +98,7 @@ public class SupplierCardDalController extends DalController<SupplierCard> {
     }
 
     @Override
-    public boolean select(SupplierCard supplierCard) throws SQLException {
+    public boolean select(SupplierCardDal supplierCard) throws SQLException {
         boolean isDesired = false;
         try (Connection conn = DriverManager.getConnection(connectionString)) {
             String query = "SELECT * FROM " + tableName;

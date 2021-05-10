@@ -1,11 +1,12 @@
 package DataAccessLayer.DalControllers.SupplierControllers;
 
+
 import DataAccessLayer.DalControllers.DalController;
-import DataAccessLayer.DalObjects.SupplierObjects.Order;
+import DataAccessLayer.DalObjects.SupplierObjects.OrderDal;
 
 import java.sql.*;
 
-public class OrderDalController extends DalController<Order> {
+public class OrderDalController extends DalController<OrderDal> {
     private static OrderDalController instance = null;
     public final static String ORDER_TABLE_NAME = "Orders";
 
@@ -29,9 +30,9 @@ public class OrderDalController extends DalController<Order> {
         System.out.println("Initiating create '" + tableName + "' table.");
         try (Connection conn = DriverManager.getConnection(connectionString)) {
             String command = "CREATE TABLE IF NOT EXISTS " + tableName + " (" +
-                    Order.orderIdColumnName + " INTEGER NOT NULL," +
-                    Order.dateColumnName + " TEXT NOT NULL," + Order.deliveredColumnName +" INTEGER NOT NULL,"+
-                    "PRIMARY KEY (" + Order.orderIdColumnName + ")" +
+                    OrderDal.orderIdColumnName + " INTEGER NOT NULL," +
+                    OrderDal.dateColumnName + " TEXT NOT NULL," + OrderDal.deliveredColumnName +" INTEGER NOT NULL,"+
+                    "PRIMARY KEY (" + OrderDal.orderIdColumnName + ")" +
                     ");";
 
             PreparedStatement stmt = conn.prepareStatement(command);
@@ -45,7 +46,7 @@ public class OrderDalController extends DalController<Order> {
     }
 
     @Override
-    public boolean insert(Order order) throws SQLException {
+    public boolean insert(OrderDal order) throws SQLException {
         System.out.println("Initiating " + tableName + " insert.");
         try (Connection conn = DriverManager.getConnection(connectionString)) {
             String query = "INSERT INTO " + tableName + " VALUES (?,?,?)";
@@ -62,9 +63,9 @@ public class OrderDalController extends DalController<Order> {
     }
 
     @Override
-    public boolean delete(Order order) throws SQLException {
+    public boolean delete(OrderDal order) throws SQLException {
         try (Connection conn = DriverManager.getConnection(connectionString)) {
-            String query = "DELETE FROM " + tableName + " WHERE (" + Order.orderIdColumnName + "=?)";
+            String query = "DELETE FROM " + tableName + " WHERE (" + OrderDal.orderIdColumnName + "=?)";
             PreparedStatement stmt = conn.prepareStatement(query);
 
             stmt.setInt(1, order.getId());
@@ -76,10 +77,10 @@ public class OrderDalController extends DalController<Order> {
     }
 
     @Override
-    public boolean update(Order order) throws SQLException {
+    public boolean update(OrderDal order) throws SQLException {
         try (Connection conn = DriverManager.getConnection(connectionString)) {
-            String query = "UPDATE " + tableName + " SET " + Order.dateColumnName +
-                    "=?, "+ Order.deliveredColumnName+"=? WHERE(" + Order.orderIdColumnName + "=?)";
+            String query = "UPDATE " + tableName + " SET " + OrderDal.dateColumnName +
+                    "=?, "+ OrderDal.deliveredColumnName+"=? WHERE(" + OrderDal.orderIdColumnName + "=?)";
             PreparedStatement stmt = conn.prepareStatement(query);
 
             stmt.setString(1, order.getDate());
@@ -93,7 +94,7 @@ public class OrderDalController extends DalController<Order> {
     }
 
     @Override
-    public boolean select(Order order) throws SQLException {
+    public boolean select(OrderDal order) throws SQLException {
         boolean isDesired = false;
         try (Connection conn = DriverManager.getConnection(connectionString)) {
             String query = "SELECT * FROM " + tableName;

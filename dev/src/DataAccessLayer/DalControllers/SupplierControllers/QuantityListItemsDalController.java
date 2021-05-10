@@ -3,12 +3,12 @@ package DataAccessLayer.DalControllers.SupplierControllers;
 import DataAccessLayer.DalControllers.DalController;
 import DataAccessLayer.DalControllers.InventoryControllers.ItemDalController;
 import DataAccessLayer.DalObjects.InventoryObjects.Item;
-import DataAccessLayer.DalObjects.SupplierObjects.ProductsInOrder;
-import DataAccessLayer.DalObjects.SupplierObjects.QuantityListItems;
+import DataAccessLayer.DalObjects.SupplierObjects.ProductsInOrderDal;
+import DataAccessLayer.DalObjects.SupplierObjects.QuantityListItemsDal;
 
 import java.sql.*;
 
-public class QuantityListItemsDalController extends DalController<QuantityListItems> {
+public class QuantityListItemsDalController extends DalController<QuantityListItemsDal> {
     private static QuantityListItemsDalController instance = null;
     public final static String QUANTITY_LIST_ITEMS_TABLE_NAME = "Quantity_List_Items";
 
@@ -32,10 +32,10 @@ public class QuantityListItemsDalController extends DalController<QuantityListIt
         System.out.println("Initiating create '" + tableName + "' table.");
         try (Connection conn = DriverManager.getConnection(connectionString)) {
             String command = "CREATE TABLE IF NOT EXISTS " + tableName + " (" +
-                    QuantityListItems.productIdColumnName + " INTEGER NOT NULL," +
-                    QuantityListItems.amountColumnName+ " INTEGET NOT NULL," + QuantityListItems.discountColumnName+ " REAL NOT NULL,"+
-                    "PRIMARY KEY (" + ProductsInOrder.productIdColumnName + "),"+
-                    "FOREIGN KEY (" + ProductsInOrder.productIdColumnName + ")" + "REFERENCES " + Item.itemIdColumnName + " (" + ItemDalController.ITEM_TABLE_NAME +") ON DELETE NO ACTION "+
+                    QuantityListItemsDal.productIdColumnName + " INTEGER NOT NULL," +
+                    QuantityListItemsDal.amountColumnName+ " INTEGET NOT NULL," + QuantityListItemsDal.discountColumnName+ " REAL NOT NULL,"+
+                    "PRIMARY KEY (" + ProductsInOrderDal.productIdColumnName + "),"+
+                    "FOREIGN KEY (" + ProductsInOrderDal.productIdColumnName + ")" + "REFERENCES " + Item.itemIdColumnName + " (" + ItemDalController.ITEM_TABLE_NAME +") ON DELETE NO ACTION "+
                     ");";
 
             PreparedStatement stmt = conn.prepareStatement(command);
@@ -49,7 +49,7 @@ public class QuantityListItemsDalController extends DalController<QuantityListIt
     }
 
     @Override
-    public boolean insert(QuantityListItems quantityListItem) throws SQLException {
+    public boolean insert(QuantityListItemsDal quantityListItem) throws SQLException {
         System.out.println("Initiating " + tableName + " insert.");
         try (Connection conn = DriverManager.getConnection(connectionString)) {
             String query = "INSERT INTO " + tableName + " VALUES (?,?,?)";
@@ -66,9 +66,9 @@ public class QuantityListItemsDalController extends DalController<QuantityListIt
     }
 
     @Override
-    public boolean delete(QuantityListItems quantityListItem) throws SQLException {
+    public boolean delete(QuantityListItemsDal quantityListItem) throws SQLException {
         try (Connection conn = DriverManager.getConnection(connectionString)) {
-            String query = "DELETE FROM " + tableName + " WHERE (" + QuantityListItems.productIdColumnName + "=?)";
+            String query = "DELETE FROM " + tableName + " WHERE (" + QuantityListItemsDal.productIdColumnName + "=?)";
             PreparedStatement stmt = conn.prepareStatement(query);
 
             stmt.setInt(1, quantityListItem.getProductId());
@@ -80,10 +80,10 @@ public class QuantityListItemsDalController extends DalController<QuantityListIt
     }
 
     @Override
-    public boolean update(QuantityListItems quantityListItem) throws SQLException {
+    public boolean update(QuantityListItemsDal quantityListItem) throws SQLException {
         try (Connection conn = DriverManager.getConnection(connectionString)) {
-            String query = "UPDATE " + tableName + " SET " + QuantityListItems.amountColumnName +
-                    "=?, "+ QuantityListItems.discountColumnName+"=? WHERE(" + QuantityListItems.productIdColumnName + "=?)";
+            String query = "UPDATE " + tableName + " SET " + QuantityListItemsDal.amountColumnName +
+                    "=?, "+ QuantityListItemsDal.discountColumnName+"=? WHERE(" + QuantityListItemsDal.productIdColumnName + "=?)";
             PreparedStatement stmt = conn.prepareStatement(query);
 
             stmt.setInt(1, quantityListItem.getAmount());
@@ -97,7 +97,7 @@ public class QuantityListItemsDalController extends DalController<QuantityListIt
     }
 
     @Override
-    public boolean select(QuantityListItems quantityListItem) throws SQLException {
+    public boolean select(QuantityListItemsDal quantityListItem) throws SQLException {
         boolean isDesired = false;
         try (Connection conn = DriverManager.getConnection(connectionString)) {
             String query = "SELECT * FROM " + tableName;

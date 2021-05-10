@@ -3,7 +3,7 @@ package DataAccessLayer.DalControllers.InventoryControllers;
 import DataAccessLayer.DalControllers.DalController;
 import DataAccessLayer.DalObjects.InventoryObjects.Category;
 import DataAccessLayer.DalObjects.InventoryObjects.CategoryDiscount;
-import DataAccessLayer.DalObjects.SupplierObjects.SupplierCard;
+import DataAccessLayer.DalObjects.SupplierObjects.SupplierCardDal;
 
 import java.sql.*;
 
@@ -42,7 +42,7 @@ public class CategoryDiscountDalController extends DalController<CategoryDiscoun
                     "PRIMARY KEY (" + CategoryDiscount.discountDateColumnName + ", " + CategoryDiscount.supplierIdColumnName + "," +
                     CategoryDiscount.categoryNameColumnName + ")," +
                     "FOREIGN KEY (" + CategoryDiscount.supplierIdColumnName + ")" +
-                    "REFERENCES " + SupplierCard.supplierIdColumnName + " (" + SUPPLIER_CARD_TABLE_NAME + ") ON DELETE NO ACTION," +
+                    "REFERENCES " + SupplierCardDal.supplierIdColumnName + " (" + SUPPLIER_CARD_TABLE_NAME + ") ON DELETE NO ACTION," +
                     "FOREIGN KEY (" + CategoryDiscount.categoryNameColumnName + ")" +
                     "REFERENCES " + Category.categoryNameColumnName + " (" + CATEGORY_TABLE_NAME + ") ON DELETE NO ACTION" +
                     ");";

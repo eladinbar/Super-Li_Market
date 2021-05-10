@@ -56,6 +56,7 @@ public class Item extends DalObject<Item> {
         this.categoryName = categoryName;
     }
 
+    public Item(){}
     public int getItemID() {
         return itemID;
     }

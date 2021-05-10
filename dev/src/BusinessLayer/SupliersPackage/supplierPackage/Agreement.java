@@ -1,5 +1,9 @@
 package BusinessLayer.SupliersPackage.supplierPackage;
 
+import DataAccessLayer.DalObjects.SupplierObjects.SupplierCardDal;
+import DataAccessLayer.DalObjects.SupplierObjects.agreementItemsDal;
+
+import java.sql.SQLException;
 import java.util.*;
 
 public class Agreement {
@@ -51,6 +55,7 @@ public class Agreement {
         compID(productID);
         ql.getDiscount().remove(productID);
         ql.getAmount().remove(productID);
+
     }
 
     public void addQuantityListItem(int productID, int amount, int discount) throws Exception {

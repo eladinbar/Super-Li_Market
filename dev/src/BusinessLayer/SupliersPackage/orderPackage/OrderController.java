@@ -64,12 +64,8 @@ public class OrderController {
     }
 
     public void addProductToOrder(int orderId, int productId, int amount) throws Exception {
-        //todo complete check if the product is in the agreement
-        //todo check if the date is not approved
-        //todo check after agreement
         orderExist(orderId);
-        productExist(productId);
-        orders.get(orderId).addProductToOrder(orderId, productId, amount);
+        orders.get(orderId).addProductToOrder(productId, amount);
     }
 
     public product createProduct(String name, String manufacturer) throws Exception {
@@ -89,6 +85,11 @@ public class OrderController {
     }
 
     public Order createPermOrder(int day, Supplier supplier) throws Exception {
+        for (Order o : pernamentOrders.get(day)) {
+            if(o.getSupplier().getSc().getId().equals(supplier.getSc().getId())){
+                return o;
+            }
+        }
         Order order = createOrder(null, supplier);
         pernamentOrders.get(day).add(order);
         return order;
