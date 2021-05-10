@@ -122,11 +122,7 @@ public class InventoryController {
 
     public void modifyItemName(int itemId, String newName) {
         Item item = getItem(itemId);
-        try {
-            item.setName(newName);
-        } catch (SQLException ex) {
-            throw new RuntimeException("Something went wrong.");
-        }
+        item.setName(newName);
     }
 
     public void modifyItemCategory(int itemId, String newCategoryName) {
@@ -223,56 +219,32 @@ public class InventoryController {
 
     public void modifyItemCostPrice(int itemId, double newCostPrice) {
         Item item = getItem(itemId);
-        try {
-            item.setCostPrice(newCostPrice);
-        } catch (SQLException ex) {
-            throw new RuntimeException("Something went wrong.");
-        }
+        item.setCostPrice(newCostPrice);
     }
 
     public void modifyItemSellingPrice(int itemId, double newSellingPrice) {
         Item item = getItem(itemId);
-        try {
-            item.setSellingPrice(newSellingPrice);
-        } catch (SQLException ex) {
-            throw new RuntimeException("Something went wrong.");
-        }
+        item.setSellingPrice(newSellingPrice);
     }
 
     public void changeItemShelfLocation(int itemId, String newShelfLocation) {
         Item item = getItem(itemId);
-        try {
-            item.setShelfLocation(newShelfLocation);
-        } catch (SQLException ex) {
-            throw new RuntimeException("Something went wrong.");
-        }
+        item.setShelfLocation(newShelfLocation);
     }
 
     public void changeItemStorageLocation(int itemId, String newStorageLocation) {
         Item item = getItem(itemId);
-        try {
-            item.setStorageLocation(newStorageLocation);
-        } catch (SQLException ex) {
-            throw new RuntimeException("Something went wrong.");
-        }
+        item.setStorageLocation(newStorageLocation);
     }
 
     public void modifyItemShelfQuantity(int itemId, int newShelfQuantity) {
         Item item = getItem(itemId);
-        try {
-            item.setShelfQuantity(newShelfQuantity);
-        } catch (SQLException ex) {
-            throw new RuntimeException("Something went wrong.");
-        }
+        item.setShelfQuantity(newShelfQuantity);
     }
 
     public void modifyItemStorageQuantity(int itemId, int newStorageQuantity) {
         Item item = getItem(itemId);
-        try {
-            item.setStorageQuantity(newStorageQuantity);
-        } catch (SQLException ex) {
-            throw new RuntimeException("Something went wrong.");
-        }
+        item.setStorageQuantity(newStorageQuantity);
     }
 
     public void addItemSupplier(int itemId, String supplierId) {
@@ -395,22 +367,14 @@ public class InventoryController {
 
         //If newParentName is null or empty, set parent category as base category
         if (newParentName == null || newParentName.trim().equals("") | newParentName.trim().equals("Uncategorized")) {
-            try {
-                category.setParentCategory(BASE_CATEGORY);
-            } catch (SQLException ex) {
-                throw new RuntimeException("Something went wrong.");
-            }
+            category.setParentCategory(BASE_CATEGORY);
         }
         //Else, check whether the given newParentName is a valid parent category to 'category'
         else {
             Category parentCategory = getCategory(newParentName);
             if (isSubCategory(category, parentCategory))
                 throw new IllegalArgumentException("Cannot change parent category to a sub category, please enter a different parent category.");
-            try {
-                category.setParentCategory(parentCategory);
-            } catch (SQLException ex) {
-                throw new RuntimeException("Something went wrong.");
-            }
+            category.setParentCategory(parentCategory);
         }
     }
 
@@ -472,6 +436,11 @@ public class InventoryController {
                 throw ex; //Rethrow exception thrown in 'try' block (different error message)
 
             ItemSale newSale = new ItemSale(saleName, saleDiscount, startDate, endDate, item);
+            try {
+                newSale.save();
+            } catch (SQLException e) {
+                throw new RuntimeException("Something went wrong.");
+            }
             sales.add(newSale);
         }
     }
@@ -486,6 +455,11 @@ public class InventoryController {
                 throw ex; //Rethrow exception thrown in 'try' block (different error message)
 
             CategorySale newSale = new CategorySale(saleName, saleDiscount, startDate, endDate, getCategory(categoryName));
+            try {
+                newSale.save();
+            } catch (SQLException e) {
+                throw new RuntimeException("Something went wrong.");
+            }
             sales.add(newSale);
         }
     }
@@ -495,6 +469,33 @@ public class InventoryController {
             if (sale.getName().equals(saleName))
                 return sale;
         }
+
+        //Retrieve from database
+        CategorySale savedCategorySale = new CategorySale(saleName);
+        boolean found;
+        try {
+            found = savedCategorySale.find();
+        } catch (SQLException ex) {
+            throw new RuntimeException("Something went wrong.");
+        }
+        if (found) {
+            savedCategorySale.setCategory(getCategory(savedCategorySale.getCategory().getName()));
+            sales.add(savedCategorySale);
+            return savedCategorySale;
+        }
+
+        ItemSale savedItemSale = new ItemSale(saleName);
+        try {
+            found = savedItemSale.find();
+        } catch (SQLException ex) {
+            throw new RuntimeException("Something went wrong.");
+        }
+        if (found) {
+            savedItemSale.setItem(getItem(savedItemSale.getItem().getID()));
+            sales.add(savedItemSale);
+            return savedItemSale;
+        }
+
         throw new IllegalArgumentException("No sale with name: " + saleName + " was found in the system.");
     }
 

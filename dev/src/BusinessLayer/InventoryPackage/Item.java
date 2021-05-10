@@ -51,14 +51,14 @@ public class Item {
         return name;
     }
 
-    public void setName(String name) throws SQLException {
+    public void setName(String name) {
         dalCopyItem.setName(name);
         try {
             dalCopyItem.update();
             this.name = name;
         } catch (SQLException ex) {
             dalCopyItem.setName(this.name);
-            throw ex;
+            throw new RuntimeException("Something went wrong.");
         }
     }
 
@@ -66,14 +66,14 @@ public class Item {
         return costPrice;
     }
 
-    public void setCostPrice(double costPrice) throws SQLException {
+    public void setCostPrice(double costPrice) {
         dalCopyItem.setCostPrice(costPrice);
         try {
             dalCopyItem.update();
             this.costPrice = costPrice;
         } catch (SQLException ex) {
             dalCopyItem.setCostPrice(this.costPrice);
-            throw ex;
+            throw new RuntimeException("Something went wrong.");
         }
     }
 
@@ -81,14 +81,14 @@ public class Item {
         return sellingPrice;
     }
 
-    public void setSellingPrice(double sellingPrice) throws SQLException {
+    public void setSellingPrice(double sellingPrice) {
         dalCopyItem.setSellingPrice(sellingPrice);
         try {
             dalCopyItem.update();
             this.sellingPrice = sellingPrice;
         } catch (SQLException ex) {
             dalCopyItem.setSellingPrice(this.sellingPrice);
-            throw ex;
+            throw new RuntimeException("Something went wrong.");
         }
     }
 
@@ -120,25 +120,25 @@ public class Item {
         return quantity.getStorageQuantity();
     }
 
-    public void setShelfQuantity(int shelfQuantity) throws SQLException {
+    public void setShelfQuantity(int shelfQuantity) {
         dalCopyItem.setShelfQuantity(shelfQuantity);
         try {
             dalCopyItem.update();
             this.quantity.setShelfQuantity(shelfQuantity);
         } catch (SQLException ex) {
             dalCopyItem.setShelfQuantity(this.getShelfQuantity());
-            throw ex;
+            throw new RuntimeException("Something went wrong.");
         }
     }
 
-    public void setStorageQuantity(int storageQuantity) throws SQLException {
+    public void setStorageQuantity(int storageQuantity) {
         dalCopyItem.setStorageQuantity(storageQuantity);
         try {
             dalCopyItem.update();
             this.quantity.setStorageQuantity(storageQuantity);
         } catch (SQLException ex) {
             dalCopyItem.setStorageQuantity(this.getStorageQuantity());
-            throw ex;
+            throw new RuntimeException("Something went wrong.");
         }
     }
 
@@ -150,25 +150,25 @@ public class Item {
         return location.getStorageLocation();
     }
 
-    public void setShelfLocation(String shelfLocation) throws SQLException {
+    public void setShelfLocation(String shelfLocation) {
         dalCopyItem.setShelfLocation(shelfLocation);
         try {
             dalCopyItem.update();
             this.location.setShelfLocation(shelfLocation);
         } catch(SQLException ex) {
             dalCopyItem.setShelfLocation(this.getShelfLocation());
-            throw ex;
+            throw new RuntimeException("Something went wrong.");
         }
     }
 
-    public void setStorageLocation(String storageLocation) throws SQLException {
+    public void setStorageLocation(String storageLocation) {
         dalCopyItem.setStorageLocation(storageLocation);
         try {
             dalCopyItem.update();
             this.location.setStorageLocation(storageLocation);
         } catch (SQLException ex) {
             dalCopyItem.setStorageLocation(this.getStorageLocation());
-            throw ex;
+            throw new RuntimeException("Something went wrong.");
         }
     }
 
