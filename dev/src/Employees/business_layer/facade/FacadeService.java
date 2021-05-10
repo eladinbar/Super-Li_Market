@@ -26,12 +26,11 @@ public class FacadeService {
 
     //shift service responsibility
 
-    public ResponseT<FacadeWeeklyShiftSchedule> getRecommendation(LocalDate startingDate) {
+    public ResponseT<FacadeWeeklyShiftSchedule> getRecommendation(LocalDate startingDate) throws SQLException {
         return shiftService.getRecommendation ( startingDate );
     }
 
-    public ResponseT<FacadeWeeklyShiftSchedule> createWeeklyShiftSchedule(LocalDate startingDate, FacadeShift[][] shifts)
-    {
+    public ResponseT<FacadeWeeklyShiftSchedule> createWeeklyShiftSchedule(LocalDate startingDate, FacadeShift[][] shifts) throws SQLException {
         return shiftService.createWeeklyShiftSchedule ( startingDate, shifts );
     }
 
@@ -51,7 +50,7 @@ public class FacadeService {
         return shiftService.changeShiftType ( date, shift, shiftType);
     }
 
-    public Response createShiftType(String shiftType, HashMap<String, Integer> manning){
+    public Response createShiftType(String shiftType, HashMap<String, Integer> manning) throws SQLException {
         return shiftService.createShiftType ( shiftType, manning );
     }
 

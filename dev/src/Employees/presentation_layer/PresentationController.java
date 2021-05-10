@@ -251,7 +251,7 @@ public class PresentationController {
         }
     }
 
-    private void createShiftTypes() {
+    private void createShiftTypes() throws SQLException {
         menuPrinter.print ( "For continuing you have to create and characterize morning shift type and evening shift type.\n\n" +
                 "Create morning shift type:\n" );
         createShiftType(0);
@@ -298,7 +298,7 @@ public class PresentationController {
         menuPrinter.print ( "Role added successfully." );
     }
 
-    private void getRecommendation() {
+    private void getRecommendation() throws SQLException {
         LocalDate date = menuPrinter.schedule ();
         ResponseT<FacadeWeeklyShiftSchedule> weeklyShiftSchedule = facadeService.getRecommendation ( date );
         if(weeklyShiftSchedule.errorOccured ())
@@ -310,8 +310,7 @@ public class PresentationController {
         editSchedule ();
     }
 
-    private void createWeeklyShiftSchedule()
-    {
+    private void createWeeklyShiftSchedule() throws SQLException {
         int choice = menuPrinter.createWeeklyShiftSchedule();
         if(choice < 1 || choice > 2)
         {
@@ -352,8 +351,7 @@ public class PresentationController {
             getRecommendation (  );
     }
 
-    private FacadeShift createFirstShift(LocalDate date)
-    {
+    private FacadeShift createFirstShift(LocalDate date) throws SQLException {
         String choice = menuPrinter.chooseShiftType(date, 1);
         while (choice == null)
         {
@@ -368,8 +366,7 @@ public class PresentationController {
         return shift;
     }
 
-    private FacadeShift createSecondShift(LocalDate date)
-    {
+    private FacadeShift createSecondShift(LocalDate date) throws SQLException {
         String choice = menuPrinter.chooseShiftType(date, 2);
         while (choice == null)
         {
@@ -453,7 +450,7 @@ public class PresentationController {
         menuPrinter.print ( "Shift type changed successfully." );
     }
 
-    private String createShiftType(int type){
+    private String createShiftType(int type) throws SQLException {
         String shiftType;
         if(type == 0)
             shiftType = "morningShift";
