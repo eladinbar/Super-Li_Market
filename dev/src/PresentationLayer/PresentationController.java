@@ -416,6 +416,9 @@ public class PresentationController implements Runnable {
             case "3":
                 orderMainMenu();
                 break;
+            case "q":
+                terminate = true;
+                return;
             default:
                 menu.errorPrompt("invalid choice - " + choice);
                 break;
