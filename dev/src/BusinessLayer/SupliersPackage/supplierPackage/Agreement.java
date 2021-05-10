@@ -22,7 +22,7 @@ public class Agreement {
 
     public Map<Integer, Integer> getProducts() {
         return products;
-    }//todo check discount
+    }
 
     public Map<Integer, Integer> getPrices() {
         return prices;
