@@ -136,7 +136,6 @@ public class SupplierController {
         suppliers.get(supplierID).deleteQuantityList();
     }
 
-    //todo add method to order controller
     public void addQuantityListItem(String supplierID, int productID, int amount, int discount) throws Exception {
         existSupplier(supplierID);
         suppliers.get(supplierID).addQuantityListItem(productID, amount, discount, supplierID);
@@ -184,7 +183,7 @@ public class SupplierController {
     }
 
     public Supplier getCheapestSupplier(int productID, int amount, boolean scheduled) throws Exception {
-        Double cheapestPrice = Double.POSITIVE_INFINITY;
+        double cheapestPrice = Double.POSITIVE_INFINITY;
         Supplier cheapestSup = null;
         for (Supplier sup : suppliers.values()) {
             try {
@@ -194,7 +193,7 @@ public class SupplierController {
                         cheapestSup = sup;
                     }
                 }
-            } catch (Exception e) {
+            } catch (Exception ignored) {
             }
         }
         if (cheapestSup == null)
