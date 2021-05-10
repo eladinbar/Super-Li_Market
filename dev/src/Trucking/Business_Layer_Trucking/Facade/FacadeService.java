@@ -312,7 +312,7 @@ public class FacadeService {
         }
     }
 
-    private void saveReportReplacedTruckReport() {
+    private void saveReportReplacedTruckReport() throws SQLException {
         deliveryService.saveReportReplacedTruckReport();
     }
 

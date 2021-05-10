@@ -326,7 +326,7 @@ public class EmployeeController {
         return isExist &&employees.get ( Id ).getRole ().name ().equals ( role );
     }
 
-    public void createData () throws EmployeeException {
+    public void createData () throws EmployeeException, SQLException {
             createUshers();
             createGuard();
             creatCashier();
@@ -423,7 +423,7 @@ public class EmployeeController {
         }
     }
 
-    private void creatDriverC() throws EmployeeException {
+    private void creatDriverC() throws EmployeeException, SQLException {
         int accountNum = 589, bankBranch=27, salary=6000, educationFund=1000, sickDays=21, daysOff=15;
         String bankName = "Diskont";
         for(int i=0; i<3; i++){
@@ -434,7 +434,7 @@ public class EmployeeController {
         }
     }
 
-    private void creatDriverC1() throws EmployeeException {
+    private void creatDriverC1() throws EmployeeException, SQLException {
         int accountNum = 663, bankBranch=54, salary=7000, educationFund=1000, sickDays=21, daysOff=15;
         String bankName = "Diskont";
         for(int i=0; i<3; i++){
@@ -489,7 +489,7 @@ public class EmployeeController {
 
     public boolean loadData() throws SQLException, EmployeeException {
         LinkedList<DalEmployee> employees = DalEmployeeController.getInstance ( ).load ( );
-        if(employees == null)
+        if(employees.size () == 0)
             return false;
         LinkedList<DalBankBranch> bankBranches = DalBankBranchController.getInstance ( ).load ( );
         LinkedList<DalConstraint> constraints = DalConstraintController.getInstance ( ).load ( );

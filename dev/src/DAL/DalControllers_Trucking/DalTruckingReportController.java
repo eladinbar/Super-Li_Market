@@ -1,6 +1,8 @@
 package DAL;
 
 
+import DAL.DalObjects_Trucking.DalTruckingReport;
+
 import java.sql.*;
 import java.time.LocalDate;
 import java.time.LocalTime;

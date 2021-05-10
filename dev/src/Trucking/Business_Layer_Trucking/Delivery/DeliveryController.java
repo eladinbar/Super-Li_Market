@@ -2,6 +2,10 @@ package Trucking.Business_Layer_Trucking.Delivery;
 
 
 import DAL.*;
+import DAL.DalControllers_Trucking.*;
+import DAL.DalItemsOnDF;
+import DAL.DalObjects_Trucking.*;
+import DAL.DalTruckingReportController;
 
 import javax.management.openmbean.KeyAlreadyExistsException;
 import java.sql.SQLException;
@@ -1051,7 +1055,7 @@ public class DeliveryController {
         DalDeliveryFormController delivery = DalDeliveryFormController.getInstance();
         DalTruckingReportController truckingReport = DalTruckingReportController.getInstance();
         LinkedList<DalItem> dalItems = dalItemController.load();
-        for (DalItem item : dalItems)                        // item list create
+        for ( DalItem item : dalItems)                        // item list create
             items.put(item.getID(), new Item(item));
         LinkedList<DalSite> dalSites = dsc.load();
         for (DalSite site : dalSites)                        // site list create
@@ -1144,21 +1148,21 @@ public class DeliveryController {
     }
 
     private void saveDeliveryFormDB(DeliveryForm df) throws SQLException {
-        DalDeliveryFormController.getInstance().insert(new DalDeliveryForm(df.getID(), df.getOrigin(), df.getDestination(), df.isCompleted(), df.getLeavingWeight(), df.getTrID()));
-        DalItemsOnDFController controller=DalItemsOnDFController.getInstance();
+        DalDeliveryFormController.getInstance().insert(new DalDeliveryForm (df.getID(), df.getOrigin(), df.getDestination(), df.isCompleted(), df.getLeavingWeight(), df.getTrID()));
+        DalItemsOnDFController controller= DalItemsOnDFController.getInstance();
         for (Map.Entry<Integer,Integer> entry:df.getItems().entrySet())
         {
-            controller.insert(new DalItemsOnDF(df.getID(),entry.getKey(),entry.getValue()));
+            controller.insert(new DalItemsOnDF (df.getID(),entry.getKey(),entry.getValue()));
         }
     }
 
     private void saveTruckReportDB(TruckingReport currTR) throws SQLException {
-        DalTruckingReportController.getInstance().insert(new DalTruckingReport(currTR.getID(), currTR.getLeavingHour(),
+        DalTruckingReportController.getInstance().insert(new DalTruckingReport (currTR.getID(), currTR.getLeavingHour(),
                 currTR.getDate(), currTR.getTruckNumber(), currTR.getDriverID(), currTR.getOrigin(), currTR.isCompleted(), currTR.getTRReplace()));
     }
 
     private void saveDemandDB(Demand demand) throws SQLException {
-        DalDemandController.getInstance().insert(new DalDemand(demand.getItemID(), demand.getAmount(), demand.getSite()));
+        DalDemandController.getInstance().insert(new DalDemand (demand.getItemID(), demand.getAmount(), demand.getSite()));
     }
 
     private void updateDemandDB(Demand demand) throws SQLException {
