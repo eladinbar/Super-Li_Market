@@ -1,6 +1,8 @@
-package DAL;
+package DAL.DalObjects_Trucking;
 
-public class DalSite implements DalObject{
+import DAL.DalObject;
+
+public class DalSite implements DalObject {
     private int siteID;
     private String name;
     private String city;

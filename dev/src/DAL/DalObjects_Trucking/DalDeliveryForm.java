@@ -1,6 +1,8 @@
-package DAL;
+package DAL.DalObjects_Trucking;
 
-public class DalDeliveryForm implements DalObject{
+import DAL.DalObject;
+
+public class DalDeliveryForm implements DalObject {
     private int ID;
     private int origin;
     private int destination;

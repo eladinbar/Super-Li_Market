@@ -1,7 +1,6 @@
 package Trucking.Business_Layer_Trucking.Delivery;
 
-import DAL.DalTruckingReport;
-import DAL.DalTruckingReportController;
+import DAL.DalObjects_Trucking.DalTruckingReport;
 
 import java.sql.SQLException;
 import java.time.LocalDate;

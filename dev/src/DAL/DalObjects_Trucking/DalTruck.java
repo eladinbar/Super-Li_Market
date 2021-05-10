@@ -1,6 +1,8 @@
-package DAL;
+package DAL.DalObjects_Trucking;
 
-public class DalTruck implements DalObject{
+import DAL.DalObject;
+
+public class DalTruck implements DalObject {
     private String licenseNumber;
     private String model;
     private int weightNeto;

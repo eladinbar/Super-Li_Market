@@ -1,14 +1,13 @@
 package Trucking.Business_Layer_Trucking.Resources;
 
-import DAL.DalDriver;
-import DAL.DalDriverController;
-import DAL.DalTruck;
-import DAL.DalTruckController;
+import DAL.DalObjects_Trucking.DalDriver;
+import DAL.DalControllers_Trucking.DalDriverController;
+import DAL.DalObjects_Trucking.DalTruck;
+import DAL.DalControllers_Trucking.DalTruckController;
 import Employees.EmployeeException;
 import Employees.business_layer.Shift.ShiftController;
 
 import javax.management.openmbean.KeyAlreadyExistsException;
-import java.awt.*;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -126,7 +125,7 @@ public class ResourcesController {
 
     }
 
-    private void addConstraint(String id, LocalDate date, Integer shift, HashMap<String, HashMap<LocalDate, Integer>> constraint_hash) {
+    private void addConstraint(String id, LocalDate date, Integer shift, HashMap<String, HashMap<LocalDate, Integer>> constraint_hash)throws IllegalArgumentException{
         String name;
         String obj;
         String idn;
@@ -136,7 +135,7 @@ public class ResourcesController {
             idn = "id";
         } else {
             name = "drivers";
-            idn = "license Number";
+            idn = "ID Number";
             obj = "Driver";
         }
         if (date.isBefore(LocalDate.now())) {
@@ -406,7 +405,7 @@ public class ResourcesController {
             Driver bDriver =  new Driver(driver);
             drivers.put(driver.getID(), bDriver);
             driversByLicense.add(bDriver);
-            trucks_constraints.put(driver.getID(), new HashMap<>());
+            drivers_constraints.put(driver.getID(), new HashMap<>());
         }
         for (Map.Entry<String,HashMap<LocalDate,Integer>> entry: driver_cons.entrySet()){
             for (Map.Entry<LocalDate, Integer> dates : entry.getValue().entrySet()) {

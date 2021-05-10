@@ -1,9 +1,12 @@
-package DAL;
+package DAL.DalControllers_Trucking;
+
+import DAL.DalController;
+import DAL.DalObjects_Trucking.DalItemsOnDF;
 
 import java.sql.*;
 import java.util.LinkedList;
 
-public class DalItemsOnDFController extends DalController{
+public class DalItemsOnDFController extends DalController {
 
     private static DalItemsOnDFController controller;
 

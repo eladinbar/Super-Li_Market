@@ -27,10 +27,36 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="05ca914f-9056-4de3-9869-7fdfaa880f2d" name="Default Changelist" comment="remove site bug fixed">
+    <list default="true" id="05ca914f-9056-4de3-9869-7fdfaa880f2d" name="Default Changelist" comment="Testing before big merge">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dev/src/DAL/DalItemsOnDFController.java" beforeDir="false" afterPath="$PROJECT_DIR$/dev/src/DAL/DalItemsOnDFController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dev/src/DAL/DalDeliveryForm.java" beforeDir="false" afterPath="$PROJECT_DIR$/dev/src/DAL/DalObjects_Trucking/DalDeliveryForm.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dev/src/DAL/DalDeliveryFormController.java" beforeDir="false" afterPath="$PROJECT_DIR$/dev/src/DAL/DalControllers_Trucking/DalDeliveryFormController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dev/src/DAL/DalDemand.java" beforeDir="false" afterPath="$PROJECT_DIR$/dev/src/DAL/DalObjects_Trucking/DalDemand.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dev/src/DAL/DalDemandController.java" beforeDir="false" afterPath="$PROJECT_DIR$/dev/src/DAL/DalControllers_Trucking/DalDemandController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dev/src/DAL/DalDriver.java" beforeDir="false" afterPath="$PROJECT_DIR$/dev/src/DAL/DalObjects_Trucking/DalDriver.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dev/src/DAL/DalDriverController.java" beforeDir="false" afterPath="$PROJECT_DIR$/dev/src/DAL/DalControllers_Trucking/DalDriverController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dev/src/DAL/DalItem.java" beforeDir="false" afterPath="$PROJECT_DIR$/dev/src/DAL/DalObjects_Trucking/DalItem.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dev/src/DAL/DalItemController.java" beforeDir="false" afterPath="$PROJECT_DIR$/dev/src/DAL/DalControllers_Trucking/DalItemController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dev/src/DAL/DalItemsOnDF.java" beforeDir="false" afterPath="$PROJECT_DIR$/dev/src/DAL/DalObjects_Trucking/DalItemsOnDF.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dev/src/DAL/DalItemsOnDFController.java" beforeDir="false" afterPath="$PROJECT_DIR$/dev/src/DAL/DalControllers_Trucking/DalItemsOnDFController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dev/src/DAL/DalSite.java" beforeDir="false" afterPath="$PROJECT_DIR$/dev/src/DAL/DalObjects_Trucking/DalSite.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dev/src/DAL/DalSiteController.java" beforeDir="false" afterPath="$PROJECT_DIR$/dev/src/DAL/DalControllers_Trucking/DalSiteController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dev/src/DAL/DalTruck.java" beforeDir="false" afterPath="$PROJECT_DIR$/dev/src/DAL/DalObjects_Trucking/DalTruck.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dev/src/DAL/DalTruckController.java" beforeDir="false" afterPath="$PROJECT_DIR$/dev/src/DAL/DalControllers_Trucking/DalTruckController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dev/src/DAL/DalTruckingReport.java" beforeDir="false" afterPath="$PROJECT_DIR$/dev/src/DAL/DalObjects_Trucking/DalTruckingReport.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dev/src/DAL/DalTruckingReportController.java" beforeDir="false" afterPath="$PROJECT_DIR$/dev/src/DAL/DalControllers_Trucking/DalTruckingReportController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dev/src/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/dev/src/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dev/src/Trucking/Business_Layer_Trucking/Delivery/DeliveryController.java" beforeDir="false" afterPath="$PROJECT_DIR$/dev/src/Trucking/Business_Layer_Trucking/Delivery/DeliveryController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dev/src/Trucking/Business_Layer_Trucking/Delivery/DeliveryForm.java" beforeDir="false" afterPath="$PROJECT_DIR$/dev/src/Trucking/Business_Layer_Trucking/Delivery/DeliveryForm.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dev/src/Trucking/Business_Layer_Trucking/Delivery/Demand.java" beforeDir="false" afterPath="$PROJECT_DIR$/dev/src/Trucking/Business_Layer_Trucking/Delivery/Demand.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dev/src/Trucking/Business_Layer_Trucking/Delivery/Item.java" beforeDir="false" afterPath="$PROJECT_DIR$/dev/src/Trucking/Business_Layer_Trucking/Delivery/Item.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dev/src/Trucking/Business_Layer_Trucking/Delivery/Site.java" beforeDir="false" afterPath="$PROJECT_DIR$/dev/src/Trucking/Business_Layer_Trucking/Delivery/Site.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dev/src/Trucking/Business_Layer_Trucking/Delivery/TruckingReport.java" beforeDir="false" afterPath="$PROJECT_DIR$/dev/src/Trucking/Business_Layer_Trucking/Delivery/TruckingReport.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dev/src/Trucking/Business_Layer_Trucking/Resources/Driver.java" beforeDir="false" afterPath="$PROJECT_DIR$/dev/src/Trucking/Business_Layer_Trucking/Resources/Driver.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dev/src/Trucking/Business_Layer_Trucking/Resources/ResourcesController.java" beforeDir="false" afterPath="$PROJECT_DIR$/dev/src/Trucking/Business_Layer_Trucking/Resources/ResourcesController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dev/src/Trucking/Business_Layer_Trucking/Resources/Truck.java" beforeDir="false" afterPath="$PROJECT_DIR$/dev/src/Trucking/Business_Layer_Trucking/Resources/Truck.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/dev/src/Trucking/Presentation_Layer_Trucking/Menu_Printer.java" beforeDir="false" afterPath="$PROJECT_DIR$/dev/src/Trucking/Presentation_Layer_Trucking/Menu_Printer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/ADSS_Group_G/Main.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/ADSS_Group_G/Main.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -166,13 +192,6 @@
       <workItem from="1619330774077" duration="12857000" />
       <workItem from="1619792461374" duration="1895000" />
       <workItem from="1619794411025" duration="473000" />
-    </task>
-    <task id="LOCAL-00010" summary="finished Facade layer and Presentation layer. waiting for combine with business layer to tests.&#10;&#10;** Unit test haven't done yet.&#10;** NTH didn't accomplished yet">
-      <created>1617379529536</created>
-      <option name="number" value="00010" />
-      <option name="presentableId" value="LOCAL-00010" />
-      <option name="project" value="LOCAL" />
-      <updated>1617379529536</updated>
     </task>
     <task id="LOCAL-00011" summary="after combine meeting.">
       <created>1617442640772</created>
@@ -510,7 +529,14 @@
       <option name="project" value="LOCAL" />
       <updated>1620642135155</updated>
     </task>
-    <option name="localTasksCounter" value="59" />
+    <task id="LOCAL-00059" summary="Testing before big merge">
+      <created>1620646778291</created>
+      <option name="number" value="00059" />
+      <option name="presentableId" value="LOCAL-00059" />
+      <option name="project" value="LOCAL" />
+      <updated>1620646778291</updated>
+    </task>
+    <option name="localTasksCounter" value="60" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -529,7 +555,6 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="date added to AddDemand" />
     <MESSAGE value="Finnally merged, re testing" />
     <MESSAGE value="first step test, passed" />
     <MESSAGE value="remove Demand has been added" />
@@ -554,63 +579,59 @@
     <MESSAGE value="ItemsOnDF updated + Foreign keys + delete calls" />
     <MESSAGE value="select method fixed" />
     <MESSAGE value="remove site bug fixed" />
-    <option name="LAST_COMMIT_MESSAGE" value="remove site bug fixed" />
+    <MESSAGE value="Testing before big merge" />
+    <option name="LAST_COMMIT_MESSAGE" value="Testing before big merge" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/dev/src/DAL/DalTruckingReportController.java</url>
+          <url>file://$PROJECT_DIR$/dev/src/DAL/DalControllers_Trucking/DalTruckingReportController.java</url>
           <line>32</line>
           <option name="timeStamp" value="1" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/dev/src/DAL/DalTruckingReportController.java</url>
+          <url>file://$PROJECT_DIR$/dev/src/DAL/DalControllers_Trucking/DalTruckingReportController.java</url>
           <line>106</line>
           <option name="timeStamp" value="7" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/dev/src/DAL/DalItemController.java</url>
+          <url>file://$PROJECT_DIR$/dev/src/DAL/DalControllers_Trucking/DalItemController.java</url>
           <line>28</line>
           <option name="timeStamp" value="13" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/dev/src/DAL/DalItemController.java</url>
+          <url>file://$PROJECT_DIR$/dev/src/DAL/DalControllers_Trucking/DalItemController.java</url>
           <line>54</line>
           <option name="timeStamp" value="14" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/dev/src/DAL/DalDemandController.java</url>
+          <url>file://$PROJECT_DIR$/dev/src/DAL/DalControllers_Trucking/DalDemandController.java</url>
           <line>117</line>
           <option name="timeStamp" value="18" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/dev/src/Trucking/Business_Layer_Trucking/Resources/Driver.java</url>
-          <line>43</line>
-          <option name="timeStamp" value="24" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/dev/src/DAL/DalDriverController.java</url>
+          <url>file://$PROJECT_DIR$/dev/src/DAL/DalControllers_Trucking/DalDriverController.java</url>
           <line>27</line>
           <option name="timeStamp" value="25" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/dev/src/DAL/DalDriverController.java</url>
+          <url>file://$PROJECT_DIR$/dev/src/DAL/DalControllers_Trucking/DalDriverController.java</url>
           <line>18</line>
           <option name="timeStamp" value="26" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/dev/src/DAL/DalDriverController.java</url>
+          <url>file://$PROJECT_DIR$/dev/src/DAL/DalControllers_Trucking/DalDriverController.java</url>
           <line>105</line>
           <option name="timeStamp" value="28" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/dev/src/Trucking/Business_Layer_Trucking/Resources/ResourcesController.java</url>
-          <line>403</line>
+          <line>402</line>
           <option name="timeStamp" value="39" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/dev/src/DAL/DalItemController.java</url>
+          <url>file://$PROJECT_DIR$/dev/src/DAL/DalControllers_Trucking/DalItemController.java</url>
           <line>78</line>
           <option name="timeStamp" value="48" />
         </line-breakpoint>
@@ -636,7 +657,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/dev/src/Trucking/Business_Layer_Trucking/Delivery/DeliveryController.java</url>
-          <line>617</line>
+          <line>618</line>
           <option name="timeStamp" value="57" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
@@ -644,17 +665,37 @@
           <line>966</line>
           <option name="timeStamp" value="59" />
         </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/dev/src/Trucking/Business_Layer_Trucking/Resources/ResourcesController.java</url>
+          <line>388</line>
+          <option name="timeStamp" value="64" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/dev/src/Trucking/Business_Layer_Trucking/Delivery/DeliveryController.java</url>
+          <line>1093</line>
+          <option name="timeStamp" value="65" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/dev/src/Trucking/Business_Layer_Trucking/Resources/ResourcesController.java</url>
+          <line>409</line>
+          <option name="timeStamp" value="69" />
+        </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
     <pin-to-top-manager>
       <pinned-members>
-        <PinnedItemInfo parentTag="java.lang.Integer" memberName="value" />
+        <PinnedItemInfo parentTag="Trucking.Business_Layer_Trucking.Delivery.DeliveryController" memberName="oldDeliveryForms" />
         <PinnedItemInfo parentTag="Business_Layer_Trucking.Delivery.DeliveryController" memberName="lastReportID" />
         <PinnedItemInfo parentTag="java.util.HashMap$Node" memberName="value" />
         <PinnedItemInfo parentTag="Business_Layer_Trucking.Delivery.DeliveryController" memberName="currDF" />
         <PinnedItemInfo parentTag="Business_Layer_Trucking.Facade.DeliveryService" memberName="dc" />
       </pinned-members>
     </pin-to-top-manager>
+    <watches-manager>
+      <configuration name="Application">
+        <watch expression="df.trID" />
+      </configuration>
+    </watches-manager>
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/Main_java$Main.ic" NAME="Main Coverage Results" MODIFIED="1620284345160" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />

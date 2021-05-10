@@ -1,7 +1,8 @@
 package Trucking.Business_Layer_Trucking.Delivery;
 
 
-import DAL.*;
+import DAL.DalControllers_Trucking.*;
+import DAL.DalObjects_Trucking.*;
 
 import javax.management.openmbean.KeyAlreadyExistsException;
 import java.sql.SQLException;
@@ -1103,6 +1104,13 @@ public class DeliveryController {
                 }
             }
         }
+        for (Map.Entry<Integer, LinkedList<DeliveryForm>> entry : oldDeliveryForms.entrySet()) {
+            for (DeliveryForm df : entry.getValue()) {
+                if (df.getID() == ID) {
+                    return df;
+                }
+            }
+        }
         return null;
     }
 
@@ -1124,6 +1132,7 @@ public class DeliveryController {
         for (Map.Entry<Integer, TruckingReport> entry : ids.entrySet()) {
             activeTruckingReports.remove(entry.getKey());
             oldDeliveryForms.put(entry.getKey(), new LinkedList<>());
+            activeDeliveryForms.remove(entry.getKey());
         }
     }
 

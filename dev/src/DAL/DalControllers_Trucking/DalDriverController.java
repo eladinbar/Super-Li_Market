@@ -1,9 +1,12 @@
-package DAL;
+package DAL.DalControllers_Trucking;
+
+import DAL.DalController;
+import DAL.DalObjects_Trucking.DalDriver;
 
 import java.sql.*;
 import java.util.LinkedList;
 
-public class DalDriverController extends DalController{
+public class DalDriverController extends DalController {
 
     private static DalDriverController controller;
 
@@ -103,7 +106,7 @@ public class DalDriverController extends DalController{
     public boolean createTable() throws SQLException {
         Connection conn = DriverManager.getConnection(connection);
         String query = "CREATE TABLE IF NOT EXISTS Drivers("
-                +"ID INTEGER,"
+                +"ID TEXT,"
                 +"name TEXT,"
                 +"license TEXT,"
                 +"PRIMARY KEY (ID));";

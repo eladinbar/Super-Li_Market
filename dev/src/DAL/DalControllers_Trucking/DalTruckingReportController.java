@@ -1,10 +1,12 @@
-package DAL;
+package DAL.DalControllers_Trucking;
 
+
+import DAL.DalController;
+import DAL.DalObjects_Trucking.DalTruckingReport;
 
 import java.sql.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
 import java.util.LinkedList;
 
 public class DalTruckingReportController extends DalController {
@@ -125,11 +127,11 @@ public class DalTruckingReportController extends DalController {
                 String s=resultSet.getString(2);
                 LocalTime lt=LocalTime.parse(resultSet.getString(2));
                 String s1=resultSet.getString(3);
-                DateTimeFormatter formatter=DateTimeFormatter.ofPattern("dd/MM/yyyy");
-                LocalDate ld=LocalDate.parse(s1,formatter);
+                //DateTimeFormatter formatter=DateTimeFormatter.ofPattern("yyyy-MM-dd");
+                LocalDate ld=LocalDate.parse(s1);
                 boolean completed=resultSet.getString(7).equals("1");
                 reports.add(new DalTruckingReport(resultSet.getInt(1),lt,ld,resultSet.getString(4),
-                        resultSet.getString(5),resultSet.getInt(6),completed,resultSet.getInt(7)));
+                        resultSet.getString(5),resultSet.getInt(6),completed,resultSet.getInt(8)));
             }
         }
         catch (SQLException e)

@@ -1,8 +1,9 @@
-package DAL;
+package DAL.DalControllers_Trucking;
+
+import DAL.DalController;
+import DAL.DalObjects_Trucking.DalDeliveryForm;
 
 import java.sql.*;
-import java.time.LocalDate;
-import java.time.LocalTime;
 import java.util.LinkedList;
 
 public class DalDeliveryFormController extends DalController {
@@ -112,8 +113,8 @@ public class DalDeliveryFormController extends DalController {
             {
                 boolean completed=resultSet.getString(4).equals("true");
                 reports.add(new DalDeliveryForm(resultSet.getInt(1),resultSet.getInt(2),
-                        resultSet.getInt(3),completed,resultSet.getInt(4),
-                        resultSet.getInt(5)));
+                        resultSet.getInt(3),completed,resultSet.getInt(5),
+                        resultSet.getInt(6)));
             }
         }
         catch (SQLException e)
