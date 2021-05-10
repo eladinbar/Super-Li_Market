@@ -1,19 +1,17 @@
 package Trucking.Business_Layer_Trucking.Resources;
 
-import DAL.DalDriver;
-import DAL.DalDriverController;
-import DAL.DalTruck;
-import DAL.DalTruckController;
+import DAL.DalObjects_Trucking.DalDriver;
+import DAL.DalControllers_Trucking.DalDriverController;
+import DAL.DalObjects_Trucking.DalTruck;
+import DAL.DalControllers_Trucking.DalTruckController;
 import Employees.EmployeeException;
 import Employees.business_layer.Shift.ShiftController;
 
 import javax.management.openmbean.KeyAlreadyExistsException;
-import java.awt.*;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.*;
-import java.util.List;
 
 public class ResourcesController {
     private HashMap<String, Driver> drivers;

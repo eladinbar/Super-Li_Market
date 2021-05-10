@@ -88,7 +88,7 @@ public class PresentationController {
         return true;
     }
 
-    private void handleManagerChoice(int choice){
+    private void handleManagerChoice(int choice) throws SQLException {
         switch (choice){
             case 1:
                 createWeeklyShiftSchedule ( );
@@ -145,7 +145,7 @@ public class PresentationController {
         }
     }
 
-    private void handleSimpleEmployeeChoice(int choice){
+    private void handleSimpleEmployeeChoice(int choice) throws SQLException {
         switch (choice){
             case 1:
                 getWeeklyShiftSchedule ( );
@@ -546,7 +546,7 @@ public class PresentationController {
         return true;
     }
 
-    private boolean login(boolean first) {
+    private boolean login(boolean first) throws SQLException {
         String id = menuPrinter.loginID ( );
         String role = menuPrinter.roleMenu ();
         int choice;
@@ -794,7 +794,7 @@ public class PresentationController {
         }
     }
 
-    private void getEmployeeByManager() {
+    private void getEmployeeByManager() throws SQLException {
         menuPrinter.print ( "Write the ID of the employee you would like to display: " );
         String ID = menuPrinter.getString ( );
         ResponseT<FacadeEmployee> employee = facadeService.getEmployee ( ID );
@@ -815,7 +815,7 @@ public class PresentationController {
             updateEmployee (employee.value, choice);
     }
 
-    private void updateEmployee(FacadeEmployee facadeEmployee, int choice) {
+    private void updateEmployee(FacadeEmployee facadeEmployee, int choice) throws SQLException {
         switch (choice){
             case 1:
                 removeEmployee (facadeEmployee.getID ());

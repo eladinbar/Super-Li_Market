@@ -40,7 +40,7 @@ public class EmployeeService {
         }
     }
 
-    public Response giveConstraint(LocalDate date, int shift, String reason) {
+    public Response giveConstraint(LocalDate date, int shift, String reason) throws SQLException {
         try{
             employeeController.giveConstraint(date, shift, reason);
             return new Response();
@@ -86,7 +86,7 @@ public class EmployeeService {
         try{
             return new ResponseT(new FacadeEmployee(employeeController.addManager(manager)));
         }
-        catch (EmployeeException e){
+        catch (EmployeeException | SQLException e){
             return new ResponseT(e.getMessage());
         }
     }
@@ -95,7 +95,7 @@ public class EmployeeService {
         try{
             return new ResponseT(new FacadeEmployee(employeeController.removeEmployee(Id)));
         }
-        catch (EmployeeException e){
+        catch (EmployeeException | SQLException e){
             return new ResponseT(e.getMessage());
         }
     }
