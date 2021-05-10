@@ -91,7 +91,7 @@ public class FacadeService {
         return employeeService.logout ();
     }
 
-    public Response giveConstraint(LocalDate date, int shift, String reason) {
+    public Response giveConstraint(LocalDate date, int shift, String reason) throws SQLException {
         return employeeService.giveConstraint (date, shift, reason );
     }
 

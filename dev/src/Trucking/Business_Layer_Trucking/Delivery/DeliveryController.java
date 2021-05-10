@@ -2,6 +2,9 @@ package Trucking.Business_Layer_Trucking.Delivery;
 
 
 import DAL.*;
+import DAL.DalControllers_Trucking.*;
+import DAL.DalItemsOnDF;
+import DAL.DalObjects_Trucking.*;
 
 import javax.management.openmbean.KeyAlreadyExistsException;
 import java.sql.SQLException;
@@ -240,7 +243,7 @@ public class DeliveryController {
         } else {
             Site s=sites.remove(siteID);
 
-            DalSiteController.getInstance().delete(new DalSite(siteID,s.getName(),s.getCity(),s.getDeliveryArea(),s.getContactName(),s.getPhoneNumber()));
+            DalSiteController.getInstance().delete(new DalSite (siteID,s.getName(),s.getCity(),s.getDeliveryArea(),s.getContactName(),s.getPhoneNumber()));
             for (Map.Entry<Integer, Item> entry : items.entrySet()) {
                 if (entry.getValue().getOriginSiteId() == siteID) {
                     removeItemFromPool(entry.getKey());
@@ -397,7 +400,7 @@ public class DeliveryController {
                 throw new IllegalStateException("Cant delete item when there is a demand with it");
         }
         Item i=items.remove(item);
-        DalItemController.getInstance().delete(new DalItem(item,i.getWeight(),i.getName(),i.getOriginSiteId()));
+        DalItemController.getInstance().delete(new DalItem (item,i.getWeight(),i.getName(),i.getOriginSiteId()));
     }
 
 
@@ -559,7 +562,7 @@ public class DeliveryController {
                         "please notice, if you proceed");
 
         }
-        DalDemandController.getInstance().insert(new DalDemand(itemId, amount, site));
+        DalDemandController.getInstance().insert(new DalDemand (itemId, amount, site));
 
 
     }

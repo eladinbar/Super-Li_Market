@@ -660,7 +660,7 @@ public class PresentationController {
         return true;
     }
 
-    private void giveConstraint() {
+    private void giveConstraint() throws SQLException {
         menuPrinter.print ( "Write the constraint detail:\n" );
         LocalDate date = menuPrinter.dateMenu ();
         if(date == null)

@@ -247,7 +247,7 @@ public class EmployeeController {
         if(Id.equals(loggedIn.getID())){ logout();}
         Employee fired = employees.get(Id);
         fired.setEmployed(false);
-        DalEmployeeController.getInstance ().update ( new DalEmployee ( Id, fired.getRole (), fired.getTransactionDate (), fired.getTerms ().getDaysOff (), fired.getTerms ().getSalary (), fired.getTerms ().getSickDays (), fired.getTerms ().getEducationFund (), fired.isEmployed ()) );
+        DalEmployeeController.getInstance ().update ( new DalEmployee ( Id, fired.getRole ().name (), fired.getTransactionDate (), fired.getTerms ().getDaysOff (), fired.getTerms ().getSalary (), fired.getTerms ().getSickDays (), fired.getTerms ().getEducationFund (), fired.isEmployed ()) );
         return employees.get(Id);
     }
 
