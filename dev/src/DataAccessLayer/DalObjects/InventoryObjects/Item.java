@@ -30,6 +30,16 @@ public class Item extends DalObject<Item> {
     private String storageLocation;
     private String categoryName;
 
+    public Item() {}
+
+    public Item(String categoryName) {
+        this.categoryName = categoryName;
+    }
+
+    public Item(int itemID) {
+        this.itemID = itemID;
+    }
+
     public Item(int itemID, String name, double costPrice, double sellingPrice, int manufacturerID, int minAmount,
                 int shelfQuantity, int storageQuantity, String shelfLocation, String storageLocation, String categoryName) throws SQLException {
         super(ItemDalController.getInstance());
@@ -46,7 +56,6 @@ public class Item extends DalObject<Item> {
         this.categoryName = categoryName;
     }
 
-    public Item(){}
     public int getItemID() {
         return itemID;
     }
@@ -55,95 +64,90 @@ public class Item extends DalObject<Item> {
         return name;
     }
 
-    public void setName(String name) throws SQLException {
+    public void setName(String name) {
         this.name = name;
-        controller.update(this);
     }
 
     public double getCostPrice() {
         return costPrice;
     }
 
-    public void setCostPrice(double costPrice) throws SQLException {
+    public void setCostPrice(double costPrice) {
         this.costPrice = costPrice;
-        controller.update(this);
     }
 
     public double getSellingPrice() {
         return sellingPrice;
     }
 
-    public void setSellingPrice(double sellingPrice) throws SQLException {
+    public void setSellingPrice(double sellingPrice) {
         this.sellingPrice = sellingPrice;
-        controller.update(this);
     }
 
     public int getManufacturerID() {
         return manufacturerID;
     }
 
-    public void setManufacturerID(int manufacturerID) throws SQLException {
+    public void setManufacturerID(int manufacturerID) {
         this.manufacturerID = manufacturerID;
-        controller.update(this);
     }
 
     public int getMinAmount() {
         return minAmount;
     }
 
-    public void setMinAmount(int minAmount) throws SQLException {
+    public void setMinAmount(int minAmount) {
         this.minAmount = minAmount;
-        controller.update(this);
     }
 
     public int getShelfQuantity() {
         return shelfQuantity;
     }
 
-    public void setShelfQuantity(int shelfQuantity) throws SQLException {
+    public void setShelfQuantity(int shelfQuantity) {
         this.shelfQuantity = shelfQuantity;
-        controller.update(this);
     }
 
     public int getStorageQuantity() {
         return storageQuantity;
     }
 
-    public void setStorageQuantity(int storageQuantity) throws SQLException {
+    public void setStorageQuantity(int storageQuantity) {
         this.storageQuantity = storageQuantity;
-        controller.update(this);
     }
 
     public String getShelfLocation() {
         return shelfLocation;
     }
 
-    public void setShelfLocation(String shelfLocation) throws SQLException {
+    public void setShelfLocation(String shelfLocation) {
         this.shelfLocation = shelfLocation;
-        controller.update(this);
     }
 
     public String getStorageLocation() {
         return storageLocation;
     }
 
-    public void setStorageLocation(String storageLocation) throws SQLException {
+    public void setStorageLocation(String storageLocation) {
         this.storageLocation = storageLocation;
-        controller.update(this);
     }
 
     public String getCategoryName() {
         return categoryName;
     }
 
-    public void setCategoryName(String categoryName) throws SQLException {
+    public void setCategoryName(String categoryName) {
         this.categoryName = categoryName;
-        controller.update(this);
     }
 
     public void setItemID(int itemID) throws SQLException {
         int oldId = this.itemID;
         this.itemID = itemID;
-        controller.update(this, oldId);
+        try {
+            controller.update(this);
+        } catch (SQLException ex) {
+            this.itemID = oldId;
+            throw ex;
+        }
     }
 }

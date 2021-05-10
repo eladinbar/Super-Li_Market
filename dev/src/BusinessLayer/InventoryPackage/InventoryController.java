@@ -9,9 +9,9 @@ import BusinessLayer.InventoryPackage.SalePackage.CategorySale;
 import BusinessLayer.InventoryPackage.SalePackage.ItemSale;
 import BusinessLayer.InventoryPackage.SalePackage.Sale;
 
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 
 public class InventoryController {
@@ -30,50 +30,64 @@ public class InventoryController {
 
     //-------------------------------------------------------------------------Item functions
 
-    public void addItem(int id, String name, String categoryName, double costPrice, double sellingPrice, int minAmount,
-                     String shelfLocation, String storageLocation, int storageQuantity, int shelfQuantity, int manufacturerId, List<String> suppliersIds) {
-        //If categoryName is empty or null, add item with the base category
-        if (categoryName == null || categoryName.trim().equals("")) {
-            Item newItem = new Item(id, name, costPrice, sellingPrice, minAmount, manufacturerId, suppliersIds,
-                    shelfQuantity, storageQuantity, shelfLocation, storageLocation);
-            BASE_CATEGORY.addItem(newItem);
-            return;
-        }
-
-        //Determine the appropriate category in which to add the new item
-        Category itemCategory = null;
-        for (Category category : categories) {
-            if (category.getName().equals(categoryName))
-                itemCategory = category;
-            for (Item item : category.getItems()) {
-                if (item.getID() == id)
-                    throw new IllegalArgumentException("An item with ID: " + id + " already exists in the system.");
-            }
-        }
-
-        //If 'itemCategory' is still 'null' no category with the given name exists in the system
-        if (itemCategory == null)
+    public void addItem(int id, String name, String categoryName, double costPrice, double sellingPrice, int minAmount, String shelfLocation, String storageLocation,
+                        int storageQuantity, int shelfQuantity, int manufacturerId, List<String> suppliersIds) {
+        Category itemCategory;
+        try {
+            itemCategory = getCategory(categoryName);
+        } catch(IllegalArgumentException ex) {
             throw new IllegalArgumentException("No category with name: " + categoryName + " was found in the system.");
+        }
+        try {
+            getItem(id, itemCategory);
+            throw new IllegalArgumentException("An item with ID: " + id + " already exists in the system.");
+        } catch (IllegalArgumentException ex) {
+            //No item with 'id' found - continue
+        }
 
         //Create a new item with the given attributes and add it to the appropriate category
         Item newItem = new Item(id, name, costPrice, sellingPrice, minAmount, manufacturerId, suppliersIds,
-                                shelfQuantity, storageQuantity, shelfLocation, storageLocation);
-        itemCategory.addItem(newItem);
+                shelfQuantity, storageQuantity, shelfLocation, storageLocation);
+        try {
+            newItem.save(itemCategory.getName());
+            itemCategory.addItem(newItem);
+        } catch (SQLException ex) {
+            throw new RuntimeException("Something went wrong.");
+        }
     }
 
     public Item getItem(int itemId) {
+        Item item;
         for (Category category : categories) {
-            for (Item item : category.getItems()) {
-                if (item.getID() == itemId)
-                    return item;
-            }
+            item = getItem(itemId, category);
+            if (item != null)
+                return item;
         }
         //Check in base category as well
-        for (Item item : BASE_CATEGORY.getItems()) {
+        item = getItem(itemId, BASE_CATEGORY);
+        if (item != null)
+            return item;
+
+        //Retrieve from database
+        Item savedItem = new Item(itemId);
+        boolean found;
+        try {
+            found = savedItem.find();
+        } catch (SQLException ex) {
+            throw new RuntimeException("Something went wrong.");
+        }
+        if (found)
+            return savedItem;
+
+        throw new IllegalArgumentException("No item with ID: " + itemId + " was found in the system.");
+    }
+
+    private Item getItem(int itemId, Category category) {
+        for (Item item : category.getItems()) {
             if (item.getID() == itemId)
                 return item;
         }
-        throw new IllegalArgumentException("No item with ID: " + itemId + " was found in the system.");
+        return null;
     }
 
     public Category getItemCategory(int itemId) {
@@ -88,6 +102,21 @@ public class InventoryController {
             if (item.getID() == itemId)
                 return BASE_CATEGORY;
         }
+
+        //Retrieve from database
+//        Item savedItem
+//        Category savedCategory = new Category(categoryName);
+//        boolean found;
+//        try {
+//            found = savedCategory.find();
+//        } catch (SQLException ex) {
+//            throw new RuntimeException("Something went wrong.");
+//        }
+//        if (found) {
+//            categories.add(savedCategory); //Add to RAM
+//            return savedCategory;
+//        }
+        
         throw new IllegalArgumentException("No item with ID: " + itemId + " was found in the system.");
     }
 
@@ -111,6 +140,11 @@ public class InventoryController {
                 if (newCategoryName.trim().equals("") | newCategoryName.trim().equals("Uncategorized"))
                     return; //Item is already in the base category
                 else {
+                    try {
+                        item.delete(); //Remove item with outdated category from database
+                    } catch (SQLException ex) {
+                        throw new RuntimeException("Something went wrong");
+                    }
                     BASE_CATEGORY.removeItem(item);
                     oldCategory = BASE_CATEGORY; //Save old category in case new category does not exist for rollback
                 }
@@ -128,6 +162,11 @@ public class InventoryController {
                     if (category.getName().equals(newCategoryName))
                         return; //Item is already in the given category
                     else {
+                        try {
+                            item.delete(); //Remove item with outdated category from database
+                        } catch (SQLException ex) {
+                            throw new RuntimeException("Something went wrong");
+                        }
                         category.removeItem(item);
                         oldCategory = category; //Save old category in case new category does not exist for rollback
                     }
@@ -136,21 +175,42 @@ public class InventoryController {
                 }
             }
             if (count == categories.size() & newCategory == null) {
-                if (oldCategory != null)
+                if (oldCategory != null) {
+                    try {
+                        modItem.save(oldCategory.getName());
+                    } catch (SQLException ex) {
+                        throw new RuntimeException("Something went wrong");
+                    }
                     oldCategory.addItem(modItem); //Rollback item category modification
+                }
                 throw new IllegalArgumentException("No category with name: " + newCategoryName + " was found in the system");
             }
             if (modItem != null & newCategory != null) {
+                try {
+                    modItem.save(oldCategory.getName());
+                } catch (SQLException ex) {
+                    throw new RuntimeException("Something went wrong");
+                }
                 newCategory.addItem(modItem);
                 return; //Item was successfully modified
             }
         }
         if (count == categories.size() & newCategory == null) {
             if (oldCategory != null)
+                try {
+                    modItem.save(oldCategory.getName());
+                } catch (SQLException ex) {
+                    throw new RuntimeException("Something went wrong");
+                }
                 oldCategory.addItem(modItem); //Rollback item category modification
             throw new IllegalArgumentException("No category with name: " + newCategoryName + " was found in the system");
         }
         if (modItem != null & newCategory != null) {
+            try {
+                modItem.save(oldCategory.getName());
+            } catch (SQLException ex) {
+                throw new RuntimeException("Something went wrong");
+            }
             newCategory.addItem(modItem);
             return; //Item was successfully modified
         }
@@ -200,8 +260,14 @@ public class InventoryController {
     public void removeItem(int itemId) {
         for (Category category : categories) {
             for (Item item : category.getItems()) {
-                if (item.getID() == itemId)
+                if (item.getID() == itemId) {
+                    try {
+                        item.delete();
+                    } catch (SQLException ex) {
+                        throw new RuntimeException("Something went wrong.");
+                    }
                     category.removeItem(item);
+                }
             }
         }
         throw new IllegalArgumentException("No item with ID: " + itemId + " was found in the system.");
@@ -229,6 +295,11 @@ public class InventoryController {
                 for (Category parentCategory : categories) {
                     if (parentCategory.getName().equals(parentCategoryName)) {
                         newCategory = new Category(categoryName, new ArrayList<>(), parentCategory, new ArrayList<>());
+                        try {
+                            newCategory.save();
+                        } catch (SQLException e) {
+                            throw new RuntimeException("Something went wrong.");
+                        }
                         categories.add(newCategory);
                         parentCategory.addSubCategory(newCategory);
                         return;
@@ -239,6 +310,11 @@ public class InventoryController {
             else {
                 //If parent category is null or empty, add new category with "Uncategorized" as its parent category
                 newCategory = new Category(categoryName, new ArrayList<>(), BASE_CATEGORY, new ArrayList<>());
+                try {
+                    newCategory.save();
+                } catch (SQLException e) {
+                    throw new RuntimeException("Something went wrong.");
+                }
                 categories.add(newCategory);
             }
         }
@@ -252,12 +328,32 @@ public class InventoryController {
             if (category.getName().equals(categoryName))
                 return category;
         }
+        
+        //Retrieve from database
+        Category savedCategory = new Category(categoryName);
+        boolean found;
+        try {
+            found = savedCategory.find();
+        } catch (SQLException ex) {
+            throw new RuntimeException("Something went wrong.");
+        }
+        if (found) {
+            categories.add(savedCategory);
+            categories.addAll(savedCategory.getSubCategories());
+            categories.add(savedCategory.getParentCategory());
+            return savedCategory;
+        }
+        
         throw new IllegalArgumentException("No category with name: " + categoryName + " was found in the system.");
     }
 
     public void modifyCategoryName(String oldName, String newName) {
         Category category = getCategory(oldName);
-        category.setName(newName);
+        try {
+            category.setName(newName);
+        } catch (SQLException ex) {
+            throw new RuntimeException("Something went wrong.");
+        }
     }
 
     public void changeParentCategory(String categoryName, String newParentName) {
@@ -270,8 +366,9 @@ public class InventoryController {
             return;
 
         //If newParentName is null or empty, set parent category as base category
-        if (newParentName == null || newParentName.trim().equals("") | newParentName.trim().equals("Uncategorized"))
+        if (newParentName == null || newParentName.trim().equals("") | newParentName.trim().equals("Uncategorized")) {
             category.setParentCategory(BASE_CATEGORY);
+        }
         //Else, check whether the given newParentName is a valid parent category to 'category'
         else {
             Category parentCategory = getCategory(newParentName);
@@ -292,7 +389,7 @@ public class InventoryController {
     }
 
     /*
-    when the category is removed all its sub categories move to the parent category.
+    When the category is removed all its sub categories move to the parent category.
      */
     public void removeCategory(String categoryName) {
         if (categoryName == null || categoryName.trim().equals("") | categoryName.trim().equals("Uncategorized"))
@@ -301,12 +398,27 @@ public class InventoryController {
         Category oldCategory = getCategory(categoryName);
         Category parentCategory = oldCategory.getParentCategory();
         for (Item item : oldCategory.getItems()) {
+            try {
+                item.delete();
+            } catch (SQLException ex) {
+                throw new RuntimeException("Something went wrong.");
+            }
+            try {
+                item.save(oldCategory.getName());
+            } catch (SQLException ex) {
+                throw new RuntimeException("Something went wrong.");
+            }
             parentCategory.addItem(item);
             oldCategory.removeItem(item);
         }
         for(Category subCategory : oldCategory.getSubCategories()) {
             parentCategory.addSubCategory(subCategory);
             oldCategory.removeSubCategory(subCategory);
+        }
+        try {
+            oldCategory.delete();
+        } catch (SQLException ex) {
+            throw new RuntimeException("Something went wrong.");
         }
         categories.remove(oldCategory);
     }
@@ -324,6 +436,11 @@ public class InventoryController {
                 throw ex; //Rethrow exception thrown in 'try' block (different error message)
 
             ItemSale newSale = new ItemSale(saleName, saleDiscount, startDate, endDate, item);
+            try {
+                newSale.save();
+            } catch (SQLException e) {
+                throw new RuntimeException("Something went wrong.");
+            }
             sales.add(newSale);
         }
     }
@@ -338,6 +455,11 @@ public class InventoryController {
                 throw ex; //Rethrow exception thrown in 'try' block (different error message)
 
             CategorySale newSale = new CategorySale(saleName, saleDiscount, startDate, endDate, getCategory(categoryName));
+            try {
+                newSale.save();
+            } catch (SQLException e) {
+                throw new RuntimeException("Something went wrong.");
+            }
             sales.add(newSale);
         }
     }
@@ -347,6 +469,33 @@ public class InventoryController {
             if (sale.getName().equals(saleName))
                 return sale;
         }
+
+        //Retrieve from database
+        CategorySale savedCategorySale = new CategorySale(saleName);
+        boolean found;
+        try {
+            found = savedCategorySale.find();
+        } catch (SQLException ex) {
+            throw new RuntimeException("Something went wrong.");
+        }
+        if (found) {
+            savedCategorySale.setCategory(getCategory(savedCategorySale.getCategory().getName()));
+            sales.add(savedCategorySale);
+            return savedCategorySale;
+        }
+
+        ItemSale savedItemSale = new ItemSale(saleName);
+        try {
+            found = savedItemSale.find();
+        } catch (SQLException ex) {
+            throw new RuntimeException("Something went wrong.");
+        }
+        if (found) {
+            savedItemSale.setItem(getItem(savedItemSale.getItem().getID()));
+            sales.add(savedItemSale);
+            return savedItemSale;
+        }
+
         throw new IllegalArgumentException("No sale with name: " + saleName + " was found in the system.");
     }
 

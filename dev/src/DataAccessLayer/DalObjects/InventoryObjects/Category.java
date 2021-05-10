@@ -12,6 +12,10 @@ public class Category extends DalObject<Category> {
     private String name;
     private String parentName;
 
+    public Category(String name) {
+        this.name = name;
+    }
+
     public Category(String name, String parentName) throws SQLException {
         super(CategoryDalController.getInstance());
         this.name = name;
@@ -26,14 +30,18 @@ public class Category extends DalObject<Category> {
         return parentName;
     }
 
-    public void setParentName(String parentName) throws SQLException {
+    public void setParentName(String parentName) {
         this.parentName = parentName;
-        controller.update(this);
     }
 
     public void setName(String name) throws SQLException {
         String oldName = this.name;
         this.name = name;
-        controller.update(this, oldName);
+        try {
+            controller.update(this, oldName);
+        } catch (SQLException ex) {
+            this.name = oldName;
+            throw ex;
+        }
     }
 }

@@ -32,18 +32,16 @@ public class DefectEntry extends DalObject<DefectEntry> {
         return location;
     }
 
-    public void setLocation(String location) throws SQLException {
+    public void setLocation(String location) {
         this.location = location;
-        controller.update(this);
     }
 
     public int getQuantity() {
         return quantity;
     }
 
-    public void setQuantity(int quantity) throws SQLException {
+    public void setQuantity(int quantity) {
         this.quantity = quantity;
-        controller.update(this);
     }
 
     public int getItemID() {
@@ -53,12 +51,22 @@ public class DefectEntry extends DalObject<DefectEntry> {
     public void setEntryDate(String entryDate) throws SQLException {
         String oldEntryDate = this.entryDate;
         this.entryDate = entryDate;
-        controller.update(this, oldEntryDate);
+        try {
+            controller.update(this, oldEntryDate);
+        } catch (SQLException ex) {
+            this.entryDate = entryDate;
+            throw ex;
+        }
     }
 
     public void setItemID(int itemID) throws SQLException {
         int oldId = this.itemID;
         this.itemID = itemID;
-        controller.update(this, oldId);
+        try {
+            controller.update(this, oldId);
+        } catch (SQLException ex) {
+            this.itemID = itemID;
+            throw ex;
+        }
     }
 }
