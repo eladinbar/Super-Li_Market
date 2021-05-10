@@ -13,7 +13,7 @@ public class DalEmployeeController extends DalController {
     public DalEmployeeController() throws SQLException{
         super();
             tableName = "EMPLOYEES";
-            columnNames = new String[] {"ID","ROLE", "TRANSACTIONDATE",  "DAYS OFF", "SALARY", "SICK  DAYS", "EDUCATION FUND"};
+            columnNames = new String[] {"ID","ROLE", "TRANSACTIONDATE",  "DAYS OFF", "SALARY", "SICK  DAYS", "EDUCATION FUND", "EMPLOYED"};
             try{
                 createTable();
             }
@@ -33,6 +33,7 @@ public class DalEmployeeController extends DalController {
                 +"SALARY INTEGER,"
                 +"SICKDAYS INTEGER,"
                 +"EDUCATIONFUND INTEGER,"
+                +"EMPLOYED INTEGER,"
                 +"PRIMARY KEY (ID));";
         try {
             PreparedStatement st=conn.prepareStatement(query);
@@ -56,7 +57,7 @@ public class DalEmployeeController extends DalController {
         //TODO - change URL
         System.out.println("starting insert");
         Connection conn= DriverManager.getConnection("jdbc:sqlite:Desktop\\database_nitoz.db");
-        String query= "INSERT INTO "+tableName+" VALUES (?,?,?,?,?,?,?)";
+        String query= "INSERT INTO "+tableName+" VALUES (?,?,?,?,?,?,?,?)";
         try{
             PreparedStatement st=conn.prepareStatement(query);
             st.setString(1,dalEmployee.getId());
@@ -66,6 +67,9 @@ public class DalEmployeeController extends DalController {
             st.setInt(5, dalEmployee.getSalary());
             st.setInt(6, dalEmployee.getSickDays());
             st.setInt(7, dalEmployee.getEducationFund());
+            int bool = 0;
+            if(dalEmployee.getEmployed()) {bool =1;}
+            st.setInt(8,bool);
 
             System.out.println("executing insert");
             st.executeUpdate();
@@ -85,7 +89,7 @@ public class DalEmployeeController extends DalController {
 
     public boolean update(DalEmployee dalEmployee) throws SQLException {
         Connection conn=DriverManager.getConnection("jdbc:sqlite:Desktop\\database_nitoz.db");
-        String query="UPDATE "+tableName+" SET "+columnNames[0]+"=?"+columnNames[1]+"=?, "+columnNames[2]+"=?, "+columnNames[3]+"=?, "+columnNames[4]+"=?, "+columnNames[5]+"=?, "+columnNames[6]+"=?, WHERE ("+columnNames[0]+"=?)";
+        String query="UPDATE "+tableName+" SET "+columnNames[0]+"=?"+columnNames[1]+"=?, "+columnNames[2]+"=?, "+columnNames[3]+"=?, "+columnNames[4]+"=?, "+columnNames[5]+"=?, "+columnNames[6]+"=?"+columnNames[7]+"=?, WHERE ("+columnNames[0]+"=?)";
         try{
             PreparedStatement st=conn.prepareStatement(query);
             st.setString(1,dalEmployee.getId());
@@ -94,7 +98,11 @@ public class DalEmployeeController extends DalController {
             st.setInt(4,dalEmployee.getDaysOff());
             st.setInt(5, dalEmployee.getSalary());
             st.setInt(6, dalEmployee.getSickDays());
-            st.setInt(7, dalEmployee.getEducationFund());
+            int bool = 0;
+            if(dalEmployee.getEmployed()) {bool =1;}
+            st.setInt(7, bool);
+            st.setInt(8, dalEmployee.getEducationFund());
+
 
             st.executeUpdate();
 
@@ -134,8 +142,10 @@ public class DalEmployeeController extends DalController {
             while (resultSet.next()) {
                 Date date = resultSet.getDate(3);
                 LocalDate lDate = date.toLocalDate();
+                boolean employed = true;
+                if(resultSet.getInt(8)==0){employed=false;}
                 employees.add(new DalEmployee(resultSet.getString(1),resultSet.getString(2),
-                       lDate,resultSet.getInt(4), resultSet.getInt(5) , resultSet.getInt(6), resultSet.getInt(7) )
+                       lDate,resultSet.getInt(4), resultSet.getInt(5) , resultSet.getInt(6), resultSet.getInt(7), employed )
                 );
             }
         } catch (SQLException e) {
