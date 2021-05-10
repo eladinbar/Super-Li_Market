@@ -32,7 +32,7 @@ public class Category {
         return name;
     }
 
-    public void setName(String name) throws SQLException {
+    public void setName(String name) {
         dalCopyCategory.setName(name); //Primary Key fields auto-update and auto-check
         this.name = name;
 
@@ -71,6 +71,10 @@ public class Category {
 
     public void addSubCategory(Category subCategory) {
         this.subCategories.add(subCategory);
+    }
+
+    public void addSubCategories(List<Category> subCategories) {
+        this.subCategories.addAll(subCategories);
     }
 
     public void removeSubCategory(Category subCategory) {
@@ -122,6 +126,31 @@ public class Category {
             throw new RuntimeException("Something went wrong.");
         }
 
+        return found;
+    }
+
+    public boolean find(List<Category> categories, String parentName) {
+        boolean found;
+        try {
+            List<DataAccessLayer.DalObjects.InventoryObjects.Category> dalCopyCategories = new ArrayList<>();
+            dalCopyCategory = new DataAccessLayer.DalObjects.InventoryObjects.Category(null);
+            dalCopyCategory.setParentName(parentName);
+
+            found = dalCopyCategory.find(dalCopyCategories); //Retrieves DAL Category from the database
+            //Set the fields according to the retrieved data
+            if (found) {
+                for (DataAccessLayer.DalObjects.InventoryObjects.Category category : dalCopyCategories) {
+                    List<Item> savedItems = new ArrayList<>();
+                    Item item = new Item();
+                    item.find(savedItems, category.getName());
+                    Category savedCategory = new Category(category.getName(), savedItems, new Category(category.getParentName()), new ArrayList<>());
+
+                    categories.add(savedCategory);
+                }
+            }
+        } catch (SQLException ex) {
+            throw new RuntimeException("Something went wrong.");
+        }
         return found;
     }
 }

@@ -172,6 +172,10 @@ public class Item {
         }
     }
 
+    DataAccessLayer.DalObjects.InventoryObjects.Item getDalCopyItem() {
+        return dalCopyItem;
+    }
+
     public void save(String categoryName) {
         try {
             dalCopyItem = new DataAccessLayer.DalObjects.InventoryObjects.Item(ID, name, costPrice, sellingPrice, manufacturerID, minAmount,

@@ -12,6 +12,8 @@ public class Category extends DalObject<Category> {
     private String name;
     private String parentName;
 
+    public Category() {}
+
     public Category(String name) {
         this.name = name;
     }
