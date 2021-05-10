@@ -106,7 +106,7 @@ public class DalDriverController extends DalController {
     public boolean createTable() throws SQLException {
         Connection conn = DriverManager.getConnection(connection);
         String query = "CREATE TABLE IF NOT EXISTS Drivers("
-                +"ID INTEGER,"
+                +"ID TEXT,"
                 +"name TEXT,"
                 +"license TEXT,"
                 +"PRIMARY KEY (ID));";

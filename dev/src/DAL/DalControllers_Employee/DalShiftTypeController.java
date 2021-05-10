@@ -15,8 +15,8 @@ public class DalShiftTypeController extends DalController {
 
     private DalShiftTypeController()throws SQLException{
         super();
-        tableName = "SHIFT";
-        columnNames = new String[] {"EMPLOYEEID",  "TYPE","DATE", "SHIFT"};
+        tableName = "SHIFTTYPES";
+        columnNames = new String[] {"AMOUNT", "TYPE", "ROLE"};
         try{
             createTable();
         }

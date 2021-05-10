@@ -2,6 +2,7 @@ package DAL.DalControllers_Trucking;
 
 import DAL.DalController;
 import DAL.DalObjects_Trucking.DalTruck;
+
 import java.sql.*;
 import java.util.LinkedList;
 
@@ -13,7 +14,7 @@ public class DalTruckController extends DalController {
         super();
         this.tableName="Trucks";
         this.columnNames=new String[4];
-        columnNames[1]="model"; columnNames[0]="licenseNumber";columnNames[2]="weightNeto";
+        columnNames[1]="model";columnNames[0]="licenseNumber";columnNames[2]="weightNeto";
         columnNames[3]="maxWeight";}
 
     public static DalTruckController getInstance() throws SQLException {
@@ -95,7 +96,7 @@ public class DalTruckController extends DalController {
             PreparedStatement st = conn.prepareStatement(query);
             ResultSet resultSet = st.executeQuery();
             while (resultSet.next()) {
-                trucks.add(new DalTruck(resultSet.getString(1),resultSet.getString(2),
+                trucks.add(new DalTruck(resultSet.getString(2),resultSet.getString(1),
                         resultSet.getInt(3),resultSet.getInt(4)                    )
                 );
             }

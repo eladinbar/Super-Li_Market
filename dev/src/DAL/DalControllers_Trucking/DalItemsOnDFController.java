@@ -1,8 +1,7 @@
 package DAL.DalControllers_Trucking;
 
 import DAL.DalController;
-import DAL.DalItemsOnDF;
-
+import DAL.DalObjects_Trucking.DalItemsOnDF;
 
 import java.sql.*;
 import java.util.LinkedList;

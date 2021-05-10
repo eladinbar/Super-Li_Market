@@ -1,7 +1,41 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="ArtifactsWorkspaceSettings">
+    <artifacts-to-build>
+      <artifact name="ADSS_Group_G:jar" />
+    </artifacts-to-build>
+  </component>
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="BranchesTreeState">
+    <expand>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="LOCAL_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="REMOTE_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="REMOTE_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="GROUP_NODE:origin" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+    </expand>
+    <select />
+  </component>
   <component name="ChangeListManager">
-    <list default="true" id="81ce0887-8b24-4737-8b90-9f78e7d4770c" name="Default Changelist" comment="" />
+    <list default="true" id="05ca914f-9056-4de3-9869-7fdfaa880f2d" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/sqlite_jdbc_3_32_3_2.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ADSS_Group_G.iml" beforeDir="false" afterPath="$PROJECT_DIR$/ADSS_Group_G.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dev/src/DAL/DalControllers_Employee/DalBankBranchController.java" beforeDir="false" afterPath="$PROJECT_DIR$/dev/src/DAL/DalControllers_Employee/DalBankBranchController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dev/src/DAL/DalControllers_Employee/DalShiftTypeController.java" beforeDir="false" afterPath="$PROJECT_DIR$/dev/src/DAL/DalControllers_Employee/DalShiftTypeController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dev/src/Employees/business_layer/Shift/ShiftController.java" beforeDir="false" afterPath="$PROJECT_DIR$/dev/src/Employees/business_layer/Shift/ShiftController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dev/src/Employees/presentation_layer/PresentationController.java" beforeDir="false" afterPath="$PROJECT_DIR$/dev/src/Employees/presentation_layer/PresentationController.java" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -10,29 +44,15 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
+        <option value="Interface" />
         <option value="Class" />
       </list>
     </option>
   </component>
   <component name="Git.Settings">
-    <favorite-branches>
-      <branch-storage>
-        <map>
-          <entry type="REMOTE">
-            <value>
-              <list>
-                <branch-info repo="$PROJECT_DIR$" source="origin/2.2Employees" />
-                <branch-info repo="$PROJECT_DIR$" source="origin/ayala-businassL" />
-                <branch-info repo="$PROJECT_DIR$" source="origin/ayala-presentation" />
-              </list>
-            </value>
-          </entry>
-        </map>
-      </branch-storage>
-    </favorite-branches>
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="2.2Employees" />
+        <entry key="$PROJECT_DIR$" value="DAL-Raz" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -52,28 +72,37 @@
   <component name="ProblemsViewState">
     <option name="selectedIndex" value="1" />
   </component>
-  <component name="ProjectId" id="1s7aVbJPf0UZ0ZsEfDnwNZEoJHQ" />
+  <component name="ProjectId" id="1pchlU42Bar4qov9F42Tsf9ACy9" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent">
+    <property name="Downloaded.Files.Path.Enabled" value="false" />
     <property name="Git.Branch.Popup.ShowAllRemotes" value="true" />
+    <property name="Repository.Attach.Annotations" value="false" />
+    <property name="Repository.Attach.JavaDocs" value="false" />
+    <property name="Repository.Attach.Sources" value="false" />
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="node.js.detected.package.eslint" value="true" />
-    <property name="node.js.detected.package.tslint" value="true" />
-    <property name="node.js.selected.package.eslint" value="(autodetect)" />
+    <property name="extract.method.default.visibility" value="private" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/dev/src/sqlite-jdbc-3.32.3.2.jar" />
     <property name="node.js.selected.package.tslint" value="(autodetect)" />
+    <property name="nodejs_package_manager_path" value="npm" />
+    <property name="project.structure.last.edited" value="Libraries" />
+    <property name="project.structure.proportion" value="0.15332031" />
+    <property name="project.structure.side.proportion" value="0.2" />
+    <property name="settings.editor.selected.configurable" value="preferences.lookFeel" />
   </component>
   <component name="RecentsManager">
-    <key name="CreateClassDialog.RecentsKey">
-      <recent name="Employees" />
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\razba\Desktop\ADSS_Group_G" />
     </key>
   </component>
-  <component name="RunManager">
+  <component name="RunManager" selected="Application.Main">
     <configuration name="Main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="Main" />
       <module name="ADSS_Group_G" />
@@ -81,274 +110,580 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration default="true" type="ArquillianTestNG" factoryName="" nameIsGenerated="true">
+    <configuration default="true" type="ArquillianJUnit" factoryName="" nameIsGenerated="true">
       <option name="arquillianRunConfiguration">
         <value>
           <option name="containerStateName" value="" />
         </value>
       </option>
-      <option name="TEST_OBJECT" value="CLASS" />
-      <properties />
-      <listeners />
+      <option name="TEST_OBJECT" value="class" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="ResourcesServiceTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="ADSS_Group_G" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="Tests.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="Tests" />
+      <option name="MAIN_CLASS_NAME" value="Tests.ResourcesServiceTest" />
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="ADSS_Group_G.jar" type="JarApplication" temporary="true">
+      <option name="JAR_PATH" value="$PROJECT_DIR$/out/artifacts/ADSS_Group_G_jar/ADSS_Group_G.jar" />
+      <method v="2" />
+    </configuration>
     <recent_temporary>
       <list>
         <item itemvalue="Application.Main" />
+        <item itemvalue="JUnit.ResourcesServiceTest" />
+        <item itemvalue="JAR Application.ADSS_Group_G.jar" />
         <item itemvalue="Application.Main" />
-        <item itemvalue="Application.Main" />
+        <item itemvalue="JUnit.ResourcesServiceTest" />
       </list>
     </recent_temporary>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="81ce0887-8b24-4737-8b90-9f78e7d4770c" name="Default Changelist" comment="" />
-      <created>1620226113349</created>
+      <changelist id="05ca914f-9056-4de3-9869-7fdfaa880f2d" name="Default Changelist" comment="" />
+      <created>1615488437162</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
-      <updated>1620226113349</updated>
-      <workItem from="1620226115138" duration="12000" />
-      <workItem from="1620226295678" duration="2352000" />
+      <updated>1615488437162</updated>
+      <workItem from="1615488447919" duration="335000" />
+      <workItem from="1615658425420" duration="293000" />
+      <workItem from="1617021253314" duration="31710000" />
+      <workItem from="1617283946638" duration="32036000" />
+      <workItem from="1617441029503" duration="7267000" />
+      <workItem from="1617459116634" duration="79000" />
+      <workItem from="1617544285290" duration="6673000" />
+      <workItem from="1617559642726" duration="25025000" />
+      <workItem from="1617779133098" duration="119952000" />
+      <workItem from="1617992472850" duration="2656000" />
+      <workItem from="1618208518753" duration="178000" />
+      <workItem from="1618825989222" duration="904000" />
+      <workItem from="1619330774077" duration="12857000" />
+      <workItem from="1619792461374" duration="1895000" />
+      <workItem from="1619794411025" duration="473000" />
     </task>
-    <task id="LOCAL-00001" summary="merging tests">
-      <created>1620227247282</created>
-      <option name="number" value="00001" />
-      <option name="presentableId" value="LOCAL-00001" />
-      <option name="project" value="LOCAL" />
-      <updated>1620227247283</updated>
-    </task>
-    <task id="LOCAL-00002" summary="getDaysAndDrivers&#10;addDriverToShift&#10;isDriverAssigned&#10;driver  and truckingManager in role">
-      <created>1620251048815</created>
-      <option name="number" value="00002" />
-      <option name="presentableId" value="LOCAL-00002" />
-      <option name="project" value="LOCAL" />
-      <updated>1620251048815</updated>
-    </task>
-    <task id="LOCAL-00003" summary="make sure no exceptions in the constructors">
-      <created>1620254041414</created>
-      <option name="number" value="00003" />
-      <option name="presentableId" value="LOCAL-00003" />
-      <option name="project" value="LOCAL" />
-      <updated>1620254041414</updated>
-    </task>
-    <task id="LOCAL-00004" summary="kosher super - cannot edit shifts in friday evening and saturday morning">
-      <created>1620254460870</created>
-      <option name="number" value="00004" />
-      <option name="presentableId" value="LOCAL-00004" />
-      <option name="project" value="LOCAL" />
-      <updated>1620254460870</updated>
-    </task>
-    <task id="LOCAL-00005" summary="when employee gives constraint - if it is a driver sends the details to Raz&amp;Ido">
-      <created>1620281038048</created>
-      <option name="number" value="00005" />
-      <option name="presentableId" value="LOCAL-00005" />
-      <option name="project" value="LOCAL" />
-      <updated>1620281038048</updated>
-    </task>
-    <task id="LOCAL-00006" summary="adding a driver - get a name and send details to Raz&amp;Ido">
-      <created>1620281794164</created>
-      <option name="number" value="00006" />
-      <option name="presentableId" value="LOCAL-00006" />
-      <option name="project" value="LOCAL" />
-      <updated>1620281794164</updated>
-    </task>
-    <task id="LOCAL-00007" summary="note when creating a shift without a shift manager">
-      <created>1620282853014</created>
-      <option name="number" value="00007" />
-      <option name="presentableId" value="LOCAL-00007" />
-      <option name="project" value="LOCAL" />
-      <updated>1620282853014</updated>
-    </task>
-    <task id="LOCAL-00008" summary="shift creating - no drivers without store keeper">
-      <created>1620285755883</created>
-      <option name="number" value="00008" />
-      <option name="presentableId" value="LOCAL-00008" />
-      <option name="project" value="LOCAL" />
-      <updated>1620285755883</updated>
-    </task>
-    <task id="LOCAL-00009" summary="create data - add driver">
-      <created>1620301473454</created>
-      <option name="number" value="00009" />
-      <option name="presentableId" value="LOCAL-00009" />
-      <option name="project" value="LOCAL" />
-      <updated>1620301473454</updated>
-    </task>
-    <task id="LOCAL-00010" summary="shift options - only 0,1,2&#10;date - checking if it is sunday&#10;login - trucking manager&#10;logout and login right after">
-      <created>1620306858187</created>
-      <option name="number" value="00010" />
-      <option name="presentableId" value="LOCAL-00010" />
-      <option name="project" value="LOCAL" />
-      <updated>1620306858187</updated>
-    </task>
-    <task id="LOCAL-00011" summary="\n">
-      <created>1620307883965</created>
-      <option name="number" value="00011" />
-      <option name="presentableId" value="LOCAL-00011" />
-      <option name="project" value="LOCAL" />
-      <updated>1620307883965</updated>
-    </task>
-    <task id="LOCAL-00012" summary="fixing add driver">
-      <created>1620515564506</created>
-      <option name="number" value="00012" />
-      <option name="presentableId" value="LOCAL-00012" />
-      <option name="project" value="LOCAL" />
-      <updated>1620515564506</updated>
-    </task>
-    <task id="LOCAL-00013" summary="transaction date and driverC - C and not 120000">
-      <created>1620543914691</created>
+    <task id="LOCAL-00013" summary="** compilation error exist. need to add getItems in Delivery service">
+      <created>1617449982865</created>
       <option name="number" value="00013" />
       <option name="presentableId" value="LOCAL-00013" />
       <option name="project" value="LOCAL" />
-      <updated>1620543914691</updated>
+      <updated>1617449982865</updated>
     </task>
-    <task id="LOCAL-00014" summary="addDriver in beginning of program">
-      <created>1620548822722</created>
+    <task id="LOCAL-00014" summary="Facade objects has been completed">
+      <created>1617549120191</created>
       <option name="number" value="00014" />
       <option name="presentableId" value="LOCAL-00014" />
       <option name="project" value="LOCAL" />
-      <updated>1620548822722</updated>
+      <updated>1617549120191</updated>
     </task>
-    <task id="LOCAL-00015" summary="create data - also the current week">
-      <created>1620562810124</created>
+    <task id="LOCAL-00015" summary="merged before tests">
+      <created>1617557389459</created>
       <option name="number" value="00015" />
       <option name="presentableId" value="LOCAL-00015" />
       <option name="project" value="LOCAL" />
-      <updated>1620562810124</updated>
+      <updated>1617557389459</updated>
     </task>
-    <task id="LOCAL-00016" summary="create data - also the current week">
-      <created>1620563395806</created>
+    <task id="LOCAL-00016" summary="First test has been done - ido left to do Menu test.&#10;Raz has left with everything else because he is such a dick&#10;Love you raz">
+      <created>1617566004636</created>
       <option name="number" value="00016" />
       <option name="presentableId" value="LOCAL-00016" />
       <option name="project" value="LOCAL" />
-      <updated>1620563395806</updated>
+      <updated>1617566004636</updated>
     </task>
-    <task id="LOCAL-00017" summary="create data and upload clean">
-      <created>1620566467616</created>
+    <task id="LOCAL-00017" summary="fixed input exceptions">
+      <created>1617711142345</created>
       <option name="number" value="00017" />
       <option name="presentableId" value="LOCAL-00017" />
       <option name="project" value="LOCAL" />
-      <updated>1620566467616</updated>
+      <updated>1617711142345</updated>
     </task>
-    <task id="LOCAL-00018" summary="back in each menu">
-      <created>1620570994642</created>
+    <task id="LOCAL-00018" summary="initalize test method has been improved. String scanner exception has been cought">
+      <created>1617715420665</created>
       <option name="number" value="00018" />
       <option name="presentableId" value="LOCAL-00018" />
       <option name="project" value="LOCAL" />
-      <updated>1620570994642</updated>
+      <updated>1617715420665</updated>
     </task>
-    <task id="LOCAL-00019" summary="bank account - key">
-      <created>1620596190194</created>
+    <task id="LOCAL-00019" summary="TODO has been added to both branche's job">
+      <created>1617715973615</created>
       <option name="number" value="00019" />
       <option name="presentableId" value="LOCAL-00019" />
       <option name="project" value="LOCAL" />
-      <updated>1620596190194</updated>
+      <updated>1617715973615</updated>
     </task>
-    <task id="LOCAL-00020" summary="merging">
-      <created>1620631920095</created>
+    <task id="LOCAL-00020" summary="DF active has been added">
+      <created>1617782711922</created>
       <option name="number" value="00020" />
       <option name="presentableId" value="LOCAL-00020" />
       <option name="project" value="LOCAL" />
-      <updated>1620631920095</updated>
+      <updated>1617782711922</updated>
     </task>
-    <task id="LOCAL-00021" summary="load Employees">
-      <created>1620633475131</created>
+    <task id="LOCAL-00021" summary="DF active has been added">
+      <created>1617783487004</created>
       <option name="number" value="00021" />
       <option name="presentableId" value="LOCAL-00021" />
       <option name="project" value="LOCAL" />
-      <updated>1620633475131</updated>
+      <updated>1617783487004</updated>
     </task>
-    <task id="LOCAL-00022" summary="loadData - service">
-      <created>1620634381374</created>
+    <task id="LOCAL-00022" summary="updateDeliveryForm has been added">
+      <created>1617788487524</created>
       <option name="number" value="00022" />
       <option name="presentableId" value="LOCAL-00022" />
       <option name="project" value="LOCAL" />
-      <updated>1620634381374</updated>
+      <updated>1617788487524</updated>
     </task>
-    <task id="LOCAL-00023" summary="getEmployeeId">
-      <created>1620636364270</created>
+    <task id="LOCAL-00023" summary="updateDeliveryForm has been added">
+      <created>1617794617070</created>
       <option name="number" value="00023" />
       <option name="presentableId" value="LOCAL-00023" />
       <option name="project" value="LOCAL" />
-      <updated>1620636364271</updated>
+      <updated>1617794617070</updated>
     </task>
-    <task id="LOCAL-00024" summary="save and delete db - employye, constraint">
-      <created>1620637401231</created>
+    <task id="LOCAL-00024" summary="updateDeliveryForm has been added">
+      <created>1617797511295</created>
       <option name="number" value="00024" />
       <option name="presentableId" value="LOCAL-00024" />
       <option name="project" value="LOCAL" />
-      <updated>1620637401231</updated>
+      <updated>1617797511296</updated>
     </task>
-    <task id="LOCAL-00025" summary="update and delete - constraint">
-      <created>1620641290986</created>
+    <task id="LOCAL-00025" summary="menu printer has been updated, all exception catched">
+      <created>1617827344959</created>
       <option name="number" value="00025" />
       <option name="presentableId" value="LOCAL-00025" />
       <option name="project" value="LOCAL" />
-      <updated>1620641290986</updated>
+      <updated>1617827344959</updated>
     </task>
-    <task id="LOCAL-00026" summary="before merge">
-      <created>1620645791154</created>
+    <task id="LOCAL-00026" summary="menu printer has been updated, all exception catched">
+      <created>1617830902413</created>
       <option name="number" value="00026" />
       <option name="presentableId" value="LOCAL-00026" />
       <option name="project" value="LOCAL" />
-      <updated>1620645791154</updated>
+      <updated>1617830902413</updated>
     </task>
-    <option name="localTasksCounter" value="27" />
+    <task id="LOCAL-00027" summary="menu printer has been updated, all exception catched">
+      <created>1617865506806</created>
+      <option name="number" value="00027" />
+      <option name="presentableId" value="LOCAL-00027" />
+      <option name="project" value="LOCAL" />
+      <updated>1617865506806</updated>
+    </task>
+    <task id="LOCAL-00028" summary="menu printer has been updated, all exception catched">
+      <created>1617866516208</created>
+      <option name="number" value="00028" />
+      <option name="presentableId" value="LOCAL-00028" />
+      <option name="project" value="LOCAL" />
+      <updated>1617866516208</updated>
+    </task>
+    <task id="LOCAL-00029" summary="menu printer method has been updated">
+      <created>1617867431184</created>
+      <option name="number" value="00029" />
+      <option name="presentableId" value="LOCAL-00029" />
+      <option name="project" value="LOCAL" />
+      <updated>1617867431184</updated>
+    </task>
+    <task id="LOCAL-00030" summary="remove site from pool option added">
+      <created>1617868967243</created>
+      <option name="number" value="00030" />
+      <option name="presentableId" value="LOCAL-00030" />
+      <option name="project" value="LOCAL" />
+      <updated>1617868967243</updated>
+    </task>
+    <task id="LOCAL-00031" summary="date added to AddDemand">
+      <created>1617873405041</created>
+      <option name="number" value="00031" />
+      <option name="presentableId" value="LOCAL-00031" />
+      <option name="project" value="LOCAL" />
+      <updated>1617873405041</updated>
+    </task>
+    <task id="LOCAL-00032" summary="Finnally merged, re testing">
+      <created>1617875911735</created>
+      <option name="number" value="00032" />
+      <option name="presentableId" value="LOCAL-00032" />
+      <option name="project" value="LOCAL" />
+      <updated>1617875911735</updated>
+    </task>
+    <task id="LOCAL-00033" summary="Finnally merged, re testing">
+      <created>1617888225427</created>
+      <option name="number" value="00033" />
+      <option name="presentableId" value="LOCAL-00033" />
+      <option name="project" value="LOCAL" />
+      <updated>1617888225427</updated>
+    </task>
+    <task id="LOCAL-00034" summary="first step test, passed">
+      <created>1617893615283</created>
+      <option name="number" value="00034" />
+      <option name="presentableId" value="LOCAL-00034" />
+      <option name="project" value="LOCAL" />
+      <updated>1617893615283</updated>
+    </task>
+    <task id="LOCAL-00035" summary="remove Demand has been added">
+      <created>1617899185018</created>
+      <option name="number" value="00035" />
+      <option name="presentableId" value="LOCAL-00035" />
+      <option name="project" value="LOCAL" />
+      <updated>1617899185018</updated>
+    </task>
+    <task id="LOCAL-00036" summary="remove Demand has been added">
+      <created>1617902532984</created>
+      <option name="number" value="00036" />
+      <option name="presentableId" value="LOCAL-00036" />
+      <option name="project" value="LOCAL" />
+      <updated>1617902532984</updated>
+    </task>
+    <task id="LOCAL-00037" summary="replan to be improved">
+      <created>1617930237681</created>
+      <option name="number" value="00037" />
+      <option name="presentableId" value="LOCAL-00037" />
+      <option name="project" value="LOCAL" />
+      <updated>1617930237681</updated>
+    </task>
+    <task id="LOCAL-00038" summary="all method save finnnalyyy">
+      <created>1617983734990</created>
+      <option name="number" value="00038" />
+      <option name="presentableId" value="LOCAL-00038" />
+      <option name="project" value="LOCAL" />
+      <updated>1617983734990</updated>
+    </task>
+    <task id="LOCAL-00039" summary="finished to upload">
+      <created>1617986325475</created>
+      <option name="number" value="00039" />
+      <option name="presentableId" value="LOCAL-00039" />
+      <option name="project" value="LOCAL" />
+      <updated>1617986325475</updated>
+    </task>
+    <task id="LOCAL-00040" summary="Fixed intiate method">
+      <created>1617987095296</created>
+      <option name="number" value="00040" />
+      <option name="presentableId" value="LOCAL-00040" />
+      <option name="project" value="LOCAL" />
+      <updated>1617987095296</updated>
+    </task>
+    <task id="LOCAL-00041" summary="last update">
+      <created>1617992627648</created>
+      <option name="number" value="00041" />
+      <option name="presentableId" value="LOCAL-00041" />
+      <option name="project" value="LOCAL" />
+      <updated>1617992627648</updated>
+    </task>
+    <task id="LOCAL-00042" summary="Started DAL">
+      <created>1619871948236</created>
+      <option name="number" value="00042" />
+      <option name="presentableId" value="LOCAL-00042" />
+      <option name="project" value="LOCAL" />
+      <updated>1619871948236</updated>
+    </task>
+    <task id="LOCAL-00043" summary="Started DAL - Constructors , Load method signature changed.">
+      <created>1619887030042</created>
+      <option name="number" value="00043" />
+      <option name="presentableId" value="LOCAL-00043" />
+      <option name="project" value="LOCAL" />
+      <updated>1619887030042</updated>
+    </task>
+    <task id="LOCAL-00044" summary="DalTruckingReportController insert method made.">
+      <created>1619971196521</created>
+      <option name="number" value="00044" />
+      <option name="presentableId" value="LOCAL-00044" />
+      <option name="project" value="LOCAL" />
+      <updated>1619971196521</updated>
+    </task>
+    <task id="LOCAL-00045" summary="DAL Trucking classes almost done!">
+      <created>1620068815332</created>
+      <option name="number" value="00045" />
+      <option name="presentableId" value="LOCAL-00045" />
+      <option name="project" value="LOCAL" />
+      <updated>1620068815332</updated>
+    </task>
+    <task id="LOCAL-00046" summary="DAL Load &amp; delete methods working">
+      <created>1620238888479</created>
+      <option name="number" value="00046" />
+      <option name="presentableId" value="LOCAL-00046" />
+      <option name="project" value="LOCAL" />
+      <updated>1620238888480</updated>
+    </task>
+    <task id="LOCAL-00047" summary="DAL insert&amp; update methods has been made. Time to test">
+      <created>1620289584903</created>
+      <option name="number" value="00047" />
+      <option name="presentableId" value="LOCAL-00047" />
+      <option name="project" value="LOCAL" />
+      <updated>1620289584904</updated>
+    </task>
+    <task id="LOCAL-00048" summary="Little fix in TruckController">
+      <created>1620367911739</created>
+      <option name="number" value="00048" />
+      <option name="presentableId" value="LOCAL-00048" />
+      <option name="project" value="LOCAL" />
+      <updated>1620367911739</updated>
+    </task>
+    <task id="LOCAL-00049" summary="upload method for DC">
+      <created>1620376554747</created>
+      <option name="number" value="00049" />
+      <option name="presentableId" value="LOCAL-00049" />
+      <option name="project" value="LOCAL" />
+      <updated>1620376554747</updated>
+    </task>
+    <task id="LOCAL-00050" summary="upload method for RC">
+      <created>1620378566312</created>
+      <option name="number" value="00050" />
+      <option name="presentableId" value="LOCAL-00050" />
+      <option name="project" value="LOCAL" />
+      <updated>1620378566312</updated>
+    </task>
+    <task id="LOCAL-00051" summary="completed field changed to int">
+      <created>1620382663504</created>
+      <option name="number" value="00051" />
+      <option name="presentableId" value="LOCAL-00051" />
+      <option name="project" value="LOCAL" />
+      <updated>1620382663504</updated>
+    </task>
+    <task id="LOCAL-00052" summary="TODO regard singleton added!">
+      <created>1620392242208</created>
+      <option name="number" value="00052" />
+      <option name="presentableId" value="LOCAL-00052" />
+      <option name="project" value="LOCAL" />
+      <updated>1620392242209</updated>
+    </task>
+    <task id="LOCAL-00053" summary="Singleton and delete methods fixed in all DallControllers">
+      <created>1620505069747</created>
+      <option name="number" value="00053" />
+      <option name="presentableId" value="LOCAL-00053" />
+      <option name="project" value="LOCAL" />
+      <updated>1620505069748</updated>
+    </task>
+    <task id="LOCAL-00054" summary="Code for creating tables has been added. Need to test">
+      <created>1620574149838</created>
+      <option name="number" value="00054" />
+      <option name="presentableId" value="LOCAL-00054" />
+      <option name="project" value="LOCAL" />
+      <updated>1620574149839</updated>
+    </task>
+    <task id="LOCAL-00055" summary="Code for creating tables has been added. Need to test">
+      <created>1620601782743</created>
+      <option name="number" value="00055" />
+      <option name="presentableId" value="LOCAL-00055" />
+      <option name="project" value="LOCAL" />
+      <updated>1620601782743</updated>
+    </task>
+    <task id="LOCAL-00056" summary="ItemsOnDF updated + Foreign keys + delete calls">
+      <created>1620634530415</created>
+      <option name="number" value="00056" />
+      <option name="presentableId" value="LOCAL-00056" />
+      <option name="project" value="LOCAL" />
+      <updated>1620634530415</updated>
+    </task>
+    <task id="LOCAL-00057" summary="select method fixed">
+      <created>1620636724831</created>
+      <option name="number" value="00057" />
+      <option name="presentableId" value="LOCAL-00057" />
+      <option name="project" value="LOCAL" />
+      <updated>1620636724831</updated>
+    </task>
+    <task id="LOCAL-00058" summary="remove site bug fixed">
+      <created>1620642135155</created>
+      <option name="number" value="00058" />
+      <option name="presentableId" value="LOCAL-00058" />
+      <option name="project" value="LOCAL" />
+      <updated>1620642135155</updated>
+    </task>
+    <task id="LOCAL-00059" summary="Testing before big merge">
+      <created>1620646778291</created>
+      <option name="number" value="00059" />
+      <option name="presentableId" value="LOCAL-00059" />
+      <option name="project" value="LOCAL" />
+      <updated>1620646778291</updated>
+    </task>
+    <task id="LOCAL-00060" summary="using mainMenu">
+      <created>1620660976762</created>
+      <option name="number" value="00060" />
+      <option name="presentableId" value="LOCAL-00060" />
+      <option name="project" value="LOCAL" />
+      <updated>1620660976762</updated>
+    </task>
+    <task id="LOCAL-00061" summary="load data from trucking">
+      <created>1620661982292</created>
+      <option name="number" value="00061" />
+      <option name="presentableId" value="LOCAL-00061" />
+      <option name="project" value="LOCAL" />
+      <updated>1620661982292</updated>
+    </task>
+    <option name="localTasksCounter" value="62" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="merging tests" />
-    <MESSAGE value="getDaysAndDrivers&#10;addDriverToShift&#10;isDriverAssigned&#10;driver  and truckingManager in role" />
-    <MESSAGE value="make sure no exceptions in the constructors" />
-    <MESSAGE value="kosher super - cannot edit shifts in friday evening and saturday morning" />
-    <MESSAGE value="when employee gives constraint - if it is a driver sends the details to Raz&amp;Ido" />
-    <MESSAGE value="adding a driver - get a name and send details to Raz&amp;Ido" />
-    <MESSAGE value="note when creating a shift without a shift manager" />
-    <MESSAGE value="shift creating - no drivers without store keeper" />
-    <MESSAGE value="create data - add driver" />
-    <MESSAGE value="shift options - only 0,1,2&#10;date - checking if it is sunday&#10;login - trucking manager&#10;logout and login right after" />
-    <MESSAGE value="\n" />
-    <MESSAGE value="fixing add driver" />
-    <MESSAGE value="transaction date and driverC - C and not 120000" />
-    <MESSAGE value="addDriver in beginning of program" />
-    <MESSAGE value="create data - also the current week" />
-    <MESSAGE value="create data and upload clean" />
-    <MESSAGE value="back in each menu" />
-    <MESSAGE value="bank account - key" />
-    <MESSAGE value="merging" />
-    <MESSAGE value="load Employees" />
-    <MESSAGE value="loadData - service" />
-    <MESSAGE value="getEmployeeId" />
-    <MESSAGE value="save and delete db - employye, constraint" />
-    <MESSAGE value="update and delete - constraint" />
-    <MESSAGE value="before merge" />
-    <option name="LAST_COMMIT_MESSAGE" value="before merge" />
+    <MESSAGE value="remove Demand has been added" />
+    <MESSAGE value="replan to be improved" />
+    <MESSAGE value="all method save finnnalyyy" />
+    <MESSAGE value="finished to upload" />
+    <MESSAGE value="Fixed intiate method" />
+    <MESSAGE value="last update" />
+    <MESSAGE value="Started DAL" />
+    <MESSAGE value="Started DAL - Constructors , Load method signature changed." />
+    <MESSAGE value="DalTruckingReportController insert method made." />
+    <MESSAGE value="DAL Trucking classes almost done!" />
+    <MESSAGE value="DAL Load &amp; delete methods working" />
+    <MESSAGE value="DAL insert&amp; update methods has been made. Time to test" />
+    <MESSAGE value="Little fix in TruckController" />
+    <MESSAGE value="upload method for DC" />
+    <MESSAGE value="upload method for RC" />
+    <MESSAGE value="completed field changed to int" />
+    <MESSAGE value="TODO regard singleton added!" />
+    <MESSAGE value="Singleton and delete methods fixed in all DallControllers" />
+    <MESSAGE value="Code for creating tables has been added. Need to test" />
+    <MESSAGE value="ItemsOnDF updated + Foreign keys + delete calls" />
+    <MESSAGE value="select method fixed" />
+    <MESSAGE value="remove site bug fixed" />
+    <MESSAGE value="Testing before big merge" />
+    <MESSAGE value="using mainMenu" />
+    <MESSAGE value="load data from trucking" />
+    <option name="LAST_COMMIT_MESSAGE" value="load data from trucking" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/dev/src/Employees/business_layer/facade/ShiftService.java</url>
-          <line>98</line>
+          <url>file://$PROJECT_DIR$/dev/src/DAL/DalControllers_Trucking/DalTruckingReportController.java</url>
+          <line>32</line>
           <option name="timeStamp" value="1" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/dev/src/DAL/DalControllers_Trucking/DalTruckingReportController.java</url>
+          <line>106</line>
+          <option name="timeStamp" value="7" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/dev/src/DAL/DalControllers_Trucking/DalItemController.java</url>
+          <line>28</line>
+          <option name="timeStamp" value="13" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/dev/src/DAL/DalControllers_Trucking/DalItemController.java</url>
+          <line>54</line>
+          <option name="timeStamp" value="14" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/dev/src/DAL/DalControllers_Trucking/DalDemandController.java</url>
+          <line>117</line>
+          <option name="timeStamp" value="18" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/dev/src/DAL/DalControllers_Trucking/DalDriverController.java</url>
+          <line>27</line>
+          <option name="timeStamp" value="25" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/dev/src/DAL/DalControllers_Trucking/DalDriverController.java</url>
+          <line>18</line>
+          <option name="timeStamp" value="26" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/dev/src/DAL/DalControllers_Trucking/DalDriverController.java</url>
+          <line>105</line>
+          <option name="timeStamp" value="28" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/dev/src/Trucking/Business_Layer_Trucking/Resources/ResourcesController.java</url>
+          <line>402</line>
+          <option name="timeStamp" value="39" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/dev/src/DAL/DalControllers_Trucking/DalItemController.java</url>
+          <line>78</line>
+          <option name="timeStamp" value="48" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/dev/src/Trucking/Presentation_Layer_Trucking/Menu_Printer.java</url>
+          <line>940</line>
+          <option name="timeStamp" value="49" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/dev/src/Trucking/Business_Layer_Trucking/Facade/FacadeService.java</url>
-          <line>37</line>
-          <option name="timeStamp" value="3" />
+          <line>293</line>
+          <option name="timeStamp" value="50" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/dev/src/Trucking/Presentation_Layer_Trucking/Menu_Printer.java</url>
+          <line>969</line>
+          <option name="timeStamp" value="55" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/dev/src/Trucking/Presentation_Layer_Trucking/Menu_Printer.java</url>
+          <line>961</line>
+          <option name="timeStamp" value="56" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/dev/src/Trucking/Business_Layer_Trucking/Delivery/DeliveryController.java</url>
+          <line>618</line>
+          <option name="timeStamp" value="57" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/dev/src/Trucking/Presentation_Layer_Trucking/Menu_Printer.java</url>
+          <line>966</line>
+          <option name="timeStamp" value="59" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/dev/src/Trucking/Business_Layer_Trucking/Resources/ResourcesController.java</url>
+          <line>388</line>
+          <option name="timeStamp" value="64" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/dev/src/Trucking/Business_Layer_Trucking/Delivery/DeliveryController.java</url>
+          <line>1093</line>
+          <option name="timeStamp" value="65" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/dev/src/Trucking/Business_Layer_Trucking/Resources/ResourcesController.java</url>
+          <line>409</line>
+          <option name="timeStamp" value="69" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/dev/src/DAL/DalControllers_Trucking/DalItemController.java</url>
+          <line>112</line>
+          <option name="timeStamp" value="70" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/dev/src/DAL/DalControllers_Employee/DalShiftController.java</url>
+          <line>29</line>
+          <option name="timeStamp" value="71" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/dev/src/Employees/business_layer/Shift/ShiftController.java</url>
+          <line>287</line>
+          <option name="timeStamp" value="72" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
     <pin-to-top-manager>
       <pinned-members>
+        <PinnedItemInfo parentTag="Trucking.Business_Layer_Trucking.Delivery.DeliveryController" memberName="oldDeliveryForms" />
         <PinnedItemInfo parentTag="java.lang.Integer" memberName="value" />
         <PinnedItemInfo parentTag="Business_Layer_Trucking.Delivery.DeliveryController" memberName="lastReportID" />
         <PinnedItemInfo parentTag="java.util.HashMap$Node" memberName="value" />
@@ -358,6 +693,7 @@
     </pin-to-top-manager>
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
+    <SUITE FILE_PATH="coverage/Main_java$Main.ic" NAME="Main Coverage Results" MODIFIED="1620284345160" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
     <SUITE FILE_PATH="coverage/ADSS_Group_G$Main.ic" NAME="Main Coverage Results" MODIFIED="1617982326074" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
   </component>
 </project>

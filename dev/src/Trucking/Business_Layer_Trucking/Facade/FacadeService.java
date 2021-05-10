@@ -19,12 +19,12 @@ public class FacadeService {
     private DeliveryService deliveryService;
     private ResourcesService resourcesService;
     private FacadeTruckingReport currTR;
-    private static FacadeService instance =null;
+    private static FacadeService instance = null;
 
 
-    private FacadeService(){
-        deliveryService =  DeliveryService.getInstance();
-        resourcesService =   ResourcesService.getInstance();
+    private FacadeService() {
+        deliveryService = DeliveryService.getInstance();
+        resourcesService = ResourcesService.getInstance();
     }
 
     public static FacadeService getInstance() {
@@ -35,17 +35,16 @@ public class FacadeService {
 
     public void createTruckingReport() throws SQLException {
         int id = deliveryService.createTruckingReport();
-        currTR =  new FacadeTruckingReport(id);
+        currTR = new FacadeTruckingReport(id);
 
     }
 
 
-    public FacadeTruck chooseTruck(String truck,LocalDate date , LocalTime shift) throws NoSuchElementException, IllegalStateException, SQLException {
-        int weightToDeliver=deliveryService.getWeightOfCurrReport();
-        FacadeTruck ft =  new FacadeTruck(resourcesService.chooseTruck(truck,date,turnTimeToShift(shift)));
-        if (weightToDeliver+ ft.getWeightNeto()>ft.getMaxWeight())
-        {
-            throw new IllegalStateException("Total Weight is: "+(weightToDeliver+ft.getWeightNeto())+" But Truck can carry: "+ft.getMaxWeight());
+    public FacadeTruck chooseTruck(String truck, LocalDate date, LocalTime shift) throws NoSuchElementException, IllegalStateException, SQLException {
+        int weightToDeliver = deliveryService.getWeightOfCurrReport();
+        FacadeTruck ft = new FacadeTruck(resourcesService.chooseTruck(truck, date, turnTimeToShift(shift)));
+        if (weightToDeliver + ft.getWeightNeto() > ft.getMaxWeight()) {
+            throw new IllegalStateException("Total Weight is: " + (weightToDeliver + ft.getWeightNeto()) + " But Truck can carry: " + ft.getMaxWeight());
         }
 
         currTR.setTruckNumber(ft.getLicenseNumber());
@@ -55,21 +54,20 @@ public class FacadeService {
 
 
     public FacadeDemand addDemandToReport(int item_number, int supplyAmount, int siteID) throws IllegalStateException, IllegalArgumentException, SQLException {
-        return deliveryService.addDemandToReport(item_number,supplyAmount , siteID);
+        return deliveryService.addDemandToReport(item_number, supplyAmount, siteID);
     }
 
 
+    public FacadeDriver chooseDriver(String driver, LocalDate date, LocalTime shift) throws IllegalStateException, NoSuchElementException, SQLException {
+        FacadeDriver fd = resourcesService.chooseDriver(driver, date, turnTimeToShift(shift));
 
-    public FacadeDriver chooseDriver(String driver, LocalDate date,  LocalTime shift) throws IllegalStateException, NoSuchElementException, SQLException {
-        FacadeDriver fd  = resourcesService.chooseDriver(driver,date, turnTimeToShift(shift));
-
-        FacadeTruck ft  = null;
-        for (FacadeTruck ft2 : resourcesService.getTrucks()){
+        FacadeTruck ft = null;
+        for (FacadeTruck ft2 : resourcesService.getTrucks()) {
             if (ft2.getLicenseNumber().equals(currTR.getTruckNumber()))
                 ft = ft2;
         }
-        if (ft==null) throw new NoSuchElementException("the truck's license Number does not exist");
-        if (fd.getLicenseType().getSize()< ft.getWeightNeto()+deliveryService.getWeightOfCurrReport())
+        if (ft == null) throw new NoSuchElementException("the truck's license Number does not exist");
+        if (fd.getLicenseType().getSize() < ft.getWeightNeto() + deliveryService.getWeightOfCurrReport())
             throw new IllegalStateException("Driver cant handle this delivery");
 
         deliveryService.chooseDriver(driver);
@@ -96,15 +94,15 @@ public class FacadeService {
     }
 
     public void continueAddDemandToReport(int itemID, int amount, int siteID) throws SQLException {
-        deliveryService.continueAddDemandToReport(itemID,amount,siteID);
+        deliveryService.continueAddDemandToReport(itemID, amount, siteID);
     }
 
     public FacadeTruckingReport getTruckReport(int trNumber) {
         return deliveryService.getTruckReport(trNumber);
     }
 
-    public FacadeDeliveryForm getDeliveryForm(int dfNumber, int trNumber)throws IllegalArgumentException,NoSuchElementException {
-        return deliveryService.getDeliveryForm(dfNumber,trNumber);
+    public FacadeDeliveryForm getDeliveryForm(int dfNumber, int trNumber) throws IllegalArgumentException, NoSuchElementException {
+        return deliveryService.getDeliveryForm(dfNumber, trNumber);
     }
 
     public void removeDestination(int site) throws NoSuchElementException, SQLException {
@@ -112,12 +110,13 @@ public class FacadeService {
     }
 
     public void removeItemFromReport(FacadeDemand demand, int amount) throws SQLException {
-        deliveryService.removeItemFromReport(demand,amount);
+        deliveryService.removeItemFromReport(demand, amount);
     }
     public void removeItemFromPool(int item) throws NoSuchElementException, SQLException {
         deliveryService.removeItemFromPool(item);
     }
-    public int getWeightOfCurrReport(){
+
+    public int getWeightOfCurrReport() {
         return deliveryService.getWeightOfCurrReport();
     }
 
@@ -128,21 +127,21 @@ public class FacadeService {
         return deliveryService.getItemsOnTruck();
     }
 
-    public void addTruck(String model, String licenseNumber, int weightNeto, int maxWeight)  throws KeyAlreadyExistsException,SQLException {
-        resourcesService.addTruck( model, licenseNumber, weightNeto, maxWeight);
+    public void addTruck(String model, String licenseNumber, int weightNeto, int maxWeight) throws KeyAlreadyExistsException, SQLException {
+        resourcesService.addTruck(model, licenseNumber, weightNeto, maxWeight);
     }
 
-    public void addDriver(String ID, String name, Driver.License licenseType)throws SQLException {
+    public void addDriver(String ID, String name, Driver.License licenseType) throws SQLException {
         resourcesService.addDriver(ID, name, licenseType);
     }
 
-    public void addSite(String city,  int deliveryArea, String phoneNumber, String contactName,String name) throws SQLException {
-        deliveryService.addSite(city,  deliveryArea, phoneNumber, contactName,name );
+    public void addSite(String city, int deliveryArea, String phoneNumber, String contactName, String name) throws SQLException {
+        deliveryService.addSite(city, deliveryArea, phoneNumber, contactName, name);
 
     }
 
-    public void addItem( double weight, String name,int siteID) throws NoSuchElementException, KeyAlreadyExistsException, SQLException {
-        deliveryService.addItem( weight,name,siteID);
+    public void addItem(double weight, String name, int siteID) throws NoSuchElementException, KeyAlreadyExistsException, SQLException {
+        deliveryService.addItem(weight, name, siteID);
     }
 
     public void displaySites() {
@@ -176,10 +175,10 @@ public class FacadeService {
     }
 
     public LinkedList<FacadeDemand> sortDemandsBySite(LinkedList<FacadeDemand> demands) {
-        for (int i = demands.size() -1 ; i>= 0 ; i--){
+        for (int i = demands.size() - 1; i >= 0; i--) {
             FacadeDemand min = demands.get(i);
             int index = i;
-            for (int j= i; j>= 0; j--){
+            for (int j = i; j >= 0; j--) {
                 if (demands.get(j).getSite() < min.getSite()) {
                     min = demands.get(j);
                     index = j;
@@ -187,7 +186,7 @@ public class FacadeService {
             }
             FacadeDemand temp = demands.get(i);
             demands.set(i, min);
-            demands.set(index,temp);
+            demands.set(index, temp);
         }
         return demands;
     }
@@ -199,7 +198,7 @@ public class FacadeService {
     }
 
     public LinkedList<FacadeDemand> getCurrentDemandsBySite(FacadeSite site) throws SQLException {
-        return  deliveryService.getCurrentDemands(site);
+        return deliveryService.getCurrentDemands(site);
 
     }
 
@@ -212,45 +211,43 @@ public class FacadeService {
     }
 
     public void addDemandToSystem(int itemId, int site, int amount) throws SQLException {
-        deliveryService.addDemandToSystem(itemId,site,amount);
+        deliveryService.addDemandToSystem(itemId, site, amount);
     }
 
     public LinkedList<FacadeTruckingReport> getActiveTruckingReports() {
         return deliveryService.getActiveTruckingReports();
     }
 
-    public LinkedList<FacadeDeliveryForm> getDeliveryForms(int trID){
+    public LinkedList<FacadeDeliveryForm> getDeliveryForms(int trID) {
         return deliveryService.getDeliveryForms(trID);
     }
 
     public void updateDeliveryFormRealWeight(int trID, int dfID, int weight) throws IllegalStateException, SQLException {
 
-        deliveryService.updateDeliveryFormRealWeight(trID,dfID,weight);
-        LinkedList<FacadeTruck>trucks=resourcesService.getTrucks();
-        FacadeTruck ft=null;
-        for (FacadeTruck facadeTruck:trucks)
-        {
+        deliveryService.updateDeliveryFormRealWeight(trID, dfID, weight);
+        LinkedList<FacadeTruck> trucks = resourcesService.getTrucks();
+        FacadeTruck ft = null;
+        for (FacadeTruck facadeTruck : trucks) {
 
             if (facadeTruck.getLicenseNumber().equals(getTruckReport(trID).getTruckNumber()))//should not be currTR
-                ft=facadeTruck;
+                ft = facadeTruck;
         }
 
-        if (weight> ft.getMaxWeight())
-        {
-            deliveryService.makeDeliveryFormUncompleted(trID,dfID);
+        if (weight > ft.getMaxWeight()) {
+            deliveryService.makeDeliveryFormUncompleted(trID, dfID);
             deliveryService.archiveNotCompleted(trID);
-            throw new IllegalStateException("Overweight related to Delivery Form Number:"+dfID+"  In TR number: "+trID);
+            throw new IllegalStateException("Overweight related to Delivery Form Number:" + dfID + "  In TR number: " + trID);
 
         }
 
-         if (deliveryService.checkIfAllCompleted(trID)){
-             FacadeTruckingReport truckingReport = deliveryService.getTruckReport(trID);
-             // TODO need to think whether we want to implement somehow 2 deliveries in same shift
+
+        if (deliveryService.checkIfAllCompleted(trID)) {
+            FacadeTruckingReport truckingReport = deliveryService.getTruckReport(trID);
     /*         resourcesService.makeAvailable_Driver(truckingReport.getDriverID());
              resourcesService.makeAvailable_Truck(truckingReport.getTruckNumber());*/
-             deliveryService.archive(trID);
+            deliveryService.archive(trID);
 
-         }
+        }
     }
 
 /*
@@ -299,47 +296,42 @@ public class FacadeService {
     }
 
     public void removeSiteFromTruckReport(int siteID, int trID) throws NoSuchElementException, SQLException {
-        deliveryService.removeSiteFromTruckReport(siteID,trID);
-        if (deliveryService.getCurrTruckingReport().getDestinations().isEmpty()){
-            FacadeTruckingReport ft =  getTruckReport(trID);
+        deliveryService.removeSiteFromTruckReport(siteID, trID);
+        if (deliveryService.getCurrTruckingReport().getDestinations().isEmpty()) {
+            FacadeTruckingReport ft = getTruckReport(trID);
             LocalDate date = ft.getDate();
             int shift = turnTimeToShift(ft.getLeavingHour());
-            resourcesService.deleteTruckConstarint(ft.getTruckNumber(),date,shift);
-            resourcesService.deleteDriverConstarint(ft.getDriverID(),date,shift);
-        }
-        else{
+            resourcesService.deleteTruckConstarint(ft.getTruckNumber(), date, shift);
+            resourcesService.deleteDriverConstarint(ft.getDriverID(), date, shift);
+        } else {
             saveReportReplacedTruckReport();
         }
     }
 
-    private void saveReportReplacedTruckReport() {
+    private void saveReportReplacedTruckReport() throws SQLException {
         deliveryService.saveReportReplacedTruckReport();
     }
 
     public boolean addDemandToTruckReport(int itemNumber, int amount, int siteID, int trID) throws IllegalStateException, SQLException {
-        return deliveryService.addDemandToTruckReport(itemNumber,amount,siteID,trID);
+        return deliveryService.addDemandToTruckReport(itemNumber, amount, siteID, trID);
     }
 
     public void replaceDriver(int trID, String driverID, int weight) throws IllegalStateException, NoSuchElementException, SQLException {
-        LinkedList<FacadeDriver> lfds=resourcesService.getDrivers();
-        FacadeDriver fd=null;
-        for (FacadeDriver facadeDriver:lfds)
-        {
-            if (fd.getID().equals(driverID))
-            {
-                fd=facadeDriver;
+        LinkedList<FacadeDriver> lfds = resourcesService.getDrivers();
+        FacadeDriver fd = null;
+        for (FacadeDriver facadeDriver : lfds) {
+            if (fd.getID().equals(driverID)) {
+                fd = facadeDriver;
                 break;
             }
         }
-        if (fd==null)
-        {
+        if (fd == null) {
             throw new NoSuchElementException("No such Driver with that id");
         }
-        if (fd.getLicenseType().getSize()<weight)
-        {
+        if (fd.getLicenseType().getSize() < weight) {
             throw new IllegalStateException("Driver cant handle this weight");
         }
-        deliveryService.replaceDriver(trID,driverID);
+        deliveryService.replaceDriver(trID, driverID);
     }
 
     public LinkedList<FacadeDemand> getItemOnReport(int trID) throws SQLException {
@@ -347,11 +339,11 @@ public class FacadeService {
     }
 
     public void removeItemFromTruckingReport(int trID, FacadeDemand demand) throws SQLException {
-        deliveryService.removeItemFromTruckingReport(trID,demand);
+        deliveryService.removeItemFromTruckingReport(trID, demand);
     }
 
     public boolean continueAddDemandToTruckReport(int itemNumber, int amount, int siteID, int truckId) throws SQLException {
-        return deliveryService.continueAddDemandToTruckReport(itemNumber,amount,siteID,truckId);
+        return deliveryService.continueAddDemandToTruckReport(itemNumber, amount, siteID, truckId);
     }
     public void chooseDateToCurrentTR(LocalDate chosen) throws SQLException {
         deliveryService.chooseDateToCurrentTR(chosen);
@@ -376,7 +368,7 @@ public class FacadeService {
 
     public void moveDemandsFromCurrentToReport(FacadeTruckingReport tr) throws SQLException {
 
-        int replacedId =  deliveryService.moveDemandsFromCurrentToReport(tr);
+        int replacedId = deliveryService.moveDemandsFromCurrentToReport(tr);
         FacadeTruckingReport replaced = deliveryService.getTruckReport(replacedId);
         // TODO need to check why it is here
   /*      resourcesService.makeUnavailable_Driver(replaced.getDriverID());
@@ -387,16 +379,16 @@ public class FacadeService {
     public void replaceTruckAndDriver(String truckNumber, String driverID, FacadeTruckingReport tr, int weight) throws InputMismatchException, SQLException {
         FacadeDriver fd = resourcesService.getDriver(driverID);
         FacadeTruck ft = resourcesService.getTruck(truckNumber);
-        if (ft.getMaxWeight()<(weight + ft.getWeightNeto()))
+        if (ft.getMaxWeight() < (weight + ft.getWeightNeto()))
             throw new InputMismatchException("the truck's cannot carry this weight");
-        if (fd.getLicenseType().getSize()<(weight + ft.getWeightNeto()))
+        if (fd.getLicenseType().getSize() < (weight + ft.getWeightNeto()))
             throw new InputMismatchException("the driver cannot drive with this weight");
         // TODO need to check why its here
       /*  resourcesService.makeUnavailable_Truck(truckNumber);
         resourcesService.makeUnavailable_Driver(driverID);*/
 
-        deliveryService.setNewTruckToTR(tr.getID(),truckNumber);
-        deliveryService.setNewDriverToTR(tr.getID(),driverID);
+        deliveryService.setNewTruckToTR(tr.getID(), truckNumber);
+        deliveryService.setNewDriverToTR(tr.getID(), driverID);
         tr.setDriverID(driverID);
         tr.setTruckNumber(truckNumber);
         deliveryService.saveReportReplacedTruckReport();
@@ -442,28 +434,40 @@ public class FacadeService {
         return resourcesService.getAvailableDrivers(date, turnTimeToShift(shift));
     }
 
-    private int turnTimeToShift(LocalTime shift){
-        if (shift.isBefore(LocalTime.of(14,0)))
+    private int turnTimeToShift(LocalTime shift) {
+        if (shift.isBefore(LocalTime.of(14, 0)))
             return 0;
         else
             return 1;
     }
 
     public void deleteDriverConstarint(String id, LocalDate date, LocalTime leavingHour) {
-        resourcesService.deleteDriverConstarint(id,date,turnTimeToShift(leavingHour));
+        resourcesService.deleteDriverConstarint(id, date, turnTimeToShift(leavingHour));
     }
 
     public void deleteTruckConstarint(String id, LocalDate date, LocalTime leavingHour) {
-        resourcesService.deleteTruckConstarint(id,date,turnTimeToShift(leavingHour));
+        resourcesService.deleteTruckConstarint(id, date, turnTimeToShift(leavingHour));
     }
 
     public void addDriverConstarint(String id, LocalDate date, LocalTime leavingHour) {
-        resourcesService.addDriverConstarint(id,date,turnTimeToShift(leavingHour));
+        resourcesService.addDriverConstarint(id, date, turnTimeToShift(leavingHour));
 
     }
 
     public void addTruckConstraint(String id, LocalDate date, LocalTime leavingHour) {
-        resourcesService.addTruckConstraint(id,date,turnTimeToShift(leavingHour));
+        resourcesService.addTruckConstraint(id, date, turnTimeToShift(leavingHour));
+    }
+
+    public LinkedList<FacadeTruckingReport> getTodayReports() {
+        return deliveryService.getTodayReports();
+    }
+
+
+    public void upload() throws SQLException {
+        deliveryService.upload();
+        HashMap driver_cons =  deliveryService.getDriverConstraintsFromUpload();
+        HashMap trucks_cons = deliveryService.getTruckConstraintsFromUpload();
+        resourcesService.upload(driver_cons,trucks_cons);
     }
 }
 

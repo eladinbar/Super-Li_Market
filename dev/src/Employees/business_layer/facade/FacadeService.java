@@ -156,6 +156,7 @@ public class FacadeService {
         shiftService.loadData();
         try {
             Boolean b = employeeService.loadData();
+            Trucking.Business_Layer_Trucking.Facade.FacadeService.getInstance ().upload ();
             return new ResponseT<> ( b );
         }catch (EmployeeException e){
             return new ResponseT<> ( e.getMessage () );
