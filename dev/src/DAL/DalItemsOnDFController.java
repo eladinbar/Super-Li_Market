@@ -104,7 +104,7 @@ public class DalItemsOnDFController extends DalController{
                 +"amount INTEGER,"
                 +"FOREIGN KEY (DFID) REFERENCES DeliveryForms(DFID),"
                 +"FOREIGN KEY (itemID) REFERENCES Items (ID) ON DELETE NO ACTION ON UPDATE CASCADE,"
-                +"PRIMARY KEY (itemID));";
+                +"PRIMARY KEY (itemID , DFID));";
         try {
             PreparedStatement st=conn.prepareStatement(query);
 

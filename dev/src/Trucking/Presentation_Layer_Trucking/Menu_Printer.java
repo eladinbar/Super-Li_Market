@@ -964,12 +964,12 @@ public class Menu_Printer {
 
                     String truckNumber = chooseTruck(scanner, tr.getDate(), tr.getLeavingHour());
                     String DriverID = chooseDriver(scanner, tr.getDate(), tr.getLeavingHour());
-                    pc.replaceTruckAndDriver(truckNumber, DriverID, tr, weight);
-                    pc.updateDeliveryFormRealWeight(fdf.getTrID(), fdf.getID(), weight);
-                } catch (InputMismatchException|SQLException e) {
+                    pc.replaceTruckAndDriver(truckNumber, DriverID, pc.getCurrentTruckReport(), weight);
+                    pc.updateDeliveryFormRealWeight(pc.getCurrTruckReport().getID(), fdf.getID(), weight);
+                } catch (IllegalStateException|InputMismatchException|SQLException e) {
                     System.out.println(e.getMessage());
                     pc.addDriverConstraint(oldD, tr.getDate(), tr.getLeavingHour());
-                    pc.addTruckConstraint(oldD, tr.getDate(), tr.getLeavingHour());
+                    pc.addTruckConstraint(oldT, tr.getDate(), tr.getLeavingHour());
                 }
                 break;
 
@@ -1084,7 +1084,6 @@ public class Menu_Printer {
 
     }
 
-
     public void putInitialTestState() {
 
         try {
@@ -1094,27 +1093,26 @@ public class Menu_Printer {
             pc.addTruck("Volvo", "123", 1000, 10000);
             pc.addTruck("Volvo", "12121", 1000, 14000);
 
-            pc.addSite("Haifa", 1, "0502008216", "Shimi", "SuperLee-Haifa");
-            pc.addSite("Nazareth", 1, "0522002123", "Esti", "Suber-LNazerath");
-            pc.addSite("Beer Sheva", 2, "0502008217", "Yotam", "superLee-BeerSheva");
-            pc.addSite("Rahat", 2, "0502008214", "Mohamad", "MilkHere");
-            pc.addSite("Afula", 3, "0502008215", "Raz", "Tnuva");
-            pc.addSite("Geva", 3, "0503988883", "ShirHayafa", "Dubi");
-            pc.addSite("Tveria", 1, "0503988883", "Yaron", "Dagim");
-            pc.addSite("Qiryat Shemona", 1, "0503988883", "Shimi", "Macolet");
+            pc.addSite("Beer-Sheba", 3, "0503123465", "Ido", "Super-Lee");
+            pc.addSite("Haifa", 1, "0502008216", "Shimi", "Tnuva-Haifa");
+            pc.addSite("Qiryat Shemona", 1, "0503988883", "Ofir", "Tara-North");
+            pc.addSite("Tel-Aviv", 2, "0504123465", "Raz", "Meat-Bar");
+            pc.addSite("Rahat", 3, "0502008214", "Mohamad", "Wheat-Farmers");
+            pc.addSite("Sderot", 3, "0523123465", "Shaked", "Klil");
 
 
-            pc.addItem(1, "milk", 1);
-            pc.addItem(2, "cream cheese", 1);
-            pc.addItem(4, "cottage", 2);
-            pc.addItem(2, "banana", 2);
-            pc.addItem(3, "cucumber", 3);
-            pc.addItem(0.1, "chocolate", 5);
 
-            pc.addDemandToSystem(1, 2, 1000);
-            pc.addDemandToSystem(3, 1, 100);
-            pc.addDemandToSystem(5, 4, 1000);
-            pc.addDemandToSystem(6, 6, 500);
+            pc.addItem(1, "milk", 2);
+            pc.addItem(2, "cream cheese", 2);
+            pc.addItem(4, "cottage", 3);
+            pc.addItem(2, "banana", 5);
+            pc.addItem(3, "cucumber", 5);
+            pc.addItem(0.1, "chocolate", 6);
+
+
+            pc.addDemandToSystem(6, 1, 100);
+            pc.addDemandToSystem(4, 1, 1000);
+            pc.addDemandToSystem(5, 1, 500);
         }
         catch (SQLException e)
         {
