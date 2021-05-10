@@ -49,24 +49,24 @@ public class SupplierCard extends PersonCard {
         return contactMembers;
     }
 
-    public void setCompanyNumber(int companyNumber) {
+    public void setCompanyNumber(int companyNumber) throws SQLException {
         this.companyNumber = companyNumber;
+        dalObject.update();
     }
 
-    public void setPernamentDays(boolean pernamentDays) {
+    public void setPernamentDays(boolean pernamentDays) throws SQLException {
         isPernamentDays = pernamentDays;
+        dalObject.update();
     }
 
-    public void setSelfDelivery(boolean selfDelivery) {
+    public void setSelfDelivery(boolean selfDelivery) throws SQLException {
         this.selfDelivery = selfDelivery;
+        dalObject.update();
     }
 
-    public void setPayment(Payment payment) {
+    public void setPayment(Payment payment) throws SQLException {
         this.payment = payment;
-    }
-
-    public void setContactMembers(List<String> contactMembers) {
-        this.contactMembers = contactMembers;
+        dalObject.update();
     }
 
     public boolean find() throws SQLException {
@@ -78,9 +78,15 @@ public class SupplierCard extends PersonCard {
         toDalObject().save();
     }
 
-
+    public void save(String id,String memberID) throws SQLException {
+        toDalObject().save(id,memberID);
+    }
 
     public SupplierCardDal toDalObject() throws SQLException {
         return new SupplierCardDal(Integer.parseInt(id),companyNumber,isPernamentDays,selfDelivery,payment);
+    }
+
+    public void delete(String id, String memberID) throws SQLException {
+        dalObject.delete(id, memberID);
     }
 }

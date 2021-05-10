@@ -55,6 +55,7 @@ public class Agreement {
         compID(productID);
         ql.getDiscount().remove(productID);
         ql.getAmount().remove(productID);
+
     }
 
     public void addQuantityListItem(int productID, int amount, int discount) throws Exception {

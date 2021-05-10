@@ -38,12 +38,14 @@ public class Supplier {
         if(memberID.equals(sc.getId()))
             throw new Exception("cannot add supplier to his contact members");
         sc.getContactMembers().add(memberID);
+        sc.save(sc.getId(),memberID);
     }
 
     public void deleteContactMember(String memberID) throws Exception {
         if (!sc.getContactMembers().contains(memberID))
             throw new Exception("contact member with the id " + memberID + " does not exists");
         sc.getContactMembers().remove(memberID);
+        sc.delete(sc.getId(),memberID);
     }
 
     public void deleteQuantityList() throws Exception {

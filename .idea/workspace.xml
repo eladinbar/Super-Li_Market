@@ -2,47 +2,12 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="c504957e-918c-4f71-9c63-485477fe9c44" name="Default Changelist" comment="updated changes">
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/sqlite_jdbc_3_34_0.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/SuperLi.db" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/dev/sqlite-jdbc-3.34.0.jar" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/nitutz.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/ADSS_Group_G.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/ADSS_Group_G.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/dev/src/BusinessLayer/SupliersPackage/supplierPackage/Agreement.java" beforeDir="false" afterPath="$PROJECT_DIR$/dev/src/BusinessLayer/SupliersPackage/supplierPackage/Agreement.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dev/src/BusinessLayer/SupliersPackage/supplierPackage/PersonCard.java" beforeDir="false" afterPath="$PROJECT_DIR$/dev/src/BusinessLayer/SupliersPackage/supplierPackage/PersonCard.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dev/src/BusinessLayer/SupliersPackage/supplierPackage/QuantityList.java" beforeDir="false" afterPath="$PROJECT_DIR$/dev/src/BusinessLayer/SupliersPackage/supplierPackage/QuantityList.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dev/src/BusinessLayer/SupliersPackage/supplierPackage/Supplier.java" beforeDir="false" afterPath="$PROJECT_DIR$/dev/src/BusinessLayer/SupliersPackage/supplierPackage/Supplier.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/dev/src/BusinessLayer/SupliersPackage/supplierPackage/SupplierCard.java" beforeDir="false" afterPath="$PROJECT_DIR$/dev/src/BusinessLayer/SupliersPackage/supplierPackage/SupplierCard.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dev/src/BusinessLayer/SupliersPackage/supplierPackage/SupplierController.java" beforeDir="false" afterPath="$PROJECT_DIR$/dev/src/BusinessLayer/SupliersPackage/supplierPackage/SupplierController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dev/src/DataAccessLayer/DalControllers/InventoryControllers/CategoryDiscountDalController.java" beforeDir="false" afterPath="$PROJECT_DIR$/dev/src/DataAccessLayer/DalControllers/InventoryControllers/CategoryDiscountDalController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dev/src/DataAccessLayer/DalControllers/InventoryControllers/ItemDiscountDalController.java" beforeDir="false" afterPath="$PROJECT_DIR$/dev/src/DataAccessLayer/DalControllers/InventoryControllers/ItemDiscountDalController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dev/src/DataAccessLayer/DalControllers/SupplierControllers/AgreementItemsDalController.java" beforeDir="false" afterPath="$PROJECT_DIR$/dev/src/DataAccessLayer/DalControllers/SupplierControllers/AgreementItemsDalController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dev/src/DataAccessLayer/DalControllers/SupplierControllers/OrderDalController.java" beforeDir="false" afterPath="$PROJECT_DIR$/dev/src/DataAccessLayer/DalControllers/SupplierControllers/OrderDalController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dev/src/DataAccessLayer/DalControllers/SupplierControllers/PersonCardDalController.java" beforeDir="false" afterPath="$PROJECT_DIR$/dev/src/DataAccessLayer/DalControllers/SupplierControllers/PersonCardDalController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dev/src/DataAccessLayer/DalControllers/SupplierControllers/ProductsInOrderDalController.java" beforeDir="false" afterPath="$PROJECT_DIR$/dev/src/DataAccessLayer/DalControllers/SupplierControllers/ProductsInOrderDalController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dev/src/DataAccessLayer/DalControllers/SupplierControllers/QuantityListItemsDalController.java" beforeDir="false" afterPath="$PROJECT_DIR$/dev/src/DataAccessLayer/DalControllers/SupplierControllers/QuantityListItemsDalController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dev/src/DataAccessLayer/DalControllers/SupplierControllers/SupplierCardDalController.java" beforeDir="false" afterPath="$PROJECT_DIR$/dev/src/DataAccessLayer/DalControllers/SupplierControllers/SupplierCardDalController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dev/src/DataAccessLayer/DalControllers/SupplierControllers/SupplierContactMembersDalController.java" beforeDir="false" afterPath="$PROJECT_DIR$/dev/src/DataAccessLayer/DalControllers/SupplierControllers/SupplierContactMembersDalController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dev/src/DataAccessLayer/DalObjects/InventoryObjects/Item.java" beforeDir="false" afterPath="$PROJECT_DIR$/dev/src/DataAccessLayer/DalObjects/InventoryObjects/Item.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dev/src/DataAccessLayer/DalObjects/SupplierObjects/AgreementItems.java" beforeDir="false" afterPath="$PROJECT_DIR$/dev/src/DataAccessLayer/DalObjects/SupplierObjects/agreementItemsDal.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dev/src/DataAccessLayer/DalObjects/SupplierObjects/Order.java" beforeDir="false" afterPath="$PROJECT_DIR$/dev/src/DataAccessLayer/DalObjects/SupplierObjects/OrderDal.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dev/src/DataAccessLayer/DalObjects/SupplierObjects/PersonCard.java" beforeDir="false" afterPath="$PROJECT_DIR$/dev/src/DataAccessLayer/DalObjects/SupplierObjects/PersonCardDal.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dev/src/DataAccessLayer/DalObjects/SupplierObjects/ProductsInOrder.java" beforeDir="false" afterPath="$PROJECT_DIR$/dev/src/DataAccessLayer/DalObjects/SupplierObjects/ProductsInOrderDal.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dev/src/DataAccessLayer/DalObjects/SupplierObjects/QuantityListItems.java" beforeDir="false" afterPath="$PROJECT_DIR$/dev/src/DataAccessLayer/DalObjects/SupplierObjects/QuantityListItemsDal.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dev/src/DataAccessLayer/DalObjects/SupplierObjects/SupplierCard.java" beforeDir="false" afterPath="$PROJECT_DIR$/dev/src/DataAccessLayer/DalObjects/SupplierObjects/SupplierCardDal.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dev/src/DataAccessLayer/DalObjects/SupplierObjects/SupplierContactMembers.java" beforeDir="false" afterPath="$PROJECT_DIR$/dev/src/DataAccessLayer/DalObjects/SupplierObjects/SupplierContactMembersDal.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dev/src/PresentationLayer/SuppliersP/main.java" beforeDir="false" afterPath="$PROJECT_DIR$/dev/src/PresentationLayer/SuppliersP/main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/ADSS_Group_G/BusinessLayer/InventoryPackage/Category.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/ADSS_Group_G/BusinessLayer/InventoryPackage/Category.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/ADSS_Group_G/BusinessLayer/InventoryPackage/DefectsPackage/DefectEntry.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/ADSS_Group_G/BusinessLayer/InventoryPackage/DefectsPackage/DefectEntry.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/ADSS_Group_G/BusinessLayer/InventoryPackage/DiscountPackage/CategoryDiscount.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/ADSS_Group_G/BusinessLayer/InventoryPackage/DiscountPackage/CategoryDiscount.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/ADSS_Group_G/BusinessLayer/InventoryPackage/DiscountPackage/Discount.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/ADSS_Group_G/BusinessLayer/InventoryPackage/DiscountPackage/Discount.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/ADSS_Group_G/BusinessLayer/InventoryPackage/DiscountPackage/ItemDiscount.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/ADSS_Group_G/BusinessLayer/InventoryPackage/DiscountPackage/ItemDiscount.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/ADSS_Group_G/BusinessLayer/InventoryPackage/Item.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/ADSS_Group_G/BusinessLayer/InventoryPackage/Item.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/ADSS_Group_G/BusinessLayer/InventoryPackage/SalePackage/CategorySale.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/ADSS_Group_G/BusinessLayer/InventoryPackage/SalePackage/CategorySale.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/ADSS_Group_G/BusinessLayer/InventoryPackage/SalePackage/ItemSale.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/ADSS_Group_G/BusinessLayer/InventoryPackage/SalePackage/ItemSale.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/ADSS_Group_G/BusinessLayer/InventoryPackage/SalePackage/Sale.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/ADSS_Group_G/BusinessLayer/InventoryPackage/SalePackage/Sale.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/ADSS_Group_G/BusinessLayer/SupliersPackage/supplierPackage/SupplierCard.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/ADSS_Group_G/BusinessLayer/SupliersPackage/supplierPackage/SupplierCard.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/ADSS_Group_G/BusinessLayer/SupliersPackage/supplierPackage/SupplierController.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/ADSS_Group_G/BusinessLayer/SupliersPackage/supplierPackage/SupplierController.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/ADSS_Group_G/PresentationLayer/Menu.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/ADSS_Group_G/PresentationLayer/Menu.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/ADSS_Group_G/PresentationLayer/PresentationController.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/ADSS_Group_G/PresentationLayer/PresentationController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dev/src/DataAccessLayer/DalObjects/SupplierObjects/SupplierCardDal.java" beforeDir="false" afterPath="$PROJECT_DIR$/dev/src/DataAccessLayer/DalObjects/SupplierObjects/SupplierCardDal.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -218,13 +183,6 @@
       <workItem from="1620580756956" duration="107000" />
       <workItem from="1620580881428" duration="210000" />
       <workItem from="1620581096048" duration="1396000" />
-    </task>
-    <task id="LOCAL-00009" summary="remove category Implemented.">
-      <created>1617713001473</created>
-      <option name="number" value="00009" />
-      <option name="presentableId" value="LOCAL-00009" />
-      <option name="project" value="LOCAL" />
-      <updated>1617713001473</updated>
     </task>
     <task id="LOCAL-00010" summary="remove category Implemented.">
       <created>1617714100653</created>
@@ -561,7 +519,13 @@
       <option name="presentableId" value="LOCAL‎00057" />
       <updated>1620585688180</updated>
     </task>
-    <option name="localTasksCounter" value="58" />
+    <task id="LOCAL‎00058" summary="updated changes">
+      <created>1620599313801</created>
+      <option name="number" value="LOCAL‎00058" />
+      <option name="presentableId" value="LOCAL‎00058" />
+      <updated>1620599313801</updated>
+    </task>
+    <option name="localTasksCounter" value="59" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">

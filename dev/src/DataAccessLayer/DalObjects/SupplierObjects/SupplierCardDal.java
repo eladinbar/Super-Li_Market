@@ -2,6 +2,7 @@ package DataAccessLayer.DalObjects.SupplierObjects;
 
 import BusinessLayer.SupliersPackage.supplierPackage.Payment;
 import DataAccessLayer.DalControllers.SupplierControllers.SupplierCardDalController;
+import DataAccessLayer.DalControllers.SupplierControllers.SupplierContactMembersDalController;
 import DataAccessLayer.DalObjects.DalObject;
 
 import java.sql.SQLException;
@@ -81,5 +82,14 @@ public class SupplierCardDal extends DalObject<SupplierCardDal> {
 
     public void setPayment(String payment) {
         this.payment = Payment.valueOf(payment);
+    }
+
+    public boolean save(String id,String contactMemberID) throws SQLException {
+        SupplierContactMembersDalController.getInstance().insert(new SupplierContactMembersDal(Integer.parseInt(id),Integer.parseInt(contactMemberID)));
+        return controller.insert(this);
+    }
+
+    public boolean delete(String supId, String personId) throws SQLException {
+        return SupplierContactMembersDalController.getInstance().delete(new SupplierContactMembersDal(Integer.parseInt(supId), Integer.parseInt(personId)));
     }
 }
