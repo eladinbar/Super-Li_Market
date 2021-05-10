@@ -186,6 +186,7 @@ public class ItemDalController extends DalController<Item> {
         return isDesired;
     }
 
+    @Override
     public boolean select(Item item, List<Item> items) throws SQLException {
         boolean isDesired = false;
         Item savedItem = new Item();

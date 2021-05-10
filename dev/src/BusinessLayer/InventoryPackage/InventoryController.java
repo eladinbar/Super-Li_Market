@@ -452,6 +452,7 @@ public class InventoryController {
                 throw ex; //Rethrow exception thrown in 'try' block (different error message)
 
             ItemDiscount newDiscount = new ItemDiscount(supplierId, discount, discountDate, itemCount, getItem(itemId));
+            newDiscount.save();
             discounts.add(newDiscount);
         }
     }
@@ -466,6 +467,7 @@ public class InventoryController {
                 throw ex; //Rethrow exception thrown in 'try' block (different error message)
 
             CategoryDiscount newDiscount = new CategoryDiscount(supplierId, discount, discountDate, itemCount, getCategory(categoryName));
+            newDiscount.save();
             discounts.add(newDiscount);
         }
     }
@@ -475,6 +477,26 @@ public class InventoryController {
         for (Discount discount : discounts) {
             if (discount.getSupplierID().equals(supplierId) & discount.getDate().compareTo(discountDate) == 0)
                 discountList.add(discount);
+        }
+
+        //Retrieve from database
+        List<CategoryDiscount> savedCategoryDiscountList = new ArrayList<>();
+        CategoryDiscount savedCategoryDiscount = new CategoryDiscount();
+        boolean found;
+        found = savedCategoryDiscount.find(savedCategoryDiscountList, supplierId, discountDate.toString());
+        if (found) {
+            savedCategoryDiscount.setCategory(getCategory(savedCategoryDiscount.getCategory().getName()));
+            discountList.addAll(savedCategoryDiscountList);
+            discounts.addAll(savedCategoryDiscountList);
+        }
+
+        List<ItemDiscount> savedItemDiscountList = new ArrayList<>();
+        ItemDiscount savedItemDiscount = new ItemDiscount();
+        found = savedItemDiscount.find(savedItemDiscountList, supplierId, discountDate.toString());
+        if (found) {
+            savedItemDiscount.setItem(getItem(savedItemDiscount.getItem().getID()));
+            discountList.addAll(savedItemDiscountList);
+            discounts.addAll(savedItemDiscountList);
         }
 
         if (discountList.isEmpty())

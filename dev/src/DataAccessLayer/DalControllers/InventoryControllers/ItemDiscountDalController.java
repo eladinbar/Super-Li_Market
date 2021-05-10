@@ -6,6 +6,7 @@ import DataAccessLayer.DalObjects.InventoryObjects.ItemDiscount;
 import DataAccessLayer.DalObjects.SupplierObjects.SupplierCardDal;
 
 import java.sql.*;
+import java.util.List;
 
 import static DataAccessLayer.DalControllers.InventoryControllers.ItemDalController.ITEM_TABLE_NAME;
 import static DataAccessLayer.DalControllers.SupplierControllers.SupplierCardDalController.SUPPLIER_CARD_TABLE_NAME;
@@ -204,9 +205,34 @@ public class ItemDiscountDalController extends DalController<ItemDiscount> {
                 isDesired = resultSet.getString(0).equals(itemDiscount.getDiscountDate()) &&
                         resultSet.getString(1).equals(itemDiscount.getSupplierID()) && resultSet.getInt(2) == itemDiscount.getItemID();
                 if (isDesired) {
-                    itemDiscount.setDiscount(resultSet.getInt(1));
-                    itemDiscount.setItemCount(resultSet.getInt(2));
+                    itemDiscount.setDiscount(resultSet.getInt(3));
+                    itemDiscount.setItemCount(resultSet.getInt(4));
                     break; //Desired item discount found
+                }
+            }
+        } catch (SQLException ex) {
+            throw new SQLException(ex.getMessage());
+        }
+        return isDesired;
+    }
+
+    @Override
+    public boolean select(ItemDiscount itemDiscount, List<ItemDiscount> itemDiscounts) throws SQLException {
+        boolean isDesired = false;
+        ItemDiscount savedItemDiscount = new ItemDiscount();
+        try (Connection conn = DriverManager.getConnection(connectionString)) {
+            String query = "SELECT * FROM " + tableName;
+            PreparedStatement stmt = conn.prepareStatement(query);
+            ResultSet resultSet = stmt.executeQuery(query);
+            while (resultSet.next())
+            {
+                isDesired = resultSet.getString(0).equals(itemDiscount.getDiscountDate()) &&
+                        resultSet.getString(1).equals(itemDiscount.getSupplierID());
+                if (isDesired) {
+                    itemDiscount.setItemID(resultSet.getInt(2));
+                    itemDiscount.setDiscount(resultSet.getInt(3));
+                    itemDiscount.setItemCount(resultSet.getInt(4));
+                    itemDiscounts.add(savedItemDiscount);
                 }
             }
         } catch (SQLException ex) {

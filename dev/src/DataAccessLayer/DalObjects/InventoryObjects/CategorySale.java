@@ -67,14 +67,14 @@ public class CategorySale extends DalObject<CategorySale> {
         this.categoryName = categoryName;
     }
 
-    public void setName(String name) throws SQLException {
+    public void setName(String name) {
         String oldName = this.name;
         this.name = name;
         try {
             controller.update(this, oldName);
         } catch (SQLException ex) {
             this.name = oldName;
-            throw ex;
+            throw new RuntimeException("Something went wrong.");
         }
     }
 }

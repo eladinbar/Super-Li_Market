@@ -18,6 +18,19 @@ public class ItemDiscount extends DalObject<ItemDiscount> {
     private double discount;
     private int itemCount;
 
+    public ItemDiscount() {}
+
+    public ItemDiscount(String discountDate, String supplierID) {
+        this.discountDate = discountDate;
+        this.supplierID = supplierID;
+    }
+
+    public ItemDiscount(String discountDate, String supplierID, int itemID) {
+        this.discountDate = discountDate;
+        this.supplierID = supplierID;
+        this.itemID = itemID;
+    }
+
     public ItemDiscount(String discountDate, String supplierID, int itemID, double discount, int itemCount) throws SQLException {
         super(ItemDiscountDalController.getInstance());
         this.discountDate = discountDate;
@@ -56,35 +69,36 @@ public class ItemDiscount extends DalObject<ItemDiscount> {
         return itemID;
     }
 
-    public void setDiscountDate(String discountDate) throws SQLException {
+    public void setDiscountDate(String discountDate) {
         String oldDate = this.discountDate;
         this.discountDate = discountDate;
         try {
             controller.update(this, oldDate);
         } catch (SQLException ex) {
             this.discountDate = oldDate;
-            throw ex;
+            throw new RuntimeException("Something went wrong.");
         }
     }
 
-    public void setSupplierID(String supplierID) throws SQLException {
+    public void setSupplierID(String supplierID) {
         String oldSupplierId = this.supplierID;
         this.supplierID = supplierID;
         try {
             controller.update(this, oldSupplierId);
         } catch(SQLException ex) {
             this.supplierID = oldSupplierId;
-            throw ex;
+            throw new RuntimeException("Something went wrong.");
         }
     }
 
-    public void setItemID(int itemID) throws SQLException {
+    public void setItemID(int itemID) {
         int oldId = this.itemID;
         this.itemID = itemID;
         try {
             controller.update(this, oldId);
         } catch (SQLException ex) {
             this.itemID = oldId;
+            throw new RuntimeException("Something went wrong.");
         }
     }
 }

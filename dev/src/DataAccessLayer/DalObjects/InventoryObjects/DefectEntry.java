@@ -64,25 +64,25 @@ public class DefectEntry extends DalObject<DefectEntry> {
         this.itemName = itemName;
     }
 
-    public void setEntryDate(String entryDate) throws SQLException {
+    public void setEntryDate(String entryDate) {
         String oldEntryDate = this.entryDate;
         this.entryDate = entryDate;
         try {
             controller.update(this, oldEntryDate);
         } catch (SQLException ex) {
             this.entryDate = entryDate;
-            throw ex;
+            throw new RuntimeException("Something went wrong.");
         }
     }
 
-    public void setItemID(int itemID) throws SQLException {
+    public void setItemID(int itemID) {
         int oldId = this.itemID;
         this.itemID = itemID;
         try {
             controller.update(this, oldId);
         } catch (SQLException ex) {
             this.itemID = itemID;
-            throw ex;
+            throw new RuntimeException("Something went wrong.");
         }
     }
 }

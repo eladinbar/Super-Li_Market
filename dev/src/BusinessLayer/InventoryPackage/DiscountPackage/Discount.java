@@ -8,6 +8,13 @@ public abstract class Discount {
     protected LocalDate date;
     protected int itemCount;
 
+    public Discount() {}
+
+    public Discount(String supplierId, LocalDate discountDate) {
+        this.supplierID = supplierId;
+        this.date = discountDate;
+    }
+
     public Discount(String supplierID, double discount, LocalDate date, int itemCount) {
         this.supplierID = supplierID;
         this.discount = discount;

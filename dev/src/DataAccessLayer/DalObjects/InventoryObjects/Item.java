@@ -140,14 +140,14 @@ public class Item extends DalObject<Item> {
         this.categoryName = categoryName;
     }
 
-    public void setItemID(int itemID) throws SQLException {
+    public void setItemID(int itemID) {
         int oldId = this.itemID;
         this.itemID = itemID;
         try {
             controller.update(this);
         } catch (SQLException ex) {
             this.itemID = oldId;
-            throw ex;
+            throw new RuntimeException("Something went wrong.");
         }
     }
 }

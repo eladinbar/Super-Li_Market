@@ -21,21 +21,13 @@ public class ItemSale extends Sale {
 
     @Override
     public void setName(String name) {
-        try {
-            dalCopyItemSale.setName(name);
-        } catch (SQLException ex) {
-            throw new RuntimeException("Something went wrong.");
-        }
+        dalCopyItemSale.setName(name);
         try {
             dalCopyItemSale.update();
             this.name = name;
         } catch (SQLException ex) {
-            try {
-                dalCopyItemSale.setName(this.name);
-                throw new RuntimeException("Something went wrong.");
-            } catch (SQLException e) {
-                throw new RuntimeException("Something went wrong.");
-            }
+            dalCopyItemSale.setName(this.name);
+            throw new RuntimeException("Something went wrong.");
         }
     }
 

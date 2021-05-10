@@ -18,6 +18,19 @@ public class CategoryDiscount extends DalObject<CategoryDiscount> {
     private String supplierID;
     private String categoryName;
 
+    public CategoryDiscount() {}
+
+    public CategoryDiscount(String supplierId, String discountDate) {
+        this.supplierID = supplierId;
+        this.discountDate = discountDate;
+    }
+
+    public CategoryDiscount(String discountDate, String supplierID, String categoryName) {
+        this.discountDate = discountDate;
+        this.supplierID = supplierID;
+        this.categoryName = categoryName;
+    }
+
     public CategoryDiscount(String discountDate, String supplierID, String categoryName, double discount, int itemCount) throws SQLException {
         super(CategoryDiscountDalController.getInstance());
         this.discountDate = discountDate;
@@ -55,36 +68,36 @@ public class CategoryDiscount extends DalObject<CategoryDiscount> {
         return categoryName;
     }
 
-    public void setDiscountDate(String discountDate) throws SQLException {
+    public void setDiscountDate(String discountDate) {
         String oldDate = this.discountDate;
         this.discountDate = discountDate;
         try {
             controller.update(this, oldDate);
         } catch (SQLException ex) {
             this.discountDate = oldDate;
-            throw ex;
+            throw new RuntimeException("Something went wrong.");
         }
     }
 
-    public void setSupplierID(String supplierID) throws SQLException {
+    public void setSupplierID(String supplierID) {
         String oldSupplierId = this.supplierID;
         this.supplierID = supplierID;
         try {
             controller.update(this, oldSupplierId);
         } catch(SQLException ex) {
             this.supplierID = oldSupplierId;
-            throw ex;
+            throw new RuntimeException("Something went wrong.");
         }
     }
 
-    public void setCategoryName(String categoryName) throws SQLException {
+    public void setCategoryName(String categoryName) {
         String oldCategoryName = this.categoryName;
         this.categoryName = categoryName;
         try {
             controller.update(this, oldCategoryName);
         } catch (SQLException ex) {
             this.categoryName = oldCategoryName;
-            throw ex;
+            throw new RuntimeException("Something went wrong.");
         }
     }
 }
