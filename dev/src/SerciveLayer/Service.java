@@ -94,7 +94,7 @@ public class Service implements IService {
 
     @Override
     public Response editQuantityListAmount(String supplierID, int productID, int amount) {
-        if(!itemExists(productID)){
+        if (!itemExists(productID)) {
             return new ResponseT<>("no Item exist in the system: " + productID);
         }
         return supplierService.editQuantityListAmount(supplierID, productID, amount);
@@ -102,7 +102,7 @@ public class Service implements IService {
 
     @Override
     public Response editQuantityListDiscount(String supplierID, int productID, int discount) {
-        if(!itemExists(productID)){
+        if (!itemExists(productID)) {
             return new ResponseT<>("no Item exist in the system: " + productID);
         }
         return supplierService.editQuantityListDiscount(supplierID, productID, discount);
@@ -118,7 +118,7 @@ public class Service implements IService {
         ResponseT<Item> r = inventoryService.getItem(productID);
         if (!r.errorOccurred()) {
             ResponseT<Item> rp = supplierService.addQuantityListItem(supplierID, productID, amount, discount, inventoryService);
-            if(rp.errorOccurred())
+            if (rp.errorOccurred())
                 return new ResponseT<>(rp.getErrorMessage());
         }
         return r;
@@ -128,16 +128,16 @@ public class Service implements IService {
         ResponseT<Item> r = inventoryService.getItem(productID);
         if (!r.errorOccurred()) {
             ResponseT<Item> rp = supplierService.addItemToAgreement(id, productID, companyProductId, price, inventoryService);
-            if(rp.errorOccurred())
+            if (rp.errorOccurred())
                 return new ResponseT<>(rp.getErrorMessage());
+            inventoryService.addItemSupplier(productID, id);
         }
-        inventoryService.addItemSupplier(productID, id);
         return r;
     }
 
     @Override
     public Response removeItemFromAgreement(String supplierId, int productID) {
-        if(!itemExists(productID)){
+        if (!itemExists(productID)) {
             return new ResponseT<>("no Item exist in the system: " + productID);
         }
         return supplierService.removeItemFromAgreement(supplierId, productID);
@@ -145,7 +145,7 @@ public class Service implements IService {
 
     @Override
     public Response editAgreementItemCompanyProductID(String supplierID, int productID, int companyProductID) {
-        if(!itemExists(productID)){
+        if (!itemExists(productID)) {
             return new ResponseT<>("no Item exist in the system: " + productID);
         }
         return supplierService.editAgreementItemCompanyProductID(supplierID, productID, companyProductID);
@@ -153,7 +153,7 @@ public class Service implements IService {
 
     @Override
     public Response editAgreementItemPrice(String supplierID, int productID, int price) {
-        if(!itemExists(productID)){
+        if (!itemExists(productID)) {
             return new ResponseT<>("no Item exist in the system: " + productID);
         }
         return supplierService.editAgreementItemPrice(supplierID, productID, price);
@@ -166,31 +166,36 @@ public class Service implements IService {
 
     @Override
     public ResponseT<List<Order>> createShortageOrder(LocalDate date) {
-        ResponseT<Map<Integer,Integer>> itemInShort = inventoryService.getItemsInShortAndQuantities();
-        if(itemInShort.errorOccurred())
+        ResponseT<Map<Integer, Integer>> itemInShort = inventoryService.getItemsInShortAndQuantities();
+        if (itemInShort.errorOccurred())
             return new ResponseT<>(itemInShort.getErrorMessage());
-
-        ResponseT<Map<String,Map<Integer,Integer>>> r = supplierService.createShortageOrders(itemInShort.value);
-        ResponseT<List<Order>> orderR = orderService.createShortageOrders(r.value,date,supplierService.getSp());
-        if(r.errorOccurred())
+        //todo check if there is always value
+        ResponseT<Map<String, Map<Integer, Integer>>> r = supplierService.createShortageOrders(itemInShort.value);
+        ResponseT<List<Order>> orderR=null;//todo check
+        try {
+            orderR = orderService.createShortageOrders(r.value, date, supplierService.getSp());
+        } catch (Exception e)//todo check the exeption !!
+        {
+        }
+        if (r.errorOccurred())
             orderR.setErrorMessage(r.getErrorMessage());
         return orderR;
     }
 
     @Override
     public ResponseT<Order> createScheduledOrder(int day, int itemID, int amount) {
-        if(!itemExists(itemID)){
+        if (!itemExists(itemID)) {
             return new ResponseT<>("no Item exist in the system: " + itemID);
         }
-        ResponseT<Supplier> cheap = supplierService.getCheapestSupplier(itemID,amount,true);
-        if(cheap.errorOccurred())
+        ResponseT<Supplier> cheap = supplierService.getCheapestSupplier(itemID, amount, true);
+        if (cheap.errorOccurred())
             return new ResponseT<>(cheap.getErrorMessage());
         Supplier s = cheap.value;
-        ResponseT<Order> scheduledOrder = orderService.createPernamentOrder(day,s.getSc().getId(), supplierService.getSp());
-        if(scheduledOrder.errorOccurred())
+        ResponseT<Order> scheduledOrder = orderService.createPernamentOrder(day, s.getSc().getId(), supplierService.getSp());
+        if (scheduledOrder.errorOccurred())
             return new ResponseT<>(cheap.getErrorMessage());
-        Response addItemResp = orderService.addProductToOrder(scheduledOrder.value.getId(),itemID,amount);
-        if(addItemResp.errorOccurred())
+        Response addItemResp = orderService.addProductToOrder(scheduledOrder.value.getId(), itemID, amount);
+        if (addItemResp.errorOccurred())
             return new ResponseT<>(addItemResp.getErrorMessage());
 
         return getOrder(scheduledOrder.value.getId());
@@ -198,7 +203,7 @@ public class Service implements IService {
 
     @Override
     public Response deleteQuantityListItem(String supplierID, int productID) {
-        if(!itemExists(productID))
+        if (!itemExists(productID))
             return new ResponseT<>("no Item exist in the system: " + productID);
         return supplierService.deleteQuantityListItem(supplierID, productID);
     }
@@ -216,15 +221,15 @@ public class Service implements IService {
     @Override
     public Response approveOrder(int orderID) {
         Response r = orderService.approveOrder(orderID);
-        if(r.errorOccurred())
+        if (r.errorOccurred())
             return r;
         ResponseT<Order> orderR = orderService.getOrder(orderID, inventoryService);
-        if(orderR.errorOccurred())
+        if (orderR.errorOccurred())
             return orderR;
         ArrayList<Product> productList = orderR.value.getProducts();
         inventoryService.updateQuantityInventory(productList);
         for (Product p : productList) {
-            if(p.getDiscount() > 0){
+            if (p.getDiscount() > 0) {
                 inventoryService.addItemDiscount(orderR.value.getSupplier().getSc().getId(), p.getDiscount(), orderR.value.getDate(), p.getAmount(), p.getProductID());
             }
         }
@@ -239,32 +244,32 @@ public class Service implements IService {
 
     @Override
     public Response addProductToOrder(int orderId, int productID, int amount) {
-        if(!itemExists(productID))
+        if (!itemExists(productID))
             return new ResponseT<>("no Item exist in the system: " + productID);
         return orderService.addProductToOrder(orderId, productID, amount);
     }
 
     @Override
     public Response removeProductFromOrder(int orderID, int productID) {
-        if(!itemExists(productID))
+        if (!itemExists(productID))
             return new ResponseT<>("no Item exist in the system: " + productID);
         return orderService.removeProductFromOrder(orderID, productID);
     }
 
     @Override
     public ResponseT<Double> getPrice(String supplierID, int amount, int productID) {
-        if(!itemExists(productID)){
+        if (!itemExists(productID)) {
             return new ResponseT<>("no Item exist in the system: " + productID);
         }
-        return supplierService.getPrice(supplierID,amount,productID);
+        return supplierService.getPrice(supplierID, amount, productID);
     }
 
     @Override
     public ResponseT<Supplier> getCheapestSupplier(int productID, int amount, boolean scheduled) {
-        if(!itemExists(productID)){
+        if (!itemExists(productID)) {
             return new ResponseT<>("no Item exist in the system: " + productID);
         }
-        return supplierService.getCheapestSupplier(productID,amount, scheduled);
+        return supplierService.getCheapestSupplier(productID, amount, scheduled);
     }
 
     @Override
@@ -274,7 +279,7 @@ public class Service implements IService {
 
     @Override
     public ResponseT<Double> getProductDiscount(String supplierID, int amount, int productID) {
-        if(!itemExists(productID)){
+        if (!itemExists(productID)) {
             return new ResponseT<>("no Item exist in the system: " + productID);
         }
         return supplierService.getProductDiscount(supplierID, amount, productID);
@@ -282,10 +287,10 @@ public class Service implements IService {
 
     @Override
     public ResponseT<Integer> getSupplierCompanyProductID(String supplierID, int productID) {
-        if(!itemExists(productID)){
+        if (!itemExists(productID)) {
             return new ResponseT<>("no Item exist in the system: " + productID);
         }
-        return supplierService.getSupplierCompanyProductID(supplierID,productID);
+        return supplierService.getSupplierCompanyProductID(supplierID, productID);
     }
 
     @Override
@@ -295,7 +300,7 @@ public class Service implements IService {
 
     @Override
     public Response addItem(int id, String name, String categoryName, double costPrice, double sellingPrice, int minAmount, String shelfLocation, String storageLocation, int shelfQuantity, int storageQuantity, int manufacturerId, List<String> suppliersIds) {
-        return inventoryService.addItem(id,name,categoryName,costPrice,sellingPrice,minAmount,shelfLocation,storageLocation,shelfQuantity,storageQuantity,manufacturerId,suppliersIds);
+        return inventoryService.addItem(id, name, categoryName, costPrice, sellingPrice, minAmount, shelfLocation, storageLocation, shelfQuantity, storageQuantity, manufacturerId, suppliersIds);
     }
 
     @Override
@@ -305,7 +310,7 @@ public class Service implements IService {
 
     @Override
     public Response modifyItemName(int itemId, String newName) {
-        return inventoryService.modifyItemName(itemId,newName);
+        return inventoryService.modifyItemName(itemId, newName);
     }
 
     @Override
@@ -350,7 +355,7 @@ public class Service implements IService {
 
     @Override
     public Response addCategory(String categoryName, String parentCategoryName) {
-        return inventoryService.addCategory(categoryName,parentCategoryName);
+        return inventoryService.addCategory(categoryName, parentCategoryName);
     }
 
     @Override
@@ -405,7 +410,7 @@ public class Service implements IService {
 
     @Override
     public <T extends SimpleEntity> ResponseT<List<Discount<T>>> getDiscount(String supplierId, LocalDate discountDate) {
-        return inventoryService.getDiscount(supplierId,discountDate);
+        return inventoryService.getDiscount(supplierId, discountDate);
     }
 
     @Override
@@ -448,7 +453,7 @@ public class Service implements IService {
         return supplierService.getAgreement(supplierID);
     }
 
-    private boolean itemExists(int itemId){
+    private boolean itemExists(int itemId) {
         return !inventoryService.getItem(itemId).errorOccurred();
     }
 }

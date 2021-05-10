@@ -17,9 +17,9 @@ public class QuantityList {
 
     @Override
     public String toString() {
-        String amounts="quantity List details :";
+        String amounts="quantity List details :\nPID\t|\tamount\t|\tdiscount\n";
         for (Map.Entry<Integer,Integer> entry: amount.entrySet()) {
-            amounts+="\nitem ID: "+entry.getKey()+"\nitem amount to get discount: "+entry.getValue()+"\nitem discount: "+discount.get(entry.getKey())+"\n";
+            amounts+=entry.getKey()+"\t|\t"+entry.getValue()+"\t|\t"+discount.get(entry.getKey())+"\n";
         }
         return amounts;
     }

@@ -24,18 +24,13 @@ public class Agreement {
 
     @Override
     public String toString() {
-        String p = "";
+        String p = "Agreement details:\nproduct ID\t|\tproduct company id\t|\tproduct price\n";
         for (Map.Entry<Integer, Integer> e : products.entrySet()) {
-            p += "product ID: " + e.getKey() + "\nproduct company id: " + e.getValue() + "\nproduct price: " + prices.get(e.getKey()) + "\n--------------------\n";
+            p += e.getKey() + "\t|\t" + e.getValue() + "\t|\t" + prices.get(e.getKey()) + "\n";
         }
         if (ql != null)
-            return "agreement details:" +
-                    "\nproducts: \n" + p +
-                    "\n" + ql.toString();
+            return p + ql.toString();
         else
-            return "agreement details:" +
-                    "\nproducts: \n" + p +
-                    "\nsupplier does not have a quantity list";
-
+            return p + "\nsupplier does not have a quantity list";
     }
 }

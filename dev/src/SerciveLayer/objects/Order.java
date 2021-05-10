@@ -21,13 +21,13 @@ public class Order {
         this.day = conNumToDay(day);
     }
 
-    public Order(BusinessLayer.SupliersPackage.orderPackage.Order order, ArrayList<Product> products,int day) {
+    public Order(BusinessLayer.SupliersPackage.orderPackage.Order order, ArrayList<Product> products, int day) {
         this.id = order.getId();
         this.products = products;
         this.date = order.getDate();
         this.delivered = order.isDelivered();
         this.supplier = new Supplier(order.getSupplier());
-        this.day="";
+        this.day = "";
     }
 
     public int getId() {
@@ -49,25 +49,14 @@ public class Order {
 
     @Override
     public String toString() {
-        String proToString = "";
+        String proToString = "order products:\n";
         for (Product en : products) {
-            proToString += "\nproduct id : " + en.getProductID() + "       amount: " + en.getAmount();
+            proToString += en.toString() + "\n";
         }
 
-        if (date == null) {
-            return "order details: " +
-                    "\nid: " + id + " " +
-                    "\nproducts: " + proToString +
-                    "\ndelivered: " + delivered +
-                    "\nsupplier: " + supplier.getName();
-        }
-
-        return "order details: " +
-                "\nid: " + id + " " +
-                "\nproducts: " + proToString +
-                "\ndate: " + date.toString() +
-                "\ndelivered: " + delivered +
-                "\nsupplier: " + supplier.getName();
+        if (date == null)
+            return String.format("order details:\nsupplier name: %s\t|\tadress:%s\t|\torder id : %d\nsupplier id: %s\t|\tpermanentDay: %s\t|\tphone number: %s\nitem id\t|\tname\t|\tquantity\t|\tselling price\t|\tdiscount\t|\tfinal price\n", supplier.getName(), "**insertaddress**", id, supplier.getSc().id, day, supplier.getSc().phone) + proToString;
+        return String.format("order details:\nsupplier name: %s\t|\tadress:%s\t|\torder id : %d\nsupplier id: %s\t|\tdate: %s\t|\tphone number: %s\nitem id\t|\tname\t|\tquantity\t|\tselling price\t|\tdiscount\t|\tfinal price\n", supplier.getName(), "**insertaddress**", id, supplier.getSc().id, date, supplier.getSc().phone) + proToString;
     }
 
     private String conNumToDay(int num) {

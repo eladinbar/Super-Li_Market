@@ -138,7 +138,7 @@ public class OrderService {
         return toReturn;
     }
 
-    public ResponseT<List<Order>> createShortageOrders(Map<String,Map<Integer, Integer>> itemToOrder,LocalDate orderDate,SupplierController sp) {//todo check again
+    public ResponseT<List<Order>> createShortageOrders(Map<String,Map<Integer, Integer>> itemToOrder,LocalDate orderDate,SupplierController sp) throws Exception {//todo check again
         List<Order> orderList = new ArrayList<>();
         for (String suppID : itemToOrder.keySet()) {
             Map<Integer,Integer> tempMap = itemToOrder.get(suppID);
@@ -146,6 +146,8 @@ public class OrderService {
             if(order.errorOccurred()) return new ResponseT<>(order.getErrorMessage());
             for (int itemID: tempMap.keySet()) {
                 addProductToOrder(order.value.getId(),itemID,tempMap.get(itemID));
+                Product p=new Product(itemID,"name",tempMap.get(itemID),sp.getSuppliers().get(suppID).getAg().getPrices().get(itemID),sp.getProductDiscount(suppID,tempMap.get(itemID),itemID));//todo check and insert name
+                order.value.getProducts().add(p);
             }
             orderList.add(order.value);
         }

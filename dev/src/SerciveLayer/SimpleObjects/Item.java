@@ -72,7 +72,7 @@ public class Item extends SimpleEntity {
         return storageQuantity;
     }
 
-    public int getTotalQuantity(){
+    public int getTotalQuantity() {
         return totalQuantity;
     }
 
@@ -102,5 +102,22 @@ public class Item extends SimpleEntity {
 
     public void setCategory(String category) {
         this.category = category;
+    }
+
+    @Override
+    public String toString() {
+        return "Item details:\n" +
+                "ID: " + ID + '\n' +
+                "name: " + name + '\n' +
+                "costPrice: " + costPrice + '\n' +
+                "sellingPrice: " + sellingPrice + '\n' +
+                "shelfQuantity: " + shelfQuantity + '\n' +
+                "storageQuantity: " + storageQuantity + '\n' +
+                "totalQuantity: " + totalQuantity + '\n' +
+                "minAmount: " + minAmount + '\n' +
+                "shelfLocation: " + shelfLocation + '\n' +
+                "storageLocation: " + storageLocation + '\n' +
+                "manufacturerID: " + manufacturerID + '\n' +
+                "category: " + category;
     }
 }

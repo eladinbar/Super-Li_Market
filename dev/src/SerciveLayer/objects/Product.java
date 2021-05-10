@@ -2,6 +2,8 @@ package SerciveLayer.objects;
 
 import SerciveLayer.SimpleObjects.SimpleEntity;
 
+import java.lang.reflect.Field;
+
 public class Product extends SimpleEntity {
     private int productID;
     private String name;
@@ -45,9 +47,6 @@ public class Product extends SimpleEntity {
 
     @Override
     public String toString() {
-        return "product: " +
-                "\nname: " + name  +
-                "\nproductID: " + productID +
-                "\nmanufacturer: "  +"\n\n";
+        return String.format("%s\t|\t%s\t|\t%d\t|\t%d\t|\t%d\t|\t%d\n",productID,name,amount,sellingPrice,discount,finalPrice);
     }
 }

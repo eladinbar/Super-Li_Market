@@ -187,8 +187,8 @@ public class SupplierController {
         for (Supplier sup : suppliers.values()) {
             try {
                 if (!scheduled || sup.getSc().isPernamentDays()) {
-                    if (sup.getPrice(productID, amount) < cheapestPrice) {
-                        cheapestPrice = sup.getPrice(productID, amount);
+                    if (sup.getPrice(amount, productID) < cheapestPrice) {
+                        cheapestPrice = sup.getPrice(amount, productID);
                         cheapestSup = sup;
                     }
                 }

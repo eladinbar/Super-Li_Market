@@ -319,7 +319,6 @@ public class SupplierService {
     public ResponseT<Map<String, Map<Integer, Integer>>> createShortageOrders(Map<Integer, Integer> items) {
         Map<String, Map<Integer, Integer>> orders = new HashMap<>();
         String noSupplier = "";
-
             for (Integer itemId : items.keySet()) {
                 try {
                 String suppId = sp.getCheapestSupplier(itemId, items.get(itemId), false).getSc().getId();

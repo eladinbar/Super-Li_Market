@@ -478,7 +478,7 @@ public class PresentationController implements Runnable {
     }
 
     private void orderMainMenu() {
-        System.out.println("order menu:");
+        System.out.println("\norder menu:");
         System.out.println("1. create shortage order");
         System.out.println("2. create scheduled order");
         System.out.println("3. approve order");
@@ -508,7 +508,7 @@ public class PresentationController implements Runnable {
                 return;
         }
         String order = oo.value.stream().map(o -> o.getId() + "").reduce("added orders", (acc, curr) -> acc + ", " + curr);
-        System.out.println(order.substring(0, order.length() - 1));
+        System.out.println(order);
     }
 
     private void setPermanentOrder() { //case 7
@@ -628,7 +628,7 @@ public class PresentationController implements Runnable {
         System.out.println(print);
         if (!print.split(" ")[0].equals("\nError:")) {
             while (true) {
-                System.out.println("please choose option:");
+                System.out.println("\nplease choose option:");
                 System.out.println("1. add item to agreement");
                 System.out.println("2. stop add items to agreement");
                 System.out.print("Option: ");
@@ -646,7 +646,7 @@ public class PresentationController implements Runnable {
     }
 
     private void getSupplier() {
-        System.out.print("please enter supplier id: ");
+        System.out.print("please enter supplier ");
         String supplierId = readID();
         System.out.println(service.getSupplier(supplierId).toString());
     }
@@ -658,7 +658,7 @@ public class PresentationController implements Runnable {
         String supplierID = readID();
         boolean flag = true;
         while (flag) {
-            System.out.println("Please choose an option to Edit:");
+            System.out.println("\nPlease choose an option to Edit:");
             System.out.println("1. edit first name");
             System.out.println("2. edit last name");
             System.out.println("3. edit phone number");
@@ -754,7 +754,7 @@ public class PresentationController implements Runnable {
                         else if (opt != 1)
                             System.out.println("invalid option");
                         else if (opt == 1) {
-                            System.out.print("please enter following details: ");
+                            System.out.print("\nplease enter following details: ");
                             String fName = readName(0);
                             String lName = readName(1);
                             String email = readEmail();
@@ -841,11 +841,11 @@ public class PresentationController implements Runnable {
     }
 
     private void editAgrreement() {
-        System.out.print("Please enter supplier");
+        System.out.print("Please enter supplier ");
         String supplierId = readID();
         boolean flag = true;
         while (flag) {
-            System.out.println("please choose an option:");
+            System.out.println("\nplease choose an option:");
             System.out.println("1. add product");
             System.out.println("2. remove product");
             System.out.println("3. edit company product id");
@@ -859,7 +859,7 @@ public class PresentationController implements Runnable {
                     productId = menu.instructAndReceive("please enter system product id: ", Integer.class);
                     int price = menu.instructAndReceive("please enter price: ", Integer.class);
                     int companyProductID=menu.instructAndReceive("enter your company product id: ", Integer.class);
-                    menu.printEntity(service.addItemToAgreement(supplierId, productId,companyProductID, price).value);
+                    System.out.println((service.addItemToAgreement(supplierId, productId,companyProductID, price).toString()));
                 }
                 case 2 -> {//delete product
                     productId = menu.instructAndReceive("please enter system product id: ", Integer.class);
@@ -867,15 +867,13 @@ public class PresentationController implements Runnable {
                 }
                 case 3 -> {
                     System.out.println("\nplease enter the following details: ");
-                    System.out.print("supplier id: ");
-                    supplierId = readID();
                     productId = menu.instructAndReceive("product id: ", Integer.class);
-                    int newCompId = menu.instructAndReceive("new company product id: ", Integer.class);
+                    int newCompId = menu.instructAndReceive("enter new company product id: ", Integer.class);
                     System.out.println(service.editAgreementItemCompanyProductID(supplierId, productId, newCompId).toString());
                 }
                 case 4 -> {
                     productId = menu.instructAndReceive("product id: ", Integer.class);
-                    int price = menu.instructAndReceive("please new price: ", Integer.class);
+                    int price = menu.instructAndReceive("enter new price: ", Integer.class);
                     System.out.println(service.editAgreementItemPrice(supplierId, productId, price).toString());
                 }
                 case 5 -> flag = false;
