@@ -14,7 +14,8 @@ public class Category extends DalObject<Category> {
 
     public Category() {}
 
-    public Category(String name) {
+    public Category(String name) throws SQLException {
+        super(CategoryDalController.getInstance());
         this.name = name;
     }
 

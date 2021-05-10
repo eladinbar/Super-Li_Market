@@ -20,12 +20,14 @@ public class CategoryDiscount extends DalObject<CategoryDiscount> {
 
     public CategoryDiscount() {}
 
-    public CategoryDiscount(String supplierId, String discountDate) {
+    public CategoryDiscount(String supplierId, String discountDate) throws SQLException {
+        super(CategoryDiscountDalController.getInstance());
         this.supplierID = supplierId;
         this.discountDate = discountDate;
     }
 
-    public CategoryDiscount(String discountDate, String supplierID, String categoryName) {
+    public CategoryDiscount(String discountDate, String supplierID, String categoryName) throws SQLException {
+        super(CategoryDiscountDalController.getInstance());
         this.discountDate = discountDate;
         this.supplierID = supplierID;
         this.categoryName = categoryName;

@@ -1,5 +1,6 @@
 package DataAccessLayer.DalObjects.InventoryObjects;
 
+import DataAccessLayer.DalControllers.InventoryControllers.DefectEntryDalController;
 import DataAccessLayer.DalControllers.InventoryControllers.ItemDalController;
 import DataAccessLayer.DalObjects.DalObject;
 
@@ -30,13 +31,17 @@ public class Item extends DalObject<Item> {
     private String storageLocation;
     private String categoryName;
 
-    public Item() {}
+    public Item() throws SQLException {
+        super(ItemDalController.getInstance());
+    }
 
-    public Item(String categoryName) {
+    public Item(String categoryName) throws SQLException {
+        super(ItemDalController.getInstance());
         this.categoryName = categoryName;
     }
 
-    public Item(int itemID) {
+    public Item(int itemID) throws SQLException {
+        super(ItemDalController.getInstance());
         this.itemID = itemID;
     }
 
