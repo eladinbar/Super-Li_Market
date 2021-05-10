@@ -40,6 +40,10 @@ public class Category extends DalObject<Category> {
     }
 
     public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setAndSaveName(String name) {
         String oldName = this.name;
         this.name = name;
         try {

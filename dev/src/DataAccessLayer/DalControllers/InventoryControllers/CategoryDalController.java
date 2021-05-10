@@ -93,13 +93,12 @@ public class CategoryDalController extends DalController<Category> {
     @Override
     public boolean update(Category category, String oldName) throws SQLException {
         try (Connection conn = DriverManager.getConnection(connectionString)) {
-            String command = "UPDATE " + tableName + " SET " + Category.categoryNameColumnName + "=?," + Category.parentNameColumnName +
+            String command = "UPDATE " + tableName + " SET " + Category.categoryNameColumnName +
                     "=? WHERE(" + Category.categoryNameColumnName + "=?)";
             PreparedStatement stmt = conn.prepareStatement(command);
 
             stmt.setString(1, category.getName());
-            stmt.setString(2, category.getParentName());
-            stmt.setString(3, oldName);
+            stmt.setString(2, oldName);
             stmt.executeUpdate();
         } catch (SQLException ex) {
             throw new SQLException(ex.getMessage());
