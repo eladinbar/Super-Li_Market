@@ -15,7 +15,7 @@ public class DalBankBranchController extends DalController {
     private DalBankBranchController() throws SQLException {
         super();
         tableName = "BANKS";
-        columnNames = new String[] {"BANK", "BANKBRANCH",  "ACCOUNTNUMBER"};
+        columnNames = new String[] {"EMPLOYEEID", "BANK", "BANKBRANCH",  "ACCOUNTNUMBER"};
        try {
            createTable();
        }
@@ -29,6 +29,7 @@ public class DalBankBranchController extends DalController {
     protected boolean createTable() throws SQLException {
         Connection conn = DriverManager.getConnection("jdbc:sqlite:/C:\\Users\\ofirp\\WorkJavaBGU\\second year\\Nitoz\\database.db");
         String query = "CREATE TABLE IF NOT EXISTS BANKS("
+                +"EMPLOYEEID TEXT,"
                 +"bank TEXT ,"
                 +"BANKBRANCH INTEGER,"
                 +"ACCOUNTNUMBER INTEGER,"
@@ -58,12 +59,13 @@ public class DalBankBranchController extends DalController {
         //TODO - change URL
         System.out.println("starting insert");
         Connection conn= DriverManager.getConnection("jdbc:sqlite:Desktop\\database_nitoz.db");
-        String query= "INSERT INTO "+tableName+" VALUES (?,?,?)";
+        String query= "INSERT INTO "+tableName+" VALUES (?,?,?,?)";
         try{
             PreparedStatement st=conn.prepareStatement(query);
-            st.setString(1,dalBankBranch.getBank());
-            st.setInt(2,dalBankBranch.getBankBranch());
-            st.setInt(3,dalBankBranch.getAccountNumber());
+            st.setString(1,dalBankBranch.getEmployeeId());
+            st.setString(2,dalBankBranch.getBank());
+            st.setInt(3,dalBankBranch.getBankBranch());
+            st.setInt(4,dalBankBranch.getAccountNumber());
 
             System.out.println("executing insert");
             st.executeUpdate();
@@ -81,13 +83,14 @@ public class DalBankBranchController extends DalController {
 
     public boolean update(DalBankBranch dalBankBranch) throws SQLException {
         Connection conn=DriverManager.getConnection("jdbc:sqlite:Desktop\\database_nitoz.db");
-        String query="UPDATE "+tableName+" SET "+columnNames[0]+"=?, "+columnNames[1]+"=?, "+columnNames[2]+"=?, WHERE ("+columnNames[2]+"=?)";
+        String query="UPDATE "+tableName+" SET "+columnNames[0]+"=?, "+columnNames[1]+"=?, "+columnNames[2]+"=?," +columnNames[3]+"=?, WHERE ("+columnNames[2]+"=?)";
         try{
             PreparedStatement st=conn.prepareStatement(query);
-            st.setString(1,dalBankBranch.getBank());
-            st.setInt(2,dalBankBranch.getBankBranch());
-            st.setInt(3,dalBankBranch.getAccountNumber());
+            st.setString(1,dalBankBranch.getEmployeeId());
+            st.setString(2,dalBankBranch.getBank());
+            st.setInt(3,dalBankBranch.getBankBranch());
             st.setInt(4,dalBankBranch.getAccountNumber());
+            st.setInt(5,dalBankBranch.getAccountNumber());
             st.executeUpdate();
 
 
@@ -124,8 +127,8 @@ public class DalBankBranchController extends DalController {
             PreparedStatement st = conn.prepareStatement(query);
             ResultSet resultSet = st.executeQuery(query);
             while (resultSet.next()) {
-                bankBranches.add(new DalBankBranch(resultSet.getString(1),
-                        resultSet.getInt(2),resultSet.getInt(3))
+                bankBranches.add(new DalBankBranch(resultSet.getString(1), resultSet.getString(2),
+                        resultSet.getInt(3),resultSet.getInt(4))
                 );
             }
         } catch (SQLException e) {
@@ -141,7 +144,7 @@ public class DalBankBranchController extends DalController {
             PreparedStatement st=conn.prepareStatement(query);
             st.setInt(1,accountNumber);
             ResultSet resultSet = st.executeQuery(query);
-            return new DalBankBranch(resultSet.getString(1), resultSet.getInt(2), resultSet.getInt(3));
+            return new DalBankBranch(resultSet.getString(1), resultSet.getString(2), resultSet.getInt(3), resultSet.getInt(4));
         }
         catch (SQLException e){
             throw e;

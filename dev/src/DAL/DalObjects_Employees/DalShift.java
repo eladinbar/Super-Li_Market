@@ -15,6 +15,7 @@ public class DalShift {
         this.date = date;
         this.shift = shift;
         this.role = role;
+
     }
 
     // getters
