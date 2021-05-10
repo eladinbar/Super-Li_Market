@@ -10,23 +10,23 @@ public class DalSiteController extends DalController {
 
     private static DalSiteController controller;
 
-    private DalSiteController(){//TODO - Check when tables created
+    private DalSiteController(){
         super();
         this.tableName="Sites";
         this.columnNames=new String[6];
         columnNames[0]="siteID";columnNames[1]="name";columnNames[2]="city";
         columnNames[3]="deliverArea";columnNames[4]="contactName";columnNames[5]="phoneNumber";}
 
-    public static DalSiteController getInstance() {
-        if (controller==null)
-        controller= new DalSiteController();
+    public static DalSiteController getInstance() throws SQLException {
+        if (controller==null) {
+            controller = new DalSiteController();
+            controller.createTable();
+        }
         return controller;
     }
 
     public boolean insert(DalSite dalSite) throws SQLException {
-        //TODO - change URL
-        System.out.println("starting insert");
-        Connection conn= DriverManager.getConnection("jdbc:sqlite:/D:\\Year2\\ניתוצ\\עבודה 2\\database.db");
+        Connection conn= DriverManager.getConnection(connection);
         String query= "INSERT INTO "+tableName+" VALUES (?,?,?,?,?,?)";
         try{
             PreparedStatement st=conn.prepareStatement(query);
@@ -36,8 +36,6 @@ public class DalSiteController extends DalController {
             st.setInt(4,dalSite.getDeliveryArea());
             st.setString(5,dalSite.getContactName());
             st.setString(6,dalSite.getPhoneNumber());
-
-            System.out.println("executing update");
             st.executeUpdate();
 
         }
@@ -54,7 +52,7 @@ public class DalSiteController extends DalController {
     }
 
     public boolean update(DalSite dalSite) throws SQLException {
-        Connection conn=DriverManager.getConnection("jdbc:sqlite:/D:\\Year2\\ניתוצ\\עבודה 2\\database.db");
+        Connection conn=DriverManager.getConnection(connection);
         String query="UPDATE "+tableName+" SET "+columnNames[1]+"=?, "+columnNames[2]+"=?, "+columnNames[3]+"=? " +
                 columnNames[4]+"=?,"+columnNames[5]+"WHERE ("+columnNames[0]+"=?)";
 
@@ -82,7 +80,7 @@ public class DalSiteController extends DalController {
     }
 
     public boolean delete(DalSite dalSite) throws SQLException {
-        Connection conn=DriverManager.getConnection("jdbc:sqlite:/D:\\Year2\\ניתוצ\\עבודה 2\\database.db");
+        Connection conn=DriverManager.getConnection(connection);
         String query="DELETE FROM "+tableName+" WHERE("+columnNames[0]+"=? ";
         try {
             PreparedStatement st=conn.prepareStatement(query);
@@ -98,11 +96,11 @@ public class DalSiteController extends DalController {
     public LinkedList<DalSite> load () throws SQLException// Select From DB
     {
         LinkedList<DalSite> sites = new LinkedList<>();
-        Connection conn = DriverManager.getConnection("jdbc:sqlite:/D:\\Year2\\ניתוצ\\עבודה 2\\database.db");
+        Connection conn = DriverManager.getConnection(connection);
         String query = "SELECT * FROM "+tableName;
         try {
             PreparedStatement st = conn.prepareStatement(query);
-            ResultSet resultSet = st.executeQuery(query);
+            ResultSet resultSet = st.executeQuery();
             while (resultSet.next()) {
                 sites.add(new DalSite(resultSet.getInt(1),resultSet.getString(2),
                         resultSet.getString(3),resultSet.getInt(4),resultSet.getString(5)
@@ -115,7 +113,7 @@ public class DalSiteController extends DalController {
         return sites;
     }
     public boolean createTable() throws SQLException {
-        Connection conn = DriverManager.getConnection("jdbc:sqlite:/D:\\Year2\\ניתוצ\\עבודה 2\\database.db");
+        Connection conn = DriverManager.getConnection(connection);
         String query = "CREATE TABLE IF NOT EXISTS Sites("
                 +"siteID INTEGER,"
                 +"name TEXT,"
@@ -126,7 +124,6 @@ public class DalSiteController extends DalController {
                 +"PRIMARY KEY (siteID));";
         try {
             PreparedStatement st=conn.prepareStatement(query);
-            System.out.println("Creating\n");
             st.executeUpdate();
         }
         catch (SQLException e){

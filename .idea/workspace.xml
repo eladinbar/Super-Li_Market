@@ -1,16 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="81ce0887-8b24-4737-8b90-9f78e7d4770c" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/.name" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_01_05_2021_15_35__Default_Changelist_.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_01_05_2021_15_35__Default_Changelist_.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dev/src/Employees/business_layer/Shift/ShiftController.java" beforeDir="false" afterPath="$PROJECT_DIR$/dev/src/Employees/business_layer/Shift/ShiftController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dev/src/Employees/business_layer/facade/EmployeeService.java" beforeDir="false" afterPath="$PROJECT_DIR$/dev/src/Employees/business_layer/facade/EmployeeService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dev/src/Employees/business_layer/facade/FacadeService.java" beforeDir="false" afterPath="$PROJECT_DIR$/dev/src/Employees/business_layer/facade/FacadeService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dev/src/Employees/business_layer/facade/ShiftService.java" beforeDir="false" afterPath="$PROJECT_DIR$/dev/src/Employees/business_layer/facade/ShiftService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dev/src/Employees/presentation_layer/PresentationController.java" beforeDir="false" afterPath="$PROJECT_DIR$/dev/src/Employees/presentation_layer/PresentationController.java" afterDir="false" />
-    </list>
+    <list default="true" id="81ce0887-8b24-4737-8b90-9f78e7d4770c" name="Default Changelist" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -41,7 +32,7 @@
     </favorite-branches>
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="ayala-presentation" />
+        <entry key="$PROJECT_DIR$" value="2.2Employees" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -90,8 +81,23 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration default="true" type="ArquillianTestNG" factoryName="" nameIsGenerated="true">
+      <option name="arquillianRunConfiguration">
+        <value>
+          <option name="containerStateName" value="" />
+        </value>
+      </option>
+      <option name="TEST_OBJECT" value="CLASS" />
+      <properties />
+      <listeners />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Application.Main" />
+        <item itemvalue="Application.Main" />
         <item itemvalue="Application.Main" />
       </list>
     </recent_temporary>
@@ -106,7 +112,6 @@
       <updated>1620226113349</updated>
       <workItem from="1620226115138" duration="12000" />
       <workItem from="1620226295678" duration="2352000" />
-      <workItem from="1620602173143" duration="5097000" />
     </task>
     <task id="LOCAL-00001" summary="merging tests">
       <created>1620227247282</created>
@@ -241,14 +246,56 @@
       <option name="project" value="LOCAL" />
       <updated>1620596190194</updated>
     </task>
-    <task id="LOCAL-00020" summary="fixing starting date is already passed">
-      <created>1620597213373</created>
+    <task id="LOCAL-00020" summary="merging">
+      <created>1620631920095</created>
       <option name="number" value="00020" />
       <option name="presentableId" value="LOCAL-00020" />
       <option name="project" value="LOCAL" />
-      <updated>1620597213373</updated>
+      <updated>1620631920095</updated>
     </task>
-    <option name="localTasksCounter" value="21" />
+    <task id="LOCAL-00021" summary="load Employees">
+      <created>1620633475131</created>
+      <option name="number" value="00021" />
+      <option name="presentableId" value="LOCAL-00021" />
+      <option name="project" value="LOCAL" />
+      <updated>1620633475131</updated>
+    </task>
+    <task id="LOCAL-00022" summary="loadData - service">
+      <created>1620634381374</created>
+      <option name="number" value="00022" />
+      <option name="presentableId" value="LOCAL-00022" />
+      <option name="project" value="LOCAL" />
+      <updated>1620634381374</updated>
+    </task>
+    <task id="LOCAL-00023" summary="getEmployeeId">
+      <created>1620636364270</created>
+      <option name="number" value="00023" />
+      <option name="presentableId" value="LOCAL-00023" />
+      <option name="project" value="LOCAL" />
+      <updated>1620636364271</updated>
+    </task>
+    <task id="LOCAL-00024" summary="save and delete db - employye, constraint">
+      <created>1620637401231</created>
+      <option name="number" value="00024" />
+      <option name="presentableId" value="LOCAL-00024" />
+      <option name="project" value="LOCAL" />
+      <updated>1620637401231</updated>
+    </task>
+    <task id="LOCAL-00025" summary="update and delete - constraint">
+      <created>1620641290986</created>
+      <option name="number" value="00025" />
+      <option name="presentableId" value="LOCAL-00025" />
+      <option name="project" value="LOCAL" />
+      <updated>1620641290986</updated>
+    </task>
+    <task id="LOCAL-00026" summary="before merge">
+      <created>1620645791154</created>
+      <option name="number" value="00026" />
+      <option name="presentableId" value="LOCAL-00026" />
+      <option name="project" value="LOCAL" />
+      <updated>1620645791154</updated>
+    </task>
+    <option name="localTasksCounter" value="27" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -258,7 +305,6 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Merge branch '203834734_206117400_314978925_315994442' into 2.2Employees&#10;&#10;# Conflicts:&#10;#&#9;.idea/.gitignore&#10;#&#9;.idea/misc.xml&#10;#&#9;.idea/vcs.xml" />
     <MESSAGE value="merging tests" />
     <MESSAGE value="getDaysAndDrivers&#10;addDriverToShift&#10;isDriverAssigned&#10;driver  and truckingManager in role" />
     <MESSAGE value="make sure no exceptions in the constructors" />
@@ -277,8 +323,14 @@
     <MESSAGE value="create data and upload clean" />
     <MESSAGE value="back in each menu" />
     <MESSAGE value="bank account - key" />
-    <MESSAGE value="fixing starting date is already passed" />
-    <option name="LAST_COMMIT_MESSAGE" value="fixing starting date is already passed" />
+    <MESSAGE value="merging" />
+    <MESSAGE value="load Employees" />
+    <MESSAGE value="loadData - service" />
+    <MESSAGE value="getEmployeeId" />
+    <MESSAGE value="save and delete db - employye, constraint" />
+    <MESSAGE value="update and delete - constraint" />
+    <MESSAGE value="before merge" />
+    <option name="LAST_COMMIT_MESSAGE" value="before merge" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -289,19 +341,9 @@
           <option name="timeStamp" value="1" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/dev/src/Employees/business_layer/Employee/EmployeeController.java</url>
-          <line>185</line>
-          <option name="timeStamp" value="2" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/dev/src/Trucking/Business_Layer_Trucking/Facade/FacadeService.java</url>
-          <line>36</line>
+          <line>37</line>
           <option name="timeStamp" value="3" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/dev/src/Employees/business_layer/Shift/ShiftController.java</url>
-          <line>36</line>
-          <option name="timeStamp" value="4" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

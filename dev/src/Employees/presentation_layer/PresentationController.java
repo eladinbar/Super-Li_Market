@@ -28,7 +28,7 @@ public class PresentationController {
         stringConverter = new StringConverter ();
     }
 
-    public void start(){
+    public void start() throws SQLException {
         int choice = menuPrinter.uploadProgram ();
         if(choice == 2)
             uploadClean ();
@@ -36,40 +36,44 @@ public class PresentationController {
             uploadData ();
     }
 
-    private void uploadClean(){
+    private Response uploadClean() throws SQLException {
         char choice = menuPrinter.uploadClean ();
-        boolean start = loadData();
-        FacadeEmployee manager;
-        if(choice == 'y') {
-            manager = menuPrinter.createManagerAccountMenu ( );
-            while (manager == null)
-            {
-                manager = menuPrinter.createManagerAccountMenu ();
-            }
-            ResponseT<FacadeEmployee> facadeEmployee = facadeService.addManager ( manager );
-            if(facadeEmployee.errorOccured ())
-            {
-                menuPrinter.print ( facadeEmployee.getErrorMessage () );
-                return;
-            }
-            login ( true );
-            while(!login (false));
+        ResponseT<Boolean> start = loadData();
+        if(start.errorOccured ())
+            return new Response ( start.getErrorMessage () );
+        if(start.value == false) {
+            FacadeEmployee manager;
+            if (choice == 'y') {
+                manager = menuPrinter.createManagerAccountMenu ( );
+                while (manager == null) {
+                    manager = menuPrinter.createManagerAccountMenu ( );
+                }
+                ResponseT<FacadeEmployee> facadeEmployee = facadeService.addManager ( manager );
+                if (facadeEmployee.errorOccured ( )) {
+                    menuPrinter.print ( facadeEmployee.getErrorMessage ( ) );
+                    return new Response ( facadeEmployee.getErrorMessage () );
+                }
+                login ( true );
+                while (!login ( false )) ;
+            } else
+                menuPrinter.print ( "Only a manager can start a clean program." );
         }
         else
-            menuPrinter.print ("Only a manager can start a clean program." );
+            while (!login ( false ));
+        return new Response (  );
     }
 
-    private boolean loadData() throws SQLException {
+    private ResponseT<Boolean> loadData() throws SQLException {
         return facadeService.loadData();
     }
 
-    private void uploadData(){
+    private void uploadData() throws SQLException {
         if(!createData())
             return;
         while (!login ( false ));
     }
 
-    private boolean createData() {
+    private boolean createData() throws SQLException {
         Response response = facadeService.createData();
         if (response.errorOccured ())
         {
@@ -79,7 +83,7 @@ public class PresentationController {
         return true;
     }
 
-    private void handleManagerChoice(int choice){
+    private void handleManagerChoice(int choice) throws SQLException {
         switch (choice){
             case 1:
                 createWeeklyShiftSchedule ( );
@@ -136,7 +140,7 @@ public class PresentationController {
         }
     }
 
-    private void handleSimpleEmployeeChoice(int choice){
+    private void handleSimpleEmployeeChoice(int choice) throws SQLException {
         switch (choice){
             case 1:
                 getWeeklyShiftSchedule ( );
@@ -510,7 +514,7 @@ public class PresentationController {
         return true;
     }
 
-    private boolean login(boolean first) {
+    private boolean login(boolean first) throws SQLException {
         String id = menuPrinter.loginID ( );
         String role = menuPrinter.roleMenu ();
         int choice;
@@ -617,7 +621,7 @@ public class PresentationController {
         return true;
     }
 
-    private void giveConstraint() {
+    private void giveConstraint() throws SQLException {
         menuPrinter.print ( "Write the constraint detail:\n" );
         LocalDate date = menuPrinter.dateMenu ();
         if(date == null)
@@ -637,7 +641,7 @@ public class PresentationController {
         menuPrinter.print ( "Constraint added successfully." );
     }
 
-    private void deleteConstraint ()  {
+    private void deleteConstraint () throws SQLException {
         LocalDate date = menuPrinter.dateMenu ();
         if(date == null)
             return;
@@ -650,7 +654,7 @@ public class PresentationController {
         menuPrinter.print ( "Constraint deleted successfully.\n" );
     }
 
-    private void addEmployee() {
+    private void addEmployee() throws SQLException {
         menuPrinter.print ( "Write the new employee details:" );
         String role = menuPrinter.roleMenu ( );
         if(role == null)
@@ -699,7 +703,7 @@ public class PresentationController {
         menuPrinter.print ( "Bank account changed successfully." );
     }
 
-    private void updateTermsOfEmployee(String ID) {
+    private void updateTermsOfEmployee(String ID) throws SQLException {
         menuPrinter.print ( "Write salary: " );
         int salary = menuPrinter.getInt ();
         menuPrinter.print ( "Write education fund: " );
@@ -745,7 +749,7 @@ public class PresentationController {
         }
     }
 
-    private void getEmployeeByManager() {
+    private void getEmployeeByManager() throws SQLException {
         menuPrinter.print ( "Write the ID of the employee you would like to display: " );
         String ID = menuPrinter.getString ( );
         ResponseT<FacadeEmployee> employee = facadeService.getEmployee ( ID );
@@ -761,7 +765,7 @@ public class PresentationController {
             updateEmployee (employee.value, choice);
     }
 
-    private void updateEmployee(FacadeEmployee facadeEmployee, int choice) {
+    private void updateEmployee(FacadeEmployee facadeEmployee, int choice) throws SQLException {
         switch (choice){
             case 1:
                 removeEmployee (facadeEmployee.getID ());
