@@ -28,12 +28,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="05ca914f-9056-4de3-9869-7fdfaa880f2d" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_01_05_2021_15_35_[Default_Changelist]/shelved.patch" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_01_05_2021_15_35__Default_Changelist_.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dev/src/Employees/business_layer/Shift/ShiftController.java" beforeDir="false" afterPath="$PROJECT_DIR$/dev/src/Employees/business_layer/Shift/ShiftController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dev/src/Employees/business_layer/facade/FacadeService.java" beforeDir="false" afterPath="$PROJECT_DIR$/dev/src/Employees/business_layer/facade/FacadeService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dev/src/Employees/business_layer/facade/ShiftService.java" beforeDir="false" afterPath="$PROJECT_DIR$/dev/src/Employees/business_layer/facade/ShiftService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dev/src/Employees/presentation_layer/MenuPrinter.java" beforeDir="false" afterPath="$PROJECT_DIR$/dev/src/Employees/presentation_layer/MenuPrinter.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/dev/src/Employees/presentation_layer/PresentationController.java" beforeDir="false" afterPath="$PROJECT_DIR$/dev/src/Employees/presentation_layer/PresentationController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/ADSS_Group_G/Employees/business_layer/facade/FacadeService.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/ADSS_Group_G/Employees/business_layer/facade/FacadeService.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -89,6 +88,8 @@
     <property name="aspect.path.notification.shown" value="true" />
     <property name="extract.method.default.visibility" value="private" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/dev/src/sqlite-jdbc-3.32.3.2.jar" />
+    <property name="node.js.detected.package.eslint" value="true" />
+    <property name="node.js.selected.package.eslint" value="(autodetect)" />
     <property name="node.js.selected.package.tslint" value="(autodetect)" />
     <property name="nodejs_package_manager_path" value="npm" />
     <property name="project.structure.last.edited" value="Libraries" />
@@ -105,17 +106,6 @@
     <configuration name="Main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="Main" />
       <module name="ADSS_Group_G" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration default="true" type="ArquillianJUnit" factoryName="" nameIsGenerated="true">
-      <option name="arquillianRunConfiguration">
-        <value>
-          <option name="containerStateName" value="" />
-        </value>
-      </option>
-      <option name="TEST_OBJECT" value="class" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -175,13 +165,7 @@
       <workItem from="1619330774077" duration="12857000" />
       <workItem from="1619792461374" duration="1895000" />
       <workItem from="1619794411025" duration="473000" />
-    </task>
-    <task id="LOCAL-00019" summary="TODO has been added to both branche's job">
-      <created>1617715973615</created>
-      <option name="number" value="00019" />
-      <option name="presentableId" value="LOCAL-00019" />
-      <option name="project" value="LOCAL" />
-      <updated>1617715973615</updated>
+      <workItem from="1620738941892" duration="1502000" />
     </task>
     <task id="LOCAL-00020" summary="DF active has been added">
       <created>1617782711922</created>
@@ -519,7 +503,14 @@
       <option name="project" value="LOCAL" />
       <updated>1620685542823</updated>
     </task>
-    <option name="localTasksCounter" value="68" />
+    <task id="LOCAL-00068" summary="partlyweek">
+      <created>1620688613803</created>
+      <option name="number" value="00068" />
+      <option name="presentableId" value="LOCAL-00068" />
+      <option name="project" value="LOCAL" />
+      <updated>1620688613803</updated>
+    </task>
+    <option name="localTasksCounter" value="69" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -538,7 +529,6 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Started DAL" />
     <MESSAGE value="Started DAL - Constructors , Load method signature changed." />
     <MESSAGE value="DalTruckingReportController insert method made." />
     <MESSAGE value="DAL Trucking classes almost done!" />
@@ -563,7 +553,8 @@
     <MESSAGE value="deleting &quot;creating&quot;" />
     <MESSAGE value="fixing where" />
     <MESSAGE value="add constraint" />
-    <option name="LAST_COMMIT_MESSAGE" value="add constraint" />
+    <MESSAGE value="partlyweek" />
+    <option name="LAST_COMMIT_MESSAGE" value="partlyweek" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -645,7 +636,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/dev/src/Employees/presentation_layer/PresentationController.java</url>
-          <line>213</line>
+          <line>214</line>
           <option name="timeStamp" value="95" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
@@ -685,18 +676,28 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/dev/src/Employees/presentation_layer/PresentationController.java</url>
-          <line>315</line>
+          <line>316</line>
           <option name="timeStamp" value="104" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/dev/src/Employees/presentation_layer/PresentationController.java</url>
-          <line>99</line>
+          <line>100</line>
           <option name="timeStamp" value="105" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/dev/src/Employees/business_layer/Shift/ShiftController.java</url>
           <line>138</line>
           <option name="timeStamp" value="106" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/dev/src/Employees/presentation_layer/PresentationController.java</url>
+          <line>537</line>
+          <option name="timeStamp" value="107" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/dev/src/Employees/presentation_layer/PresentationController.java</url>
+          <line>544</line>
+          <option name="timeStamp" value="109" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

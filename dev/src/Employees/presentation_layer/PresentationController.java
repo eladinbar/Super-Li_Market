@@ -1,5 +1,6 @@
 package Employees.presentation_layer;
 
+import Employees.business_layer.Employee.Employee;
 import Employees.business_layer.Employee.Role;
 import Employees.business_layer.Shift.ShiftTypes;
 import Employees.business_layer.facade.FacadeService;
@@ -44,7 +45,7 @@ public class PresentationController {
             menuPrinter.print ( start.getErrorMessage ( ) );
             return;
         }
-        if (start.value == false) {
+        if (!start.value) {
             char choice = menuPrinter.uploadClean ( );
             FacadeEmployee manager;
             if (choice == 'y') {
@@ -57,7 +58,7 @@ public class PresentationController {
                     menuPrinter.print ( facadeEmployee.getErrorMessage ( ) );
                     return;
                 }
-                login ( true );
+                while (!login ( true ));
                 while (!login ( false )) ;
             } else
                 menuPrinter.print ( "Only a manager can start a clean program." );
@@ -534,8 +535,19 @@ public class PresentationController {
                 return false;
             }
             if(employee.value.isManager ()) {
-                if(first)
-                    createShiftTypes();
+                if(first) {
+                    createShiftTypes ( );
+                    menuPrinter.print ( "For continuing you have to create trucking manager account" );
+                    FacadeEmployee truckingManager = menuPrinter.getEmployeeDetails ( "truckingManager" );
+                    while (truckingManager == null) {
+                        truckingManager = menuPrinter.createManagerAccountMenu ( );
+                    }
+                    Response response = facadeService.addEmployee ( truckingManager );
+                    if (response.errorOccured ( )) {
+                        menuPrinter.print ( response.getErrorMessage ( ) );
+                        menuPrinter.print ( "Please add a trucking manager to the system later." );
+                    }
+                }
                 choice = menuPrinter.managerMenu ( );
                 handleManagerChoice ( choice, first );
             } else if(role.equals ( "truckingManager" )){
