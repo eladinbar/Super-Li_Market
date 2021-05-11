@@ -113,7 +113,11 @@ public class SupplierController {
 
     public Supplier getSupplier(String id) throws Exception {
         existSupplier(id);
-        return suppliers.get(id);
+        Supplier toReturn = suppliers.get(id);
+        if (toReturn==null) {
+           toReturn = new Supplier(id);
+        }
+        return toReturn;
     }
 
     public QuantityList addQuantityList(String supplierID) throws Exception {

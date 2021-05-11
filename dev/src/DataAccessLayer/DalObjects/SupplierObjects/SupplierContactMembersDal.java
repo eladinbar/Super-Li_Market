@@ -17,6 +17,11 @@ public class SupplierContactMembersDal extends DalObject<SupplierContactMembersD
         this.personId = personId;
     }
 
+    public SupplierContactMembersDal(int supplierId) throws SQLException {
+        super(SupplierContactMembersDalController.getInstance());
+        this.supplierId = supplierId;
+    }
+
     public int getSupplierId() {
         return supplierId;
     }

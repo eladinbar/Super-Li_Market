@@ -1,8 +1,14 @@
 package BusinessLayer.SupliersPackage.supplierPackage;
 
 import BusinessLayer.InventoryPackage.Item;
+import DataAccessLayer.DalObjects.SupplierObjects.PersonCardDal;
+import DataAccessLayer.DalObjects.SupplierObjects.QuantityListItemsDal;
+import DataAccessLayer.DalObjects.SupplierObjects.SupplierCardDal;
+import DataAccessLayer.DalObjects.SupplierObjects.agreementItemsDal;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Supplier {
     private SupplierCard sc;
@@ -16,6 +22,11 @@ public class Supplier {
         Payment pay = paymentCheck(payment);
         this.sc = new SupplierCard(firstName, lastName, email, id, phone, companyNumber, isPernamentDays, selfDelivery, pay);
         this.ag = new Agreement();
+    }
+
+    public Supplier(String id) throws Exception {
+        readSupplierCard(id);
+        readAgreement(id);
     }
 
     public SupplierCard getSc() {
@@ -106,5 +117,26 @@ public class Supplier {
 
     public Integer getSupplierCompanyProductID(int productID) throws Exception {
         return ag.getSupplierCompanyProductID(productID);
+    }
+
+    private void readSupplierCard(String supplierId) throws SQLException {
+        SupplierCardDal supplierCardDal = new SupplierCardDal(Integer.parseInt(supplierId));
+        PersonCardDal personCardDal = new PersonCardDal(supplierId);
+        supplierCardDal.find();
+        personCardDal.find();
+        SupplierCard supplierCardBusiness = new SupplierCard(supplierCardDal, personCardDal);
+        this.sc = supplierCardBusiness;
+    }
+
+    public Agreement readAgreement(String supplierId) throws Exception {
+        List<agreementItemsDal> agreementItems = new ArrayList();
+        agreementItemsDal agDal = new agreementItemsDal(supplierId);
+        agDal.find(agreementItems);
+        Agreement agBusiness = new Agreement();
+        for (agreementItemsDal agItemDal: agreementItems) {
+            agBusiness.addItemToAgreement(agItemDal.getProductId(), agItemDal.getProductCompId(), (int)agItemDal.getPrice(), "");
+        }
+        agBusiness.readQl(supplierId);
+        return agBusiness;
     }
 }

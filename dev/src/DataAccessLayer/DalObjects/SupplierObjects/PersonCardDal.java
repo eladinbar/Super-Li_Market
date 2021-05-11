@@ -26,6 +26,11 @@ public class PersonCardDal extends DalObject<PersonCardDal> {
         this.phone = phone;
     }
 
+    public PersonCardDal(String id) throws SQLException {
+        super(PersonCardDalController.getInstance());
+        this.id = id;
+    }
+
     public String getFirstName() {
         return firstName;
     }

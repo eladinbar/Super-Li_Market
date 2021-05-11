@@ -37,7 +37,8 @@ public class QuantityList {
             throw new Exception("product already exists in quantity list");
         this.amount.put(productID, amount);
         this.discount.put(productID, discount);
-        saveItem(productID, supplierId); //dal
+        if (!supplierId.equals(""))
+            saveItem(productID, supplierId); //dal
     }
 
     private void productExists(int productID) throws Exception {

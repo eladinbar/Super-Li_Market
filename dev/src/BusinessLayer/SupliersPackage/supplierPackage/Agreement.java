@@ -1,7 +1,6 @@
 package BusinessLayer.SupliersPackage.supplierPackage;
 
 import DataAccessLayer.DalObjects.SupplierObjects.QuantityListItemsDal;
-import DataAccessLayer.DalObjects.SupplierObjects.SupplierCardDal;
 import DataAccessLayer.DalObjects.SupplierObjects.agreementItemsDal;
 
 import java.sql.SQLException;
@@ -30,6 +29,22 @@ public class Agreement {
 
     public QuantityList getQl() {
         return ql;
+    }
+
+    public QuantityList readQl(String supplierId) throws Exception {
+        List<QuantityListItemsDal> qlItems = new ArrayList();
+        QuantityListItemsDal qlDal = new QuantityListItemsDal(supplierId);
+        qlDal.find(qlItems);
+        if (qlItems.size()==0) {
+            ql = null;
+            return null;
+        }
+        QuantityList qlBusiness = new QuantityList();
+        for (QuantityListItemsDal qlItemDal : qlItems) {
+            qlBusiness.addQuantityListItem(qlItemDal.getProductId(), qlItemDal.getAmount(), (int) qlItemDal.getDiscount(), "");
+        }
+        this.ql = qlBusiness;
+        return qlBusiness;
     }
 
     public void setQl(QuantityList ql) {
@@ -98,7 +113,8 @@ public class Agreement {
             throw new Exception("company product ID must be positive number");
         products.put(productID, companyProductID);
         prices.put(productID, price);
-        saveItem(productID, supplierId); //dal
+        if (!supplierId.equals(""))
+            saveItem(productID, supplierId); //dal
     }
 
     public void removeItemFromAgreement(int productId) throws Exception {
@@ -146,9 +162,9 @@ public class Agreement {
             throw new Exception("item does not exists in agreement");
         if (amount < 0)
             throw new Exception("price must be positive number");
-        double agreementPrice=amount*prices.get(productID);
-        double afterDiscountPrice=getPrice(amount,productID);
-        return agreementPrice-afterDiscountPrice;
+        double agreementPrice = amount * prices.get(productID);
+        double afterDiscountPrice = getPrice(amount, productID);
+        return agreementPrice - afterDiscountPrice;
     }
 
     public Integer getSupplierCompanyProductID(int productID) throws Exception {
@@ -161,8 +177,8 @@ public class Agreement {
         return dalObjects.get(itemId).delete();
     }
 
-    public boolean saveItem(int itemId, String supplierId)throws SQLException {
-        dalObjects.put(itemId,new agreementItemsDal(itemId, Integer.parseInt(supplierId), products.get(itemId), prices.get(itemId)));
+    public boolean saveItem(int itemId, String supplierId) throws SQLException {
+        dalObjects.put(itemId, new agreementItemsDal(itemId, Integer.parseInt(supplierId), products.get(itemId), prices.get(itemId)));
         return dalObjects.get(itemId).save();
     }
 

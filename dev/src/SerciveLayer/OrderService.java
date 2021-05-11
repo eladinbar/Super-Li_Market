@@ -1,6 +1,7 @@
 package SerciveLayer;
 
 import BusinessLayer.SupliersPackage.orderPackage.OrderController;
+import BusinessLayer.SupliersPackage.supplierPackage.Supplier;
 import BusinessLayer.SupliersPackage.supplierPackage.SupplierController;
 import SerciveLayer.Response.Response;
 import SerciveLayer.Response.ResponseT;
@@ -23,7 +24,7 @@ public class OrderService {
     public ResponseT<Order> createOrder(LocalDate date, String supplierID, SupplierController sp) {
         ResponseT<Order> toReturn;
         try {
-            toReturn = new ResponseT<>(new Order(oc.createOrder(date, sp.getSupplier(supplierID)), new ArrayList<>(),-1));
+            toReturn = new ResponseT<>(new Order(oc.createOrder(date, sp.getSupplier(supplierID)), new ArrayList<>(), -1));
         } catch (Exception e) {
             toReturn = new ResponseT<>(e.getMessage());
         }
@@ -33,7 +34,7 @@ public class OrderService {
     public ResponseT<Order> createPernamentOrder(int day, String supplierID, SupplierController sp) {
         ResponseT<Order> toReturn;
         try {
-            toReturn= new ResponseT<>(new Order(oc.createPermOrder(day, sp.getSupplier(supplierID)), new ArrayList<>(),day));
+            toReturn = new ResponseT<>(new Order(oc.createPermOrder(day, sp.getSupplier(supplierID)), new ArrayList<>(), day));
         } catch (Exception e) {
             toReturn = new ResponseT<>(e.getMessage());
         }
@@ -50,20 +51,22 @@ public class OrderService {
         return toReturn;
     }
 
-    public ResponseT<Order> getOrder(int orderID, InventoryService is) {
+    public ResponseT<Order> getOrder(int orderID, InventoryService is,SupplierService ss) {
         ResponseT<Order> toReturn;
         try {
             ArrayList<Product> productList = new ArrayList<>();
-            BusinessLayer.SupliersPackage.orderPackage.Order o = oc.getOrder(orderID);
-            for (int id: o.getProducts().keySet()){
+            String supID = oc.getOrderSupID(orderID);
+            Supplier supplier=ss.getSp().getSupplier(supID);
+            BusinessLayer.SupliersPackage.orderPackage.Order o = oc.getOrder(orderID,supplier);
+            for (int id : o.getProducts().keySet()) {
                 ResponseT<Item> itemR = is.getItem(id);
-                if(itemR.errorOccurred()){
+                if (itemR.errorOccurred()) {
                     throw new Exception(itemR.getErrorMessage());
                 }
                 Item i = itemR.value;
-                Product newProd = new Product(i.getID(),i.getName(),
-                        o.getProducts().get(id),o.getSupplier().getPrice(1,id),
-                        o.getSupplier().getProductDiscount(o.getProducts().get(id),id));
+                Product newProd = new Product(i.getID(), i.getName(),
+                        o.getProducts().get(id), o.getSupplier().getPrice(1, id),
+                        o.getSupplier().getProductDiscount(o.getProducts().get(id), id));
                 productList.add(newProd);
             }
             toReturn=new ResponseT<>(new Order(o, productList,oc.getOrderDay(orderID)));
@@ -72,9 +75,6 @@ public class OrderService {
         }
         return toReturn;
     }
-
-
-
 
 
     public Response removeSupplier(String id) {
@@ -151,7 +151,7 @@ public class OrderService {
             }
             orderList.add(order.value);
         }
-        if(orderList.isEmpty()){
+        if (orderList.isEmpty()) {
             return new ResponseT<>("there is no shortage in the store");
         }
         return new ResponseT<>(orderList);

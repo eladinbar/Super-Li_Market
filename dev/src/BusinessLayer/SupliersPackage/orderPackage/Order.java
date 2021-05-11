@@ -1,7 +1,10 @@
 package BusinessLayer.SupliersPackage.orderPackage;
 
+import BusinessLayer.SupliersPackage.supplierPackage.QuantityList;
 import BusinessLayer.SupliersPackage.supplierPackage.Supplier;
 import DataAccessLayer.DalObjects.SupplierObjects.OrderDal;
+import DataAccessLayer.DalObjects.SupplierObjects.ProductsInOrderDal;
+import DataAccessLayer.DalObjects.SupplierObjects.QuantityListItemsDal;
 
 import java.sql.SQLException;
 import java.time.LocalDate;
@@ -25,7 +28,15 @@ public class Order {
         save();
     }
 
-    public Order(int id){
+    public Order(OrderDal orderDal, Supplier supplier) throws Exception {
+        this.id = orderDal.getOrderId();
+        this.delivered = orderDal.isDelivered() == 1? true : false;
+        this.date = LocalDate.parse(orderDal.getDate());
+        readOrderProducts();
+        this.supplier = supplier;
+    }
+
+    public Order(int id) {
         this.id=id;
     }
 
@@ -107,6 +118,15 @@ public class Order {
             sum+=supplier.getProductDiscount(products.get(productID),productID);
         }
         return sum;
+    }
+
+    private void readOrderProducts() throws Exception {
+        List<ProductsInOrderDal> orderItems = new ArrayList();
+        ProductsInOrderDal productInOrderDal = new ProductsInOrderDal(id);
+        productInOrderDal.find(orderItems);
+        for (ProductsInOrderDal product : orderItems) {
+            addProductToOrder(product.getProductId(), product.getAmount());
+        }
     }
 
     private OrderDal toDalObject() throws SQLException {
