@@ -1,6 +1,8 @@
 package PresentationLayer;
 
 import DataAccessLayer.DalControllers.SupplierControllers.*;
+import SerciveLayer.InventoryService;
+import SerciveLayer.InventoryServiceImpl;
 import SerciveLayer.SupplierService;
 
 import java.sql.SQLException;
@@ -11,13 +13,15 @@ public class MainDal {
 //        PresentationController c = new PresentationController();
 //        c.run();
         SupplierService sc = new SupplierService();
+        InventoryService ic = new InventoryServiceImpl();
         String name = "shaked";
         String lastName = "dollberg";
         String email = "s@gmail.com";
         String id = "208677682";
         String phone = "0547972797";
       //  sc.addSupplier(name, lastName, email, id, phone, 1, true, true, "cash", "hes 3 raanana");
-        sc.getSupplier(id);
+//        sc.getSupplier(id);
+        sc.addItemToAgreement("208677682", 1, 1, 20, ic);
 //        AgreementItemsDalController agreementItemsController = AgreementItemsDalController.getInstance();
 //        OrderDalController orderDalController = OrderDalController.getInstance();
 //        PersonCardDalController personCardDalController = PersonCardDalController.getInstance();

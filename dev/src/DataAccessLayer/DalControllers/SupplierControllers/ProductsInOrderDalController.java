@@ -109,10 +109,10 @@ public class ProductsInOrderDalController extends DalController<ProductsInOrderD
             ResultSet resultSet = stmt.executeQuery();
             while (resultSet.next())
             {
-                isDesired = resultSet.getInt(0) == productInOrder.getProductId()
-                && resultSet.getInt(1) == productInOrder.getOrderId();
+                isDesired = resultSet.getInt(1) == productInOrder.getProductId()
+                && resultSet.getInt(2) == productInOrder.getOrderId();
                 if (isDesired) {
-                    productInOrder.setAmountLoad(resultSet.getInt(2));
+                    productInOrder.setAmountLoad(resultSet.getInt(3));
                     break; //Desired category discount found
                 }
             }
@@ -130,10 +130,10 @@ public class ProductsInOrderDalController extends DalController<ProductsInOrderD
             ResultSet resultSet = stmt.executeQuery();
             while (resultSet.next())
             {
-                isDesired = resultSet.getString(1).equals(product.getOrderId());
+                isDesired = resultSet.getString(2).equals(product.getOrderId());
                 if (isDesired) {
-                    int productId = resultSet.getInt(0);
-                    int amount = resultSet.getInt(2);
+                    int productId = resultSet.getInt(1);
+                    int amount = resultSet.getInt(3);
                     ProductsInOrderDal savedProduct = new ProductsInOrderDal(productId, product.getOrderId(), amount);
                     productsInOrderDal.add(savedProduct);
                 }

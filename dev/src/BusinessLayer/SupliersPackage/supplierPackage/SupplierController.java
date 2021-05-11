@@ -158,7 +158,7 @@ public class SupplierController {
 
     public void addItemToAgreement(String id, int productID, int companyProductID, int price) throws Exception {
         existSupplier(id);
-        suppliers.get(id).addItemToAgreement(productID, companyProductID, price);
+        getSupplier(id).addItemToAgreement(productID, companyProductID, price);
     }
 
     public void removeItemFromAgreement(String supplierId, int productId) throws Exception {
