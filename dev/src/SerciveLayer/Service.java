@@ -170,6 +170,9 @@ public class Service implements IService {
         ResponseT<Pair<Map<Integer, Integer>, Map<Integer, String>>> itemInShort = inventoryService.getItemsInShortAndQuantities();
         if (itemInShort.errorOccurred())
             return new ResponseT<>(itemInShort.getErrorMessage());
+        if(itemInShort.value==null) {
+            return new ResponseT<>("there is no item shortage");
+        }
         ResponseT<Map<String, Map<Integer, Integer>>> r = supplierService.createShortageOrders(itemInShort.value.getFirst()); //yes always returns a value;
         ResponseT<List<Order>> orderR;
         try {
