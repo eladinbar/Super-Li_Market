@@ -100,9 +100,9 @@ public class SupplierCard extends PersonCard {
         dalObject.setPayment(payment);
     }
 
-    public void setAddress(String address) {
+    public void setAddress(String address) throws SQLException {
         this.address = address;
-        //todo dal set address
+        dalObject.setAddress(address);
     }
 
     public boolean find() throws SQLException {
