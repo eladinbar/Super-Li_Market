@@ -1,7 +1,7 @@
 package DataAccessLayer.DalControllers.SupplierControllers;
+
 import DataAccessLayer.DalControllers.DalController;
 import DataAccessLayer.DalControllers.InventoryControllers.ItemDalController;
-import DataAccessLayer.DalObjects.InventoryObjects.CategoryDiscount;
 import DataAccessLayer.DalObjects.InventoryObjects.Item;
 import DataAccessLayer.DalObjects.SupplierObjects.SupplierCardDal;
 import DataAccessLayer.DalObjects.SupplierObjects.agreementItemsDal;
@@ -125,15 +125,16 @@ public class AgreementItemsDalController extends DalController<agreementItemsDal
     }
 
     public boolean select(agreementItemsDal agreement, List<agreementItemsDal> agreements) throws SQLException {
-        boolean isDesired = false;
+        boolean hasItem = false;
         try (Connection conn = DriverManager.getConnection(connectionString)) {
             String query = "SELECT * FROM " + tableName;
             PreparedStatement stmt = conn.prepareStatement(query);
             ResultSet resultSet = stmt.executeQuery();
             while (resultSet.next())
             {
-
-                isDesired = resultSet.getString(2).equals(""+agreement.getSupplierId());
+                boolean isDesired = resultSet.getString(2).equals(""+agreement.getSupplierId());
+                if (!hasItem & isDesired)
+                    hasItem = true;
                 if (isDesired) {
                     int productId = resultSet.getInt(1);
                     int compId = resultSet.getInt(3);
@@ -145,6 +146,6 @@ public class AgreementItemsDalController extends DalController<agreementItemsDal
         } catch (SQLException ex) {
             throw new SQLException(ex.getMessage());
         }
-        return isDesired;
+        return hasItem;
     }
 }

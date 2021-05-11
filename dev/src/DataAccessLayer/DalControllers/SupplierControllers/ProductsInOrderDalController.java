@@ -5,7 +5,6 @@ import DataAccessLayer.DalControllers.InventoryControllers.ItemDalController;
 import DataAccessLayer.DalObjects.InventoryObjects.Item;
 import DataAccessLayer.DalObjects.SupplierObjects.OrderDal;
 import DataAccessLayer.DalObjects.SupplierObjects.ProductsInOrderDal;
-import DataAccessLayer.DalObjects.SupplierObjects.agreementItemsDal;
 
 import java.sql.*;
 import java.util.List;
@@ -123,14 +122,16 @@ public class ProductsInOrderDalController extends DalController<ProductsInOrderD
     }
 
     public boolean select(ProductsInOrderDal product, List<ProductsInOrderDal> productsInOrderDal) throws SQLException {
-        boolean isDesired = false;
+        boolean hasItem = false;
         try (Connection conn = DriverManager.getConnection(connectionString)) {
             String query = "SELECT * FROM " + tableName;
             PreparedStatement stmt = conn.prepareStatement(query);
             ResultSet resultSet = stmt.executeQuery();
             while (resultSet.next())
             {
-                isDesired = resultSet.getString(2).equals(product.getOrderId());
+                boolean isDesired = resultSet.getString(2).equals(""+product.getOrderId());
+                if (!hasItem & isDesired)
+                    hasItem = true;
                 if (isDesired) {
                     int productId = resultSet.getInt(1);
                     int amount = resultSet.getInt(3);
@@ -141,6 +142,6 @@ public class ProductsInOrderDalController extends DalController<ProductsInOrderD
         } catch (SQLException ex) {
             throw new SQLException(ex.getMessage());
         }
-        return isDesired;
+        return hasItem;
     }
 }

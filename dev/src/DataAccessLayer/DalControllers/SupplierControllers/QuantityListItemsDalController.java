@@ -3,10 +3,8 @@ package DataAccessLayer.DalControllers.SupplierControllers;
 import DataAccessLayer.DalControllers.DalController;
 import DataAccessLayer.DalControllers.InventoryControllers.ItemDalController;
 import DataAccessLayer.DalObjects.InventoryObjects.Item;
-import DataAccessLayer.DalObjects.SupplierObjects.ProductsInOrderDal;
 import DataAccessLayer.DalObjects.SupplierObjects.QuantityListItemsDal;
 import DataAccessLayer.DalObjects.SupplierObjects.SupplierCardDal;
-import DataAccessLayer.DalObjects.SupplierObjects.agreementItemsDal;
 
 import java.sql.*;
 import java.util.List;
@@ -130,14 +128,16 @@ public class QuantityListItemsDalController extends DalController<QuantityListIt
     }
 
     public boolean select(QuantityListItemsDal ql, List<QuantityListItemsDal> qlList) throws SQLException {
-        boolean isDesired = false;
+        boolean hasItem = false;
         try (Connection conn = DriverManager.getConnection(connectionString)) {
             String query = "SELECT * FROM " + tableName;
             PreparedStatement stmt = conn.prepareStatement(query);
             ResultSet resultSet = stmt.executeQuery();
             while (resultSet.next())
             {
-                isDesired = resultSet.getString(2).equals(ql.getSupplierId());
+                boolean isDesired = resultSet.getString(2).equals(ql.getSupplierId());
+                if (!hasItem & isDesired)
+                    hasItem = true;
                 if (isDesired) {
                     int productId = resultSet.getInt(1);
                     int amount = resultSet.getInt(3);
@@ -149,6 +149,6 @@ public class QuantityListItemsDalController extends DalController<QuantityListIt
         } catch (SQLException ex) {
             throw new SQLException(ex.getMessage());
         }
-        return isDesired;
+        return hasItem;
     }
 }

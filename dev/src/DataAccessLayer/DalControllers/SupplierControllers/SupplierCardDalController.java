@@ -1,7 +1,6 @@
 package DataAccessLayer.DalControllers.SupplierControllers;
 
 import DataAccessLayer.DalControllers.DalController;
-import DataAccessLayer.DalObjects.InventoryObjects.DefectEntry;
 import DataAccessLayer.DalObjects.SupplierObjects.*;
 
 import java.sql.*;
