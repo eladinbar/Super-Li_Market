@@ -156,7 +156,7 @@ public class CategoryDalController extends DalController<Category> {
 
     @Override
     public boolean select(List<Category> categories) throws SQLException {
-        Category savedCategory = new Category();
+        Category savedCategory;
         try (Connection conn = DriverManager.getConnection(connectionString)) {
             String query = "SELECT * FROM " + tableName;
             PreparedStatement stmt = conn.prepareStatement(query);

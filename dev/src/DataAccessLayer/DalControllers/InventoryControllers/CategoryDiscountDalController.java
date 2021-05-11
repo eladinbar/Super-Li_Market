@@ -222,7 +222,7 @@ public class CategoryDiscountDalController extends DalController<CategoryDiscoun
     @Override
     public boolean select(CategoryDiscount categoryDiscount, List<CategoryDiscount> categoryDiscounts) throws SQLException {
         boolean isDesired = false;
-        CategoryDiscount savedCategoryDiscount = new CategoryDiscount();
+        CategoryDiscount savedCategoryDiscount;
         try (Connection conn = DriverManager.getConnection(connectionString)) {
             String query = "SELECT * FROM " + tableName;
             PreparedStatement stmt = conn.prepareStatement(query);
@@ -233,9 +233,11 @@ public class CategoryDiscountDalController extends DalController<CategoryDiscoun
                 resultSet.getString(2).equals(categoryDiscount.getSupplierID());
                 if (isDesired) {
                     savedCategoryDiscount = new CategoryDiscount();
-                    categoryDiscount.setCategoryName(resultSet.getString(3));
-                    categoryDiscount.setDiscount(resultSet.getInt(4));
-                    categoryDiscount.setItemCount(resultSet.getInt(5));
+                    savedCategoryDiscount.setDiscountDate(resultSet.getString(1));
+                    savedCategoryDiscount.setSupplierID(resultSet.getString(2));
+                    savedCategoryDiscount.setCategoryName(resultSet.getString(3));
+                    savedCategoryDiscount.setDiscount(resultSet.getInt(4));
+                    savedCategoryDiscount.setItemCount(resultSet.getInt(5));
                     categoryDiscounts.add(savedCategoryDiscount);
                 }
             }
