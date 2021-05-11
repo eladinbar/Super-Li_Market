@@ -1,7 +1,6 @@
 package BusinessLayer.SupliersPackage.supplierPackage;
 
 import DataAccessLayer.DalObjects.SupplierObjects.PersonCardDal;
-import DataAccessLayer.DalObjects.SupplierObjects.QuantityListItemsDal;
 import DataAccessLayer.DalObjects.SupplierObjects.SupplierCardDal;
 import DataAccessLayer.DalObjects.SupplierObjects.SupplierContactMembersDal;
 
@@ -16,14 +15,16 @@ public class SupplierCard extends PersonCard {
     private Payment payment;
     private List<String> contactMembers;
     private SupplierCardDal dalObject;
+    private String address;
 
-    public SupplierCard(String firstName, String lastName, String email, String id, String phone, int companyNumber, boolean isPernamentDays, boolean selfDelivery, Payment payment) throws SQLException {
+    public SupplierCard(String firstName, String lastName, String email, String id, String phone, int companyNumber, boolean isPernamentDays, boolean selfDelivery, Payment payment, String address) throws SQLException {
         super(firstName, lastName, email, id, phone);
         this.companyNumber = companyNumber;
         this.isPernamentDays = isPernamentDays;
         this.selfDelivery = selfDelivery;
         this.payment = payment;
         this.contactMembers = new ArrayList<>();
+        this.address=address;
         this.dalObject = toDalObjectSupplierCard();
         save();
     }
@@ -40,6 +41,7 @@ public class SupplierCard extends PersonCard {
         this.payment = Payment.valueOf(supplierCardDal.getPayment());
         readContactMembers();
         this.dalObject = supplierCardDal;
+        //todo add address from dal object
     }
 
     private void readContactMembers() throws SQLException {
@@ -73,6 +75,10 @@ public class SupplierCard extends PersonCard {
         return contactMembers;
     }
 
+    public String getAddress() {
+        return address;
+    }
+
     public void setCompanyNumber(int companyNumber) throws SQLException {
         this.companyNumber = companyNumber;
         dalObject.setCompanyNumber(companyNumber);
@@ -91,6 +97,11 @@ public class SupplierCard extends PersonCard {
     public void setPayment(Payment payment) throws SQLException {
         this.payment = payment;
         dalObject.setPayment(payment);
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+        //todo dal set address
     }
 
     public boolean find() throws SQLException {

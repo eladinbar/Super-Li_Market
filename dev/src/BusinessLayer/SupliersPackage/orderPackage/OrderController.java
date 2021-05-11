@@ -37,10 +37,10 @@ public class OrderController {
         }
     }
 
-    public Order createOrder(LocalDate date, Supplier supplier) throws Exception {
+    public Order createOrder(LocalDate date, Supplier supplier,int day) throws Exception {
         if (date != null && date.isBefore(LocalDate.now()))
             throw new Exception("the date should be in the future");
-        Order o = new Order(orderCounter, date, supplier);
+        Order o = new Order(orderCounter, date, supplier,day);
         orders.put(orderCounter, o);
         orderCounter++;
         return o;
@@ -69,7 +69,12 @@ public class OrderController {
             return toReturn;
         OrderDal orderDal = new OrderDal(orderID);
         orderDal.find();
-        return new Order(orderDal,supplier);
+        Order newOrder = new Order(orderDal, supplier);
+        orders.put(orderID,newOrder);
+        if(newOrder.getDate()==null){
+            //todo add day to order and than put the new order in the appropriate day
+        }
+        return newOrder;
     }
 
     public String getOrderSupID(int orderID) throws Exception {
@@ -93,7 +98,7 @@ public class OrderController {
                 return o;
             }
         }
-        Order order = createOrder(null, supplier);
+        Order order = createOrder(null, supplier,day);
         pernamentOrders.get(day).add(order);
         return order;
     }

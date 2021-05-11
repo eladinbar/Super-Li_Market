@@ -23,10 +23,10 @@ public class SupplierService {
         return sp;
     }
 
-    public ResponseT<Supplier> addSupplier(String firstName, String lastName, String email, String id, String phone, int companyNumber, boolean isPernamentDays, boolean selfDelivery, String payment) {
+    public ResponseT<Supplier> addSupplier(String firstName, String lastName, String email, String id, String phone, int companyNumber, boolean isPernamentDays, boolean selfDelivery, String payment,String address) {
         ResponseT<Supplier> toReturn;
         try {
-            toReturn = new ResponseT<>(new Supplier(sp.addSupplier(firstName, lastName, email, id, phone, companyNumber, isPernamentDays, selfDelivery, payment)));
+            toReturn = new ResponseT<>(new Supplier(sp.addSupplier(firstName, lastName, email, id, phone, companyNumber, isPernamentDays, selfDelivery, payment,address)));
         } catch (Exception e) {
             toReturn = new ResponseT<>(e.getMessage());
         }
