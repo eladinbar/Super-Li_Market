@@ -188,7 +188,7 @@ public class ItemDalController extends DalController<Item> {
 
     @Override
     public boolean select(Item item, List<Item> items) throws SQLException {
-        boolean isDesired = false;
+        boolean hasItem = false;
         Item savedItem;
         try (Connection conn = DriverManager.getConnection(connectionString)) {
             String query = "SELECT * FROM " + tableName;
@@ -196,7 +196,9 @@ public class ItemDalController extends DalController<Item> {
             ResultSet resultSet = stmt.executeQuery();
             while (resultSet.next())
             {
-                isDesired = resultSet.getString(11).equals(item.getCategoryName());
+                boolean isDesired = resultSet.getString(11).equals(item.getCategoryName());
+                if (!hasItem & isDesired)
+                    hasItem = true;
                 if (isDesired) {
                     savedItem = new Item();
                     savedItem.setItemID(resultSet.getInt(1));
@@ -216,6 +218,6 @@ public class ItemDalController extends DalController<Item> {
         } catch (SQLException ex) {
             throw new SQLException(ex.getMessage());
         }
-        return isDesired;
+        return hasItem;
     }
 }

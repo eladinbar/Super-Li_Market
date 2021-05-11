@@ -35,14 +35,14 @@ public class SupplierCard extends PersonCard {
     }
 
     public SupplierCard(SupplierCardDal supplierCardDal, PersonCardDal personCardDal) throws SQLException {
-        super(personCardDal.getFirstName() , personCardDal.getLastName() , personCardDal.getEmail(), personCardDal.getId(), personCardDal.getPhone());
+        super(personCardDal.getFirstName() , personCardDal.getLastName() , personCardDal.getEmail(), personCardDal.getId(), personCardDal.getPhone(), true);
         this.companyNumber = supplierCardDal.getCompanyNumber();
         this.isPernamentDays = supplierCardDal.isPermanentDays() ==1 ? true : false;
         this.selfDelivery = supplierCardDal.isSelfDelivery() ==1 ? true : false;
         this.payment = Payment.valueOf(supplierCardDal.getPayment());
+        this.address = supplierCardDal.getAddress();
         readContactMembers();
         this.dalObject = supplierCardDal;
-        //todo add address from dal object
     }
 
     private void readContactMembers() throws SQLException {

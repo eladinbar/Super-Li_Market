@@ -69,6 +69,10 @@ public class CategorySale extends DalObject<CategorySale> {
     }
 
     public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setAndSaveName(String name) {
         String oldName = this.name;
         this.name = name;
         try {

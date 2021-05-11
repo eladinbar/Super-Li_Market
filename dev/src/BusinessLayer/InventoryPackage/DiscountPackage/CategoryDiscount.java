@@ -44,14 +44,8 @@ public class CategoryDiscount extends Discount{
     }
 
     public void setAndSaveCategory(Category category) {
-        dalCopyCategoryDiscount.setCategoryName(category.getName());
-        try {
-            dalCopyCategoryDiscount.update();
-            this.category = category;
-        } catch (SQLException ex) {
-            dalCopyCategoryDiscount.setCategoryName(this.category.getName());
-            throw new RuntimeException("Something went wrong.");
-        }
+        dalCopyCategoryDiscount.setAndSaveCategoryName(category.getName());
+        this.category = category;
     }
 
     public void save() {

@@ -113,12 +113,12 @@ public class OrderDalController extends DalController<OrderDal> {
             ResultSet resultSet = stmt.executeQuery();
             while (resultSet.next())
             {
-                isDesired = resultSet.getInt(0)==(order.getOrderId());
+                isDesired = resultSet.getInt(1)==(order.getOrderId());
                 if (isDesired) {
-                    order.setSupplierIdLoad(resultSet.getString(1));
-                    order.setDateLoad(resultSet.getString(2));
-                    order.setDeliveredLoad(resultSet.getInt(3));
-                    order.setDayLoad(resultSet.getInt(4));
+                    order.setSupplierIdLoad(resultSet.getString(2));
+                    order.setDateLoad(resultSet.getString(3));
+                    order.setDeliveredLoad(resultSet.getInt(4));
+                    order.setDayLoad(resultSet.getInt(5));
                     break;
                 }
             }

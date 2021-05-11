@@ -115,11 +115,11 @@ public class QuantityListItemsDalController extends DalController<QuantityListIt
             ResultSet resultSet = stmt.executeQuery();
             while (resultSet.next())
             {
-                isDesired = resultSet.getInt(0) == quantityListItem.getProductId()
-                && resultSet.getString(1).equals(quantityListItem.getSupplierId());
+                isDesired = resultSet.getInt(1) == quantityListItem.getProductId()
+                && resultSet.getString(2).equals(quantityListItem.getSupplierId());
                 if (isDesired) {
-                    quantityListItem.setAmountLoad(resultSet.getInt(2));
-                    quantityListItem.setDiscountLoad(resultSet.getInt(3));
+                    quantityListItem.setAmountLoad(resultSet.getInt(3));
+                    quantityListItem.setDiscountLoad(resultSet.getInt(4));
                     break; //Desired category discount found
                 }
             }
@@ -137,11 +137,11 @@ public class QuantityListItemsDalController extends DalController<QuantityListIt
             ResultSet resultSet = stmt.executeQuery();
             while (resultSet.next())
             {
-                isDesired = resultSet.getString(1).equals(ql.getSupplierId());
+                isDesired = resultSet.getString(2).equals(ql.getSupplierId());
                 if (isDesired) {
-                    int productId = resultSet.getInt(0);
-                    int amount = resultSet.getInt(2);
-                    double discount = resultSet.getDouble(3);
+                    int productId = resultSet.getInt(1);
+                    int amount = resultSet.getInt(3);
+                    double discount = resultSet.getDouble(4);
                     QuantityListItemsDal savedQl = new QuantityListItemsDal(productId,ql.getSupplierId(), amount, (int)discount);
                     qlList.add(savedQl);
                 }

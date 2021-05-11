@@ -117,14 +117,14 @@ public class SupplierCardDalController extends DalController<SupplierCardDal> {
             ResultSet resultSet = stmt.executeQuery();
             while (resultSet.next())
             {
-                isDesired = resultSet.getString(1).equals(supplierCard.getSupplierId());
+                isDesired = resultSet.getString(1).equals(""+supplierCard.getSupplierId());
                 if (isDesired) {
-                    supplierCard.setCompanyNumberLoad(resultSet.getInt(1));
-                    supplierCard.setPermanentDaysLoad(resultSet.getInt(2));
-                    supplierCard.setSelfDeliveryLoad(resultSet.getInt(3));
-                    supplierCard.setPaymentLoad(resultSet.getString(4));
-                    supplierCard.setAddressLoad(resultSet.getString(5));
-                    break; //Desired category discount found
+                    supplierCard.setCompanyNumberLoad(resultSet.getInt(2));
+                    supplierCard.setPermanentDaysLoad(resultSet.getInt(3));
+                    supplierCard.setSelfDeliveryLoad(resultSet.getInt(4));
+                    supplierCard.setPaymentLoad(resultSet.getString(5));
+                    supplierCard.setAddressLoad(resultSet.getString(6));
+                    break;
                 }
             }
         } catch (SQLException ex) {

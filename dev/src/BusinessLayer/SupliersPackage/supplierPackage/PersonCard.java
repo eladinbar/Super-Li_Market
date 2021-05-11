@@ -23,6 +23,15 @@ public class PersonCard {
         dalObject.save();
     }
 
+    public PersonCard(String firstName, String lastName, String email, String id, String phone, boolean load) throws SQLException {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.id = id;
+        this.phone = phone;
+        this.dalObject = toDalObject();
+    }
+
     public PersonCard(String id) throws SQLException {
         this.id = id;
         this.dalObject = toDalObject();
