@@ -118,12 +118,12 @@ public class DefectEntry {
             if (found) {
                 for (DataAccessLayer.DalObjects.InventoryObjects.DefectEntry defectEntry : dalCopyDefectEntries) {
                     Location savedLocation;
-                    if (dalCopyDefectEntry.getLocation().startsWith("SH"))
-                        savedLocation = new Location(dalCopyDefectEntry.getLocation(), null);
+                    if (defectEntry.getLocation().startsWith("SH"))
+                        savedLocation = new Location(defectEntry.getLocation(), null);
                     else //if (dalCopyDefectEntry.getLocation().startsWith("ST")
-                        savedLocation = new Location(null, dalCopyDefectEntry.getLocation());
-                    DefectEntry savedDefectEntry = new DefectEntry(dalCopyDefectEntry.getItemID(), dalCopyDefectEntry.getItemName(),
-                            LocalDate.parse(dalCopyDefectEntry.getEntryDate()), dalCopyDefectEntry.getQuantity(), savedLocation);
+                        savedLocation = new Location(null, defectEntry.getLocation());
+                    DefectEntry savedDefectEntry = new DefectEntry(defectEntry.getItemID(), defectEntry.getItemName(),
+                            LocalDate.parse(defectEntry.getEntryDate()), defectEntry.getQuantity(), savedLocation);
 
                     defectEntries.add(savedDefectEntry);
                 }

@@ -448,8 +448,12 @@ public class PresentationController implements Runnable {
         while (true) {
             int itemID = menu.instructAndReceive("enter item ID to add to a scheduled order: ", Integer.class);
             int amount = menu.instructAndReceive("enter amount to order: ", Integer.class);
-            String address = menu.instructAndReceive("enter the shipping address of the order");
-            String order = service.createScheduledOrder(day, itemID, amount).toString();
+            ResponseT<Order> orderR = service.createScheduledOrder(day, itemID, amount);
+            if(orderR.errorOccurred()){
+                menu.errorPrompt(orderR.getErrorMessage());
+                return;
+            }
+            String order = orderR.toString();
             System.out.println(order);
             String choice = menu.instructAndReceive("*) press 1 to add more items\n*) press anything else to complete \n");
             if (!choice.equals("1")) {
