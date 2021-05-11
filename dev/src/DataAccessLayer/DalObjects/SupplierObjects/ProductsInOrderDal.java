@@ -42,8 +42,16 @@ public class ProductsInOrderDal extends DalObject<ProductsInOrderDal> {
         update();
     }
 
+    public void setProductIdLoad(int productId) throws SQLException {
+        this.productId = productId;
+    }
+
     public void setAmount(int amount) throws SQLException {
         this.amount = amount;
         update();
+    }
+
+    public void setAmountLoad(int amount) throws SQLException {
+        this.amount = amount;
     }
 }

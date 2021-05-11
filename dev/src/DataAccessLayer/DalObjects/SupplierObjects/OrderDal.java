@@ -13,17 +13,21 @@ public class OrderDal extends DalObject<OrderDal> {
     public static final String supplierIdColumnName = "Supplier_ID";
     public static final String dateColumnName = "Date";
     public static final String deliveredColumnName = "Delivered";
+    public static final String dayColumnName = "Day";
+
     private int orderId; //primary key
     private String supplierId;
     private LocalDate date;
     private boolean delivered;
+    private int day;
 
-    public OrderDal(int orderId, String supplierId, LocalDate date, boolean delivered) throws SQLException {
+    public OrderDal(int orderId, String supplierId, LocalDate date, boolean delivered, int day) throws SQLException {
         super(OrderDalController.getInstance());
         this.orderId = orderId;
         this.supplierId = supplierId;
         this.date = date;
         this.delivered = delivered;
+        this.day = day;
     }
 
     public OrderDal(int orderId) throws SQLException {
@@ -43,6 +47,19 @@ public class OrderDal extends DalObject<OrderDal> {
         return supplierId;
     }
 
+    public int getDay() {
+        return day;
+    }
+
+    public void setDay(int day) throws SQLException {
+        this.day = day;
+        update();
+    }
+
+    public void setDayLoad(int day) throws SQLException {
+        this.day = day;
+    }
+
     public int isDelivered() {
         if (delivered)
             return 1;
@@ -54,9 +71,17 @@ public class OrderDal extends DalObject<OrderDal> {
         update();
     }
 
+    public void setOrderIdLoad(int orderId) throws SQLException {
+        this.orderId = orderId;
+    }
+
     public void setSupplierId(String supplierId) throws SQLException {
         this.supplierId = supplierId;
         update();
+    }
+
+    public void setSupplierIdLoad(String supplierId) throws SQLException {
+        this.supplierId = supplierId;
     }
 
     public void setDate(String date) throws SQLException {
@@ -64,12 +89,14 @@ public class OrderDal extends DalObject<OrderDal> {
         update();
     }
 
+    public void setDateLoad(String date) throws SQLException {
+        this.date = LocalDate.parse(date);
+    }
+
     public void setDate(LocalDate date) throws SQLException {
         this.date=date;
         update();
     }
-
-
 
     public void setDelivered(int delivered) throws SQLException {
         if (delivered==1)
@@ -77,6 +104,13 @@ public class OrderDal extends DalObject<OrderDal> {
         else
             this.delivered=false;
         update();
+    }
+
+    public void setDeliveredLoad(int delivered) throws SQLException {
+        if (delivered==1)
+            this.delivered=true;
+        else
+            this.delivered=false;
     }
 
     public void setDelivered(boolean delivered) throws SQLException {

@@ -1,11 +1,13 @@
 package DataAccessLayer.DalControllers.SupplierControllers;
 import DataAccessLayer.DalControllers.DalController;
 import DataAccessLayer.DalControllers.InventoryControllers.ItemDalController;
+import DataAccessLayer.DalObjects.InventoryObjects.CategoryDiscount;
 import DataAccessLayer.DalObjects.InventoryObjects.Item;
 import DataAccessLayer.DalObjects.SupplierObjects.SupplierCardDal;
 import DataAccessLayer.DalObjects.SupplierObjects.agreementItemsDal;
 
 import java.sql.*;
+import java.util.List;
 
 public class AgreementItemsDalController extends DalController<agreementItemsDal> {
     private static AgreementItemsDalController instance = null;
@@ -111,9 +113,32 @@ public class AgreementItemsDalController extends DalController<agreementItemsDal
             while (resultSet.next()) {
                 isDesired = resultSet.getInt(0) == agreementItem.getProductId() && resultSet.getInt(1)== agreementItem.getSupplierId();
                 if (isDesired) {
-                    agreementItem.setProductCompId(resultSet.getInt(2));
-                    agreementItem.setPrice(resultSet.getInt(3));
+                    agreementItem.setProductCompIdLoad(resultSet.getInt(2));
+                    agreementItem.setPriceLoad(resultSet.getInt(3));
                     break; //Desired category discount found
+                }
+            }
+        } catch (SQLException ex) {
+            throw new SQLException(ex.getMessage());
+        }
+        return isDesired;
+    }
+
+    public boolean select(agreementItemsDal agreement, List<agreementItemsDal> agreements) throws SQLException {
+        boolean isDesired = false;
+        try (Connection conn = DriverManager.getConnection(connectionString)) {
+            String query = "SELECT * FROM " + tableName;
+            PreparedStatement stmt = conn.prepareStatement(query);
+            ResultSet resultSet = stmt.executeQuery();
+            while (resultSet.next())
+            {
+                isDesired = resultSet.getString(1).equals(agreement.getSupplierId());
+                if (isDesired) {
+                    int productId = resultSet.getInt(0);
+                    int compId = resultSet.getInt(2);
+                    double price = resultSet.getDouble(3);
+                    agreementItemsDal savedAgreement = new agreementItemsDal(productId,agreement.getSupplierId(), compId,(int)price);
+                    agreements.add(savedAgreement);
                 }
             }
         } catch (SQLException ex) {

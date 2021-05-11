@@ -56,9 +56,17 @@ public class PersonCardDal extends DalObject<PersonCardDal> {
         update();
     }
 
+    public void setIdLoad(String id) throws SQLException {
+        this.id = id;
+    }
+
     public void setFirstName(String firstName) throws SQLException {
         this.firstName = firstName;
         update();
+    }
+
+    public void setFirstNameLoad(String firstName) throws SQLException {
+        this.firstName = firstName;
     }
 
     public void setLastName(String lastName) throws SQLException {
@@ -66,13 +74,25 @@ public class PersonCardDal extends DalObject<PersonCardDal> {
         update();
     }
 
+    public void setLastNameLoad(String lastName) throws SQLException {
+        this.lastName = lastName;
+    }
+
     public void setEmail(String email) throws SQLException {
         this.email = email;
         update();
     }
 
+    public void setEmailLoad(String email) throws SQLException {
+        this.email = email;
+    }
+
     public void setPhone(String phone) throws SQLException {
         this.phone = phone;
         update();
+    }
+
+    public void setPhoneLoad(String phone) throws SQLException {
+        this.phone = phone;
     }
 }

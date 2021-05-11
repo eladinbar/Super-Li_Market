@@ -49,9 +49,16 @@ public class agreementItemsDal extends DalObject<agreementItemsDal> {
         update();
     }
 
+    public void setSupplierIdLoad(int supplierId) throws SQLException {
+        this.supplierId = supplierId;
+    }
+
     public void setProductId(int productId) throws SQLException {
         this.productId = productId;
         update();
+    }
+    public void setProductIdLoad(int productId) throws SQLException {
+        this.productId = productId;
     }
 
     public void setProductCompId(int productCompId) throws SQLException {
@@ -59,8 +66,16 @@ public class agreementItemsDal extends DalObject<agreementItemsDal> {
         update();
     }
 
+    public void setProductCompIdLoad(int productCompId) throws SQLException {
+        this.productCompId = productCompId;
+    }
+
     public void setPrice(double price) throws SQLException {
         this.price = price;
         update();
+    }
+
+    public void setPriceLoad(double price) throws SQLException {
+        this.price = price;
     }
 }

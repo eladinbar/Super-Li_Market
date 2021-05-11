@@ -5,8 +5,10 @@ import DataAccessLayer.DalControllers.InventoryControllers.ItemDalController;
 import DataAccessLayer.DalObjects.InventoryObjects.Item;
 import DataAccessLayer.DalObjects.SupplierObjects.OrderDal;
 import DataAccessLayer.DalObjects.SupplierObjects.ProductsInOrderDal;
+import DataAccessLayer.DalObjects.SupplierObjects.agreementItemsDal;
 
 import java.sql.*;
+import java.util.List;
 
 public class ProductsInOrderDalController extends DalController<ProductsInOrderDal> {
     private static ProductsInOrderDalController instance = null;
@@ -110,8 +112,30 @@ public class ProductsInOrderDalController extends DalController<ProductsInOrderD
                 isDesired = resultSet.getInt(0) == productInOrder.getProductId()
                 && resultSet.getInt(1) == productInOrder.getOrderId();
                 if (isDesired) {
-                    productInOrder.setAmount(resultSet.getInt(2));
+                    productInOrder.setAmountLoad(resultSet.getInt(2));
                     break; //Desired category discount found
+                }
+            }
+        } catch (SQLException ex) {
+            throw new SQLException(ex.getMessage());
+        }
+        return isDesired;
+    }
+
+    public boolean select(ProductsInOrderDal product, List<ProductsInOrderDal> productsInOrderDal) throws SQLException {
+        boolean isDesired = false;
+        try (Connection conn = DriverManager.getConnection(connectionString)) {
+            String query = "SELECT * FROM " + tableName;
+            PreparedStatement stmt = conn.prepareStatement(query);
+            ResultSet resultSet = stmt.executeQuery();
+            while (resultSet.next())
+            {
+                isDesired = resultSet.getString(1).equals(product.getOrderId());
+                if (isDesired) {
+                    int productId = resultSet.getInt(0);
+                    int amount = resultSet.getInt(2);
+                    ProductsInOrderDal savedProduct = new ProductsInOrderDal(productId, product.getOrderId(), amount);
+                    productsInOrderDal.add(savedProduct);
                 }
             }
         } catch (SQLException ex) {

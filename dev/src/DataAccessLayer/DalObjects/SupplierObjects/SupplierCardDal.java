@@ -64,9 +64,17 @@ public class SupplierCardDal extends DalObject<SupplierCardDal> {
         update();
     }
 
+    public void setSupplierIdLoad(int supplierId) throws SQLException {
+        this.supplierId = supplierId;
+    }
+
     public void setCompanyNumber(int companyNumber) throws SQLException {
         this.companyNumber = companyNumber;
         update();
+    }
+
+    public void setCompanyNumberLoad(int companyNumber) throws SQLException {
+        this.companyNumber = companyNumber;
     }
 
     public void setPermanentDays(int permanentDays) throws SQLException {
@@ -75,6 +83,13 @@ public class SupplierCardDal extends DalObject<SupplierCardDal> {
         else
             this.isPermanentDays=false;
         update();
+    }
+
+    public void setPermanentDaysLoad(int permanentDays) throws SQLException {
+        if (permanentDays==1)
+            this.isPermanentDays=true;
+        else
+            this.isPermanentDays=false;
     }
 
     public void setPermanentDays(boolean permanentDays) throws SQLException {
@@ -90,16 +105,25 @@ public class SupplierCardDal extends DalObject<SupplierCardDal> {
         update();
     }
 
+    public void setSelfDeliveryLoad(int selfDelivery) throws SQLException {
+        if (selfDelivery==1)
+            this.selfDelivery=true;
+        else
+            this.selfDelivery=false;
+    }
+
     public void setSelfDelivery(boolean selfDelivery) throws SQLException {
         this.selfDelivery=selfDelivery;
         update();
     }
 
-
-
     public void setPayment(String payment) throws SQLException {
         this.payment = Payment.valueOf(payment);
         update();
+    }
+
+    public void setPaymentLoad(String payment) throws SQLException {
+        this.payment = Payment.valueOf(payment);
     }
 
     public void setPayment(Payment payment) throws SQLException {

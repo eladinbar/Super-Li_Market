@@ -109,10 +109,10 @@ public class PersonCardDalController extends DalController<PersonCardDal> {
             {
                 isDesired = resultSet.getString(0).equals(personCard.getId());
                 if (isDesired) {
-                    personCard.setFirstName(resultSet.getString(1));
-                    personCard.setLastName(resultSet.getString(2));
-                    personCard.setEmail(resultSet.getString(3));
-                    personCard.setPhone(resultSet.getString(4));
+                    personCard.setFirstNameLoad(resultSet.getString(1));
+                    personCard.setLastNameLoad(resultSet.getString(2));
+                    personCard.setEmailLoad(resultSet.getString(3));
+                    personCard.setPhoneLoad(resultSet.getString(4));
                     break; //Desired category discount found
                 }
             }
