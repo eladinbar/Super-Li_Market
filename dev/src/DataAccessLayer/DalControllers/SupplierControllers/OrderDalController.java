@@ -127,4 +127,25 @@ public class OrderDalController extends DalController<OrderDal> {
         }
         return isDesired;
     }
+
+    public boolean select(List<OrderDal> orders) throws SQLException {
+        OrderDal savedOrder;
+        try (Connection conn = DriverManager.getConnection(connectionString)) {
+            String query = "SELECT * FROM " + tableName;
+            PreparedStatement stmt = conn.prepareStatement(query);
+            ResultSet resultSet = stmt.executeQuery();
+            while (resultSet.next())
+            {
+                savedOrder = new OrderDal(resultSet.getInt(1));
+                savedOrder.setSupplierIdLoad(resultSet.getString(2));
+                savedOrder.setDateLoad(resultSet.getString(3));
+                savedOrder.setDeliveredLoad(resultSet.getInt(4));
+                savedOrder.setDayLoad(resultSet.getInt(5));
+                orders.add(savedOrder);
+            }
+        } catch (SQLException ex) {
+            throw new SQLException(ex.getMessage());
+        }
+        return true;
+    }
 }

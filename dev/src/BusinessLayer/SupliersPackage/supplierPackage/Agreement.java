@@ -174,7 +174,9 @@ public class Agreement {
     }
 
     public boolean deleteItem(int itemId) throws SQLException {
-        return dalObjects.get(itemId).delete();
+        boolean toReturn = dalObjects.get(itemId).delete();
+        dalObjects.remove(itemId);
+        return toReturn;
     }
 
     public boolean saveItem(int itemId, String supplierId) throws SQLException {

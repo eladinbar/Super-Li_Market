@@ -1,5 +1,7 @@
 package BusinessLayer.SupliersPackage.supplierPackage;
 
+import DataAccessLayer.DalObjects.SupplierObjects.SupplierCardDal;
+
 import java.util.*;
 
 public class SupplierController {
@@ -229,4 +231,5 @@ public class SupplierController {
                 throw new Exception("email already exists in the system");
         }
     }
+
 }

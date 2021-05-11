@@ -6,6 +6,7 @@ import DataAccessLayer.DalControllers.SupplierControllers.SupplierContactMembers
 import DataAccessLayer.DalObjects.DalObject;
 
 import java.sql.SQLException;
+import java.util.List;
 
 public class SupplierCardDal extends DalObject<SupplierCardDal> {
     public static final String supplierIdColumnName = "Supplier_ID";
@@ -146,8 +147,6 @@ public class SupplierCardDal extends DalObject<SupplierCardDal> {
         update();
     }
 
-
-
     public boolean save(String id,String contactMemberID) throws SQLException {
         SupplierContactMembersDalController.getInstance().insert(new SupplierContactMembersDal(Integer.parseInt(id),Integer.parseInt(contactMemberID)));
         return controller.insert(this);
@@ -155,5 +154,9 @@ public class SupplierCardDal extends DalObject<SupplierCardDal> {
 
     public boolean delete(String supId, String personId) throws SQLException {
         return SupplierContactMembersDalController.getInstance().delete(new SupplierContactMembersDal(Integer.parseInt(supId), Integer.parseInt(personId)));
+    }
+
+    public boolean loadAllSuppliers(List<SupplierCardDal> suppliers) throws SQLException {
+        return controller.select(suppliers);
     }
 }

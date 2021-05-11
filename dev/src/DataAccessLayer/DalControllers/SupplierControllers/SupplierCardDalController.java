@@ -1,9 +1,11 @@
 package DataAccessLayer.DalControllers.SupplierControllers;
 
 import DataAccessLayer.DalControllers.DalController;
+import DataAccessLayer.DalObjects.InventoryObjects.DefectEntry;
 import DataAccessLayer.DalObjects.SupplierObjects.*;
 
 import java.sql.*;
+import java.util.List;
 
 public class SupplierCardDalController extends DalController<SupplierCardDal> {
     private static SupplierCardDalController instance = null;
@@ -131,5 +133,27 @@ public class SupplierCardDalController extends DalController<SupplierCardDal> {
             throw new SQLException(ex.getMessage());
         }
         return isDesired;
+    }
+
+    public boolean select(List<SupplierCardDal> suppliers) throws SQLException {
+        SupplierCardDal savedSupplier;
+        try (Connection conn = DriverManager.getConnection(connectionString)) {
+            String query = "SELECT * FROM " + tableName;
+            PreparedStatement stmt = conn.prepareStatement(query);
+            ResultSet resultSet = stmt.executeQuery();
+            while (resultSet.next())
+            {
+                savedSupplier = new SupplierCardDal(resultSet.getInt(1));
+                savedSupplier.setCompanyNumberLoad(resultSet.getInt(2));
+                savedSupplier.setPermanentDaysLoad(resultSet.getInt(3));
+                savedSupplier.setSelfDeliveryLoad(resultSet.getInt(4));
+                savedSupplier.setPaymentLoad(resultSet.getString(5));
+                savedSupplier.setAddressLoad(resultSet.getString(6));
+                suppliers.add(savedSupplier);
+            }
+        } catch (SQLException ex) {
+            throw new SQLException(ex.getMessage());
+        }
+        return true;
     }
 }

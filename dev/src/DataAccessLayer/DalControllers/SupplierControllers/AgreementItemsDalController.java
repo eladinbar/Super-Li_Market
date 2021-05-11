@@ -132,7 +132,8 @@ public class AgreementItemsDalController extends DalController<agreementItemsDal
             ResultSet resultSet = stmt.executeQuery();
             while (resultSet.next())
             {
-                isDesired = resultSet.getString(2).equals(agreement.getSupplierId());
+
+                isDesired = resultSet.getString(2).equals(""+agreement.getSupplierId());
                 if (isDesired) {
                     int productId = resultSet.getInt(1);
                     int compId = resultSet.getInt(3);
