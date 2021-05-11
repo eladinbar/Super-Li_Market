@@ -17,27 +17,31 @@ public class Order {
     private boolean delivered;
     private Supplier supplier;
     private OrderDal dalObject;
+    private int day;
 
-    public Order(int id, LocalDate date, Supplier supplier) throws SQLException {
+    public Order(int id, LocalDate date, Supplier supplier, int day) throws SQLException {
         this.id = id;
         this.products = new HashMap<>();
         this.date = date;
         this.delivered = false;
         this.supplier = supplier;
         this.dalObject = toDalObject();
+        this.day = day;
         save();
     }
 
     public Order(OrderDal orderDal, Supplier supplier) throws Exception {
         this.id = orderDal.getOrderId();
-        this.delivered = orderDal.isDelivered() == 1? true : false;
+        this.delivered = orderDal.isDelivered() == 1 ? true : false;
         this.date = LocalDate.parse(orderDal.getDate());
         readOrderProducts();
         this.supplier = supplier;
+        //this.day=orderDal.getDay();
+        //todo add getDay method to orderDal
     }
 
     public Order(int id) {
-        this.id=id;
+        this.id = id;
     }
 
     public int getId() {
@@ -83,10 +87,10 @@ public class Order {
     }
 
     public void addProductToOrder(int productId, int amount) throws Exception {
-        if(!supplier.getAg().getProducts().containsKey(productId))
-            throw new Exception("supplier does not supply the product :"+ productId);
-        if(products.containsKey(productId))
-            throw new Exception("product " +productId + " already exists in the order " + this.id + ", check if you want to edit the amount or remove");
+        if (!supplier.getAg().getProducts().containsKey(productId))
+            throw new Exception("supplier does not supply the product :" + productId);
+        if (products.containsKey(productId))
+            throw new Exception("product " + productId + " already exists in the order " + this.id + ", check if you want to edit the amount or remove");
         if (delivered)
             throw new Exception("order already delivered");
         if (amount < 1)
@@ -105,17 +109,17 @@ public class Order {
     }
 
     public Double getOrderTotalPrice() throws Exception {
-        Double sum=0.0;
-        for (int productID:products.keySet()) {
-            sum+=supplier.getPrice(products.get(productID),productID);
+        Double sum = 0.0;
+        for (int productID : products.keySet()) {
+            sum += supplier.getPrice(products.get(productID), productID);
         }
         return sum;
     }
 
     public Double getOrderTotalDiscount() throws Exception {
-        Double sum=0.0;
-        for (int productID:products.keySet()) {
-            sum+=supplier.getProductDiscount(products.get(productID),productID);
+        Double sum = 0.0;
+        for (int productID : products.keySet()) {
+            sum += supplier.getProductDiscount(products.get(productID), productID);
         }
         return sum;
     }
@@ -131,19 +135,21 @@ public class Order {
 
     private OrderDal toDalObject() throws SQLException {
         return new OrderDal(id, supplier.getSc().getId(), date, delivered);
+        //todo add day
     }
 
     private boolean save() throws SQLException {
         return dalObject.save();
     }
 
-    private boolean save (int productId, int orderId, int amount) throws SQLException {
+    private boolean save(int productId, int orderId, int amount) throws SQLException {
         return dalObject.save(productId, orderId, amount);
     }
 
-    protected boolean delete (int productId, int orderId) throws SQLException {
+    protected boolean delete(int productId, int orderId) throws SQLException {
         return dalObject.delete(productId, orderId);
     }
+
     public boolean find() throws SQLException {
         return dalObject.find();
     }

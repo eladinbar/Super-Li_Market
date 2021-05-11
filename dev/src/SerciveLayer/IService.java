@@ -12,7 +12,7 @@ import java.util.Map;
 
 public interface IService {
     //add supplier and edit all supplier fields
-    ResponseT<Supplier> addSupplier(String firstName, String lastName, String email, String id, String phone, int companyNumber, boolean isPernamentDays, boolean selfDelivery, String payment);
+    ResponseT<Supplier> addSupplier(String firstName, String lastName, String email, String id, String phone, int companyNumber, boolean isPernamentDays, boolean selfDelivery, String payment,String adress);
     Response removeSupplier(String id);
     Response updateFirstName(String id, String lirstName);
     Response updateLastName(String id, String lastName);

@@ -10,14 +10,16 @@ public class supplierCard extends PersonCard {
     private boolean selfDelivery;
     private String payment;
     private List<String> contactMembers;
+    private String address;
 
-    public supplierCard(String firstName, String lastName, String email, String id, String phone, int companyNumber, boolean isPernamentDays, boolean selfDelivery, String payment, List<String> contactMembers) {
+    public supplierCard(String firstName, String lastName, String email, String id, String phone, int companyNumber, boolean isPernamentDays, boolean selfDelivery, String payment, List<String> contactMembers, String address) {
         super(firstName, lastName, email, id, phone);
         this.companyNumber = companyNumber;
         this.isPernamentDays = isPernamentDays;
         this.selfDelivery = selfDelivery;
         this.payment = payment;
         this.contactMembers = contactMembers;
+        this.address = address;
     }
 
     public supplierCard(SupplierCard sc) {
@@ -27,8 +29,8 @@ public class supplierCard extends PersonCard {
         this.selfDelivery = sc.isSelfDelivery();
         this.payment = sc.getPayment().name();
         this.contactMembers = sc.getContactMembers();
+        this.address = sc.getAddress();
     }
-
 
 
     @Override
@@ -44,5 +46,9 @@ public class supplierCard extends PersonCard {
                 "\nselfDelivery:" + selfDelivery +
                 "\npayment: " + payment +
                 "\ncontactMembers: " + contactMembers + "\n\n";
+    }
+
+    public String getAddress() {
+        return address;
     }
 }
