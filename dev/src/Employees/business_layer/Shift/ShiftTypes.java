@@ -80,4 +80,12 @@ public class ShiftTypes {
             shifts[i++] = shift.getKey ();
         return shifts;
     }
+
+    public boolean contains(String shiftype) {
+        return shiftTypes.containsKey ( shiftype );
+    }
+
+    public int numOfShiftTypes(){
+        return shiftTypes.size ();
+    }
 }

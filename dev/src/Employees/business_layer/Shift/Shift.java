@@ -1,28 +1,29 @@
 package Employees.business_layer.Shift;
 
+import DAL.DalControllers_Employee.DalShiftController;
+import DAL.DalObjects_Employees.DalShift;
 import Employees.EmployeeException;
 import Employees.business_layer.Employee.EmployeeController;
 import Employees.business_layer.Employee.Role;
 import Employees.business_layer.facade.facadeObject.FacadeShift;
 
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.*;
 
 public class Shift {
-    private LocalDate date;
+    private final LocalDate date;
     private HashMap<Role, List<String>> manning;
     private String type;
-    private int mORe;
-    private boolean isMissing;
+    private final int mORe;
 
-    //an existing shift with a given maning
+    //an existing shift with a given manning
     public Shift(LocalDate date, HashMap<Role, List<String>> manning, String type, int mORe)
     {
         this.date = date;
         this.manning = manning;
         this.type = type;
         this.mORe = mORe;
-        isMissing = isMissing ();
     }
 
     //a new shift without an existing manning
@@ -32,10 +33,9 @@ public class Shift {
         this.manning = new HashMap<> ();
         this.type = type;
         this.mORe = mORe;
-        isMissing = isMissing ();
     }
 
-    public Shift(FacadeShift facadeShift) throws EmployeeException {
+    public Shift(FacadeShift facadeShift){
         date = facadeShift.getDate();
         manning = new HashMap<> (  );
         for( Map.Entry <String, List<String>> entry: facadeShift.getManning ().entrySet ())
@@ -72,25 +72,23 @@ public class Shift {
     {
         int needed = ShiftTypes.getInstance ().getRoleManning ( type, role );
         if(!manning.containsKey ( role )) {
-            if (needed == 0)
-                return false;
-            return true;
+            return  (needed != 0);
         }
-        if(needed > manning.get ( role ).size ())
-            return true;
-        return false;
+        return (needed > manning.get ( role ).size ());
     }
 
-    public void deleteEmployee(String role, String ID) throws EmployeeException {
+    public void deleteEmployee(String role, String ID) throws EmployeeException, SQLException {
         Role newRole = Role.valueOf ( role );
-        if(manning.containsKey ( newRole ) && manning.get ( newRole ).contains ( ID ))
+        if(manning.containsKey ( newRole ) && manning.get ( newRole ).contains ( ID )) {
             manning.get ( newRole ).remove ( ID );
-        else
+            if(manning.get ( newRole ).isEmpty ())
+                manning.remove ( newRole );
+            DalShiftController.getInstance ().delete ( new DalShift ( ID, type, date, mORe, role) );
+        } else
             throw new EmployeeException ( "no such employee to delete in the current shift." );
     }
 
-    public void addEmployee(String role, String ID) throws EmployeeException
-    {
+    public void addEmployee(String role, String ID) throws EmployeeException, SQLException {
         Role newRole = Role.valueOf ( role );
         if(!manning.containsKey ( newRole )){
             manning.put ( newRole, new ArrayList<> () );
@@ -98,26 +96,35 @@ public class Shift {
         if(manning.get ( newRole ).contains ( ID ))
             throw new EmployeeException ( "this employee already exists in shift." );
         manning.get ( newRole ).add ( ID );
+        DalShiftController.getInstance ().insert ( new DalShift ( ID, type, date, mORe, role) );
     }
 
-    public void changeShiftType(String shiftType) {
+    public void changeShiftType(String shiftType) throws SQLException {
         this.type = shiftType;
+        for( Map.Entry<Role, List<String>> entry : manning.entrySet () ){
+            for(String ID :entry.getValue ())
+                DalShiftController.getInstance ().update ( new DalShift ( ID, shiftType, date, mORe, entry.getKey ().name () ) );
+        }
     }
 
-    public void changeManning(HashMap<String,List<String>> manning) {
+    public void changeManning(HashMap<String,List<String>> manning) throws SQLException {
+        for( Map.Entry<Role, List<String>> entry : this.manning.entrySet () ){
+            for(String ID :entry.getValue ())
+                DalShiftController.getInstance ().delete ( new DalShift ( ID, type, date, mORe, entry.getKey ().name () ) );
+        }
         this.manning = new HashMap<> (  );
         for( Map.Entry<String, List<String >> entry : manning.entrySet () ){
             this.manning.put ( Role.valueOf ( entry.getKey () ), entry.getValue () );
         }
     }
 
-    public void createManning(EmployeeController employeeController, Shift shift) throws EmployeeException {
+    public void createManning(EmployeeController employeeController, Shift shift) throws EmployeeException, SQLException {
         HashMap<Role, Integer> manning = ShiftTypes.getInstance ().getShiftTypeManning ( type );
         List<String> free;
         List<String> work = new ArrayList<> (  );
-        for(Map.Entry<Role, Integer> entery: manning.entrySet ())
+        for(Map.Entry<Role, Integer> entry: manning.entrySet ())
         {
-            Role role = entery.getKey ();
+            Role role = entry.getKey ();
             free = employeeController.getRoleInDate(date, role, mORe);
             if(shift != null)
                 free = updateFree(free, shift.getManning ().get ( role ));
@@ -133,6 +140,15 @@ public class Shift {
             }
             this.manning.put ( role, new ArrayList<> ( work ) );
             work.clear ();
+        }
+        if(!this.manning.containsKey ( Role.storeKeeper ) || this.manning.get ( Role.storeKeeper ).isEmpty ())
+        {
+            this.manning.remove ( Role.driverC1 );
+            this.manning.remove ( Role.driverC );
+        }
+        for( Map.Entry<Role, List<String>> entry : this.manning.entrySet () ){
+            for(String ID :entry.getValue ())
+                DalShiftController.getInstance ().insert ( new DalShift ( ID, type, date, mORe, entry.getKey ().name () ) );
         }
     }
 
@@ -168,5 +184,24 @@ public class Shift {
 
     public int getmORe() {
         return mORe;
+    }
+
+    public boolean isWorking(String role, String id) {
+        if(manning.containsKey ( Role.valueOf ( role ) ))
+            return (manning.get ( Role.valueOf ( role ) ).contains ( id ) );
+        return false;
+    }
+
+    public List<String> getDrivers() {
+        List<String> driversC = getManning ().getOrDefault ( Role.driverC, null );
+        List<String> driversC1 = getManning ().getOrDefault ( Role.driverC1, null );
+        if(driversC != null && driversC1 != null) {
+            driversC.addAll ( driversC1 );
+            return driversC;
+        }
+        else if(driversC != null)
+            return driversC;
+        else
+            return driversC1;
     }
 }

@@ -10,6 +10,7 @@ import Employees.business_layer.Shift.WeeklyShiftSchedule;
 import Employees.business_layer.facade.facadeObject.FacadeShift;
 import Employees.business_layer.facade.facadeObject.FacadeWeeklyShiftSchedule;
 
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
@@ -23,9 +24,9 @@ public class ShiftService {
         shiftController = ShiftController.getInstance ();
     }
 
-    public ResponseT<FacadeWeeklyShiftSchedule> getRecommendation(LocalDate startingDate) {
+    public ResponseT<FacadeWeeklyShiftSchedule> getRecommendation(LocalDate startingDate, boolean start) throws SQLException {
         try {
-            WeeklyShiftSchedule weeklyShiftSchedule = shiftController.getRecommendation ( startingDate );
+            WeeklyShiftSchedule weeklyShiftSchedule = shiftController.getRecommendation ( startingDate, start );
             FacadeWeeklyShiftSchedule facadeWeeklyShiftSchedule = new FacadeWeeklyShiftSchedule ( weeklyShiftSchedule );
             return new ResponseT<> ( facadeWeeklyShiftSchedule );
         } catch (EmployeeException e)
@@ -34,8 +35,7 @@ public class ShiftService {
         }
     }
 
-    public ResponseT<FacadeWeeklyShiftSchedule> createWeeklyShiftSchedule(LocalDate startingDate, FacadeShift[][] shifts)
-    {
+    public ResponseT<FacadeWeeklyShiftSchedule> createWeeklyShiftSchedule(LocalDate startingDate, FacadeShift[][] shifts) throws SQLException {
         try{
             Shift[][] newShifts = new Shift[7][2];
             for ( int i = 0; i < 7; i ++ )
@@ -102,7 +102,7 @@ public class ShiftService {
         }
     }
 
-    public Response changeShift(LocalDate date, int shift, HashMap<String, List<String>> manning) {
+    public Response changeShift(LocalDate date, int shift, HashMap<String, List<String>> manning) throws SQLException {
         try {
             checkManningValidity(manning);
             checkConstraint ( manning, date, shift );
@@ -114,7 +114,7 @@ public class ShiftService {
         }
     }
 
-    public Response addEmployeeToShift(String role, String ID, LocalDate date, int shift) {
+    public Response addEmployeeToShift(String role, String ID, LocalDate date, int shift) throws SQLException {
         try {
             shiftController.addEmployeeToShift ( role, ID, date, shift );
             return new Response ( );
@@ -123,7 +123,7 @@ public class ShiftService {
         }
     }
 
-    public Response deleteEmployeeFromShift(String role, String ID, LocalDate date, int shift)  {
+    public Response deleteEmployeeFromShift(String role, String ID, LocalDate date, int shift) throws SQLException {
         try {
             shiftController.deleteEmployeeFromShift ( role, ID, date, shift );
             return new Response (  );
@@ -133,7 +133,7 @@ public class ShiftService {
         }
     }
 
-    public Response changeShiftType(LocalDate date, int shift, String shiftType) {
+    public Response changeShiftType(LocalDate date, int shift, String shiftType) throws SQLException {
         try {
             shiftController.changeShiftType ( date, shift, shiftType);
             return new Response (  );
@@ -143,9 +143,9 @@ public class ShiftService {
         }
     }
 
-    public Response createShiftType(String shiftype, HashMap<String, Integer> manning){
+    public Response createShiftType(String shiftType, HashMap<String, Integer> manning) throws SQLException {
         try {
-            shiftController.createShiftType ( shiftype, manning );
+            shiftController.createShiftType ( shiftType, manning );
             return new Response (  );
         }catch (EmployeeException e)
         {
@@ -211,12 +211,21 @@ public class ShiftService {
         }
     }
 
-    public Response createData() {
+    public Response createData() throws SQLException {
         try {
             shiftController.createData ( );
             return new Response (  );
         } catch (EmployeeException e) {
             return new Response ( e.getMessage ( ) );
+        }
+    }
+
+    public Response loadData() throws SQLException {
+        try {
+            shiftController.loadData();
+            return new Response (  );
+        } catch (EmployeeException e){
+            return new Response ( e.getMessage () );
         }
     }
 }

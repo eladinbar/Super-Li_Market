@@ -1,6 +1,8 @@
 package Employees.presentation_layer;
 
+import Employees.business_layer.Employee.Employee;
 import Employees.business_layer.Employee.Role;
+import Employees.business_layer.Shift.ShiftTypes;
 import Employees.business_layer.facade.FacadeService;
 import Employees.business_layer.facade.Response;
 import Employees.business_layer.facade.ResponseT;
@@ -8,7 +10,10 @@ import Employees.business_layer.facade.facadeObject.FacadeConstraint;
 import Employees.business_layer.facade.facadeObject.FacadeEmployee;
 import Employees.business_layer.facade.facadeObject.FacadeShift;
 import Employees.business_layer.facade.facadeObject.FacadeWeeklyShiftSchedule;
+import Trucking.Presentation_Layer_Trucking.Menu_Printer;
 
+import java.sql.SQLException;
+import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -20,48 +25,67 @@ public class PresentationController {
     MenuPrinter menuPrinter;
     StringConverter stringConverter;
 
-    public PresentationController(){
-        facadeService = new FacadeService ();
-        menuPrinter = new MenuPrinter ();
-        stringConverter = new StringConverter ();
+    public PresentationController() {
+        facadeService = new FacadeService ( );
+        menuPrinter = new MenuPrinter ( );
+        stringConverter =  StringConverter.getInstance ( );
     }
 
-    public void start(){
-        int choice = menuPrinter.uploadProgram ();
-        if(choice == 2)
-            uploadClean ();
+    public void start() throws SQLException {
+        int choice = menuPrinter.uploadProgram ( );
+        if (choice == 2)
+            uploadClean ( );
         else
-            uploadData ();
+            uploadData ( );
     }
 
-    private void uploadClean(){
-        char choice = menuPrinter.uploadClean ();
-        FacadeEmployee manager;
-        if(choice == 'y') {
-            manager = menuPrinter.createManagerAccountMenu ( );
-            while (manager == null)
-            {
-                manager = menuPrinter.createManagerAccountMenu ();
-            }
-            ResponseT<FacadeEmployee> facadeEmployee = facadeService.addManager ( manager );
-            if(facadeEmployee.errorOccured ())
-            {
-                menuPrinter.print ( facadeEmployee.getErrorMessage () );
-                return;
-            }
-            while(!login (true));
+    private void uploadClean() throws SQLException {
+        ResponseT<Boolean> start = loadData ( );
+        if (start.errorOccured ( )) {
+            menuPrinter.print ( start.getErrorMessage ( ) );
+            return;
         }
-        else
-            menuPrinter.print ("Only a manager can start a clean program." );
+        if (!start.value) {
+            char choice = menuPrinter.uploadClean ( );
+            FacadeEmployee manager;
+            if (choice == 'y') {
+                manager = menuPrinter.createManagerAccountMenu ( );
+                while (manager == null) {
+                    manager = menuPrinter.createManagerAccountMenu ( );
+                }
+                ResponseT<FacadeEmployee> facadeEmployee = facadeService.addManager ( manager );
+                if (facadeEmployee.errorOccured ( )) {
+                    menuPrinter.print ( facadeEmployee.getErrorMessage ( ) );
+                    return;
+                }
+                while (!login ( true ));
+                while (!login ( false )) ;
+            } else
+                menuPrinter.print ( "Only a manager can start a clean program." );
+        } else {
+            if (ShiftTypes.getInstance ().numOfShiftTypes () < 2) {
+                char choice = menuPrinter.uploadClean ( );
+                if (choice == 'y') {
+                    while (!login ( true )) ;
+                } else
+                    menuPrinter.print ( "Only a manager can start a program without shift types." );
+            } else {
+                while (!login ( false )) ;
+            }
+        }
     }
 
-    private void uploadData(){
+    private ResponseT<Boolean> loadData() throws SQLException {
+        return facadeService.loadData();
+    }
+
+    private void uploadData() throws SQLException {
         if(!createData())
             return;
         while (!login ( false ));
     }
 
-    private boolean createData() {
+    private boolean createData() throws SQLException {
         Response response = facadeService.createData();
         if (response.errorOccured ())
         {
@@ -71,64 +95,64 @@ public class PresentationController {
         return true;
     }
 
-    private void handleManagerChoice(int choice){
+    private void handleManagerChoice(int choice, boolean start) throws SQLException {
         switch (choice){
             case 1:
-                createWeeklyShiftSchedule ( );
+                createWeeklyShiftSchedule ( start );
                 choice = menuPrinter.managerMenu ();
-                handleManagerChoice ( choice );
+                handleManagerChoice ( choice, false );
                 break;
             case 2:
                 getWeeklyShiftScheduleManager ( );
                 choice = menuPrinter.managerMenu ();
-                handleManagerChoice ( choice );
+                handleManagerChoice ( choice, start );
                 break;
             case 3:
                 getShiftType ();
                 choice = menuPrinter.managerMenu ();
-                handleManagerChoice ( choice );
+                handleManagerChoice ( choice, start );
                 break;
             case 4:
                 createShiftType ( 2 );
                 choice = menuPrinter.managerMenu ();
-                handleManagerChoice ( choice );
+                handleManagerChoice ( choice, start );
                 break;
             case 5:
                 getEmployeeList();
                 choice = menuPrinter.managerMenu ();
-                handleManagerChoice ( choice );
+                handleManagerChoice ( choice, start );
                 break;
             case 6:
                 getEmployeeByManager( );
                 choice = menuPrinter.managerMenu ();
-                handleManagerChoice ( choice );
+                handleManagerChoice ( choice, start );
                 break;
             case 7:
                 getConstraintsOfEmployee ();
                 choice = menuPrinter.managerMenu ();
-                handleManagerChoice ( choice );
+                handleManagerChoice ( choice, start );
                 break;
             case 8:
                 addEmployee (  );
                 choice = menuPrinter.managerMenu ();
-                handleManagerChoice ( choice );
+                handleManagerChoice ( choice, start );
                 break;
             case 9:
                 if(!logout ())
                 {
                     choice = menuPrinter.managerMenu ();
-                    handleManagerChoice ( choice );
+                    handleManagerChoice ( choice, start );
                 }
                 while(!login (false));
                 break;
             default:
                 menuPrinter.printChoiceException();
                 choice = menuPrinter.managerMenu ();
-                handleManagerChoice ( choice );
+                handleManagerChoice ( choice, start );
         }
     }
 
-    private void handleSimpleEmployeeChoice(int choice){
+    private void handleSimpleEmployeeChoice(int choice) throws SQLException {
         switch (choice){
             case 1:
                 getWeeklyShiftSchedule ( );
@@ -173,7 +197,7 @@ public class PresentationController {
         }
     }
 
-    private void handleManagerScheduleChoice(LocalDate date, int shift, int choice) {
+    private void handleManagerScheduleChoice(LocalDate date, int shift, int choice) throws SQLException {
         if(shift != 1 & shift != 2)
             menuPrinter.printChoiceException ();
         switch (choice) {
@@ -230,7 +254,7 @@ public class PresentationController {
         }
     }
 
-    private void createShiftTypes() {
+    private void createShiftTypes() throws SQLException {
         menuPrinter.print ( "For continuing you have to create and characterize morning shift type and evening shift type.\n\n" +
                 "Create morning shift type:\n" );
         createShiftType(0);
@@ -277,9 +301,9 @@ public class PresentationController {
         menuPrinter.print ( "Role added successfully." );
     }
 
-    private void getRecommendation() {
+    private void getRecommendation(boolean start) throws SQLException {
         LocalDate date = menuPrinter.schedule ();
-        ResponseT<FacadeWeeklyShiftSchedule> weeklyShiftSchedule = facadeService.getRecommendation ( date );
+        ResponseT<FacadeWeeklyShiftSchedule> weeklyShiftSchedule = facadeService.getRecommendation ( date, start );
         if(weeklyShiftSchedule.errorOccured ())
         {
             menuPrinter.print ( weeklyShiftSchedule.getErrorMessage () );
@@ -289,8 +313,7 @@ public class PresentationController {
         editSchedule ();
     }
 
-    private void createWeeklyShiftSchedule()
-    {
+    private void createWeeklyShiftSchedule(boolean start) throws SQLException {
         int choice = menuPrinter.createWeeklyShiftSchedule();
         if(choice < 1 || choice > 2)
         {
@@ -298,10 +321,19 @@ public class PresentationController {
             return;
         }
         if(choice == 1) {
+            boolean  dateLegal = false;
             menuPrinter.print ( "Write the shifts details:" );
             LocalDate date = menuPrinter.schedule ( );
-            if(date == null)
-                return;
+            while (!dateLegal) {
+                if (date == null)
+                    return;
+                if(!start && !date.getDayOfWeek ().equals ( DayOfWeek.SUNDAY )){
+                    menuPrinter.print ( "The selected date is not sunday.\n try again." );
+                    date = menuPrinter.schedule ();
+                }
+                else
+                    dateLegal = true;
+            }
             FacadeShift[][] shifts = new FacadeShift[7][2];
             for ( int i = 0 ; i < 6 ; i++ ) {
                 shifts[i][0] = createFirstShift ( date.plusDays ( i ) );
@@ -315,14 +347,14 @@ public class PresentationController {
                 return;
             }
             menuPrinter.print ( "Weekly shift schedule created successfully." );
+            menuPrinter.print ( stringConverter.convertWeeklyShiftSchedule ( weeklyShiftSchedule.value ) );
             editSchedule ();
         }
         else
-            getRecommendation (  );
+            getRecommendation ( start );
     }
 
-    private FacadeShift createFirstShift(LocalDate date)
-    {
+    private FacadeShift createFirstShift(LocalDate date) throws SQLException {
         String choice = menuPrinter.chooseShiftType(date, 1);
         while (choice == null)
         {
@@ -337,8 +369,7 @@ public class PresentationController {
         return shift;
     }
 
-    private FacadeShift createSecondShift(LocalDate date)
-    {
+    private FacadeShift createSecondShift(LocalDate date) throws SQLException {
         String choice = menuPrinter.chooseShiftType(date, 2);
         while (choice == null)
         {
@@ -372,7 +403,7 @@ public class PresentationController {
         return manning;
     }
 
-    private void changeShift(LocalDate date, int shift) {
+    private void changeShift(LocalDate date, int shift) throws SQLException {
         HashMap<String, List<String>> manning = createManning ();
         Response response = facadeService.changeShift ( date, shift, manning );
         if(response.errorOccured ())
@@ -383,7 +414,7 @@ public class PresentationController {
         menuPrinter.print ( "Shift changed successfully.\n" );
     }
 
-    private void addEmployeeToShift(LocalDate date, int shift) {
+    private void addEmployeeToShift(LocalDate date, int shift) throws SQLException {
         String role = menuPrinter.roleMenu ( );
         if(role == null)
             return;
@@ -397,7 +428,7 @@ public class PresentationController {
         menuPrinter.print ( "Employee added to shift successfully.\n" );
     }
 
-    private void deleteEmployeeFromShift(LocalDate date, int shift)  {
+    private void deleteEmployeeFromShift(LocalDate date, int shift) throws SQLException {
         String role = menuPrinter.roleMenu ( );
         if(role == null)
             return;
@@ -411,8 +442,8 @@ public class PresentationController {
         menuPrinter.print ( "Employee deleted from shift successfully.\n" );
     }
 
-    private void changeShiftType(LocalDate date, int shift) {
-        menuPrinter.print ( "choose shift type you woud like to change: " );
+    private void changeShiftType(LocalDate date, int shift) throws SQLException {
+        menuPrinter.print ( "choose shift type you would like to change: " );
         String shiftType = menuPrinter.getShifTypes ();
         Response response = facadeService.changeShiftType ( date, shift, shiftType );
         if (response.errorOccured ( )) {
@@ -422,7 +453,7 @@ public class PresentationController {
         menuPrinter.print ( "Shift type changed successfully." );
     }
 
-    private String createShiftType(int type){
+    private String createShiftType(int type) throws SQLException {
         String shiftType;
         if(type == 0)
             shiftType = "morningShift";
@@ -469,9 +500,18 @@ public class PresentationController {
 
 
     private boolean getWeeklyShiftSchedule() {
+        boolean  dateLegal = false;
         LocalDate date = menuPrinter.schedule();
-        if(date == null)
-            return false;
+        while (!dateLegal) {
+            if (date == null)
+                return false;
+            if(!date.getDayOfWeek ().equals ( DayOfWeek.SUNDAY )){
+                menuPrinter.print ( "The selected date is not sunday.\n try again." );
+                date = menuPrinter.schedule ();
+            }
+            else
+                dateLegal = true;
+        }
         ResponseT<FacadeWeeklyShiftSchedule> schedule = facadeService.getWeeklyShiftSchedule ( date );
         if(schedule.errorOccured ())
         {
@@ -483,7 +523,7 @@ public class PresentationController {
         return true;
     }
 
-    private boolean login(boolean first) {
+    private boolean login(boolean first) throws SQLException {
         String id = menuPrinter.loginID ( );
         String role = menuPrinter.roleMenu ();
         int choice;
@@ -494,23 +534,40 @@ public class PresentationController {
                 menuPrinter.print ( employee.getErrorMessage () );
                 return false;
             }
-            if(first)
-                createShiftTypes();
             if(employee.value.isManager ()) {
+                if(first) {
+                    createShiftTypes ( );
+                    menuPrinter.print ( "For continuing you have to create trucking manager account" );
+                    FacadeEmployee truckingManager = menuPrinter.getEmployeeDetails ( "truckingManager" );
+                    while (truckingManager == null) {
+                        truckingManager = menuPrinter.createManagerAccountMenu ( );
+                    }
+                    Response response = facadeService.addEmployee ( truckingManager );
+                    while(response.errorOccured ( )) {
+                        menuPrinter.print ( response.getErrorMessage ( ) );
+                        menuPrinter.print ( "For continuing you have to create trucking manager account" );
+                        truckingManager = menuPrinter.getEmployeeDetails ( "truckingManager" );
+                        while (truckingManager == null) {
+                            truckingManager = menuPrinter.createManagerAccountMenu ( );
+                        }
+                        response = facadeService.addEmployee ( truckingManager );
+                    }
+                }
                 choice = menuPrinter.managerMenu ( );
-                handleManagerChoice ( choice );
-                return true;
-            }
-            else {
+                handleManagerChoice ( choice, first );
+            } else if(role.equals ( "truckingManager" )){
+                Menu_Printer.getInstance ().mainMenu ();
+                logout ();
+                while(!login (false));
+            } else {
                 choice = menuPrinter.simpleEmployeeMenu ();
                 handleSimpleEmployeeChoice ( choice );
-                return true;
             }
+            return true;
         }
         else
             return false;
     }
-
 
     private void getShift() {
         LocalDate date = menuPrinter.getShiftDate ();
@@ -588,12 +645,16 @@ public class PresentationController {
         return true;
     }
 
-    private void giveConstraint() {
+    private void giveConstraint() throws SQLException {
         menuPrinter.print ( "Write the constraint detail:\n" );
         LocalDate date = menuPrinter.dateMenu ();
         if(date == null)
             return;
         int shift = menuPrinter.getShiftNum ();
+        if(shift > 2 || shift < 0) {
+            menuPrinter.printChoiceException ( );
+            return;
+        }
         menuPrinter.print ( "reason: " );
         String reason = menuPrinter.getString();
         Response r = facadeService.giveConstraint ( date, shift, reason );
@@ -604,7 +665,7 @@ public class PresentationController {
         menuPrinter.print ( "Constraint added successfully." );
     }
 
-    private void deleteConstraint ()  {
+    private void deleteConstraint () throws SQLException {
         LocalDate date = menuPrinter.dateMenu ();
         if(date == null)
             return;
@@ -617,13 +678,21 @@ public class PresentationController {
         menuPrinter.print ( "Constraint deleted successfully.\n" );
     }
 
-    private void addEmployee() {
+    private void addEmployee() throws SQLException {
         menuPrinter.print ( "Write the new employee details:" );
         String role = menuPrinter.roleMenu ( );
         if(role == null)
             return;
         FacadeEmployee facadeEmployee = menuPrinter.getEmployeeDetails ( role );
-        Response response = facadeService.addEmployee ( facadeEmployee );
+        Response response;
+        if(role.equals ( "driverC" ) || role.equals ( "driverC1" ))
+        {
+            menuPrinter.print ( "name:" );
+            String name = menuPrinter.getString ();
+            response = facadeService.addDriver ( facadeEmployee, name );
+        }
+        else
+            response = facadeService.addEmployee ( facadeEmployee );
         if(response.errorOccured ())
         {
             menuPrinter.print ( response.getErrorMessage () );
@@ -658,7 +727,7 @@ public class PresentationController {
         menuPrinter.print ( "Bank account changed successfully." );
     }
 
-    private void updateTermsOfEmployee(String ID) {
+    private void updateTermsOfEmployee(String ID) throws SQLException {
         menuPrinter.print ( "Write salary: " );
         int salary = menuPrinter.getInt ();
         menuPrinter.print ( "Write education fund: " );
@@ -687,13 +756,13 @@ public class PresentationController {
         menuPrinter.print ( s );
     }
 
-    private void getWeeklyShiftScheduleManager() {
+    private void getWeeklyShiftScheduleManager() throws SQLException {
         boolean succeed = getWeeklyShiftSchedule ();
         if(succeed)
             editSchedule ();
     }
 
-    private void editSchedule(){
+    private void editSchedule() throws SQLException {
         menuPrinter.print ( "Would you like to edit one of the shifts? n\\y" );
         char c = menuPrinter.getChar ( );
         if (c == 'y') {
@@ -704,7 +773,7 @@ public class PresentationController {
         }
     }
 
-    private void getEmployeeByManager() {
+    private void getEmployeeByManager() throws SQLException {
         menuPrinter.print ( "Write the ID of the employee you would like to display: " );
         String ID = menuPrinter.getString ( );
         ResponseT<FacadeEmployee> employee = facadeService.getEmployee ( ID );
@@ -720,7 +789,7 @@ public class PresentationController {
             updateEmployee (employee.value, choice);
     }
 
-    private void updateEmployee(FacadeEmployee facadeEmployee, int choice) {
+    private void updateEmployee(FacadeEmployee facadeEmployee, int choice) throws SQLException {
         switch (choice){
             case 1:
                 removeEmployee (facadeEmployee.getID ());

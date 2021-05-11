@@ -1,5 +1,6 @@
 package Employees.business_layer.facade;
 
+import Employees.EmployeeException;
 import Employees.business_layer.Employee.EmployeeController;
 import Employees.business_layer.Employee.Role;
 import Employees.business_layer.Shift.ShiftController;
@@ -8,6 +9,7 @@ import Employees.business_layer.facade.facadeObject.FacadeEmployee;
 import Employees.business_layer.facade.facadeObject.FacadeShift;
 import Employees.business_layer.facade.facadeObject.FacadeWeeklyShiftSchedule;
 
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
@@ -24,32 +26,31 @@ public class FacadeService {
 
     //shift service responsibility
 
-    public ResponseT<FacadeWeeklyShiftSchedule> getRecommendation(LocalDate startingDate) {
-        return shiftService.getRecommendation ( startingDate );
+    public ResponseT<FacadeWeeklyShiftSchedule> getRecommendation(LocalDate startingDate, boolean start) throws SQLException {
+        return shiftService.getRecommendation ( startingDate, start );
     }
 
-    public ResponseT<FacadeWeeklyShiftSchedule> createWeeklyShiftSchedule(LocalDate startingDate, FacadeShift[][] shifts)
-    {
+    public ResponseT<FacadeWeeklyShiftSchedule> createWeeklyShiftSchedule(LocalDate startingDate, FacadeShift[][] shifts) throws SQLException {
         return shiftService.createWeeklyShiftSchedule ( startingDate, shifts );
     }
 
-    public Response changeShift(LocalDate date, int shift, HashMap<String, List<String>> manning) {
+    public Response changeShift(LocalDate date, int shift, HashMap<String, List<String>> manning) throws SQLException {
         return shiftService.changeShift ( date, shift, manning);
     }
 
-    public Response addEmployeeToShift(String role, String ID, LocalDate date, int shift){
+    public Response addEmployeeToShift(String role, String ID, LocalDate date, int shift) throws SQLException {
         return shiftService.addEmployeeToShift ( role, ID, date, shift );
     }
 
-    public Response deleteEmployeeFromShift(String role, String ID, LocalDate date, int shift)  {
+    public Response deleteEmployeeFromShift(String role, String ID, LocalDate date, int shift) throws SQLException {
         return shiftService.deleteEmployeeFromShift ( role, ID, date, shift );
     }
 
-    public Response changeShiftType(LocalDate date, int shift, String shiftType) {
+    public Response changeShiftType(LocalDate date, int shift, String shiftType) throws SQLException {
         return shiftService.changeShiftType ( date, shift, shiftType);
     }
 
-    public Response createShiftType(String shiftType, HashMap<String, Integer> manning){
+    public Response createShiftType(String shiftType, HashMap<String, Integer> manning) throws SQLException {
         return shiftService.createShiftType ( shiftType, manning );
     }
 
@@ -87,11 +88,11 @@ public class FacadeService {
         return employeeService.logout ();
     }
 
-    public Response giveConstraint(LocalDate date, int shift, String reason) {
+    public Response giveConstraint(LocalDate date, int shift, String reason) throws SQLException {
         return employeeService.giveConstraint (date, shift, reason );
     }
 
-    public Response deleteConstraint (LocalDate date, int shift)  {
+    public Response deleteConstraint (LocalDate date, int shift) throws SQLException {
         return employeeService.deleteConstraint (date, shift );
     }
 
@@ -101,14 +102,18 @@ public class FacadeService {
 
     public Response updateBankAccount(String Id, int accountNum, int bankBranch, String bank) {
         return employeeService.updateBankAccount ( Id,accountNum,bankBranch,bank );
-    }
+}
 
-    public Response updateTermsOfEmployee(String Id, int salary, int educationFund, int sickDays, int daysOff) {
+    public Response updateTermsOfEmployee(String Id, int salary, int educationFund, int sickDays, int daysOff) throws SQLException {
         return employeeService.updateTermsOfEmployee ( Id,salary,educationFund,sickDays,daysOff );
     }
 
-    public Response addEmployee(FacadeEmployee employee) {
+    public Response addEmployee(FacadeEmployee employee) throws SQLException {
         return employeeService.addEmployee ( employee );
+    }
+
+    public Response addDriver(FacadeEmployee employee, String name) {
+        return employeeService.addDriver ( employee, name );
     }
 
     public ResponseT<FacadeEmployee> addManager(FacadeEmployee manager) {
@@ -136,7 +141,7 @@ public class FacadeService {
         return employeeService.getEmployees();
     }
 
-    public Response createData() {
+    public Response createData() throws SQLException {
         Response response = employeeService.createData ( );
         if(response.errorOccured ())
             return response;
@@ -144,5 +149,16 @@ public class FacadeService {
         response = shiftService.createData ( );
         employeeService.logout ();
         return response;
+    }
+
+    public ResponseT<Boolean> loadData() throws SQLException {
+        shiftService.loadData();
+        try {
+            Boolean b = employeeService.loadData();
+            Trucking.Business_Layer_Trucking.Facade.FacadeService.getInstance ().upload ();
+            return new ResponseT<> ( b );
+        }catch (EmployeeException e){
+            return new ResponseT<> ( e.getMessage () );
+        }
     }
 }

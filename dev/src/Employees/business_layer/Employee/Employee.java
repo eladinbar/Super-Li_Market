@@ -1,6 +1,9 @@
 package Employees.business_layer.Employee;
+import DAL.DalControllers_Employee.DalConstraintController;
+import DAL.DalObjects_Employees.DalConstraint;
 import Employees.EmployeeException;
 
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -15,9 +18,8 @@ public class Employee {
     private BankAccountInfo bank;
     private HashMap<LocalDate, Constraint> constraints;
 
-    public Employee (String role, String ID, TermsOfEmployment terms, LocalDate transactionDate,  BankAccountInfo bank ) throws EmployeeException {
+    public Employee (String role, String ID, TermsOfEmployment terms, LocalDate transactionDate,  BankAccountInfo bank ) {
         this.role = Role.valueOf (role);
-        if(!validId(ID)){throw new EmployeeException("An invalid ID was entered ");}
         this.ID = ID;
         this.isManager = isManager(this.role);
         employed = true;
@@ -64,11 +66,6 @@ public class Employee {
         this.role = role;
     }
 
-    public void setID(String ID) throws EmployeeException {
-        if(!validId(ID)){throw new EmployeeException("An invalid ID was entered ");}
-        this.ID = ID;
-    }
-
     public void setEmployed(boolean employed) {
         this.employed = employed;
     }
@@ -87,30 +84,32 @@ public class Employee {
 
 
 // functions:
-    public void giveConstraint(LocalDate date, int shift, String reason) throws EmployeeException {
+    public void giveConstraint(LocalDate date, int shift, String reason) throws EmployeeException, SQLException {
         if(!validDate(date)){
             throw new EmployeeException("A constraint can be filed up to two weeks in advance");
         }
         if (constraints.containsKey(date)){ // if the employment already has a constraint on one of the shifts that day.
             Constraint exist = constraints.get(date);
-            if( shift == 1){// morning shift
+            if( shift == 0 || shift == 2){// morning shift
                 if(exist.isMorningShift()){
                     throw new EmployeeException ("You already have a constraint on this shift, if you want to update it please delete and enter a new one");
                 }
                 exist.setMorningShift(true);
             }
-            else if (shift ==2){// evening shift
+            else if (shift ==1 || shift == 2){// evening shift
                 if(exist.isEveningShift()){
                     throw new EmployeeException("You already have a constraint on this shift, if you want to update it please delete and enter a new one");
                 }
                 exist.setEveningShift(true);
             }
             exist.setReason(exist.getReason()+"\n"+reason);
+            DalConstraintController.getInstance ().update ( new DalConstraint ( ID, reason, date, shift ) );
         }
 
         else{ // if the employment has no constraint on that day.
             Constraint newConstraint;
             if(shift == 0){ // morning shift
+
                 newConstraint = new Constraint(date, true, false, reason );
             }
             else if( shift == 1){
@@ -120,23 +119,40 @@ public class Employee {
                 newConstraint = new Constraint(date, true, true, reason );
             }
             constraints.put(date, newConstraint);
+            DalConstraintController.getInstance ().insert ( new DalConstraint ( ID, reason, date, shift )  );
         }
 
         constraints = sortConstraintsByDate(constraints);
     }
 
 
-public void deleteConstraint(LocalDate date, int shift) throws EmployeeException {
-    if (!constraints.containsKey(date)){
-        throw new EmployeeException("There is no constraint to delete on that day");
+public void deleteConstraint(LocalDate date, int shift) throws EmployeeException, SQLException {
+    if (!constraints.containsKey(date) || (!constraints.get ( date ).isEveningShift () && shift == 1) || (!constraints.get ( date ).isMorningShift () && shift == 0) || (shift == 2 && (!constraints.get ( date ).isMorningShift () || !constraints.get ( date ).isEveningShift ()))){
+        throw new EmployeeException("There is no constraint to delete on that day and shift");
     }
     Constraint exist = constraints.get(date);
-    if(shift == 0 && exist.isMorningShift ())
-        exist.setMorningShift ( false );
-    else if(shift == 1 && exist.isEveningShift ())
-        exist.setEveningShift ( false );
-    else if(shift == 2 && exist.isEveningShift () && exist.isMorningShift ())
+    if(shift == 0) {
+        if (exist.isEveningShift ( )) {
+            exist.setMorningShift ( false );
+            DalConstraintController.getInstance ().update ( new DalConstraint ( ID, exist.getReason ( ), exist.getDate ( ), 1 ) );
+        } else {
+            constraints.remove ( date );
+            DalConstraintController.getInstance ( ).delete ( new DalConstraint ( ID, exist.getReason ( ), exist.getDate ( ), 0 ) );
+        }
+    }
+    else if(shift == 1) {
+        if (exist.isMorningShift ()) {
+            exist.setEveningShift ( false );
+            DalConstraintController.getInstance ( ).update ( new DalConstraint ( ID, exist.getReason ( ), exist.getDate ( ), 0 ) );
+        } else {
+            constraints.remove ( date );
+            DalConstraintController.getInstance ( ).delete ( new DalConstraint ( ID, exist.getReason ( ), exist.getDate ( ), 1 ) );
+        }
+    }
+    else if(shift == 2) {
         constraints.remove ( date );
+        DalConstraintController.getInstance ( ).delete ( new DalConstraint ( ID, exist.getReason ( ), exist.getDate ( ), 2 ) );
+    }
     else
         throw new EmployeeException("There is no constraint to the specific shift to delete on that day");
     if(!exist.isMorningShift() & !exist.isEveningShift()){
@@ -148,17 +164,6 @@ public void deleteConstraint(LocalDate date, int shift) throws EmployeeException
 
     private boolean isManager(Role role){
         return role == Role.branchManager | role == Role.branchManagerAssistant | role == Role.humanResourcesManager;
-    }
-
-    private boolean validId(String ID){
-        if(ID.length () != 9)
-            return false;
-        try{
-            Integer.parseInt ( ID );
-            return true;
-        }catch (NumberFormatException n) {
-            return false;
-        }
     }
 
     private boolean validDate(LocalDate date) {

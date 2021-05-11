@@ -1,9 +1,13 @@
 package Trucking.Business_Layer_Trucking.Resources;
 
+import DAL.DalObjects_Trucking.DalDriver;
+import DAL.DalControllers_Trucking.DalDriverController;
+
+import java.sql.SQLException;
+
 public class Driver {
     private  String ID;
     private String name;
-    private boolean available;
     private License licenseType;
 
     public enum License{
@@ -21,11 +25,21 @@ public class Driver {
 
     }
 
-    public Driver(String ID, String name , License license){
+    public Driver(String ID, String name , License license) throws SQLException {
         this.ID = ID;
         this.name = name;
-        this.available = true;
         this.licenseType = license;
+
+        DalDriverController.getInstance().insert(new DalDriver(ID, name, licenseToString(licenseType)));
+
+    }
+
+    public Driver(DalDriver dalDriver){
+        this.ID=dalDriver.getID();
+        this.name= dalDriver.getName();
+        if (dalDriver.getLicense().equals("C1"))
+            this.licenseType=License.C1;
+        else this.licenseType=License.C;
     }
 
     public String getID() {
@@ -40,27 +54,31 @@ public class Driver {
         return licenseType;
     }
 
-    public boolean isAvailable() {
-        return available;
-    }
-    public void setUnavailable()
-    {
-        available=false;
-    }
-    public void makeAvailable()
-    {
-        available=true;
-    }
 
-    public void setID(String ID) {
+
+    public void setID(String ID) throws SQLException {
         this.ID = ID;
+        DalDriverController.getInstance().update(new DalDriver(ID, name, licenseToString(licenseType)));
     }
 
-    public void setName(String name) {
+    public void setName(String name) throws SQLException {
         this.name = name;
+        DalDriverController.getInstance().update(new DalDriver(ID, name, licenseToString(licenseType)));
+
     }
 
-    public void setLicenseType(License licenseType) {
+    public void setLicenseType(License licenseType) throws SQLException {
         this.licenseType = licenseType;
+        DalDriverController.getInstance().update(new DalDriver(ID, name, licenseToString(licenseType)));
+
+    }
+
+    private String licenseToString(License license){
+        String l = "C";
+        if (licenseType == Driver.License.C1) {
+            l = "C1";
+        }
+        return l;
+
     }
 }

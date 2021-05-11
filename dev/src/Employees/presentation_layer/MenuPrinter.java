@@ -36,7 +36,7 @@ BufferedReader sc = new BufferedReader(new InputStreamReader(System.in));
 
     public String roleMenu(){
         System.out.println ("Choose role:\n1.branch manager\n2.branch manager assistant\n" +
-                "3.human resources manager\n4.cashier\n5.guard\n6.usher\n7.store keeper\n8.shift manager\n9.back" );
+                "3.human resources manager\n4.cashier\n5.guard\n6.usher\n7.store keeper\n8.shift manager\n9.driver - license c\n10.driver - license c1\n11.trucking manager\n12.back" );
         int choice =  getInt ();
         switch (choice){
             case 1:
@@ -56,6 +56,12 @@ BufferedReader sc = new BufferedReader(new InputStreamReader(System.in));
             case 8:
                 return "shiftManager";
             case 9:
+                return "driverC";
+            case 10:
+                return "driverC1";
+            case 11:
+                return "truckingManager";
+            case 12:
                 return null;
             default:
                 System.out.println ("choice is illegal.");
@@ -119,7 +125,10 @@ BufferedReader sc = new BufferedReader(new InputStreamReader(System.in));
         System.out.println ( "transaction date:");
         transactionDate = dateMenu ();
         System.out.print ("bank account info:\nbank: " );
-        bank = getString ();
+        while(Character.isDigit((bank = getString ()).charAt ( 0 ))){
+            print ( "Illegal bank name." );
+            System.out.print ("bank account info:\nbank: " );
+        }
         System.out.print ("bank branch: " );
         bankBranch = getInt ();
         System.out.print ("bank account number: " );
@@ -143,25 +152,26 @@ BufferedReader sc = new BufferedReader(new InputStreamReader(System.in));
         System.out.print ( "day:" );
         input = getInt ();
         int day, month;
-        if (input > 31 || input < 1) {
+        while (input > 31 || input < 1) {
             System.out.println ( "day is illegal" );
-            return null;
+            System.out.print ( "day:" );
+            input = getInt ();
         }
         day = input;
         System.out.print ("month:" );
         input = getInt();
-
-
-        if (input > 12 || input < 1) {
+        while (input > 12 || input < 1) {
             System.out.println ( "month is illegal" );
-            return null;
+            System.out.print ("month:" );
+            input = getInt();
         }
         month = input;
         System.out.print ("year:" );
         input = getInt ();
-        if (input > 2021 || input < 1961) {
+        while (input > 2021 || input < 1961) {
             System.out.println ( "year is illegal" );
-            return null;
+            System.out.print ("year:" );
+            input = getInt ();
         }
         return LocalDate.of (input, month, day);
     }
