@@ -1,5 +1,6 @@
 package SerciveLayer;
 
+import InfrastructurePackage.Pair;
 import SerciveLayer.Response.Response;
 import SerciveLayer.Response.ResponseT;
 import SerciveLayer.SimpleObjects.*;
@@ -439,7 +440,7 @@ public class Service implements IService {
     }
 
     @Override
-    public ResponseT<Map<Integer, Integer>> getItemsInShortAndQuantities() {
+    public ResponseT<Pair<Map<Integer, Integer >,Map<Integer, String>>> getItemsInShortAndQuantities() {
         return inventoryService.getItemsInShortAndQuantities();
     }
 

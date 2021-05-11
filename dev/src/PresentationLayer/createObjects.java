@@ -54,7 +54,7 @@ public class createObjects {
     }
 
     public void setupSystem() {
-       // createObjectsForTests();
+        createObjectsForTests();
         //Adding categories
         service.addCategory("Dairy products", "");
         service.addCategory("Milks", "Dairy products");
