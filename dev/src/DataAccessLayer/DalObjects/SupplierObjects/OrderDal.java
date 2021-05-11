@@ -39,7 +39,7 @@ public class OrderDal extends DalObject<OrderDal> {
     }
 
     public String getDate() {
-        return date.toString();
+        return date == null ? null : date.toString();
     }
 
     public String getSupplierId() {
@@ -123,5 +123,9 @@ public class OrderDal extends DalObject<OrderDal> {
 
     public boolean delete (int productId, int orderId) throws SQLException {
         return ProductsInOrderDalController.getInstance().delete(new ProductsInOrderDal(productId, orderId, 0));
+    }
+
+    public int getOrderCounter() throws SQLException {
+        return controller.getOrderCounter();
     }
 }

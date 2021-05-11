@@ -32,7 +32,7 @@ public class OrderDalController extends DalController<OrderDal> {
             String command = "CREATE TABLE IF NOT EXISTS " + tableName + " (" +
                     OrderDal.orderIdColumnName + " INTEGER NOT NULL," +
                     OrderDal.supplierIdColumnName + " TEXT NOT NULL," +
-                    OrderDal.dateColumnName + " TEXT NOT NULL," +
+                    OrderDal.dateColumnName + " TEXT," +
                     OrderDal.deliveredColumnName +" INTEGER NOT NULL,"+
                     OrderDal.dayColumnName + " INTEGER NOT NULL,"+
                     "PRIMARY KEY (" + OrderDal.orderIdColumnName + ")," +
@@ -138,5 +138,17 @@ public class OrderDalController extends DalController<OrderDal> {
             throw new SQLException(ex.getMessage());
         }
         return true;
+    }
+
+    @Override
+    public int getOrderCounter() throws SQLException {
+        try (Connection conn = DriverManager.getConnection(connectionString)) {
+            String query = "SELECT MAX(" + OrderDal.orderIdColumnName + ") FROM " + tableName;
+            PreparedStatement stmt = conn.prepareStatement(query);
+            ResultSet resultSet = stmt.executeQuery();
+            if (resultSet.next())
+                return resultSet.getInt(1) + 1;
+            return 0;
+        }
     }
 }

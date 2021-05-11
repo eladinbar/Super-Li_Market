@@ -99,4 +99,8 @@ public abstract class DalController<T extends DalObject<T>>{
     public boolean select(List<T> dalObjects) throws SQLException {
          return false;
     }
+
+    public int getOrderCounter() throws SQLException {
+        return 0;
+    }
 }

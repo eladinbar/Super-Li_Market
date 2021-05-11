@@ -199,6 +199,8 @@ public class Service implements IService {
         ResponseT<Order> scheduledOrder = orderService.createPernamentOrder(day, s.getSc().getId(), supplierService.getSp());
         if (scheduledOrder.errorOccurred())
             return new ResponseT<>(cheap.getErrorMessage());
+        if (scheduledOrder.value == null)
+            return new ResponseT<Order>("Something went wrong.");
         Response addItemResp = orderService.addProductToOrder(scheduledOrder.value.getId(), itemID, amount);
         if (addItemResp.errorOccurred())
             return new ResponseT<>(addItemResp.getErrorMessage());

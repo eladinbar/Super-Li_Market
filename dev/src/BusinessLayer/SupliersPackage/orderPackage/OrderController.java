@@ -3,6 +3,7 @@ package BusinessLayer.SupliersPackage.orderPackage;
 import BusinessLayer.SupliersPackage.supplierPackage.Supplier;
 import DataAccessLayer.DalObjects.SupplierObjects.OrderDal;
 
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.*;
 
@@ -18,7 +19,11 @@ public class OrderController {
             pernamentOrders.put(i, new ArrayList<>());
         }
         orders = new HashMap<>();
-        orderCounter = 0;
+        try {
+            orderCounter = new OrderDal(0).getOrderCounter();
+        } catch(SQLException ex) {
+            orderCounter = 0;
+        }
     }
 
     public void removeSupplier(String id) {

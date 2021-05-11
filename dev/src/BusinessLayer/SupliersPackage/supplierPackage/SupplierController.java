@@ -29,12 +29,12 @@ public class SupplierController {
     }
 
     //method that add new supplier to the system
-    public Supplier addSupplier(String firstName, String lastName, String email, String id, String phone, int companyNumber, boolean isPernamentDays, boolean selfDelivery, String payment,String address) throws Exception {
+    public Supplier addSupplier(String firstName, String lastName, String email, String id, String phone, int companyNumber, boolean isPermanentDays, boolean selfDelivery, String payment,String address) throws Exception {
         if (suppliers.containsKey(id)) //case that the supplier already exists
             throw new Exception("supplier with the id : " + id + " already exists");
         emailCheck(email);
         phoneCheck(phone);
-        Supplier newSup = new Supplier(firstName, lastName, email, id, phone, companyNumber, isPernamentDays, selfDelivery, payment,address);
+        Supplier newSup = new Supplier(firstName, lastName, email, id, phone, companyNumber, isPermanentDays, selfDelivery, payment,address);
         suppliers.put(id, newSup);
         if (persons.containsKey(id))
             persons.remove(id);
@@ -190,6 +190,8 @@ public class SupplierController {
     }
 
     public Supplier getCheapestSupplier(int productID, int amount, boolean scheduled) throws Exception {
+        loadAllSuppliers(); //Ensure all suppliers are loaded into the system
+
         double cheapestPrice = Double.POSITIVE_INFINITY;
         Supplier cheapestSup = null;
         for (Supplier sup : suppliers.values()) {
@@ -229,6 +231,19 @@ public class SupplierController {
         for (Supplier s : suppliers.values()) {
             if (s.getSc().getEmail().equals(email))
                 throw new Exception("email already exists in the system");
+        }
+    }
+
+    private void loadAllSuppliers() throws Exception {
+        List<SupplierCardDal> supplierCardsDal = new ArrayList<>();
+        SupplierCardDal supplierCardDal = new SupplierCardDal();
+        supplierCardDal.loadAllSuppliers(supplierCardsDal);
+
+        for (SupplierCardDal supplierCard : supplierCardsDal) {
+            if (!suppliers.containsKey(supplierCard.getSupplierId()+"")) {
+                Supplier savedSupplier = new Supplier(supplierCard.getSupplierId() + "");
+                suppliers.put(supplierCard.getSupplierId() + "", savedSupplier);
+            }
         }
     }
 

@@ -23,6 +23,10 @@ public class SupplierCardDal extends DalObject<SupplierCardDal> {
     private Payment payment;
     private String address;
 
+    public SupplierCardDal() throws SQLException {
+        super(SupplierCardDalController.getInstance());
+    }
+
     public SupplierCardDal(int supplierId, int companyNumber, boolean isPermanentDays, boolean selfDelivery, Payment payment, String address) throws SQLException {
         super(SupplierCardDalController.getInstance());
         this.supplierId = supplierId;
