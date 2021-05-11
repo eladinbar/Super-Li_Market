@@ -4,8 +4,8 @@ import DataAccessLayer.DalControllers.SupplierControllers.*;
 
 public class Main {
     public static void main(String[] args) {
-//        PresentationController c = new PresentationController();
-//        c.run();
+        PresentationController c = new PresentationController();
+        c.run();
 
 //        AgreementItemsDalController agreementItemsController = AgreementItemsDalController.getInstance();
 //        OrderDalController orderDalController = OrderDalController.getInstance();
