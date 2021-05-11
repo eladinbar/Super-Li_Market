@@ -22,6 +22,12 @@ public class ItemSale extends Sale {
     @Override
     public void setName(String name) {
         dalCopyItemSale.setName(name);
+        this.name = name;
+    }
+
+    @Override
+    public void setAndSaveName(String name) {
+        dalCopyItemSale.setName(name);
         try {
             dalCopyItemSale.update();
             this.name = name;
@@ -33,6 +39,12 @@ public class ItemSale extends Sale {
 
     @Override
     public void setDiscount(double discount) {
+        dalCopyItemSale.setDiscount(discount);
+        this.discount = discount;
+    }
+
+    @Override
+    public void setAndSaveDiscount(double discount) {
         dalCopyItemSale.setDiscount(discount);
         try {
             dalCopyItemSale.update();
@@ -46,6 +58,12 @@ public class ItemSale extends Sale {
     @Override
     public void setStartDate(LocalDate startDate) {
         dalCopyItemSale.setStartSaleDate(startDate.toString());
+        this.saleDates.setFirst(startDate);
+    }
+
+    @Override
+    public void setAndSaveStartDate(LocalDate startDate) {
+        dalCopyItemSale.setStartSaleDate(startDate.toString());
         try {
             dalCopyItemSale.update();
             this.saleDates.setFirst(startDate);
@@ -57,6 +75,12 @@ public class ItemSale extends Sale {
 
     @Override
     public void setEndDate(LocalDate endDate) {
+        dalCopyItemSale.setEndSaleDate(endDate.toString());
+        this.saleDates.setSecond(endDate);
+    }
+
+    @Override
+    public void setAndSaveEndDate(LocalDate endDate) {
         dalCopyItemSale.setEndSaleDate(endDate.toString());
         try {
             dalCopyItemSale.update();
@@ -72,6 +96,11 @@ public class ItemSale extends Sale {
     }
 
     public void setItem(Item item) {
+        dalCopyItemSale.setItemID(item.getID());
+        this.item = item;
+    }
+
+    public void setAndSaveItem(Item item) {
         dalCopyItemSale.setItemID(item.getID());
         try {
             dalCopyItemSale.update();

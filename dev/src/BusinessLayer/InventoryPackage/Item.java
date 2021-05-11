@@ -53,6 +53,11 @@ public class Item {
 
     public void setName(String name) {
         dalCopyItem.setName(name);
+        this.name = name;
+    }
+
+    public void setAndSaveName(String name) {
+        dalCopyItem.setName(name);
         try {
             dalCopyItem.update();
             this.name = name;
@@ -68,6 +73,11 @@ public class Item {
 
     public void setCostPrice(double costPrice) {
         dalCopyItem.setCostPrice(costPrice);
+        this.costPrice = costPrice;
+    }
+
+    public void setAndSaveCostPrice(double costPrice) {
+        dalCopyItem.setCostPrice(costPrice);
         try {
             dalCopyItem.update();
             this.costPrice = costPrice;
@@ -82,6 +92,11 @@ public class Item {
     }
 
     public void setSellingPrice(double sellingPrice) {
+        dalCopyItem.setSellingPrice(sellingPrice);
+        this.sellingPrice = sellingPrice;
+    }
+
+    public void setAndSaveSellingPrice(double sellingPrice) {
         dalCopyItem.setSellingPrice(sellingPrice);
         try {
             dalCopyItem.update();
@@ -122,6 +137,11 @@ public class Item {
 
     public void setShelfQuantity(int shelfQuantity) {
         dalCopyItem.setShelfQuantity(shelfQuantity);
+        this.quantity.setShelfQuantity(shelfQuantity);
+    }
+
+    public void setAndSaveShelfQuantity(int shelfQuantity) {
+        dalCopyItem.setShelfQuantity(shelfQuantity);
         try {
             dalCopyItem.update();
             this.quantity.setShelfQuantity(shelfQuantity);
@@ -132,6 +152,11 @@ public class Item {
     }
 
     public void setStorageQuantity(int storageQuantity) {
+        dalCopyItem.setStorageQuantity(storageQuantity);
+        this.quantity.setStorageQuantity(storageQuantity);
+    }
+
+    public void setAndSaveStorageQuantity(int storageQuantity) {
         dalCopyItem.setStorageQuantity(storageQuantity);
         try {
             dalCopyItem.update();
@@ -152,6 +177,11 @@ public class Item {
 
     public void setShelfLocation(String shelfLocation) {
         dalCopyItem.setShelfLocation(shelfLocation);
+        this.location.setShelfLocation(shelfLocation);
+    }
+
+    public void setAndSaveShelfLocation(String shelfLocation) {
+        dalCopyItem.setShelfLocation(shelfLocation);
         try {
             dalCopyItem.update();
             this.location.setShelfLocation(shelfLocation);
@@ -162,6 +192,11 @@ public class Item {
     }
 
     public void setStorageLocation(String storageLocation) {
+        dalCopyItem.setStorageLocation(storageLocation);
+        this.location.setStorageLocation(storageLocation);
+    }
+
+    public void setAndSaveStorageLocation(String storageLocation) {
         dalCopyItem.setStorageLocation(storageLocation);
         try {
             dalCopyItem.update();

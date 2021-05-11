@@ -33,9 +33,13 @@ public class Category {
     }
 
     public void setName(String name) {
-        dalCopyCategory.setName(name); //Primary Key fields auto-update and auto-check
+        dalCopyCategory.setName(name);
         this.name = name;
+    }
 
+    public void setAndSaveName(String name) {
+        dalCopyCategory.setAndSaveName(name);
+        this.name = name;
     }
 
     public List<Item> getItems() {
@@ -55,6 +59,10 @@ public class Category {
     }
 
     public void setParentCategory(Category parentCategory) {
+        this.parentCategory = parentCategory;
+    }
+
+    public void setAndSaveParentCategory(Category parentCategory) {
         dalCopyCategory.setParentName(parentCategory.name);
         try {
             dalCopyCategory.update();
