@@ -296,9 +296,9 @@ public class InventoryController {
 
     private List<Category> getBusinessSubCategories(String parentName) {
         List<Category> subCategories = new ArrayList<>();
-        for (Category parentCategory : categories) {
-            if (parentCategory.getName().equals(parentName))
-                subCategories.add(parentCategory);
+        for (Category category : categories) {
+            if (category.getParentCategory().getName().equals(parentName))
+                subCategories.add(category);
         }
         return subCategories;
     }
