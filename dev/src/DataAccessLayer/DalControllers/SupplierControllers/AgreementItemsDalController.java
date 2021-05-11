@@ -30,7 +30,6 @@ public class AgreementItemsDalController extends DalController<agreementItemsDal
 
     @Override
     public boolean createTable() throws SQLException {
-        System.out.println("Initiating create '" + tableName + "' table.");
         try (Connection conn = DriverManager.getConnection(connectionString)) {
             String command = "CREATE TABLE IF NOT EXISTS " + tableName + " (" +
                     agreementItemsDal.productIdColumnName + " INTEGER NOT NULL," +
@@ -42,9 +41,7 @@ public class AgreementItemsDalController extends DalController<agreementItemsDal
                     ");";
 
             PreparedStatement stmt = conn.prepareStatement(command);
-            System.out.println("Creating '" + tableName + "' table.");
             stmt.executeUpdate();
-            System.out.println("Table '" + tableName + "' created.");
         } catch (SQLException ex) {
             throw new SQLException(ex.getMessage());
         }
@@ -53,7 +50,6 @@ public class AgreementItemsDalController extends DalController<agreementItemsDal
 
     @Override
     public boolean insert(agreementItemsDal agreementItem) throws SQLException {
-        System.out.println("Initiating " + tableName + " insert.");
         try (Connection conn = DriverManager.getConnection(connectionString)) {
             String query = "INSERT INTO " + tableName + " VALUES (?,?,?,?)";
             PreparedStatement stmt = conn.prepareStatement(query);
@@ -61,7 +57,6 @@ public class AgreementItemsDalController extends DalController<agreementItemsDal
             stmt.setInt(2, agreementItem.getSupplierId());
             stmt.setInt(3, agreementItem.getProductCompId());
             stmt.setDouble(4, agreementItem.getPrice());
-            System.out.println("Executing " + tableName + " insert.");
             stmt.executeUpdate();
         } catch (SQLException ex) {
             throw new SQLException(ex.getMessage());

@@ -24,7 +24,6 @@ public class SupplierContactMembersDalController extends DalController<SupplierC
 
     @Override
     public boolean createTable() throws SQLException {
-        System.out.println("Initiating create '" + tableName + "' table.");
         try (Connection conn = DriverManager.getConnection(connectionString)) {
             String command = "CREATE TABLE IF NOT EXISTS " + tableName + " (" +
                     SupplierContactMembersDal.supplierIdColumnName + " INTEGER NOT NULL," +
@@ -36,9 +35,7 @@ public class SupplierContactMembersDalController extends DalController<SupplierC
                     ");";
 
             PreparedStatement stmt = conn.prepareStatement(command);
-            System.out.println("Creating '" + tableName + "' table.");
             stmt.executeUpdate();
-            System.out.println("Table '" + tableName + "' created.");
         } catch (SQLException ex) {
             throw new SQLException(ex.getMessage());
         }
@@ -47,13 +44,11 @@ public class SupplierContactMembersDalController extends DalController<SupplierC
 
     @Override
     public boolean insert(SupplierContactMembersDal person) throws SQLException {
-        System.out.println("Initiating " + tableName + " insert.");
         try (Connection conn = DriverManager.getConnection(connectionString)) {
             String query = "INSERT INTO " + tableName + " VALUES (?,?)";
             PreparedStatement stmt = conn.prepareStatement(query);
             stmt.setInt(1, person.getSupplierId());
             stmt.setInt(2, person.getPersonId());
-            System.out.println("Executing " + tableName + " insert.");
             stmt.executeUpdate();
         } catch (SQLException ex) {
             throw new SQLException(ex.getMessage());

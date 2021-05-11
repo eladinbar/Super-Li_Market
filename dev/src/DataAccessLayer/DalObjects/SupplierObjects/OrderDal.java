@@ -2,7 +2,6 @@ package DataAccessLayer.DalObjects.SupplierObjects;
 
 import DataAccessLayer.DalControllers.SupplierControllers.OrderDalController;
 import DataAccessLayer.DalControllers.SupplierControllers.ProductsInOrderDalController;
-import DataAccessLayer.DalControllers.SupplierControllers.SupplierContactMembersDalController;
 import DataAccessLayer.DalObjects.DalObject;
 
 import java.sql.SQLException;

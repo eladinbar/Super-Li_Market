@@ -29,7 +29,6 @@ public class DefectEntryDalController extends DalController<DefectEntry> {
 
     @Override
     public boolean createTable() throws SQLException {
-        System.out.println("Initiating create '" + tableName + "' table.");
         try (Connection conn = DriverManager.getConnection(connectionString)) {
             String command = "CREATE TABLE IF NOT EXISTS " + tableName + " (" +
                     DefectEntry.entryDateColumnName + " TEXT NOT NULL," +
@@ -42,9 +41,7 @@ public class DefectEntryDalController extends DalController<DefectEntry> {
                     "REFERENCES " + Item.itemIdColumnName + " (" + ITEM_TABLE_NAME + ") ON DELETE NO ACTION" +
                     ");";
             PreparedStatement stmt = conn.prepareStatement(command);
-            System.out.println("Creating '" + tableName + "' table.");
             stmt.executeUpdate();
-            System.out.println("Table '" + tableName + "' created.");
         } catch (SQLException ex) {
             throw new SQLException(ex.getMessage());
         }
@@ -53,7 +50,6 @@ public class DefectEntryDalController extends DalController<DefectEntry> {
 
     @Override
     public boolean insert(DefectEntry defectEntry) throws SQLException {
-        System.out.println("Initiating " + tableName + " insert.");
         try (Connection conn = DriverManager.getConnection(connectionString)) {
             String command = "INSERT OR IGNORE INTO " + tableName + " VALUES (?,?, ?, ?, ?)";
             PreparedStatement stmt = conn.prepareStatement(command);
@@ -64,7 +60,6 @@ public class DefectEntryDalController extends DalController<DefectEntry> {
             stmt.setString(4, defectEntry.getLocation());
             stmt.setInt(5, defectEntry.getQuantity());
 
-            System.out.println("Executing " + tableName + " insert.");
             stmt.executeUpdate();
         } catch (SQLException ex) {
             throw new SQLException(ex.getMessage());

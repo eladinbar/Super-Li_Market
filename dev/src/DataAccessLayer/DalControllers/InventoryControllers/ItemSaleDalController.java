@@ -29,7 +29,6 @@ public class ItemSaleDalController extends DalController<ItemSale> {
 
     @Override
     public boolean createTable() throws SQLException {
-        System.out.println("Initiating create '" + tableName + "' table.");
         try (Connection conn = DriverManager.getConnection(connectionString)) {
             String command = "CREATE TABLE IF NOT EXISTS " + tableName + " (" +
                     ItemSale.itemSaleNameColumnName + " TEXT NOT NULL," +
@@ -42,9 +41,7 @@ public class ItemSaleDalController extends DalController<ItemSale> {
                     "REFERENCES " + Item.itemIdColumnName + " (" + ITEM_TABLE_NAME + ") ON DELETE CASCADE" +
                     ");";
             PreparedStatement stmt = conn.prepareStatement(command);
-            System.out.println("Creating '" + tableName + "' table.");
             stmt.executeUpdate();
-            System.out.println("Table '" + tableName + "' created.");
         } catch (SQLException ex) {
             throw new SQLException(ex.getMessage());
         }
@@ -53,7 +50,6 @@ public class ItemSaleDalController extends DalController<ItemSale> {
 
     @Override
     public boolean insert(ItemSale itemSale) throws SQLException {
-        System.out.println("Initiating " + tableName + " insert.");
         try (Connection conn = DriverManager.getConnection(connectionString)) {
             String command = "INSERT OR IGNORE INTO " + tableName + " VALUES (?,?, ?, ?, ?)";
             PreparedStatement stmt = conn.prepareStatement(command);
@@ -63,7 +59,6 @@ public class ItemSaleDalController extends DalController<ItemSale> {
             stmt.setString(3, itemSale.getStartSaleDate());
             stmt.setString(4, itemSale.getEndSaleDate());
             stmt.setInt(5, itemSale.getItemID());
-            System.out.println("Executing " + tableName + " insert.");
             stmt.executeUpdate();
         } catch (SQLException ex) {
             throw new SQLException(ex.getMessage());

@@ -26,7 +26,6 @@ public class PersonCardDalController extends DalController<PersonCardDal> {
 
     @Override
     public boolean createTable() throws SQLException {
-        System.out.println("Initiating create '" + tableName + "' table.");
         try (Connection conn = DriverManager.getConnection(connectionString)) {
             String command = "CREATE TABLE IF NOT EXISTS " + tableName + " (" +
                     PersonCardDal.idColumnName + " INTEGER NOT NULL," +
@@ -38,9 +37,7 @@ public class PersonCardDalController extends DalController<PersonCardDal> {
                     ");";
 
             PreparedStatement stmt = conn.prepareStatement(command);
-            System.out.println("Creating '" + tableName + "' table.");
             stmt.executeUpdate();
-            System.out.println("Table '" + tableName + "' created.");
         } catch (SQLException ex) {
             throw new SQLException(ex.getMessage());
         }
@@ -49,7 +46,6 @@ public class PersonCardDalController extends DalController<PersonCardDal> {
 
     @Override
     public boolean insert(PersonCardDal personCard) throws SQLException {
-        System.out.println("Initiating " + tableName + " insert.");
         try (Connection conn = DriverManager.getConnection(connectionString)) {
             String query = "INSERT INTO " + tableName + " VALUES (?,?,?,?,?)";
             PreparedStatement stmt = conn.prepareStatement(query);
@@ -58,7 +54,6 @@ public class PersonCardDalController extends DalController<PersonCardDal> {
             stmt.setString(3, personCard.getLastName());
             stmt.setString(4, personCard.getEmail());
             stmt.setString(5, personCard.getPhone());
-            System.out.println("Executing " + tableName + " insert.");
             stmt.executeUpdate();
         } catch (SQLException ex) {
             throw new SQLException(ex.getMessage());

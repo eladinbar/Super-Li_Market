@@ -27,7 +27,6 @@ public class CategoryDalController extends DalController<Category> {
 
     @Override
     public boolean createTable() throws SQLException {
-        System.out.println("Initiating create '" + tableName + "' table.");
         try (Connection conn = DriverManager.getConnection(connectionString)) {
             String command = "CREATE TABLE IF NOT EXISTS " + tableName + " (" +
                     Category.categoryNameColumnName + " TEXT NOT NULL," +
@@ -35,9 +34,7 @@ public class CategoryDalController extends DalController<Category> {
                     "PRIMARY KEY (" + Category.categoryNameColumnName + ")" +
                     ");";
             PreparedStatement stmt = conn.prepareStatement(command);
-            System.out.println("Creating '" + tableName + "' table.");
             stmt.executeUpdate();
-            System.out.println("Table '" + tableName + "' created.");
         } catch (SQLException ex) {
             throw new SQLException(ex.getMessage());
         }
@@ -46,13 +43,11 @@ public class CategoryDalController extends DalController<Category> {
 
     @Override
     public boolean insert(Category category) throws SQLException {
-        System.out.println("Initiating " + tableName + " insert.");
         try (Connection conn = DriverManager.getConnection(connectionString)) {
             String command = "INSERT OR IGNORE INTO " + tableName + " VALUES (?,?)";
             PreparedStatement stmt = conn.prepareStatement(command);
             stmt.setString(1, category.getName());
             stmt.setString(2, category.getParentName());
-            System.out.println("Executing " + tableName + " insert.");
             stmt.executeUpdate();
         } catch (SQLException ex) {
             throw new SQLException(ex.getMessage());

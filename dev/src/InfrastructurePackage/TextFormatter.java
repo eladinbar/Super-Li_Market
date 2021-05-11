@@ -10,25 +10,24 @@ import java.util.Calendar;
 public class TextFormatter {
     private int paddingSize = 20;
 
-
     public String formatItemMenuColumns() {
         Field[] itemFields = Item.class.getDeclaredFields();
-        StringBuilder outPut = new StringBuilder();
+        StringBuilder output = new StringBuilder();
         for (int i = 0; i < itemFields.length - 1; i++) {
             String currentField = itemFields[i].getName();
-            outPut.append(centerString(currentField, 20)).append("|");
+            output.append(centerString(currentField, 20)).append("|");
         }
-        return outPut + centerString(itemFields[itemFields.length - 1].getName(), paddingSize);
+        return output + centerString(itemFields[itemFields.length - 1].getName(), paddingSize);
     }
 
     public String formatProductMenuColumns(){
         Field[] productFields = Product.class.getDeclaredFields();
-        StringBuilder outPut = new StringBuilder();
+        StringBuilder output = new StringBuilder();
         for (int i = 0; i < productFields.length - 1; i++) {
             String currentField = productFields[i].getName();
-            outPut.append(centerString(currentField, 20)).append("|");
+            output.append(centerString(currentField, 20)).append("|");
         }
-        return outPut + centerString(productFields[productFields.length - 1].getName(), paddingSize);
+        return output + centerString(productFields[productFields.length - 1].getName(), paddingSize);
     }
 
     public String defectsMenuFormat(){
@@ -63,8 +62,6 @@ public class TextFormatter {
                 "Count: " + discount.getItemCount() + "\n"+
                  "Applied On:");
     }
-
-
 
     public String centerString(String s, int width) {
         return String.format("%-" + width + "s", String.format("%" + (s.length() + (width - s.length()) / 2) + "s", s));

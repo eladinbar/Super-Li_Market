@@ -22,23 +22,6 @@ public class createObjects {
     public void createObjectsForTests() {
         int id = 333333333;
         int phone = 544444444;
-//        for (int i = 0; i < 10; i++) {
-//            pc.createProduct("name" + i, "osem");
-//            products.add(i);
-//        }
-//        for (int i = 10; i < 20; i++) {
-//            pc.createProduct("name" + i, "elit");
-//            products.add(i);
-//        }for (int i = 10; i < 30; i++) {
-//            pc.createProduct("name" + i, "tnuva");
-//            products.add(i);
-//        }for (int i = 30; i < 40; i++) {
-//            pc.createProduct("name" + i, "gad");
-//            products.add(i);
-//        }for (int i = 40; i < 50; i++) {
-//            pc.createProduct("name" + i, "knor");
-//            products.add(i);
-//        }
         for (int i = 0; i < 10; i++, phone++, id++) {
             service.addSupplier("Supplier", "LastName", "email" + i + "@gmail.com", "" + id, "0" + phone, 1, true, true, "cash", "adress");
             suppliers.add(id);
@@ -186,5 +169,4 @@ public class createObjects {
         service.addItemToAgreement("333333334", 847, 14, 100);
         service.addItemToAgreement("333333334", 845, 15, 100);
     }
-
 }

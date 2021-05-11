@@ -30,7 +30,6 @@ public class ItemDalController extends DalController<Item> {
 
     @Override
     public boolean createTable() throws SQLException {
-        System.out.println("Initiating create '" + tableName + "' table.");
         try (Connection conn = DriverManager.getConnection(connectionString)) {
             String command = "CREATE TABLE IF NOT EXISTS " + tableName + " (" +
                     Item.itemIdColumnName + " INTEGER NOT NULL," +
@@ -49,9 +48,7 @@ public class ItemDalController extends DalController<Item> {
                     "REFERENCES " + Category.categoryNameColumnName + " (" + CATEGORY_TABLE_NAME + ") ON DELETE CASCADE" +
                     ");";
             PreparedStatement stmt = conn.prepareStatement(command);
-            System.out.println("Creating '" + tableName + "' table.");
             stmt.executeUpdate();
-            System.out.println("Table '" + tableName + "' created.");
         } catch (SQLException ex) {
             throw new SQLException(ex.getMessage());
         }
@@ -60,7 +57,6 @@ public class ItemDalController extends DalController<Item> {
 
     @Override
     public boolean insert(Item item) throws SQLException {
-        System.out.println("Initiating " + tableName + " insert.");
         try (Connection conn = DriverManager.getConnection(connectionString)) {
             String command = "INSERT OR IGNORE INTO " + tableName + " VALUES (?,?, ?, ?, ?, ?,?, ?, ?, ?, ?)";
             PreparedStatement stmt = conn.prepareStatement(command);
@@ -75,7 +71,6 @@ public class ItemDalController extends DalController<Item> {
             stmt.setString(9, item.getShelfLocation());
             stmt.setString(10, item.getStorageLocation());
             stmt.setString(11, item.getCategoryName());
-            System.out.println("Executing " + tableName + " insert.");
             stmt.executeUpdate();
         } catch (SQLException ex) {
             throw new SQLException(ex.getMessage());

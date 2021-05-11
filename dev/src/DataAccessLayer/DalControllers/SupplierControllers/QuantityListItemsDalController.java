@@ -30,7 +30,6 @@ public class QuantityListItemsDalController extends DalController<QuantityListIt
 
     @Override
     public boolean createTable() throws SQLException {
-        System.out.println("Initiating create '" + tableName + "' table.");
         try (Connection conn = DriverManager.getConnection(connectionString)) {
             String command = "CREATE TABLE IF NOT EXISTS " + tableName + " (" +
                     QuantityListItemsDal.productIdColumnName + " INTEGER NOT NULL," +
@@ -43,9 +42,7 @@ public class QuantityListItemsDalController extends DalController<QuantityListIt
                     ");";
 
             PreparedStatement stmt = conn.prepareStatement(command);
-            System.out.println("Creating '" + tableName + "' table.");
             stmt.executeUpdate();
-            System.out.println("Table '" + tableName + "' created.");
         } catch (SQLException ex) {
             throw new SQLException(ex.getMessage());
         }
@@ -54,7 +51,6 @@ public class QuantityListItemsDalController extends DalController<QuantityListIt
 
     @Override
     public boolean insert(QuantityListItemsDal quantityListItem) throws SQLException {
-        System.out.println("Initiating " + tableName + " insert.");
         try (Connection conn = DriverManager.getConnection(connectionString)) {
             String query = "INSERT INTO " + tableName + " VALUES (?,?,?,?)";
             PreparedStatement stmt = conn.prepareStatement(query);
@@ -62,7 +58,6 @@ public class QuantityListItemsDalController extends DalController<QuantityListIt
             stmt.setString(2, quantityListItem.getSupplierId());
             stmt.setInt(3, quantityListItem.getAmount());
             stmt.setDouble(4, quantityListItem.getDiscount());
-            System.out.println("Executing " + tableName + " insert.");
             stmt.executeUpdate();
         } catch (SQLException ex) {
             throw new SQLException(ex.getMessage());

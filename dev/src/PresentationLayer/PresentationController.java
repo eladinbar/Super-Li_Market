@@ -8,6 +8,7 @@ import SerciveLayer.Service;
 import SerciveLayer.SimpleObjects.*;
 import SerciveLayer.objects.Order;
 
+import java.io.File;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
@@ -386,7 +387,7 @@ public class PresentationController implements Runnable {
     }
 
     private void setupSystem() {
-        String toSetup = menu.instructAndReceive("would you like to load the system with data? [y/n]\n 'no' will start up a clean system ");
+        String toSetup = menu.instructAndReceive("Would you like to load the system with data? [y/n]\n 'no' will start up a clean system ");
         toSetup = toSetup.toLowerCase();
         if (toSetup.compareTo("y") != 0) {
             System.out.println("Starting clean system");
@@ -406,7 +407,6 @@ public class PresentationController implements Runnable {
             case "q" -> {terminate = true; return;}
             default -> menu.errorPrompt("invalid choice - " + choice);
         }
-
     }
 
     private void orderMainMenu() {

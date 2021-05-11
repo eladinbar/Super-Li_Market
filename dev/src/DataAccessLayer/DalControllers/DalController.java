@@ -1,7 +1,6 @@
 package DataAccessLayer.DalControllers;
 
 import DataAccessLayer.DalObjects.DalObject;
-import DataAccessLayer.DalObjects.InventoryObjects.Category;
 
 import java.sql.SQLException;
 import java.util.List;
