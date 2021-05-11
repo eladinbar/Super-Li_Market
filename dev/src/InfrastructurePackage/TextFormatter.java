@@ -13,37 +13,38 @@ public class TextFormatter {
 
     public String formatItemMenuColumns() {
         Field[] itemFields = Item.class.getDeclaredFields();
-        String outPut = "";
+        StringBuilder outPut = new StringBuilder();
         for (int i = 0; i < itemFields.length - 1; i++) {
             String currentField = itemFields[i].getName();
-            outPut = outPut + centerString(currentField, 20) + "|";
+            outPut.append(centerString(currentField, 20)).append("|");
         }
         return outPut + centerString(itemFields[itemFields.length - 1].getName(), paddingSize);
     }
 
     public String formatProductMenuColumns(){
         Field[] productFields = Product.class.getDeclaredFields();
-        String outPut = "";
+        StringBuilder outPut = new StringBuilder();
         for (int i = 0; i < productFields.length - 1; i++) {
             String currentField = productFields[i].getName();
-            outPut = outPut + centerString(currentField, 20) + "|";
+            outPut.append(centerString(currentField, 20)).append("|");
         }
         return outPut + centerString(productFields[productFields.length - 1].getName(), paddingSize);
     }
 
     public String defectsMenuFormat(){
         Field[] defectFields = DefectEntry.class.getDeclaredFields();
-        String output = "";
+        StringBuilder output = new StringBuilder();
         for (int i = 0; i < defectFields.length - 1; i++) {
             String currentField = defectFields[i].getName();
-            output = output + centerString(currentField, 20) + "|";
+            output.append(centerString(currentField, 20)).append("|");
         }
         return output + centerString(defectFields[defectFields.length - 1].getName(), paddingSize);
     }
 
     public void categoryMenuFormat(Category category) {
         String subCategories = category.getSubCategories().stream().reduce("", (acc, curr) -> acc + curr + ", ");
-        subCategories = subCategories.substring(0,subCategories.length() - 2);
+        if(subCategories.length()> 2)
+            subCategories = subCategories.substring(0,subCategories.length() - 2);
         System.out.println("Category Name: " + category.getName() + "\n" +
                 "Parent Category: " + category.getParentCategory() + "\n" +
                 "Sub-categories: " + subCategories +
