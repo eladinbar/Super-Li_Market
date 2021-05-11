@@ -26,7 +26,7 @@ class SupplierCardDalControllerTest {
         SupplierCardDal supplierCardDal = null;
         try {
             supplierCardDal = new SupplierCardDal(333333333, 1,
-                    true,true, Payment.bankTrasfer);
+                    true,true, Payment.bankTrasfer,"Address");
         } catch (SQLException throwables) {
             fail("can't create suppler person card" + throwables.getMessage());
         }

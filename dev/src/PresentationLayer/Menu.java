@@ -274,8 +274,10 @@ public class Menu {
 
     public <T extends SimpleEntity> void printEntity(Sale<T> sale) {
         tf.saleMenuFormat(sale);
-        if (sale.getAppliesOn().getClass() == Item.class)
+        if (sale.getAppliesOn().getClass() == Item.class){
+            itemHeader();
             printEntity((Item) sale.getAppliesOn());
+        }
         else if (sale.getAppliesOn().getClass() == Category.class)
             printEntity((Category) sale.getAppliesOn());
     }

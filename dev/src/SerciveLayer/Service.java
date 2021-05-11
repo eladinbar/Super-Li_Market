@@ -173,6 +173,7 @@ public class Service implements IService {
         ResponseT<Map<String, Map<Integer, Integer>>> r = supplierService.createShortageOrders(itemInShort.value.getFirst()); //yes always returns a value;
         ResponseT<List<Order>> orderR;
         try {
+            assert r.value != null;
             orderR = orderService.createShortageOrders(r.value, itemInShort.value.getSecond(), date, supplierService.getSp());
         } catch (Exception e)
         {
