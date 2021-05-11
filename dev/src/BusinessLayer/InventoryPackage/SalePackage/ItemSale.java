@@ -27,14 +27,8 @@ public class ItemSale extends Sale {
 
     @Override
     public void setAndSaveName(String name) {
-        dalCopyItemSale.setName(name);
-        try {
-            dalCopyItemSale.update();
-            this.name = name;
-        } catch (SQLException ex) {
-            dalCopyItemSale.setName(this.name);
-            throw new RuntimeException("Something went wrong.");
-        }
+        dalCopyItemSale.setAndSaveName(name);
+        this.name = name;
     }
 
     @Override

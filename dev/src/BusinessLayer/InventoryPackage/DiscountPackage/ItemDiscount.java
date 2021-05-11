@@ -44,14 +44,8 @@ public class ItemDiscount extends Discount{
     }
 
     public void setAndSaveItem(Item item) {
-        dalCopyItemDiscount.setItemID(item.getID());
-        try {
-            dalCopyItemDiscount.update();
-            this.item = item;
-        } catch (SQLException ex) {
-            dalCopyItemDiscount.setItemID(this.item.getID());
-            throw new RuntimeException("Something went wrong.");
-        }
+        dalCopyItemDiscount.setAndSaveItemID(item.getID());
+        this.item = item;
     }
 
     public void save() {

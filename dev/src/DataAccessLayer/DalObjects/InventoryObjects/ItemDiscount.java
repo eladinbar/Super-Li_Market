@@ -74,6 +74,10 @@ public class ItemDiscount extends DalObject<ItemDiscount> {
     }
 
     public void setDiscountDate(String discountDate) {
+        this.discountDate = discountDate;
+    }
+
+    public void setAndSaveDiscountDate(String discountDate) {
         String oldDate = this.discountDate;
         this.discountDate = discountDate;
         try {
@@ -85,6 +89,10 @@ public class ItemDiscount extends DalObject<ItemDiscount> {
     }
 
     public void setSupplierID(String supplierID) {
+        this.supplierID = supplierID;
+    }
+
+    public void setAndSaveSupplierID(String supplierID) {
         String oldSupplierId = this.supplierID;
         this.supplierID = supplierID;
         try {
@@ -96,6 +104,10 @@ public class ItemDiscount extends DalObject<ItemDiscount> {
     }
 
     public void setItemID(int itemID) {
+        this.itemID = itemID;
+    }
+
+    public void setAndSaveItemID(int itemID) {
         int oldId = this.itemID;
         this.itemID = itemID;
         try {

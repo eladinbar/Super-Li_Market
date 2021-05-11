@@ -1,6 +1,5 @@
 package DataAccessLayer.DalObjects.InventoryObjects;
 
-import DataAccessLayer.DalControllers.InventoryControllers.DefectEntryDalController;
 import DataAccessLayer.DalControllers.InventoryControllers.ItemDalController;
 import DataAccessLayer.DalObjects.DalObject;
 
@@ -146,6 +145,10 @@ public class Item extends DalObject<Item> {
     }
 
     public void setItemID(int itemID) {
+        this.itemID = itemID;
+    }
+
+    public void setAndSaveItemID(int itemID) {
         int oldId = this.itemID;
         this.itemID = itemID;
         try {
