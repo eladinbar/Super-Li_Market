@@ -129,16 +129,18 @@ public class CategoryDalController extends DalController<Category> {
 
     @Override
     public boolean select(Category category, List<Category> categories) throws SQLException {
-        boolean isDesired = false;
-        Category savedCategory = new Category();
+        boolean hasItem = false;
+        Category savedCategory;
         try (Connection conn = DriverManager.getConnection(connectionString)) {
             String query = "SELECT * FROM " + tableName;
             PreparedStatement stmt = conn.prepareStatement(query);
             ResultSet resultSet = stmt.executeQuery();
             while (resultSet.next())
             {
-                isDesired = category.getName() == null ? resultSet.getString(2).equals(category.getParentName()) :
+                boolean isDesired = category.getName() == null ? resultSet.getString(2).equals(category.getParentName()) :
                 resultSet.getString(1).equals(category.getName());
+                if (!hasItem & isDesired)
+                    hasItem = true;
                 if (isDesired) {
                     savedCategory = new Category();
                     if (category.getName() == null)
@@ -151,7 +153,7 @@ public class CategoryDalController extends DalController<Category> {
         } catch (SQLException ex) {
             throw new SQLException(ex.getMessage());
         }
-        return isDesired;
+        return hasItem;
     }
 
     @Override
