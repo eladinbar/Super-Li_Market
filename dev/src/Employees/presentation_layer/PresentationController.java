@@ -543,9 +543,14 @@ public class PresentationController {
                         truckingManager = menuPrinter.createManagerAccountMenu ( );
                     }
                     Response response = facadeService.addEmployee ( truckingManager );
-                    if (response.errorOccured ( )) {
+                    while(response.errorOccured ( )) {
                         menuPrinter.print ( response.getErrorMessage ( ) );
-                        menuPrinter.print ( "Please add a trucking manager to the system later." );
+                        menuPrinter.print ( "For continuing you have to create trucking manager account" );
+                        truckingManager = menuPrinter.getEmployeeDetails ( "truckingManager" );
+                        while (truckingManager == null) {
+                            truckingManager = menuPrinter.createManagerAccountMenu ( );
+                        }
+                        response = facadeService.addEmployee ( truckingManager );
                     }
                 }
                 choice = menuPrinter.managerMenu ( );
