@@ -170,9 +170,13 @@ public class Service implements IService {
         ResponseT<Pair<Map<Integer, Integer>, Map<Integer, String>>> itemInShort = inventoryService.getItemsInShortAndQuantities();
         if (itemInShort.errorOccurred())
             return new ResponseT<>(itemInShort.getErrorMessage());
+        if(itemInShort.value==null) {
+            return new ResponseT<>("there is no item shortage");
+        }
         ResponseT<Map<String, Map<Integer, Integer>>> r = supplierService.createShortageOrders(itemInShort.value.getFirst()); //yes always returns a value;
         ResponseT<List<Order>> orderR;
         try {
+            assert r.value != null;
             orderR = orderService.createShortageOrders(r.value, itemInShort.value.getSecond(), date, supplierService.getSp());
         } catch (Exception e)
         {
@@ -221,6 +225,7 @@ public class Service implements IService {
 
     @Override
     public Response approveOrder(int orderID) {
+        getOrder(orderID);
         Response r = orderService.approveOrder(orderID);
         if(r.errorOccurred())
             return r;
@@ -245,6 +250,7 @@ public class Service implements IService {
 
     @Override
     public Response addProductToOrder(int orderId, int productID, int amount) {
+        getOrder(orderId);
         if(!itemExists(productID))
             return new ResponseT<>("no Item exist in the system: " + productID);
         return orderService.addProductToOrder(orderId, productID, amount);
@@ -252,6 +258,7 @@ public class Service implements IService {
 
     @Override
     public Response removeProductFromOrder(int orderID, int productID) {
+        getOrder(orderID);
         if(!itemExists(productID))
             return new ResponseT<>("no Item exist in the system: " + productID);
         return orderService.removeProductFromOrder(orderID, productID);
@@ -275,6 +282,7 @@ public class Service implements IService {
 
     @Override
     public ResponseT<Double> getOrderTotalPrice(int orderID) {
+        getOrder(orderID);
         return orderService.getOrderTotalPrice(orderID);
     }
 
@@ -296,6 +304,7 @@ public class Service implements IService {
 
     @Override
     public ResponseT<Double> getOrderTotalDiscount(int orderID) {
+        getOrder(orderID);
         return orderService.getOrderTotalDiscount(orderID);
     }
 

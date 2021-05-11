@@ -97,16 +97,6 @@ public class OrderService {
         return toReturn;
     }
 
-    public Response productExists(int productID) {
-        Response toReturn = new Response();
-        try {
-            oc.productExist(productID);
-        } catch (Exception e) {
-            toReturn = new Response(e.getMessage());
-        }
-        return toReturn;
-    }
-
     public Response removeProductFromOrder(int orderID, int productID) {
         Response toReturn = new Response();
         try {
@@ -138,7 +128,7 @@ public class OrderService {
         return toReturn;
     }
 
-    public ResponseT<List<Order>> createShortageOrders(Map<String, Map<Integer, Integer>> itemToOrder, Map<Integer, String> itemNames, LocalDate orderDate, SupplierController sp) throws Exception {//todo check again
+    public ResponseT<List<Order>> createShortageOrders(Map<String, Map<Integer, Integer>> itemToOrder, Map<Integer, String> itemNames, LocalDate orderDate, SupplierController sp) throws Exception {
         List<Order> orderList = new ArrayList<>();
         for (String suppID : itemToOrder.keySet()) {
             Map<Integer, Integer> tempMap = itemToOrder.get(suppID);

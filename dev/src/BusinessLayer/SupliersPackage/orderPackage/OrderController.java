@@ -1,10 +1,7 @@
 package BusinessLayer.SupliersPackage.orderPackage;
 
 import BusinessLayer.SupliersPackage.supplierPackage.Supplier;
-import BusinessLayer.SupliersPackage.supplierPackage.SupplierCard;
 import DataAccessLayer.DalObjects.SupplierObjects.OrderDal;
-import DataAccessLayer.DalObjects.SupplierObjects.PersonCardDal;
-import DataAccessLayer.DalObjects.SupplierObjects.SupplierCardDal;
 
 import java.time.LocalDate;
 import java.util.*;
@@ -13,8 +10,6 @@ public class OrderController {
     private final int days = 7;
     private Map<Integer, Order> orders;
     private Map<Integer, List<Order>> pernamentOrders;
-    private Map<Integer, product> products;
-    private int productCounter;
     private int orderCounter;
 
     public OrderController() {
@@ -23,8 +18,6 @@ public class OrderController {
             pernamentOrders.put(i, new ArrayList<>());
         }
         orders = new HashMap<>();
-        products = new HashMap<>();
-        productCounter = 0;
         orderCounter = 0;
     }
 
@@ -35,12 +28,16 @@ public class OrderController {
                     pernamentOrders.get(i).remove(o); //remove the order from the list
             }
         }
+        for(Order o : orders.values()){
+            if (o.getSupplier().getSc().getId().equals(id))
+                orders.remove(o); //remove the order from the list
+        }
     }
 
-    public Order createOrder(LocalDate date, Supplier supplier,int day) throws Exception {
+    public Order createOrder(LocalDate date, Supplier supplier, int day) throws Exception {
         if (date != null && date.isBefore(LocalDate.now()))
             throw new Exception("the date should be in the future");
-        Order o = new Order(orderCounter, date, supplier,day);
+        Order o = new Order(orderCounter, date, supplier, day);
         orders.put(orderCounter, o);
         orderCounter++;
         return o;
@@ -56,12 +53,6 @@ public class OrderController {
             throw new Exception("order does not exist");
     }
 
-    public void productExist(int productId) throws Exception {
-        //todo check if product is in dal
-        if (!products.containsKey(productId))
-            throw new Exception("product " + productId + " does not exist");
-    }
-
     public Order getOrder(int orderID, Supplier supplier) throws Exception {
         orderExist(orderID);
         Order toReturn = orders.get(orderID);
@@ -70,10 +61,9 @@ public class OrderController {
         OrderDal orderDal = new OrderDal(orderID);
         orderDal.find();
         Order newOrder = new Order(orderDal, supplier);
-        orders.put(orderID,newOrder);
-        if(newOrder.getDate()==null){
-            //todo add day to order and than put the new order in the appropriate day
-        }
+        orders.put(orderID, newOrder);
+        if (newOrder.getDate() == null)
+            pernamentOrders.get(newOrder.getDate()).add(newOrder);
         return newOrder;
     }
 
@@ -98,13 +88,12 @@ public class OrderController {
                 return o;
             }
         }
-        Order order = createOrder(null, supplier,day);
+        Order order = createOrder(null, supplier, day);
         pernamentOrders.get(day).add(order);
         return order;
     }
 
     public void removeProductFromOrder(int orderID, int productID) throws Exception {
-        productExist(productID);
         orderExist(orderID);
         orders.get(orderID).removeProductFromOrder(productID);
     }

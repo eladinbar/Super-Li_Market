@@ -1,12 +1,11 @@
 package BusinessLayer.SupliersPackage.orderPackage;
 
-import BusinessLayer.SupliersPackage.supplierPackage.QuantityList;
 import BusinessLayer.SupliersPackage.supplierPackage.Supplier;
 import DataAccessLayer.DalObjects.SupplierObjects.OrderDal;
 import DataAccessLayer.DalObjects.SupplierObjects.ProductsInOrderDal;
-import DataAccessLayer.DalObjects.SupplierObjects.QuantityListItemsDal;
 
 import java.sql.SQLException;
+import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.util.*;
 
@@ -36,8 +35,7 @@ public class Order {
         this.date = LocalDate.parse(orderDal.getDate());
         readOrderProducts();
         this.supplier = supplier;
-        //this.day=orderDal.getDay();
-        //todo add getDay method to orderDal
+        this.day = orderDal.getDay();
     }
 
     public Order(int id) {
@@ -87,6 +85,7 @@ public class Order {
     }
 
     public void addProductToOrder(int productId, int amount) throws Exception {
+        checkDateToUpdate();
         if (!supplier.getAg().getProducts().containsKey(productId))
             throw new Exception("supplier does not supply the product :" + productId);
         if (products.containsKey(productId))
@@ -100,6 +99,7 @@ public class Order {
     }
 
     public void removeProductFromOrder(int productID) throws Exception {
+        checkDateToUpdate();
         if (delivered)
             throw new Exception("order already delivered");
         if (!products.containsKey(productID))
@@ -135,7 +135,6 @@ public class Order {
 
     private OrderDal toDalObject() throws SQLException {
         return new OrderDal(id, supplier.getSc().getId(), date, delivered, day);
-        //todo add day
     }
 
     private boolean save() throws SQLException {
@@ -152,5 +151,17 @@ public class Order {
 
     public boolean find() throws SQLException {
         return dalObject.find();
+    }
+
+    private void checkDateToUpdate() throws Exception {
+        day = day == 7 ? 1 : day + 1;
+        int yesterday = day == 1 ? 7 : day - 1;
+        if (day > 0) {
+            if (LocalDate.now().getDayOfWeek() == DayOfWeek.of(day) || LocalDate.now().getDayOfWeek() == DayOfWeek.of(yesterday))
+                throw new Exception("order can be updated at most one day before the order");
+        } else {
+            if (LocalDate.now().isAfter(date.minusDays(2)))
+                throw new Exception("order can be updated at most one day before the order");
+        }
     }
 }

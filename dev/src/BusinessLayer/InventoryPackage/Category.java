@@ -125,10 +125,17 @@ public class Category {
                 item.find(savedItems, name);
                 this.items = savedItems;
 
+                //Set dud parent category for parent category name
                 if (dalCopyCategory.getParentName() != null) {
-                    this.parentCategory = new Category(dalCopyCategory.getName());
-                    parentCategory.addSubCategory(this);
+                    this.parentCategory = new Category(dalCopyCategory.getParentName());
                 }
+
+                //Get all sub categories to set sub category names
+                List<Category> subCategories = new ArrayList<>();
+                Category dudCategory = new Category();
+                dudCategory.find(subCategories, this.name);
+
+                this.subCategories = subCategories;
             }
         } catch (SQLException ex) {
             throw new RuntimeException("Something went wrong.");
