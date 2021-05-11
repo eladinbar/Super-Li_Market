@@ -667,7 +667,7 @@ public class InventoryServiceImpl implements InventoryService {
             shortageResponse = getResponseListItem(simpleItemList, shortageItems);
 
         } catch (Exception e) {
-            shortageResponse = new ResponseT<>(true, e.getMessage(), null);
+            shortageResponse = new ResponseT<>(true, e.getMessage(), new ArrayList<>());
         }
         return shortageResponse;
     }
