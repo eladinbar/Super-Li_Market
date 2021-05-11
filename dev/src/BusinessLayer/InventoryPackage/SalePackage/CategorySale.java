@@ -22,17 +22,23 @@ public class CategorySale extends Sale{
     @Override
     public void setName(String name) {
         dalCopyCategorySale.setName(name);
-        try {
-            dalCopyCategorySale.update();
-            this.name = name;
-        } catch (SQLException ex) {
-            dalCopyCategorySale.setName(this.name);
-            throw new RuntimeException("Something went wrong.");
-        }
+        this.name = name;
+    }
+
+    @Override
+    public void setAndSaveName(String name) {
+        dalCopyCategorySale.setAndSaveName(name);
+        this.name = name;
     }
 
     @Override
     public void setDiscount(double discount) {
+        dalCopyCategorySale.setDiscount(discount);
+        this.discount = discount;
+    }
+
+    @Override
+    public void setAndSaveDiscount(double discount) {
         dalCopyCategorySale.setDiscount(discount);
         try {
             dalCopyCategorySale.update();
@@ -46,6 +52,12 @@ public class CategorySale extends Sale{
     @Override
     public void setStartDate(LocalDate startDate) {
         dalCopyCategorySale.setStartSaleDate(startDate.toString());
+        this.saleDates.setFirst(startDate);
+    }
+
+    @Override
+    public void setAndSaveStartDate(LocalDate startDate) {
+        dalCopyCategorySale.setStartSaleDate(startDate.toString());
         try {
             dalCopyCategorySale.update();
             this.saleDates.setFirst(startDate);
@@ -57,6 +69,12 @@ public class CategorySale extends Sale{
 
     @Override
     public void setEndDate(LocalDate endDate) {
+        dalCopyCategorySale.setEndSaleDate(endDate.toString());
+        this.saleDates.setSecond(endDate);
+    }
+
+    @Override
+    public void setAndSaveEndDate(LocalDate endDate) {
         dalCopyCategorySale.setEndSaleDate(endDate.toString());
         try {
             dalCopyCategorySale.update();
@@ -72,6 +90,11 @@ public class CategorySale extends Sale{
     }
 
     public void setCategory(Category category) {
+        dalCopyCategorySale.setCategoryName(category.getName());
+        this.category = category;
+    }
+
+    public void setAndSaveCategory(Category category) {
         dalCopyCategorySale.setCategoryName(category.getName());
         try {
             dalCopyCategorySale.update();

@@ -1,8 +1,6 @@
 package BusinessLayer.InventoryPackage.DefectsPackage;
 
-import BusinessLayer.InventoryPackage.Item;
 import BusinessLayer.InventoryPackage.Location;
-import DataAccessLayer.DalObjects.InventoryObjects.Category;
 
 import java.sql.SQLException;
 import java.time.LocalDate;

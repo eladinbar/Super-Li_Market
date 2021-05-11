@@ -25,6 +25,8 @@ public abstract class Sale {
 
     public abstract void setDiscount(double discount);
 
+    public abstract void setAndSaveDiscount(double discount);
+
     public Pair<LocalDate, LocalDate> getSaleDates() {
         return saleDates;
     }
@@ -35,11 +37,15 @@ public abstract class Sale {
 
     public abstract void setStartDate(LocalDate startDate);
 
+    public abstract void setAndSaveStartDate(LocalDate startDate);
+
     public LocalDate getEndDate() {
         return saleDates.getSecond();
     }
 
     public abstract void setEndDate(LocalDate endDate);
+
+    public abstract void setAndSaveEndDate(LocalDate endDate);
 
     public String getName() {
         return name;
@@ -47,8 +53,15 @@ public abstract class Sale {
 
     public abstract void setName(String name);
 
+    public abstract void setAndSaveName(String name);
+
     public void setSaleDates(LocalDate startDate, LocalDate endDate) {
         setStartDate(startDate);
         setEndDate(endDate);
+    }
+
+    public void setAndSaveSaleDates(LocalDate startDate, LocalDate endDate) {
+        setAndSaveStartDate(startDate);
+        setAndSaveEndDate(endDate);
     }
 }

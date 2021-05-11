@@ -157,12 +157,12 @@ public class DefectEntryDalController extends DalController<DefectEntry> {
             ResultSet resultSet = stmt.executeQuery();
             while (resultSet.next())
             {
-                isDesired = resultSet.getString(0).equals(defectEntry.getEntryDate()) &&
-                        resultSet.getInt(1) == defectEntry.getItemID();
+                isDesired = resultSet.getString(1).equals(defectEntry.getEntryDate()) &&
+                        resultSet.getInt(2) == defectEntry.getItemID();
                 if (isDesired) {
-                    defectEntry.setItemName(resultSet.getString(2));
-                    defectEntry.setLocation(resultSet.getString(3));
-                    defectEntry.setQuantity(resultSet.getInt(4));
+                    defectEntry.setItemName(resultSet.getString(3));
+                    defectEntry.setLocation(resultSet.getString(4));
+                    defectEntry.setQuantity(resultSet.getInt(5));
                     break; //Desired defect entry found
                 }
             }
@@ -174,7 +174,7 @@ public class DefectEntryDalController extends DalController<DefectEntry> {
 
     @Override
     public boolean select(List<DefectEntry> defectEntries) throws SQLException {
-        DefectEntry savedDefectEntry = new DefectEntry();
+        DefectEntry savedDefectEntry;
         try (Connection conn = DriverManager.getConnection(connectionString)) {
             String query = "SELECT * FROM " + tableName;
             PreparedStatement stmt = conn.prepareStatement(query);
@@ -182,9 +182,11 @@ public class DefectEntryDalController extends DalController<DefectEntry> {
             while (resultSet.next())
             {
                 savedDefectEntry = new DefectEntry();
-                savedDefectEntry.setItemName(resultSet.getString(2));
-                savedDefectEntry.setLocation(resultSet.getString(3));
-                savedDefectEntry.setQuantity(resultSet.getInt(4));
+                savedDefectEntry.setEntryDate(resultSet.getString(1));
+                savedDefectEntry.setItemID(resultSet.getInt(2));
+                savedDefectEntry.setItemName(resultSet.getString(3));
+                savedDefectEntry.setLocation(resultSet.getString(4));
+                savedDefectEntry.setQuantity(resultSet.getInt(5));
                 defectEntries.add(savedDefectEntry);
             }
         } catch (SQLException ex) {

@@ -70,6 +70,10 @@ public class DefectEntry extends DalObject<DefectEntry> {
     }
 
     public void setEntryDate(String entryDate) {
+        this.entryDate = entryDate;
+    }
+
+    public void setAndSaveEntryDate(String entryDate) {
         String oldEntryDate = this.entryDate;
         this.entryDate = entryDate;
         try {
@@ -81,6 +85,10 @@ public class DefectEntry extends DalObject<DefectEntry> {
     }
 
     public void setItemID(int itemID) {
+        this.itemID = itemID;
+    }
+
+    public void setAndSaveItemID(int itemID) {
         int oldId = this.itemID;
         this.itemID = itemID;
         try {

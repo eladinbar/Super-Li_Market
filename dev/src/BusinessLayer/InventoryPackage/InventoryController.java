@@ -105,7 +105,7 @@ public class InventoryController {
 
     public void modifyItemName(int itemId, String newName) {
         Item item = getItem(itemId);
-        item.setName(newName);
+        item.setAndSaveName(newName);
     }
 
     public void modifyItemCategory(int itemId, String newCategoryName) {
@@ -179,32 +179,32 @@ public class InventoryController {
 
     public void modifyItemCostPrice(int itemId, double newCostPrice) {
         Item item = getItem(itemId);
-        item.setCostPrice(newCostPrice);
+        item.setAndSaveCostPrice(newCostPrice);
     }
 
     public void modifyItemSellingPrice(int itemId, double newSellingPrice) {
         Item item = getItem(itemId);
-        item.setSellingPrice(newSellingPrice);
+        item.setAndSaveSellingPrice(newSellingPrice);
     }
 
     public void changeItemShelfLocation(int itemId, String newShelfLocation) {
         Item item = getItem(itemId);
-        item.setShelfLocation(newShelfLocation);
+        item.setAndSaveShelfLocation(newShelfLocation);
     }
 
     public void changeItemStorageLocation(int itemId, String newStorageLocation) {
         Item item = getItem(itemId);
-        item.setStorageLocation(newStorageLocation);
+        item.setAndSaveStorageLocation(newStorageLocation);
     }
 
     public void modifyItemShelfQuantity(int itemId, int newShelfQuantity) {
         Item item = getItem(itemId);
-        item.setShelfQuantity(newShelfQuantity);
+        item.setAndSaveShelfQuantity(newShelfQuantity);
     }
 
     public void modifyItemStorageQuantity(int itemId, int newStorageQuantity) {
         Item item = getItem(itemId);
-        item.setStorageQuantity(newStorageQuantity);
+        item.setAndSaveStorageQuantity(newStorageQuantity);
     }
 
     public void addItemSupplier(int itemId, String supplierId) {
@@ -305,7 +305,7 @@ public class InventoryController {
 
     public void modifyCategoryName(String oldName, String newName) {
         Category category = getCategory(oldName);
-        category.setName(newName);
+        category.setAndSaveName(newName);
     }
 
     public void changeParentCategory(String categoryName, String newParentName) {
@@ -319,7 +319,7 @@ public class InventoryController {
 
         //If newParentName is null or empty, set parent category as base category
         if (newParentName == null || newParentName.trim().equals("") | newParentName.trim().equals("Uncategorized")) {
-            category.setParentCategory(BASE_CATEGORY);
+            category.setAndSaveParentCategory(BASE_CATEGORY);
         }
         //Else, check whether the given newParentName is a valid parent category to 'category'
         else {
@@ -328,7 +328,7 @@ public class InventoryController {
             Category parentCategory = getCategory(newParentName);
             if (isSubCategory(category, parentCategory))
                 throw new IllegalArgumentException("Cannot change parent category to a sub category, please enter a different parent category.");
-            category.setParentCategory(parentCategory);
+            category.setAndSaveParentCategory(parentCategory);
         }
     }
 
@@ -438,17 +438,17 @@ public class InventoryController {
 
     public void modifySaleName(String oldName, String newName) {
         Sale sale = getSale(oldName);
-        sale.setName(newName);
+        sale.setAndSaveName(newName);
     }
 
     public void modifySaleDiscount(String saleName, double newDiscount) {
         Sale sale = getSale(saleName);
-        sale.setDiscount(newDiscount);
+        sale.setAndSaveDiscount(newDiscount);
     }
 
     public void modifySaleDates(String saleName, LocalDate startDate, LocalDate endDate) {
         Sale sale = getSale(saleName);
-        sale.setSaleDates(startDate, endDate);
+        sale.setAndSaveSaleDates(startDate, endDate);
     }
 
 

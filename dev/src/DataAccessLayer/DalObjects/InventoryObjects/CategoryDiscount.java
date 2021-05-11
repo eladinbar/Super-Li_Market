@@ -1,6 +1,5 @@
 package DataAccessLayer.DalObjects.InventoryObjects;
 
-import DataAccessLayer.DalControllers.InventoryControllers.CategoryDalController;
 import DataAccessLayer.DalControllers.InventoryControllers.CategoryDiscountDalController;
 import DataAccessLayer.DalObjects.DalObject;
 
@@ -74,6 +73,10 @@ public class CategoryDiscount extends DalObject<CategoryDiscount> {
     }
 
     public void setDiscountDate(String discountDate) {
+        this.discountDate = discountDate;
+    }
+
+    public void setAndSaveDiscountDate(String discountDate) {
         String oldDate = this.discountDate;
         this.discountDate = discountDate;
         try {
@@ -85,6 +88,10 @@ public class CategoryDiscount extends DalObject<CategoryDiscount> {
     }
 
     public void setSupplierID(String supplierID) {
+        this.supplierID = supplierID;
+    }
+
+    public void setAndSaveSupplierID(String supplierID) {
         String oldSupplierId = this.supplierID;
         this.supplierID = supplierID;
         try {
@@ -96,6 +103,10 @@ public class CategoryDiscount extends DalObject<CategoryDiscount> {
     }
 
     public void setCategoryName(String categoryName) {
+        this.categoryName = categoryName;
+    }
+
+    public void setAndSaveCategoryName(String categoryName) {
         String oldCategoryName = this.categoryName;
         this.categoryName = categoryName;
         try {
