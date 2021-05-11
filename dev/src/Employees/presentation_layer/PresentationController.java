@@ -564,7 +564,6 @@ public class PresentationController {
             return false;
     }
 
-
     private void getShift() {
         LocalDate date = menuPrinter.getShiftDate ();
         int shift = menuPrinter.getShiftNum ();
