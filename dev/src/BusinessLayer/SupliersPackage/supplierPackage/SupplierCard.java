@@ -26,11 +26,12 @@ public class SupplierCard extends PersonCard {
         this.contactMembers = new ArrayList<>();
         this.address=address;
         this.dalObject = toDalObjectSupplierCard();
-        save();
+        dalObject.save();
     }
 
     public SupplierCard(String supplierId) throws SQLException {
-        super(null, null, null, supplierId, null);
+        super(supplierId);
+        this.dalObject = toDalObjectSupplierCard();
     }
 
     public SupplierCard(SupplierCardDal supplierCardDal, PersonCardDal personCardDal) throws SQLException {
@@ -117,7 +118,7 @@ public class SupplierCard extends PersonCard {
     }
 
     public SupplierCardDal toDalObjectSupplierCard() throws SQLException {
-        return new SupplierCardDal(Integer.parseInt(id),companyNumber,isPernamentDays,selfDelivery,payment);
+        return new SupplierCardDal(Integer.parseInt(id),companyNumber,isPernamentDays,selfDelivery,payment, address);
     }
 
     public void delete(String id, String memberID) throws SQLException {

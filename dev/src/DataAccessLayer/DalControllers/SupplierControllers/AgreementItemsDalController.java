@@ -109,7 +109,7 @@ public class AgreementItemsDalController extends DalController<agreementItemsDal
         try (Connection conn = DriverManager.getConnection(connectionString)) {
             String query = "SELECT * FROM " + tableName;
             PreparedStatement stmt = conn.prepareStatement(query);
-            ResultSet resultSet = stmt.executeQuery(query);
+            ResultSet resultSet = stmt.executeQuery();
             while (resultSet.next()) {
                 isDesired = resultSet.getInt(0) == agreementItem.getProductId() && resultSet.getInt(1)== agreementItem.getSupplierId();
                 if (isDesired) {

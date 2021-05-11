@@ -30,7 +30,10 @@ public class PersonCardDalController extends DalController<PersonCardDal> {
         try (Connection conn = DriverManager.getConnection(connectionString)) {
             String command = "CREATE TABLE IF NOT EXISTS " + tableName + " (" +
                     PersonCardDal.idColumnName + " INTEGER NOT NULL," +
-                    PersonCardDal.firstNameColumnName + " TEXT NOT NULL," + PersonCardDal.lastNameColumnName +" TEXT NOT NULL,"+ PersonCardDal.emailColumnName + " TEXT NOT NULL," + PersonCardDal.phoneColumnName + " TEXT NOT NULL,"+
+                    PersonCardDal.firstNameColumnName + " TEXT NOT NULL," +
+                    PersonCardDal.lastNameColumnName +" TEXT NOT NULL,"+
+                    PersonCardDal.emailColumnName + " TEXT NOT NULL," +
+                    PersonCardDal.phoneColumnName + " TEXT NOT NULL,"+
                     "PRIMARY KEY (" + PersonCardDal.idColumnName + ")" +
                     ");";
 
@@ -80,12 +83,12 @@ public class PersonCardDalController extends DalController<PersonCardDal> {
     @Override
     public boolean update(PersonCardDal personCard) throws SQLException {
         try (Connection conn = DriverManager.getConnection(connectionString)) {
-            String query = "UPDATE " + tableName + " SET " + PersonCardDal.firstNameColumnName +
-                    "=?, "+ PersonCardDal.lastNameColumnName +"=?, "+PersonCardDal.emailColumnName+"=?, "+
-                    PersonCardDal.phoneColumnName+"=?" +
+            String query = "UPDATE " + tableName + " SET " + PersonCardDal.firstNameColumnName + "=?, "+
+                    PersonCardDal.lastNameColumnName +"=?, "+
+                    PersonCardDal.emailColumnName+"=?, "+
+                    PersonCardDal.phoneColumnName+"=?, " +
                     " WHERE(" + PersonCardDal.idColumnName + "=?)";
             PreparedStatement stmt = conn.prepareStatement(query);
-
             stmt.setString(1, personCard.getFirstName());
             stmt.setString(2, personCard.getLastName());
             stmt.setString(3, personCard.getEmail());
@@ -104,15 +107,11 @@ public class PersonCardDalController extends DalController<PersonCardDal> {
         try (Connection conn = DriverManager.getConnection(connectionString)) {
             String query = "SELECT * FROM " + tableName;
             PreparedStatement stmt = conn.prepareStatement(query);
-            ResultSet resultSet = stmt.executeQuery(query);
+            ResultSet resultSet = stmt.executeQuery();
             while (resultSet.next())
             {
-                isDesired = resultSet.getString(1).equals(personCard.getId());
+                isDesired = resultSet.getString(0).equals(personCard.getId());
                 if (isDesired) {
-                    personCard.setFirstName(resultSet.getString(2));
-                    personCard.setLastName(resultSet.getString(3));
-                    personCard.setEmail(resultSet.getString(4));
-                    personCard.setPhone(resultSet.getString(5));
                     personCard.setFirstNameLoad(resultSet.getString(1));
                     personCard.setLastNameLoad(resultSet.getString(2));
                     personCard.setEmailLoad(resultSet.getString(3));

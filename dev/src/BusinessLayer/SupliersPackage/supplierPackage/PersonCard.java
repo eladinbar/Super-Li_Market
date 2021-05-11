@@ -20,7 +20,12 @@ public class PersonCard {
         this.id = id;
         this.phone = phone;
         this.dalObject = toDalObject();
-        save();
+        dalObject.save();
+    }
+
+    public PersonCard(String id) throws SQLException {
+        this.id = id;
+        this.dalObject = toDalObject();
     }
 
     public String getFirstName() {

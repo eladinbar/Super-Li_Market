@@ -13,20 +13,23 @@ public class SupplierCardDal extends DalObject<SupplierCardDal> {
     public static final String isPermanentDaysColumnName = "Is_Permanent_Days";
     public static final String selfDeliveryColumnName = "Self_Delivery";
     public static final String paymentColumnName = "Payment";
+    public static final String addressColumnName = "Address";
 
     private int supplierId; //foreign key (personCard)
     private int companyNumber;
     private boolean isPermanentDays;
     private boolean selfDelivery;
     private Payment payment;
+    private String address;
 
-    public SupplierCardDal(int supplierId, int companyNumber, boolean isPermanentDays, boolean selfDelivery, Payment payment) throws SQLException {
+    public SupplierCardDal(int supplierId, int companyNumber, boolean isPermanentDays, boolean selfDelivery, Payment payment, String address) throws SQLException {
         super(SupplierCardDalController.getInstance());
         this.supplierId = supplierId;
         this.companyNumber = companyNumber;
         this.isPermanentDays = isPermanentDays;
         this.selfDelivery = selfDelivery;
         this.payment = payment;
+        this.address = address;
     }
 
     public SupplierCardDal(int supplierId) throws SQLException {
@@ -34,6 +37,18 @@ public class SupplierCardDal extends DalObject<SupplierCardDal> {
         this.supplierId = supplierId;
     }
 
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) throws SQLException {
+        this.address = address;
+        update();
+    }
+
+    public void setAddressLoad(String address) {
+        this.address = address;
+    }
 
     public int getSupplierId() {
         return supplierId;

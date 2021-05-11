@@ -11,6 +11,7 @@ public class PersonCardDal extends DalObject<PersonCardDal> {
     public static final String lastNameColumnName = "Last_Name";
     public static final String emailColumnName = "Email";
     public static final String phoneColumnName = "Phone";
+
     private String id; //primary key
     private String firstName;
     private String lastName;
