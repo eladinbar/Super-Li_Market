@@ -111,10 +111,10 @@ public class AgreementItemsDalController extends DalController<agreementItemsDal
             PreparedStatement stmt = conn.prepareStatement(query);
             ResultSet resultSet = stmt.executeQuery();
             while (resultSet.next()) {
-                isDesired = resultSet.getInt(0) == agreementItem.getProductId() && resultSet.getInt(1)== agreementItem.getSupplierId();
+                isDesired = resultSet.getInt(1) == agreementItem.getProductId() && resultSet.getInt(2)== agreementItem.getSupplierId();
                 if (isDesired) {
-                    agreementItem.setProductCompIdLoad(resultSet.getInt(2));
-                    agreementItem.setPriceLoad(resultSet.getInt(3));
+                    agreementItem.setProductCompIdLoad(resultSet.getInt(3));
+                    agreementItem.setPriceLoad(resultSet.getInt(4));
                     break; //Desired category discount found
                 }
             }
@@ -132,11 +132,11 @@ public class AgreementItemsDalController extends DalController<agreementItemsDal
             ResultSet resultSet = stmt.executeQuery();
             while (resultSet.next())
             {
-                isDesired = resultSet.getString(1).equals(agreement.getSupplierId());
+                isDesired = resultSet.getString(2).equals(agreement.getSupplierId());
                 if (isDesired) {
-                    int productId = resultSet.getInt(0);
-                    int compId = resultSet.getInt(2);
-                    double price = resultSet.getDouble(3);
+                    int productId = resultSet.getInt(1);
+                    int compId = resultSet.getInt(3);
+                    double price = resultSet.getDouble(4);
                     agreementItemsDal savedAgreement = new agreementItemsDal(productId,agreement.getSupplierId(), compId,(int)price);
                     agreements.add(savedAgreement);
                 }

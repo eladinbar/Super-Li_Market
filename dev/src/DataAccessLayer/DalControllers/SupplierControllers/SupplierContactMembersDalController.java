@@ -91,8 +91,8 @@ public class SupplierContactMembersDalController extends DalController<SupplierC
             ResultSet resultSet = stmt.executeQuery();
             while (resultSet.next())
             {
-                isDesired = resultSet.getInt(0) == (supplierContactMember.getSupplierId())
-                && resultSet.getInt(1) == supplierContactMember.getPersonId();
+                isDesired = resultSet.getInt(1) == (supplierContactMember.getSupplierId())
+                && resultSet.getInt(2) == supplierContactMember.getPersonId();
                 if (isDesired) {
                     //todo
                     break; //Desired category discount found
@@ -112,9 +112,9 @@ public class SupplierContactMembersDalController extends DalController<SupplierC
             ResultSet resultSet = stmt.executeQuery();
             while (resultSet.next())
             {
-                isDesired = resultSet.getString(0).equals(contactMember.getSupplierId());
+                isDesired = resultSet.getString(1).equals(contactMember.getSupplierId());
                 if (isDesired) {
-                    int personId = resultSet.getInt(1);
+                    int personId = resultSet.getInt(2);
                     SupplierContactMembersDal savedSupplier = new SupplierContactMembersDal(contactMember.getSupplierId(), personId);
                     contactMemberList.add(savedSupplier);
                 }

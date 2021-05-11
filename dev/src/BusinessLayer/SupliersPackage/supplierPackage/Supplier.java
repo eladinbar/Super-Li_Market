@@ -136,6 +136,7 @@ public class Supplier {
             agBusiness.addItemToAgreement(agItemDal.getProductId(), agItemDal.getProductCompId(), (int)agItemDal.getPrice(), "");
         }
         agBusiness.readQl(supplierId);
+        this.ag = agBusiness;
         return agBusiness;
     }
 }
