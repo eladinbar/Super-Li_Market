@@ -520,6 +520,7 @@ public class PresentationController implements Runnable {
         String email = readEmail();
         String ID = readID();
         String phone = readPhone();
+        String adress = menu.instructAndReceive("adress :");
         int companyNumber = readCompanyNumber();
         boolean perm;
         while (true) {
@@ -557,7 +558,7 @@ public class PresentationController implements Runnable {
                 break;
             } else System.out.println("\nwrong input please choose again\n");
         }
-        String print = service.addSupplier(firstName, lName, email, ID, phone, companyNumber, perm, self, pay).toString();
+        String print = service.addSupplier(firstName, lName, email, ID, phone, companyNumber, perm, self, pay,adress).toString();
         System.out.println(print);
         if (!print.split(" ")[0].equals("\nError:")) {
             while (true) {

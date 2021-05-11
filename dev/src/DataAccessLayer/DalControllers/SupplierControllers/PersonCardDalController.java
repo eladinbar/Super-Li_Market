@@ -107,8 +107,12 @@ public class PersonCardDalController extends DalController<PersonCardDal> {
             ResultSet resultSet = stmt.executeQuery(query);
             while (resultSet.next())
             {
-                isDesired = resultSet.getString(0).equals(personCard.getId());
+                isDesired = resultSet.getString(1).equals(personCard.getId());
                 if (isDesired) {
+                    personCard.setFirstName(resultSet.getString(2));
+                    personCard.setLastName(resultSet.getString(3));
+                    personCard.setEmail(resultSet.getString(4));
+                    personCard.setPhone(resultSet.getString(5));
                     personCard.setFirstNameLoad(resultSet.getString(1));
                     personCard.setLastNameLoad(resultSet.getString(2));
                     personCard.setEmailLoad(resultSet.getString(3));

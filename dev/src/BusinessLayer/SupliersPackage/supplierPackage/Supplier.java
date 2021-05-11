@@ -1,6 +1,5 @@
 package BusinessLayer.SupliersPackage.supplierPackage;
 
-import BusinessLayer.InventoryPackage.Item;
 import DataAccessLayer.DalObjects.SupplierObjects.PersonCardDal;
 import DataAccessLayer.DalObjects.SupplierObjects.QuantityListItemsDal;
 import DataAccessLayer.DalObjects.SupplierObjects.SupplierCardDal;
@@ -18,9 +17,9 @@ public class Supplier {
     private final int PhoneLength = 10;
     private final int idLength = 9;
 
-    public Supplier(String firstName, String lastName, String email, String id, String phone, int companyNumber, boolean isPernamentDays, boolean selfDelivery, String payment) throws Exception {
+    public Supplier(String firstName, String lastName, String email, String id, String phone, int companyNumber, boolean isPernamentDays, boolean selfDelivery, String payment,String address) throws Exception {
         Payment pay = paymentCheck(payment);
-        this.sc = new SupplierCard(firstName, lastName, email, id, phone, companyNumber, isPernamentDays, selfDelivery, pay);
+        this.sc = new SupplierCard(firstName, lastName, email, id, phone, companyNumber, isPernamentDays, selfDelivery, pay,address);
         this.ag = new Agreement();
     }
 
