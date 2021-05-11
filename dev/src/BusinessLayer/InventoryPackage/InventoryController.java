@@ -551,6 +551,10 @@ public class InventoryController {
         throw new IllegalArgumentException("No defect entry with ID: " + itemId + " and date recorded: " + entryDate + " were found in the system");
     }
 
+    private DefectEntry getBusinessDefectEntry(int itemId, LocalDate entryDate) {
+        return defectsLogger.getDefectEntry(itemId, entryDate);
+    }
+
 
     //-------------------------------------------------------------------------Report functions
 
@@ -572,13 +576,15 @@ public class InventoryController {
         loadCategory.find(savedCategories);
 
         for (Category category : savedCategories) {
-            for (Category someCategory : savedCategories) {
-                if (category.getName().equals(someCategory.getParentCategory().getName()))
-                    category.addSubCategory(someCategory);
-                else if (category.getParentCategory().getName().equals(someCategory.getName()))
-                    category.setParentCategory(someCategory);
+            if (getBusinessCategory(category.getName()) == null) { //If category is not already in business - continue
+                for (Category someCategory : savedCategories) {
+                    if (category.getName().equals(someCategory.getParentCategory().getName()))
+                        category.addSubCategory(someCategory);
+                    else if (category.getParentCategory().getName().equals(someCategory.getName()))
+                        category.setParentCategory(someCategory);
+                }
+                categories.add(category);
             }
-            categories.add(category);
         }
     }
 
@@ -622,5 +628,11 @@ public class InventoryController {
         List<DefectEntry> savedDefectEntries = new ArrayList<>();
         DefectEntry loadDefectEntry = new DefectEntry();
         loadDefectEntry.find(savedDefectEntries);
+
+        for (DefectEntry defectEntry : savedDefectEntries) {
+            if (getBusinessDefectEntry(defectEntry.getItemID(), defectEntry.getEntryDate()) == null) { //If defect entry is not already in business - continue
+                defectsLogger.addDefectEntry(defectEntry);
+            }
+        }
     }
 }
