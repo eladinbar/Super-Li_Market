@@ -38,9 +38,11 @@ public class InventoryController {
             throw new IllegalArgumentException("No category with name: " + categoryName + " was found in the system.");
         }
         try {
-            if (getItem(id, itemCategory) != null)
-                throw new IllegalArgumentException("An item with ID: " + id + " already exists in the system.");
+            getItem(id);
+            throw new IllegalArgumentException("An item with ID: " + id + " already exists in the system.");
         } catch (IllegalArgumentException ex) {
+            if (ex.getMessage().equals("An item with ID: " + id + " already exists in the system."))
+                throw ex;
             //No item with 'id' found - continue
         }
 
