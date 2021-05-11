@@ -27,9 +27,7 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="05ca914f-9056-4de3-9869-7fdfaa880f2d" name="Default Changelist" comment="final upload. jar in realse. instructions in docs as instructions2">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-    </list>
+    <list default="true" id="05ca914f-9056-4de3-9869-7fdfaa880f2d" name="Default Changelist" comment="final upload. jar in realse. instructions in docs as s" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -164,14 +162,7 @@
       <workItem from="1619794411025" duration="473000" />
       <workItem from="1620674813676" duration="4565000" />
       <workItem from="1620738399722" duration="1254000" />
-      <workItem from="1620753908398" duration="1537000" />
-    </task>
-    <task id="LOCAL-00011" summary="after combine meeting.">
-      <created>1617442640772</created>
-      <option name="number" value="00011" />
-      <option name="presentableId" value="LOCAL-00011" />
-      <option name="project" value="LOCAL" />
-      <updated>1617442640772</updated>
+      <workItem from="1620753908398" duration="2133000" />
     </task>
     <task id="LOCAL-00012" summary="replan changed">
       <created>1617448511041</created>
@@ -509,7 +500,14 @@
       <option name="project" value="LOCAL" />
       <updated>1620755229891</updated>
     </task>
-    <option name="localTasksCounter" value="60" />
+    <task id="LOCAL-00060" summary="final upload. jar in realse. instructions in docs as s">
+      <created>1620755478422</created>
+      <option name="number" value="00060" />
+      <option name="presentableId" value="LOCAL-00060" />
+      <option name="project" value="LOCAL" />
+      <updated>1620755478422</updated>
+    </task>
+    <option name="localTasksCounter" value="61" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -528,7 +526,6 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Finnally merged, re testing" />
     <MESSAGE value="first step test, passed" />
     <MESSAGE value="remove Demand has been added" />
     <MESSAGE value="replan to be improved" />
@@ -553,7 +550,8 @@
     <MESSAGE value="select method fixed" />
     <MESSAGE value="remove site bug fixed" />
     <MESSAGE value="final upload. jar in realse. instructions in docs as instructions2" />
-    <option name="LAST_COMMIT_MESSAGE" value="final upload. jar in realse. instructions in docs as instructions2" />
+    <MESSAGE value="final upload. jar in realse. instructions in docs as s" />
+    <option name="LAST_COMMIT_MESSAGE" value="final upload. jar in realse. instructions in docs as s" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
