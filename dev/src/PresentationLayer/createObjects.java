@@ -163,10 +163,25 @@ public class createObjects {
         service.recordDefect(98755, defectTime3, 2, "SH-A19-R-55");
 
         service.addItemToAgreement("333333333", 11115, 12, 100);
-        service.addItemToAgreement("333333334", 11115, 12, 100);
-        service.addItemToAgreement("333333334", 265, 16, 100);
-        service.addItemToAgreement("333333334", 846, 13, 100);
-        service.addItemToAgreement("333333334", 847, 14, 100);
-        service.addItemToAgreement("333333334", 845, 15, 100);
+        service.addItemToAgreement("333333334", 11115, 12, 103);
+        service.addItemToAgreement("333333335", 265, 16, 108);
+        service.addItemToAgreement("333333336", 265, 16, 108);
+        service.addItemToAgreement("333333337", 265, 16, 108);
+        service.addItemToAgreement("333333338", 265, 16, 108);
+        service.addItemToAgreement("333333333", 846, 13, 1043);
+        service.addItemToAgreement("333333334", 846, 13, 1043);
+        service.addItemToAgreement("333333335", 846, 13, 1043);
+        service.addItemToAgreement("333333336", 846, 13, 1043);
+        service.addItemToAgreement("333333337", 846, 13, 1043);
+        service.addItemToAgreement("333333333", 847, 14, 88);
+        service.addItemToAgreement("333333334", 847, 14, 88);
+        service.addItemToAgreement("333333335", 847, 14, 88);
+        service.addItemToAgreement("333333336", 847, 14, 88);
+        service.addItemToAgreement("333333337", 847, 14, 88);
+        service.addItemToAgreement("333333333", 845, 15, 120);
+        service.addItemToAgreement("333333334", 845, 15, 120);
+        service.addItemToAgreement("333333335", 845, 15, 120);
+        service.addItemToAgreement("333333336", 845, 15, 120);
+        service.addItemToAgreement("333333337", 845, 15, 120);
     }
 }
