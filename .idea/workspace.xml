@@ -27,12 +27,8 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="05ca914f-9056-4de3-9869-7fdfaa880f2d" name="Default Changelist" comment="upload fixed">
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_4_23_2021_3_54_PM__Default_Changelist_.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_4_23_2021_3_54_PM__Default_Changelist_.xml" afterDir="false" />
+    <list default="true" id="05ca914f-9056-4de3-9869-7fdfaa880f2d" name="Default Changelist" comment="final upload. jar in realse. instructions in docs as instructions2">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dev/src/DAL/DalControllers_Employee/DalShiftController.java" beforeDir="false" afterPath="$PROJECT_DIR$/dev/src/DAL/DalControllers_Employee/DalShiftController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/release/adss2020_v01.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/release/adss_v0.jar" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -100,6 +96,17 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration default="true" type="ArquillianJUnit" factoryName="" nameIsGenerated="true">
+      <option name="arquillianRunConfiguration">
+        <value>
+          <option name="containerStateName" value="" />
+        </value>
+      </option>
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="ResourcesServiceTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="ADSS_Group_G" />
       <extension name="coverage">
@@ -157,14 +164,7 @@
       <workItem from="1619794411025" duration="473000" />
       <workItem from="1620674813676" duration="4565000" />
       <workItem from="1620738399722" duration="1254000" />
-      <workItem from="1620753908398" duration="1230000" />
-    </task>
-    <task id="LOCAL-00010" summary="finished Facade layer and Presentation layer. waiting for combine with business layer to tests.&#10;&#10;** Unit test haven't done yet.&#10;** NTH didn't accomplished yet">
-      <created>1617379529536</created>
-      <option name="number" value="00010" />
-      <option name="presentableId" value="LOCAL-00010" />
-      <option name="project" value="LOCAL" />
-      <updated>1617379529536</updated>
+      <workItem from="1620753908398" duration="1537000" />
     </task>
     <task id="LOCAL-00011" summary="after combine meeting.">
       <created>1617442640772</created>
@@ -502,7 +502,14 @@
       <option name="project" value="LOCAL" />
       <updated>1620642135155</updated>
     </task>
-    <option name="localTasksCounter" value="59" />
+    <task id="LOCAL-00059" summary="final upload. jar in realse. instructions in docs as instructions2">
+      <created>1620755229891</created>
+      <option name="number" value="00059" />
+      <option name="presentableId" value="LOCAL-00059" />
+      <option name="project" value="LOCAL" />
+      <updated>1620755229891</updated>
+    </task>
+    <option name="localTasksCounter" value="60" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -521,7 +528,6 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="date added to AddDemand" />
     <MESSAGE value="Finnally merged, re testing" />
     <MESSAGE value="first step test, passed" />
     <MESSAGE value="remove Demand has been added" />
@@ -546,7 +552,8 @@
     <MESSAGE value="ItemsOnDF updated + Foreign keys + delete calls" />
     <MESSAGE value="select method fixed" />
     <MESSAGE value="remove site bug fixed" />
-    <option name="LAST_COMMIT_MESSAGE" value="remove site bug fixed" />
+    <MESSAGE value="final upload. jar in realse. instructions in docs as instructions2" />
+    <option name="LAST_COMMIT_MESSAGE" value="final upload. jar in realse. instructions in docs as instructions2" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
