@@ -21,7 +21,9 @@ public class MainDal {
         String phone = "0547972797";
       //  sc.addSupplier(name, lastName, email, id, phone, 1, true, true, "cash", "hes 3 raanana");
 //        sc.getSupplier(id);
-        sc.addItemToAgreement("208677682", 1, 1, 20, ic);
+//        sc.addItemToAgreement("208677682", 1, 1, 20, ic);
+        sc.removeItemFromAgreement(id, 1);
+
 //        AgreementItemsDalController agreementItemsController = AgreementItemsDalController.getInstance();
 //        OrderDalController orderDalController = OrderDalController.getInstance();
 //        PersonCardDalController personCardDalController = PersonCardDalController.getInstance();

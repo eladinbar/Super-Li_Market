@@ -48,51 +48,51 @@ public class SupplierController {
 
     public void updateCompanySupplier(String id, int companyNumber) throws Exception {
         existSupplier(id);
-        Supplier supplier = suppliers.get(id);
+        Supplier supplier = getSupplier(id);
         supplier.getSc().setCompanyNumber(companyNumber);
     }
 
     public void updateFirstName(String id, String firstName) throws Exception {
         existSupplier(id);
-        Supplier supplier = suppliers.get(id);
+        Supplier supplier = getSupplier(id);
         supplier.getSc().setFirstName(firstName);
     }
 
     public void updateLastName(String id, String lastName) throws Exception {
         existSupplier(id);
-        Supplier supplier = suppliers.get(id);
+        Supplier supplier = getSupplier(id);
         supplier.getSc().setLastName(lastName);
     }
 
     public void updatePhone(String id, String phone) throws Exception {
         existSupplier(id);
-        Supplier supplier = suppliers.get(id);
+        Supplier supplier = getSupplier(id);
         phoneCheck(phone);
         supplier.getSc().setPhone(phone);
     }
 
     public void updateEmail(String id, String email) throws Exception {
         existSupplier(id);
-        Supplier supplier = suppliers.get(id);
+        Supplier supplier = getSupplier(id);
         emailCheck(email);
         supplier.getSc().setEmail(email);
     }
 
     public void updateSelfDelivery(String id, boolean self) throws Exception {
         existSupplier(id);
-        Supplier supplier = suppliers.get(id);
+        Supplier supplier = getSupplier(id);
         supplier.getSc().setSelfDelivery(self);
     }
 
     public void updatePernamentDays(String id, boolean perm) throws Exception {
         existSupplier(id);
-        Supplier supplier = suppliers.get(id);
+        Supplier supplier = getSupplier(id);
         supplier.getSc().setPernamentDays(perm);
     }
 
     public void updatePayment(String id, String pay) throws Exception {
         existSupplier(id);
-        Supplier supplier = suppliers.get(id);
+        Supplier supplier = getSupplier(id);
         Payment enumPay = supplier.paymentCheck(pay);
         supplier.getSc().setPayment(enumPay);
     }
@@ -100,15 +100,15 @@ public class SupplierController {
     public void addContactMember(String supplierId, String firstName, String lastName, String email, String memberID, String phone) throws Exception {
         existSupplier(supplierId);
         if (!persons.containsKey(memberID)) {
-            PersonCard newPerson = suppliers.get(supplierId).createPersonCard(firstName, lastName, email, memberID, phone);
+            PersonCard newPerson = getSupplier(supplierId).createPersonCard(firstName, lastName, email, memberID, phone);
             persons.put(memberID, newPerson);
         }
-        suppliers.get(supplierId).addContactMember(memberID);
+        getSupplier(supplierId).addContactMember(memberID);
     }
 
     public void deleteContactMember(String supplierID, String memberID) throws Exception {
         existSupplier(supplierID);
-        suppliers.get(supplierID).deleteContactMember(memberID);
+        getSupplier(supplierID).deleteContactMember(memberID);
     }
 
     public Supplier getSupplier(String id) throws Exception {
@@ -123,37 +123,37 @@ public class SupplierController {
 
     public QuantityList addQuantityList(String supplierID) throws Exception {
         existSupplier(supplierID);
-        return suppliers.get(supplierID).addQuantityList();
+        return getSupplier(supplierID).addQuantityList();
     }
 
     public void editQuantityListAmount(String supplierID, int productID, int amount) throws Exception {
         existSupplier(supplierID);
-        suppliers.get(supplierID).editQuantityListAmount(productID, amount);
+        getSupplier(supplierID).editQuantityListAmount(productID, amount);
     }
 
     public void editQuantityListDiscount(String supplierID, int productID, int discount) throws Exception {
         existSupplier(supplierID);
-        suppliers.get(supplierID).editQuantityListDiscount(productID, discount);
+        getSupplier(supplierID).editQuantityListDiscount(productID, discount);
     }
 
     public void deleteQuantityList(String supplierID) throws Exception {
         existSupplier(supplierID);
-        suppliers.get(supplierID).deleteQuantityList();
+        getSupplier(supplierID).deleteQuantityList();
     }
 
     public void addQuantityListItem(String supplierID, int productID, int amount, int discount) throws Exception {
         existSupplier(supplierID);
-        suppliers.get(supplierID).addQuantityListItem(productID, amount, discount, supplierID);
+        getSupplier(supplierID).addQuantityListItem(productID, amount, discount, supplierID);
     }
 
     public void deleteQuantityListItem(String supplierID, int productID) throws Exception {
         existSupplier(supplierID);
-        suppliers.get(supplierID).deleteQuantityListItem(productID);
+        getSupplier(supplierID).deleteQuantityListItem(productID);
     }
 
     public QuantityList getQuantityList(String supplierId) throws Exception {
         existSupplier(supplierId);
-        return suppliers.get(supplierId).getQuantityList();
+        return getSupplier(supplierId).getQuantityList();
     }
 
     public void addItemToAgreement(String id, int productID, int companyProductID, int price) throws Exception {
@@ -163,28 +163,28 @@ public class SupplierController {
 
     public void removeItemFromAgreement(String supplierId, int productId) throws Exception {
         existSupplier(supplierId);
-        suppliers.get(supplierId).removeItemFromAgreement(productId);
+        getSupplier(supplierId).removeItemFromAgreement(productId);
 
     }
 
     public void editAgreementItemCompanyProductID(String supplierID, int productID, int companyProductID) throws Exception {
         existSupplier(supplierID);
-        suppliers.get(supplierID).getAg().editAgreementItemCompanyProductID(productID, companyProductID);
+        getSupplier(supplierID).getAg().editAgreementItemCompanyProductID(productID, companyProductID);
     }
 
     public void editAgreementItemPrice(String supplierID, int productID, int price) throws Exception {
         existSupplier(supplierID);
-        suppliers.get(supplierID).getAg().editAgreementItemPrice(productID, price);
+        getSupplier(supplierID).getAg().editAgreementItemPrice(productID, price);
     }
 
     public Agreement getAgreement(String supplierID) throws Exception {
         existSupplier(supplierID);
-        return suppliers.get(supplierID).getAg();
+        return getSupplier(supplierID).getAg();
     }
 
     public double getPrice(String supplierID, int amount, int productID) throws Exception {
         existSupplier((supplierID));
-        return suppliers.get(supplierID).getPrice(amount, productID);
+        return getSupplier(supplierID).getPrice(amount, productID);
     }
 
     public Supplier getCheapestSupplier(int productID, int amount, boolean scheduled) throws Exception {
@@ -208,12 +208,12 @@ public class SupplierController {
 
     public Double getProductDiscount(String supplierID, int amount, int productID) throws Exception {
         existSupplier(supplierID);
-        return suppliers.get(supplierID).getProductDiscount(amount, productID);
+        return getSupplier(supplierID).getProductDiscount(amount, productID);
     }
 
     public Integer getSupplierCompanyProductID(String supplierID, int productID) throws Exception {
         existSupplier(supplierID);
-        return suppliers.get(supplierID).getSupplierCompanyProductID(productID);
+        return getSupplier(supplierID).getSupplierCompanyProductID(productID);
     }
 
     private void phoneCheck(String phone) throws Exception {
