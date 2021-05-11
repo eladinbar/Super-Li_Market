@@ -1,10 +1,7 @@
 package BusinessLayer.SupliersPackage.orderPackage;
 
 import BusinessLayer.SupliersPackage.supplierPackage.Supplier;
-import BusinessLayer.SupliersPackage.supplierPackage.SupplierCard;
 import DataAccessLayer.DalObjects.SupplierObjects.OrderDal;
-import DataAccessLayer.DalObjects.SupplierObjects.PersonCardDal;
-import DataAccessLayer.DalObjects.SupplierObjects.SupplierCardDal;
 
 import java.time.LocalDate;
 import java.util.*;
@@ -25,12 +22,15 @@ public class OrderController {
     }
 
     public void removeSupplier(String id) {
-        //todo check in dal
         for (int i = 1; i <= days; i++) {
             for (Order o : pernamentOrders.get(i)) {
                 if (o.getSupplier().getSc().getId().equals(id))
                     pernamentOrders.get(i).remove(o); //remove the order from the list
             }
+        }
+        for(Order o : orders.values()){
+            if (o.getSupplier().getSc().getId().equals(id))
+                orders.remove(o); //remove the order from the list
         }
     }
 
