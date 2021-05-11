@@ -383,7 +383,6 @@ public class PresentationController implements Runnable {
         while (!terminate) {
             mainMenu();
         }
-
     }
 
     private void setupSystem() {

@@ -134,7 +134,7 @@ public class Order {
     }
 
     private OrderDal toDalObject() throws SQLException {
-        return new OrderDal(id, supplier.getSc().getId(), date, delivered);
+        return new OrderDal(id, supplier.getSc().getId(), date, delivered, day);
         //todo add day
     }
 

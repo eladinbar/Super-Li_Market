@@ -9,6 +9,7 @@ import DataAccessLayer.DalObjects.SupplierObjects.SupplierCardDal;
 import DataAccessLayer.DalObjects.SupplierObjects.agreementItemsDal;
 
 import java.sql.*;
+import java.util.List;
 
 public class OrderDalController extends DalController<OrderDal> {
     private static OrderDalController instance = null;
@@ -38,6 +39,7 @@ public class OrderDalController extends DalController<OrderDal> {
                     OrderDal.supplierIdColumnName + " TEXT NOT NULL," +
                     OrderDal.dateColumnName + " TEXT NOT NULL," +
                     OrderDal.deliveredColumnName +" INTEGER NOT NULL,"+
+                    OrderDal.dayColumnName + " INTEGER NOT NULL,"+
                     "PRIMARY KEY (" + OrderDal.orderIdColumnName + ")," +
                     "FOREIGN KEY (" + OrderDal.supplierIdColumnName + ")" + "REFERENCES " + SupplierCardDal.supplierIdColumnName + " (" + SupplierCardDalController.SUPPLIER_CARD_TABLE_NAME + ") ON DELETE CASCADE " +
                     ");";
@@ -56,12 +58,13 @@ public class OrderDalController extends DalController<OrderDal> {
     public boolean insert(OrderDal order) throws SQLException {
         System.out.println("Initiating " + tableName + " insert.");
         try (Connection conn = DriverManager.getConnection(connectionString)) {
-            String query = "INSERT INTO " + tableName + " VALUES (?,?,?,?)";
+            String query = "INSERT INTO " + tableName + " VALUES (?,?,?,?,?)";
             PreparedStatement stmt = conn.prepareStatement(query);
             stmt.setInt(1, order.getOrderId());
             stmt.setString(2, order.getSupplierId());
             stmt.setString(3, order.getDate());
             stmt.setInt(4, order.isDelivered());
+            stmt.setInt(5, order.getDay());
             System.out.println("Executing " + tableName + " insert.");
             stmt.executeUpdate();
         } catch (SQLException ex) {
@@ -75,7 +78,6 @@ public class OrderDalController extends DalController<OrderDal> {
         try (Connection conn = DriverManager.getConnection(connectionString)) {
             String query = "DELETE FROM " + tableName + " WHERE (" + OrderDal.orderIdColumnName + "=?)";
             PreparedStatement stmt = conn.prepareStatement(query);
-
             stmt.setInt(1, order.getOrderId());
             stmt.executeUpdate();
         } catch (SQLException ex) {
@@ -88,12 +90,13 @@ public class OrderDalController extends DalController<OrderDal> {
     public boolean update(OrderDal order) throws SQLException {
         try (Connection conn = DriverManager.getConnection(connectionString)) {
             String query = "UPDATE " + tableName + " SET " + OrderDal.dateColumnName +
-                    "=?, "+ OrderDal.deliveredColumnName+"=? WHERE(" + OrderDal.orderIdColumnName + "=?)";
+                    "=?, "+ OrderDal.deliveredColumnName+"=?, "+ OrderDal.dayColumnName+"=? WHERE(" + OrderDal.orderIdColumnName + "=?)";
             PreparedStatement stmt = conn.prepareStatement(query);
 
             stmt.setString(1, order.getDate());
             stmt.setInt(2, order.isDelivered());
-            stmt.setInt(3, order.getOrderId());
+            stmt.setInt(3, order.getDay());
+            stmt.setInt(4, order.getOrderId());
             stmt.executeUpdate();
         } catch (SQLException ex) {
             throw new SQLException(ex.getMessage());
@@ -107,14 +110,15 @@ public class OrderDalController extends DalController<OrderDal> {
         try (Connection conn = DriverManager.getConnection(connectionString)) {
             String query = "SELECT * FROM " + tableName;
             PreparedStatement stmt = conn.prepareStatement(query);
-            ResultSet resultSet = stmt.executeQuery(query);
+            ResultSet resultSet = stmt.executeQuery();
             while (resultSet.next())
             {
                 isDesired = resultSet.getInt(0)==(order.getOrderId());
                 if (isDesired) {
-                    order.setSupplierId(resultSet.getString(1));
-                    order.setDate(resultSet.getString(2));
-                    order.setDelivered(resultSet.getInt(3));
+                    order.setSupplierIdLoad(resultSet.getString(1));
+                    order.setDateLoad(resultSet.getString(2));
+                    order.setDeliveredLoad(resultSet.getInt(3));
+                    order.setDayLoad(resultSet.getInt(4));
                     break;
                 }
             }

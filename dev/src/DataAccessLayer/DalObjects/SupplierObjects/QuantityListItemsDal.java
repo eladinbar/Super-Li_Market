@@ -44,14 +44,26 @@ public class QuantityListItemsDal extends DalObject<QuantityListItemsDal> {
         update();
     }
 
+    public void setProductIdLoad(int productId) throws SQLException {
+        this.productId = productId;
+    }
+
     public void setAmount(int amount) throws SQLException {
         this.amount = amount;
         update();
     }
 
+    public void setAmountLoad(int amount) throws SQLException {
+        this.amount = amount;
+    }
+
     public void setDiscount(double discount) throws SQLException {
         this.discount = discount;
         update();
+    }
+
+    public void setDiscountLoad(double discount) throws SQLException {
+        this.discount = discount;
     }
 
     public String getSupplierId() {
@@ -61,5 +73,9 @@ public class QuantityListItemsDal extends DalObject<QuantityListItemsDal> {
     public void setSupplierId(String supplierId) throws SQLException {
         this.supplierId = supplierId;
         update();
+    }
+
+    public void setSupplierIdLoad(String supplierId) throws SQLException {
+        this.supplierId = supplierId;
     }
 }

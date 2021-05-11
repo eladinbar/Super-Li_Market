@@ -4,8 +4,10 @@ import DataAccessLayer.DalControllers.DalController;
 import DataAccessLayer.DalObjects.SupplierObjects.PersonCardDal;
 import DataAccessLayer.DalObjects.SupplierObjects.SupplierCardDal;
 import DataAccessLayer.DalObjects.SupplierObjects.SupplierContactMembersDal;
+import DataAccessLayer.DalObjects.SupplierObjects.agreementItemsDal;
 
 import java.sql.*;
+import java.util.List;
 
 public class SupplierContactMembersDalController extends DalController<SupplierContactMembersDal> {
     private static SupplierContactMembersDalController instance = null;
@@ -86,7 +88,7 @@ public class SupplierContactMembersDalController extends DalController<SupplierC
         try (Connection conn = DriverManager.getConnection(connectionString)) {
             String query = "SELECT * FROM " + tableName;
             PreparedStatement stmt = conn.prepareStatement(query);
-            ResultSet resultSet = stmt.executeQuery(query);
+            ResultSet resultSet = stmt.executeQuery();
             while (resultSet.next())
             {
                 isDesired = resultSet.getInt(0) == (supplierContactMember.getSupplierId())
@@ -94,6 +96,27 @@ public class SupplierContactMembersDalController extends DalController<SupplierC
                 if (isDesired) {
                     //todo
                     break; //Desired category discount found
+                }
+            }
+        } catch (SQLException ex) {
+            throw new SQLException(ex.getMessage());
+        }
+        return isDesired;
+    }
+
+    public boolean select(SupplierContactMembersDal contactMember, List<SupplierContactMembersDal> contactMemberList) throws SQLException {
+        boolean isDesired = false;
+        try (Connection conn = DriverManager.getConnection(connectionString)) {
+            String query = "SELECT * FROM " + tableName;
+            PreparedStatement stmt = conn.prepareStatement(query);
+            ResultSet resultSet = stmt.executeQuery();
+            while (resultSet.next())
+            {
+                isDesired = resultSet.getString(0).equals(contactMember.getSupplierId());
+                if (isDesired) {
+                    int personId = resultSet.getInt(1);
+                    SupplierContactMembersDal savedSupplier = new SupplierContactMembersDal(contactMember.getSupplierId(), personId);
+                    contactMemberList.add(savedSupplier);
                 }
             }
         } catch (SQLException ex) {

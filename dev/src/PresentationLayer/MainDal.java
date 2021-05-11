@@ -1,12 +1,23 @@
 package PresentationLayer;
 
 import DataAccessLayer.DalControllers.SupplierControllers.*;
+import SerciveLayer.SupplierService;
 
-public class Main {
-    public static void main(String[] args) {
+import java.sql.SQLException;
+import java.time.LocalDate;
+
+public class MainDal {
+    public static void main(String[] args) throws SQLException {
 //        PresentationController c = new PresentationController();
 //        c.run();
-
+        SupplierService sc = new SupplierService();
+        String name = "shaked";
+        String lastName = "dollberg";
+        String email = "s@gmail.com";
+        String id = "208677682";
+        String phone = "0547972797";
+      //  sc.addSupplier(name, lastName, email, id, phone, 1, true, true, "cash", "hes 3 raanana");
+        sc.getSupplier(id);
 //        AgreementItemsDalController agreementItemsController = AgreementItemsDalController.getInstance();
 //        OrderDalController orderDalController = OrderDalController.getInstance();
 //        PersonCardDalController personCardDalController = PersonCardDalController.getInstance();
@@ -35,5 +46,6 @@ public class Main {
 //        pc.setPhone("0522434934");
 //        personCardDalController.update(pc);
 //        personCardDalController.delete(pc);
+
     }
 }

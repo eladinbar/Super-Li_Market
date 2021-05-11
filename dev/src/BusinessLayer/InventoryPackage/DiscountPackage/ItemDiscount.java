@@ -23,6 +23,17 @@ public class ItemDiscount extends Discount{
         this.item = item;
     }
 
+    public void setAndSaveDiscount(double discount) {
+        dalCopyItemDiscount.setDiscount(discount);
+        try {
+            dalCopyItemDiscount.update();
+            this.discount = discount;
+        } catch (SQLException ex) {
+            dalCopyItemDiscount.setDiscount(this.discount);
+            throw new RuntimeException("Something went wrong.");
+        }
+    }
+
     public Item getItem() {
         return item;
     }
@@ -30,6 +41,17 @@ public class ItemDiscount extends Discount{
     public void setItem(Item item) {
         dalCopyItemDiscount.setItemID(item.getID());
         this.item = item;
+    }
+
+    public void setAndSaveItem(Item item) {
+        dalCopyItemDiscount.setItemID(item.getID());
+        try {
+            dalCopyItemDiscount.update();
+            this.item = item;
+        } catch (SQLException ex) {
+            dalCopyItemDiscount.setItemID(this.item.getID());
+            throw new RuntimeException("Something went wrong.");
+        }
     }
 
     public void save() {

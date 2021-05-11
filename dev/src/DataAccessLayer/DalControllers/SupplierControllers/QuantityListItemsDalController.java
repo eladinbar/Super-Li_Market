@@ -6,8 +6,10 @@ import DataAccessLayer.DalObjects.InventoryObjects.Item;
 import DataAccessLayer.DalObjects.SupplierObjects.ProductsInOrderDal;
 import DataAccessLayer.DalObjects.SupplierObjects.QuantityListItemsDal;
 import DataAccessLayer.DalObjects.SupplierObjects.SupplierCardDal;
+import DataAccessLayer.DalObjects.SupplierObjects.agreementItemsDal;
 
 import java.sql.*;
+import java.util.List;
 
 public class QuantityListItemsDalController extends DalController<QuantityListItemsDal> {
     private static QuantityListItemsDalController instance = null;
@@ -110,15 +112,38 @@ public class QuantityListItemsDalController extends DalController<QuantityListIt
         try (Connection conn = DriverManager.getConnection(connectionString)) {
             String query = "SELECT * FROM " + tableName;
             PreparedStatement stmt = conn.prepareStatement(query);
-            ResultSet resultSet = stmt.executeQuery(query);
+            ResultSet resultSet = stmt.executeQuery();
             while (resultSet.next())
             {
                 isDesired = resultSet.getInt(0) == quantityListItem.getProductId()
                 && resultSet.getString(1).equals(quantityListItem.getSupplierId());
                 if (isDesired) {
-                    quantityListItem.setAmount(resultSet.getInt(2));
-                    quantityListItem.setDiscount(resultSet.getInt(3));
+                    quantityListItem.setAmountLoad(resultSet.getInt(2));
+                    quantityListItem.setDiscountLoad(resultSet.getInt(3));
                     break; //Desired category discount found
+                }
+            }
+        } catch (SQLException ex) {
+            throw new SQLException(ex.getMessage());
+        }
+        return isDesired;
+    }
+
+    public boolean select(QuantityListItemsDal ql, List<QuantityListItemsDal> qlList) throws SQLException {
+        boolean isDesired = false;
+        try (Connection conn = DriverManager.getConnection(connectionString)) {
+            String query = "SELECT * FROM " + tableName;
+            PreparedStatement stmt = conn.prepareStatement(query);
+            ResultSet resultSet = stmt.executeQuery();
+            while (resultSet.next())
+            {
+                isDesired = resultSet.getString(1).equals(ql.getSupplierId());
+                if (isDesired) {
+                    int productId = resultSet.getInt(0);
+                    int amount = resultSet.getInt(2);
+                    double discount = resultSet.getDouble(3);
+                    QuantityListItemsDal savedQl = new QuantityListItemsDal(productId,ql.getSupplierId(), amount, (int)discount);
+                    qlList.add(savedQl);
                 }
             }
         } catch (SQLException ex) {

@@ -1,7 +1,6 @@
 package BusinessLayer.InventoryPackage.DiscountPackage;
 
 import BusinessLayer.InventoryPackage.Category;
-import BusinessLayer.InventoryPackage.Item;
 
 import java.time.LocalDate;
 import java.sql.SQLException;
@@ -24,6 +23,17 @@ public class CategoryDiscount extends Discount{
         this.category = category;
     }
 
+    public void setAndSaveDiscount(double discount) {
+        dalCopyCategoryDiscount.setDiscount(discount);
+        try {
+            dalCopyCategoryDiscount.update();
+            this.discount = discount;
+        } catch (SQLException ex) {
+            dalCopyCategoryDiscount.setDiscount(this.discount);
+            throw new RuntimeException("Something went wrong.");
+        }
+    }
+
     public Category getCategory() {
         return category;
     }
@@ -31,6 +41,17 @@ public class CategoryDiscount extends Discount{
     public void setCategory(Category category) {
         dalCopyCategoryDiscount.setCategoryName(category.getName());
         this.category = category;
+    }
+
+    public void setAndSaveCategory(Category category) {
+        dalCopyCategoryDiscount.setCategoryName(category.getName());
+        try {
+            dalCopyCategoryDiscount.update();
+            this.category = category;
+        } catch (SQLException ex) {
+            dalCopyCategoryDiscount.setCategoryName(this.category.getName());
+            throw new RuntimeException("Something went wrong.");
+        }
     }
 
     public void save() {
