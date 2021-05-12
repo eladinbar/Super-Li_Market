@@ -42,9 +42,14 @@ public class Agreement {
         QuantityList qlBusiness = new QuantityList();
         for (QuantityListItemsDal qlItemDal : qlItems) {
             qlBusiness.addQuantityListItem(qlItemDal.getProductId(), qlItemDal.getAmount(), (int) qlItemDal.getDiscount(), "");
+            qlBusiness.getDalObjects().put(qlItemDal.getProductId(),qlItemDal);
         }
         this.ql = qlBusiness;
         return qlBusiness;
+    }
+
+    public Map<Integer, agreementItemsDal> getDalObjects() {
+        return dalObjects;
     }
 
     public void setQl(QuantityList ql) {

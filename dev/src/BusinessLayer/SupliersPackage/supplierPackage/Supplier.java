@@ -134,6 +134,7 @@ public class Supplier {
         Agreement agBusiness = new Agreement();
         for (agreementItemsDal agItemDal: agreementItems) {
             agBusiness.addItemToAgreement(agItemDal.getProductId(), agItemDal.getProductCompId(), (int)agItemDal.getPrice(), "");
+            agBusiness.getDalObjects().put(agItemDal.getProductId(),agItemDal);
         }
         agBusiness.readQl(supplierId);
         this.ag = agBusiness;

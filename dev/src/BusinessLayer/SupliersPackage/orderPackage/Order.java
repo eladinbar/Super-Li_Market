@@ -30,16 +30,20 @@ public class Order {
     }
 
     public Order(OrderDal orderDal, Supplier supplier) throws Exception {
+        this.products = new HashMap<>();
         this.id = orderDal.getOrderId();
         this.delivered = orderDal.isDelivered() == 1 ? true : false;
         this.date = LocalDate.parse(orderDal.getDate());
-        readOrderProducts();
         this.supplier = supplier;
         this.day = orderDal.getDay();
+        this.dalObject = toDalObject();
+        readOrderProducts();
     }
 
-    public Order(int id) {
+    public Order(int id) throws SQLException {
+        this.products = new HashMap<>();
         this.id = id;
+        this.dalObject = new OrderDal(id);
     }
 
     public int getId() {
@@ -84,18 +88,23 @@ public class Order {
         dalObject.setDelivered(true);
     }
 
-    public void addProductToOrder(int productId, int amount) throws Exception {
-        checkDateToUpdate();
+    /**
+     * add product to order flag=true means its a new product, flag=false means no need to save on dal
+     */
+    public void addProductToOrder(int productId, int amount, boolean flag) throws Exception {
+        if (flag)
+            checkDateToUpdate();
         if (!supplier.getAg().getProducts().containsKey(productId))
             throw new Exception("supplier does not supply the product :" + productId);
         if (products.containsKey(productId))
             throw new Exception("product " + productId + " already exists in the order " + this.id + ", check if you want to edit the amount or remove");
-        if (delivered)
+        if (delivered&&flag)
             throw new Exception("order already delivered");
         if (amount < 1)
             throw new Exception("illegal amount");
         products.put(productId, amount);
-        save(productId, id, amount);
+        if (flag)
+            save(productId, id, amount);
     }
 
     public void removeProductFromOrder(int productID) throws Exception {
@@ -129,7 +138,7 @@ public class Order {
         ProductsInOrderDal productInOrderDal = new ProductsInOrderDal(id);
         productInOrderDal.find(orderItems);
         for (ProductsInOrderDal product : orderItems) {
-            addProductToOrder(product.getProductId(), product.getAmount());
+            addProductToOrder(product.getProductId(), product.getAmount(), false);
         }
     }
 

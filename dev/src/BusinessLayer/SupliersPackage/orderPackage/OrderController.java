@@ -21,7 +21,7 @@ public class OrderController {
         orders = new HashMap<>();
         try {
             orderCounter = new OrderDal(0).getOrderCounter();
-        } catch(SQLException ex) {
+        } catch (SQLException ex) {
             orderCounter = 0;
         }
     }
@@ -33,7 +33,7 @@ public class OrderController {
                     pernamentOrders.get(i).remove(o); //remove the order from the list
             }
         }
-        for(Order o : orders.values()){
+        for (Order o : orders.values()) {
             if (o.getSupplier().getSc().getId().equals(id))
                 orders.remove(o); //remove the order from the list
         }
@@ -84,7 +84,7 @@ public class OrderController {
 
     public void addProductToOrder(int orderId, int productId, int amount) throws Exception {
         orderExist(orderId);
-        orders.get(orderId).addProductToOrder(productId, amount);
+        orders.get(orderId).addProductToOrder(productId, amount, true);
     }
 
     public Order createPermOrder(int day, Supplier supplier) throws Exception {

@@ -81,7 +81,7 @@ public class PersonCardDalController extends DalController<PersonCardDal> {
             String query = "UPDATE " + tableName + " SET " + PersonCardDal.firstNameColumnName + "=?, "+
                     PersonCardDal.lastNameColumnName +"=?, "+
                     PersonCardDal.emailColumnName+"=?, "+
-                    PersonCardDal.phoneColumnName+"=?, " +
+                    PersonCardDal.phoneColumnName+"=? " +
                     " WHERE(" + PersonCardDal.idColumnName + "=?)";
             PreparedStatement stmt = conn.prepareStatement(query);
             stmt.setString(1, personCard.getFirstName());
