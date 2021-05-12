@@ -1,9 +1,8 @@
-package BusinessLayer.SupliersPackage.supplierPackage;
+package BusinessLayer.SuppliersPackage.SupplierPackage;
 
+import DataAccessLayer.DalObjects.SupplierObjects.AgreementItemsDal;
 import DataAccessLayer.DalObjects.SupplierObjects.PersonCardDal;
-import DataAccessLayer.DalObjects.SupplierObjects.QuantityListItemsDal;
 import DataAccessLayer.DalObjects.SupplierObjects.SupplierCardDal;
-import DataAccessLayer.DalObjects.SupplierObjects.agreementItemsDal;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -128,11 +127,11 @@ public class Supplier {
     }
 
     public Agreement readAgreement(String supplierId) throws Exception {
-        List<agreementItemsDal> agreementItems = new ArrayList();
-        agreementItemsDal agDal = new agreementItemsDal(supplierId);
+        List<AgreementItemsDal> agreementItems = new ArrayList();
+        AgreementItemsDal agDal = new AgreementItemsDal(supplierId);
         agDal.find(agreementItems);
         Agreement agBusiness = new Agreement();
-        for (agreementItemsDal agItemDal: agreementItems) {
+        for (AgreementItemsDal agItemDal: agreementItems) {
             agBusiness.addItemToAgreement(agItemDal.getProductId(), agItemDal.getProductCompId(), (int)agItemDal.getPrice(), "");
             agBusiness.getDalObjects().put(agItemDal.getProductId(),agItemDal);
         }

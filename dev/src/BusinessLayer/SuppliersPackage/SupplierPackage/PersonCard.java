@@ -1,7 +1,6 @@
-package BusinessLayer.SupliersPackage.supplierPackage;
+package BusinessLayer.SuppliersPackage.SupplierPackage;
 
 import DataAccessLayer.DalObjects.SupplierObjects.PersonCardDal;
-import DataAccessLayer.DalObjects.SupplierObjects.SupplierCardDal;
 
 import java.sql.SQLException;
 

@@ -1,10 +1,9 @@
-package SerciveLayer.objects;
+package SerciveLayer.Objects;
 
 import InfrastructurePackage.TextFormatter;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Map;
 
 public class Order {
     private int id;
@@ -23,7 +22,7 @@ public class Order {
         this.day = conNumToDay(day);
     }
 
-    public Order(BusinessLayer.SupliersPackage.orderPackage.Order order, ArrayList<Product> products, int day) {
+    public Order(BusinessLayer.SuppliersPackage.OrderPackage.Order order, ArrayList<Product> products, int day) {
         this.id = order.getId();
         this.products = products;
         this.date = order.getDate();

@@ -1,4 +1,4 @@
-package SerciveLayer.objects;
+package SerciveLayer.Objects;
 
 import InfrastructurePackage.TextFormatter;
 
@@ -12,7 +12,7 @@ public class QuantityList {
         this.amount = amount;
         this.discount = discount;
     }
-    public QuantityList(BusinessLayer.SupliersPackage.supplierPackage.QuantityList ql){
+    public QuantityList(BusinessLayer.SuppliersPackage.SupplierPackage.QuantityList ql){
         this.amount=ql.getAmount();
         this.discount=ql.getDiscount();
     }

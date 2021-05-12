@@ -8,12 +8,12 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
-public class createObjects {
+public class CreateObjects {
     private IService service;
     private List<Integer> suppliers;
     private List<Integer> products;
 
-    public createObjects(IService service) {
+    public CreateObjects(IService service) {
         suppliers = new ArrayList<>();
         products = new ArrayList<>();
         this.service = service;

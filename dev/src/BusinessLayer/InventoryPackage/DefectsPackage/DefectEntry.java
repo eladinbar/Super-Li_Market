@@ -24,6 +24,11 @@ public class DefectEntry {
     }
 
     public DefectEntry(int itemID, String itemName, LocalDate entryDate, int quantity, String location) {
+        try {
+            dalCopyDefectEntry = new DataAccessLayer.DalObjects.InventoryObjects.DefectEntry();
+        } catch(SQLException ex) {
+            throw new RuntimeException("Something went wrong.");
+        }
         this.itemID = itemID;
         this.itemName = itemName;
         this.entryDate = entryDate;

@@ -18,12 +18,22 @@ public class Item {
     private final Location location;
 
     public Item() {
+        try {
+            dalCopyItem = new DataAccessLayer.DalObjects.InventoryObjects.Item();
+        } catch(SQLException ex) {
+            throw new RuntimeException("Something went wrong.");
+        }
         supplierIDs = new ArrayList<>();
         quantity = new Quantity();
         location = new Location();
     }
 
     public Item(int ID) {
+        try {
+            dalCopyItem = new DataAccessLayer.DalObjects.InventoryObjects.Item();
+        } catch(SQLException ex) {
+            throw new RuntimeException("Something went wrong.");
+        }
         this.ID = ID;
         supplierIDs = new ArrayList<>();
         quantity = new Quantity();
@@ -32,6 +42,11 @@ public class Item {
 
     public Item(int ID, String name, double costPrice, double sellingPrice, int minAmount, int manufacturerID, List<String> supplierIDs,
                 int shelfQuantity, int storageQuantity, String shelfLocation, String storageLocation) {
+        try {
+            dalCopyItem = new DataAccessLayer.DalObjects.InventoryObjects.Item();
+        } catch(SQLException ex) {
+            throw new RuntimeException("Something went wrong.");
+        }
         this.ID = ID;
         this.name = name;
         this.costPrice = costPrice;

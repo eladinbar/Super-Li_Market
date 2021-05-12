@@ -1,15 +1,14 @@
 package SerciveLayer;
 
-import BusinessLayer.SupliersPackage.orderPackage.OrderController;
-import BusinessLayer.SupliersPackage.supplierPackage.Supplier;
-import BusinessLayer.SupliersPackage.supplierPackage.SupplierController;
+import BusinessLayer.SuppliersPackage.OrderPackage.OrderController;
+import BusinessLayer.SuppliersPackage.SupplierPackage.Supplier;
+import BusinessLayer.SuppliersPackage.SupplierPackage.SupplierController;
 import SerciveLayer.Response.Response;
 import SerciveLayer.Response.ResponseT;
 import SerciveLayer.SimpleObjects.Item;
-import SerciveLayer.objects.Order;
-import SerciveLayer.objects.Product;
+import SerciveLayer.Objects.Order;
+import SerciveLayer.Objects.Product;
 
-import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -32,7 +31,7 @@ public class OrderService {
         return toReturn;
     }
 
-    public ResponseT<Order> createPernamentOrder(int day, String supplierID, SupplierController sp) {
+    public ResponseT<Order> createPermanentOrder(int day, String supplierID, SupplierController sp) {
         ResponseT<Order> toReturn;
         try {
             toReturn = new ResponseT<>(new Order(oc.createPermOrder(day, sp.getSupplier(supplierID)), new ArrayList<>(), day));
@@ -58,7 +57,7 @@ public class OrderService {
             String supID = oc.getOrderSupID(orderID); //get supplier id
             Supplier supRes = sc.getSp().getSupplier(supID); // get the supplier
             ArrayList<Product> productList = new ArrayList<>();
-            BusinessLayer.SupliersPackage.orderPackage.Order o = oc.getOrder(orderID, supRes);
+            BusinessLayer.SuppliersPackage.OrderPackage.Order o = oc.getOrder(orderID, supRes);
             for (int id : o.getProducts().keySet()) {
                 ResponseT<Item> itemR = is.getItem(id);
                 if (itemR.errorOccurred()) {

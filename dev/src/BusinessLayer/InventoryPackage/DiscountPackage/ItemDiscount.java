@@ -12,14 +12,31 @@ public class ItemDiscount extends Discount{
 
     private Item item;
 
-    public ItemDiscount() {}
+    public ItemDiscount() {
+        super();
+        try {
+            dalCopyItemDiscount = new DataAccessLayer.DalObjects.InventoryObjects.ItemDiscount();
+        } catch(SQLException ex) {
+            throw new RuntimeException("Something went wrong.");
+        }
+    }
 
     public ItemDiscount(String supplierId, LocalDate discountDate) {
         super(supplierId, discountDate);
+        try {
+            dalCopyItemDiscount = new DataAccessLayer.DalObjects.InventoryObjects.ItemDiscount();
+        } catch(SQLException ex) {
+            throw new RuntimeException("Something went wrong.");
+        }
     }
 
     public ItemDiscount(String supplierID, double discount, LocalDate date, int itemCount, Item item) {
         super(supplierID, discount, date, itemCount);
+        try {
+            dalCopyItemDiscount = new DataAccessLayer.DalObjects.InventoryObjects.ItemDiscount();
+        } catch(SQLException ex) {
+            throw new RuntimeException("Something went wrong.");
+        }
         this.item = item;
     }
 

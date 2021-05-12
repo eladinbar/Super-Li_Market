@@ -3,7 +3,7 @@ package SerciveLayer;
 import InfrastructurePackage.Pair;
 import SerciveLayer.Response.*;
 import SerciveLayer.SimpleObjects.*;
-import SerciveLayer.objects.*;
+import SerciveLayer.Objects.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
@@ -39,7 +39,7 @@ public interface IService {
     ResponseT<List<Order>> createShortageOrder(LocalDate date);
     ResponseT<Order> createScheduledOrder(int day, int itemID, int amount);
     ResponseT<Order> createOrder(LocalDate date, String supplierID);
-    ResponseT<Order> createPernamentOrder(int day, String supplierID);
+    ResponseT<Order> createPermanentOrder(int day, String supplierID);
     Response approveOrder(int orderID);
     ResponseT<Order> getOrder(int orderID);
     Response addProductToOrder(int orderId, int productId, int amount);

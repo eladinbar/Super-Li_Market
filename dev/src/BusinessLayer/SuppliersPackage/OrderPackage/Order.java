@@ -1,6 +1,6 @@
-package BusinessLayer.SupliersPackage.orderPackage;
+package BusinessLayer.SuppliersPackage.OrderPackage;
 
-import BusinessLayer.SupliersPackage.supplierPackage.Supplier;
+import BusinessLayer.SuppliersPackage.SupplierPackage.Supplier;
 import DataAccessLayer.DalObjects.SupplierObjects.OrderDal;
 import DataAccessLayer.DalObjects.SupplierObjects.ProductsInOrderDal;
 

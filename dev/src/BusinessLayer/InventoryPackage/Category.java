@@ -15,6 +15,11 @@ public class Category {
     public Category() {}
 
     public Category(String name) {
+        try {
+            dalCopyCategory = new DataAccessLayer.DalObjects.InventoryObjects.Category();
+        } catch(SQLException ex) {
+            throw new RuntimeException("Something went wrong.");
+        }
         this.name = name;
         items = new ArrayList<>();
         parentCategory = null;
@@ -22,6 +27,11 @@ public class Category {
     }
 
     public Category(String name, List<Item> items, Category parentCategory, List<Category> subCategories) {
+        try {
+            dalCopyCategory = new DataAccessLayer.DalObjects.InventoryObjects.Category();
+        } catch(SQLException ex) {
+            throw new RuntimeException("Something went wrong.");
+        }
         this.name = name;
         this.items = items;
         this.parentCategory = parentCategory;

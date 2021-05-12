@@ -1,15 +1,13 @@
 package SerciveLayer;
 
-import BusinessLayer.SupliersPackage.supplierPackage.SupplierController;
+import BusinessLayer.SuppliersPackage.SupplierPackage.SupplierController;
 import SerciveLayer.Response.*;
 import SerciveLayer.SimpleObjects.Item;
-import SerciveLayer.objects.Agreement;
-import SerciveLayer.objects.Product;
-import SerciveLayer.objects.QuantityList;
-import SerciveLayer.objects.Supplier;
+import SerciveLayer.Objects.Agreement;
+import SerciveLayer.Objects.QuantityList;
+import SerciveLayer.Objects.Supplier;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class SupplierService {

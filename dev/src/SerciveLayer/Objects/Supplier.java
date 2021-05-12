@@ -1,20 +1,20 @@
-package SerciveLayer.objects;
+package SerciveLayer.Objects;
 
 public class Supplier {
-    private supplierCard sc;
+    private SupplierCard sc;
     private Agreement ag;
 
-    public Supplier(supplierCard sc, Agreement ag) throws Exception {
+    public Supplier(SupplierCard sc, Agreement ag) throws Exception {
         this.sc = sc;
         this.ag = ag;
     }
 
-    public Supplier(BusinessLayer.SupliersPackage.supplierPackage.Supplier supplier) {
-        this.sc = new supplierCard(supplier.getSc());
+    public Supplier(BusinessLayer.SuppliersPackage.SupplierPackage.Supplier supplier) {
+        this.sc = new SupplierCard(supplier.getSc());
         this.ag = new Agreement(supplier.getAg());
     }
 
-    public supplierCard getSc() {
+    public SupplierCard getSc() {
         return sc;
     }
 

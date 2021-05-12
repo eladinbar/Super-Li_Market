@@ -1,4 +1,4 @@
-package SerciveLayer.objects;
+package SerciveLayer.Objects;
 
 public class PersonCard {
     protected String firstName;
@@ -15,7 +15,7 @@ public class PersonCard {
         this.phone = phone;
     }
 
-    public PersonCard(BusinessLayer.SupliersPackage.supplierPackage.PersonCard pc){
+    public PersonCard(BusinessLayer.SuppliersPackage.SupplierPackage.PersonCard pc){
         this.email=pc.getEmail();
         this.firstName=pc.getFirstName();
         this.lastName=pc.getLastName();

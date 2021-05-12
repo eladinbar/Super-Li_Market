@@ -1,6 +1,6 @@
-package BusinessLayer.SupliersPackage.orderPackage;
+package BusinessLayer.SuppliersPackage.OrderPackage;
 
-import BusinessLayer.SupliersPackage.supplierPackage.Supplier;
+import BusinessLayer.SuppliersPackage.SupplierPackage.Supplier;
 import DataAccessLayer.DalObjects.SupplierObjects.OrderDal;
 
 import java.sql.SQLException;
@@ -10,13 +10,13 @@ import java.util.*;
 public class OrderController {
     private final int days = 7;
     private Map<Integer, Order> orders;
-    private Map<Integer, List<Order>> pernamentOrders;
+    private Map<Integer, List<Order>> permanentOrders;
     private int orderCounter;
 
     public OrderController() {
-        pernamentOrders = new HashMap<>();
+        permanentOrders = new HashMap<>();
         for (int i = 1; i <= days; i++) {
-            pernamentOrders.put(i, new ArrayList<>());
+            permanentOrders.put(i, new ArrayList<>());
         }
         orders = new HashMap<>();
         try {
@@ -28,9 +28,9 @@ public class OrderController {
 
     public void removeSupplier(String id) {
         for (int i = 1; i <= days; i++) {
-            for (Order o : pernamentOrders.get(i)) {
+            for (Order o : permanentOrders.get(i)) {
                 if (o.getSupplier().getSc().getId().equals(id))
-                    pernamentOrders.get(i).remove(o); //remove the order from the list
+                    permanentOrders.get(i).remove(o); //remove the order from the list
             }
         }
         for (Order o : orders.values()) {
@@ -68,7 +68,7 @@ public class OrderController {
         Order newOrder = new Order(orderDal, supplier);
         orders.put(orderID, newOrder);
         if (newOrder.getDate() == null)
-            pernamentOrders.get(newOrder.getDate()).add(newOrder);
+            permanentOrders.get(newOrder.getDate()).add(newOrder);
         return newOrder;
     }
 
@@ -88,13 +88,13 @@ public class OrderController {
     }
 
     public Order createPermOrder(int day, Supplier supplier) throws Exception {
-        for (Order o : pernamentOrders.get(day)) {
+        for (Order o : permanentOrders.get(day)) {
             if (o.getSupplier().getSc().getId().equals(supplier.getSc().getId())) {
                 return o;
             }
         }
         Order order = createOrder(null, supplier, day);
-        pernamentOrders.get(day).add(order);
+        permanentOrders.get(day).add(order);
         return order;
     }
 
@@ -115,7 +115,7 @@ public class OrderController {
 
     public int getOrderDay(int orderID) {
         for (int i = 1; i < 8; i++) {
-            for (Order o : pernamentOrders.get(i)) {
+            for (Order o : permanentOrders.get(i)) {
                 if (o.getId() == orderID)
                     return i;
             }

@@ -18,6 +18,10 @@ public class ItemSale extends DalObject<ItemSale> {
     private String endSaleDate;
     private int itemID;
 
+    public ItemSale() throws SQLException {
+        super(ItemSaleDalController.getInstance());
+    }
+
     public ItemSale(String name) throws SQLException {
         super(ItemSaleDalController.getInstance());
         this.name = name;

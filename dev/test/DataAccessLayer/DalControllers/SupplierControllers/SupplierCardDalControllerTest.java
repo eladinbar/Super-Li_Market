@@ -1,6 +1,6 @@
 package DataAccessLayer.DalControllers.SupplierControllers;
 
-import BusinessLayer.SupliersPackage.supplierPackage.Payment;
+import BusinessLayer.SuppliersPackage.SupplierPackage.Payment;
 import DataAccessLayer.DalObjects.SupplierObjects.SupplierCardDal;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;

@@ -4,7 +4,7 @@ import InfrastructurePackage.Pair;
 import SerciveLayer.Response.Response;
 import SerciveLayer.Response.ResponseT;
 import SerciveLayer.SimpleObjects.*;
-import SerciveLayer.objects.Product;
+import SerciveLayer.Objects.Product;
 
 import java.time.LocalDate;
 import java.util.ArrayList;

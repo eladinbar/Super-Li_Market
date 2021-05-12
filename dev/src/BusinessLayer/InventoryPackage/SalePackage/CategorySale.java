@@ -12,10 +12,20 @@ public class CategorySale extends Sale{
 
     public CategorySale(String name) {
         super(name);
+        try {
+            dalCopyCategorySale = new DataAccessLayer.DalObjects.InventoryObjects.CategorySale();
+        } catch(SQLException ex) {
+            throw new RuntimeException("Something went wrong.");
+        }
     }
 
     public CategorySale(String name, double discount, LocalDate startDate, LocalDate endDate, Category category) {
         super(name, discount, startDate, endDate);
+        try {
+            dalCopyCategorySale = new DataAccessLayer.DalObjects.InventoryObjects.CategorySale();
+        } catch(SQLException ex) {
+            throw new RuntimeException("Something went wrong.");
+        }
         this.category = category;
     }
 

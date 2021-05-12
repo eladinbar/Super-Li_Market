@@ -5,7 +5,7 @@ import DataAccessLayer.DalObjects.DalObject;
 
 import java.sql.SQLException;
 
-public class agreementItemsDal extends DalObject<agreementItemsDal> {
+public class AgreementItemsDal extends DalObject<AgreementItemsDal> {
     public static final String productIdColumnName = "Product_ID";
     public static final String supplierIdColumnName = "Supplier_ID";
     public static final String productCompIdColumnName = "Product_Company_ID";
@@ -15,7 +15,7 @@ public class agreementItemsDal extends DalObject<agreementItemsDal> {
     private int productCompId;
     private double price;
 
-    public agreementItemsDal(int productId, int supplierId, int productCompId, int price) throws SQLException {
+    public AgreementItemsDal(int productId, int supplierId, int productCompId, int price) throws SQLException {
         super(AgreementItemsDalController.getInstance());
         this.productId = productId;
         this.supplierId = supplierId;
@@ -23,7 +23,7 @@ public class agreementItemsDal extends DalObject<agreementItemsDal> {
         this.price = price;
     }
 
-    public agreementItemsDal(String supplierId) throws SQLException {
+    public AgreementItemsDal(String supplierId) throws SQLException {
         super(AgreementItemsDalController.getInstance());
         this.supplierId = Integer.parseInt(supplierId);
     }

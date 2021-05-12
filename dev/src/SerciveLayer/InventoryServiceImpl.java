@@ -8,7 +8,7 @@ import SerciveLayer.Response.*;
 import SerciveLayer.Response.ResponseT;
 import SerciveLayer.SimpleObjects.*;
 import SerciveLayer.SimpleObjects.DefectEntry;
-import SerciveLayer.objects.Product;
+import SerciveLayer.Objects.Product;
 
 import java.time.LocalDate;
 import java.util.*;

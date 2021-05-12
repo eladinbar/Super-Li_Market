@@ -1,6 +1,4 @@
-package SerciveLayer.objects;
-
-import InfrastructurePackage.TextFormatter;
+package SerciveLayer.Objects;
 
 import java.util.Map;
 
@@ -15,7 +13,7 @@ public class Agreement {
         this.prices = prices;
     }
 
-    public Agreement(BusinessLayer.SupliersPackage.supplierPackage.Agreement ag) {
+    public Agreement(BusinessLayer.SuppliersPackage.SupplierPackage.Agreement ag) {
         this.prices = ag.getPrices();
         this.products = ag.getProducts();
         if (ag.getQl() == null)

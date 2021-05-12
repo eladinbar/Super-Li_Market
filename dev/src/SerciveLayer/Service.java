@@ -4,7 +4,7 @@ import InfrastructurePackage.Pair;
 import SerciveLayer.Response.Response;
 import SerciveLayer.Response.ResponseT;
 import SerciveLayer.SimpleObjects.*;
-import SerciveLayer.objects.*;
+import SerciveLayer.Objects.*;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -196,7 +196,7 @@ public class Service implements IService {
         if (cheap.errorOccurred())
             return new ResponseT<>(cheap.getErrorMessage());
         Supplier s = cheap.value;
-        ResponseT<Order> scheduledOrder = orderService.createPernamentOrder(day, s.getSc().getId(), supplierService.getSp());
+        ResponseT<Order> scheduledOrder = orderService.createPermanentOrder(day, s.getSc().getId(), supplierService.getSp());
         if (scheduledOrder.errorOccurred())
             return new ResponseT<>(cheap.getErrorMessage());
         if (scheduledOrder.value == null)
@@ -221,8 +221,8 @@ public class Service implements IService {
     }
 
     @Override
-    public ResponseT<Order> createPernamentOrder(int day, String supplierID) {
-        return orderService.createPernamentOrder(day, supplierID, supplierService.getSp());
+    public ResponseT<Order> createPermanentOrder(int day, String supplierID) {
+        return orderService.createPermanentOrder(day, supplierID, supplierService.getSp());
     }
 
 

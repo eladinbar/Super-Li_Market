@@ -1,6 +1,6 @@
 package DataAccessLayer.DalObjects.SupplierObjects;
 
-import BusinessLayer.SupliersPackage.supplierPackage.Payment;
+import BusinessLayer.SuppliersPackage.SupplierPackage.Payment;
 import DataAccessLayer.DalControllers.SupplierControllers.SupplierCardDalController;
 import DataAccessLayer.DalControllers.SupplierControllers.SupplierContactMembersDalController;
 import DataAccessLayer.DalObjects.DalObject;

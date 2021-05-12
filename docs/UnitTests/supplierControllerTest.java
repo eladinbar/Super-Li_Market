@@ -1,6 +1,6 @@
-import BusinessLayer.SupliersPackage.supplierPackage.QuantityList;
-import BusinessLayer.SupliersPackage.supplierPackage.Supplier;
-import BusinessLayer.SupliersPackage.supplierPackage.SupplierController;
+import BusinessLayer.SuppliersPackage.SupplierPackage.QuantityList;
+import BusinessLayer.SuppliersPackage.SupplierPackage.Supplier;
+import BusinessLayer.SuppliersPackage.SupplierPackage.SupplierController;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

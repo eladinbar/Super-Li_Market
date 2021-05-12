@@ -1,9 +1,7 @@
-package SerciveLayer.objects;
+package SerciveLayer.Objects;
 
 import InfrastructurePackage.TextFormatter;
 import SerciveLayer.SimpleObjects.SimpleEntity;
-
-import java.lang.reflect.Field;
 
 public class Product extends SimpleEntity {
     private int productID;

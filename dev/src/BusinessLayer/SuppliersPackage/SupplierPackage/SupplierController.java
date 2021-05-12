@@ -1,4 +1,4 @@
-package BusinessLayer.SupliersPackage.supplierPackage;
+package BusinessLayer.SuppliersPackage.SupplierPackage;
 
 import DataAccessLayer.DalObjects.SupplierObjects.SupplierCardDal;
 

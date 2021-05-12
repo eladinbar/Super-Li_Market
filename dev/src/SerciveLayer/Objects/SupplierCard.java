@@ -1,10 +1,8 @@
-package SerciveLayer.objects;
-
-import BusinessLayer.SupliersPackage.supplierPackage.SupplierCard;
+package SerciveLayer.Objects;
 
 import java.util.List;
 
-public class supplierCard extends PersonCard {
+public class SupplierCard extends PersonCard {
     private int companyNumber;
     private boolean isPernamentDays;
     private boolean selfDelivery;
@@ -12,7 +10,7 @@ public class supplierCard extends PersonCard {
     private List<String> contactMembers;
     private String address;
 
-    public supplierCard(String firstName, String lastName, String email, String id, String phone, int companyNumber, boolean isPernamentDays, boolean selfDelivery, String payment, List<String> contactMembers, String address) {
+    public SupplierCard(String firstName, String lastName, String email, String id, String phone, int companyNumber, boolean isPernamentDays, boolean selfDelivery, String payment, List<String> contactMembers, String address) {
         super(firstName, lastName, email, id, phone);
         this.companyNumber = companyNumber;
         this.isPernamentDays = isPernamentDays;
@@ -22,7 +20,7 @@ public class supplierCard extends PersonCard {
         this.address = address;
     }
 
-    public supplierCard(SupplierCard sc) {
+    public SupplierCard(BusinessLayer.SuppliersPackage.SupplierPackage.SupplierCard sc) {
         super(sc);
         this.companyNumber = sc.getCompanyNumber();
         this.isPernamentDays = sc.isPernamentDays();

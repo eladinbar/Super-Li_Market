@@ -1,7 +1,7 @@
 package InfrastructurePackage;
 
 import SerciveLayer.SimpleObjects.*;
-import SerciveLayer.objects.Product;
+import SerciveLayer.Objects.Product;
 
 import java.lang.reflect.Field;
 import java.text.SimpleDateFormat;

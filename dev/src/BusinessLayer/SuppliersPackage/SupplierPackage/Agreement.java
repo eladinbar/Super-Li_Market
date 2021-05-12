@@ -1,7 +1,7 @@
-package BusinessLayer.SupliersPackage.supplierPackage;
+package BusinessLayer.SuppliersPackage.SupplierPackage;
 
+import DataAccessLayer.DalObjects.SupplierObjects.AgreementItemsDal;
 import DataAccessLayer.DalObjects.SupplierObjects.QuantityListItemsDal;
-import DataAccessLayer.DalObjects.SupplierObjects.agreementItemsDal;
 
 import java.sql.SQLException;
 import java.util.*;
@@ -10,7 +10,7 @@ public class Agreement {
     private Map<Integer, Integer> products;
     private Map<Integer, Integer> prices;
     private QuantityList ql;
-    private Map<Integer, agreementItemsDal> dalObjects;
+    private Map<Integer, AgreementItemsDal> dalObjects;
 
     public Agreement() {
         this.ql = null;
@@ -48,7 +48,7 @@ public class Agreement {
         return qlBusiness;
     }
 
-    public Map<Integer, agreementItemsDal> getDalObjects() {
+    public Map<Integer, AgreementItemsDal> getDalObjects() {
         return dalObjects;
     }
 
@@ -185,7 +185,7 @@ public class Agreement {
     }
 
     public boolean saveItem(int itemId, String supplierId) throws SQLException {
-        dalObjects.put(itemId, new agreementItemsDal(itemId, Integer.parseInt(supplierId), products.get(itemId), prices.get(itemId)));
+        dalObjects.put(itemId, new AgreementItemsDal(itemId, Integer.parseInt(supplierId), products.get(itemId), prices.get(itemId)));
         return dalObjects.get(itemId).save();
     }
 
