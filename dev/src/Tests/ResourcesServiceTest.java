@@ -1,3 +1,4 @@
+/*
 package Tests;
 
 import Trucking.Business_Layer_Trucking.Facade.FacadeObject.ResourcesService;
@@ -146,3 +147,4 @@ class ResourcesServiceTest {
 
     }
 }
+*/
