@@ -26,7 +26,7 @@ public class ShiftService {
 
     public ResponseT<FacadeWeeklyShiftSchedule> getRecommendation(LocalDate startingDate, boolean start) throws SQLException {
         try {
-            WeeklyShiftSchedule weeklyShiftSchedule = shiftController.getRecommendation ( startingDate, start );
+            WeeklyShiftSchedule weeklyShiftSchedule = shiftController.getRecommendation ( startingDate );
             FacadeWeeklyShiftSchedule facadeWeeklyShiftSchedule = new FacadeWeeklyShiftSchedule ( weeklyShiftSchedule );
             return new ResponseT<> ( facadeWeeklyShiftSchedule );
         } catch (EmployeeException e)

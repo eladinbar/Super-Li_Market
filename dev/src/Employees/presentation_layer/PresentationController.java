@@ -82,6 +82,7 @@ public class PresentationController {
     private void uploadData() throws SQLException {
         if(!createData())
             return;
+        Menu_Printer.getInstance().putInitialTestState();
         while (!login ( false ));
     }
 
@@ -687,6 +688,7 @@ public class PresentationController {
         Response response;
         if(role.equals ( "driverC" ) || role.equals ( "driverC1" ))
         {
+            System.out.println("reached here 690");
             menuPrinter.print ( "name:" );
             String name = menuPrinter.getString ();
             response = facadeService.addDriver ( facadeEmployee, name );

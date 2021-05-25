@@ -17,6 +17,7 @@ import java.util.*;
 
 public class ShiftController {
     private static ShiftController instance = null;
+    private boolean beginning = true;
 
     private HashMap<LocalDate, WeeklyShiftSchedule> shifts;
     EmployeeController employeeController;
@@ -32,8 +33,8 @@ public class ShiftController {
         return instance;
     }
 
-    public WeeklyShiftSchedule getRecommendation(LocalDate startingDate, boolean start) throws EmployeeException, SQLException {
-        if (startingDate.isBefore ( LocalDate.now ( ) ))
+    /*public WeeklyShiftSchedule getRecommendation(LocalDate startingDate, boolean start) throws EmployeeException, SQLException {
+        if (!beginning && startingDate.isBefore ( LocalDate.now ( ) ))
             throw new EmployeeException ( "Starting date has already passed." );
         if (!start && startingDate.getDayOfWeek ( ) != DayOfWeek.SUNDAY)
             throw new EmployeeException ( "Starting date is not Sunday." );
@@ -49,6 +50,20 @@ public class ShiftController {
             output.recommendShifts ( employeeController, i );
         }
         shifts.put ( startingDate, output );
+        return output;
+    }*/
+
+    public WeeklyShiftSchedule getRecommendation(LocalDate startingDate) throws EmployeeException, SQLException {
+        if (!beginning && startingDate.isBefore ( LocalDate.now ( ) ))
+            throw new EmployeeException ( "Starting date has already passed." );
+        if (startingDate.getDayOfWeek ( ) != DayOfWeek.SUNDAY)
+            throw new EmployeeException ( "Starting date is not Sunday." );
+        if (this.shifts.containsKey ( startingDate ))
+            throw new EmployeeException ( "Weekly shift schedule is already exists in the system. \nYou can watch it and edit if you would like." );
+        WeeklyShiftSchedule output = createEmptyWeeklyShiftSchedule ( startingDate );
+        for ( int i = 0 ; i < 7 ; i++ ) {
+            output.recommendShifts ( employeeController, i );
+        }
         return output;
     }
 
@@ -135,10 +150,10 @@ public class ShiftController {
                 throw new EmployeeException ( "Shift has driver/s without having a store keeper." );
     }
 
-    public WeeklyShiftSchedule createEmptyWeeklyShiftSchedule(LocalDate startingDate, boolean start) throws EmployeeException {
-        if(!start && startingDate.isBefore ( LocalDate.now () ))
+    public WeeklyShiftSchedule createEmptyWeeklyShiftSchedule(LocalDate startingDate) throws EmployeeException {
+        if(!beginning && startingDate.isBefore ( LocalDate.now () ))
             throw new EmployeeException ( "starting day has already passed." );
-        if(! start && startingDate.getDayOfWeek () != DayOfWeek.SUNDAY)
+        if(! beginning && startingDate.getDayOfWeek () != DayOfWeek.SUNDAY)
             throw new EmployeeException ( "Starting date is not sunday." );
         return new WeeklyShiftSchedule ( startingDate );
     }
@@ -226,6 +241,22 @@ public class ShiftController {
         ShiftTypes.getInstance ().deleteRole(shiftType, role);
     }
 
+ /*   public void createData() throws EmployeeException, SQLException {
+        createShiftTypes ();
+//        LocalDate temp = LocalDate.now ().plusDays ( 7 );
+        LocalDate temp = LocalDate.now ();
+        LocalDate sunday = temp;
+        if(temp.getDayOfWeek () != DayOfWeek.SUNDAY) {
+            TemporalField field = WeekFields.of ( Locale.US ).dayOfWeek ( );
+            sunday = temp.with ( field, 1 );
+        }
+        temp = LocalDate.now();
+        if (temp.getDayOfWeek().equals(DayOfWeek.SUNDAY))
+            shifts.put(temp,getRecommendation())
+        shifts.put (sunday, getRecommendation ( sunday, true));
+        shifts.put (sunday.plusDays ( 7 ), getRecommendation ( sunday.plusDays ( 7 ), false ));
+    }*/
+
     public void createData() throws EmployeeException, SQLException {
         createShiftTypes ();
         LocalDate temp = LocalDate.now ().plusDays ( 7 );
@@ -234,8 +265,16 @@ public class ShiftController {
             TemporalField field = WeekFields.of ( Locale.US ).dayOfWeek ( );
             sunday = temp.with ( field, 1 );
         }
-        shifts.put (sunday, getRecommendation ( sunday, true));
-        shifts.put (sunday.plusDays ( 7 ), getRecommendation ( sunday.plusDays ( 7 ), false ));
+        temp = LocalDate.now ();
+        if(temp.getDayOfWeek ().equals ( DayOfWeek.SUNDAY ))
+            shifts.put ( temp, getRecommendation ( temp ) );
+        else{
+            temp = temp.minusDays ( temp.getDayOfWeek ().getValue () );
+            shifts.put ( temp, getRecommendation ( temp ) );
+        }
+        shifts.put (sunday, getRecommendation ( sunday ));
+        shifts.put (sunday.plusDays ( 7 ), getRecommendation ( sunday.plusDays ( 7 ) ));
+        beginning = false;
     }
 
     private void createShiftTypes() throws EmployeeException, SQLException {
