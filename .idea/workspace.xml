@@ -27,12 +27,8 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="05ca914f-9056-4de3-9869-7fdfaa880f2d" name="Default Changelist" comment="fixed merge problems">
-      <change afterPath="$PROJECT_DIR$/.idea/artifacts/ADSS_Group_G_jar.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/META-INF/MANIFEST.MF" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/artifacts/adss2020_v01_jar.xml" beforeDir="false" />
+    <list default="true" id="05ca914f-9056-4de3-9869-7fdfaa880f2d" name="Default Changelist" comment="fixed jar uploaded">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/release/adss2020_v02.jar" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -152,6 +148,8 @@
       <workItem from="1619330774077" duration="12857000" />
       <workItem from="1619792461374" duration="1895000" />
       <workItem from="1619794411025" duration="473000" />
+      <workItem from="1621954834281" duration="923000" />
+      <workItem from="1622799790245" duration="2408000" />
     </task>
     <task id="LOCAL-00001" summary="ID text file has been added. team ido and raz :)">
       <created>1615488571310</created>
@@ -461,7 +459,21 @@
       <option name="project" value="LOCAL" />
       <updated>1621948379647</updated>
     </task>
-    <option name="localTasksCounter" value="45" />
+    <task id="LOCAL-00045" summary="fixed jar uploaded">
+      <created>1621954867530</created>
+      <option name="number" value="00045" />
+      <option name="presentableId" value="LOCAL-00045" />
+      <option name="project" value="LOCAL" />
+      <updated>1621954867530</updated>
+    </task>
+    <task id="LOCAL-00046" summary="fixed jar uploaded">
+      <created>1621955132487</created>
+      <option name="number" value="00046" />
+      <option name="presentableId" value="LOCAL-00046" />
+      <option name="project" value="LOCAL" />
+      <updated>1621955132487</updated>
+    </task>
+    <option name="localTasksCounter" value="47" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -480,7 +492,6 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="after combine meeting." />
     <MESSAGE value="replan changed" />
     <MESSAGE value="** compilation error exist. need to add getItems in Delivery service" />
     <MESSAGE value="Facade objects has been completed" />
@@ -505,7 +516,8 @@
     <MESSAGE value="last update" />
     <MESSAGE value="push soi can checkout" />
     <MESSAGE value="fixed merge problems" />
-    <option name="LAST_COMMIT_MESSAGE" value="fixed merge problems" />
+    <MESSAGE value="fixed jar uploaded" />
+    <option name="LAST_COMMIT_MESSAGE" value="fixed jar uploaded" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
