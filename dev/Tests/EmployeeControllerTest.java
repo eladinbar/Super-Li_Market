@@ -1,10 +1,10 @@
 //package Tests;
 //
-//import Employees.EmployeeException;
-//import Employees.business_layer.Employee.EmployeeController;
-//import Employees.business_layer.facade.facadeObject.FacadeBankAccountInfo;
-//import Employees.business_layer.facade.facadeObject.FacadeEmployee;
-//import Employees.business_layer.facade.facadeObject.FacadeTermsOfEmployment;
+//import BusinessLayer.EmployeePackage.EmployeeException;
+//import BusinessLayer.EmployeePackage.Employee.EmployeeController;
+//import BusinessLayer.EmployeePackage.facade.facadeObject.FacadeBankAccountInfo;
+//import BusinessLayer.EmployeePackage.facade.facadeObject.FacadeEmployee;
+//import BusinessLayer.EmployeePackage.facade.facadeObject.FacadeTermsOfEmployment;
 //import org.junit.After;
 //import org.junit.jupiter.api.AfterEach;
 //import org.junit.jupiter.api.BeforeEach;

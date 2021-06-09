@@ -1,6 +1,6 @@
 package DataAccessLayer.DalControllers.SupplierControllers;
 
-import DataAccessLayer.DalControllers.DalController;
+import DataAccessLayer.DalControllers.DalController$;
 import DataAccessLayer.DalControllers.InventoryControllers.ItemDalController;
 import DataAccessLayer.DalObjects.InventoryObjects.Item;
 import DataAccessLayer.DalObjects.SupplierObjects.OrderDal;
@@ -9,7 +9,7 @@ import DataAccessLayer.DalObjects.SupplierObjects.ProductsInOrderDal;
 import java.sql.*;
 import java.util.List;
 
-public class ProductsInOrderDalController extends DalController<ProductsInOrderDal> {
+public class ProductsInOrderDalController extends DalController$<ProductsInOrderDal> {
     private static ProductsInOrderDalController instance = null;
     public final static String PRODUCTS_IN_ORDER_TABLE_NAME = "Products_In_Order";
 

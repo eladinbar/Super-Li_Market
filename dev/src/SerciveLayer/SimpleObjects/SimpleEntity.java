@@ -1,10 +1,10 @@
 package SerciveLayer.SimpleObjects;
 
-import PresentationLayer.Menu;
+import PresentationLayer.Menu$;
 
 public abstract class SimpleEntity {
 
-    public void printMe(Menu m){
+    public void printMe(Menu$ m){
         m.printEntity(this);
     }
 }

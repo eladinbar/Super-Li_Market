@@ -1,6 +1,6 @@
 package DataAccessLayer.DalControllers.InventoryControllers;
 
-import DataAccessLayer.DalControllers.DalController;
+import DataAccessLayer.DalControllers.DalController$;
 import DataAccessLayer.DalObjects.InventoryObjects.Category;
 import DataAccessLayer.DalObjects.InventoryObjects.Item;
 
@@ -9,7 +9,7 @@ import java.util.List;
 
 import static DataAccessLayer.DalControllers.InventoryControllers.CategoryDalController.CATEGORY_TABLE_NAME;
 
-public class ItemDalController extends DalController<Item> {
+public class ItemDalController extends DalController$<Item> {
     private static ItemDalController instance = null;
     public final static String ITEM_TABLE_NAME = "Items";
 

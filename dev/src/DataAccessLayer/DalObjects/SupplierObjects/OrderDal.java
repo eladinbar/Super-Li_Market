@@ -2,12 +2,12 @@ package DataAccessLayer.DalObjects.SupplierObjects;
 
 import DataAccessLayer.DalControllers.SupplierControllers.OrderDalController;
 import DataAccessLayer.DalControllers.SupplierControllers.ProductsInOrderDalController;
-import DataAccessLayer.DalObjects.DalObject;
+import DataAccessLayer.DalObjects.DalObject$;
 
 import java.sql.SQLException;
 import java.time.LocalDate;
 
-public class OrderDal extends DalObject<OrderDal> {
+public class OrderDal extends DalObject$<OrderDal> {
     public static final String orderIdColumnName = "Order_ID";
     public static final String supplierIdColumnName = "Supplier_ID";
     public static final String dateColumnName = "Date";

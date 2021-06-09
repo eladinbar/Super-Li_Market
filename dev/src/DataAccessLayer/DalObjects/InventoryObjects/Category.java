@@ -1,11 +1,11 @@
 package DataAccessLayer.DalObjects.InventoryObjects;
 
 import DataAccessLayer.DalControllers.InventoryControllers.CategoryDalController;
-import DataAccessLayer.DalObjects.DalObject;
+import DataAccessLayer.DalObjects.DalObject$;
 
 import java.sql.SQLException;
 
-public class Category extends DalObject<Category> {
+public class Category extends DalObject$<Category> {
     public static final String categoryNameColumnName = "Name"; //Primary Key
     public static final String parentNameColumnName = "ParentName";
 

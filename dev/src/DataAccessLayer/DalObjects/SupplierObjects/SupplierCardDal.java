@@ -3,12 +3,12 @@ package DataAccessLayer.DalObjects.SupplierObjects;
 import BusinessLayer.SuppliersPackage.SupplierPackage.Payment;
 import DataAccessLayer.DalControllers.SupplierControllers.SupplierCardDalController;
 import DataAccessLayer.DalControllers.SupplierControllers.SupplierContactMembersDalController;
-import DataAccessLayer.DalObjects.DalObject;
+import DataAccessLayer.DalObjects.DalObject$;
 
 import java.sql.SQLException;
 import java.util.List;
 
-public class SupplierCardDal extends DalObject<SupplierCardDal> {
+public class SupplierCardDal extends DalObject$<SupplierCardDal> {
     public static final String supplierIdColumnName = "Supplier_ID";
     public static final String companyNumberColumnName = "Company_Number";
     public static final String isPermanentDaysColumnName = "Is_Permanent_Days";

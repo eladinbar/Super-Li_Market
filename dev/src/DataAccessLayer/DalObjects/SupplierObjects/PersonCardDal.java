@@ -1,11 +1,11 @@
 package DataAccessLayer.DalObjects.SupplierObjects;
 
 import DataAccessLayer.DalControllers.SupplierControllers.PersonCardDalController;
-import DataAccessLayer.DalObjects.DalObject;
+import DataAccessLayer.DalObjects.DalObject$;
 
 import java.sql.SQLException;
 
-public class PersonCardDal extends DalObject<PersonCardDal> {
+public class PersonCardDal extends DalObject$<PersonCardDal> {
     public static final String idColumnName = "ID";
     public static final String firstNameColumnName = "First_Name";
     public static final String lastNameColumnName = "Last_Name";

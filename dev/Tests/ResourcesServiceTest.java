@@ -1,9 +1,9 @@
 //package Tests;
 //
-//import Trucking.Business_Layer_Trucking.Facade.FacadeObject.ResourcesService;
-//import Trucking.Business_Layer_Trucking.Resources.Driver;
-//import Trucking.Business_Layer_Trucking.Resources.ResourcesController;
-//import Trucking.Business_Layer_Trucking.Resources.Truck;
+//import BusinessLayer.TruckingPackage.Facade.FacadeObject.ResourcesService;
+//import BusinessLayer.TruckingPackage.Resources.Driver;
+//import BusinessLayer.TruckingPackage.Resources.ResourcesController;
+//import BusinessLayer.TruckingPackage.Resources.Truck;
 //import org.junit.jupiter.api.*;
 //
 //import java.util.HashMap;

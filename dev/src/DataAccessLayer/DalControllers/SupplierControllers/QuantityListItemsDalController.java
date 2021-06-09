@@ -1,6 +1,6 @@
 package DataAccessLayer.DalControllers.SupplierControllers;
 
-import DataAccessLayer.DalControllers.DalController;
+import DataAccessLayer.DalControllers.DalController$;
 import DataAccessLayer.DalControllers.InventoryControllers.ItemDalController;
 import DataAccessLayer.DalObjects.InventoryObjects.Item;
 import DataAccessLayer.DalObjects.SupplierObjects.QuantityListItemsDal;
@@ -9,7 +9,7 @@ import DataAccessLayer.DalObjects.SupplierObjects.SupplierCardDal;
 import java.sql.*;
 import java.util.List;
 
-public class QuantityListItemsDalController extends DalController<QuantityListItemsDal> {
+public class QuantityListItemsDalController extends DalController$<QuantityListItemsDal> {
     private static QuantityListItemsDalController instance = null;
     public final static String QUANTITY_LIST_ITEMS_TABLE_NAME = "Quantity_List_Items";
 

@@ -1,6 +1,6 @@
 package DataAccessLayer.DalControllers.SupplierControllers;
 
-import DataAccessLayer.DalControllers.DalController;
+import DataAccessLayer.DalControllers.DalController$;
 import DataAccessLayer.DalControllers.InventoryControllers.ItemDalController;
 import DataAccessLayer.DalObjects.InventoryObjects.Item;
 import DataAccessLayer.DalObjects.SupplierObjects.SupplierCardDal;
@@ -9,7 +9,7 @@ import DataAccessLayer.DalObjects.SupplierObjects.AgreementItemsDal;
 import java.sql.*;
 import java.util.List;
 
-public class AgreementItemsDalController extends DalController<AgreementItemsDal> {
+public class AgreementItemsDalController extends DalController$<AgreementItemsDal> {
     private static AgreementItemsDalController instance = null;
     public final static String AGREEMENT_ITEMS_TABLE_NAME = "Agreement_Items";
 

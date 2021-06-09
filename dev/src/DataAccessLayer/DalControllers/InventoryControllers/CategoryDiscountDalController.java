@@ -1,6 +1,6 @@
 package DataAccessLayer.DalControllers.InventoryControllers;
 
-import DataAccessLayer.DalControllers.DalController;
+import DataAccessLayer.DalControllers.DalController$;
 import DataAccessLayer.DalObjects.InventoryObjects.Category;
 import DataAccessLayer.DalObjects.InventoryObjects.CategoryDiscount;
 import DataAccessLayer.DalObjects.SupplierObjects.SupplierCardDal;
@@ -11,7 +11,7 @@ import java.util.List;
 import static DataAccessLayer.DalControllers.InventoryControllers.CategoryDalController.CATEGORY_TABLE_NAME;
 import static DataAccessLayer.DalControllers.SupplierControllers.SupplierCardDalController.SUPPLIER_CARD_TABLE_NAME;
 
-public class CategoryDiscountDalController extends DalController<CategoryDiscount> {
+public class CategoryDiscountDalController extends DalController$<CategoryDiscount> {
     private static CategoryDiscountDalController instance = null;
     final static String CATEGORY_DISCOUNT_TABLE_NAME = "Category_Discounts";
 

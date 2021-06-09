@@ -1,6 +1,6 @@
 package DataAccessLayer.DalControllers.InventoryControllers;
 
-import DataAccessLayer.DalControllers.DalController;
+import DataAccessLayer.DalControllers.DalController$;
 import DataAccessLayer.DalObjects.InventoryObjects.Item;
 import DataAccessLayer.DalObjects.InventoryObjects.ItemSale;
 
@@ -8,7 +8,7 @@ import java.sql.*;
 
 import static DataAccessLayer.DalControllers.InventoryControllers.ItemDalController.ITEM_TABLE_NAME;
 
-public class ItemSaleDalController extends DalController<ItemSale> {
+public class ItemSaleDalController extends DalController$<ItemSale> {
     private static ItemSaleDalController instance = null;
     public final static String ITEM_SALE_TABLE_NAME = "Item_Sales";
 

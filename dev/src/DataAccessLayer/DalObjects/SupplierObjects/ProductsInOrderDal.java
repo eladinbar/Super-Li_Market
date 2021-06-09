@@ -1,11 +1,11 @@
 package DataAccessLayer.DalObjects.SupplierObjects;
 
 import DataAccessLayer.DalControllers.SupplierControllers.ProductsInOrderDalController;
-import DataAccessLayer.DalObjects.DalObject;
+import DataAccessLayer.DalObjects.DalObject$;
 
 import java.sql.SQLException;
 
-public class ProductsInOrderDal extends DalObject<ProductsInOrderDal> {
+public class ProductsInOrderDal extends DalObject$<ProductsInOrderDal> {
     public static final String productIdColumnName = "Product_Id";
     public static final String orderIdColumnName = "Order_Id";
     public static final String amountColumnName = "Amount";

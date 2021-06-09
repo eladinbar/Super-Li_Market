@@ -1,6 +1,6 @@
 package DataAccessLayer.DalControllers.InventoryControllers;
 
-import DataAccessLayer.DalControllers.DalController;
+import DataAccessLayer.DalControllers.DalController$;
 import DataAccessLayer.DalObjects.InventoryObjects.*;
 
 import java.sql.*;
@@ -8,7 +8,7 @@ import java.util.List;
 
 import static DataAccessLayer.DalControllers.InventoryControllers.ItemDalController.ITEM_TABLE_NAME;
 
-public class DefectEntryDalController extends DalController<DefectEntry> {
+public class DefectEntryDalController extends DalController$<DefectEntry> {
     private static DefectEntryDalController instance = null;
     public final static String DEFECT_ENTRY_TABLE_NAME = "Defect_Entries";
 
