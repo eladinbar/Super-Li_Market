@@ -1,7 +1,7 @@
-package BusinessLayer.TruckingPackage.Facade.FacadeObject;
+package SerciveLayer.SimpleObjects;
 
-import BusinessLayer.TruckingPackage.ResourcesPackage.Truck;
-
+import BusinessLayer.TruckingPackage.DeliveryPackage.*;
+import BusinessLayer.TruckingPackage.ResourcesPackage.*;
 public class FacadeTruck implements FacadeObject{
     private String model;
     private  String licenseNumber;

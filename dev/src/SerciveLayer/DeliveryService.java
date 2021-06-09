@@ -1,7 +1,10 @@
-package BusinessLayer.TruckingPackage.Facade;
+package SerciveLayer;
 
+import SerciveLayer.SimpleObjects.FacadeDeliveryForm;
+import SerciveLayer.SimpleObjects.FacadeDemand;
+import SerciveLayer.SimpleObjects.FacadeTruckingReport;
 import BusinessLayer.TruckingPackage.DeliveryPackage.*;
-import BusinessLayer.TruckingPackage.Facade.FacadeObject.*;
+import BusinessLayer.TruckingPackage.ResourcesPackage.*;
 
 import javax.management.openmbean.KeyAlreadyExistsException;
 import java.sql.SQLException;

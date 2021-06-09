@@ -1,7 +1,7 @@
-package BusinessLayer.TruckingPackage.Facade.FacadeObject;
+package SerciveLayer.SimpleObjects;
 
-import BusinessLayer.TruckingPackage.ResourcesPackage.Driver;
-
+import BusinessLayer.TruckingPackage.DeliveryPackage.*;
+import BusinessLayer.TruckingPackage.ResourcesPackage.*;
 public class FacadeDriver {
     private  String ID;
     private String name;

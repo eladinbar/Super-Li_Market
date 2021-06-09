@@ -1,7 +1,6 @@
-package BusinessLayer.TruckingPackage.Facade.FacadeObject;
-
-import BusinessLayer.TruckingPackage.DeliveryPackage.Demand;
-
+package SerciveLayer.SimpleObjects;
+import BusinessLayer.TruckingPackage.DeliveryPackage.*;
+import BusinessLayer.TruckingPackage.ResourcesPackage.*;
 public class FacadeDemand {
     private int itemID;
     private int site;

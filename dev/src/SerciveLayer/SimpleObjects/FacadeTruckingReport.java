@@ -1,7 +1,7 @@
-package BusinessLayer.TruckingPackage.Facade.FacadeObject;
+package SerciveLayer.SimpleObjects;
 
-import BusinessLayer.TruckingPackage.DeliveryPackage.TruckingReport;
-
+import BusinessLayer.TruckingPackage.DeliveryPackage.*;
+import BusinessLayer.TruckingPackage.ResourcesPackage.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.LinkedList;

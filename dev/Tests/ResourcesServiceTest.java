@@ -1,6 +1,6 @@
 //package Tests;
 //
-//import BusinessLayer.TruckingPackage.Facade.FacadeObject.ResourcesService;
+//import SerciveLayer.ResourcesService;
 //import BusinessLayer.TruckingPackage.Resources.Driver;
 //import BusinessLayer.TruckingPackage.Resources.ResourcesController;
 //import BusinessLayer.TruckingPackage.Resources.Truck;

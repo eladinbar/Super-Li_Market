@@ -1,8 +1,9 @@
-package BusinessLayer.TruckingPackage.Facade;
+package SerciveLayer;
 
+import BusinessLayer.TruckingPackage.DeliveryPackage.*;
+import BusinessLayer.TruckingPackage.ResourcesPackage.*;
+import SerciveLayer.SimpleObjects.*;
 
-import BusinessLayer.TruckingPackage.Facade.FacadeObject.*;
-import BusinessLayer.TruckingPackage.ResourcesPackage.Driver;
 import javax.management.openmbean.KeyAlreadyExistsException;
 import java.sql.SQLException;
 import java.time.LocalDate;
@@ -12,21 +13,21 @@ import java.util.InputMismatchException;
 import java.util.LinkedList;
 import java.util.NoSuchElementException;
 
-public class FacadeService {
+public class TruckingService {
     private DeliveryService deliveryService;
     private ResourcesService resourcesService;
     private FacadeTruckingReport currTR;
-    private static FacadeService instance = null;
+    private static TruckingService instance = null;
 
 
-    private FacadeService() {
+    private TruckingService() {
         deliveryService = DeliveryService.getInstance();
         resourcesService = ResourcesService.getInstance();
     }
 
-    public static FacadeService getInstance() {
+    public static TruckingService getInstance() {
         if (instance == null)
-            instance = new FacadeService();
+            instance = new TruckingService();
         return instance;
     }
 

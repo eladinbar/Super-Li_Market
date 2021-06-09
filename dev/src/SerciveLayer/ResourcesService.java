@@ -1,8 +1,6 @@
-package BusinessLayer.TruckingPackage.Facade.FacadeObject;
-
-import BusinessLayer.TruckingPackage.ResourcesPackage.Driver;
-import BusinessLayer.TruckingPackage.ResourcesPackage.ResourcesController;
-import BusinessLayer.TruckingPackage.ResourcesPackage.Truck;
+package SerciveLayer;
+import BusinessLayer.TruckingPackage.DeliveryPackage.*;
+import BusinessLayer.TruckingPackage.ResourcesPackage.*;
 
 import javax.management.openmbean.KeyAlreadyExistsException;
 import java.sql.SQLException;

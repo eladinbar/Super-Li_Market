@@ -6,6 +6,7 @@ import BusinessLayer.EmployeePackage.Facade.FacadeObject.FacadeConstraint;
 import BusinessLayer.EmployeePackage.Facade.FacadeObject.FacadeEmployee;
 import BusinessLayer.EmployeePackage.Facade.FacadeObject.FacadeShift;
 import BusinessLayer.EmployeePackage.Facade.FacadeObject.FacadeWeeklyShiftSchedule;
+import SerciveLayer.TruckingService;
 
 import java.sql.SQLException;
 import java.time.LocalDate;
@@ -153,7 +154,7 @@ public class FacadeService {
         shiftService.loadData();
         try {
             Boolean b = employeeService.loadData();
-            BusinessLayer.TruckingPackage.Facade.FacadeService.getInstance ().upload ();
+            TruckingService.getInstance ().upload ();
             return new ResponseT<> ( b );
         }catch (EmployeeException e){
             return new ResponseT<> ( e.getMessage () );

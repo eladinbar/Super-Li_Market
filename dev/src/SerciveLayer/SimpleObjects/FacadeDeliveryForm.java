@@ -1,6 +1,7 @@
-package BusinessLayer.TruckingPackage.Facade.FacadeObject;
+package SerciveLayer.SimpleObjects;
 
-import BusinessLayer.TruckingPackage.DeliveryPackage.DeliveryForm;
+import BusinessLayer.TruckingPackage.DeliveryPackage.*;
+import BusinessLayer.TruckingPackage.ResourcesPackage.*;
 
 import java.util.HashMap;
 import java.util.Map;

@@ -226,7 +226,7 @@ public class DeliveryController {
 
     public boolean addSite(String city, int deliveryArea, String phoneNumber, String contactName, String name) throws SQLException {
 
-        Site newSite = new Site(lastSiteID, city, deliveryArea, phoneNumber, contactName, name);
+//        Site newSite = new Site(lastSiteID, city, deliveryArea, phoneNumber, contactName, name);
 
         sites.put(lastSiteID, newSite);
         lastSiteID++;

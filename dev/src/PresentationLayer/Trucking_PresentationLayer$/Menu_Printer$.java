@@ -1,7 +1,7 @@
 package PresentationLayer.Trucking_PresentationLayer$;
 
-import BusinessLayer.TruckingPackage.Facade.FacadeObject.*;
 import BusinessLayer.TruckingPackage.ResourcesPackage.Driver;
+import SerciveLayer.SimpleObjects.*;
 
 import javax.management.openmbean.KeyAlreadyExistsException;
 import java.sql.SQLException;
