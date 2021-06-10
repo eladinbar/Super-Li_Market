@@ -3,7 +3,7 @@ package DataAccessLayer.DalObjects.TruckingObjects;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
-public class DalTruckingReport implements DalObject$ {
+public class DalTruckingReport  {
     private int ID;
     private LocalTime leavingHour;
     private LocalDate date;
