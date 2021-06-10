@@ -1,9 +1,16 @@
 package ServiceLayer;
 
+import BusinessLayer.SuppliersPackage.OrderPackage.Order;
+import BusinessLayer.TruckingPackage.DeliveryPackage.Demand;
+import BusinessLayer.TruckingPackage.DeliveryPackage.TruckingReport;
 import BusinessLayer.TruckingPackage.ResourcesPackage.*;
+import InfrastructurePackage.Pair;
+import PresentationLayer.TruckingPresentationController;
 import ServiceLayer.FacadeObjects.*;
+import ServiceLayer.Response.ResponseT;
 
 import javax.management.openmbean.KeyAlreadyExistsException;
+import javax.swing.text.ParagraphView;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -30,7 +37,140 @@ public class TruckingService {
         return instance;
     }
 
-    public void createTruckingReport() throws SQLException {
+
+    /**
+     * this method receives an Order and returns and Linked List of items that couldn't been delivered
+     * ->  if an item couldn't been delivered, it will be stored in the demands map. will be
+     * set to a delivery as soon as a new shift will we set.
+     * delivery set priority:
+     * 1.this week, existing deliveries
+     * 2.this week, new deliveries
+     * 3.add a driver to an existing shift this week (will also alert the Manager)
+     * 4.next week's existing TR -> alerts logistics manager
+     * 5. next week's new TR -> alerts logistics manager
+     *
+     * @return List of pairs, item and its amount, only item that couldn't been delivered
+     */
+    public ResponseT<  LinkedList<Pair<Integer, Integer>> > addDemand(Order order) {
+
+        throw new UnsupportedOperationException();
+    }
+
+    public ResponseT<  LinkedList<Pair<Integer, Integer>> > addPermanentDemand(Order order) {
+        throw new UnsupportedOperationException();
+    }
+
+
+    public ResponseT< LinkedList<String> > getNotifications(){
+        throw new UnsupportedOperationException();
+    }
+
+    public ResponseT<  LinkedList<FacadeDriver> >getDrivers(){
+        throw new UnsupportedOperationException();
+    }
+
+    public ResponseT< LinkedList<FacadeTruck> > getTrucks(){
+        ResponseT<Driver> d;
+
+        throw new UnsupportedOperationException();
+    }
+
+    public ResponseT<  LinkedList<FacadeDemand> > getDemands(){
+        throw new UnsupportedOperationException();
+    }
+
+    public ResponseT<  LinkedList<FacadeTruckingReport> > showActiveTruckingReports(){
+        throw new UnsupportedOperationException();
+    }
+
+    public ResponseT<  LinkedList<FacadeTruckingReport > showOldTruckingReports(){
+        throw new UnsupportedOperationException();
+    }
+
+    /**
+     *
+     * @return all the trucking reports waiting for approval
+     */
+    public ResponseT<  LinkedList<FacadeTruckingReport> > getWaitingTruckingReports(){
+        throw new UnsupportedOperationException();
+    }
+
+    public void addTruck(String model, String licenseNumber, int weightNeto, int maxWeight) throws KeyAlreadyExistsException, SQLException {
+        resourcesService.addTruck(model, licenseNumber, weightNeto, maxWeight);
+    }
+
+    public boolean approveTruckReport(Integer trID){
+        throw new UnsupportedOperationException();
+    }
+    public ResponseT< FacadeTruckingReport> getTruckingReport(int id){
+        throw new UnsupportedOperationException();
+    }
+    public ResponseT< FacadeDeliveryForm> getDeliveryForm(int id){
+        throw new UnsupportedOperationException();
+    }
+
+
+    private void insertToExistingTR(Order order, LinkedList<FacadeTruckingReport> reports){
+        throw new UnsupportedOperationException();
+    }
+
+    private int getMaxWeight(FacadeTruckingReport tr){
+        throw new UnsupportedOperationException();
+
+    }
+
+    /**
+     *      this method created new Trucking reports for the received items.
+     *      preferably sorted by delivery area
+     *      if not possible-> add new drivers to shift
+     *      only for the next 7 days
+     *
+     * @param items -> pair is < < ItemID, DeliveryArea>, amount>
+     *
+     * @return < left items ,LinkedList of the created TruckingReports>>
+     */
+    private Pair<HashMap<Pair<Integer, Integer>, Integer> ,LinkedList<FacadeTruckingReport>>
+    createReportsThisWeek(HashMap<Pair<Integer, Integer>, Integer> items ){
+        throw new UnsupportedOperationException();
+    }
+
+    private Pair<HashMap<Pair<Integer, Integer>, Integer> ,LinkedList<FacadeTruckingReport>>
+    createReportsEveryWeek(HashMap<Pair<Integer, Integer>, Integer> items ){
+        throw new UnsupportedOperationException();
+    }
+
+    private  HashMap<LocalDate, HashMap<Integer, LinkedList<String>>> getDaysAndDrivers() throws IllegalArgumentException {
+        return resourcesService.getDayAndDrivers();
+    }
+
+    private void handleLeftOvers() {
+        throw new UnsupportedOperationException();
+    }
+
+    /**
+     * this mehtod check whether we can deliver the whole order in the wanted date. checks by overall weight
+     * to the day's overall weight
+     * @param order already has the wanted date
+     * @return true if can, false if cannot
+     */
+    private boolean canAddFullOrder(Order order){
+
+        throw new UnsupportedOperationException();
+    }
+
+    private int getDayLeftWeight(LocalDate date){
+        throw new UnsupportedOperationException();
+    }
+
+
+
+
+
+
+
+
+
+  /*  public void createTruckingReport() throws SQLException {
         int id = deliveryService.createTruckingReport();
         currTR = new FacadeTruckingReport(id);
 
@@ -240,14 +380,14 @@ public class TruckingService {
 
         if (deliveryService.checkIfAllCompleted(trID)) {
             FacadeTruckingReport truckingReport = deliveryService.getTruckReport(trID);
-    /*         resourcesService.makeAvailable_Driver(truckingReport.getDriverID());
-             resourcesService.makeAvailable_Truck(truckingReport.getTruckNumber());*/
+    *//*         resourcesService.makeAvailable_Driver(truckingReport.getDriverID());
+             resourcesService.makeAvailable_Truck(truckingReport.getTruckNumber());*//*
             deliveryService.archive(trID);
 
         }
     }
 
-/*
+*//*
     public void replaceTruck(int trid, String truckNumber, int weight) throws IllegalStateException,IllegalArgumentException,ProviderMismatchException{
         FacadeTruckingReport ftr=getTruckReport(trid);
         String old_truck=ftr.getTruckNumber();
@@ -286,7 +426,7 @@ public class TruckingService {
         resourcesService.replaceTruck(old_truck,truckNumber);
 
 
-    }*/
+    }*//*
 
     public int getSiteDeliveryArea(int site) {
         return deliveryService.getSiteDeliveryArea(site);
@@ -368,8 +508,8 @@ public class TruckingService {
         int replacedId = deliveryService.moveDemandsFromCurrentToReport(tr);
         FacadeTruckingReport replaced = deliveryService.getTruckReport(replacedId);
         // TODO need to check why it is here
-  /*      resourcesService.makeUnavailable_Driver(replaced.getDriverID());
-        resourcesService.makeUnavailable_Truck(replaced.getTruckNumber());*/
+  *//*      resourcesService.makeUnavailable_Driver(replaced.getDriverID());
+        resourcesService.makeUnavailable_Truck(replaced.getTruckNumber());*//*
 
     }
 
@@ -381,8 +521,8 @@ public class TruckingService {
         if (fd.getLicenseType().getSize() < (weight + ft.getWeightNeto()))
             throw new InputMismatchException("the driver cannot drive with this weight");
         // TODO need to check why its here
-      /*  resourcesService.makeUnavailable_Truck(truckNumber);
-        resourcesService.makeUnavailable_Driver(driverID);*/
+      *//*  resourcesService.makeUnavailable_Truck(truckNumber);
+        resourcesService.makeUnavailable_Driver(driverID);*//*
 
         deliveryService.setNewTruckToTR(tr.getID(), truckNumber);
         deliveryService.setNewDriverToTR(tr.getID(), driverID);
@@ -465,7 +605,7 @@ public class TruckingService {
         HashMap driver_cons =  deliveryService.getDriverConstraintsFromUpload();
         HashMap trucks_cons = deliveryService.getTruckConstraintsFromUpload();
         resourcesService.upload(driver_cons,trucks_cons);
-    }
+    }*/
 }
 
 

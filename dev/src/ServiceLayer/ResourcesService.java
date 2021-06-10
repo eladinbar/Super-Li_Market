@@ -1,5 +1,6 @@
 package ServiceLayer;
 import BusinessLayer.TruckingPackage.ResourcesPackage.*;
+import InfrastructurePackage.Pair;
 import ServiceLayer.FacadeObjects.FacadeDriver;
 import ServiceLayer.FacadeObjects.FacadeTruck;
 
@@ -27,7 +28,21 @@ public class ResourcesService {
         return instance;
     }
 
+    public HashMap<LocalDate, HashMap<Integer, LinkedList<String>>> getDayAndDrivers() throws IllegalArgumentException {
+        return rc.getDaysAndDrivers();
+    }
 
+    public Pair<FacadeDriver, Truck> getDriverAndTruckForDate(LocalDate date){
+        throw new UnsupportedOperationException();
+    }
+
+    // TODO - this method also need to call "addDriverToShift" if found.
+    //  as well as alerts to the Manager
+    public Pair<FacadeDriver, Truck> findDriverAndTruckForDate(LocalDate date){
+        throw new UnsupportedOperationException();
+    }
+
+/*
     public Truck chooseTruck(String truck,LocalDate date, int shift) throws NoSuchElementException, IllegalStateException {
 
         return rc.chooseTruck(truck,date,shift);
@@ -89,9 +104,6 @@ public class ResourcesService {
 
     }
 
-    public HashMap<LocalDate, HashMap<Integer, LinkedList<String>>> getDayAndDrivers() throws IllegalArgumentException {
-        return rc.getDaysAndDrivers();
-    }
 
     public LinkedList<FacadeTruck> getAvailableTrucks(LocalDate date, int shift) {
         LinkedList<Truck> trucks = rc.getAvailableTrucks(date, shift);
@@ -129,7 +141,7 @@ public class ResourcesService {
 
     public void upload(HashMap driver_cons, HashMap trucks_cons) throws SQLException {
         rc.upload(driver_cons, trucks_cons);
-    }
+    }*/
 }
 
 /*
