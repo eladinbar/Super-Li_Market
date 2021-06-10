@@ -1,5 +1,6 @@
 package ServiceLayer;
 
+import BusinessLayer.Notification;
 import BusinessLayer.SuppliersPackage.OrderPackage.Order;
 import BusinessLayer.TruckingPackage.DeliveryPackage.Demand;
 import BusinessLayer.TruckingPackage.DeliveryPackage.TruckingReport;
@@ -61,7 +62,7 @@ public class TruckingService {
     }
 
 
-    public ResponseT< LinkedList<String> > getNotifications(){
+    public ResponseT< LinkedList<Notification> > getNotifications(){
         throw new UnsupportedOperationException();
     }
 
@@ -98,6 +99,12 @@ public class TruckingService {
     public void addTruck(String model, String licenseNumber, int weightNeto, int maxWeight) throws KeyAlreadyExistsException, SQLException {
         resourcesService.addTruck(model, licenseNumber, weightNeto, maxWeight);
     }
+    public void managerApproveTruckReport(Integer trID){
+        throw new UnsupportedOperationException();
+    }
+    public void managerCancelTruckReport(Integer trID){
+        throw new UnsupportedOperationException();
+    }
 
     public boolean approveTruckReport(Integer trID){
         throw new UnsupportedOperationException();
@@ -106,6 +113,9 @@ public class TruckingService {
         throw new UnsupportedOperationException();
     }
     public ResponseT< FacadeDeliveryForm> getDeliveryForm(int id){
+        throw new UnsupportedOperationException();
+    }
+    public void handleLeftOvers() {
         throw new UnsupportedOperationException();
     }
 
@@ -143,9 +153,6 @@ public class TruckingService {
         return resourcesService.getDayAndDrivers();
     }
 
-    private void handleLeftOvers() {
-        throw new UnsupportedOperationException();
-    }
 
     /**
      * this mehtod check whether we can deliver the whole order in the wanted date. checks by overall weight
@@ -162,6 +169,7 @@ public class TruckingService {
         throw new UnsupportedOperationException();
     }
 
+    private void createNotification(String content){throw new UnsupportedOperationException();}
 
 
 
