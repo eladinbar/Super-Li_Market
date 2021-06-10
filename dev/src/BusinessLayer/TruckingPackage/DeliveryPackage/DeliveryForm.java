@@ -1,6 +1,7 @@
 package BusinessLayer.TruckingPackage.DeliveryPackage;
 
 import DataAccessLayer.DalObjects.TruckingObjects.DalDeliveryForm;
+import InfrastructurePackage.Pair;
 
 import java.sql.SQLException;
 import java.util.HashMap;

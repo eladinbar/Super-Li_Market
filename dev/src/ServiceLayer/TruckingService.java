@@ -1,5 +1,6 @@
 package ServiceLayer;
 
+import BusinessLayer.InventoryPackage.Item;
 import BusinessLayer.Notification;
 import BusinessLayer.SuppliersPackage.OrderPackage.Order;
 import BusinessLayer.TruckingPackage.DeliveryPackage.Demand;
@@ -44,20 +45,26 @@ public class TruckingService {
      * ->  if an item couldn't been delivered, it will be stored in the demands map. will be
      * set to a delivery as soon as a new shift will we set.
      * delivery set priority:
-     * 1.this week, existing deliveries
-     * 2.this week, new deliveries
-     * 3.add a driver to an existing shift this week (will also alert the Manager)
-     * 4.next week's existing TR -> alerts logistics manager
-     * 5. next week's new TR -> alerts logistics manager
-     *
+     * 1.   next 7 days, existing deliveries
+     * 2.   this week, new deliveries
+     * 3.   add a driver to an existing shift this week (will also alert the Employee Manager)
+     * 4.   next week's existing TR -> alerts Trucking manager
+     * 5.   next week's new TR -> alerts Trucking manager
+     * 6.   adds to the Demands list
      * @return List of pairs, item and its amount, only item that couldn't been delivered
      */
-    public ResponseT<  LinkedList<Pair<Integer, Integer>> > addDemand(Order order) {
+    public ResponseT<  LinkedList<Pair<Integer, Integer>> > addOrder(Order order) {
 
         throw new UnsupportedOperationException();
     }
 
-    public ResponseT<  LinkedList<Pair<Integer, Integer>> > addPermanentDemand(Order order) {
+    /**
+     * this order must been done in a specific day. all of it
+     * if fails, deliveries none of it
+     * @param order
+     * @return true if succeeded, false other wise
+     */
+    public boolean addPermanentOrder(Order order) {
         throw new UnsupportedOperationException();
     }
 
@@ -71,7 +78,6 @@ public class TruckingService {
     }
 
     public ResponseT< LinkedList<FacadeTruck> > getTrucks(){
-        ResponseT<Driver> d;
 
         throw new UnsupportedOperationException();
     }
@@ -84,17 +90,16 @@ public class TruckingService {
         throw new UnsupportedOperationException();
     }
 
-    public ResponseT<  LinkedList<FacadeTruckingReport > showOldTruckingReports(){
+
+    public ResponseT<  LinkedList<FacadeTruckingReport> > showWaitingTruckingReports(){
         throw new UnsupportedOperationException();
     }
 
-    /**
-     *
-     * @return all the trucking reports waiting for approval
-     */
-    public ResponseT<  LinkedList<FacadeTruckingReport> > getWaitingTruckingReports(){
+
+    public ResponseT<  LinkedList<FacadeTruckingReport >> showOldTruckingReports(){
         throw new UnsupportedOperationException();
     }
+
 
     public void addTruck(String model, String licenseNumber, int weightNeto, int maxWeight) throws KeyAlreadyExistsException, SQLException {
         resourcesService.addTruck(model, licenseNumber, weightNeto, maxWeight);
@@ -105,29 +110,45 @@ public class TruckingService {
     public void managerCancelTruckReport(Integer trID){
         throw new UnsupportedOperationException();
     }
+    // TODO - employees should call this function
+    public void handleLeftOvers() {
+        getDemands();
+        // for each demand in demands
+        addOrder(null);
 
-    public boolean approveTruckReport(Integer trID){
         throw new UnsupportedOperationException();
     }
+
+
     public ResponseT< FacadeTruckingReport> getTruckingReport(int id){
         throw new UnsupportedOperationException();
     }
     public ResponseT< FacadeDeliveryForm> getDeliveryForm(int id){
         throw new UnsupportedOperationException();
     }
-    public void handleLeftOvers() {
+
+    /**
+     * this method tries to insert as much as possible items to the received trucking Reports
+     * @param reports available TruckingReports
+     * @param itemsToInsert - List< Pair< itemId, Amount >>
+     * @param supplierCard -  delivery area of the Order
+     * @return items left to insert
+     */
+    private LinkedList<Pair<Integer, Integer>>
+    insertToExistingTR(LinkedList<Pair<Integer, Integer>> itemsToInsert,int supplierCard, LinkedList<FacadeTruckingReport> reports){
         throw new UnsupportedOperationException();
     }
 
-
-    private void insertToExistingTR(Order order, LinkedList<FacadeTruckingReport> reports){
-        throw new UnsupportedOperationException();
-    }
-
+    /**
+     *
+     * @param tr -  truck report to check
+     * @return returns Max weight truck and driver can handle
+     */
     private int getMaxWeight(FacadeTruckingReport tr){
         throw new UnsupportedOperationException();
 
     }
+
 
     /**
      *      this method created new Trucking reports for the received items.
@@ -149,7 +170,8 @@ public class TruckingService {
         throw new UnsupportedOperationException();
     }
 
-    private  HashMap<LocalDate, HashMap<Integer, LinkedList<String>>> getDaysAndDrivers() throws IllegalArgumentException {
+    private  HashMap<LocalDate, HashMap<Integer, LinkedList<String>>>
+    getDaysAndDrivers() throws IllegalArgumentException {
         return resourcesService.getDayAndDrivers();
     }
 
@@ -165,15 +187,34 @@ public class TruckingService {
         throw new UnsupportedOperationException();
     }
 
+    /**
+     *
+     * @param date -  date to check
+     * @return overall weight can add to overall deliveries in this date includes the not created TRs
+     */
     private int getDayLeftWeight(LocalDate date){
         throw new UnsupportedOperationException();
     }
 
     private void createNotification(String content){throw new UnsupportedOperationException();}
 
+    private int getDeliveryArea(int supplier ){throw new UnsupportedOperationException();}
 
+    private Pair<FacadeDriver, FacadeTruck> getDriverAndTruckFromExisting (LocalDate date){
+        return resourcesService.findDriverAndTruckForDateFromExisting(date);
+    }
 
+    private Pair<FacadeDriver, FacadeTruck> getDriverAndTruckFromPool (LocalDate date){
+        return resourcesService.findDriverAndTruckForDateFromPool(date);
+    }
 
+    private void addDemandToPool(HashMap<Pair<Integer, Integer>, Integer> items){
+        throw new UnsupportedOperationException();
+    }
+
+    private Item getItem(int id, int supplier){
+        throw new UnsupportedOperationException();
+    }
 
 
 

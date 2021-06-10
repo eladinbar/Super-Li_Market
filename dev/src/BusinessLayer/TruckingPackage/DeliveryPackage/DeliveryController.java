@@ -17,6 +17,7 @@ public class DeliveryController {
 
     private LinkedList<Demand> demands;
     private HashMap<Integer, TruckingReport> activeTruckingReports;//<trID,TR>
+    private HashMap<Integer, TruckingReport> waitingTruckingReports;//<trID,TR>
     private HashMap<Integer, TruckingReport> oldTruckingReports;//<trID,TR>
     private HashMap<Integer, LinkedList<DeliveryForm>> activeDeliveryForms;
     private HashMap<Integer, LinkedList<DeliveryForm>> oldDeliveryForms;
@@ -48,6 +49,7 @@ public class DeliveryController {
 */
         // when data base is added, need to be set by it;
         //this.items = new HashMap<>();
+        this.waitingTruckingReports =  new HashMap<>();
         this.lastDeliveryForms = 1;
         this.lastReportID = 0;
         this.lastSiteID = 1;

@@ -17,6 +17,7 @@ public class TruckingReport {
     private LinkedList<Integer> destinations;
     private int TRReplace;
     private boolean completed;
+    private boolean approved;
 
 
     public TruckingReport(int ID, LocalDate date, LocalTime leavingHour, String  truckNumber, String driverID,
@@ -30,6 +31,7 @@ public class TruckingReport {
         this.origin=origin;
         this.destinations=destinations;
         this.TRReplace=-1;
+        approved = false;
     }
     public TruckingReport(int ID){
         this.ID=ID;

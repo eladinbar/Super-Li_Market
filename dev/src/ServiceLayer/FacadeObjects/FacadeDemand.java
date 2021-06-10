@@ -14,7 +14,7 @@ public class FacadeDemand {
 
     public FacadeDemand(Demand demand){
         this.itemID = demand.getItemID();
-        this.site = demand.getSite();
+        this.site = demand.getSupplier();
         this.amount = demand.getAmount();
 
     }

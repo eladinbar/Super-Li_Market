@@ -32,13 +32,21 @@ public class ResourcesService {
         return rc.getDaysAndDrivers();
     }
 
-    public Pair<FacadeDriver, Truck> getDriverAndTruckForDate(LocalDate date){
+    public Pair<FacadeDriver, FacadeTruck> findDriverAndTruckForDateFromExisting(LocalDate date){
         throw new UnsupportedOperationException();
     }
 
-    // TODO - this method also need to call "addDriverToShift" if found.
+
+    // TODO - this method also need to call "addDriverToShift" if couldn't find any Driver available.
     //  as well as alerts to the Manager
-    public Pair<FacadeDriver, Truck> findDriverAndTruckForDate(LocalDate date){
+    //  tries to get the driver and truck with the highest capability
+
+    /**
+     *
+     * @param date
+     * @return the Truck and Driver, returns null if cannot
+     */
+    public Pair<FacadeDriver, FacadeTruck> findDriverAndTruckForDateFromPool(LocalDate date){
         throw new UnsupportedOperationException();
     }
 
