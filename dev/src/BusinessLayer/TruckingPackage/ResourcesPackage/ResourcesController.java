@@ -42,64 +42,69 @@ public class ResourcesController {
         return instance;
     }
 
-        public HashMap<LocalDate, HashMap<Integer, LinkedList<String>>> getDaysAndDrivers() throws IllegalArgumentException {
-        HashMap<LocalDate, HashMap<Integer, List<String>>> received = null;
-        try {
-            received = ShiftController.getInstance().getDaysAndDrivers();
-        } catch (EmployeeException e) {
-            System.out.println("Employee's Exception thrown in Resources Service. exits...");
-            System.exit(1);
-        }
 
 
-        HashMap<LocalDate, HashMap<Integer, LinkedList<String>>> output = new HashMap<>();
-        for (Map.Entry<LocalDate, HashMap<Integer, List<String>>> entry : received.entrySet()) {     // loop for each date
-            LocalDate date = entry.getKey();
-            HashMap<Integer,LinkedList<String> >temp =  new HashMap<>();
-            output.put(date, new HashMap<>());
-            for (Map.Entry<Integer, List<String>> shift : entry.getValue().entrySet()) {     // loop for each shift
-                if (shift.getKey().equals(2)) {
-                    for (String id : shift.getValue()) {                                            // runs through drivers with shift number = 2
-                        //HashMap<Integer, LinkedList<String>> hash = output.get(date);
+    public HashMap<LocalDate, HashMap<Integer, LinkedList<String>>> getDaysAndDrivers() throws IllegalArgumentException {
+    HashMap<LocalDate, HashMap<Integer, List<String>>> received = null;
+    try {
+        received = ShiftController.getInstance().getDaysAndDrivers();
+    } catch (EmployeeException e) {
+        System.out.println("Employee's Exception thrown in Resources Service. exits...");
+        System.exit(1);
+    }
 
-                        for (int i = 0; i < 2; i++) {                                            // i presents the current shift
-                            if (isDriverAvailable(id, date, i) && hasAvailableTrucks(date,i)) {
 
-                                if (temp.get(i) == null) {
-                                    temp.put(i, new LinkedList<>());
-                                }
-                                if (!temp.get(i).contains(id)) {
-                                    temp.get(shift.getKey()).add(id);
-                                }
+    HashMap<LocalDate, HashMap<Integer, LinkedList<String>>> output = new HashMap<>();
+    for (Map.Entry<LocalDate, HashMap<Integer, List<String>>> entry : received.entrySet()) {     // loop for each date
+        LocalDate date = entry.getKey();
+        HashMap<Integer,LinkedList<String> >temp =  new HashMap<>();
+        output.put(date, new HashMap<>());
+        for (Map.Entry<Integer, List<String>> shift : entry.getValue().entrySet()) {     // loop for each shift
+            if (shift.getKey().equals(2)) {
+                for (String id : shift.getValue()) {                                            // runs through drivers with shift number = 2
+                    //HashMap<Integer, LinkedList<String>> hash = output.get(date);
+
+                    for (int i = 0; i < 2; i++) {                                            // i presents the current shift
+                        if (isDriverAvailable(id, date, i) && hasAvailableTrucks(date,i)) {
+
+                            if (temp.get(i) == null) {
+                                temp.put(i, new LinkedList<>());
+                            }
+                            if (!temp.get(i).contains(id)) {
+                                temp.get(shift.getKey()).add(id);
                             }
                         }
-
-
                     }
-                }
-                for (String id : shift.getValue()) {                                               // runs through drivers
-                    if (isDriverAvailable(id, date, shift.getKey()) && hasAvailableTrucks(date,shift.getKey())) {
-                   /*     HashMap<Integer, LinkedList<String>> hash = output.get(date);
-                        hash.computeIfAbsent(shift.getKey(), k -> new LinkedList<>());*/
-                        if (temp.get(shift.getKey()) == null)
-                            temp.put(shift.getKey(), new LinkedList<>());
 
-                        if (!temp.get(shift.getKey()).contains(id))
-                            temp.get(shift.getKey()).add(id);
-                    }
+
                 }
-                if (!temp.isEmpty()) {
-                    output.put(date, temp);
-                }
-                temp = new HashMap<>();
             }
+            for (String id : shift.getValue()) {                                               // runs through drivers
+                if (isDriverAvailable(id, date, shift.getKey()) && hasAvailableTrucks(date,shift.getKey())) {
+               /*     HashMap<Integer, LinkedList<String>> hash = output.get(date);
+                    hash.computeIfAbsent(shift.getKey(), k -> new LinkedList<>());*/
+                    if (temp.get(shift.getKey()) == null)
+                        temp.put(shift.getKey(), new LinkedList<>());
 
-
+                    if (!temp.get(shift.getKey()).contains(id))
+                        temp.get(shift.getKey()).add(id);
+                }
+            }
+            if (!temp.isEmpty()) {
+                output.put(date, temp);
+            }
+            temp = new HashMap<>();
         }
-        return output;
 
 
     }
+    return output;
+
+
+    }
+
+    //TODO - add driver to shift gets DriverId, LocalDate, Shift number and returns true if succeeded,
+    //  false otherwise
 
 
 //

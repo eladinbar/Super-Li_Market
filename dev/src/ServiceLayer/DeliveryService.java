@@ -33,10 +33,16 @@ public class DeliveryService {
         return instace;
     }
 
-    public LinkedList<Pair<Integer, Integer>> addItemsToReport(LinkedList<Pair<Integer, Integer>> items, Map<FacadeTruckingReport , Integer> reportsWeight ){
+    public LinkedList<Integer> getTruckReportDestinations(int id){
+        throw new UnsupportedOperationException();
+    }
+    public LinkedList<Integer>  getTruckReportDeliveryAreas(int id){
         throw new UnsupportedOperationException();
     }
 
+    public LinkedList<Pair<Integer, Integer>> addItemsToReport(LinkedList<Pair<Integer, Integer>> items, Map<FacadeTruckingReport , Integer> reportsWeight ){
+        throw new UnsupportedOperationException();
+    }
 
 
 /*
