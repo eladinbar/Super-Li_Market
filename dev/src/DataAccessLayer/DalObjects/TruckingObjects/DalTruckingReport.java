@@ -1,7 +1,5 @@
 package DataAccessLayer.DalObjects.TruckingObjects;
 
-import DataAccessLayer.DAL$.DalObject$;
-
 import java.time.LocalDate;
 import java.time.LocalTime;
 

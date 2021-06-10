@@ -1,6 +1,6 @@
 package DataAccessLayer.DalControllers.SupplierControllers;
 
-import DataAccessLayer.DalControllers.DalController$;
+import DataAccessLayer.DalControllers.DalController;
 import DataAccessLayer.DalObjects.SupplierObjects.DalPersonCard;
 import DataAccessLayer.DalObjects.SupplierObjects.DalSupplierCard;
 import DataAccessLayer.DalObjects.SupplierObjects.DalSupplierContactMembers;
@@ -8,7 +8,7 @@ import DataAccessLayer.DalObjects.SupplierObjects.DalSupplierContactMembers;
 import java.sql.*;
 import java.util.List;
 
-public class SupplierContactMembersDalController extends DalController$<DalSupplierContactMembers> {
+public class SupplierContactMembersDalController extends DalController<DalSupplierContactMembers> {
     private static SupplierContactMembersDalController instance = null;
     public final static String SUPPLIER_CONTACT_MEMBERS_TABLE_NAME = "Supplier_Contact_Members";
 

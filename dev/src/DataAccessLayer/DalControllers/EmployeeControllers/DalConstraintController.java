@@ -1,13 +1,13 @@
 package DataAccessLayer.DalControllers.EmployeeControllers;
 
 import DataAccessLayer.DalObjects.EmployeeObjects.DalConstraint;
-import DataAccessLayer.DAL$.DalController$;
+import DataAccessLayer.DalControllers.Employee_Trucking_DALController_Interface;
 
 import java.sql.*;
 import java.time.LocalDate;
 import java.util.LinkedList;
 
-public class DalConstraintController extends DalController$ {
+public class DalConstraintController extends Employee_Trucking_DALController_Interface {
     private static DalConstraintController instance = null;
     private DalConstraintController() throws SQLException{
         super();
