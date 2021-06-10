@@ -1,12 +1,12 @@
 package DataAccessLayer.DalControllers.EmployeeControllers;
 
 import DataAccessLayer.DalObjects.EmployeeObjects.DalBankBranch;
-import DataAccessLayer.DAL$.DalController$;
+import DataAccessLayer.DalControllers.Employee_Trucking_DALController_Interface;
 
 import java.sql.*;
 import java.util.LinkedList;
 
-public class DalBankBranchController extends DalController$ {
+public class DalBankBranchController extends Employee_Trucking_DALController_Interface {
     private static DalBankBranchController instance = null;
 
     private DalBankBranchController() throws SQLException {
