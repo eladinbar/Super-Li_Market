@@ -1,11 +1,11 @@
 package DataAccessLayer.DalControllers.SupplierControllers;
 
 import DataAccessLayer.DalControllers.DalController$;
-import DataAccessLayer.DalObjects.SupplierObjects.PersonCardDal;
+import DataAccessLayer.DalObjects.SupplierObjects.DalPersonCard;
 
 import java.sql.*;
 
-public class PersonCardDalController extends DalController$<PersonCardDal> {
+public class PersonCardDalController extends DalController$<DalPersonCard> {
     private static PersonCardDalController instance = null;
     public final static String PERSON_CARD_TABLE_NAME = "Person_Cards";
 
@@ -28,12 +28,12 @@ public class PersonCardDalController extends DalController$<PersonCardDal> {
     public boolean createTable() throws SQLException {
         try (Connection conn = DriverManager.getConnection(connectionString)) {
             String command = "CREATE TABLE IF NOT EXISTS " + tableName + " (" +
-                    PersonCardDal.idColumnName + " INTEGER NOT NULL," +
-                    PersonCardDal.firstNameColumnName + " TEXT NOT NULL," +
-                    PersonCardDal.lastNameColumnName +" TEXT NOT NULL,"+
-                    PersonCardDal.emailColumnName + " TEXT NOT NULL," +
-                    PersonCardDal.phoneColumnName + " TEXT NOT NULL,"+
-                    "PRIMARY KEY (" + PersonCardDal.idColumnName + ")" +
+                    DalPersonCard.idColumnName + " INTEGER NOT NULL," +
+                    DalPersonCard.firstNameColumnName + " TEXT NOT NULL," +
+                    DalPersonCard.lastNameColumnName +" TEXT NOT NULL,"+
+                    DalPersonCard.emailColumnName + " TEXT NOT NULL," +
+                    DalPersonCard.phoneColumnName + " TEXT NOT NULL,"+
+                    "PRIMARY KEY (" + DalPersonCard.idColumnName + ")" +
                     ");";
 
             PreparedStatement stmt = conn.prepareStatement(command);
@@ -45,7 +45,7 @@ public class PersonCardDalController extends DalController$<PersonCardDal> {
     }
 
     @Override
-    public boolean insert(PersonCardDal personCard) throws SQLException {
+    public boolean insert(DalPersonCard personCard) throws SQLException {
         try (Connection conn = DriverManager.getConnection(connectionString)) {
             String query = "INSERT INTO " + tableName + " VALUES (?,?,?,?,?)";
             PreparedStatement stmt = conn.prepareStatement(query);
@@ -62,9 +62,9 @@ public class PersonCardDalController extends DalController$<PersonCardDal> {
     }
 
     @Override
-    public boolean delete(PersonCardDal personCard) throws SQLException {
+    public boolean delete(DalPersonCard personCard) throws SQLException {
         try (Connection conn = DriverManager.getConnection(connectionString)) {
-            String query = "DELETE FROM " + tableName + " WHERE (" + PersonCardDal.idColumnName+ "=?)";
+            String query = "DELETE FROM " + tableName + " WHERE (" + DalPersonCard.idColumnName+ "=?)";
             PreparedStatement stmt = conn.prepareStatement(query);
 
             stmt.setString(1, personCard.getId());
@@ -76,13 +76,13 @@ public class PersonCardDalController extends DalController$<PersonCardDal> {
     }
 
     @Override
-    public boolean update(PersonCardDal personCard) throws SQLException {
+    public boolean update(DalPersonCard personCard) throws SQLException {
         try (Connection conn = DriverManager.getConnection(connectionString)) {
-            String query = "UPDATE " + tableName + " SET " + PersonCardDal.firstNameColumnName + "=?, "+
-                    PersonCardDal.lastNameColumnName +"=?, "+
-                    PersonCardDal.emailColumnName+"=?, "+
-                    PersonCardDal.phoneColumnName+"=? " +
-                    " WHERE(" + PersonCardDal.idColumnName + "=?)";
+            String query = "UPDATE " + tableName + " SET " + DalPersonCard.firstNameColumnName + "=?, "+
+                    DalPersonCard.lastNameColumnName +"=?, "+
+                    DalPersonCard.emailColumnName+"=?, "+
+                    DalPersonCard.phoneColumnName+"=? " +
+                    " WHERE(" + DalPersonCard.idColumnName + "=?)";
             PreparedStatement stmt = conn.prepareStatement(query);
             stmt.setString(1, personCard.getFirstName());
             stmt.setString(2, personCard.getLastName());
@@ -97,7 +97,7 @@ public class PersonCardDalController extends DalController$<PersonCardDal> {
     }
 
     @Override
-    public boolean select(PersonCardDal personCard) throws SQLException {
+    public boolean select(DalPersonCard personCard) throws SQLException {
         boolean isDesired = false;
         try (Connection conn = DriverManager.getConnection(connectionString)) {
             String query = "SELECT * FROM " + tableName;

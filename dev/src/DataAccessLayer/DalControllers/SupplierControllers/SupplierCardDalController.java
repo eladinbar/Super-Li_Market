@@ -6,7 +6,7 @@ import DataAccessLayer.DalObjects.SupplierObjects.*;
 import java.sql.*;
 import java.util.List;
 
-public class SupplierCardDalController extends DalController$<SupplierCardDal> {
+public class SupplierCardDalController extends DalController$<DalSupplierCard> {
     private static SupplierCardDalController instance = null;
     public final static String SUPPLIER_CARD_TABLE_NAME = "Supplier_Cards";
 
@@ -29,14 +29,14 @@ public class SupplierCardDalController extends DalController$<SupplierCardDal> {
     public boolean createTable() throws SQLException {
         try (Connection conn = DriverManager.getConnection(connectionString)) {
             String command = "CREATE TABLE IF NOT EXISTS " + tableName + " (" +
-                    SupplierCardDal.supplierIdColumnName + " INTEGER NOT NULL," +
-                    SupplierCardDal.companyNumberColumnName + " INTEGET NOT NULL," +
-                    SupplierCardDal.isPermanentDaysColumnName +" INTEGER NOT NULL," +
-                    SupplierCardDal.selfDeliveryColumnName+ " INTEGER NOT NULL,"+
-                    SupplierCardDal.paymentColumnName+" TEXT NOT NULL,"+
-                    SupplierCardDal.addressColumnName + " TEXT NOT NULL,"+
-                    "PRIMARY KEY ("+ SupplierCardDal.supplierIdColumnName+"),"+
-                    "FOREIGN KEY (" + SupplierCardDal.supplierIdColumnName + ")" + "REFERENCES " + PersonCardDal.idColumnName + " (" + PersonCardDalController.PERSON_CARD_TABLE_NAME +") ON DELETE CASCADE "+
+                    DalSupplierCard.supplierIdColumnName + " INTEGER NOT NULL," +
+                    DalSupplierCard.companyNumberColumnName + " INTEGET NOT NULL," +
+                    DalSupplierCard.isPermanentDaysColumnName +" INTEGER NOT NULL," +
+                    DalSupplierCard.selfDeliveryColumnName+ " INTEGER NOT NULL,"+
+                    DalSupplierCard.paymentColumnName+" TEXT NOT NULL,"+
+                    DalSupplierCard.addressColumnName + " TEXT NOT NULL,"+
+                    "PRIMARY KEY ("+ DalSupplierCard.supplierIdColumnName+"),"+
+                    "FOREIGN KEY (" + DalSupplierCard.supplierIdColumnName + ")" + "REFERENCES " + DalPersonCard.idColumnName + " (" + PersonCardDalController.PERSON_CARD_TABLE_NAME +") ON DELETE CASCADE "+
                     ");";
 
             PreparedStatement stmt = conn.prepareStatement(command);
@@ -48,7 +48,7 @@ public class SupplierCardDalController extends DalController$<SupplierCardDal> {
     }
 
     @Override
-    public boolean insert(SupplierCardDal supplierCard) throws SQLException {
+    public boolean insert(DalSupplierCard supplierCard) throws SQLException {
         try (Connection conn = DriverManager.getConnection(connectionString)) {
             String query = "INSERT INTO " + tableName + " VALUES (?,?,?,?,?,?)";
             PreparedStatement stmt = conn.prepareStatement(query);
@@ -67,9 +67,9 @@ public class SupplierCardDalController extends DalController$<SupplierCardDal> {
     }
 
     @Override
-    public boolean delete(SupplierCardDal supplierCard) throws SQLException {
+    public boolean delete(DalSupplierCard supplierCard) throws SQLException {
         try (Connection conn = DriverManager.getConnection(connectionString)) {
-            String query = "DELETE FROM " + tableName + " WHERE (" + SupplierCardDal.supplierIdColumnName + "=?)";
+            String query = "DELETE FROM " + tableName + " WHERE (" + DalSupplierCard.supplierIdColumnName + "=?)";
             PreparedStatement stmt = conn.prepareStatement(query);
 
             stmt.setInt(1, supplierCard.getSupplierId());
@@ -81,14 +81,14 @@ public class SupplierCardDalController extends DalController$<SupplierCardDal> {
     }
 
     @Override
-    public boolean update(SupplierCardDal supplierCard) throws SQLException {
+    public boolean update(DalSupplierCard supplierCard) throws SQLException {
         try (Connection conn = DriverManager.getConnection(connectionString)) {
-            String query = "UPDATE " + tableName + " SET " + SupplierCardDal.companyNumberColumnName + "=?, "+
-                    SupplierCardDal.isPermanentDaysColumnName +"=?, "+
-                    SupplierCardDal.selfDeliveryColumnName +"=?, "+
-                    SupplierCardDal.paymentColumnName+"=?, "+
-                    SupplierCardDal.addressColumnName+
-                    "=? WHERE(" + SupplierCardDal.supplierIdColumnName + "=?)";
+            String query = "UPDATE " + tableName + " SET " + DalSupplierCard.companyNumberColumnName + "=?, "+
+                    DalSupplierCard.isPermanentDaysColumnName +"=?, "+
+                    DalSupplierCard.selfDeliveryColumnName +"=?, "+
+                    DalSupplierCard.paymentColumnName+"=?, "+
+                    DalSupplierCard.addressColumnName+
+                    "=? WHERE(" + DalSupplierCard.supplierIdColumnName + "=?)";
             PreparedStatement stmt = conn.prepareStatement(query);
 
             stmt.setInt(1, supplierCard.getCompanyNumber());
@@ -105,7 +105,7 @@ public class SupplierCardDalController extends DalController$<SupplierCardDal> {
     }
 
     @Override
-    public boolean select(SupplierCardDal supplierCard) throws SQLException {
+    public boolean select(DalSupplierCard supplierCard) throws SQLException {
         boolean isDesired = false;
         try (Connection conn = DriverManager.getConnection(connectionString)) {
             String query = "SELECT * FROM " + tableName;
@@ -129,15 +129,15 @@ public class SupplierCardDalController extends DalController$<SupplierCardDal> {
         return isDesired;
     }
 
-    public boolean select(List<SupplierCardDal> suppliers) throws SQLException {
-        SupplierCardDal savedSupplier;
+    public boolean select(List<DalSupplierCard> suppliers) throws SQLException {
+        DalSupplierCard savedSupplier;
         try (Connection conn = DriverManager.getConnection(connectionString)) {
             String query = "SELECT * FROM " + tableName;
             PreparedStatement stmt = conn.prepareStatement(query);
             ResultSet resultSet = stmt.executeQuery();
             while (resultSet.next())
             {
-                savedSupplier = new SupplierCardDal(resultSet.getInt(1));
+                savedSupplier = new DalSupplierCard(resultSet.getInt(1));
                 savedSupplier.setCompanyNumberLoad(resultSet.getInt(2));
                 savedSupplier.setPermanentDaysLoad(resultSet.getInt(3));
                 savedSupplier.setSelfDeliveryLoad(resultSet.getInt(4));

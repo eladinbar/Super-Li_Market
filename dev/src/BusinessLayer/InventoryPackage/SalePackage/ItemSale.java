@@ -1,19 +1,20 @@
 package BusinessLayer.InventoryPackage.SalePackage;
 
 import BusinessLayer.InventoryPackage.Item;
+import DataAccessLayer.DalObjects.InventoryObjects.DalItemSale;
 
 import java.sql.SQLException;
 import java.time.LocalDate;
 
 public class ItemSale extends Sale {
-    private DataAccessLayer.DalObjects.InventoryObjects.ItemSale dalCopyItemSale;
+    private DalItemSale dalCopyItemSale;
 
     private Item item;
 
     public ItemSale(String name) {
         super(name);
         try {
-            dalCopyItemSale = new DataAccessLayer.DalObjects.InventoryObjects.ItemSale();
+            dalCopyItemSale = new DalItemSale();
         } catch(SQLException ex) {
             throw new RuntimeException("Something went wrong.");
         }
@@ -22,7 +23,7 @@ public class ItemSale extends Sale {
     public ItemSale(String name, double discount, LocalDate startDate, LocalDate endDate, Item item) {
         super(name, discount, startDate, endDate);
         try {
-            dalCopyItemSale = new DataAccessLayer.DalObjects.InventoryObjects.ItemSale();
+            dalCopyItemSale = new DalItemSale();
         } catch(SQLException ex) {
             throw new RuntimeException("Something went wrong.");
         }
@@ -117,7 +118,7 @@ public class ItemSale extends Sale {
 
     public void save() {
         try {
-            dalCopyItemSale = new DataAccessLayer.DalObjects.InventoryObjects.ItemSale(name, discount,
+            dalCopyItemSale = new DalItemSale(name, discount,
                     saleDates.getFirst().toString(), saleDates.getSecond().toString(), item.getID());
             dalCopyItemSale.save();
         } catch (SQLException ex) {
@@ -140,7 +141,7 @@ public class ItemSale extends Sale {
     public boolean find() {
         boolean found;
         try {
-            dalCopyItemSale = new DataAccessLayer.DalObjects.InventoryObjects.ItemSale(name);
+            dalCopyItemSale = new DalItemSale(name);
 
             found = dalCopyItemSale.find(); //Retrieves DAL Category Sale from the database
             //Set the fields according to the retrieved data

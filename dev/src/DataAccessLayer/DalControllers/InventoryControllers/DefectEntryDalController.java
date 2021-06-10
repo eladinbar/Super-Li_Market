@@ -8,7 +8,7 @@ import java.util.List;
 
 import static DataAccessLayer.DalControllers.InventoryControllers.ItemDalController.ITEM_TABLE_NAME;
 
-public class DefectEntryDalController extends DalController$<DefectEntry> {
+public class DefectEntryDalController extends DalController$<DalDefectEntry> {
     private static DefectEntryDalController instance = null;
     public final static String DEFECT_ENTRY_TABLE_NAME = "Defect_Entries";
 
@@ -31,14 +31,14 @@ public class DefectEntryDalController extends DalController$<DefectEntry> {
     public boolean createTable() throws SQLException {
         try (Connection conn = DriverManager.getConnection(connectionString)) {
             String command = "CREATE TABLE IF NOT EXISTS " + tableName + " (" +
-                    DefectEntry.entryDateColumnName + " TEXT NOT NULL," +
-                    DefectEntry.itemIdColumnName + " INTEGER NOT NULL," +
-                    DefectEntry.itemNameColumnName + " TEXT NOT NULL," +
-                    DefectEntry.locationColumnName + " TEXT NOT NULL," +
-                    DefectEntry.quantityColumnName + " INTEGER DEFAULT 0 NOT NULL," +
-                    "PRIMARY KEY (" + DefectEntry.entryDateColumnName + ", " + DefectEntry.itemIdColumnName + ")," +
-                    "FOREIGN KEY (" + DefectEntry.itemIdColumnName + ")" +
-                    "REFERENCES " + Item.itemIdColumnName + " (" + ITEM_TABLE_NAME + ") ON DELETE NO ACTION" +
+                    DalDefectEntry.entryDateColumnName + " TEXT NOT NULL," +
+                    DalDefectEntry.itemIdColumnName + " INTEGER NOT NULL," +
+                    DalDefectEntry.itemNameColumnName + " TEXT NOT NULL," +
+                    DalDefectEntry.locationColumnName + " TEXT NOT NULL," +
+                    DalDefectEntry.quantityColumnName + " INTEGER DEFAULT 0 NOT NULL," +
+                    "PRIMARY KEY (" + DalDefectEntry.entryDateColumnName + ", " + DalDefectEntry.itemIdColumnName + ")," +
+                    "FOREIGN KEY (" + DalDefectEntry.itemIdColumnName + ")" +
+                    "REFERENCES " + DalItem.itemIdColumnName + " (" + ITEM_TABLE_NAME + ") ON DELETE NO ACTION" +
                     ");";
             PreparedStatement stmt = conn.prepareStatement(command);
             stmt.executeUpdate();
@@ -49,7 +49,7 @@ public class DefectEntryDalController extends DalController$<DefectEntry> {
     }
 
     @Override
-    public boolean insert(DefectEntry defectEntry) throws SQLException {
+    public boolean insert(DalDefectEntry defectEntry) throws SQLException {
         try (Connection conn = DriverManager.getConnection(connectionString)) {
             String command = "INSERT OR IGNORE INTO " + tableName + " VALUES (?,?, ?, ?, ?)";
             PreparedStatement stmt = conn.prepareStatement(command);
@@ -68,9 +68,9 @@ public class DefectEntryDalController extends DalController$<DefectEntry> {
     }
 
     @Override
-    public boolean delete(DefectEntry defectEntry) throws SQLException {
+    public boolean delete(DalDefectEntry defectEntry) throws SQLException {
         try (Connection conn = DriverManager.getConnection(connectionString)) {
-            String command = "DELETE FROM " + tableName + " WHERE ("+ DefectEntry.entryDateColumnName + "=? AND " + DefectEntry.itemIdColumnName + "=?)";
+            String command = "DELETE FROM " + tableName + " WHERE ("+ DalDefectEntry.entryDateColumnName + "=? AND " + DalDefectEntry.itemIdColumnName + "=?)";
             PreparedStatement stmt = conn.prepareStatement(command);
             stmt.setString(1, defectEntry.getEntryDate());
             stmt.setInt(2, defectEntry.getItemID());
@@ -82,11 +82,11 @@ public class DefectEntryDalController extends DalController$<DefectEntry> {
     }
 
     @Override
-    public boolean update(DefectEntry defectEntry) throws SQLException {
+    public boolean update(DalDefectEntry defectEntry) throws SQLException {
         try (Connection conn = DriverManager.getConnection(connectionString)) {
-            String command = "UPDATE " + tableName + " SET " + DefectEntry.itemNameColumnName + "=?, " +
-                    DefectEntry.locationColumnName + "=?, " + DefectEntry.quantityColumnName + "=? " +
-                    "WHERE(" + DefectEntry.entryDateColumnName + "=? AND " + DefectEntry.itemIdColumnName + "=?)";
+            String command = "UPDATE " + tableName + " SET " + DalDefectEntry.itemNameColumnName + "=?, " +
+                    DalDefectEntry.locationColumnName + "=?, " + DalDefectEntry.quantityColumnName + "=? " +
+                    "WHERE(" + DalDefectEntry.entryDateColumnName + "=? AND " + DalDefectEntry.itemIdColumnName + "=?)";
             PreparedStatement stmt = conn.prepareStatement(command);
 
             stmt.setString(1, defectEntry.getItemName());
@@ -102,11 +102,11 @@ public class DefectEntryDalController extends DalController$<DefectEntry> {
     }
 
     @Override
-    public boolean update(DefectEntry defectEntry, String oldDate) throws SQLException {
+    public boolean update(DalDefectEntry defectEntry, String oldDate) throws SQLException {
         try (Connection conn = DriverManager.getConnection(connectionString)) {
-            String command = "UPDATE " + tableName + " SET " + DefectEntry.entryDateColumnName + "=?, " +
-                    DefectEntry.itemNameColumnName + "=?, " +DefectEntry.locationColumnName + "=?, " + DefectEntry.quantityColumnName + "=? " +
-                    "WHERE(" + DefectEntry.entryDateColumnName + "=? AND " + DefectEntry.itemIdColumnName + "=?)";
+            String command = "UPDATE " + tableName + " SET " + DalDefectEntry.entryDateColumnName + "=?, " +
+                    DalDefectEntry.itemNameColumnName + "=?, " + DalDefectEntry.locationColumnName + "=?, " + DalDefectEntry.quantityColumnName + "=? " +
+                    "WHERE(" + DalDefectEntry.entryDateColumnName + "=? AND " + DalDefectEntry.itemIdColumnName + "=?)";
             PreparedStatement stmt = conn.prepareStatement(command);
 
             stmt.setString(1, defectEntry.getEntryDate());
@@ -123,11 +123,11 @@ public class DefectEntryDalController extends DalController$<DefectEntry> {
     }
 
     @Override
-    public boolean update(DefectEntry defectEntry, int oldId) throws SQLException {
+    public boolean update(DalDefectEntry defectEntry, int oldId) throws SQLException {
         try (Connection conn = DriverManager.getConnection(connectionString)) {
-            String command = "UPDATE " + tableName + " SET " + DefectEntry.itemIdColumnName + "=?, " + DefectEntry.itemNameColumnName + "=?, " +
-                    DefectEntry.locationColumnName + "=?, " + DefectEntry.quantityColumnName + "=? " +
-                    "WHERE(" + DefectEntry.entryDateColumnName + "=? AND " + DefectEntry.itemIdColumnName + "=?)";
+            String command = "UPDATE " + tableName + " SET " + DalDefectEntry.itemIdColumnName + "=?, " + DalDefectEntry.itemNameColumnName + "=?, " +
+                    DalDefectEntry.locationColumnName + "=?, " + DalDefectEntry.quantityColumnName + "=? " +
+                    "WHERE(" + DalDefectEntry.entryDateColumnName + "=? AND " + DalDefectEntry.itemIdColumnName + "=?)";
             PreparedStatement stmt = conn.prepareStatement(command);
 
             stmt.setInt(1, defectEntry.getItemID());
@@ -144,7 +144,7 @@ public class DefectEntryDalController extends DalController$<DefectEntry> {
     }
 
     @Override
-    public boolean select(DefectEntry defectEntry) throws SQLException {
+    public boolean select(DalDefectEntry defectEntry) throws SQLException {
         boolean isDesired = false;
         try (Connection conn = DriverManager.getConnection(connectionString)) {
             String query = "SELECT * FROM " + tableName;
@@ -168,15 +168,15 @@ public class DefectEntryDalController extends DalController$<DefectEntry> {
     }
 
     @Override
-    public boolean select(List<DefectEntry> defectEntries) throws SQLException {
-        DefectEntry savedDefectEntry;
+    public boolean select(List<DalDefectEntry> defectEntries) throws SQLException {
+        DalDefectEntry savedDefectEntry;
         try (Connection conn = DriverManager.getConnection(connectionString)) {
             String query = "SELECT * FROM " + tableName;
             PreparedStatement stmt = conn.prepareStatement(query);
             ResultSet resultSet = stmt.executeQuery();
             while (resultSet.next())
             {
-                savedDefectEntry = new DefectEntry();
+                savedDefectEntry = new DalDefectEntry();
                 savedDefectEntry.setEntryDate(resultSet.getString(1));
                 savedDefectEntry.setItemID(resultSet.getInt(2));
                 savedDefectEntry.setItemName(resultSet.getString(3));

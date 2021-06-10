@@ -1,6 +1,6 @@
 package BusinessLayer.SuppliersPackage.SupplierPackage;
 
-import DataAccessLayer.DalObjects.SupplierObjects.QuantityListItemsDal;
+import DataAccessLayer.DalObjects.SupplierObjects.DalQuantityListItems;
 
 import java.sql.SQLException;
 import java.util.HashMap;
@@ -10,7 +10,7 @@ public class QuantityList {
     private final int maxDiscount = 100;
     private Map<Integer, Integer> amount;
     private Map<Integer, Integer> discount;
-    private Map<Integer, QuantityListItemsDal> dalObjects;
+    private Map<Integer, DalQuantityListItems> dalObjects;
 
     public QuantityList() {
         amount = new HashMap<>();
@@ -26,7 +26,7 @@ public class QuantityList {
         return discount;
     }
 
-    public Map<Integer, QuantityListItemsDal> getDalObjects() {
+    public Map<Integer, DalQuantityListItems> getDalObjects() {
         return dalObjects;
     }
 
@@ -85,7 +85,7 @@ public class QuantityList {
     }
 
     public boolean saveItem(int itemId, String supplierId) throws SQLException {
-        dalObjects.put(itemId,new QuantityListItemsDal(itemId,supplierId,amount.get(itemId),discount.get(itemId)));
+        dalObjects.put(itemId,new DalQuantityListItems(itemId,supplierId,amount.get(itemId),discount.get(itemId)));
         return dalObjects.get(itemId).save();
     }
 

@@ -1,6 +1,6 @@
 package BusinessLayer.SuppliersPackage.SupplierPackage;
 
-import DataAccessLayer.DalObjects.SupplierObjects.SupplierCardDal;
+import DataAccessLayer.DalObjects.SupplierObjects.DalSupplierCard;
 
 import java.util.*;
 
@@ -235,11 +235,11 @@ public class SupplierController {
     }
 
     private void loadAllSuppliers() throws Exception {
-        List<SupplierCardDal> supplierCardsDal = new ArrayList<>();
-        SupplierCardDal supplierCardDal = new SupplierCardDal();
+        List<DalSupplierCard> supplierCardsDal = new ArrayList<>();
+        DalSupplierCard supplierCardDal = new DalSupplierCard();
         supplierCardDal.loadAllSuppliers(supplierCardsDal);
 
-        for (SupplierCardDal supplierCard : supplierCardsDal) {
+        for (DalSupplierCard supplierCard : supplierCardsDal) {
             if (!suppliers.containsKey(supplierCard.getSupplierId()+"")) {
                 Supplier savedSupplier = new Supplier(supplierCard.getSupplierId() + "");
                 suppliers.put(supplierCard.getSupplierId() + "", savedSupplier);

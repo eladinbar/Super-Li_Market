@@ -1,6 +1,7 @@
 package BusinessLayer.InventoryPackage.DefectsPackage;
 
 import BusinessLayer.InventoryPackage.Location;
+import DataAccessLayer.DalObjects.InventoryObjects.DalDefectEntry;
 
 import java.sql.SQLException;
 import java.time.LocalDate;
@@ -8,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class DefectEntry {
-    private DataAccessLayer.DalObjects.InventoryObjects.DefectEntry dalCopyDefectEntry;
+    private DalDefectEntry dalCopyDefectEntry;
 
     private int itemID;
     private String itemName;
@@ -25,7 +26,7 @@ public class DefectEntry {
 
     public DefectEntry(int itemID, String itemName, LocalDate entryDate, int quantity, String location) {
         try {
-            dalCopyDefectEntry = new DataAccessLayer.DalObjects.InventoryObjects.DefectEntry();
+            dalCopyDefectEntry = new DalDefectEntry();
         } catch(SQLException ex) {
             throw new RuntimeException("Something went wrong.");
         }
@@ -69,7 +70,7 @@ public class DefectEntry {
 
     public void save() {
         try {
-            dalCopyDefectEntry = new DataAccessLayer.DalObjects.InventoryObjects.DefectEntry(entryDate.toString(), itemID, itemName, getLocation(), quantity);
+            dalCopyDefectEntry = new DalDefectEntry(entryDate.toString(), itemID, itemName, getLocation(), quantity);
             dalCopyDefectEntry.save();
         } catch (SQLException ex) {
             throw new RuntimeException("Something went wrong.");
@@ -91,7 +92,7 @@ public class DefectEntry {
     public boolean find() {
         boolean found;
         try {
-            dalCopyDefectEntry = new DataAccessLayer.DalObjects.InventoryObjects.DefectEntry(entryDate.toString(), itemID);
+            dalCopyDefectEntry = new DalDefectEntry(entryDate.toString(), itemID);
 
             found = dalCopyDefectEntry.find(); //Retrieves DAL Category Sale from the database
             //Set the fields according to the retrieved data
@@ -115,13 +116,13 @@ public class DefectEntry {
     public boolean find(List<DefectEntry> defectEntries) {
         boolean found;
         try {
-            List<DataAccessLayer.DalObjects.InventoryObjects.DefectEntry> dalCopyDefectEntries = new ArrayList<>();
-            dalCopyDefectEntry = new DataAccessLayer.DalObjects.InventoryObjects.DefectEntry();
+            List<DalDefectEntry> dalCopyDefectEntries = new ArrayList<>();
+            dalCopyDefectEntry = new DalDefectEntry();
 
             found = dalCopyDefectEntry.findAll(dalCopyDefectEntries); //Retrieves all DAL defect entries from the database
             //Set the fields according to the retrieved data
             if (found) {
-                for (DataAccessLayer.DalObjects.InventoryObjects.DefectEntry defectEntry : dalCopyDefectEntries) {
+                for (DalDefectEntry defectEntry : dalCopyDefectEntries) {
                     Location savedLocation;
                     if (defectEntry.getLocation().startsWith("SH"))
                         savedLocation = new Location(defectEntry.getLocation(), null);

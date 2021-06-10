@@ -1,9 +1,9 @@
 package DataAccessLayer.DalControllers.InventoryControllers;
 
 import DataAccessLayer.DalControllers.DalController$;
-import DataAccessLayer.DalObjects.InventoryObjects.Item;
-import DataAccessLayer.DalObjects.InventoryObjects.ItemDiscount;
-import DataAccessLayer.DalObjects.SupplierObjects.SupplierCardDal;
+import DataAccessLayer.DalObjects.InventoryObjects.DalItem;
+import DataAccessLayer.DalObjects.InventoryObjects.DalItemDiscount;
+import DataAccessLayer.DalObjects.SupplierObjects.DalSupplierCard;
 
 import java.sql.*;
 import java.util.List;
@@ -11,7 +11,7 @@ import java.util.List;
 import static DataAccessLayer.DalControllers.InventoryControllers.ItemDalController.ITEM_TABLE_NAME;
 import static DataAccessLayer.DalControllers.SupplierControllers.SupplierCardDalController.SUPPLIER_CARD_TABLE_NAME;
 
-public class ItemDiscountDalController extends DalController$<ItemDiscount> {
+public class ItemDiscountDalController extends DalController$<DalItemDiscount> {
     private static ItemDiscountDalController instance = null;
     public final static String ITEM_DISCOUNT_TABLE_NAME = "Item_Discounts";
 
@@ -34,17 +34,17 @@ public class ItemDiscountDalController extends DalController$<ItemDiscount> {
     public boolean createTable() throws SQLException {
         try (Connection conn = DriverManager.getConnection(connectionString)) {
             String command = "CREATE TABLE IF NOT EXISTS " + tableName + " (" +
-                    ItemDiscount.discountDateColumnName + " TEXT NOT NULL," +
-                    ItemDiscount.supplierIdColumnName + " TEXT NOT NULL," +
-                    ItemDiscount.itemIdColumnName + " INTEGER NOT NULL," +
-                    ItemDiscount.discountColumnName + " REAL DEFAULT 0 NOT NULL," +
-                    ItemDiscount.itemCountColumnName + " INTEGER DEFAULT 0 NOT NULL," +
-                    "PRIMARY KEY (" + ItemDiscount.discountDateColumnName + ", " + ItemDiscount.supplierIdColumnName + "," +
-                    ItemDiscount.itemIdColumnName + ")," +
-                    "FOREIGN KEY (" + ItemDiscount.supplierIdColumnName + ")" +
-                    "REFERENCES " + SupplierCardDal.supplierIdColumnName + " (" + SUPPLIER_CARD_TABLE_NAME + ") ON DELETE NO ACTION," +
-                    "FOREIGN KEY (" + ItemDiscount.itemIdColumnName + ")" +
-                    "REFERENCES " + Item.itemIdColumnName + " (" + ITEM_TABLE_NAME + ") ON DELETE NO ACTION" +
+                    DalItemDiscount.discountDateColumnName + " TEXT NOT NULL," +
+                    DalItemDiscount.supplierIdColumnName + " TEXT NOT NULL," +
+                    DalItemDiscount.itemIdColumnName + " INTEGER NOT NULL," +
+                    DalItemDiscount.discountColumnName + " REAL DEFAULT 0 NOT NULL," +
+                    DalItemDiscount.itemCountColumnName + " INTEGER DEFAULT 0 NOT NULL," +
+                    "PRIMARY KEY (" + DalItemDiscount.discountDateColumnName + ", " + DalItemDiscount.supplierIdColumnName + "," +
+                    DalItemDiscount.itemIdColumnName + ")," +
+                    "FOREIGN KEY (" + DalItemDiscount.supplierIdColumnName + ")" +
+                    "REFERENCES " + DalSupplierCard.supplierIdColumnName + " (" + SUPPLIER_CARD_TABLE_NAME + ") ON DELETE NO ACTION," +
+                    "FOREIGN KEY (" + DalItemDiscount.itemIdColumnName + ")" +
+                    "REFERENCES " + DalItem.itemIdColumnName + " (" + ITEM_TABLE_NAME + ") ON DELETE NO ACTION" +
                     ");";
             PreparedStatement stmt = conn.prepareStatement(command);
             stmt.executeUpdate();
@@ -55,7 +55,7 @@ public class ItemDiscountDalController extends DalController$<ItemDiscount> {
     }
 
     @Override
-    public boolean insert(ItemDiscount itemDiscount) throws SQLException {
+    public boolean insert(DalItemDiscount itemDiscount) throws SQLException {
         try (Connection conn = DriverManager.getConnection(connectionString)) {
             String command = "INSERT OR IGNORE INTO " + tableName + " VALUES (?,?, ?, ?, ?)";
             PreparedStatement stmt = conn.prepareStatement(command);
@@ -73,10 +73,10 @@ public class ItemDiscountDalController extends DalController$<ItemDiscount> {
     }
 
     @Override
-    public boolean delete(ItemDiscount itemDiscount) throws SQLException {
+    public boolean delete(DalItemDiscount itemDiscount) throws SQLException {
         try (Connection conn = DriverManager.getConnection(connectionString)) {
-            String command = "DELETE FROM " + tableName + " WHERE (" + ItemDiscount.discountDateColumnName + "=? AND " + ItemDiscount.supplierIdColumnName +
-                    "=? AND " + ItemDiscount.itemIdColumnName + "=?)";
+            String command = "DELETE FROM " + tableName + " WHERE (" + DalItemDiscount.discountDateColumnName + "=? AND " + DalItemDiscount.supplierIdColumnName +
+                    "=? AND " + DalItemDiscount.itemIdColumnName + "=?)";
             PreparedStatement stmt = conn.prepareStatement(command);
 
             stmt.setString(1, itemDiscount.getDiscountDate());
@@ -90,11 +90,11 @@ public class ItemDiscountDalController extends DalController$<ItemDiscount> {
     }
 
     @Override
-    public boolean update(ItemDiscount itemDiscount) throws SQLException {
+    public boolean update(DalItemDiscount itemDiscount) throws SQLException {
         try (Connection conn = DriverManager.getConnection(connectionString)) {
-            String command = "UPDATE " + tableName + " SET " + ItemDiscount.discountColumnName + "=?, " + ItemDiscount.itemCountColumnName +
-                    "=? WHERE(" + ItemDiscount.discountDateColumnName + "=? AND " + ItemDiscount.supplierIdColumnName
-                    + "=? AND " + ItemDiscount.itemIdColumnName + "=?)";
+            String command = "UPDATE " + tableName + " SET " + DalItemDiscount.discountColumnName + "=?, " + DalItemDiscount.itemCountColumnName +
+                    "=? WHERE(" + DalItemDiscount.discountDateColumnName + "=? AND " + DalItemDiscount.supplierIdColumnName
+                    + "=? AND " + DalItemDiscount.itemIdColumnName + "=?)";
             PreparedStatement stmt = conn.prepareStatement(command);
 
             stmt.setDouble(1, itemDiscount.getDiscount());
@@ -110,12 +110,12 @@ public class ItemDiscountDalController extends DalController$<ItemDiscount> {
     }
 
     @Override
-    public boolean update(ItemDiscount itemDiscount, int oldId) throws SQLException {
+    public boolean update(DalItemDiscount itemDiscount, int oldId) throws SQLException {
         try (Connection conn = DriverManager.getConnection(connectionString)) {
-            String command = "UPDATE " + tableName + " SET " + ItemDiscount.itemIdColumnName + "=?, " +
-                    ItemDiscount.discountColumnName + "=?, " + ItemDiscount.itemCountColumnName +
-                    "=? WHERE(" + ItemDiscount.discountDateColumnName + "=? AND " + ItemDiscount.supplierIdColumnName
-                    + "=? AND " + ItemDiscount.itemIdColumnName + "=?)";
+            String command = "UPDATE " + tableName + " SET " + DalItemDiscount.itemIdColumnName + "=?, " +
+                    DalItemDiscount.discountColumnName + "=?, " + DalItemDiscount.itemCountColumnName +
+                    "=? WHERE(" + DalItemDiscount.discountDateColumnName + "=? AND " + DalItemDiscount.supplierIdColumnName
+                    + "=? AND " + DalItemDiscount.itemIdColumnName + "=?)";
             PreparedStatement stmt = conn.prepareStatement(command);
 
             stmt.setInt(1, itemDiscount.getItemID());
@@ -132,19 +132,19 @@ public class ItemDiscountDalController extends DalController$<ItemDiscount> {
     }
 
     @Override
-    public boolean update(ItemDiscount itemDiscount, String oldField) throws SQLException {
+    public boolean update(DalItemDiscount itemDiscount, String oldField) throws SQLException {
         if (extractType(oldField) == 1)
             return updateDate(itemDiscount, oldField);
         else //(extractType(oldField) == 2)
             return updateID(itemDiscount, oldField);
     }
 
-    private boolean updateDate(ItemDiscount itemDiscount, String oldDate) throws SQLException {
+    private boolean updateDate(DalItemDiscount itemDiscount, String oldDate) throws SQLException {
         try (Connection conn = DriverManager.getConnection(connectionString)) {
-            String command = "UPDATE " + tableName + " SET " + ItemDiscount.discountDateColumnName + "=?, " +
-                    ItemDiscount.discountColumnName + "=?, " + ItemDiscount.itemCountColumnName +
-                    "=? WHERE(" + ItemDiscount.discountDateColumnName + "=? AND " + ItemDiscount.supplierIdColumnName
-                    + "=? AND " + ItemDiscount.itemIdColumnName + "=?)";
+            String command = "UPDATE " + tableName + " SET " + DalItemDiscount.discountDateColumnName + "=?, " +
+                    DalItemDiscount.discountColumnName + "=?, " + DalItemDiscount.itemCountColumnName +
+                    "=? WHERE(" + DalItemDiscount.discountDateColumnName + "=? AND " + DalItemDiscount.supplierIdColumnName
+                    + "=? AND " + DalItemDiscount.itemIdColumnName + "=?)";
             PreparedStatement stmt = conn.prepareStatement(command);
 
             stmt.setString(1, itemDiscount.getDiscountDate());
@@ -160,12 +160,12 @@ public class ItemDiscountDalController extends DalController$<ItemDiscount> {
         return true;
     }
 
-    public boolean updateID(ItemDiscount itemDiscount, String oldId) throws SQLException {
+    public boolean updateID(DalItemDiscount itemDiscount, String oldId) throws SQLException {
         try (Connection conn = DriverManager.getConnection(connectionString)) {
-            String command = "UPDATE " + tableName + " SET " + ItemDiscount.supplierIdColumnName + "=?, " +
-                    ItemDiscount.discountColumnName + "=?, " + ItemDiscount.itemCountColumnName +
-                    "=? WHERE(" + ItemDiscount.discountDateColumnName + "=? AND " + ItemDiscount.supplierIdColumnName
-                    + "=? AND " + ItemDiscount.itemIdColumnName + "=?)";
+            String command = "UPDATE " + tableName + " SET " + DalItemDiscount.supplierIdColumnName + "=?, " +
+                    DalItemDiscount.discountColumnName + "=?, " + DalItemDiscount.itemCountColumnName +
+                    "=? WHERE(" + DalItemDiscount.discountDateColumnName + "=? AND " + DalItemDiscount.supplierIdColumnName
+                    + "=? AND " + DalItemDiscount.itemIdColumnName + "=?)";
             PreparedStatement stmt = conn.prepareStatement(command);
 
             stmt.setString(1, itemDiscount.getSupplierID());
@@ -189,7 +189,7 @@ public class ItemDiscountDalController extends DalController$<ItemDiscount> {
     }
 
     @Override
-    public boolean select(ItemDiscount itemDiscount) throws SQLException {
+    public boolean select(DalItemDiscount itemDiscount) throws SQLException {
         boolean isDesired = false;
         try (Connection conn = DriverManager.getConnection(connectionString)) {
             String query = "SELECT * FROM " + tableName;
@@ -212,9 +212,9 @@ public class ItemDiscountDalController extends DalController$<ItemDiscount> {
     }
 
     @Override
-    public boolean select(ItemDiscount itemDiscount, List<ItemDiscount> itemDiscounts) throws SQLException {
+    public boolean select(DalItemDiscount itemDiscount, List<DalItemDiscount> itemDiscounts) throws SQLException {
         boolean hasItem = false;
-        ItemDiscount savedItemDiscount;
+        DalItemDiscount savedItemDiscount;
         try (Connection conn = DriverManager.getConnection(connectionString)) {
             String query = "SELECT * FROM " + tableName;
             PreparedStatement stmt = conn.prepareStatement(query);
@@ -226,7 +226,7 @@ public class ItemDiscountDalController extends DalController$<ItemDiscount> {
                 if (!hasItem & isDesired)
                     hasItem = true;
                 if (isDesired) {
-                    savedItemDiscount = new ItemDiscount();
+                    savedItemDiscount = new DalItemDiscount();
                     savedItemDiscount.setDiscountDate(resultSet.getString(1));
                     savedItemDiscount.setSupplierID(resultSet.getString(2));
                     savedItemDiscount.setItemID(resultSet.getInt(3));

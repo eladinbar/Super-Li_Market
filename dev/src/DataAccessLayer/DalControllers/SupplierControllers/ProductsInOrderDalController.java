@@ -2,14 +2,14 @@ package DataAccessLayer.DalControllers.SupplierControllers;
 
 import DataAccessLayer.DalControllers.DalController$;
 import DataAccessLayer.DalControllers.InventoryControllers.ItemDalController;
-import DataAccessLayer.DalObjects.InventoryObjects.Item;
-import DataAccessLayer.DalObjects.SupplierObjects.OrderDal;
-import DataAccessLayer.DalObjects.SupplierObjects.ProductsInOrderDal;
+import DataAccessLayer.DalObjects.InventoryObjects.DalItem;
+import DataAccessLayer.DalObjects.SupplierObjects.DalOrder;
+import DataAccessLayer.DalObjects.SupplierObjects.DalProductsInOrder;
 
 import java.sql.*;
 import java.util.List;
 
-public class ProductsInOrderDalController extends DalController$<ProductsInOrderDal> {
+public class ProductsInOrderDalController extends DalController$<DalProductsInOrder> {
     private static ProductsInOrderDalController instance = null;
     public final static String PRODUCTS_IN_ORDER_TABLE_NAME = "Products_In_Order";
 
@@ -32,12 +32,12 @@ public class ProductsInOrderDalController extends DalController$<ProductsInOrder
     public boolean createTable() throws SQLException {
         try (Connection conn = DriverManager.getConnection(connectionString)) {
             String command = "CREATE TABLE IF NOT EXISTS " + tableName + " (" +
-                    ProductsInOrderDal.productIdColumnName + " INTEGER NOT NULL," +
-                    ProductsInOrderDal.orderIdColumnName + " INTEGER NOT NULL," +
-                    ProductsInOrderDal.amountColumnName + " INTEGET NOT NULL," +
-                    "PRIMARY KEY ("+ ProductsInOrderDal.productIdColumnName +", "+ProductsInOrderDal.orderIdColumnName+ "),"+
-                    "FOREIGN KEY (" + ProductsInOrderDal.productIdColumnName + ")" + "REFERENCES " + Item.itemIdColumnName + " (" + ItemDalController.ITEM_TABLE_NAME +") ON DELETE CASCADE "+
-                    "FOREIGN KEY (" + ProductsInOrderDal.orderIdColumnName + ")" + "REFERENCES " + OrderDal.orderIdColumnName + " (" + OrderDalController.ORDER_TABLE_NAME +") ON DELETE CASCADE "+
+                    DalProductsInOrder.productIdColumnName + " INTEGER NOT NULL," +
+                    DalProductsInOrder.orderIdColumnName + " INTEGER NOT NULL," +
+                    DalProductsInOrder.amountColumnName + " INTEGET NOT NULL," +
+                    "PRIMARY KEY ("+ DalProductsInOrder.productIdColumnName +", "+ DalProductsInOrder.orderIdColumnName+ "),"+
+                    "FOREIGN KEY (" + DalProductsInOrder.productIdColumnName + ")" + "REFERENCES " + DalItem.itemIdColumnName + " (" + ItemDalController.ITEM_TABLE_NAME +") ON DELETE CASCADE "+
+                    "FOREIGN KEY (" + DalProductsInOrder.orderIdColumnName + ")" + "REFERENCES " + DalOrder.orderIdColumnName + " (" + OrderDalController.ORDER_TABLE_NAME +") ON DELETE CASCADE "+
                     ");";
 
             PreparedStatement stmt = conn.prepareStatement(command);
@@ -49,7 +49,7 @@ public class ProductsInOrderDalController extends DalController$<ProductsInOrder
     }
 
     @Override
-    public boolean insert(ProductsInOrderDal productsInOrder) throws SQLException {
+    public boolean insert(DalProductsInOrder productsInOrder) throws SQLException {
         try (Connection conn = DriverManager.getConnection(connectionString)) {
             String query = "INSERT INTO " + tableName + " VALUES (?,?,?)";
             PreparedStatement stmt = conn.prepareStatement(query);
@@ -64,9 +64,9 @@ public class ProductsInOrderDalController extends DalController$<ProductsInOrder
     }
 
     @Override
-    public boolean delete(ProductsInOrderDal productsInOrder) throws SQLException {
+    public boolean delete(DalProductsInOrder productsInOrder) throws SQLException {
         try (Connection conn = DriverManager.getConnection(connectionString)) {
-            String query = "DELETE FROM " + tableName + " WHERE (" + ProductsInOrderDal.productIdColumnName +"=? AND "+ProductsInOrderDal.orderIdColumnName+ "=?)";
+            String query = "DELETE FROM " + tableName + " WHERE (" + DalProductsInOrder.productIdColumnName +"=? AND "+ DalProductsInOrder.orderIdColumnName+ "=?)";
             PreparedStatement stmt = conn.prepareStatement(query);
             stmt.setInt(1, productsInOrder.getProductId());
             stmt.setInt(2, productsInOrder.getOrderId());
@@ -78,10 +78,10 @@ public class ProductsInOrderDalController extends DalController$<ProductsInOrder
     }
 
     @Override
-    public boolean update(ProductsInOrderDal productInOrder) throws SQLException {
+    public boolean update(DalProductsInOrder productInOrder) throws SQLException {
         try (Connection conn = DriverManager.getConnection(connectionString)) {
-            String query = "UPDATE " + tableName + " SET " + ProductsInOrderDal.amountColumnName +
-                    "=? WHERE(" + ProductsInOrderDal.productIdColumnName +"=? AND "+ProductsInOrderDal.orderIdColumnName+ "=?)";
+            String query = "UPDATE " + tableName + " SET " + DalProductsInOrder.amountColumnName +
+                    "=? WHERE(" + DalProductsInOrder.productIdColumnName +"=? AND "+ DalProductsInOrder.orderIdColumnName+ "=?)";
             PreparedStatement stmt = conn.prepareStatement(query);
 
             stmt.setInt(1, productInOrder.getAmount());
@@ -95,7 +95,7 @@ public class ProductsInOrderDalController extends DalController$<ProductsInOrder
     }
 
     @Override
-    public boolean select(ProductsInOrderDal productInOrder) throws SQLException {
+    public boolean select(DalProductsInOrder productInOrder) throws SQLException {
         boolean isDesired = false;
         try (Connection conn = DriverManager.getConnection(connectionString)) {
             String query = "SELECT * FROM " + tableName;
@@ -116,7 +116,7 @@ public class ProductsInOrderDalController extends DalController$<ProductsInOrder
         return isDesired;
     }
 
-    public boolean select(ProductsInOrderDal product, List<ProductsInOrderDal> productsInOrderDal) throws SQLException {
+    public boolean select(DalProductsInOrder product, List<DalProductsInOrder> productsInOrderDal) throws SQLException {
         boolean hasItem = false;
         try (Connection conn = DriverManager.getConnection(connectionString)) {
             String query = "SELECT * FROM " + tableName;
@@ -130,7 +130,7 @@ public class ProductsInOrderDalController extends DalController$<ProductsInOrder
                 if (isDesired) {
                     int productId = resultSet.getInt(1);
                     int amount = resultSet.getInt(3);
-                    ProductsInOrderDal savedProduct = new ProductsInOrderDal(productId, product.getOrderId(), amount);
+                    DalProductsInOrder savedProduct = new DalProductsInOrder(productId, product.getOrderId(), amount);
                     productsInOrderDal.add(savedProduct);
                 }
             }

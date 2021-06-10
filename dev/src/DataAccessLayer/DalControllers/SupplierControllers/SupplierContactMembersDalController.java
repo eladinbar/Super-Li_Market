@@ -1,14 +1,14 @@
 package DataAccessLayer.DalControllers.SupplierControllers;
 
 import DataAccessLayer.DalControllers.DalController$;
-import DataAccessLayer.DalObjects.SupplierObjects.PersonCardDal;
-import DataAccessLayer.DalObjects.SupplierObjects.SupplierCardDal;
-import DataAccessLayer.DalObjects.SupplierObjects.SupplierContactMembersDal;
+import DataAccessLayer.DalObjects.SupplierObjects.DalPersonCard;
+import DataAccessLayer.DalObjects.SupplierObjects.DalSupplierCard;
+import DataAccessLayer.DalObjects.SupplierObjects.DalSupplierContactMembers;
 
 import java.sql.*;
 import java.util.List;
 
-public class SupplierContactMembersDalController extends DalController$<SupplierContactMembersDal> {
+public class SupplierContactMembersDalController extends DalController$<DalSupplierContactMembers> {
     private static SupplierContactMembersDalController instance = null;
     public final static String SUPPLIER_CONTACT_MEMBERS_TABLE_NAME = "Supplier_Contact_Members";
 
@@ -26,12 +26,12 @@ public class SupplierContactMembersDalController extends DalController$<Supplier
     public boolean createTable() throws SQLException {
         try (Connection conn = DriverManager.getConnection(connectionString)) {
             String command = "CREATE TABLE IF NOT EXISTS " + tableName + " (" +
-                    SupplierContactMembersDal.supplierIdColumnName + " INTEGER NOT NULL," +
-                    SupplierContactMembersDal.personIdColumnName + " INTEGET NOT NULL," +
-                    "PRIMARY KEY ("+ SupplierContactMembersDal.supplierIdColumnName+
-                    ", "+ SupplierContactMembersDal.personIdColumnName+"),"+
-                    "FOREIGN KEY (" + SupplierContactMembersDal.supplierIdColumnName + ")" + "REFERENCES " + SupplierCardDal.supplierIdColumnName + " (" + SupplierCardDalController.SUPPLIER_CARD_TABLE_NAME +") ON DELETE CASCADE "+
-                    "FOREIGN KEY (" + SupplierContactMembersDal.personIdColumnName + ")" + "REFERENCES " + PersonCardDal.idColumnName + " (" + PersonCardDalController.PERSON_CARD_TABLE_NAME +") ON DELETE CASCADE "+
+                    DalSupplierContactMembers.supplierIdColumnName + " INTEGER NOT NULL," +
+                    DalSupplierContactMembers.personIdColumnName + " INTEGET NOT NULL," +
+                    "PRIMARY KEY ("+ DalSupplierContactMembers.supplierIdColumnName+
+                    ", "+ DalSupplierContactMembers.personIdColumnName+"),"+
+                    "FOREIGN KEY (" + DalSupplierContactMembers.supplierIdColumnName + ")" + "REFERENCES " + DalSupplierCard.supplierIdColumnName + " (" + SupplierCardDalController.SUPPLIER_CARD_TABLE_NAME +") ON DELETE CASCADE "+
+                    "FOREIGN KEY (" + DalSupplierContactMembers.personIdColumnName + ")" + "REFERENCES " + DalPersonCard.idColumnName + " (" + PersonCardDalController.PERSON_CARD_TABLE_NAME +") ON DELETE CASCADE "+
                     ");";
 
             PreparedStatement stmt = conn.prepareStatement(command);
@@ -43,7 +43,7 @@ public class SupplierContactMembersDalController extends DalController$<Supplier
     }
 
     @Override
-    public boolean insert(SupplierContactMembersDal person) throws SQLException {
+    public boolean insert(DalSupplierContactMembers person) throws SQLException {
         try (Connection conn = DriverManager.getConnection(connectionString)) {
             String query = "INSERT INTO " + tableName + " VALUES (?,?)";
             PreparedStatement stmt = conn.prepareStatement(query);
@@ -57,9 +57,9 @@ public class SupplierContactMembersDalController extends DalController$<Supplier
     }
 
     @Override
-    public boolean delete(SupplierContactMembersDal supplierContactMember) throws SQLException {
+    public boolean delete(DalSupplierContactMembers supplierContactMember) throws SQLException {
         try (Connection conn = DriverManager.getConnection(connectionString)) {
-            String query = "DELETE FROM " + tableName + " WHERE (" + SupplierContactMembersDal.supplierIdColumnName + "=? AND "+SupplierContactMembersDal.personIdColumnName+"=?)";
+            String query = "DELETE FROM " + tableName + " WHERE (" + DalSupplierContactMembers.supplierIdColumnName + "=? AND "+ DalSupplierContactMembers.personIdColumnName+"=?)";
             PreparedStatement stmt = conn.prepareStatement(query);
 
             stmt.setInt(1, supplierContactMember.getSupplierId());
@@ -72,12 +72,12 @@ public class SupplierContactMembersDalController extends DalController$<Supplier
     }
 
     @Override
-    public boolean update(SupplierContactMembersDal dalObject) {
+    public boolean update(DalSupplierContactMembers dalObject) {
         return false;
     }
 
     @Override
-    public boolean select(SupplierContactMembersDal supplierContactMember) throws SQLException {
+    public boolean select(DalSupplierContactMembers supplierContactMember) throws SQLException {
         boolean isDesired = false;
         try (Connection conn = DriverManager.getConnection(connectionString)) {
             String query = "SELECT * FROM " + tableName;
@@ -98,7 +98,7 @@ public class SupplierContactMembersDalController extends DalController$<Supplier
         return isDesired;
     }
 
-    public boolean select(SupplierContactMembersDal contactMember, List<SupplierContactMembersDal> contactMemberList) throws SQLException {
+    public boolean select(DalSupplierContactMembers contactMember, List<DalSupplierContactMembers> contactMemberList) throws SQLException {
         boolean hasItem = false;
         try (Connection conn = DriverManager.getConnection(connectionString)) {
             String query = "SELECT * FROM " + tableName;
@@ -111,7 +111,7 @@ public class SupplierContactMembersDalController extends DalController$<Supplier
                     hasItem = true;
                 if (isDesired) {
                     int personId = resultSet.getInt(2);
-                    SupplierContactMembersDal savedSupplier = new SupplierContactMembersDal(contactMember.getSupplierId(), personId);
+                    DalSupplierContactMembers savedSupplier = new DalSupplierContactMembers(contactMember.getSupplierId(), personId);
                     contactMemberList.add(savedSupplier);
                 }
             }

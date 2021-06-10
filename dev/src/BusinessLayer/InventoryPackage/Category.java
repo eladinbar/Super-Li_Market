@@ -1,11 +1,13 @@
 package BusinessLayer.InventoryPackage;
 
+import DataAccessLayer.DalObjects.InventoryObjects.DalCategory;
+
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
 public class Category {
-    private DataAccessLayer.DalObjects.InventoryObjects.Category dalCopyCategory;
+    private DalCategory dalCopyCategory;
 
     private String name;
     private List<Item> items;
@@ -16,7 +18,7 @@ public class Category {
 
     public Category(String name) {
         try {
-            dalCopyCategory = new DataAccessLayer.DalObjects.InventoryObjects.Category();
+            dalCopyCategory = new DalCategory();
         } catch(SQLException ex) {
             throw new RuntimeException("Something went wrong.");
         }
@@ -28,7 +30,7 @@ public class Category {
 
     public Category(String name, List<Item> items, Category parentCategory, List<Category> subCategories) {
         try {
-            dalCopyCategory = new DataAccessLayer.DalObjects.InventoryObjects.Category();
+            dalCopyCategory = new DalCategory();
         } catch(SQLException ex) {
             throw new RuntimeException("Something went wrong.");
         }
@@ -101,7 +103,7 @@ public class Category {
 
     public void save() {
         try {
-            dalCopyCategory = new DataAccessLayer.DalObjects.InventoryObjects.Category(this.name, this.parentCategory.name);
+            dalCopyCategory = new DalCategory(this.name, this.parentCategory.name);
             dalCopyCategory.save();
         } catch (SQLException ex) {
             throw new RuntimeException("Something went wrong.");
@@ -123,7 +125,7 @@ public class Category {
     public boolean find() {
         boolean found;
         try {
-            dalCopyCategory = new DataAccessLayer.DalObjects.InventoryObjects.Category(name);
+            dalCopyCategory = new DalCategory(name);
 
             found = dalCopyCategory.find(); //Retrieves DAL Category from the database
             //Set the fields according to the retrieved data
@@ -157,14 +159,14 @@ public class Category {
     public boolean find(List<Category> categories, String parentName) {
         boolean found;
         try {
-            List<DataAccessLayer.DalObjects.InventoryObjects.Category> dalCopyCategories = new ArrayList<>();
-            dalCopyCategory = new DataAccessLayer.DalObjects.InventoryObjects.Category(null);
+            List<DalCategory> dalCopyCategories = new ArrayList<>();
+            dalCopyCategory = new DalCategory(null);
             dalCopyCategory.setParentName(parentName);
 
             found = dalCopyCategory.find(dalCopyCategories); //Retrieves DAL Categories from the database according to 'parentName'
             //Set the fields according to the retrieved data
             if (found) {
-                for (DataAccessLayer.DalObjects.InventoryObjects.Category category : dalCopyCategories) {
+                for (DalCategory category : dalCopyCategories) {
                     List<Item> savedItems = new ArrayList<>();
                     Item item = new Item();
                     item.find(savedItems, category.getName());
@@ -182,13 +184,13 @@ public class Category {
     public boolean find(List<Category> categories) {
         boolean found;
         try {
-            List<DataAccessLayer.DalObjects.InventoryObjects.Category> dalCopyCategories = new ArrayList<>();
-            dalCopyCategory = new DataAccessLayer.DalObjects.InventoryObjects.Category();
+            List<DalCategory> dalCopyCategories = new ArrayList<>();
+            dalCopyCategory = new DalCategory();
 
             found = dalCopyCategory.findAll(dalCopyCategories); //Retrieves all DAL categories from the database
             //Set the fields according to the retrieved data
             if (found) {
-                for (DataAccessLayer.DalObjects.InventoryObjects.Category category : dalCopyCategories) {
+                for (DalCategory category : dalCopyCategories) {
                     List<Item> savedItems = new ArrayList<>();
                     Item item = new Item();
                     item.find(savedItems, category.getName());

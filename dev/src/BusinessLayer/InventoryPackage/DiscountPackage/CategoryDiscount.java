@@ -1,6 +1,7 @@
 package BusinessLayer.InventoryPackage.DiscountPackage;
 
 import BusinessLayer.InventoryPackage.Category;
+import DataAccessLayer.DalObjects.InventoryObjects.DalCategoryDiscount;
 
 import java.time.LocalDate;
 import java.sql.SQLException;
@@ -8,14 +9,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CategoryDiscount extends Discount{
-    private DataAccessLayer.DalObjects.InventoryObjects.CategoryDiscount dalCopyCategoryDiscount;
+    private DalCategoryDiscount dalCopyCategoryDiscount;
 
     Category category;
 
     public CategoryDiscount() {
         super();
         try {
-            dalCopyCategoryDiscount = new DataAccessLayer.DalObjects.InventoryObjects.CategoryDiscount();
+            dalCopyCategoryDiscount = new DalCategoryDiscount();
         } catch(SQLException ex) {
             throw new RuntimeException("Something went wrong.");
         }
@@ -24,7 +25,7 @@ public class CategoryDiscount extends Discount{
     public CategoryDiscount(String supplierId, LocalDate discountDate) {
         super(supplierId, discountDate);
         try {
-            dalCopyCategoryDiscount = new DataAccessLayer.DalObjects.InventoryObjects.CategoryDiscount();
+            dalCopyCategoryDiscount = new DalCategoryDiscount();
         } catch(SQLException ex) {
             throw new RuntimeException("Something went wrong.");
         }
@@ -33,7 +34,7 @@ public class CategoryDiscount extends Discount{
     public CategoryDiscount(String supplierID, double discount, LocalDate date, int itemCount, Category category) {
         super(supplierID, discount, date, itemCount);
         try {
-            dalCopyCategoryDiscount = new DataAccessLayer.DalObjects.InventoryObjects.CategoryDiscount();
+            dalCopyCategoryDiscount = new DalCategoryDiscount();
         } catch(SQLException ex) {
             throw new RuntimeException("Something went wrong.");
         }
@@ -67,7 +68,7 @@ public class CategoryDiscount extends Discount{
 
     public void save() {
         try {
-            dalCopyCategoryDiscount = new DataAccessLayer.DalObjects.InventoryObjects.CategoryDiscount(date.toString(), supplierID, category.getName(), discount, itemCount);
+            dalCopyCategoryDiscount = new DalCategoryDiscount(date.toString(), supplierID, category.getName(), discount, itemCount);
             dalCopyCategoryDiscount.save();
         } catch (SQLException ex) {
             throw new RuntimeException("Something went wrong.");
@@ -89,7 +90,7 @@ public class CategoryDiscount extends Discount{
     public boolean find() {
         boolean found;
         try {
-            dalCopyCategoryDiscount = new DataAccessLayer.DalObjects.InventoryObjects.CategoryDiscount(date.toString(), supplierID, category.getName());
+            dalCopyCategoryDiscount = new DalCategoryDiscount(date.toString(), supplierID, category.getName());
 
             found = dalCopyCategoryDiscount.find(); //Retrieves DAL Category Sale from the database
             //Set the fields according to the retrieved data
@@ -110,13 +111,13 @@ public class CategoryDiscount extends Discount{
     public boolean find(List<CategoryDiscount> categoryDiscounts, String supplierId, String discountDate) {
         boolean found;
         try {
-            List<DataAccessLayer.DalObjects.InventoryObjects.CategoryDiscount> dalCopyCategoryDiscounts = new ArrayList<>();
-            dalCopyCategoryDiscount = new DataAccessLayer.DalObjects.InventoryObjects.CategoryDiscount(supplierId, discountDate);
+            List<DalCategoryDiscount> dalCopyCategoryDiscounts = new ArrayList<>();
+            dalCopyCategoryDiscount = new DalCategoryDiscount(supplierId, discountDate);
 
             found = dalCopyCategoryDiscount.find(dalCopyCategoryDiscounts); //Retrieves DAL Items from the database
             //Set the fields according to the retrieved data
             if (found) {
-                for (DataAccessLayer.DalObjects.InventoryObjects.CategoryDiscount categoryDiscount : dalCopyCategoryDiscounts) {
+                for (DalCategoryDiscount categoryDiscount : dalCopyCategoryDiscounts) {
                     CategoryDiscount savedCategoryDiscount = new CategoryDiscount(categoryDiscount.getSupplierID(), categoryDiscount.getDiscount(),
                             LocalDate.parse(categoryDiscount.getDiscountDate()), categoryDiscount.getItemCount(), new Category(categoryDiscount.getCategoryName()));
                     categoryDiscounts.add(savedCategoryDiscount);

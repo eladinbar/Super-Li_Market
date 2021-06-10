@@ -1,7 +1,7 @@
 package BusinessLayer.SuppliersPackage.SupplierPackage;
 
-import DataAccessLayer.DalObjects.SupplierObjects.AgreementItemsDal;
-import DataAccessLayer.DalObjects.SupplierObjects.QuantityListItemsDal;
+import DataAccessLayer.DalObjects.SupplierObjects.DalAgreementItems;
+import DataAccessLayer.DalObjects.SupplierObjects.DalQuantityListItems;
 
 import java.sql.SQLException;
 import java.util.*;
@@ -10,7 +10,7 @@ public class Agreement {
     private Map<Integer, Integer> products;
     private Map<Integer, Integer> prices;
     private QuantityList ql;
-    private Map<Integer, AgreementItemsDal> dalObjects;
+    private Map<Integer, DalAgreementItems> dalObjects;
 
     public Agreement() {
         this.ql = null;
@@ -32,15 +32,15 @@ public class Agreement {
     }
 
     public QuantityList readQl(String supplierId) throws Exception {
-        List<QuantityListItemsDal> qlItems = new ArrayList();
-        QuantityListItemsDal qlDal = new QuantityListItemsDal(supplierId);
+        List<DalQuantityListItems> qlItems = new ArrayList();
+        DalQuantityListItems qlDal = new DalQuantityListItems(supplierId);
         qlDal.find(qlItems);
         if (qlItems.size()==0) {
             ql = null;
             return null;
         }
         QuantityList qlBusiness = new QuantityList();
-        for (QuantityListItemsDal qlItemDal : qlItems) {
+        for (DalQuantityListItems qlItemDal : qlItems) {
             qlBusiness.addQuantityListItem(qlItemDal.getProductId(), qlItemDal.getAmount(), (int) qlItemDal.getDiscount(), "");
             qlBusiness.getDalObjects().put(qlItemDal.getProductId(),qlItemDal);
         }
@@ -48,7 +48,7 @@ public class Agreement {
         return qlBusiness;
     }
 
-    public Map<Integer, AgreementItemsDal> getDalObjects() {
+    public Map<Integer, DalAgreementItems> getDalObjects() {
         return dalObjects;
     }
 
@@ -185,7 +185,7 @@ public class Agreement {
     }
 
     public boolean saveItem(int itemId, String supplierId) throws SQLException {
-        dalObjects.put(itemId, new AgreementItemsDal(itemId, Integer.parseInt(supplierId), products.get(itemId), prices.get(itemId)));
+        dalObjects.put(itemId, new DalAgreementItems(itemId, Integer.parseInt(supplierId), products.get(itemId), prices.get(itemId)));
         return dalObjects.get(itemId).save();
     }
 

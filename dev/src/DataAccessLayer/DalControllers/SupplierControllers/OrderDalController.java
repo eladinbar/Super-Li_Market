@@ -1,13 +1,13 @@
 package DataAccessLayer.DalControllers.SupplierControllers;
 
 import DataAccessLayer.DalControllers.DalController$;
-import DataAccessLayer.DalObjects.SupplierObjects.OrderDal;
-import DataAccessLayer.DalObjects.SupplierObjects.SupplierCardDal;
+import DataAccessLayer.DalObjects.SupplierObjects.DalOrder;
+import DataAccessLayer.DalObjects.SupplierObjects.DalSupplierCard;
 
 import java.sql.*;
 import java.util.List;
 
-public class OrderDalController extends DalController$<OrderDal> {
+public class OrderDalController extends DalController$<DalOrder> {
     private static OrderDalController instance = null;
     public final static String ORDER_TABLE_NAME = "Orders";
 
@@ -30,13 +30,13 @@ public class OrderDalController extends DalController$<OrderDal> {
     public boolean createTable() throws SQLException {
         try (Connection conn = DriverManager.getConnection(connectionString)) {
             String command = "CREATE TABLE IF NOT EXISTS " + tableName + " (" +
-                    OrderDal.orderIdColumnName + " INTEGER NOT NULL," +
-                    OrderDal.supplierIdColumnName + " TEXT NOT NULL," +
-                    OrderDal.dateColumnName + " TEXT," +
-                    OrderDal.deliveredColumnName +" INTEGER NOT NULL,"+
-                    OrderDal.dayColumnName + " INTEGER NOT NULL,"+
-                    "PRIMARY KEY (" + OrderDal.orderIdColumnName + ")," +
-                    "FOREIGN KEY (" + OrderDal.supplierIdColumnName + ")" + "REFERENCES " + SupplierCardDal.supplierIdColumnName + " (" + SupplierCardDalController.SUPPLIER_CARD_TABLE_NAME + ") ON DELETE CASCADE " +
+                    DalOrder.orderIdColumnName + " INTEGER NOT NULL," +
+                    DalOrder.supplierIdColumnName + " TEXT NOT NULL," +
+                    DalOrder.dateColumnName + " TEXT," +
+                    DalOrder.deliveredColumnName +" INTEGER NOT NULL,"+
+                    DalOrder.dayColumnName + " INTEGER NOT NULL,"+
+                    "PRIMARY KEY (" + DalOrder.orderIdColumnName + ")," +
+                    "FOREIGN KEY (" + DalOrder.supplierIdColumnName + ")" + "REFERENCES " + DalSupplierCard.supplierIdColumnName + " (" + SupplierCardDalController.SUPPLIER_CARD_TABLE_NAME + ") ON DELETE CASCADE " +
                     ");";
 
             PreparedStatement stmt = conn.prepareStatement(command);
@@ -48,7 +48,7 @@ public class OrderDalController extends DalController$<OrderDal> {
     }
 
     @Override
-    public boolean insert(OrderDal order) throws SQLException {
+    public boolean insert(DalOrder order) throws SQLException {
         try (Connection conn = DriverManager.getConnection(connectionString)) {
             String query = "INSERT INTO " + tableName + " VALUES (?,?,?,?,?)";
             PreparedStatement stmt = conn.prepareStatement(query);
@@ -65,9 +65,9 @@ public class OrderDalController extends DalController$<OrderDal> {
     }
 
     @Override
-    public boolean delete(OrderDal order) throws SQLException {
+    public boolean delete(DalOrder order) throws SQLException {
         try (Connection conn = DriverManager.getConnection(connectionString)) {
-            String query = "DELETE FROM " + tableName + " WHERE (" + OrderDal.orderIdColumnName + "=?)";
+            String query = "DELETE FROM " + tableName + " WHERE (" + DalOrder.orderIdColumnName + "=?)";
             PreparedStatement stmt = conn.prepareStatement(query);
             stmt.setInt(1, order.getOrderId());
             stmt.executeUpdate();
@@ -78,10 +78,10 @@ public class OrderDalController extends DalController$<OrderDal> {
     }
 
     @Override
-    public boolean update(OrderDal order) throws SQLException {
+    public boolean update(DalOrder order) throws SQLException {
         try (Connection conn = DriverManager.getConnection(connectionString)) {
-            String query = "UPDATE " + tableName + " SET " + OrderDal.dateColumnName +
-                    "=?, "+ OrderDal.deliveredColumnName+"=?, "+ OrderDal.dayColumnName+"=? WHERE(" + OrderDal.orderIdColumnName + "=?)";
+            String query = "UPDATE " + tableName + " SET " + DalOrder.dateColumnName +
+                    "=?, "+ DalOrder.deliveredColumnName+"=?, "+ DalOrder.dayColumnName+"=? WHERE(" + DalOrder.orderIdColumnName + "=?)";
             PreparedStatement stmt = conn.prepareStatement(query);
 
             stmt.setString(1, order.getDate());
@@ -96,7 +96,7 @@ public class OrderDalController extends DalController$<OrderDal> {
     }
 
     @Override
-    public boolean select(OrderDal order) throws SQLException {
+    public boolean select(DalOrder order) throws SQLException {
         boolean isDesired = false;
         try (Connection conn = DriverManager.getConnection(connectionString)) {
             String query = "SELECT * FROM " + tableName;
@@ -119,15 +119,15 @@ public class OrderDalController extends DalController$<OrderDal> {
         return isDesired;
     }
 
-    public boolean select(List<OrderDal> orders) throws SQLException {
-        OrderDal savedOrder;
+    public boolean select(List<DalOrder> orders) throws SQLException {
+        DalOrder savedOrder;
         try (Connection conn = DriverManager.getConnection(connectionString)) {
             String query = "SELECT * FROM " + tableName;
             PreparedStatement stmt = conn.prepareStatement(query);
             ResultSet resultSet = stmt.executeQuery();
             while (resultSet.next())
             {
-                savedOrder = new OrderDal(resultSet.getInt(1));
+                savedOrder = new DalOrder(resultSet.getInt(1));
                 savedOrder.setSupplierIdLoad(resultSet.getString(2));
                 savedOrder.setDateLoad(resultSet.getString(3));
                 savedOrder.setDeliveredLoad(resultSet.getInt(4));
@@ -143,7 +143,7 @@ public class OrderDalController extends DalController$<OrderDal> {
     @Override
     public int getOrderCounter() throws SQLException {
         try (Connection conn = DriverManager.getConnection(connectionString)) {
-            String query = "SELECT MAX(" + OrderDal.orderIdColumnName + ") FROM " + tableName;
+            String query = "SELECT MAX(" + DalOrder.orderIdColumnName + ") FROM " + tableName;
             PreparedStatement stmt = conn.prepareStatement(query);
             ResultSet resultSet = stmt.executeQuery();
             if (resultSet.next())

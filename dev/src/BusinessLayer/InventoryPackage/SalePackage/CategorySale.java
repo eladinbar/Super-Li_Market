@@ -1,19 +1,20 @@
 package BusinessLayer.InventoryPackage.SalePackage;
 
 import BusinessLayer.InventoryPackage.Category;
+import DataAccessLayer.DalObjects.InventoryObjects.DalCategorySale;
 
 import java.time.LocalDate;
 import java.sql.SQLException;
 
 public class CategorySale extends Sale{
-    private DataAccessLayer.DalObjects.InventoryObjects.CategorySale dalCopyCategorySale;
+    private DalCategorySale dalCopyCategorySale;
 
     private Category category;
 
     public CategorySale(String name) {
         super(name);
         try {
-            dalCopyCategorySale = new DataAccessLayer.DalObjects.InventoryObjects.CategorySale();
+            dalCopyCategorySale = new DalCategorySale();
         } catch(SQLException ex) {
             throw new RuntimeException("Something went wrong.");
         }
@@ -22,7 +23,7 @@ public class CategorySale extends Sale{
     public CategorySale(String name, double discount, LocalDate startDate, LocalDate endDate, Category category) {
         super(name, discount, startDate, endDate);
         try {
-            dalCopyCategorySale = new DataAccessLayer.DalObjects.InventoryObjects.CategorySale();
+            dalCopyCategorySale = new DalCategorySale();
         } catch(SQLException ex) {
             throw new RuntimeException("Something went wrong.");
         }
@@ -117,7 +118,7 @@ public class CategorySale extends Sale{
 
     public void save() {
         try {
-            dalCopyCategorySale = new DataAccessLayer.DalObjects.InventoryObjects.CategorySale(name, discount,
+            dalCopyCategorySale = new DalCategorySale(name, discount,
                     saleDates.getFirst().toString(), saleDates.getSecond().toString(), category.getName());
             dalCopyCategorySale.save();
         } catch (SQLException ex) {
@@ -140,7 +141,7 @@ public class CategorySale extends Sale{
     public boolean find() {
         boolean found;
         try {
-            dalCopyCategorySale = new DataAccessLayer.DalObjects.InventoryObjects.CategorySale(name);
+            dalCopyCategorySale = new DalCategorySale(name);
 
             found = dalCopyCategorySale.find(); //Retrieves DAL Category Sale from the database
             //Set the fields according to the retrieved data

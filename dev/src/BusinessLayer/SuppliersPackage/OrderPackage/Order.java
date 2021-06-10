@@ -1,8 +1,8 @@
 package BusinessLayer.SuppliersPackage.OrderPackage;
 
 import BusinessLayer.SuppliersPackage.SupplierPackage.Supplier;
-import DataAccessLayer.DalObjects.SupplierObjects.OrderDal;
-import DataAccessLayer.DalObjects.SupplierObjects.ProductsInOrderDal;
+import DataAccessLayer.DalObjects.SupplierObjects.DalOrder;
+import DataAccessLayer.DalObjects.SupplierObjects.DalProductsInOrder;
 
 import java.sql.SQLException;
 import java.time.DayOfWeek;
@@ -15,7 +15,7 @@ public class Order {
     private LocalDate date;
     private boolean delivered;
     private Supplier supplier;
-    private OrderDal dalObject;
+    private DalOrder dalObject;
     private int day;
 
     public Order(int id, LocalDate date, Supplier supplier, int day) throws SQLException {
@@ -29,7 +29,7 @@ public class Order {
         save();
     }
 
-    public Order(OrderDal orderDal, Supplier supplier) throws Exception {
+    public Order(DalOrder orderDal, Supplier supplier) throws Exception {
         this.products = new HashMap<>();
         this.id = orderDal.getOrderId();
         this.delivered = orderDal.isDelivered() == 1 ? true : false;
@@ -43,7 +43,7 @@ public class Order {
     public Order(int id) throws SQLException {
         this.products = new HashMap<>();
         this.id = id;
-        this.dalObject = new OrderDal(id);
+        this.dalObject = new DalOrder(id);
     }
 
     public int getId() {
@@ -134,16 +134,16 @@ public class Order {
     }
 
     private void readOrderProducts() throws Exception {
-        List<ProductsInOrderDal> orderItems = new ArrayList();
-        ProductsInOrderDal productInOrderDal = new ProductsInOrderDal(id);
+        List<DalProductsInOrder> orderItems = new ArrayList();
+        DalProductsInOrder productInOrderDal = new DalProductsInOrder(id);
         productInOrderDal.find(orderItems);
-        for (ProductsInOrderDal product : orderItems) {
+        for (DalProductsInOrder product : orderItems) {
             addProductToOrder(product.getProductId(), product.getAmount(), false);
         }
     }
 
-    private OrderDal toDalObject() throws SQLException {
-        return new OrderDal(id, supplier.getSc().getId(), date, delivered, day);
+    private DalOrder toDalObject() throws SQLException {
+        return new DalOrder(id, supplier.getSc().getId(), date, delivered, day);
     }
 
     private boolean save() throws SQLException {

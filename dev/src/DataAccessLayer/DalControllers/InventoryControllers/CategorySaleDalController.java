@@ -1,14 +1,14 @@
 package DataAccessLayer.DalControllers.InventoryControllers;
 
 import DataAccessLayer.DalControllers.DalController$;
-import DataAccessLayer.DalObjects.InventoryObjects.Category;
-import DataAccessLayer.DalObjects.InventoryObjects.CategorySale;
+import DataAccessLayer.DalObjects.InventoryObjects.DalCategory;
+import DataAccessLayer.DalObjects.InventoryObjects.DalCategorySale;
 
 import java.sql.*;
 
 import static DataAccessLayer.DalControllers.InventoryControllers.CategoryDalController.CATEGORY_TABLE_NAME;
 
-public class CategorySaleDalController extends DalController$<CategorySale> {
+public class CategorySaleDalController extends DalController$<DalCategorySale> {
     private static CategorySaleDalController instance = null;
     public final static String CATEGORY_SALE_TABLE_NAME = "Category_Sales";
 
@@ -31,14 +31,14 @@ public class CategorySaleDalController extends DalController$<CategorySale> {
     public boolean createTable() throws SQLException {
         try (Connection conn = DriverManager.getConnection(connectionString)) {
             String command = "CREATE TABLE IF NOT EXISTS " + tableName + " (" +
-                    CategorySale.categorySaleNameColumnName + " TEXT NOT NULL," +
-                    CategorySale.discountColumnName + " REAL DEFAULT 0 NOT NULL," +
-                    CategorySale.startSaleDateColumnName + " TEXT NOT NULL," +
-                    CategorySale.endSaleDateColumnName + " TEXT NOT NULL," +
-                    CategorySale.categoryNameColumnName + " TEXT NOT NULL," +
-                    "PRIMARY KEY (" + CategorySale.categorySaleNameColumnName + ")," +
-                    "FOREIGN KEY (" + CategorySale.categoryNameColumnName + ")" +
-                    "REFERENCES " + Category.categoryNameColumnName + " (" + CATEGORY_TABLE_NAME + ") ON DELETE CASCADE" +
+                    DalCategorySale.categorySaleNameColumnName + " TEXT NOT NULL," +
+                    DalCategorySale.discountColumnName + " REAL DEFAULT 0 NOT NULL," +
+                    DalCategorySale.startSaleDateColumnName + " TEXT NOT NULL," +
+                    DalCategorySale.endSaleDateColumnName + " TEXT NOT NULL," +
+                    DalCategorySale.categoryNameColumnName + " TEXT NOT NULL," +
+                    "PRIMARY KEY (" + DalCategorySale.categorySaleNameColumnName + ")," +
+                    "FOREIGN KEY (" + DalCategorySale.categoryNameColumnName + ")" +
+                    "REFERENCES " + DalCategory.categoryNameColumnName + " (" + CATEGORY_TABLE_NAME + ") ON DELETE CASCADE" +
                     ");";
             PreparedStatement stmt = conn.prepareStatement(command);
             stmt.executeUpdate();
@@ -49,7 +49,7 @@ public class CategorySaleDalController extends DalController$<CategorySale> {
     }
 
     @Override
-    public boolean insert(CategorySale categorySale) throws SQLException {
+    public boolean insert(DalCategorySale categorySale) throws SQLException {
         try (Connection conn = DriverManager.getConnection(connectionString)) {
             String command = "INSERT OR IGNORE INTO " + tableName + " VALUES (?,?, ?, ?, ?)";
             PreparedStatement stmt = conn.prepareStatement(command);
@@ -66,9 +66,9 @@ public class CategorySaleDalController extends DalController$<CategorySale> {
     }
 
     @Override
-    public boolean delete(CategorySale categorySale) throws SQLException {
+    public boolean delete(DalCategorySale categorySale) throws SQLException {
         try (Connection conn = DriverManager.getConnection(connectionString)) {
-            String command = "DELETE FROM " + tableName + " WHERE (" + CategorySale.categorySaleNameColumnName + "=?)";
+            String command = "DELETE FROM " + tableName + " WHERE (" + DalCategorySale.categorySaleNameColumnName + "=?)";
             PreparedStatement stmt = conn.prepareStatement(command);
 
             stmt.setString(1, categorySale.getName());
@@ -80,11 +80,11 @@ public class CategorySaleDalController extends DalController$<CategorySale> {
     }
 
     @Override
-    public boolean update(CategorySale categorySale) throws SQLException {
+    public boolean update(DalCategorySale categorySale) throws SQLException {
         try (Connection conn = DriverManager.getConnection(connectionString)) {
-            String command = "UPDATE " + tableName + " SET " + CategorySale.discountColumnName + "=?, " +
-                    CategorySale.startSaleDateColumnName + "=?, " + CategorySale.endSaleDateColumnName + "=?, " +
-                    CategorySale.categoryNameColumnName + "=? WHERE(" + CategorySale.categorySaleNameColumnName + "=?)";
+            String command = "UPDATE " + tableName + " SET " + DalCategorySale.discountColumnName + "=?, " +
+                    DalCategorySale.startSaleDateColumnName + "=?, " + DalCategorySale.endSaleDateColumnName + "=?, " +
+                    DalCategorySale.categoryNameColumnName + "=? WHERE(" + DalCategorySale.categorySaleNameColumnName + "=?)";
             PreparedStatement stmt = conn.prepareStatement(command);
 
             stmt.setDouble(1, categorySale.getDiscount());
@@ -100,11 +100,11 @@ public class CategorySaleDalController extends DalController$<CategorySale> {
     }
 
     @Override
-    public boolean update(CategorySale categorySale, String oldName) throws SQLException {
+    public boolean update(DalCategorySale categorySale, String oldName) throws SQLException {
         try (Connection conn = DriverManager.getConnection(connectionString)) {
-            String command = "UPDATE " + tableName + " SET " + CategorySale.categorySaleNameColumnName + "=?, " + CategorySale.discountColumnName + "=?, " +
-                    CategorySale.startSaleDateColumnName + "=?, " + CategorySale.endSaleDateColumnName + "=?, " +
-                    CategorySale.categoryNameColumnName + "=? WHERE(" + CategorySale.categorySaleNameColumnName + "=?)";
+            String command = "UPDATE " + tableName + " SET " + DalCategorySale.categorySaleNameColumnName + "=?, " + DalCategorySale.discountColumnName + "=?, " +
+                    DalCategorySale.startSaleDateColumnName + "=?, " + DalCategorySale.endSaleDateColumnName + "=?, " +
+                    DalCategorySale.categoryNameColumnName + "=? WHERE(" + DalCategorySale.categorySaleNameColumnName + "=?)";
             PreparedStatement stmt = conn.prepareStatement(command);
 
             stmt.setString(1, categorySale.getName());
@@ -121,7 +121,7 @@ public class CategorySaleDalController extends DalController$<CategorySale> {
     }
 
     @Override
-    public boolean select(CategorySale categorySale) throws SQLException {
+    public boolean select(DalCategorySale categorySale) throws SQLException {
         boolean isDesired = false;
         try (Connection conn = DriverManager.getConnection(connectionString)) {
             String query = "SELECT * FROM " + tableName;

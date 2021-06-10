@@ -1,7 +1,7 @@
 package InfrastructurePackage;
 
-import SerciveLayer.SimpleObjects.*;
-import SerciveLayer.Objects.Product;
+import ServiceLayer.FacadeObjects.*;
+import ServiceLayer.FacadeObjects.FacadeProduct;
 
 import java.lang.reflect.Field;
 import java.text.SimpleDateFormat;
@@ -11,7 +11,7 @@ public class TextFormatter {
     private int paddingSize = 20;
 
     public String formatItemMenuColumns() {
-        Field[] itemFields = Item.class.getDeclaredFields();
+        Field[] itemFields = FacadeItem.class.getDeclaredFields();
         StringBuilder output = new StringBuilder();
         for (int i = 0; i < itemFields.length - 1; i++) {
             String currentField = itemFields[i].getName();
@@ -21,7 +21,7 @@ public class TextFormatter {
     }
 
     public String formatProductMenuColumns(){
-        Field[] productFields = Product.class.getDeclaredFields();
+        Field[] productFields = FacadeProduct.class.getDeclaredFields();
         StringBuilder output = new StringBuilder();
         for (int i = 0; i < productFields.length - 1; i++) {
             String currentField = productFields[i].getName();
@@ -31,7 +31,7 @@ public class TextFormatter {
     }
 
     public String defectsMenuFormat(){
-        Field[] defectFields = DefectEntry.class.getDeclaredFields();
+        Field[] defectFields = FacadeDefectEntry.class.getDeclaredFields();
         StringBuilder output = new StringBuilder();
         for (int i = 0; i < defectFields.length - 1; i++) {
             String currentField = defectFields[i].getName();
@@ -40,7 +40,7 @@ public class TextFormatter {
         return output + centerString(defectFields[defectFields.length - 1].getName(), paddingSize);
     }
 
-    public void categoryMenuFormat(Category category) {
+    public void categoryMenuFormat(FacadeCategory category) {
         String subCategories = category.getSubCategories().stream().reduce("", (acc, curr) -> acc + curr + ", ");
         if(subCategories.length()> 2)
             subCategories = subCategories.substring(0,subCategories.length() - 2);
@@ -50,12 +50,12 @@ public class TextFormatter {
                 "\nCategory items: " );
     }
 
-    public <T extends SimpleEntity> void saleMenuFormat(Sale<T> sale) {
+    public <T extends FacadeEntity> void saleMenuFormat(FacadeSale<T> sale) {
         System.out.println("Category Name: " + sale.getName() + "\n" +
                 "Discount: " + sale.getDiscount() + "\n" +
                 "Sale Dates: " + sale.getSaleDates().getFirst().toString() + " until " + sale.getSaleDates().getSecond().toString());
     }
-    public <T extends SimpleEntity> void discountMenuFormat(Discount<T> discount) {
+    public <T extends FacadeEntity> void discountMenuFormat(FacadeDiscount<T> discount) {
         System.out.println("Supplier ID: " + discount.getSupplierID() + "\n" +
                 "Discount: " + discount.getDiscount() + "\n" +
                 "Date: " + discount.getDate().toString() + "\n" +

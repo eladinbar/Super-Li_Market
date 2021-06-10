@@ -1,11 +1,13 @@
 package BusinessLayer.InventoryPackage;
 
+import DataAccessLayer.DalObjects.InventoryObjects.DalItem;
+
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
 public class Item {
-    private DataAccessLayer.DalObjects.InventoryObjects.Item dalCopyItem;
+    private DalItem dalCopyItem;
 
     private int ID;
     private String name;
@@ -19,7 +21,7 @@ public class Item {
 
     public Item() {
         try {
-            dalCopyItem = new DataAccessLayer.DalObjects.InventoryObjects.Item();
+            dalCopyItem = new DalItem();
         } catch(SQLException ex) {
             throw new RuntimeException("Something went wrong.");
         }
@@ -30,7 +32,7 @@ public class Item {
 
     public Item(int ID) {
         try {
-            dalCopyItem = new DataAccessLayer.DalObjects.InventoryObjects.Item();
+            dalCopyItem = new DalItem();
         } catch(SQLException ex) {
             throw new RuntimeException("Something went wrong.");
         }
@@ -43,7 +45,7 @@ public class Item {
     public Item(int ID, String name, double costPrice, double sellingPrice, int minAmount, int manufacturerID, List<String> supplierIDs,
                 int shelfQuantity, int storageQuantity, String shelfLocation, String storageLocation) {
         try {
-            dalCopyItem = new DataAccessLayer.DalObjects.InventoryObjects.Item();
+            dalCopyItem = new DalItem();
         } catch(SQLException ex) {
             throw new RuntimeException("Something went wrong.");
         }
@@ -222,13 +224,13 @@ public class Item {
         }
     }
 
-    DataAccessLayer.DalObjects.InventoryObjects.Item getDalCopyItem() {
+    DalItem getDalCopyItem() {
         return dalCopyItem;
     }
 
     public void save(String categoryName) {
         try {
-            dalCopyItem = new DataAccessLayer.DalObjects.InventoryObjects.Item(ID, name, costPrice, sellingPrice, manufacturerID, minAmount,
+            dalCopyItem = new DalItem(ID, name, costPrice, sellingPrice, manufacturerID, minAmount,
                     getShelfQuantity(), getStorageQuantity(), getShelfLocation(), getStorageLocation(), categoryName);
             dalCopyItem.save();
         } catch (SQLException ex) {
@@ -251,7 +253,7 @@ public class Item {
     public boolean find() {
         boolean found;
         try {
-            dalCopyItem = new DataAccessLayer.DalObjects.InventoryObjects.Item(ID);
+            dalCopyItem = new DalItem(ID);
 
             found = dalCopyItem.find(); //Retrieves DAL Item from the database
             //Set the fields according to the retrieved data
@@ -278,13 +280,13 @@ public class Item {
     public boolean find(List<Item> items, String categoryName) {
         boolean found;
         try {
-            List<DataAccessLayer.DalObjects.InventoryObjects.Item> dalCopyItems = new ArrayList<>();
-            dalCopyItem = new DataAccessLayer.DalObjects.InventoryObjects.Item(categoryName);
+            List<DalItem> dalCopyItems = new ArrayList<>();
+            dalCopyItem = new DalItem(categoryName);
 
             found = dalCopyItem.find(dalCopyItems); //Retrieves DAL Items from the database
             //Set the fields according to the retrieved data
             if (found) {
-                for (DataAccessLayer.DalObjects.InventoryObjects.Item item : dalCopyItems) {
+                for (DalItem item : dalCopyItems) {
                     Item savedItem = new Item(item.getItemID(), item.getName(), item.getCostPrice(), item.getSellingPrice(), item.getMinAmount(),
                             item.getManufacturerID(), null, item.getShelfQuantity(), item.getStorageQuantity(), item.getShelfLocation(), item.getStorageLocation());
                     items.add(savedItem);

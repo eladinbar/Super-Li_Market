@@ -1,6 +1,6 @@
 package BusinessLayer.SuppliersPackage.SupplierPackage;
 
-import DataAccessLayer.DalObjects.SupplierObjects.PersonCardDal;
+import DataAccessLayer.DalObjects.SupplierObjects.DalPersonCard;
 
 import java.sql.SQLException;
 
@@ -10,7 +10,7 @@ public class PersonCard {
     protected String email;
     protected String id;
     protected String phone;
-    protected PersonCardDal dalObject;
+    protected DalPersonCard dalObject;
 
     public PersonCard(String firstName, String lastName, String email, String id, String phone) throws SQLException {
         this.firstName = firstName;
@@ -97,8 +97,8 @@ public class PersonCard {
 //        toDalObject().save(id,memberID);
 //    }
 
-    public PersonCardDal toDalObject() throws SQLException {
-        return new PersonCardDal(firstName, lastName, email, id, phone);
+    public DalPersonCard toDalObject() throws SQLException {
+        return new DalPersonCard(firstName, lastName, email, id, phone);
     }
 
 //    public void delete(String id, String memberID) throws SQLException {

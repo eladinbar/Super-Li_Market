@@ -1,6 +1,7 @@
 package BusinessLayer.InventoryPackage.DiscountPackage;
 
 import BusinessLayer.InventoryPackage.Item;
+import DataAccessLayer.DalObjects.InventoryObjects.DalItemDiscount;
 
 import java.sql.SQLException;
 import java.time.LocalDate;
@@ -8,14 +9,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ItemDiscount extends Discount{
-    private DataAccessLayer.DalObjects.InventoryObjects.ItemDiscount dalCopyItemDiscount;
+    private DalItemDiscount dalCopyItemDiscount;
 
     private Item item;
 
     public ItemDiscount() {
         super();
         try {
-            dalCopyItemDiscount = new DataAccessLayer.DalObjects.InventoryObjects.ItemDiscount();
+            dalCopyItemDiscount = new DalItemDiscount();
         } catch(SQLException ex) {
             throw new RuntimeException("Something went wrong.");
         }
@@ -24,7 +25,7 @@ public class ItemDiscount extends Discount{
     public ItemDiscount(String supplierId, LocalDate discountDate) {
         super(supplierId, discountDate);
         try {
-            dalCopyItemDiscount = new DataAccessLayer.DalObjects.InventoryObjects.ItemDiscount();
+            dalCopyItemDiscount = new DalItemDiscount();
         } catch(SQLException ex) {
             throw new RuntimeException("Something went wrong.");
         }
@@ -33,7 +34,7 @@ public class ItemDiscount extends Discount{
     public ItemDiscount(String supplierID, double discount, LocalDate date, int itemCount, Item item) {
         super(supplierID, discount, date, itemCount);
         try {
-            dalCopyItemDiscount = new DataAccessLayer.DalObjects.InventoryObjects.ItemDiscount();
+            dalCopyItemDiscount = new DalItemDiscount();
         } catch(SQLException ex) {
             throw new RuntimeException("Something went wrong.");
         }
@@ -67,7 +68,7 @@ public class ItemDiscount extends Discount{
 
     public void save() {
         try {
-            dalCopyItemDiscount = new DataAccessLayer.DalObjects.InventoryObjects.ItemDiscount(date.toString(), supplierID, item.getID(), discount, itemCount);
+            dalCopyItemDiscount = new DalItemDiscount(date.toString(), supplierID, item.getID(), discount, itemCount);
             dalCopyItemDiscount.save();
         } catch (SQLException ex) {
             throw new RuntimeException("Something went wrong.");
@@ -89,7 +90,7 @@ public class ItemDiscount extends Discount{
     public boolean find() {
         boolean found;
         try {
-            dalCopyItemDiscount = new DataAccessLayer.DalObjects.InventoryObjects.ItemDiscount(date.toString(), supplierID, item.getID());
+            dalCopyItemDiscount = new DalItemDiscount(date.toString(), supplierID, item.getID());
 
             found = dalCopyItemDiscount.find(); //Retrieves DAL Category Sale from the database
             //Set the fields according to the retrieved data
@@ -110,13 +111,13 @@ public class ItemDiscount extends Discount{
     public boolean find(List<ItemDiscount> itemDiscounts, String supplierId, String discountDate) {
         boolean found;
         try {
-            List<DataAccessLayer.DalObjects.InventoryObjects.ItemDiscount> dalCopyItemDiscounts = new ArrayList<>();
-            dalCopyItemDiscount = new DataAccessLayer.DalObjects.InventoryObjects.ItemDiscount(supplierId, discountDate);
+            List<DalItemDiscount> dalCopyItemDiscounts = new ArrayList<>();
+            dalCopyItemDiscount = new DalItemDiscount(supplierId, discountDate);
 
             found = dalCopyItemDiscount.find(dalCopyItemDiscounts); //Retrieves DAL Items from the database
             //Set the fields according to the retrieved data
             if (found) {
-                for (DataAccessLayer.DalObjects.InventoryObjects.ItemDiscount itemDiscount : dalCopyItemDiscounts) {
+                for (DalItemDiscount itemDiscount : dalCopyItemDiscounts) {
                     ItemDiscount savedItemDiscount = new ItemDiscount(itemDiscount.getSupplierID(), itemDiscount.getDiscount(),
                             LocalDate.parse(itemDiscount.getDiscountDate()), itemDiscount.getItemCount(), new Item(dalCopyItemDiscount.getItemID()));
                     itemDiscounts.add(savedItemDiscount);

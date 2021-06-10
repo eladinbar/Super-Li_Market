@@ -1,8 +1,8 @@
 package BusinessLayer.SuppliersPackage.SupplierPackage;
 
-import DataAccessLayer.DalObjects.SupplierObjects.PersonCardDal;
-import DataAccessLayer.DalObjects.SupplierObjects.SupplierCardDal;
-import DataAccessLayer.DalObjects.SupplierObjects.SupplierContactMembersDal;
+import DataAccessLayer.DalObjects.SupplierObjects.DalPersonCard;
+import DataAccessLayer.DalObjects.SupplierObjects.DalSupplierCard;
+import DataAccessLayer.DalObjects.SupplierObjects.DalSupplierContactMembers;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -14,7 +14,7 @@ public class SupplierCard extends PersonCard {
     private boolean selfDelivery;
     private Payment payment;
     private List<String> contactMembers;
-    private SupplierCardDal dalObject;
+    private DalSupplierCard dalObject;
     private String address;
 
     public SupplierCard(String firstName, String lastName, String email, String id, String phone, int companyNumber, boolean isPernamentDays, boolean selfDelivery, Payment payment, String address) throws SQLException {
@@ -34,7 +34,7 @@ public class SupplierCard extends PersonCard {
         this.dalObject = toDalObjectSupplierCard();
     }
 
-    public SupplierCard(SupplierCardDal supplierCardDal, PersonCardDal personCardDal) throws SQLException {
+    public SupplierCard(DalSupplierCard supplierCardDal, DalPersonCard personCardDal) throws SQLException {
         super(personCardDal.getFirstName() , personCardDal.getLastName() , personCardDal.getEmail(), personCardDal.getId(), personCardDal.getPhone(), true);
         this.companyNumber = supplierCardDal.getCompanyNumber();
         this.isPernamentDays = supplierCardDal.isPermanentDays() ==1 ? true : false;
@@ -46,11 +46,11 @@ public class SupplierCard extends PersonCard {
     }
 
     private void readContactMembers() throws SQLException {
-        List<SupplierContactMembersDal> contactMemberList = new ArrayList();
-        SupplierContactMembersDal contactMemberDal = new SupplierContactMembersDal(Integer.parseInt(id));
+        List<DalSupplierContactMembers> contactMemberList = new ArrayList();
+        DalSupplierContactMembers contactMemberDal = new DalSupplierContactMembers(Integer.parseInt(id));
         contactMemberDal.find(contactMemberList);
         List<String> cmStrings = new ArrayList<>();
-        for (SupplierContactMembersDal cm : contactMemberList) {
+        for (DalSupplierContactMembers cm : contactMemberList) {
             cmStrings.add(""+cm.getPersonId());
         }
         this.contactMembers = cmStrings;
@@ -117,8 +117,8 @@ public class SupplierCard extends PersonCard {
         dalObject.save(id,memberID);
     }
 
-    public SupplierCardDal toDalObjectSupplierCard() throws SQLException {
-        return new SupplierCardDal(Integer.parseInt(id),companyNumber,isPernamentDays,selfDelivery,payment, address);
+    public DalSupplierCard toDalObjectSupplierCard() throws SQLException {
+        return new DalSupplierCard(Integer.parseInt(id),companyNumber,isPernamentDays,selfDelivery,payment, address);
     }
 
     public void delete(String id, String memberID) throws SQLException {

@@ -1,12 +1,12 @@
 package DataAccessLayer.DalControllers.InventoryControllers;
 
 import DataAccessLayer.DalControllers.DalController$;
-import DataAccessLayer.DalObjects.InventoryObjects.Category;
+import DataAccessLayer.DalObjects.InventoryObjects.DalCategory;
 
 import java.sql.*;
 import java.util.List;
 
-public class CategoryDalController extends DalController$<Category> {
+public class CategoryDalController extends DalController$<DalCategory> {
     private static CategoryDalController instance = null;
     public final static String CATEGORY_TABLE_NAME = "Categories";
 
@@ -29,9 +29,9 @@ public class CategoryDalController extends DalController$<Category> {
     public boolean createTable() throws SQLException {
         try (Connection conn = DriverManager.getConnection(connectionString)) {
             String command = "CREATE TABLE IF NOT EXISTS " + tableName + " (" +
-                    Category.categoryNameColumnName + " TEXT NOT NULL," +
-                    Category.parentNameColumnName + " TEXT," +
-                    "PRIMARY KEY (" + Category.categoryNameColumnName + ")" +
+                    DalCategory.categoryNameColumnName + " TEXT NOT NULL," +
+                    DalCategory.parentNameColumnName + " TEXT," +
+                    "PRIMARY KEY (" + DalCategory.categoryNameColumnName + ")" +
                     ");";
             PreparedStatement stmt = conn.prepareStatement(command);
             stmt.executeUpdate();
@@ -42,7 +42,7 @@ public class CategoryDalController extends DalController$<Category> {
     }
 
     @Override
-    public boolean insert(Category category) throws SQLException {
+    public boolean insert(DalCategory category) throws SQLException {
         try (Connection conn = DriverManager.getConnection(connectionString)) {
             String command = "INSERT OR IGNORE INTO " + tableName + " VALUES (?,?)";
             PreparedStatement stmt = conn.prepareStatement(command);
@@ -56,9 +56,9 @@ public class CategoryDalController extends DalController$<Category> {
     }
 
     @Override
-    public boolean delete(Category category) throws SQLException {
+    public boolean delete(DalCategory category) throws SQLException {
         try (Connection conn = DriverManager.getConnection(connectionString)) {
-            String command = "DELETE FROM " + tableName + " WHERE (" + Category.categoryNameColumnName + "=?)";
+            String command = "DELETE FROM " + tableName + " WHERE (" + DalCategory.categoryNameColumnName + "=?)";
             PreparedStatement stmt = conn.prepareStatement(command);
 
             stmt.setString(1, category.getName());
@@ -70,10 +70,10 @@ public class CategoryDalController extends DalController$<Category> {
     }
 
     @Override
-    public boolean update(Category category) throws SQLException {
+    public boolean update(DalCategory category) throws SQLException {
         try (Connection conn = DriverManager.getConnection(connectionString)) {
-            String command = "UPDATE " + tableName + " SET " + Category.parentNameColumnName +
-                    "=? WHERE(" + Category.categoryNameColumnName + "=?)";
+            String command = "UPDATE " + tableName + " SET " + DalCategory.parentNameColumnName +
+                    "=? WHERE(" + DalCategory.categoryNameColumnName + "=?)";
             PreparedStatement stmt = conn.prepareStatement(command);
 
             stmt.setString(1, category.getParentName());
@@ -86,10 +86,10 @@ public class CategoryDalController extends DalController$<Category> {
     }
 
     @Override
-    public boolean update(Category category, String oldName) throws SQLException {
+    public boolean update(DalCategory category, String oldName) throws SQLException {
         try (Connection conn = DriverManager.getConnection(connectionString)) {
-            String command = "UPDATE " + tableName + " SET " + Category.categoryNameColumnName +
-                    "=? WHERE(" + Category.categoryNameColumnName + "=?)";
+            String command = "UPDATE " + tableName + " SET " + DalCategory.categoryNameColumnName +
+                    "=? WHERE(" + DalCategory.categoryNameColumnName + "=?)";
             PreparedStatement stmt = conn.prepareStatement(command);
 
             stmt.setString(1, category.getName());
@@ -102,7 +102,7 @@ public class CategoryDalController extends DalController$<Category> {
     }
 
     @Override
-    public boolean select(Category category) throws SQLException {
+    public boolean select(DalCategory category) throws SQLException {
         boolean isDesired = false;
         try (Connection conn = DriverManager.getConnection(connectionString)) {
             String query = "SELECT * FROM " + tableName;
@@ -123,9 +123,9 @@ public class CategoryDalController extends DalController$<Category> {
     }
 
     @Override
-    public boolean select(Category category, List<Category> categories) throws SQLException {
+    public boolean select(DalCategory category, List<DalCategory> categories) throws SQLException {
         boolean hasItem = false;
-        Category savedCategory;
+        DalCategory savedCategory;
         try (Connection conn = DriverManager.getConnection(connectionString)) {
             String query = "SELECT * FROM " + tableName;
             PreparedStatement stmt = conn.prepareStatement(query);
@@ -137,7 +137,7 @@ public class CategoryDalController extends DalController$<Category> {
                 if (!hasItem & isDesired)
                     hasItem = true;
                 if (isDesired) {
-                    savedCategory = new Category();
+                    savedCategory = new DalCategory();
                     if (category.getName() == null)
                         savedCategory.setName(resultSet.getString(1));
                     else
@@ -152,15 +152,15 @@ public class CategoryDalController extends DalController$<Category> {
     }
 
     @Override
-    public boolean select(List<Category> categories) throws SQLException {
-        Category savedCategory;
+    public boolean select(List<DalCategory> categories) throws SQLException {
+        DalCategory savedCategory;
         try (Connection conn = DriverManager.getConnection(connectionString)) {
             String query = "SELECT * FROM " + tableName;
             PreparedStatement stmt = conn.prepareStatement(query);
             ResultSet resultSet = stmt.executeQuery();
             while (resultSet.next())
             {
-                savedCategory = new Category();
+                savedCategory = new DalCategory();
                 savedCategory.setName(resultSet.getString(1));
                 savedCategory.setParentName(resultSet.getString(2));
                 categories.add(savedCategory);

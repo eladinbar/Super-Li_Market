@@ -1,8 +1,8 @@
 package BusinessLayer.SuppliersPackage.SupplierPackage;
 
-import DataAccessLayer.DalObjects.SupplierObjects.AgreementItemsDal;
-import DataAccessLayer.DalObjects.SupplierObjects.PersonCardDal;
-import DataAccessLayer.DalObjects.SupplierObjects.SupplierCardDal;
+import DataAccessLayer.DalObjects.SupplierObjects.DalAgreementItems;
+import DataAccessLayer.DalObjects.SupplierObjects.DalPersonCard;
+import DataAccessLayer.DalObjects.SupplierObjects.DalSupplierCard;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -118,8 +118,8 @@ public class Supplier {
     }
 
     private void readSupplierCard(String supplierId) throws SQLException {
-        SupplierCardDal supplierCardDal = new SupplierCardDal(Integer.parseInt(supplierId));
-        PersonCardDal personCardDal = new PersonCardDal(supplierId);
+        DalSupplierCard supplierCardDal = new DalSupplierCard(Integer.parseInt(supplierId));
+        DalPersonCard personCardDal = new DalPersonCard(supplierId);
         supplierCardDal.find();
         personCardDal.find();
         SupplierCard supplierCardBusiness = new SupplierCard(supplierCardDal, personCardDal);
@@ -127,11 +127,11 @@ public class Supplier {
     }
 
     public Agreement readAgreement(String supplierId) throws Exception {
-        List<AgreementItemsDal> agreementItems = new ArrayList();
-        AgreementItemsDal agDal = new AgreementItemsDal(supplierId);
+        List<DalAgreementItems> agreementItems = new ArrayList();
+        DalAgreementItems agDal = new DalAgreementItems(supplierId);
         agDal.find(agreementItems);
         Agreement agBusiness = new Agreement();
-        for (AgreementItemsDal agItemDal: agreementItems) {
+        for (DalAgreementItems agItemDal: agreementItems) {
             agBusiness.addItemToAgreement(agItemDal.getProductId(), agItemDal.getProductCompId(), (int)agItemDal.getPrice(), "");
             agBusiness.getDalObjects().put(agItemDal.getProductId(),agItemDal);
         }

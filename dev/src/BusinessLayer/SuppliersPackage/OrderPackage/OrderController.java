@@ -1,7 +1,7 @@
 package BusinessLayer.SuppliersPackage.OrderPackage;
 
 import BusinessLayer.SuppliersPackage.SupplierPackage.Supplier;
-import DataAccessLayer.DalObjects.SupplierObjects.OrderDal;
+import DataAccessLayer.DalObjects.SupplierObjects.DalOrder;
 
 import java.sql.SQLException;
 import java.time.LocalDate;
@@ -20,7 +20,7 @@ public class OrderController {
         }
         orders = new HashMap<>();
         try {
-            orderCounter = new OrderDal(0).getOrderCounter();
+            orderCounter = new DalOrder(0).getOrderCounter();
         } catch (SQLException ex) {
             orderCounter = 0;
         }
@@ -63,7 +63,7 @@ public class OrderController {
         Order toReturn = orders.get(orderID);
         if (toReturn != null)
             return toReturn;
-        OrderDal orderDal = new OrderDal(orderID);
+        DalOrder orderDal = new DalOrder(orderID);
         orderDal.find();
         Order newOrder = new Order(orderDal, supplier);
         orders.put(orderID, newOrder);
@@ -77,7 +77,7 @@ public class OrderController {
         Order toReturn = orders.get(orderID);
         if (toReturn != null)
             return orders.get(orderID).getSupplier().getSc().getId();
-        OrderDal orderDal = new OrderDal(orderID);
+        DalOrder orderDal = new DalOrder(orderID);
         orderDal.find();
         return orderDal.getSupplierId();
     }
