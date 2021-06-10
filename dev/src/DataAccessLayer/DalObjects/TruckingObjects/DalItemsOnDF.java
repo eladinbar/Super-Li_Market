@@ -1,7 +1,5 @@
 package DataAccessLayer.DalObjects.TruckingObjects;
 
-import DataAccessLayer.DAL$.DalObject$;
-
 public class DalItemsOnDF implements DalObject$ {
     int DFID;
     int itemID;

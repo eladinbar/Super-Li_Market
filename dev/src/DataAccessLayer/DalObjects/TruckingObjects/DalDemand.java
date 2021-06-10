@@ -1,7 +1,5 @@
 package DataAccessLayer.DalObjects.TruckingObjects;
 
-import DataAccessLayer.DAL$.DalObject$;
-
 public class DalDemand implements DalObject$ {
     private int itemID;
     private int amount;

@@ -1,7 +1,5 @@
 package DataAccessLayer.DalObjects.TruckingObjects;
 
-import DataAccessLayer.DAL$.DalObject$;
-
 public class DalDriver implements DalObject$ {
     private String ID;
     private String name;

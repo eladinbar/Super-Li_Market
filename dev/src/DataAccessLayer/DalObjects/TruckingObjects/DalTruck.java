@@ -1,7 +1,5 @@
 package DataAccessLayer.DalObjects.TruckingObjects;
 
-import DataAccessLayer.DAL$.DalObject$;
-
 public class DalTruck implements DalObject$ {
     private String licenseNumber;
     private String model;
