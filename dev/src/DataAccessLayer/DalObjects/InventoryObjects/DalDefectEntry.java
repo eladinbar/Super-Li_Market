@@ -1,11 +1,11 @@
 package DataAccessLayer.DalObjects.InventoryObjects;
 
 import DataAccessLayer.DalControllers.InventoryControllers.DefectEntryDalController;
-import DataAccessLayer.DalObjects.DalObject$;
+import DataAccessLayer.DalObjects.DalObject;
 
 import java.sql.SQLException;
 
-public class DalDefectEntry extends DalObject$<DalDefectEntry> {
+public class DalDefectEntry extends DalObject<DalDefectEntry> {
     public static final String entryDateColumnName = "Entry_Date"; //Primary Key
     public static final String itemIdColumnName = "Item_ID"; //Primary Key, Foreign Key
     public static final String itemNameColumnName = "Item_Name";
