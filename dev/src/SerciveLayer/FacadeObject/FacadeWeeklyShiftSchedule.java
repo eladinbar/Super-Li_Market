@@ -1,4 +1,4 @@
-package BusinessLayer.EmployeePackage.Facade.FacadeObject;
+package SerciveLayer.FacadeObject;
 
 import BusinessLayer.EmployeePackage.ShiftPackage.Shift;
 import BusinessLayer.EmployeePackage.ShiftPackage.WeeklyShiftSchedule;

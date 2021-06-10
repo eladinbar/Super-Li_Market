@@ -1,15 +1,15 @@
-package PresentationLayer.Employee_PresnetationLayer$;
+package PresentationLayer.Employee_PresnetationLayer;
 
 import BusinessLayer.EmployeePackage.ShiftPackage.ShiftTypes;
-import BusinessLayer.EmployeePackage.Facade.FacadeObject.FacadeBankAccountInfo;
-import BusinessLayer.EmployeePackage.Facade.FacadeObject.FacadeEmployee;
-import BusinessLayer.EmployeePackage.Facade.FacadeObject.FacadeTermsOfEmployment;
+import SerciveLayer.FacadeObject.FacadeBankAccountInfo;
+import SerciveLayer.FacadeObject.FacadeEmployee;
+import SerciveLayer.FacadeObject.FacadeTermsOfEmployment;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.time.LocalDate;
 
-public class MenuPrinter$ {
+public class MenuPrinter_Employee {
 
 BufferedReader sc = new BufferedReader(new InputStreamReader(System.in));
 

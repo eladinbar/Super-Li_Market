@@ -1,15 +1,15 @@
-package PresentationLayer.Employee_PresnetationLayer$;
+package PresentationLayer.Employee_PresnetationLayer;
 
 import BusinessLayer.EmployeePackage.EmployeePackage.Role;
 import BusinessLayer.EmployeePackage.ShiftPackage.ShiftTypes;
-import BusinessLayer.EmployeePackage.Facade.FacadeService;
-import BusinessLayer.EmployeePackage.Facade.Response;
-import BusinessLayer.EmployeePackage.Facade.ResponseT;
-import BusinessLayer.EmployeePackage.Facade.FacadeObject.FacadeConstraint;
-import BusinessLayer.EmployeePackage.Facade.FacadeObject.FacadeEmployee;
-import BusinessLayer.EmployeePackage.Facade.FacadeObject.FacadeShift;
-import BusinessLayer.EmployeePackage.Facade.FacadeObject.FacadeWeeklyShiftSchedule;
 import PresentationLayer.Trucking_PresentationLayer$.Menu_Printer$;
+import SerciveLayer.Employee_Package_FacadeService;
+import SerciveLayer.FacadeObject.FacadeConstraint;
+import SerciveLayer.FacadeObject.FacadeEmployee;
+import SerciveLayer.FacadeObject.FacadeShift;
+import SerciveLayer.FacadeObject.FacadeWeeklyShiftSchedule;
+import SerciveLayer.Response.Response;
+import SerciveLayer.Response.ResponseT;
 
 import java.sql.SQLException;
 import java.time.DayOfWeek;
@@ -19,15 +19,15 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class PresentationController$ {
-    FacadeService facadeService;
-    MenuPrinter$ menuPrinter;
-    StringConverter$ stringConverter;
+public class PresentationController_Employee {
+    Employee_Package_FacadeService facadeService;
+    MenuPrinter_Employee menuPrinter;
+    StringConverter_Employee stringConverter;
 
-    public PresentationController$() {
-        facadeService = new FacadeService ( );
-        menuPrinter = new MenuPrinter$( );
-        stringConverter =  StringConverter$.getInstance ( );
+    public PresentationController_Employee() {
+        facadeService = new Employee_Package_FacadeService ( );
+        menuPrinter = new MenuPrinter_Employee ( );
+        stringConverter =  StringConverter_Employee.getInstance ( );
     }
 
     public void start() throws SQLException {
@@ -40,7 +40,7 @@ public class PresentationController$ {
 
     private void uploadClean() throws SQLException {
         ResponseT<Boolean> start = loadData ( );
-        if (start.errorOccured ( )) {
+        if (start.errorOccurred ( )) {
             menuPrinter.print ( start.getErrorMessage ( ) );
             return;
         }
@@ -53,7 +53,7 @@ public class PresentationController$ {
                     manager = menuPrinter.createManagerAccountMenu ( );
                 }
                 ResponseT<FacadeEmployee> facadeEmployee = facadeService.addManager ( manager );
-                if (facadeEmployee.errorOccured ( )) {
+                if (facadeEmployee.errorOccurred ( )) {
                     menuPrinter.print ( facadeEmployee.getErrorMessage ( ) );
                     return;
                 }
@@ -87,7 +87,7 @@ public class PresentationController$ {
 
     private boolean createData() throws SQLException {
         Response response = facadeService.createData();
-        if (response.errorOccured ())
+        if (response.errorOccurred ())
         {
             menuPrinter.print ( response.getErrorMessage () );
             return false;
@@ -267,7 +267,7 @@ public class PresentationController$ {
         if(role == null)
             return;
         Response response = facadeService.deleteRoleFromShiftType(shiftType, role);
-        if (response.errorOccured ()) {
+        if (response.errorOccurred ()) {
             menuPrinter.print ( response.getErrorMessage ( ) );
             return; }
         menuPrinter.print ( "Role manning updated successfully.\n" );
@@ -280,7 +280,7 @@ public class PresentationController$ {
         menuPrinter.print ( "Write the manning you would like for role: " );
         int num = menuPrinter.getInt ();
         Response response = facadeService.updateRoleManning ( shiftType, role, num );
-        if (response.errorOccured ()) {
+        if (response.errorOccurred ()) {
             menuPrinter.print ( response.getErrorMessage ( ) );
             return;
         }
@@ -294,7 +294,7 @@ public class PresentationController$ {
         menuPrinter.print ( "Write the manning you would like for role: " );
         int num = menuPrinter.getInt ();
         Response response = facadeService.addRoleManning ( shiftType, role, num );
-        if (response.errorOccured ()) {
+        if (response.errorOccurred ()) {
             menuPrinter.print ( response.getErrorMessage ( ) );
             return;
         }
@@ -304,7 +304,7 @@ public class PresentationController$ {
     private void getRecommendation(boolean start) throws SQLException {
         LocalDate date = menuPrinter.schedule ();
         ResponseT<FacadeWeeklyShiftSchedule> weeklyShiftSchedule = facadeService.getRecommendation ( date, start );
-        if(weeklyShiftSchedule.errorOccured ())
+        if(weeklyShiftSchedule.errorOccurred ())
         {
             menuPrinter.print ( weeklyShiftSchedule.getErrorMessage () );
             return;
@@ -342,7 +342,7 @@ public class PresentationController$ {
             shifts[5][0] = createFirstShift ( date.plusDays ( 5 ) );
             shifts[6][1] = createSecondShift ( date.plusDays ( 6 ) );
             ResponseT<FacadeWeeklyShiftSchedule> weeklyShiftSchedule = facadeService.createWeeklyShiftSchedule ( date, shifts );
-            if (weeklyShiftSchedule.errorOccured ( )) {
+            if (weeklyShiftSchedule.errorOccurred ( )) {
                 menuPrinter.print ( weeklyShiftSchedule.getErrorMessage ( ) );
                 return;
             }
@@ -406,7 +406,7 @@ public class PresentationController$ {
     private void changeShift(LocalDate date, int shift) throws SQLException {
         HashMap<String, List<String>> manning = createManning ();
         Response response = facadeService.changeShift ( date, shift, manning );
-        if(response.errorOccured ())
+        if(response.errorOccurred ())
         {
             menuPrinter.print ( response.getErrorMessage ());
             return;
@@ -421,7 +421,7 @@ public class PresentationController$ {
         menuPrinter.print ( "ID: " );
         String ID = menuPrinter.getString ( );
         Response response = facadeService.addEmployeeToShift ( role, ID, date, shift );
-        if (response.errorOccured ( )) {
+        if (response.errorOccurred ( )) {
             menuPrinter.print ( response.getErrorMessage ( ) );
             return;
         }
@@ -435,7 +435,7 @@ public class PresentationController$ {
         menuPrinter.print ( "ID: " );
         String ID = menuPrinter.getString ( );
         Response response = facadeService.deleteEmployeeFromShift ( role, ID, date, shift );
-        if (response.errorOccured ( )) {
+        if (response.errorOccurred ( )) {
             menuPrinter.print ( response.getErrorMessage ( ) );
             return;
         }
@@ -446,7 +446,7 @@ public class PresentationController$ {
         menuPrinter.print ( "choose shift type you would like to change: " );
         String shiftType = menuPrinter.getShifTypes ();
         Response response = facadeService.changeShiftType ( date, shift, shiftType );
-        if (response.errorOccured ( )) {
+        if (response.errorOccurred ( )) {
             menuPrinter.print ( response.getErrorMessage ( ) );
             return;
         }
@@ -472,7 +472,7 @@ public class PresentationController$ {
             role = menuPrinter.roleMenu ();
         }
         Response response = facadeService.createShiftType ( shiftType, manning );
-        if (response.errorOccured ( )) {
+        if (response.errorOccurred ( )) {
             menuPrinter.print ( response.getErrorMessage ( ) );
             return null;
         }
@@ -484,7 +484,7 @@ public class PresentationController$ {
         menuPrinter.print ( "Choose the shift type you would like to display: " );
         String shiftType = menuPrinter.getShifTypes (  );
         ResponseT<HashMap<Role, Integer>> manning = facadeService.getShiftType(shiftType);
-        if(manning.errorOccured ())
+        if(manning.errorOccurred ())
         {
             menuPrinter.print ( manning.getErrorMessage () );
             return;
@@ -513,7 +513,7 @@ public class PresentationController$ {
                 dateLegal = true;
         }
         ResponseT<FacadeWeeklyShiftSchedule> schedule = facadeService.getWeeklyShiftSchedule ( date );
-        if(schedule.errorOccured ())
+        if(schedule.errorOccurred ())
         {
             menuPrinter.print ( schedule.getErrorMessage () );
             return false;
@@ -529,7 +529,7 @@ public class PresentationController$ {
         int choice;
         if(role != null) {
             ResponseT<FacadeEmployee> employee = facadeService.login ( id, Role.valueOf (role) );
-            if(employee.errorOccured ())
+            if(employee.errorOccurred ())
             {
                 menuPrinter.print ( employee.getErrorMessage () );
                 return false;
@@ -543,7 +543,7 @@ public class PresentationController$ {
                         truckingManager = menuPrinter.createManagerAccountMenu ( );
                     }
                     Response response = facadeService.addEmployee ( truckingManager );
-                    while(response.errorOccured ( )) {
+                    while(response.errorOccurred ( )) {
                         menuPrinter.print ( response.getErrorMessage ( ) );
                         menuPrinter.print ( "For continuing you have to create trucking manager account" );
                         truckingManager = menuPrinter.getEmployeeDetails ( "truckingManager" );
@@ -578,7 +578,7 @@ public class PresentationController$ {
         }
         if(shift < 2) {
             ResponseT<FacadeShift> facadeShift = facadeService.getShift ( date, shift );
-            if(facadeShift.errorOccured ())
+            if(facadeShift.errorOccurred ())
             {
                 menuPrinter.print ( facadeShift.getErrorMessage () );
                 return;
@@ -589,7 +589,7 @@ public class PresentationController$ {
         else
         {
             ResponseT<FacadeShift> facadeShift = facadeService.getShift ( date, 0 );
-            if(facadeShift.errorOccured ())
+            if(facadeShift.errorOccurred ())
             {
                 menuPrinter.print ( facadeShift.getErrorMessage () );
                 return;
@@ -597,7 +597,7 @@ public class PresentationController$ {
             String s = stringConverter.convertShift ( facadeShift.value );
             menuPrinter.print ( s );
             facadeShift = facadeService.getShift ( date, 1 );
-            if(facadeShift.errorOccured ())
+            if(facadeShift.errorOccurred ())
             {
                 menuPrinter.print ( facadeShift.getErrorMessage () );
                 return;
@@ -610,7 +610,7 @@ public class PresentationController$ {
     private void getConstraints() {
         menuPrinter.print ( "Constraints:\n" );
         ResponseT<HashMap<LocalDate, FacadeConstraint>> constraints = facadeService.getConstraints();
-        if(constraints.errorOccured ())
+        if(constraints.errorOccurred ())
         {
             menuPrinter.print ( constraints.getErrorMessage () );
             return;
@@ -624,7 +624,7 @@ public class PresentationController$ {
         menuPrinter.print ( "ID of employee you would like to display: " );
         String id = menuPrinter.getString ();
         ResponseT<HashMap<LocalDate,FacadeConstraint>> constraints = facadeService.getConstraints ( id );
-        if(constraints.errorOccured ())
+        if(constraints.errorOccurred ())
         {
             menuPrinter.print ( constraints.getErrorMessage () );
             return;
@@ -637,7 +637,7 @@ public class PresentationController$ {
 
     private boolean logout()  {
         Response response = facadeService.logout();
-        if(response.errorOccured ()) {
+        if(response.errorOccurred ()) {
             menuPrinter.print ( response.getErrorMessage ( ) );
             return false;
         }
@@ -658,7 +658,7 @@ public class PresentationController$ {
         menuPrinter.print ( "reason: " );
         String reason = menuPrinter.getString();
         Response r = facadeService.giveConstraint ( date, shift, reason );
-        if (r.errorOccured ()) {
+        if (r.errorOccurred ()) {
             menuPrinter.print ( r.getErrorMessage ( ) );
             return;
         }
@@ -671,7 +671,7 @@ public class PresentationController$ {
             return;
         int shift = menuPrinter.getShiftNum ();
         Response r = facadeService.deleteConstraint (date, shift);
-        if (r.errorOccured ()) {
+        if (r.errorOccurred ()) {
             menuPrinter.print ( r.getErrorMessage ( ) );
             return;
         }
@@ -694,7 +694,7 @@ public class PresentationController$ {
         }
         else
             response = facadeService.addEmployee ( facadeEmployee );
-        if(response.errorOccured ())
+        if(response.errorOccurred ())
         {
             menuPrinter.print ( response.getErrorMessage () );
             return;
@@ -704,7 +704,7 @@ public class PresentationController$ {
 
     private void removeEmployee(String ID)  {
         Response response = facadeService.removeEmployee ( ID );
-        if(response.errorOccured ())
+        if(response.errorOccurred ())
         {
             menuPrinter.print ( response.getErrorMessage () );
             return;
@@ -720,7 +720,7 @@ public class PresentationController$ {
         menuPrinter.print ( "Write bank name: " );
         String bank = menuPrinter.getString ();
         Response response = facadeService.updateBankAccount ( ID, accountNum, bankBranch, bank );
-        if(response.errorOccured ())
+        if(response.errorOccurred ())
         {
             menuPrinter.print ( response.getErrorMessage () );
             return;
@@ -738,7 +738,7 @@ public class PresentationController$ {
         menuPrinter.print ( "Write days off: " );
         int daysOff = menuPrinter.getInt ();
         Response response = facadeService.updateTermsOfEmployee ( ID, salary, educationFund, sickDays, daysOff );
-        if(response.errorOccured ())
+        if(response.errorOccurred ())
         {
             menuPrinter.print ( response.getErrorMessage () );
             return;
@@ -748,7 +748,7 @@ public class PresentationController$ {
 
     private void getEmployee() {
         ResponseT<FacadeEmployee> employee = facadeService.getLoggedIn();
-        if (employee.errorOccured ())
+        if (employee.errorOccurred ())
         {
             menuPrinter.print ( employee.getErrorMessage () );
             return;
@@ -778,7 +778,7 @@ public class PresentationController$ {
         menuPrinter.print ( "Write the ID of the employee you would like to display: " );
         String ID = menuPrinter.getString ( );
         ResponseT<FacadeEmployee> employee = facadeService.getEmployee ( ID );
-        if (employee.errorOccured ())
+        if (employee.errorOccurred ())
         {
             menuPrinter.print ( employee.getErrorMessage () );
             return;
@@ -808,7 +808,7 @@ public class PresentationController$ {
 
     private void getEmployeeList() {
         ResponseT<HashMap<Role, List<String>>> employees = facadeService.getEmployees ( );
-        if(employees.errorOccured ())
+        if(employees.errorOccurred ())
         {
             menuPrinter.print ( employees.getErrorMessage () );
             return;

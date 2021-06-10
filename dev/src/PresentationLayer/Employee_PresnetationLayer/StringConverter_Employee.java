@@ -1,16 +1,16 @@
-package PresentationLayer.Employee_PresnetationLayer$;
+package PresentationLayer.Employee_PresnetationLayer;
 
-import BusinessLayer.EmployeePackage.Facade.FacadeObject.*;
+import SerciveLayer.FacadeObject.*;
 
 
-public class StringConverter$ {
-    private static StringConverter$ instance = null;
+public class StringConverter_Employee {
+    private static StringConverter_Employee instance = null;
 
-    private StringConverter$(){}
+    private StringConverter_Employee(){}
 
-    public static StringConverter$ getInstance(){
+    public static StringConverter_Employee getInstance(){
         if(instance == null)
-            instance = new StringConverter$();
+            instance = new StringConverter_Employee ();
         return instance;
     }
     private String convertBankAccountInfo( FacadeBankAccountInfo facadeBankAccountInfo){

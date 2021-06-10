@@ -5,7 +5,7 @@ import DataAccessLayer.DalObjects.EmployeeObjects.DalShift;
 import BusinessLayer.EmployeePackage.EmployeeException;
 import BusinessLayer.EmployeePackage.EmployeePackage.EmployeeController;
 import BusinessLayer.EmployeePackage.EmployeePackage.Role;
-import BusinessLayer.EmployeePackage.Facade.FacadeObject.FacadeShift;
+import SerciveLayer.FacadeObject.FacadeShift;
 
 import java.sql.SQLException;
 import java.time.LocalDate;

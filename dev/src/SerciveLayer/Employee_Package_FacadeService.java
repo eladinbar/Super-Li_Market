@@ -1,23 +1,24 @@
-package BusinessLayer.EmployeePackage.Facade;
+package SerciveLayer;
 
 import BusinessLayer.EmployeePackage.EmployeeException;
 import BusinessLayer.EmployeePackage.EmployeePackage.Role;
-import BusinessLayer.EmployeePackage.Facade.FacadeObject.FacadeConstraint;
-import BusinessLayer.EmployeePackage.Facade.FacadeObject.FacadeEmployee;
-import BusinessLayer.EmployeePackage.Facade.FacadeObject.FacadeShift;
-import BusinessLayer.EmployeePackage.Facade.FacadeObject.FacadeWeeklyShiftSchedule;
-import SerciveLayer.TruckingService;
+import SerciveLayer.FacadeObject.FacadeConstraint;
+import SerciveLayer.FacadeObject.FacadeEmployee;
+import SerciveLayer.FacadeObject.FacadeShift;
+import SerciveLayer.FacadeObject.FacadeWeeklyShiftSchedule;
+import SerciveLayer.Response.Response;
+import SerciveLayer.Response.ResponseT;
 
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
 
-public class FacadeService {
+public class Employee_Package_FacadeService {
     private EmployeeService employeeService;
     private ShiftService shiftService;
 
-    public  FacadeService()
+    public Employee_Package_FacadeService()
     {
         employeeService = new EmployeeService ();
         shiftService = new ShiftService ();
@@ -142,7 +143,7 @@ public class FacadeService {
 
     public Response createData() throws SQLException {
         Response response = employeeService.createData ( );
-        if(response.errorOccured ())
+        if(response.errorOccurred ())
             return response;
         employeeService.login ( "789000000", Role.humanResourcesManager );
         response = shiftService.createData ( );
