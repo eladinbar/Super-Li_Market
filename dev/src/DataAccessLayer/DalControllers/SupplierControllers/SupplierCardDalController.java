@@ -1,12 +1,12 @@
 package DataAccessLayer.DalControllers.SupplierControllers;
 
-import DataAccessLayer.DalControllers.DalController$;
+import DataAccessLayer.DalControllers.DalController;
 import DataAccessLayer.DalObjects.SupplierObjects.*;
 
 import java.sql.*;
 import java.util.List;
 
-public class SupplierCardDalController extends DalController$<DalSupplierCard> {
+public class SupplierCardDalController extends DalController<DalSupplierCard> {
     private static SupplierCardDalController instance = null;
     public final static String SUPPLIER_CARD_TABLE_NAME = "Supplier_Cards";
 

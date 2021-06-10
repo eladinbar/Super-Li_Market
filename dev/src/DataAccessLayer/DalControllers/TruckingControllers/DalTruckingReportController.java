@@ -1,7 +1,7 @@
 package DataAccessLayer.DalControllers.TruckingControllers;
 
 
-import DataAccessLayer.DAL$.DalController$;
+import DataAccessLayer.DalControllers.Employee_Trucking_DALController_Interface;
 import DataAccessLayer.DalObjects.TruckingObjects.DalTruckingReport;
 
 import java.sql.*;
@@ -9,7 +9,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.LinkedList;
 
-public class DalTruckingReportController extends DalController$ {
+public class DalTruckingReportController extends Employee_Trucking_DALController_Interface {
     private static DalTruckingReportController controller;
 
     private DalTruckingReportController(){
