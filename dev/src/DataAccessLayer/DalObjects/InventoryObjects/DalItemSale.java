@@ -1,11 +1,11 @@
 package DataAccessLayer.DalObjects.InventoryObjects;
 
 import DataAccessLayer.DalControllers.InventoryControllers.ItemSaleDalController;
-import DataAccessLayer.DalObjects.DalObject$;
+import DataAccessLayer.DalObjects.DalObject;
 
 import java.sql.SQLException;
 
-public class DalItemSale extends DalObject$<DalItemSale> {
+public class DalItemSale extends DalObject<DalItemSale> {
     public static final String itemSaleNameColumnName = "Name"; //Primary Key
     public static final String discountColumnName = "Discount";
     public static final String startSaleDateColumnName = "Start_Sale_Date";
