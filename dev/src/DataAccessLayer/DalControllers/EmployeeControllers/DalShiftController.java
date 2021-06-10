@@ -1,14 +1,14 @@
 package DataAccessLayer.DalControllers.EmployeeControllers;
 
 
-import DataAccessLayer.DAL$.DalController$;
+import DataAccessLayer.DalControllers.Employee_Trucking_DALController_Interface;
 import DataAccessLayer.DalObjects.EmployeeObjects.DalShift;
 
 import java.sql.*;
 import java.time.LocalDate;
 import java.util.LinkedList;
 
-public class DalShiftController extends DalController$ {
+public class DalShiftController extends Employee_Trucking_DALController_Interface {
 
     private static DalShiftController  instance = null;
 

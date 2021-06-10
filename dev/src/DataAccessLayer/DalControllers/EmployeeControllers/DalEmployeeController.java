@@ -1,13 +1,13 @@
 package DataAccessLayer.DalControllers.EmployeeControllers;
 
 import DataAccessLayer.DalObjects.EmployeeObjects.DalEmployee;
-import DataAccessLayer.DAL$.DalController$;
+import DataAccessLayer.DalControllers.Employee_Trucking_DALController_Interface;
 
 import java.sql.*;
 import java.time.LocalDate;
 import java.util.LinkedList;
 
-public class DalEmployeeController extends DalController$ {
+public class DalEmployeeController extends Employee_Trucking_DALController_Interface {
     private static DalEmployeeController instance = null;
 
     public DalEmployeeController() throws SQLException{

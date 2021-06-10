@@ -1,12 +1,12 @@
 package DataAccessLayer.DalControllers.InventoryControllers;
 
-import DataAccessLayer.DalControllers.DalController$;
+import DataAccessLayer.DalControllers.DalController;
 import DataAccessLayer.DalObjects.InventoryObjects.DalCategory;
 
 import java.sql.*;
 import java.util.List;
 
-public class CategoryDalController extends DalController$<DalCategory> {
+public class CategoryDalController extends DalController<DalCategory> {
     private static CategoryDalController instance = null;
     public final static String CATEGORY_TABLE_NAME = "Categories";
 

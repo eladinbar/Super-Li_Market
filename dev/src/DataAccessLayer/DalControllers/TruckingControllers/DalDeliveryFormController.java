@@ -1,12 +1,12 @@
 package DataAccessLayer.DalControllers.TruckingControllers;
 
-import DataAccessLayer.DAL$.DalController$;
+import DataAccessLayer.DalControllers.Employee_Trucking_DALController_Interface;
 import DataAccessLayer.DalObjects.TruckingObjects.DalDeliveryForm;
 
 import java.sql.*;
 import java.util.LinkedList;
 
-public class DalDeliveryFormController extends DalController$ {
+public class DalDeliveryFormController extends Employee_Trucking_DALController_Interface {
 
 
     //TODO - :)
