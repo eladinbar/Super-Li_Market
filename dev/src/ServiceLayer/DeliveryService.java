@@ -72,6 +72,15 @@ public class DeliveryService {
     public void managerCancelTruckReport(Integer trID) {
     }
 
+    public void setItemNewAmount(Integer first, Integer second, int supplier) {
+    }
+
+    public FacadeTruckingReport getTruckReport(int id) {
+    }
+
+    public FacadeDeliveryForm getDeliveryForm(int id) {
+    }
+
 
 
     /*

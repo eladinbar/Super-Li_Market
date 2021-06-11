@@ -3,20 +3,13 @@ package ServiceLayer;
 import BusinessLayer.InventoryPackage.Item;
 import BusinessLayer.Notification;
 import BusinessLayer.SuppliersPackage.OrderPackage.Order;
-import BusinessLayer.TruckingPackage.DeliveryPackage.Demand;
-import BusinessLayer.TruckingPackage.DeliveryPackage.TruckingReport;
-import BusinessLayer.TruckingPackage.ResourcesPackage.*;
 import InfrastructurePackage.Pair;
-import PresentationLayer.TruckingPresentationController;
 import ServiceLayer.FacadeObjects.*;
 import ServiceLayer.Response.ResponseT;
-import com.sun.jdi.connect.IllegalConnectorArgumentsException;
 
 import javax.management.openmbean.KeyAlreadyExistsException;
-import javax.swing.text.ParagraphView;
 import java.sql.SQLException;
 import java.time.LocalDate;
-import java.time.LocalTime;
 import java.util.*;
 
 public class TruckingService {
@@ -36,6 +29,17 @@ public class TruckingService {
             instance = new TruckingService();
         return instance;
     }
+
+ /*   TODO - things to check for debbuging
+        1. automate delivery set by getting order ( can be done alone)
+        2. addDriver to shift function
+        3. handleLeft over -  need to set new demands when no drivers are settled. and then create new shift
+        4. approve orders by manager
+        5. cancle orders by manager
+
+
+      */
+
 
     // TODO- need to add Notifications where needed
 
@@ -122,9 +126,8 @@ public class TruckingService {
                 throw new UnsupportedOperationException("for some reason - didn't recognized the needed weight to possible");
             }
         }
-
+        // TODO - need to check why it says always true
         return succeed;
-
     }
 
 
@@ -172,19 +175,54 @@ public class TruckingService {
     }
     // TODO - employees should call this function
     public void handleLeftOvers() {
-        getDemands();
-        // for each demand in demands
-        addOrder(null);
+        LinkedList<FacadeDemand> demands =  getDemands().getValue();
 
-        throw new UnsupportedOperationException();
+        for (FacadeDemand facadeDemand : demands){
+
+            int supplier    = facadeDemand.getSupplier();
+            LinkedList< Pair<Integer,Integer>> item = new LinkedList<>();
+            item.add (new Pair<>(facadeDemand.getItemID(), facadeDemand.getAmount()));
+            // TODO - maybe new method so it wont alert now??
+            LinkedList<FacadeTruckingReport> thisWeekReports =  getThisWeekReports();
+            // inserts into the next 7 days reports only
+            item = insertToExistingTR(item , supplier,thisWeekReports);
+            if (!item.isEmpty()) {
+
+                Pair<LinkedList<Pair<Integer, Integer>>, LinkedList<FacadeTruckingReport>>
+                        afterReportsCreate = createReportsThisWeek(item, supplier);
+                // creates reports for the next 7 days only, call drivers from home if needed
+                item = afterReportsCreate.getFirst();
+                if (!item.isEmpty()) {
+                    LinkedList<FacadeTruckingReport> everyWeekReports = getActiveTruckingReports().getValue();
+                    everyWeekReports.addAll(getWaitingTruckingReports().getValue());
+
+                    // adds to existing TR from every week
+                    item = insertToExistingTR(item, supplier, everyWeekReports);
+                    if (!item.isEmpty()) {
+
+                        // creates reports for every possible date
+                        afterReportsCreate = createReportsEveryWeek(item, supplier);
+                        item = afterReportsCreate.getFirst();
+                    }
+
+
+                }
+            }
+            deliveryService.setItemNewAmount(item.getFirst().getFirst(), item.getFirst().getSecond() , supplier);
+
+
+        }
+
     }
 
 
-    public ResponseT< FacadeTruckingReport> getTruckingReport(int id){
-        throw new UnsupportedOperationException();
+
+    public ResponseT< FacadeTruckingReport> getTruckReport(int id){
+        return  new ResponseT<FacadeTruckingReport>( deliveryService.getTruckReport(id) );
+
     }
     public ResponseT< FacadeDeliveryForm> getDeliveryForm(int id){
-        throw new UnsupportedOperationException();
+        return  new ResponseT<FacadeDeliveryForm>( deliveryService.getDeliveryForm(id) );
     }
 
     /**
@@ -249,14 +287,17 @@ public class TruckingService {
     }
 
     /**
-     * this mehtod check whether we can deliver the whole order in the wanted date. checks by overall weight
+     * this method check whether we can deliver the whole order in the wanted date. checks by overall weight
      * to the day's overall weight
      * @param order already has the wanted date
      * @return true if can, false if cannot
      */
     private boolean canAddFullOrder(Order order){
+        LocalDate date =  order.getDate();
+        int left = getDayLeftWeight(date);
+        int totalWeight = getOrderTotalWeight(order);
+        return ( totalWeight <= left);
 
-        throw new UnsupportedOperationException();
     }
 
     /**
@@ -313,6 +354,17 @@ public class TruckingService {
         }
         return thisWeekReports;
     }
+
+
+    private int getOrderTotalWeight(Order order) {
+        return 100;
+    }
+
+
+
+
+
+
 
 
 

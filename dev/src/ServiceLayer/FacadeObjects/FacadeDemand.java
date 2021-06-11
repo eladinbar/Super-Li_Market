@@ -3,18 +3,18 @@ import BusinessLayer.TruckingPackage.DeliveryPackage.*;
 
 public class FacadeDemand {
     private int itemID;
-    private int site;
+    private int supplier;
     private int amount;
 
     public FacadeDemand(int itemID, int site_id, int amount){
         this.itemID = itemID;
-        this.site = site_id;
+        this.supplier = site_id;
         this.amount = amount;
     }
 
     public FacadeDemand(Demand demand){
         this.itemID = demand.getItemID();
-        this.site = demand.getSupplier();
+        this.supplier = demand.getSupplier();
         this.amount = demand.getAmount();
 
     }
@@ -28,8 +28,8 @@ public class FacadeDemand {
         return itemID;
     }
 
-    public int getSite() {
-        return site;
+    public int getSupplier() {
+        return supplier;
     }
 
     public void setAmount(int amount) {
@@ -40,7 +40,4 @@ public class FacadeDemand {
         this.itemID = itemID;
     }
 
-    public void setSite(int site) {
-        this.site = site;
-    }
 }
