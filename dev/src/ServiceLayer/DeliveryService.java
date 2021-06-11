@@ -1,6 +1,7 @@
 package ServiceLayer;
 
 import BusinessLayer.InventoryPackage.Item;
+import BusinessLayer.Notification;
 import InfrastructurePackage.Pair;
 import ServiceLayer.FacadeObjects.FacadeDeliveryForm;
 import ServiceLayer.FacadeObjects.FacadeDemand;
@@ -44,8 +45,36 @@ public class DeliveryService {
         throw new UnsupportedOperationException();
     }
 
+    public LinkedList<Notification> getNotifications() {
+        return dc.getNotifications();
+    }
 
-/*
+    public LinkedList<FacadeDemand> getDemands() {
+        return null;
+    }
+
+    public LinkedList<FacadeTruckingReport> getActiveTruckingReports() {
+        return  null;
+    }
+
+    public LinkedList<FacadeTruckingReport>  getWaitingTruckingReports() {
+        return  null;
+
+    }
+
+    public LinkedList<FacadeTruckingReport> getOldTruckingReports() {
+        return  null;
+    }
+
+    public void managerApproveTruckReport(Integer trID) {
+    }
+
+    public void managerCancelTruckReport(Integer trID) {
+    }
+
+
+
+    /*
     *//*    public void addDemand(int id, int site, int amount) {
         Demand demand =  new Demand(id, site, amount);
         dc.addItemToDeliveryForm(demand,);
