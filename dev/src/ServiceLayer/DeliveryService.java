@@ -81,6 +81,12 @@ public class DeliveryService {
     public FacadeDeliveryForm getDeliveryForm(int id) {
     }
 
+    public int getTruckReportCurrentWeight(int id) {
+    }
+    // if already has it, does nothin
+    public void addSupplierToReport(int supplier, int tr_id) {
+    }
+
 
 
     /*

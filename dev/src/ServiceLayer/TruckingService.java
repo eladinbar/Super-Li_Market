@@ -229,13 +229,35 @@ public class TruckingService {
      * this method tries to insert as much as possible items to the received trucking Reports
      * @param reports available TruckingReports
      * @param itemsToInsert - List< Pair< itemId, Amount >>
-     * @param supplierCard -  delivery area of the Order
+     * @param supplier -  delivery area of the Order
      * @return items left to insert
      */
     private LinkedList<Pair<Integer, Integer>>
-    insertToExistingTR(LinkedList<Pair<Integer, Integer>> itemsToInsert,int supplierCard, LinkedList<FacadeTruckingReport> reports){
-        throw new UnsupportedOperationException();
+    insertToExistingTR(LinkedList<Pair<Integer, Integer>> itemsToInsert,int supplier, LinkedList<FacadeTruckingReport> reports){
+        //first iterates through reports, tries to add by delivery area
+        LinkedList<Pair<Integer, Integer>> left = itemsToInsert;
+        int area = getDeliveryArea(supplier);
+        for (FacadeTruckingReport report : reports){
+            int capacity = getMaxWeight(report);
+            int currentWeight = deliveryService.getTruckReportCurrentWeight(report.getID());
+            // check the report can add more items
+            if ( currentWeight< capacity) {
+                deliveryService.addSupplierToReport(supplier,report.getID());
+                int leftWeight = capacity - currentWeight;
+                LinkedList<Integer> reportAreas = getReportAreas(report);
+                // adds items to the report
+                if (reportAreas.contains(area)) {
+                    for (Pair<Integer, Integer> item : left){
+                        if (leftWeight == 0)
+                            break;
+                        // TODO - need to continue - need to insert into specific TR
+                    }
+                }
+            }
+        }
+
     }
+
 
     /**
      *
@@ -359,6 +381,11 @@ public class TruckingService {
     private int getOrderTotalWeight(Order order) {
         return 100;
     }
+
+    private LinkedList<Integer> getReportAreas(FacadeTruckingReport report) {
+        throw new UnsupportedOperationException();
+    }
+
 
 
 
