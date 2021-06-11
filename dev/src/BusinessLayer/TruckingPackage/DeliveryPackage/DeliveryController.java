@@ -1,6 +1,7 @@
 package BusinessLayer.TruckingPackage.DeliveryPackage;
 
 
+import BusinessLayer.Notification;
 import BusinessLayer.SuppliersPackage.OrderPackage.Order;
 import DataAccessLayer.DalControllers.TruckingControllers.*;
 import DataAccessLayer.DalObjects.TruckingObjects.*;
@@ -31,6 +32,7 @@ public class DeliveryController {
     private TruckingReport currTR;
     private int lastItemId;
     private static DeliveryController instance = null;
+    private LinkedList<Notification> notifications;
 
     public static DeliveryController getInstance() {
         if (instance == null)
@@ -43,6 +45,7 @@ public class DeliveryController {
         this.activeTruckingReports = new HashMap<>();
         this.oldTruckingReports = new HashMap<>();
         this.oldDeliveryForms = new HashMap<>();
+        this.notifications =  new LinkedList<>();
         //this.sites = new HashMap<>();
 /*
         this.deliveryForms=new HashMap<>();
@@ -69,7 +72,9 @@ public class DeliveryController {
         throw new UnsupportedOperationException();
     }
 
-
+    public LinkedList<Notification> getNotifications() {
+        return notifications;
+    }
 
 
 //    public int createNewTruckingReport() throws SQLException {

@@ -10,16 +10,14 @@ import InfrastructurePackage.Pair;
 import PresentationLayer.TruckingPresentationController;
 import ServiceLayer.FacadeObjects.*;
 import ServiceLayer.Response.ResponseT;
+import com.sun.jdi.connect.IllegalConnectorArgumentsException;
 
 import javax.management.openmbean.KeyAlreadyExistsException;
 import javax.swing.text.ParagraphView;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.HashMap;
-import java.util.InputMismatchException;
-import java.util.LinkedList;
-import java.util.NoSuchElementException;
+import java.util.*;
 
 public class TruckingService {
     private DeliveryService deliveryService;
@@ -39,6 +37,8 @@ public class TruckingService {
         return instance;
     }
 
+    // TODO- need to add Notifications where needed
+
 
     /**
      * this method receives an Order and returns and Linked List of items that couldn't been delivered
@@ -51,26 +51,86 @@ public class TruckingService {
      * 4.   next week's existing TR -> alerts Trucking manager
      * 5.   next week's new TR -> alerts Trucking manager
      * 6.   adds to the Demands list
-     * @return List of pairs, item and its amount, only item that couldn't been delivered
+     * @return List of pairs, item and its amount, only item that couldn't been delivered.
+     * if all items has been settled to a delivery, returns empty list
      */
     public ResponseT<  LinkedList<Pair<Integer, Integer>> > addOrder(Order order) {
 
-        throw new UnsupportedOperationException();
+        int supplier  = getSupplierFromOrder(order);
+        LinkedList<Pair<Integer,Integer>> left = orderToItemsList(order);
+
+        LinkedList<FacadeTruckingReport> thisWeekReports =  getThisWeekReports();
+        // inserts into the next 7 days reports only
+        left = insertToExistingTR(left , supplier,thisWeekReports);
+        if (!left.isEmpty()) {
+
+            Pair<LinkedList<Pair<Integer, Integer>>, LinkedList<FacadeTruckingReport>>
+                    afterReportsCreate = createReportsThisWeek(left, supplier);
+            // creates reports for the next 7 days only, call drivers from home if needed
+            left = afterReportsCreate.getFirst();
+            if (!left.isEmpty()) {
+                // TODO - need to notify
+                LinkedList<FacadeTruckingReport> everyWeekReports = getActiveTruckingReports().getValue();
+                everyWeekReports.addAll(getWaitingTruckingReports().getValue());
+
+                // adds to existing TR from every week
+                left = insertToExistingTR(left, supplier, everyWeekReports);
+                if (!left.isEmpty()) {
+
+                    // creates reports for every possible date
+                    afterReportsCreate = createReportsEveryWeek(left, supplier);
+                    left = afterReportsCreate.getFirst();
+                    if (!left.isEmpty()) {
+                       addDemandToPool(left,supplier);
+                    }
+                }
+            }
+        }
+
+
+
+        return new ResponseT<>(left);
+
+
     }
+
+
+
 
     /**
      * this order must been done in a specific day. all of it
      * if fails, deliveries none of it
-     * @param order
+     * @param order -  the permanent order need to be settled
      * @return true if succeeded, false other wise
      */
-    public boolean addPermanentOrder(Order order) {
-        throw new UnsupportedOperationException();
+    public boolean addPermanentOrder(Order order) throws UnsupportedOperationException{
+        boolean succeed = false;
+        succeed  = canAddFullOrder(order);
+        if (succeed){
+            LocalDate date = order.getDate();
+            LinkedList<Pair<Integer, Integer>> left = orderToItemsList(order);
+            int supplier = getSupplierFromOrder(order);
+            LinkedList<FacadeTruckingReport> reports = getAvailableTRsByDate(date);
+            left  = insertToExistingTR(left, supplier, reports);
+
+            Pair<LinkedList<Pair<Integer, Integer>>, LinkedList<FacadeTruckingReport>>
+                    afterCreateReports = createReportsForDate(left, supplier, date);
+
+            left = afterCreateReports.getFirst();
+
+            if (!left.isEmpty()){
+                throw new UnsupportedOperationException("for some reason - didn't recognized the needed weight to possible");
+            }
+        }
+
+        return succeed;
+
     }
 
 
+
     public ResponseT< LinkedList<Notification> > getNotifications(){
-        throw new UnsupportedOperationException();
+        return new ResponseT<LinkedList<Notification>>(DeliveryService.getInstance().getNotifications());
     }
 
     public ResponseT<  LinkedList<FacadeDriver> >getDrivers(){
@@ -83,21 +143,21 @@ public class TruckingService {
     }
 
     public ResponseT<  LinkedList<FacadeDemand> > getDemands(){
-        throw new UnsupportedOperationException();
+        return new ResponseT<LinkedList<FacadeDemand>>(deliveryService.getDemands());
     }
 
-    public ResponseT<  LinkedList<FacadeTruckingReport> > showActiveTruckingReports(){
-        throw new UnsupportedOperationException();
-    }
-
-
-    public ResponseT<  LinkedList<FacadeTruckingReport> > showWaitingTruckingReports(){
-        throw new UnsupportedOperationException();
+    public ResponseT<  LinkedList<FacadeTruckingReport> > getActiveTruckingReports(){
+        return  new ResponseT<>(deliveryService.getActiveTruckingReports());
     }
 
 
-    public ResponseT<  LinkedList<FacadeTruckingReport >> showOldTruckingReports(){
-        throw new UnsupportedOperationException();
+    public ResponseT<  LinkedList<FacadeTruckingReport> > getWaitingTruckingReports(){
+        return  new ResponseT<>(deliveryService.getWaitingTruckingReports());
+    }
+
+
+    public ResponseT<  LinkedList<FacadeTruckingReport >> getOldTruckingReports(){
+        return  new ResponseT<>(deliveryService.getOldTruckingReports());
     }
 
 
@@ -105,10 +165,10 @@ public class TruckingService {
         resourcesService.addTruck(model, licenseNumber, weightNeto, maxWeight);
     }
     public void managerApproveTruckReport(Integer trID){
-        throw new UnsupportedOperationException();
+        deliveryService.managerApproveTruckReport(trID);
     }
     public void managerCancelTruckReport(Integer trID){
-        throw new UnsupportedOperationException();
+        deliveryService.managerCancelTruckReport(trID);
     }
     // TODO - employees should call this function
     public void handleLeftOvers() {
@@ -156,25 +216,37 @@ public class TruckingService {
      *      if not possible-> add new drivers to shift
      *      only for the next 7 days
      *
-     * @param items -> pair is < < ItemID, DeliveryArea>, amount>
+     * @param items -> pair is < ItemID, Amount>
+     * @param supplier -> supplier id
      *
      * @return < left items ,LinkedList of the created TruckingReports>>
      */
-    private Pair<HashMap<Pair<Integer, Integer>, Integer> ,LinkedList<FacadeTruckingReport>>
-    createReportsThisWeek(HashMap<Pair<Integer, Integer>, Integer> items ){
+    private Pair<LinkedList<Pair<Integer,Integer>>  ,LinkedList<FacadeTruckingReport>>
+    createReportsThisWeek(    LinkedList<Pair<Integer,Integer>>  items , int supplier ){
         throw new UnsupportedOperationException();
     }
 
-    private Pair<HashMap<Pair<Integer, Integer>, Integer> ,LinkedList<FacadeTruckingReport>>
-    createReportsEveryWeek(HashMap<Pair<Integer, Integer>, Integer> items ){
+    private Pair< LinkedList<Pair<Integer,Integer>> ,LinkedList<FacadeTruckingReport>>
+    createReportsEveryWeek( LinkedList<Pair<Integer,Integer>>  items , int supplier  ){
         throw new UnsupportedOperationException();
     }
 
+    private Pair< LinkedList<Pair<Integer,Integer>> ,LinkedList<FacadeTruckingReport>>
+    createReportsForDate( LinkedList<Pair<Integer,Integer>>  items , int supplier , LocalDate date ){
+        throw new UnsupportedOperationException();
+    }
     private  HashMap<LocalDate, HashMap<Integer, LinkedList<String>>>
     getDaysAndDrivers() throws IllegalArgumentException {
         return resourcesService.getDayAndDrivers();
     }
 
+    private LinkedList<Pair<Integer, Integer>> orderToItemsList(Order order) {
+        LinkedList<Pair<Integer,Integer>> left = new LinkedList<>();
+        for (Map.Entry<Integer,Integer> entry : order.getProducts().entrySet()){
+            left.add(new Pair<>(entry.getKey(),entry.getValue()));
+        }
+        return left;
+    }
 
     /**
      * this mehtod check whether we can deliver the whole order in the wanted date. checks by overall weight
@@ -208,13 +280,41 @@ public class TruckingService {
         return resourcesService.findDriverAndTruckForDateFromPool(date);
     }
 
-    private void addDemandToPool(HashMap<Pair<Integer, Integer>, Integer> items){
+    /**
+     * inserts the items into demands pool
+     * @param items -> itemId, Amount
+     * @param  supplier  ->  supplier id
+     */
+    private void addDemandToPool(LinkedList<Pair<Integer, Integer>> items , int supplier){
         throw new UnsupportedOperationException();
     }
 
     private Item getItem(int id, int supplier){
         throw new UnsupportedOperationException();
     }
+
+    private LinkedList<FacadeTruckingReport> getAvailableTRsByDate(LocalDate now) {
+        throw new UnsupportedOperationException();
+    }
+    private int getSupplierFromOrder(Order order) {
+        return order.getSupplier().getSc().getCompanyNumber();
+    }
+
+    private LinkedList<FacadeTruckingReport> getThisWeekReports() {
+        LinkedList<FacadeTruckingReport> allReports = getActiveTruckingReports().getValue();
+        LinkedList<FacadeTruckingReport> waiting = getWaitingTruckingReports().getValue();
+        allReports.addAll(waiting);
+        LinkedList<FacadeTruckingReport> thisWeekReports = new LinkedList<>();
+        // filters the reports, remains only the next 7 day's reports
+        for (FacadeTruckingReport ftr: allReports){
+            if (ftr.getDate().isBefore(LocalDate.now().plusDays(7))){
+                thisWeekReports.add(ftr);
+            }
+        }
+        return thisWeekReports;
+    }
+
+
 
 
 
