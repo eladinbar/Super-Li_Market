@@ -75,7 +75,8 @@ public interface IService {
     //-------------------------------------------------------------------------Item functions
 
     Response addItem(int id, String name, String categoryName, double costPrice, double sellingPrice, int minAmount,
-                     String shelfLocation, String storageLocation, int shelfQuantity, int storageQuantity, int manufacturerId, List<String> suppliersIds);
+                     String shelfLocation, String storageLocation, int shelfQuantity, int storageQuantity, int manufacturerId,
+                     double weight, List<String> suppliersIds);
     ResponseT<FacadeItem> getItem(int itemId);
     Response modifyItemName(int itemId, String newName);
     Response modifyItemCategory(int itemId, String newCategoryName);

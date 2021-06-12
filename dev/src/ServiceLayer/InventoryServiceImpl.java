@@ -26,7 +26,7 @@ public class InventoryServiceImpl implements InventoryService {
     @Override
     public Response addItem(int id, String name, String categoryName, double costPrice, double sellingPrice,
                             int minAmount, String shelfLocation, String storageLocation, int shelfQuantity,
-                            int storageQuantity, int manufacturerId, List<String> suppliersIds) {
+                            int storageQuantity, int manufacturerId, double weight, List<String> suppliersIds) {
         Response response;
         //Check basic argument constraints
         if (id < 0 | name == null || name.trim().isEmpty() | costPrice < 0 | sellingPrice < 0 | minAmount < 0 |
@@ -38,8 +38,8 @@ public class InventoryServiceImpl implements InventoryService {
         //Call business layer function
         try {
             inventoryController.addItem(id, name, categoryName, costPrice, sellingPrice,
-                    minAmount, shelfLocation, storageLocation,
-                    shelfQuantity, storageQuantity, manufacturerId, suppliersIds);
+                    minAmount, shelfLocation, storageLocation, shelfQuantity, storageQuantity,
+                    manufacturerId, weight, suppliersIds);
             response = new Response(false, "Item added successfully.");
             return response;
         } catch (Exception ex) {

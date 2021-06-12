@@ -18,6 +18,7 @@ public class Item {
     private final List<String> supplierIDs;
     private final Quantity quantity;
     private final Location location;
+    private double weight;
 
     public Item() {
         try {
@@ -43,7 +44,7 @@ public class Item {
     }
 
     public Item(int ID, String name, double costPrice, double sellingPrice, int minAmount, int manufacturerID, List<String> supplierIDs,
-                int shelfQuantity, int storageQuantity, String shelfLocation, String storageLocation) {
+                int shelfQuantity, int storageQuantity, String shelfLocation, String storageLocation, double weight) {
         try {
             dalCopyItem = new DalItem();
         } catch(SQLException ex) {
@@ -58,6 +59,7 @@ public class Item {
         this.supplierIDs = supplierIDs;
         this.quantity = new Quantity(shelfQuantity, storageQuantity);
         this.location = new Location(shelfLocation, storageLocation);
+        this.weight = weight;
     }
 
     public int getID() {
@@ -224,6 +226,26 @@ public class Item {
         }
     }
 
+    public double getWeight() {
+        return this.weight;
+    }
+
+    public void setWeight(double weight) {
+        dalCopyItem.setWeight(weight);
+        this.weight = weight;
+    }
+
+    public void setAndSaveWeight(double weight) {
+        dalCopyItem.setWeight(weight);
+        try {
+            dalCopyItem.update();
+            this.weight = weight;
+        } catch (SQLException ex) {
+            dalCopyItem.setWeight(this.weight);
+            throw new RuntimeException("Something went wrong.");
+        }
+    }
+
     DalItem getDalCopyItem() {
         return dalCopyItem;
     }
@@ -288,7 +310,8 @@ public class Item {
             if (found) {
                 for (DalItem item : dalCopyItems) {
                     Item savedItem = new Item(item.getItemID(), item.getName(), item.getCostPrice(), item.getSellingPrice(), item.getMinAmount(),
-                            item.getManufacturerID(), null, item.getShelfQuantity(), item.getStorageQuantity(), item.getShelfLocation(), item.getStorageLocation());
+                            item.getManufacturerID(), null, item.getShelfQuantity(), item.getStorageQuantity(),
+                            item.getShelfLocation(), item.getStorageLocation(), item.getWeight());
                     items.add(savedItem);
 
                     //Extract supplier IDs
