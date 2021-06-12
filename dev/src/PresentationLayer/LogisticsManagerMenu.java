@@ -1,6 +1,7 @@
 package PresentationLayer;
 
-import BusinessLayer.TruckingPackage.DeliveryPackage.DeliveryForm;
+import BusinessLayer.Notification;
+import BusinessLayer.TruckingNotifications;
 import BusinessLayer.TruckingPackage.ResourcesPackage.Driver;
 import ServiceLayer.FacadeObjects.*;
 import ServiceLayer.Response.ResponseT;
@@ -204,34 +205,30 @@ public class LogisticsManagerMenu {
         return true;
     }
 
+    private void printNotifications() {
+        LinkedList<TruckingNotifications> notes = ts.getNotifications().getValue();
+        int spot =1;
+        for (TruckingNotifications n : notes){
+            System.out.print(spot + ")");
+            System.out.println(notes);
+            spot++;
+        }
+    }
+
     // TODO need to check
     private boolean truckingReportMenu(Scanner scanner) {
         int spot = 1;
-        System.out.println(spot + ".\tCreate new Trucking Report");
+        System.out.println(spot + ".\tApprove/Cancel Trucking Report");
         spot++;
-        System.out.println(spot + "\tUpdate a Trucking report and its Delivery Form's leaving weight");
+        System.out.println(spot + "\tAdd New Truck To System");
         spot++;
-        System.out.println(spot + "\tGo back To Trucking PresentationLayer.Employee_PresnetationLayer$.Main Menu");
+        System.out.println(spot + "\tGo Back To Logistic Menu");
         spot++;
         System.out.print("please choose the option you'd like: ");
         int chose = getIntFromUserMain(scanner);
         switch (chose) {
             case 1:
-                try {
-                    pc.CreateReport();
-
-                    chooseDate(scanner);
-                    chooseDemands(scanner);
-                    LocalDate date = pc.getCurrentTruckReport().getDate();
-                    LocalTime shift = pc.getCurrTruckReport().getLeavingHour();
-                    chooseTruckAndDriver(scanner, date, shift);
-
-                    pc.saveReport();
-
-
-                } catch (ReflectiveOperationException| SQLException e) {
-                    System.out.println(e.getMessage());
-                }
+                approveTruckReports(scanner);
                 break;
             case 2:
                 try {
@@ -354,19 +351,43 @@ public class LogisticsManagerMenu {
     }
 
     private void printDeliveryForm(FacadeDeliveryForm deliveryForm) {
+        System.out.println("ID:" + deliveryForm.getID()+ "\tsupplier: " + deliveryForm.getSupplier() + "" +
+                "\nitems:");
+        System.out.println("\t\tname\t\tAmount");
+        HashMap<Integer, Integer> items = deliveryForm.getItems();
+        for (Map.Entry<Integer,Integer> entry: items.entrySet()){
+            printItem(entry.getKey(), entry.getValue());
+        }
+        System.out.println("total Weight: " + deliveryForm.getLeavingWeight());
+
+    }
+
+    private void printItem(Integer item_id, Integer amount) {
+        String name = ts.getItemName(item_id);
+        System.out.println("\t\t" + name+"\t\t"+amount);
+
     }
 
 
+    private void approveTruckReports(java.util.Scanner scanner) throws ReflectiveOperationException {
+        // TODO - if waiting truck report date has passed, delete it
+        LinkedList<FacadeTruckingReport> reports = ts.getWaitingTruckingReports().getValue();
+        int spot =1;
+        for (FacadeTruckingReport report: reports){
+            System.out.print(spot+")");
+            printTruckReport(report);
+        }
+        System.out.println("\nplease choose the truck report you'd like to approve or cancel");
+        int chose = getIntFromUser(scanner);
+        while (chose<1 || chose > reports.size()-1){
+            System.out.println("number out bounds, please try again");
+            chose= getIntFromUser(scanner);
+        }
+        chose = chose -1;
+        FacadeTruckingReport report = reports.get(chose);
+        System.out.println("choose 1 to accept order ");
 
-
-
-
-
-
-
-
-
-
+    }
 
 
 
@@ -947,7 +968,7 @@ public class LogisticsManagerMenu {
         System.out.println("the relevant Delivery Forms: ");
         spot = 1;
         for (FacadeDeliveryForm dlf : deliveryForms) {
-            System.out.println(spot + ")origin: " + dlf.getOrigin() + "\tdestination: " + dlf.getDestination() +
+            System.out.println(spot + ")origin: " + dlf.getOrigin() + "\tdestination: " + dlf.getSupplier() +
                     "\nitems delivered:");
             spot++;
             for (Map.Entry<Integer, Integer> entry : dlf.getItems().entrySet()) {
@@ -1120,7 +1141,7 @@ public class LogisticsManagerMenu {
         LinkedList<Integer> sites = new LinkedList<>();
         for (FacadeDeliveryForm df : dfs) {
             if (!(df.isCompleted())) {
-                sites.add(df.getDestination());
+                sites.add(df.getSupplier());
             }
         }
         System.out.println("please choose the site you'd like to remove");

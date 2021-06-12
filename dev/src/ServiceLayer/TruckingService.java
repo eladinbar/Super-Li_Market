@@ -3,6 +3,7 @@ package ServiceLayer;
 import BusinessLayer.InventoryPackage.Item;
 import BusinessLayer.Notification;
 import BusinessLayer.SuppliersPackage.OrderPackage.Order;
+import BusinessLayer.TruckingNotifications;
 import BusinessLayer.TruckingPackage.DeliveryPackage.DeliveryForm;
 import InfrastructurePackage.Pair;
 import ServiceLayer.FacadeObjects.*;
@@ -62,7 +63,7 @@ public class TruckingService {
      * @return List of pairs, item and its amount, only item that couldn't been delivered.
      * if all items has been settled to a delivery, returns empty list
      */
-    public ResponseT<  LinkedList<Pair<Integer, Integer>> > addOrder(Order order) throws SQLException {
+    public ResponseT<  LinkedList<Pair<Integer, Integer>> > addOrder(Order order)  {
 
         int supplier  = getSupplierFromOrder(order);
         LinkedList<Pair<Integer,Integer>> left = orderToItemsList(order);
@@ -136,7 +137,7 @@ public class TruckingService {
 
 
 
-    public ResponseT< LinkedList<Notification> > getNotifications(){
+    public ResponseT< LinkedList<TruckingNotifications> > getNotifications(){
         return new ResponseT<>(DeliveryService.getInstance().getNotifications());
     }
 

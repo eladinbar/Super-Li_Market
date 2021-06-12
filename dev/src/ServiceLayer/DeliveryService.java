@@ -1,6 +1,7 @@
 package ServiceLayer;
 
 import BusinessLayer.Notification;
+import BusinessLayer.TruckingNotifications;
 import InfrastructurePackage.Pair;
 import ServiceLayer.FacadeObjects.FacadeDeliveryForm;
 import ServiceLayer.FacadeObjects.FacadeDemand;
@@ -39,7 +40,7 @@ public class DeliveryService {
 
 
 
-    public LinkedList<Notification> getNotifications() {
+    public LinkedList<TruckingNotifications> getNotifications() {
         return dc.getNotifications();
     }
 

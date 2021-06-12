@@ -24,7 +24,7 @@ public class DeliveryController {
     private int lastReportID;
     private int lastDeliveryForms;
     private static DeliveryController instance = null;
-    private LinkedList<Notification> notifications;
+    private LinkedList<TruckingNotifications> notifications;
 
     public static DeliveryController getInstance() {
         if (instance == null)
@@ -117,8 +117,8 @@ public class DeliveryController {
      * show all the current notifications, deletes them after showed
      * @return current notifications since last time
      */
-    public LinkedList<Notification> getNotifications() {
-        LinkedList<Notification> output = notifications;
+    public LinkedList<TruckingNotifications> getNotifications() {
+        LinkedList<TruckingNotifications> output = notifications;
         notifications = new LinkedList<>();
         // TODO need to delete from DB
         return output;
