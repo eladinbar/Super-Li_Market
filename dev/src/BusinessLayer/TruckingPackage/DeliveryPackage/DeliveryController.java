@@ -59,13 +59,15 @@ public class DeliveryController {
         this.activeDeliveryForms = new HashMap<>();
     }
 
+    // TODO - need to check weight insert
+
 
     // TODO - when go to old DFs and Trs, need to take form DB and not from here
 
     public LinkedList<Pair<Integer, Integer>> createTruckReport(LinkedList<Pair<Integer, Integer>> items, String driverId, String truckId, int maxWeight, int supplier, LocalDate date)  {
         TruckingReport tr= new TruckingReport(lastReportID);
         lastReportID++;
-        //TODO - need to save in DB report and the DeliveryController
+        //TODO - need to save in DB report and DFs
         tr.addSupplier(supplier);
         tr.setDate(date);
         tr.setTruckNumber(truckId);
@@ -91,6 +93,7 @@ public class DeliveryController {
                 demands.add(d);
             }
         }
+        // TODO - need to save in DB
     }
 
     public LinkedList<TruckingReport> getActiveTruckingReports(){
@@ -122,6 +125,8 @@ public class DeliveryController {
      * @return current notifications since last time
      */
     public LinkedList<Notification> getNotifications() {
+        // TODO need to delete from pool
+        // TODO need to delete from DB
         return notifications;
     }
 
@@ -217,7 +222,7 @@ public class DeliveryController {
                             DeliveryForm df = new DeliveryForm(lastDeliveryForms, supplier,dfItems,getItemTotalWeight(item.getFirst(), amount) , report_id );
                             activeDeliveryForms.get(report_id).add(df);
                             lastDeliveryForms++;
-                            // TODO - need to save dfs and lastDeliveryForm in database
+                            // TODO - need to save dfs  in database
 
                         }
                         item.setSecond(item.getSecond() - amount);
@@ -329,11 +334,13 @@ public class DeliveryController {
     }
 
     public void managerApproveTruckReport(Integer trID) throws TimeLimitExceededException {
+        // todo DB update approved
         TruckingReport report = getTruckReport(trID);
         if (report.getDate().isBefore(LocalDate.now()))
             throw new TimeLimitExceededException();
         if (!report.isApproved()) {
             report.setApproved(true);
+
 
             waitingTruckingReports.remove(trID);
             activeTruckingReports.put(trID, report);
@@ -341,13 +348,17 @@ public class DeliveryController {
     }
 
     public void managerCancelTruckReport(int trID) throws TimeLimitExceededException {
+
         TruckingReport report = getTruckReport(trID);
         if (report.getDate().isBefore(LocalDate.now()))
             throw new TimeLimitExceededException();
         if (!report.isApproved()) {
 
             waitingTruckingReports.remove(trID);
-            //TODO - need to delete from DB
+            //TODO - need to remove delivery Forms
+
+
+            //TODO - need to delete from DB as well as deliveryForms
         }
     }
 

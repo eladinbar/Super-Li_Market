@@ -11,12 +11,14 @@ public class Demand {
     private int amount;
 
     public Demand(int itemID, int site_id, int amount) throws SQLException {
+        // todo DB update
         this.itemID=itemID;
         this.supplier =site_id;
         this.amount=amount;
 
     }
     public Demand(DalDemand demand){
+
         this.itemID=demand.getItemID();
         this.amount=demand.getAmount();
         this.supplier =demand.getSiteID();

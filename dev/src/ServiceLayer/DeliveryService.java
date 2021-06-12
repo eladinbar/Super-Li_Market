@@ -1,24 +1,16 @@
 package ServiceLayer;
 
-import BusinessLayer.InventoryPackage.Item;
 import BusinessLayer.Notification;
 import InfrastructurePackage.Pair;
 import ServiceLayer.FacadeObjects.FacadeDeliveryForm;
 import ServiceLayer.FacadeObjects.FacadeDemand;
-import ServiceLayer.FacadeObjects.FacadeItem;
 import ServiceLayer.FacadeObjects.FacadeTruckingReport;
 import BusinessLayer.TruckingPackage.DeliveryPackage.*;
 
-import javax.management.openmbean.KeyAlreadyExistsException;
 import javax.naming.TimeLimitExceededException;
-import javax.xml.transform.TransformerConfigurationException;
 import java.sql.SQLException;
 import java.time.LocalDate;
-import java.time.LocalTime;
-import java.util.HashMap;
 import java.util.LinkedList;
-import java.util.Map;
-import java.util.NoSuchElementException;
 
 import static java.lang.System.exit;
 
@@ -105,7 +97,9 @@ public class DeliveryService {
 
       return dc.insertItemsToTruckReport(left, supplier, capacity,id);
     }
-
+    public LinkedList<FacadeTruckingReport> getAvailableTRsByDate(LocalDate date) {
+        return turnListTruckingReportsToFacade( dc.getTruckingReportsByDate(date) );
+    }
     public LinkedList<Pair<Integer, Integer>> createReport(LinkedList<Pair<Integer, Integer>> items, String driverId, String truckId, int maxWeight, int supplier, LocalDate date) {
         return dc.createTruckReport(items, driverId, truckId, maxWeight, supplier,date);
     }
@@ -142,6 +136,8 @@ public class DeliveryService {
         return trucks;
 
     }
+
+
 
 
 

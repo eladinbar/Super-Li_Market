@@ -13,10 +13,11 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.*;
 
+import static java.lang.System.exit;
+
 public class TruckingService {
     private DeliveryService deliveryService;
     private ResourcesService resourcesService;
-    private FacadeTruckingReport currTR;
     private static TruckingService instance = null;
 
 
@@ -71,7 +72,7 @@ public class TruckingService {
         if (!left.isEmpty()) {
 
             // creates reports for the next 7 days only, call drivers from home if needed
-            left = createReportsEveryWeek(left, supplier);
+            left = createReportsThisWeek(left, supplier);
 
             if (!left.isEmpty()) {
                 // TODO - need to notify
@@ -108,7 +109,7 @@ public class TruckingService {
      * @param order -  the permanent order need to be settled
      * @return true if succeeded, false other wise
      */
-    public boolean addPermanentOrder(Order order) throws UnsupportedOperationException{
+    public boolean addPermanentOrder(Order order) {
         boolean succeed = false;
         succeed  = canAddFullOrder(order);
         if (succeed){
@@ -122,7 +123,8 @@ public class TruckingService {
             left =  createReportsForDate(left, supplier, date);
 
             if (!left.isEmpty()){
-                throw new UnsupportedOperationException("for some reason - didn't recognized the needed weight to possible");
+                System.out.println(("for some reason - didn't recognized the needed weight to possible"));
+                exit(1);
             }
         }
         // TODO - need to check why it says always true
@@ -132,15 +134,16 @@ public class TruckingService {
 
 
     public ResponseT< LinkedList<Notification> > getNotifications(){
-        return new ResponseT<LinkedList<Notification>>(DeliveryService.getInstance().getNotifications());
+        return new ResponseT<>(DeliveryService.getInstance().getNotifications());
     }
 
     public ResponseT<  LinkedList<FacadeDriver> >getDrivers(){
+        // TODO implement
         throw new UnsupportedOperationException();
     }
 
     public ResponseT< LinkedList<FacadeTruck> > getTrucks(){
-
+        // TODO implement
         throw new UnsupportedOperationException();
     }
 
@@ -259,9 +262,10 @@ public class TruckingService {
     /**
      *
      * @param tr -  truck report to check
-     * @return returns Max weight truck and driver can handle
+     * @return returns min weight truck and driver can handle
      */
     private int getMaxWeight(FacadeTruckingReport tr){
+        // TODO implement
         throw new UnsupportedOperationException();
 
     }
@@ -301,6 +305,7 @@ public class TruckingService {
     createReportsForDate( LinkedList<Pair<Integer,Integer>>  items , int supplier , LocalDate date ){
         boolean finish = false;
         while (true){
+            // TODO need to handle hour
             Pair<FacadeDriver, FacadeTruck> driverAndTruck = getDriverAndTruckFromExisting(date);
             if (driverAndTruck == null){
                 driverAndTruck = getDriverAndTruckFromPool(date);
@@ -340,7 +345,6 @@ public class TruckingService {
         int totalWeight = getOrderTotalWeight(order);
         // TODO - need to make sure the truck and drivers for new trucking reports will actually be chosen
         return ( totalWeight <= left);
-
     }
 
     /**
@@ -354,14 +358,25 @@ public class TruckingService {
         for( FacadeTruckingReport ftr : reports){
             total += getReportLeftWeight(ftr);
         }
-        // TODO resources returns more weight possible
+        total += getPossibleWeightByDate(date);
         return total;
     }
 
 
+    private int getPossibleWeightByDate(LocalDate date) {
+        LinkedList<FacadeTruckingReport> reports = getAvailableTRsByDate(date);
+        throw new UnsupportedOperationException();
+        // TODO - employees need to make a new method, returns boolean and do no insert into shift
+    }
 
 
-    private Pair<FacadeDriver, FacadeTruck> getDriverAndTruckFromExisting (LocalDate date){
+    /**
+     *
+     * @param date
+     * @return pair < < driver, truck> , Shift>
+     */
+    private Pair <Pair<FacadeDriver, FacadeTruck>,Integer > getDriverAndTruckFromExisting (LocalDate date){
+        // TODO
         return resourcesService.findDriverAndTruckForDateFromExisting(date,getBusyTrucksByDate(date));
     }
 
@@ -378,12 +393,10 @@ public class TruckingService {
         deliveryService.addDemandToPool(items, supplier);
     }
 
-    private Item getItem(int id, int supplier){
-        throw new UnsupportedOperationException();
-    }
 
-    private LinkedList<FacadeTruckingReport> getAvailableTRsByDate(LocalDate now) {
-        throw new UnsupportedOperationException();
+    private LinkedList<FacadeTruckingReport> getAvailableTRsByDate(LocalDate date) {
+        // TODO implement
+        return deliveryService.getAvailableTRsByDate(date);
     }
     private int getSupplierFromOrder(Order order) {
         return order.getSupplier().getSc().getCompanyNumber();
@@ -417,7 +430,12 @@ public class TruckingService {
 
 
     private int getOrderTotalWeight(Order order) {
-        return 100;
+        Map<Integer, Integer> items = order.getProducts();
+        int total = 0;
+        for (Map.Entry<Integer,Integer> entry : items.entrySet()){
+            total += deliveryService.getItemTotalWeight(entry.getKey(), entry.getValue());
+        }
+        return total;
     }
 
     private LinkedList<Integer> getReportAreas(FacadeTruckingReport report) {
@@ -426,13 +444,17 @@ public class TruckingService {
 
 
     private LocalDate getLastShiftDate() {
-        // TODO - need to impement when possible
+        // TODO - need to implement when possible
         throw new UnsupportedOperationException();
     }
 
 
     private int getDeliveryArea(int supplier ){throw new UnsupportedOperationException();}
 
+
+    private Item getItem(int id, int supplier){
+        throw new UnsupportedOperationException();
+    }
 
 
 

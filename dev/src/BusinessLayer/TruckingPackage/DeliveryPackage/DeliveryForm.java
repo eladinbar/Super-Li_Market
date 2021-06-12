@@ -22,6 +22,7 @@ public class DeliveryForm {
         this.leavingWeight = leavingWeight;
         this.trID = trID;
         this.completed = false;
+        // todo DB insert
 
     }
 
@@ -52,8 +53,10 @@ public class DeliveryForm {
         if (items.containsKey(itemID)){
             int prevAmount  = items.get(itemID);
             amount  = amount  + prevAmount;
+
         }
         items.put(itemID, amount);
+        // TODO - insert/ update to DB
 
     }
 
@@ -83,10 +86,12 @@ public class DeliveryForm {
     }
 
     public void setCompleted() throws SQLException {
+        // todo DB update
         this.completed = true;
     }
 
     public void setDestination(int destination) throws SQLException {
+        // todo DB update
         this.destination = destination;
 
     }
@@ -101,6 +106,7 @@ public class DeliveryForm {
     }
 
     public void setLeavingWeight(int leavingWeight) throws SQLException {
+        // todo DB update
         this.leavingWeight = leavingWeight;
     }
 
