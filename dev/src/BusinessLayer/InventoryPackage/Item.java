@@ -18,7 +18,7 @@ public class Item {
     private final List<String> supplierIDs;
     private final Quantity quantity;
     private final Location location;
-    private double weight;
+    private int weight;
 
     public Item() {
         try {
@@ -44,7 +44,7 @@ public class Item {
     }
 
     public Item(int ID, String name, double costPrice, double sellingPrice, int minAmount, int manufacturerID, List<String> supplierIDs,
-                int shelfQuantity, int storageQuantity, String shelfLocation, String storageLocation, double weight) {
+                int shelfQuantity, int storageQuantity, String shelfLocation, String storageLocation, int weight) {
         try {
             dalCopyItem = new DalItem();
         } catch(SQLException ex) {
@@ -226,16 +226,16 @@ public class Item {
         }
     }
 
-    public double getWeight() {
+    public int getWeight() {
         return this.weight;
     }
 
-    public void setWeight(double weight) {
+    public void setWeight(int weight) {
         dalCopyItem.setWeight(weight);
         this.weight = weight;
     }
 
-    public void setAndSaveWeight(double weight) {
+    public void setAndSaveWeight(int weight) {
         dalCopyItem.setWeight(weight);
         try {
             dalCopyItem.update();

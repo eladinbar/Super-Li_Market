@@ -42,7 +42,7 @@ public class ItemDalController extends DalController<DalItem> {
                     DalItem.storageQuantityColumnName + " INTEGER DEFAULT 0 NOT NULL," +
                     DalItem.shelfLocationColumnName + " TEXT NOT NULL," +
                     DalItem.storageLocationColumnName + " TEXT NOT NULL," +
-                    DalItem.weightColumnName + " REAL DEFAULT 0 NOT NULL," +
+                    DalItem.weightColumnName + " INTEGER DEFAULT 0 NOT NULL," +
                     DalItem.categoryNameColumnName + " TEXT NOT NULL," +
                     "PRIMARY KEY (" + DalItem.itemIdColumnName + ")," +
                     "FOREIGN KEY (" + DalItem.categoryNameColumnName + ")" +
@@ -71,7 +71,7 @@ public class ItemDalController extends DalController<DalItem> {
             stmt.setInt(8, item.getStorageQuantity());
             stmt.setString(9, item.getShelfLocation());
             stmt.setString(10, item.getStorageLocation());
-            stmt.setDouble(11, item.getWeight());
+            stmt.setInt(11, item.getWeight());
             stmt.setString(12, item.getCategoryName());
             stmt.executeUpdate();
         } catch (SQLException ex) {
@@ -115,7 +115,7 @@ public class ItemDalController extends DalController<DalItem> {
             stmt.setInt(7, item.getStorageQuantity());
             stmt.setString(8, item.getShelfLocation());
             stmt.setString(9, item.getStorageLocation());
-            stmt.setDouble(10, item.getWeight());
+            stmt.setInt(10, item.getWeight());
             stmt.setString(11, item.getCategoryName());
             stmt.setInt(12, item.getItemID());
             stmt.executeUpdate();
@@ -147,7 +147,7 @@ public class ItemDalController extends DalController<DalItem> {
             stmt.setInt(8, item.getStorageQuantity());
             stmt.setString(9, item.getShelfLocation());
             stmt.setString(10, item.getStorageLocation());
-            stmt.setDouble(11, item.getWeight());
+            stmt.setInt(11, item.getWeight());
             stmt.setString(12, item.getCategoryName());
             stmt.setInt(13, oldId);
             stmt.executeUpdate();
@@ -177,7 +177,7 @@ public class ItemDalController extends DalController<DalItem> {
                     item.setStorageQuantity(resultSet.getInt(8));
                     item.setShelfLocation(resultSet.getString(9));
                     item.setStorageLocation(resultSet.getString(10));
-                    item.setWeight(resultSet.getDouble(11));
+                    item.setWeight(resultSet.getInt(11));
                     item.setCategoryName(resultSet.getString(12));
                     break; //Desired item found
                 }
@@ -213,7 +213,7 @@ public class ItemDalController extends DalController<DalItem> {
                     savedItem.setStorageQuantity(resultSet.getInt(8));
                     savedItem.setShelfLocation(resultSet.getString(9));
                     savedItem.setStorageLocation(resultSet.getString(10));
-                    savedItem.setWeight(resultSet.getDouble(11));
+                    savedItem.setWeight(resultSet.getInt(11));
                     savedItem.setCategoryName(resultSet.getString(12));
                     items.add(savedItem);
                 }

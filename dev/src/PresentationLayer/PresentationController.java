@@ -44,7 +44,7 @@ public class PresentationController implements Runnable {
         String storageL = menu.instructAndReceive("Enter storage location: follow this format \"ST-A<number>-<L/R>-S<number>\"");
         String storeL = menu.instructAndReceive("Enter shelf location: follow this format \"SH-A<number>-<L/R>-S<number>\"");
         int intManfac = menu.instructAndReceive("Enter manufacturer ID: ", Integer.class);
-        double weight = menu.instructAndReceive("Enter item weight: ", Double.class);
+        int weight = menu.instructAndReceive("Enter item weight: ", Integer.class);
         String category = menu.instructAndReceive("Enter category name: ");
         Response r = service.addItem(itemID, name, category, costP, sellP, minA, storeL, storageL, storageQ, storeQ, intManfac, weight, new ArrayList<>());
         if (r.errorOccurred()) {

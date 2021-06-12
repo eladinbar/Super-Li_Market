@@ -30,7 +30,7 @@ public class InventoryController {
     //-------------------------------------------------------------------------Item functions
 
     public void addItem(int id, String name, String categoryName, double costPrice, double sellingPrice, int minAmount, String shelfLocation, String storageLocation,
-                        int storageQuantity, int shelfQuantity, int manufacturerId, double weight, List<String> suppliersIds) {
+                        int storageQuantity, int shelfQuantity, int manufacturerId, int weight, List<String> suppliersIds) {
         Category itemCategory;
         try {
             itemCategory = getCategory(categoryName);
