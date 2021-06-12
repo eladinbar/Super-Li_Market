@@ -8,6 +8,7 @@ import ServiceLayer.Response.ResponseT;
 import ServiceLayer.TruckingService;
 
 import javax.management.openmbean.KeyAlreadyExistsException;
+import javax.naming.TimeLimitExceededException;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -52,7 +53,7 @@ public class LogisticsManagerMenu {
                     while (currentStatusMenu(scanner)) ;
                     break;
                 case 2:
-                    while (managerDriverAndTrucks(scanner)) ;
+                    while (managerOptionsMenu(scanner)) ;
                     break;
                 case 3:
                     keepGoing = false;
@@ -67,97 +68,7 @@ public class LogisticsManagerMenu {
         }
 
     }
-    // TODO need to check
-    private boolean managerDriverAndTrucks(Scanner scanner) {
-        int spot = 1;
-        System.out.println(spot + "\tAdd new Truck to the System");
-        spot++;
 
-
-        System.out.println(spot + ".\tAdd new site to the System"); // 2
-        spot++;
-        System.out.println(spot + ".\tAdd new item to the System");
-        spot++;
-        System.out.println(spot + ".\tAdd new Demand to the System");
-        spot++;
-
-
-        System.out.println(spot + ".\tRemove item from the system");
-        spot++;
-        System.out.println(spot + ".\tRemove site from the system");//6
-        spot++;
-        System.out.println(spot + ".\tRemove Demand from the system");
-        spot++;
-
-        System.out.println(spot + ".\tGo back To PresentationLayer.Employee_PresnetationLayer$.Main Menu");
-
-        int chose = getIntFromUserMain(scanner);
-        switch (chose) {
-            case 1:
-                try {
-                    addNewTruck(scanner);
-
-                } catch (ReflectiveOperationException re) {
-                    System.out.println(re.getMessage());
-                }
-
-                break;
-            case 2:
-                try {
-                    addSite(scanner);
-                } catch (ReflectiveOperationException re) {
-                    System.out.println(re.getMessage());
-                }
-                break;
-            case 3:
-                try {
-                    addItem(scanner);
-                } catch (ReflectiveOperationException re) {
-                    System.out.println(re.getMessage());
-                }
-                break;
-
-            case 4:
-                try {
-                    addDemandToSystem(scanner);
-                } catch (ReflectiveOperationException re) {
-                    System.out.println(re.getMessage());
-                }
-                break;
-            case 5:
-                try {
-                    removeItemFromPool(scanner);
-                } catch (ReflectiveOperationException |SQLException e) {
-                    System.out.println(e.getMessage());
-                }
-                break;
-            case 6:
-                try {
-                    removeSiteFromPool(scanner);
-                } catch (ReflectiveOperationException e) {
-                    System.out.println(e.getMessage());
-                }
-                break;
-
-            case 7:
-                try {
-                    removeDemandFromPool(scanner);
-                } catch (ReflectiveOperationException |SQLException e) {
-                    System.out.println(e.getMessage());
-                }
-                break;
-
-
-            case 8:
-                return false;
-            default:
-                System.out.println("option is out of bounds, please try again");
-                break;
-
-        }
-        return true;
-
-    }
     // TODO need to check
     private boolean currentStatusMenu(Scanner scanner) {
         int spot = 1;
@@ -215,8 +126,7 @@ public class LogisticsManagerMenu {
         }
     }
 
-    // TODO need to check
-    private boolean truckingReportMenu(Scanner scanner) {
+    private boolean managerOptionsMenu(Scanner scanner) {
         int spot = 1;
         System.out.println(spot + ".\tApprove/Cancel Trucking Report");
         spot++;
@@ -228,11 +138,15 @@ public class LogisticsManagerMenu {
         int chose = getIntFromUserMain(scanner);
         switch (chose) {
             case 1:
-                approveTruckReports(scanner);
+                try {
+                    approveTruckReports(scanner);
+                } catch (ReflectiveOperationException re) {
+                    System.out.println(re.getMessage());
+                }
                 break;
             case 2:
                 try {
-                    updateDeliveryForm(scanner);
+                    addNewTruck(scanner);
                 } catch (ReflectiveOperationException re) {
                     System.out.println(re.getMessage());
                 }
@@ -269,12 +183,21 @@ public class LogisticsManagerMenu {
 
             LinkedList<FacadeDemand> demands = ts.getDemands().getValue();
             demands = sortDemandsBySite(demands);
+            int spot =1;
+            for (FacadeDemand demand: demands){
+                System.out.print( spot + ")");
+                printDemand(demand);
+            }
 
-            printDemands(demands);
 
         } catch (NoSuchElementException ne) {
             System.out.println(ne.getMessage());
         }
+    }
+
+    private void printDemand(FacadeDemand demand) {
+        String itemName = ts.getItemName(demand.getItemID());
+        System.out.println(itemName + "\tAmount: "+demand.getAmount() + "\tSupplier" + ts.getSupplierName(demand.getSupplier()));
     }
 
 
@@ -385,14 +308,274 @@ public class LogisticsManagerMenu {
         }
         chose = chose -1;
         FacadeTruckingReport report = reports.get(chose);
-        System.out.println("choose 1 to accept order ");
+        System.out.println("choose 1 to accept order. 2 to cancel");
+        chose = getIntFromUser(scanner);
+        boolean keepGoing = true;
+        while (keepGoing) {
+            switch (chose) {
+                case 1:
+                    try {
+                        keepGoing = false;
+                        ts.managerApproveTruckReport(report.getID());
+                        System.out.println("report has been approved successfully");
+
+
+                    } catch (TimeLimitExceededException e) {
+                        System.out.println(e.getMessage());
+                    }
+                    break;
+                case 2:
+                    keepGoing = false;
+                    try {
+                        ts.managerCancelTruckReport(report.getID());
+                        System.out.println("report has been canceled");
+                    } catch (TimeLimitExceededException e) {
+                        System.out.println(e.getMessage());
+                    }
+                    break;
+                default:
+                    System.out.println("option out of bounds, please try again");
+
+
+            }
+        }
+
+
+    }
+
+    private void addNewTruck(Scanner scanner) throws ReflectiveOperationException {
+        boolean con = true;
+        while (con) {
+            System.out.print("Truck License ID: ");
+            String licenseNumber = getStringFromUser(scanner);
+            while (!licenseNumber.matches("[0-9]*")) {
+                System.out.println("License number should only contain digits,please try again");
+                licenseNumber = getStringFromUser(scanner);
+            }
+            System.out.print("the Trucks model:");
+            String model = getStringFromUser(scanner);
+            System.out.print("Weight Neto:");
+            int weightNeto = getIntFromUser(scanner);
+            System.out.print("Max Weight:");
+            int maxWeight = getIntFromUser(scanner);
+            while (maxWeight <= weightNeto) {
+                System.out.println("the  truck's max weight is not higher then it's neto weight(" + weightNeto + "), please choose again or quit with -1");
+                maxWeight = getIntFromUser(scanner);
+            }
+
+            try {
+                ts.addTruck(model, licenseNumber, weightNeto, maxWeight);
+                con = false;
+            } catch (KeyAlreadyExistsException|SQLException e) {
+                System.out.println(e.getMessage());
+            }
+        }
+    }
+
+
+
+    private int getIntFromUserMain(Scanner scanner) {
+
+        int choose = -1;
+        boolean scannerCon = true;
+        while (scannerCon) {
+            try {
+
+                choose = scanner.nextInt();
+
+                if (choose < 0) {
+                    System.out.println("you must choose an none-negative number ");
+                }
+                scannerCon = false;
+            } catch (Exception n) {
+                System.out.println(n.getMessage());
+                System.out.println("wrong input - a number must be inserted please try again ");
+                scanner.nextLine();
+            }
+        }
+        return choose;
 
     }
 
 
 
+    private int getIntFromUser(Scanner scanner) throws ReflectiveOperationException {
+        int choose = -1;
+        boolean scannerCon = true;
+        while (scannerCon) {
+            try {
+
+                choose = scanner.nextInt();
+
+                if (choose == -1) throw new ReflectiveOperationException("by pressing -1 you chose to go back");
+                if (choose < 0) {
+                    System.out.println("you must choose an none-negative number ");
+                } else {
+                    scannerCon = false;
+                }
+            } catch (InputMismatchException i) {
+                System.out.println("wrong input - a number must be inserted please try again ");
+                scanner.nextLine();
+            } catch (NoSuchElementException | IllegalStateException | NumberFormatException ie) {
+
+                System.out.println("wrong input - a number must be inserted please try again ");
+                scanner.nextLine();
+            }
+
+        }
+        return choose;
+    }
+
+
+    private double getDoubleFromUser(Scanner scanner) throws ReflectiveOperationException {
+
+
+        double choose = -1;
+        boolean scannerCon = true;
+        while (scannerCon)
+            try {
+
+                choose = scanner.nextDouble();
+                if (choose == -1) throw new ReflectiveOperationException("by pressing -1 you chose to go back");
+                if (choose < 0) {
+                    System.out.println("you must choose an none-negative number ");
+                }
+                scannerCon = false;
+            } catch (InputMismatchException ie) {
+                System.out.println("wrong input - a number must be inserted please try again ");
+                scanner.nextLine();
+            } catch (NoSuchElementException | IllegalStateException | NumberFormatException e) {
+                System.out.println("wrong input - a number must be inserted please try again ");
+                scanner.nextLine();
+            }
+        return choose;
+    }
+
+    private String getStringFromUser(Scanner scanner) throws ReflectiveOperationException {
+
+        boolean con = true;
+        String output = "";
+        while (con) {
+            try {
+                output = scanner.next();
+                if (output.equals("-1")) throw new ReflectiveOperationException("by pressing -1 you chose to go back");
+                con = false;
+            } catch (NoSuchElementException | IllegalStateException e) {
+                System.out.println("wrong input please try again");
+                scanner.nextLine();
+            }
+        }
+        return output;
+
+    }
+
+    private LinkedList<FacadeDemand> sortDemandsBySite(LinkedList<FacadeDemand> demands) {
+        return ts.sortDemandsBySite(demands);
+    }
+
+
+
+
+    private void printDriverDetails(FacadeDriver driver) {
+        System.out.println(driver.getName() + ":\n\t" + "Driver ID: " + driver.getID() +
+                "\tLicense Type: " + driver.getLicenseType());
+    }
+
+
 // TODO need to check all down>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
+
+   /* // TODO need to check
+    private boolean managerDriverAndTrucks(Scanner scanner) {
+        int spot = 1;
+        System.out.println(spot + "\tAdd new Truck to the System");
+        spot++;
+
+
+        System.out.println(spot + ".\tAdd new site to the System"); // 2
+        spot++;
+        System.out.println(spot + ".\tAdd new item to the System");
+        spot++;
+        System.out.println(spot + ".\tAdd new Demand to the System");
+        spot++;
+
+
+        System.out.println(spot + ".\tRemove item from the system");
+        spot++;
+        System.out.println(spot + ".\tRemove site from the system");//6
+        spot++;
+        System.out.println(spot + ".\tRemove Demand from the system");
+        spot++;
+
+        System.out.println(spot + ".\tGo back To PresentationLayer.Employee_PresnetationLayer$.Main Menu");
+
+        int chose = getIntFromUserMain(scanner);
+        switch (chose) {
+            case 1:
+                try {
+                    addNewTruck(scanner);
+
+                } catch (ReflectiveOperationException re) {
+                    System.out.println(re.getMessage());
+                }
+
+                break;
+            case 2:
+                try {
+                    addSite(scanner);
+                } catch (ReflectiveOperationException re) {
+                    System.out.println(re.getMessage());
+                }
+                break;
+            case 3:
+                try {
+                    addItem(scanner);
+                } catch (ReflectiveOperationException re) {
+                    System.out.println(re.getMessage());
+                }
+                break;
+
+            case 4:
+                try {
+                    addDemandToSystem(scanner);
+                } catch (ReflectiveOperationException re) {
+                    System.out.println(re.getMessage());
+                }
+                break;
+            case 5:
+                try {
+                    removeItemFromPool(scanner);
+                } catch (ReflectiveOperationException |SQLException e) {
+                    System.out.println(e.getMessage());
+                }
+                break;
+            case 6:
+                try {
+                    removeSiteFromPool(scanner);
+                } catch (ReflectiveOperationException e) {
+                    System.out.println(e.getMessage());
+                }
+                break;
+
+            case 7:
+                try {
+                    removeDemandFromPool(scanner);
+                } catch (ReflectiveOperationException |SQLException e) {
+                    System.out.println(e.getMessage());
+                }
+                break;
+
+
+            case 8:
+                return false;
+            default:
+                System.out.println("option is out of bounds, please try again");
+                break;
+
+        }
+        return true;
+
+    }
     private void printDateOptions(LocalDate date, HashMap<Integer, LinkedList<String>> shiftAndDrivers, int spot) {
         for (Map.Entry<Integer, LinkedList<String>> entry : shiftAndDrivers.entrySet()) {
             System.out.println(spot + ".\t" + date + "\tshift start time:" + turnShiftToTimes(entry.getKey()));
@@ -404,11 +587,6 @@ public class LogisticsManagerMenu {
 
         }
 
-    }
-
-    private void printDriverDetails(FacadeDriver driver) {
-        System.out.println(driver.getName() + ":\n\t" + "Driver ID: " + driver.getID() +
-                "\tLicense Type: " + driver.getLicenseType());
     }
 
 
@@ -686,34 +864,7 @@ public class LogisticsManagerMenu {
     }
 
 
-    private void addNewTruck(Scanner scanner) throws ReflectiveOperationException {
-        boolean con = true;
-        while (con) {
-            System.out.print("Truck License ID: ");
-            String licenseNumber = getStringFromUser(scanner);
-            while (!licenseNumber.matches("[0-9]*")) {
-                System.out.println("License number should only contain digits,please try again");
-                licenseNumber = getStringFromUser(scanner);
-            }
-            System.out.print("the Trucks model:");
-            String model = getStringFromUser(scanner);
-            System.out.print("Weight Neto:");
-            int weightNeto = getIntFromUser(scanner);
-            System.out.print("Max Weight:");
-            int maxWeight = getIntFromUser(scanner);
-            while (maxWeight <= weightNeto) {
-                System.out.println("the  truck's max weight is not higher then it's neto weight(" + weightNeto + "), please choose again or quit with -1");
-                maxWeight = getIntFromUser(scanner);
-            }
 
-            try {
-                pc.addTruck(model, licenseNumber, weightNeto, maxWeight);
-                con = false;
-            } catch (KeyAlreadyExistsException|SQLException e) {
-                System.out.println(e.getMessage());
-            }
-        }
-    }
 
     private void addNewDriver(Scanner scanner) throws ReflectiveOperationException {
 
@@ -936,9 +1087,7 @@ public class LogisticsManagerMenu {
     }
 
 
-    private LinkedList<FacadeDemand> sortDemandsBySite(LinkedList<FacadeDemand> demands) {
-        return pc.sortDemandsBySite(demands);
-    }
+
 
 
 
@@ -1201,114 +1350,7 @@ public class LogisticsManagerMenu {
         }
     }
 
-*
-     * ask the user for int input, if not int, asks again with a message
-     * this method, does not receive -1 as special case
-     *
-     * @param scanner Scanner from java utils
-     * @return the user's int
 
-
-    private int getIntFromUserMain(Scanner scanner) {
-
-        int choose = -1;
-        boolean scannerCon = true;
-        while (scannerCon) {
-            try {
-
-                choose = scanner.nextInt();
-
-                if (choose < 0) {
-                    System.out.println("you must choose an none-negative number ");
-                }
-                scannerCon = false;
-            } catch (Exception n) {
-                System.out.println(n.getMessage());
-                System.out.println("wrong input - a number must be inserted please try again ");
-                scanner.nextLine();
-            }
-        }
-        return choose;
-
-    }
-
-*
-     * ask the user for int input, if not int, asks again with a message
-     *
-     * @param scanner
-     * @return
-     * @throws ReflectiveOperationException if -1 received
-
-
-    private int getIntFromUser(Scanner scanner) throws ReflectiveOperationException {
-        int choose = -1;
-        boolean scannerCon = true;
-        while (scannerCon) {
-            try {
-
-                choose = scanner.nextInt();
-
-                if (choose == -1) throw new ReflectiveOperationException("by pressing -1 you chose to go back");
-                if (choose < 0) {
-                    System.out.println("you must choose an none-negative number ");
-                } else {
-                    scannerCon = false;
-                }
-            } catch (InputMismatchException i) {
-                System.out.println("wrong input - a number must be inserted please try again ");
-                scanner.nextLine();
-            } catch (NoSuchElementException | IllegalStateException | NumberFormatException ie) {
-
-                System.out.println("wrong input - a number must be inserted please try again ");
-                scanner.nextLine();
-            }
-
-        }
-        return choose;
-    }
-
-
-    private double getDoubleFromUser(Scanner scanner) throws ReflectiveOperationException {
-
-
-        double choose = -1;
-        boolean scannerCon = true;
-        while (scannerCon)
-            try {
-
-                choose = scanner.nextDouble();
-                if (choose == -1) throw new ReflectiveOperationException("by pressing -1 you chose to go back");
-                if (choose < 0) {
-                    System.out.println("you must choose an none-negative number ");
-                }
-                scannerCon = false;
-            } catch (InputMismatchException ie) {
-                System.out.println("wrong input - a number must be inserted please try again ");
-                scanner.nextLine();
-            } catch (NoSuchElementException | IllegalStateException | NumberFormatException e) {
-                System.out.println("wrong input - a number must be inserted please try again ");
-                scanner.nextLine();
-            }
-        return choose;
-    }
-
-    private String getStringFromUser(Scanner scanner) throws ReflectiveOperationException {
-
-        boolean con = true;
-        String output = "";
-        while (con) {
-            try {
-                output = scanner.next();
-                if (output.equals("-1")) throw new ReflectiveOperationException("by pressing -1 you chose to go back");
-                con = false;
-            } catch (NoSuchElementException | IllegalStateException e) {
-                System.out.println("wrong input please try again");
-                scanner.nextLine();
-            }
-        }
-        return output;
-
-    }
 
 
 
@@ -1532,7 +1574,7 @@ private FacadeTruckingReport rePlan(Scanner scanner) throws ReflectiveOperationE
             default:
                 return null;
         }
-    }
+    }*/
 
 
 

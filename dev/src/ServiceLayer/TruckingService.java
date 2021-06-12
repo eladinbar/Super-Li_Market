@@ -63,7 +63,7 @@ public class TruckingService {
      * @return List of pairs, item and its amount, only item that couldn't been delivered.
      * if all items has been settled to a delivery, returns empty list
      */
-    public ResponseT<  LinkedList<Pair<Integer, Integer>> > addOrder(Order order)  {
+    public ResponseT<  LinkedList<Pair<Integer, Integer>> > addOrder(Order order) throws SQLException {
 
         int supplier  = getSupplierFromOrder(order);
         LinkedList<Pair<Integer,Integer>> left = orderToItemsList(order);
@@ -238,6 +238,28 @@ public class TruckingService {
     public ResponseT< LinkedList<FacadeDeliveryForm>> getDeliveryFormsByTruckReport(int report_id) {
         return new ResponseT<>(deliveryService.getTruckReportDeliveryForms(report_id));
     }
+    public int getItemWeight(int itemID) {
+        return deliveryService.getItemTotalWeight(itemID, 1);
+    }
+
+    public LinkedList<FacadeDemand> sortDemandsBySite(LinkedList<FacadeDemand> demands) {
+        for (int i = demands.size() - 1; i >= 0; i--) {
+            FacadeDemand min = demands.get(i);
+            int index = i;
+            for (int j = i; j >= 0; j--) {
+                if (demands.get(j).getSupplier() < min.getSupplier()) {
+                    min = demands.get(j);
+                    index = j;
+                }
+            }
+            FacadeDemand temp = demands.get(i);
+            demands.set(i, min);
+            demands.set(index, temp);
+        }
+        return demands;
+    }
+
+    // <<<<<<<<<<<<<<<<<<<<<<<<<<<<<< private methods >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
     /**
      * this method tries to insert as much as possible items to the received trucking Reports
@@ -442,6 +464,10 @@ public class TruckingService {
         return max - curr;
     }
 
+    private void addNotification(String content) {
+        deliveryService.addNotification(content);
+    }
+
 
 
     private int getOrderTotalWeight(Order order) {
@@ -471,21 +497,20 @@ public class TruckingService {
         throw new UnsupportedOperationException();
     }
 
-    private void addNotification(String content) {
-        deliveryService.addNotification(content);
-    }
 
     public String getItemName(int itemID) {
+        throw new UnsupportedOperationException();
     }
 
     public int getSupplierName(int supplier) {
+        throw new UnsupportedOperationException();
     }
 
-    public int getItemWeight(int itemID) {
-    }
 
-    public int getSiteDeliveryArea(int supplier) {
-    }
+
+
+
+
 
 
 
@@ -641,22 +666,7 @@ public class TruckingService {
         return resourcesService.getTrucks();
     }
 
-    public LinkedList<FacadeDemand> sortDemandsBySite(LinkedList<FacadeDemand> demands) {
-        for (int i = demands.size() - 1; i >= 0; i--) {
-            FacadeDemand min = demands.get(i);
-            int index = i;
-            for (int j = i; j >= 0; j--) {
-                if (demands.get(j).getSite() < min.getSite()) {
-                    min = demands.get(j);
-                    index = j;
-                }
-            }
-            FacadeDemand temp = demands.get(i);
-            demands.set(i, min);
-            demands.set(index, temp);
-        }
-        return demands;
-    }
+
 
 
 
