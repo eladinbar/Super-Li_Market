@@ -3,8 +3,13 @@ package BusinessLayer.TruckingPackage.DeliveryPackage;
 import DataAccessLayer.DalObjects.TruckingObjects.DalDeliveryForm;
 import InfrastructurePackage.Pair;
 
+import java.awt.image.ImageProducer;
 import java.sql.SQLException;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Map;
+
+import static java.lang.System.exit;
 
 public class DeliveryForm {
     private int ID;
@@ -60,6 +65,7 @@ public class DeliveryForm {
 
     }
 
+
     public HashMap<Integer, Integer> getItems() {
         return items;
     }
@@ -105,9 +111,16 @@ public class DeliveryForm {
         this.items = items;
     }
 
-    public void setLeavingWeight(int leavingWeight) throws SQLException {
+    public void setLeavingWeight(int leavingWeight)  {
         // todo DB update
-        this.leavingWeight = leavingWeight;
+        try{
+            this.leavingWeight = leavingWeight;
+        }
+        catch (Exception e){
+            System.out.println(Arrays.toString(e.getStackTrace()));
+            exit(1);
+        }
+
     }
 
 
@@ -122,6 +135,9 @@ public class DeliveryForm {
         DalDeliveryFormController.getInstance().update(new DalDeliveryForm(ID, origin, destination, completed,leavingWeight,trID));
 */
     }
+
+
+
 
     public void setIDWithoutSave(int lastDeliveryForms) {
         this.ID = lastDeliveryForms;

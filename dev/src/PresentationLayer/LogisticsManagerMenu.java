@@ -1,8 +1,10 @@
-/*
 package PresentationLayer;
 
+import BusinessLayer.TruckingPackage.DeliveryPackage.DeliveryForm;
 import BusinessLayer.TruckingPackage.ResourcesPackage.Driver;
 import ServiceLayer.FacadeObjects.*;
+import ServiceLayer.Response.ResponseT;
+import ServiceLayer.TruckingService;
 
 import javax.management.openmbean.KeyAlreadyExistsException;
 import java.sql.SQLException;
@@ -12,11 +14,11 @@ import java.util.*;
 import java.util.Scanner;
 
 public class LogisticsManagerMenu {
-    TruckingPresentationController pc;
+    TruckingService ts;
     private static LogisticsManagerMenu instance = null;
 
     private LogisticsManagerMenu() {
-        pc = TruckingPresentationController.getInstance();
+        ts = TruckingService.getInstance();
     }
 
     public static LogisticsManagerMenu getInstance() {
@@ -36,26 +38,22 @@ public class LogisticsManagerMenu {
         while (keepGoing) {
             System.out.println("\n\nWelcome to Trucking Menu!\nplease choose the option you'd like:");
             int spot = 1;
-            System.out.println(spot + ".\tAdd/Edit Trucking Reports");
-            spot++;
+
             System.out.println(spot + ".\tCurrent Status");
             spot++;
             System.out.println(spot + ".\tManager Options - Drivers and Trucks");
             spot++;
 
-            System.out.println(spot + ".\tGo back To PresentationLayer.Employee_PresnetationLayer$.Main Menu");
+            System.out.println(spot + ".\tLog Out");
             int choose = getIntFromUserMain(scanner);
             switch (choose) {
                 case 1:
-                    while (truckingReportMenu(scanner)) ;
-                    break;
-                case 2:
                     while (currentStatusMenu(scanner)) ;
                     break;
-                case 3:
+                case 2:
                     while (managerDriverAndTrucks(scanner)) ;
                     break;
-                case 4:
+                case 3:
                     keepGoing = false;
                     break;
 
@@ -68,7 +66,7 @@ public class LogisticsManagerMenu {
         }
 
     }
-
+    // TODO need to check
     private boolean managerDriverAndTrucks(Scanner scanner) {
         int spot = 1;
         System.out.println(spot + "\tAdd new Truck to the System");
@@ -159,9 +157,11 @@ public class LogisticsManagerMenu {
         return true;
 
     }
-
+    // TODO need to check
     private boolean currentStatusMenu(Scanner scanner) {
         int spot = 1;
+        System.out.println(spot + ".\tShow Notifications");
+        spot++;
         System.out.println(spot + ".\tShow Drivers");
         spot++;
         System.out.println(spot + ".\tShow Trucks");
@@ -170,28 +170,31 @@ public class LogisticsManagerMenu {
         spot++; //4
         System.out.println(spot + ".\tShow Active Trucking Reports"); // 4
         spot++;
-        System.out.println(spot + ".\tShow Completed Active Reports");
+        System.out.println(spot + ".\tShow Old Active Reports");
         spot++;
-        System.out.println(spot + ".\tGo back To PresentationLayer.Employee_PresnetationLayer$.Main Menu");
+        System.out.println(spot + ".\tGo back Logistics Menu");
 
         int chose = getIntFromUserMain(scanner);
         switch (chose) {
             case 1:
-                printDrivers();
+                printNotifications();
                 break;
             case 2:
-                printTrucks();
+                printDrivers();
                 break;
             case 3:
-                printDemands();
+                printTrucks();
                 break;
             case 4:
-                showActiveTruckingReports();
+                printDemands();
                 break;
             case 5:
-                showOldDeliveryForm();
+                showActiveTruckingReports();
                 break;
             case 6:
+                showOldTruckingReports();
+                break;
+            case 7:
                 return false;
             default:
                 System.out.println("option is out of bounds, please try again");
@@ -201,7 +204,7 @@ public class LogisticsManagerMenu {
         return true;
     }
 
-
+    // TODO need to check
     private boolean truckingReportMenu(Scanner scanner) {
         int spot = 1;
         System.out.println(spot + ".\tCreate new Trucking Report");
@@ -252,7 +255,7 @@ public class LogisticsManagerMenu {
 //<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<Print Methods >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
     private void printTrucks() {
-        LinkedList<FacadeTruck> trucks = pc.getTrucks();
+        LinkedList<FacadeTruck> trucks = ts.getTrucks().getValue();
         if (trucks == null || trucks.isEmpty())
             System.out.println("no Trucks in the system yet");
         else {
@@ -267,7 +270,7 @@ public class LogisticsManagerMenu {
     private void printDemands() {
         try {
 
-            LinkedList<FacadeDemand> demands = pc.getAllDemands();
+            LinkedList<FacadeDemand> demands = ts.getDemands().getValue();
             demands = sortDemandsBySite(demands);
 
             printDemands(demands);
@@ -279,7 +282,7 @@ public class LogisticsManagerMenu {
 
 
     private void printDrivers() {
-        LinkedList<FacadeDriver> drivers = pc.getDrivers();
+        LinkedList<FacadeDriver> drivers = ts.getDrivers().getValue();
         if (drivers == null || drivers.isEmpty()) System.out.println("no Drivers in the system yet");
         else {
             for (FacadeDriver facadeDriver : drivers) {
@@ -289,6 +292,85 @@ public class LogisticsManagerMenu {
         }
     }
 
+
+    private void showActiveTruckingReports() {
+        LinkedList<FacadeTruckingReport> truckingReports = ts.getActiveTruckingReports().getValue();
+        truckingReports.addAll(ts.getWaitingTruckingReports().getValue());
+
+        if (truckingReports.isEmpty())
+            System.out.println("No active Trucking Reports");
+        else {
+            int spot = 1;
+            for (FacadeTruckingReport tr : truckingReports) {
+
+                System.out.print(spot + ")");
+                printTruckReport(tr);
+                spot++;
+            }
+        }
+    }
+
+
+
+    private void showOldTruckingReports() {
+        LinkedList<FacadeTruckingReport> truckingReports = ts.getOldTruckingReports().getValue();
+
+        if (truckingReports.isEmpty())
+            System.out.println("No active Trucking Reports");
+        else {
+            int spot = 1;
+            for (FacadeTruckingReport tr : truckingReports) {
+
+                System.out.print(spot + ")");
+                printTruckReport(tr);
+                spot++;
+            }
+        }
+    }
+
+
+    private void printTruckReport(FacadeTruckingReport tr){
+        int spot = 1;
+        String rep = "didn't approved";
+        if (tr.isApproved()) {
+            String com = "not Completed";
+            if (tr.isCompleted())
+                com = "Completed";
+            rep = "approved "+ com;
+        }
+        System.out.println("\tTrucking report ID: " + tr.getID() + "\nOrigin site:"  + "\tDate:" + tr.getDate() +
+                "\tLeaving Hour:" + tr.getLeavingHour() + "status: " + rep );
+
+        System.out.println("related delivery form:");
+        LinkedList<FacadeDeliveryForm> dfs = ts.getDeliveryFormsByTruckReport(tr.getID()).getValue();
+        spot =1;
+        for (FacadeDeliveryForm deliveryForm: dfs){
+            System.out.print(spot+")");
+            printDeliveryForm(deliveryForm);
+            spot++;
+        }
+
+
+    }
+
+    private void printDeliveryForm(FacadeDeliveryForm deliveryForm) {
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// TODO need to check all down>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
     private void printDateOptions(LocalDate date, HashMap<Integer, LinkedList<String>> shiftAndDrivers, int spot) {
         for (Map.Entry<Integer, LinkedList<String>> entry : shiftAndDrivers.entrySet()) {
@@ -340,25 +422,7 @@ public class LogisticsManagerMenu {
 
     }
 
-    private void showActiveTruckingReports() {
-        LinkedList<FacadeTruckingReport> truckingReports = pc.getActiveTruckingReports();
-        if (truckingReports.isEmpty())
-            System.out.println("No active Trucking Reports");
-        else {
-            int spot = 1;
-            for (FacadeTruckingReport tr : truckingReports) {
-                String rep = "--";
-                if (tr.getTRReplace() != null) {
-                    rep = "" + tr.getTRReplace().getID();
-                }
-                System.out.println(spot + ")\tTrucking report ID: " + tr.getID() + "\nOrigin site:" + tr.getOrigin() + "\tDate:" + tr.getDate() +
-                        "\tLeaving Hour:" + tr.getLeavingHour() + "\nreplaced:" + rep);
-                System.out.println("related delivery form");
 
-                spot++;
-            }
-        }
-    }
 
     private void checkAvailableTrucksAndDrivers(LocalDate date, LocalTime shift) throws ReflectiveOperationException {
         if (pc.getAvailableTrucks(date, shift).isEmpty())
@@ -771,10 +835,10 @@ public class LogisticsManagerMenu {
         System.out.println("the current demands:");
         int spot = 1;
         for (FacadeDemand fd : demands) {
-            String itemName = pc.getItemName(fd.getItemID());
+            String itemName = ts.getItemName(fd.getItemID());
             System.out.println(spot + ")\t" + itemName + ":\titem id: " + fd.getItemID() + "\n" + "\tamount needed:" + fd.getAmount() +
-                    "\t\tto: " + pc.getSiteName(fd.getSite()) + "\t\tdelivery area: " + pc.getSiteDeliveryArea(fd.getSite()) + "\t site ID:" + fd.getSite()
-                    + "\t\titem weight: " + pc.getWeight(fd.getItemID()));
+                    "\t\tsupplier: " + ts.getSupplierName(fd.getSupplier()) + "\t\tdelivery area: " + ts.getSiteDeliveryArea(fd.getSupplier())
+                    + "\t\titem weight: " + ts.getItemWeight(fd.getItemID()));
             spot++;
         }
     }
@@ -792,8 +856,7 @@ public class LogisticsManagerMenu {
             System.out.println(e.getMessage());
         }
 
-       */
-/* LinkedList<FacadeTruck> trucks =  pc.getAvailableTrucks();
+ LinkedList<FacadeTruck> trucks =  pc.getAvailableTrucks();
         int weight=pc.getWeightOfCurrReport();
         System.out.println("please notice the truck weight is: "+weight);
         System.out.println("available trucks:");
@@ -846,7 +909,7 @@ public class LogisticsManagerMenu {
                 rePlan(scanner);
             }
         }
-*//*
+
 
 
     }
@@ -867,7 +930,7 @@ public class LogisticsManagerMenu {
         int spot = 1;
         for (FacadeTruckingReport ftr : truckingReports) {
             System.out.print(spot + ")" + "origin site:" + ftr.getOrigin() + "\ndestinations:\n");
-            LinkedList<Integer> destinations = ftr.getDestinations();
+            LinkedList<Integer> destinations = ftr.getSuppliers();
             spot++;
             for (Integer des : destinations) {
                 System.out.println("\t" + pc.getSiteName(des));
@@ -1117,14 +1180,13 @@ public class LogisticsManagerMenu {
         }
     }
 
-    */
-/**
+*
      * ask the user for int input, if not int, asks again with a message
      * this method, does not receive -1 as special case
      *
      * @param scanner Scanner from java utils
      * @return the user's int
-     *//*
+
 
     private int getIntFromUserMain(Scanner scanner) {
 
@@ -1149,14 +1211,13 @@ public class LogisticsManagerMenu {
 
     }
 
-    */
-/**
+*
      * ask the user for int input, if not int, asks again with a message
      *
      * @param scanner
      * @return
      * @throws ReflectiveOperationException if -1 received
-     *//*
+
 
     private int getIntFromUser(Scanner scanner) throws ReflectiveOperationException {
         int choose = -1;
@@ -1232,8 +1293,7 @@ public class LogisticsManagerMenu {
 
 // old methods that may be used in the next projects
 
-    */
-/*private void removeSite(Scanner scanner) throws ReflectiveOperationException {
+private void removeSite(Scanner scanner) throws ReflectiveOperationException {
         boolean con = true;
         while (con) {
             LinkedList<FacadeSite> sites = pc.showCurrentSites();
@@ -1267,11 +1327,9 @@ public class LogisticsManagerMenu {
             }
 
         }
-    }*//*
+    }
 
 
-    */
-/*
 
     private void chooseLeavingHour(Scanner scanner) throws ReflectiveOperationException {
 
@@ -1289,12 +1347,10 @@ public class LogisticsManagerMenu {
 
         pc.chooseLeavingHour(time);
     }
-*//*
 
 
 
-*/
-/*
+
     private void makeDriverAvailable(Scanner scanner) throws ReflectiveOperationException {
         LinkedList<FacadeDriver> drivers = pc.getDrivers();
         if (drivers == null) System.out.println("no drivers in the system yet");
@@ -1317,11 +1373,10 @@ public class LogisticsManagerMenu {
             String driver = drivers.get(chose - 1).getID();
             pc.makeAvailable_Driver(driver);
         }
-    }*//*
+    }
 
 
-  */
-/*  private void makeTruckAvailable(Scanner scanner) throws ReflectiveOperationException {
+  private void makeTruckAvailable(Scanner scanner) throws ReflectiveOperationException {
         LinkedList<FacadeTruck> trucks = pc.getTrucks();
         if (trucks == null) System.out.println("no trucks in the system yet");
         else {
@@ -1368,10 +1423,8 @@ public class LogisticsManagerMenu {
                 System.out.println(e.getMessage());
             }
         }
-    }*//*
+    }
 
-*/
-/*
     private void makeTruckUnavailable(Scanner scanner) throws ReflectiveOperationException {
         LinkedList<FacadeTruck> trucks = pc.getAvailableTrucks();
         if (trucks == null) System.out.println("no available trucks");
@@ -1392,11 +1445,10 @@ public class LogisticsManagerMenu {
             String truck = trucks.get(chose - 1).getLicenseNumber();
             pc.makeUnavailable_Truck(truck);
         }
-    }*//*
+    }
 
 
-    */
-/*private FacadeTruckingReport rePlan(Scanner scanner) throws ReflectiveOperationException {
+private FacadeTruckingReport rePlan(Scanner scanner) throws ReflectiveOperationException {
 
         System.out.println("Welcome to replan menu! please choose the option you'd like to re plan the report with:");
         int spot = 1;
@@ -1459,9 +1511,8 @@ public class LogisticsManagerMenu {
             default:
                 return null;
         }
-    }*//*
+    }
 
 
 
 }
-*/

@@ -38,6 +38,7 @@ public class Demand {
 
     public void setAmount(int amount) throws SQLException {
         this.amount = amount;
+        // TODO - if amount ==0 -> delete from DB
         DalDemandController.getInstance().update(new DalDemand(itemID,amount, supplier));
 
     }

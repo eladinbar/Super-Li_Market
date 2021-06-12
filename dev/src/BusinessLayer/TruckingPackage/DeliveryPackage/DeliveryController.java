@@ -1,19 +1,14 @@
 package BusinessLayer.TruckingPackage.DeliveryPackage;
 
-
-import BusinessLayer.InventoryPackage.InventoryController;
-import BusinessLayer.InventoryPackage.Item;
 import BusinessLayer.Notification;
-import BusinessLayer.SuppliersPackage.OrderPackage.Order;
 import BusinessLayer.TruckingNotifications;
-import BusinessLayer.TruckingPackage.ResourcesPackage.Truck;
 import InfrastructurePackage.Pair;
-import ServiceLayer.InventoryService;
 
 import javax.naming.TimeLimitExceededException;
-import java.lang.invoke.LambdaConversionException;
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.*;
 
 public class DeliveryController {
@@ -28,7 +23,6 @@ public class DeliveryController {
 
     private int lastReportID;
     private int lastDeliveryForms;
-    private TruckingReport currTR;
     private static DeliveryController instance = null;
     private LinkedList<Notification> notifications;
 
@@ -44,36 +38,35 @@ public class DeliveryController {
         this.oldTruckingReports = new HashMap<>();
         this.oldDeliveryForms = new HashMap<>();
         this.notifications =  new LinkedList<>();
-        //this.sites = new HashMap<>();
-/*
-        this.deliveryForms=new HashMap<>();
-*/
-        // when data base is added, need to be set by it;
-        //this.items = new HashMap<>();
         this.waitingTruckingReports =  new HashMap<>();
         this.lastDeliveryForms = 1;
         this.lastReportID = 0;
 
-        this.currTR = new TruckingReport(lastReportID);
         lastReportID++;
         this.activeDeliveryForms = new HashMap<>();
     }
 
-    // TODO - need to check weight insert
 
 
-    // TODO - when go to old DFs and Trs, need to take form DB and not from here
 
-    public LinkedList<Pair<Integer, Integer>> createTruckReport(LinkedList<Pair<Integer, Integer>> items, String driverId, String truckId, int maxWeight, int supplier, LocalDate date)  {
+    public LinkedList<Pair<Integer, Integer>> createTruckReport(LinkedList<Pair<Integer, Integer>> items, String driverId, String truckId, int maxWeight, int supplier, LocalDate date, int shift) throws SQLException {
         TruckingReport tr= new TruckingReport(lastReportID);
         lastReportID++;
-        //TODO - need to save in DB report and DFs
+        //TODO - need to save in DB report
         tr.addSupplier(supplier);
         tr.setDate(date);
         tr.setTruckNumber(truckId);
         tr.setDriverID(truckId);
+        tr.setLeavingHour(shiftToTime(shift));
         items = insertItemsToTruckReport(items, supplier,maxWeight,tr.getID());
         return items;
+    }
+
+    private LocalTime shiftToTime(int shift) {
+        if (shift ==1)
+            return LocalTime.of(6,0);
+        else
+            return LocalTime.of(14, 0);
     }
 
     /**
@@ -125,9 +118,10 @@ public class DeliveryController {
      * @return current notifications since last time
      */
     public LinkedList<Notification> getNotifications() {
-        // TODO need to delete from pool
+        LinkedList<Notification> output = notifications;
+        notifications = new LinkedList<>();
         // TODO need to delete from DB
-        return notifications;
+        return output;
     }
 
     public LinkedList<String> getBusyTrucksByDate(LocalDate date) {
@@ -198,9 +192,11 @@ public class DeliveryController {
     public LinkedList<Pair<Integer, Integer>> insertItemsToTruckReport(LinkedList<Pair<Integer, Integer>> items, int supplier, int capacity, int report_id) {
         int currentWeight = getTruckReportCurrentWeight(report_id);
         int area =  getSupplierArea(supplier);
+        LocalDate report_date = getTruckReport(report_id).getDate();
         LinkedList<Pair<Integer,Integer>> left =  new LinkedList<>();
         // check the report can add more items
         if ( currentWeight< capacity) {
+
             addSupplierToReport(supplier,report_id);
             int leftWeight = capacity - currentWeight;
             // adds items to the report
@@ -213,6 +209,7 @@ public class DeliveryController {
                         // if returns null - does not have this supplier yet, need to create new DF
                         if (toInsert != null){
                             toInsert.addItem(item.getFirst(), amount);
+                            updateLeavingWeight(toInsert);
                             //TODO - need to update dateBase
                         }
                         else{
@@ -244,7 +241,16 @@ public class DeliveryController {
         return left;
     }
 
-    private int getItemTotalWeight(Integer itemID, int amount) {
+    private void updateLeavingWeight(DeliveryForm deliveryForm) {
+        int total =0;
+        HashMap<Integer, Integer> items = deliveryForm.getItems();
+        for (Map.Entry<Integer, Integer> entry : items.entrySet()){
+            total += getItemTotalWeight(entry.getKey(),entry.getValue());
+        }
+        deliveryForm.setLeavingWeight(total);
+    }
+
+    public int getItemTotalWeight(Integer itemID, int amount) {
         int itemWeight = getItemWeight(itemID);
         int totalWeight = itemWeight * amount;
         return totalWeight;
@@ -319,11 +325,11 @@ public class DeliveryController {
 
 
     public TruckingReport getTruckReport(int trNumber) throws NoSuchElementException {
-        if (currTR.getID() == trNumber)
-            return currTR;
-        if (oldTruckingReports.containsKey(trNumber)) {
-            return oldTruckingReports.get(trNumber);
-        } else if (activeTruckingReports.containsKey(trNumber)) {
+        LinkedList<TruckingReport> olds = getOldTruckingReports();
+        for (TruckingReport tr: olds){
+            if (tr.getID() == trNumber)
+                return tr;
+        }if (activeTruckingReports.containsKey(trNumber)) {
             return activeTruckingReports.get(trNumber);
         }
         else if (waitingTruckingReports.containsKey(trNumber)){
@@ -355,10 +361,12 @@ public class DeliveryController {
         if (!report.isApproved()) {
 
             waitingTruckingReports.remove(trID);
-            //TODO - need to remove delivery Forms
-
-
+            LinkedList<DeliveryForm> dfs = activeDeliveryForms.get(trID);
             //TODO - need to delete from DB as well as deliveryForms
+
+            activeDeliveryForms.remove(trID);
+
+
         }
     }
 
@@ -370,6 +378,9 @@ public class DeliveryController {
     public void setDemandNewAmount(Integer id, Integer amount, int supplier) throws SQLException {
         for (Demand demand : demands){
             if ((demand.getSupplier() == supplier ) && (demand.getItemID() == id)){
+                if (amount == 0){
+                    demands.remove(demand);
+                }
                 demand.setAmount(amount);
             }
         }
@@ -400,7 +411,7 @@ public class DeliveryController {
 
     }
 
-    private void addNotification(String s) {
+    public void addNotification(String s) {
         notifications.add(new TruckingNotifications(s));
     }
 
@@ -427,6 +438,17 @@ public class DeliveryController {
 
     private int getItemWeight(Integer item_id) {
         throw new UnsupportedOperationException();
+    }
+
+    public LinkedList<DeliveryForm> getTruckReportDeliveryForms(int report_id) {
+        LinkedList<DeliveryForm> dfs =  new LinkedList<>();
+        if (activeDeliveryForms.containsKey(report_id))
+            dfs = activeDeliveryForms.get(report_id);
+        else{
+            dfs = oldDeliveryForms.get(report_id);
+
+        }
+        return dfs;
     }
 
 
