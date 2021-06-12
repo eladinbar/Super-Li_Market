@@ -1,6 +1,6 @@
 package DataAccessLayer.DalObjects.TruckingObjects;
 
-public class DalDeliveryForm implements DalObject$ {
+public class DalDeliveryForm  {
     private int ID;
     private int origin;
     private int destination;

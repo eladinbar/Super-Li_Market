@@ -1,6 +1,6 @@
 package DataAccessLayer.DalObjects.TruckingObjects;
 
-public class DalItemsOnDF implements DalObject$ {
+public class DalItemsOnDF  {
     int DFID;
     int itemID;
     int amount;

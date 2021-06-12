@@ -5,10 +5,10 @@ import DataAccessLayer.DalControllers.DalController;
 import java.sql.SQLException;
 import java.util.List;
 
-public abstract class DalObject$<T extends DalObject$<T>> {
+public abstract class DalObject<T extends DalObject<T>> {
     protected DalController<T> controller;
 
-    public DalObject$() {
+    public DalObject() {
 
     }
 
@@ -16,7 +16,7 @@ public abstract class DalObject$<T extends DalObject$<T>> {
     /// A protected constructor that initializes the given controller.
     /// </summary>
     /// <param name="controller">The respective controller of the DalObject.</param>
-    protected DalObject$(DalController<T> controller)
+    protected DalObject(DalController<T> controller)
     {
         this.controller = controller;
     }
