@@ -13,7 +13,7 @@ public class Agreement {
     private Map<Integer, DalAgreementItems> dalObjects;
 
     public Agreement() {
-        this.ql = null;
+        this.ql =  null;
         products = new HashMap<>();
         prices = new HashMap<>();
         dalObjects = new HashMap<>();
