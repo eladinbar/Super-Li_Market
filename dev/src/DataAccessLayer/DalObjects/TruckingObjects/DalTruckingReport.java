@@ -28,13 +28,6 @@ public class DalTruckingReport  {
         return ID;
     }
 
-    public int getOrigin() {
-        return origin;
-    }
-
-    public int getReplaceTRID() {
-        return replaceTRID;
-    }
 
     public LocalDate getDate() {
         return date;

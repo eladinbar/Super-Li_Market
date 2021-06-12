@@ -78,8 +78,8 @@ public class DalTruckingReportController extends Employee_Trucking_DALController
 
         Connection conn=DriverManager.getConnection(connection);
         String query="UPDATE "+tableName +" SET "+columnNames[1]+"=?,"+
-                columnNames[2]+"=?,"+columnNames[3]+"=?,"+columnNames[4]+"=?,"+columnNames[5]+"=?,"+columnNames[6]+"=?,"+
-                columnNames[7]+"=?  WHERE ("+columnNames[0]+"=?)";
+                columnNames[2]+"=?,"+columnNames[3]+"=?,"+columnNames[4]+"=?,"+columnNames[5]+"=?,"+columnNames[6]+"=?"
+                +"WHERE ("+columnNames[0]+"=?)";
         try{
             PreparedStatement st=conn.prepareStatement(query);
             st.setString(1,new Date(truckingReport.getDate().getYear(),truckingReport.getDate().getMonth().getValue()
@@ -152,16 +152,14 @@ public class DalTruckingReportController extends Employee_Trucking_DALController
         Connection conn = DriverManager.getConnection(connection);
         String query = "CREATE TABLE IF NOT EXISTS TruckingReports("
                 +"ID INTEGER,"
-                +"leavingHour TEXT,"
                 +"date TEXT,"
+                +"leavingHour TEXT,"
                 +"truckNumber TEXT,"
                 +"driverID TEXT,"
-                +"origin INTEGER,"
                 +"completed INTEGER,"
-                +"replaceTRID INTEGER,"
+                +"approved INTEGER,"
                 +"FOREIGN KEY (driverID) REFERENCES Drivers(ID) ON DELETE NO ACTION ON UPDATE CASCADE,"
                 +"FOREIGN KEY (truckNumber) REFERENCES Trucks(licenseNumber) ON DELETE NO ACTION ON UPDATE CASCADE,"
-                +"FOREIGN KEY (origin) REFERENCES Sites (siteID) ON DELETE NO ACTION ON UPDATE CASCADE,"
                 +"PRIMARY KEY (ID));";
         try {
             PreparedStatement st=conn.prepareStatement(query);

@@ -343,7 +343,7 @@ public class DeliveryController {
         if (report.getDate().isBefore(LocalDate.now()))
             throw new TimeLimitExceededException();
         if (!report.isApproved()) {
-            report.setApproved(true);
+            report.setApproved();
 
 
             waitingTruckingReports.remove(trID);
