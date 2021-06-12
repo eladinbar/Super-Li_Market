@@ -169,7 +169,7 @@ public class TruckingService {
     public void managerApproveTruckReport(Integer trID) throws TimeLimitExceededException {
         deliveryService.managerApproveTruckReport(trID);
     }
-    public void managerCancelTruckReport(Integer trID){
+    public void managerCancelTruckReport(Integer trID) throws TimeLimitExceededException {
         deliveryService.managerCancelTruckReport(trID);
     }
     // TODO - employees should call this function
