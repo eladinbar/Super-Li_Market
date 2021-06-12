@@ -8,17 +8,15 @@ import java.util.HashMap;
 
 public class DeliveryForm {
     private int ID;
-    private int origin;
     private int destination;
     private HashMap<Integer, Integer> items;
     private int leavingWeight;
     private int trID;
     private boolean completed;
 
-    public DeliveryForm(int ID, int origin, int destination, HashMap<Integer, Integer> items,
-                        int leavingWeight, int trID) throws SQLException {
+    public DeliveryForm(int ID,  int destination, HashMap<Integer, Integer> items,
+                        int leavingWeight, int trID)  {
         this.ID = ID;
-        this.origin = origin;
         this.destination = destination;
         this.items = items;
         this.leavingWeight = leavingWeight;
@@ -31,7 +29,6 @@ public class DeliveryForm {
 
         this.ID = df.getID();
         this.completed = df.isCompleted();
-        this.origin = df.getOrigin();
         this.destination = df.getDestination();
         this.items = df.getItems();
         this.leavingWeight = df.getLeavingWeight();
@@ -43,7 +40,6 @@ public class DeliveryForm {
     public DeliveryForm(DalDeliveryForm deliveryForm) {
         this.ID = deliveryForm.getID();
         this.completed = deliveryForm.isCompleted();
-        this.origin = deliveryForm.getOrigin();
         this.destination = deliveryForm.getDestination();
         this.leavingWeight = deliveryForm.getLeavingWeight();
         this.trID = deliveryForm.getTRID();
@@ -53,7 +49,12 @@ public class DeliveryForm {
     public void addItem(int itemID, int amount) {
         if (items == null)
             items = new HashMap<>();
+        if (items.containsKey(itemID)){
+            int prevAmount  = items.get(itemID);
+            amount  = amount  + prevAmount;
+        }
         items.put(itemID, amount);
+
     }
 
     public HashMap<Integer, Integer> getItems() {
@@ -72,9 +73,6 @@ public class DeliveryForm {
         return leavingWeight;
     }
 
-    public int getOrigin() {
-        return origin;
-    }
 
     public int getTrID() {
         return trID;
@@ -106,9 +104,7 @@ public class DeliveryForm {
         this.leavingWeight = leavingWeight;
     }
 
-    public void setOrigin(int origin) throws SQLException {
-        this.origin = origin;
-    }
+
 
     public void setTrID(int trID) throws SQLException {
         this.trID = trID;

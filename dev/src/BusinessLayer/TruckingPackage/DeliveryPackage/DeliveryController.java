@@ -1,16 +1,19 @@
 package BusinessLayer.TruckingPackage.DeliveryPackage;
 
 
+import BusinessLayer.InventoryPackage.InventoryController;
+import BusinessLayer.InventoryPackage.Item;
 import BusinessLayer.Notification;
 import BusinessLayer.SuppliersPackage.OrderPackage.Order;
-import DataAccessLayer.DalControllers.TruckingControllers.*;
-import DataAccessLayer.DalObjects.TruckingObjects.*;
+import BusinessLayer.TruckingNotifications;
+import BusinessLayer.TruckingPackage.ResourcesPackage.Truck;
 import InfrastructurePackage.Pair;
+import ServiceLayer.InventoryService;
 
-import javax.management.openmbean.KeyAlreadyExistsException;
+import javax.naming.TimeLimitExceededException;
+import java.lang.invoke.LambdaConversionException;
 import java.sql.SQLException;
 import java.time.LocalDate;
-import java.time.LocalTime;
 import java.util.*;
 
 public class DeliveryController {
@@ -22,15 +25,10 @@ public class DeliveryController {
     private HashMap<Integer, TruckingReport> oldTruckingReports;//<trID,TR>
     private HashMap<Integer, LinkedList<DeliveryForm>> activeDeliveryForms;
     private HashMap<Integer, LinkedList<DeliveryForm>> oldDeliveryForms;
-   // private HashMap<Integer, Site> sites;//<siteID,TR>
 
-    //private HashMap<Integer, Item> items;
-    private int lastSiteID;
     private int lastReportID;
     private int lastDeliveryForms;
-    private LinkedList<DeliveryForm> currDF;
     private TruckingReport currTR;
-    private int lastItemId;
     private static DeliveryController instance = null;
     private LinkedList<Notification> notifications;
 
@@ -55,25 +53,353 @@ public class DeliveryController {
         this.waitingTruckingReports =  new HashMap<>();
         this.lastDeliveryForms = 1;
         this.lastReportID = 0;
-        this.lastSiteID = 1;
-        this.currDF = new LinkedList<>();
+
         this.currTR = new TruckingReport(lastReportID);
         lastReportID++;
         this.activeDeliveryForms = new HashMap<>();
-        this.lastItemId = 1;
     }
 
-    // TODO
-    public LinkedList<Pair<Integer, Integer>> addDemand(Order order){
-        throw new UnsupportedOperationException();
+
+    // TODO - when go to old DFs and Trs, need to take form DB and not from here
+
+    public LinkedList<Pair<Integer, Integer>> createTruckReport(LinkedList<Pair<Integer, Integer>> items, String driverId, String truckId, int maxWeight, int supplier, LocalDate date)  {
+        TruckingReport tr= new TruckingReport(lastReportID);
+        lastReportID++;
+        //TODO - need to save in DB report and the DeliveryController
+        tr.addSupplier(supplier);
+        tr.setDate(date);
+        tr.setTruckNumber(truckId);
+        tr.setDriverID(truckId);
+        items = insertItemsToTruckReport(items, supplier,maxWeight,tr.getID());
+        return items;
     }
-    // TODO
+
+    /**
+     * adds demands to pool, if already has demand for this item and supplier, adds its to the existing demands
+     * @param items Pair< itemId, amount > to insert to pool
+     * @param supplier supplier for this demand
+     * @throws SQLException
+     */
+    public void addDemand(LinkedList<Pair<Integer,Integer>> items, int supplier) throws SQLException {
+        for (Pair<Integer,Integer> item : items) {
+            for (Demand demand : demands) {
+                if (demand.getItemID() == item.getFirst() && demand.getSupplier() == supplier) {
+                    demand.setAmount(demand.getAmount() + item.getSecond());
+                    break;
+                }
+                Demand d = new Demand(item.getFirst(),supplier,item.getSecond());
+                demands.add(d);
+            }
+        }
+    }
+
     public LinkedList<TruckingReport> getActiveTruckingReports(){
-        throw new UnsupportedOperationException();
+        LinkedList<TruckingReport> tr =  new LinkedList<>();
+        for (Map.Entry<Integer,TruckingReport> entry : activeTruckingReports.entrySet()){
+            tr.add(entry.getValue());
+        }
+        return tr;
     }
 
+    public LinkedList<TruckingReport> getWaitingTruckingReports(){
+        LinkedList<TruckingReport> tr =  new LinkedList<>();
+        for (Map.Entry<Integer,TruckingReport> entry : waitingTruckingReports.entrySet()){
+            tr.add(entry.getValue());
+        }
+        return tr;
+    }
+
+    public LinkedList<TruckingReport> getOldTruckingReports(){
+        LinkedList<TruckingReport> tr =  new LinkedList<>();
+        for (Map.Entry<Integer,TruckingReport> entry : oldTruckingReports.entrySet()){
+            tr.add(entry.getValue());
+        }
+        return tr;
+    }
+
+    /**
+     * show all the current notifications, deletes them after showed
+     * @return current notifications since last time
+     */
     public LinkedList<Notification> getNotifications() {
         return notifications;
+    }
+
+    public int getTruckReportCurrentWeight(int report_id) {
+        LinkedList<DeliveryForm> dfs  = null;
+        if (activeDeliveryForms.containsKey(report_id)){
+            dfs = activeDeliveryForms.get(report_id);
+        }
+        else
+            dfs = getOldDeliveryForms(report_id);
+        if (dfs ==  null){
+            throw new NoSuchElementException("couldn't find Delivery Forms for TruckReport number: " + report_id);
+        }
+        int total = 0;
+        for (DeliveryForm df : dfs){
+            total += df.getLeavingWeight();
+        }
+
+        return total;
+    }
+
+    /**
+     * return all truckReports in a specific date
+     * @param date - the date the tr is settled to
+     * @return LinkedList of TruckReports, empty if couldn't find any
+     */
+    public LinkedList<TruckingReport> getTruckingReportsByDate(LocalDate date) {
+        LinkedList<TruckingReport> output = new LinkedList<>();
+
+        if (date.isBefore(LocalDate.now())){
+            LinkedList<TruckingReport> olds = getOldTruckingReports();
+            for (TruckingReport truckingReport : olds){
+                if (truckingReport.getDate().isEqual(date)){
+                    output.add(truckingReport);
+                }
+            }
+        }
+        else{
+            for (Map.Entry<Integer, TruckingReport> entry : activeTruckingReports.entrySet()){
+                if (entry.getValue().getDate().isEqual(date)){
+                    output.add( entry.getValue());
+                }
+            }
+            for (Map.Entry<Integer, TruckingReport> entry : waitingTruckingReports.entrySet()){
+                if (entry.getValue().getDate().isEqual(date)){
+                    output.add( entry.getValue());
+                }
+            }
+        }
+        return  output;
+    }
+
+    public LinkedList<Pair<Integer, Integer>> insertItemsToTruckReport(LinkedList<Pair<Integer, Integer>> items, int supplier, int capacity, int report_id) {
+        int currentWeight = getTruckReportCurrentWeight(report_id);
+        int area =  getSupplierArea(supplier);
+        LinkedList<Pair<Integer,Integer>> left =  new LinkedList<>();
+        // check the report can add more items
+        if ( currentWeight< capacity) {
+            addSupplierToReport(supplier,report_id);
+            int leftWeight = capacity - currentWeight;
+            // adds items to the report
+            for (Pair<Integer,Integer> item: items){
+                if (item.getSecond() != 0) {
+                    int amount = findAmountToAdd(item, leftWeight);
+                    if (amount > 0) {
+                        // finds the deliveryForm to insert to
+                        DeliveryForm toInsert = getDeliveryFormBySupplier(report_id ,supplier );
+                        // if returns null - does not have this supplier yet, need to create new DF
+                        if (toInsert != null){
+                            toInsert.addItem(item.getFirst(), amount);
+                            //TODO - need to update dateBase
+                        }
+                        else{
+                            HashMap<Integer, Integer> dfItems= new HashMap<>();
+                            dfItems.put(item.getFirst(), amount);
+
+                            DeliveryForm df = new DeliveryForm(lastDeliveryForms, supplier,dfItems,getItemTotalWeight(item.getFirst(), amount) , report_id );
+                            activeDeliveryForms.get(report_id).add(df);
+                            lastDeliveryForms++;
+                            // TODO - need to save dfs and lastDeliveryForm in database
+
+                        }
+                        item.setSecond(item.getSecond() - amount);
+                        currentWeight = currentWeight + getItemTotalWeight(item.getFirst(), amount);
+                        //stops if finished to insert
+                        if (currentWeight >= capacity)
+                            break;
+                    }
+                }
+            }
+            // returns only the items left to insert
+            for (Pair<Integer,Integer> item: items) {
+                if (item.getSecond()!= 0){
+                    left.add(item);
+                }
+            }
+
+        }
+        return left;
+    }
+
+    private int getItemTotalWeight(Integer itemID, int amount) {
+        int itemWeight = getItemWeight(itemID);
+        int totalWeight = itemWeight * amount;
+        return totalWeight;
+    }
+
+
+
+    /**
+     *
+     * @param report_id the truckReport id to find the deliveryForm in
+     * @param supplier the supplier id.
+     * @return the delivery form, returns null if couldn't find
+     */
+    private DeliveryForm getDeliveryFormBySupplier(int report_id, int supplier) {
+        TruckingReport report = getTruckReport(report_id);
+        LinkedList<Integer> suppliers = report.getSuppliers();
+        DeliveryForm output = null;
+        if (suppliers.contains(supplier)){
+            LinkedList<DeliveryForm> dfs =  null;
+            if (activeDeliveryForms.containsKey(report_id)){
+                dfs = activeDeliveryForms.get(report_id);
+            }
+            else
+                dfs = oldDeliveryForms.get(report_id);
+            for (DeliveryForm df : dfs){
+                if (df.getDestination() == supplier)
+                    output = df;
+            }
+        }
+        return output;
+    }
+
+    /**
+     * finds the maximum amount to add for the specific amount.
+     * works like binary search
+     * @param item - Item id, amount
+     * @param leftWeight - Maximum to add
+     * @return the amount to add, 0 if none
+     */
+    private int findAmountToAdd(Pair<Integer, Integer> item, int leftWeight) {
+       int output = 0;
+       int totalWeight = 0;
+       boolean found = false;
+       int maxAmount = item.getSecond();
+       int minimumAmount =0;
+       int itemWeight = getItemWeight(item.getFirst());
+       while (!found){
+           totalWeight = output * itemWeight;
+           if (totalWeight == leftWeight)
+               found = true;
+           // if adding 1 more exceeds, finished
+           else if (( totalWeight < leftWeight) &&  (totalWeight + itemWeight > leftWeight) )
+               found= true;
+           else{
+               if (totalWeight< leftWeight){
+                   minimumAmount = output + 1;
+               }
+               else{
+                   maxAmount = output - 1;
+               }
+               output = (maxAmount + minimumAmount) /2;
+
+           }
+       }
+       return output;
+    }
+
+    public LinkedList<Integer> getTruckReportSuppliers(int report_id) {
+        return getTruckReport(report_id).getSuppliers();
+
+    }
+
+
+    public TruckingReport getTruckReport(int trNumber) throws NoSuchElementException {
+        if (currTR.getID() == trNumber)
+            return currTR;
+        if (oldTruckingReports.containsKey(trNumber)) {
+            return oldTruckingReports.get(trNumber);
+        } else if (activeTruckingReports.containsKey(trNumber)) {
+            return activeTruckingReports.get(trNumber);
+        }
+        else if (waitingTruckingReports.containsKey(trNumber)){
+            return waitingTruckingReports.get(trNumber);
+        }
+        else throw new NoSuchElementException("No Report with that ID");
+
+    }
+
+    public void managerApproveTruckReport(Integer trID) throws TimeLimitExceededException {
+        TruckingReport report = getTruckReport(trID);
+        if (report.getDate().isBefore(LocalDate.now()))
+            throw new TimeLimitExceededException();
+        if (!report.isApproved()) {
+            report.setApproved(true);
+
+            waitingTruckingReports.remove(trID);
+            activeTruckingReports.put(trID, report);
+        }
+    }
+
+    public void managerCancelTruckReport(int trID) throws TimeLimitExceededException {
+        TruckingReport report = getTruckReport(trID);
+        if (report.getDate().isBefore(LocalDate.now()))
+            throw new TimeLimitExceededException();
+        if (!report.isApproved()) {
+
+            waitingTruckingReports.remove(trID);
+            //TODO - need to delete from DB
+        }
+    }
+
+
+    public LinkedList<Demand> getDemands() {
+        return demands;
+    }
+
+    public void setDemandNewAmount(Integer id, Integer amount, int supplier) throws SQLException {
+        for (Demand demand : demands){
+            if ((demand.getSupplier() == supplier ) && (demand.getItemID() == id)){
+                demand.setAmount(amount);
+            }
+        }
+    }
+
+    public DeliveryForm getDeliveryForm(int id) {
+        DeliveryForm deliveryForm = null;
+        for (Map.Entry<Integer,LinkedList< DeliveryForm>> entry : activeDeliveryForms.entrySet()){
+            if (entry.getValue().contains(id)){
+                deliveryForm = entry.getValue().get(id);
+            }
+        }
+        return  deliveryForm;
+    }
+
+
+
+
+
+    private void addSupplierToReport(int supplier,  int report_id) {
+        int supplier_area =  getSupplierArea(supplier);
+        LinkedList<Integer> report_areas = getReportAreas(report_id);
+        if (!report_areas.contains(supplier_area)){
+            addNotification("Truck Report Number: " + report_id + "\n\thas been extended to another delivery area." +
+                    "\n\tthe new Delivery area: " + supplier_area);
+        }
+        getTruckReport(report_id).addSupplier(supplier);
+
+    }
+
+    private void addNotification(String s) {
+        notifications.add(new TruckingNotifications(s));
+    }
+
+
+    private LinkedList<Integer> getReportAreas(int report_id) {
+        LinkedList<Integer> areas = new LinkedList<>();
+        LinkedList<Integer> suppliers = getTruckReport(report_id).getSuppliers();
+        for (Integer supplier: suppliers){
+            if (!areas.contains(getSupplierArea(supplier))){
+                areas.add(getSupplierArea(supplier));
+            }
+        }
+        return areas;
+    }
+    // TODO - need to get from DB
+    private LinkedList<DeliveryForm> getOldDeliveryForms(int report_id) {
+        return oldDeliveryForms.get(report_id);
+    }
+
+    private int getSupplierArea(int supplier) {
+        throw new UnsupportedOperationException();
+        // TODO - need to implement when possible
+    }
+
+    private int getItemWeight(Integer item_id) {
+        throw new UnsupportedOperationException();
     }
 
 
@@ -294,16 +620,7 @@ public class DeliveryController {
 //    }
 //
 //
-//    public TruckingReport getTruckReport(int trNumber) throws NoSuchElementException {
-//        if (currTR.getID() == trNumber)
-//            return currTR;
-//        if (oldTruckingReports.containsKey(trNumber)) {
-//            return oldTruckingReports.get(trNumber);
-//        } else if (activeTruckingReports.containsKey(trNumber)) {
-//            return activeTruckingReports.get(trNumber);
-//        } else throw new NoSuchElementException("No Report with that ID");
-//
-//    }
+
 //
 //    /**
 //     * @param dfNumber

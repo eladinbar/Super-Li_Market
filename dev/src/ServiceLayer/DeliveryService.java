@@ -10,6 +10,8 @@ import ServiceLayer.FacadeObjects.FacadeTruckingReport;
 import BusinessLayer.TruckingPackage.DeliveryPackage.*;
 
 import javax.management.openmbean.KeyAlreadyExistsException;
+import javax.naming.TimeLimitExceededException;
+import javax.xml.transform.TransformerConfigurationException;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -18,9 +20,11 @@ import java.util.LinkedList;
 import java.util.Map;
 import java.util.NoSuchElementException;
 
+import static java.lang.System.exit;
+
 public class DeliveryService {
     private DeliveryController dc;
-    private static DeliveryService instace = null;
+    private static DeliveryService instance = null;
 
 
     private DeliveryService() {
@@ -29,63 +33,112 @@ public class DeliveryService {
     }
 
     public static DeliveryService getInstance() {
-        if (instace == null)
-            instace = new DeliveryService();
-        return instace;
+        if (instance == null)
+            instance = new DeliveryService();
+        return instance;
     }
 
     public LinkedList<Integer> getTruckReportDestinations(int id){
-        throw new UnsupportedOperationException();
+        return dc.getTruckReportSuppliers(id);
     }
     public LinkedList<Integer>  getTruckReportDeliveryAreas(int id){
-        throw new UnsupportedOperationException();
+        return getTruckReportDeliveryAreas(id);
     }
 
-    public LinkedList<Pair<Integer, Integer>> addItemsToReport(LinkedList<Pair<Integer, Integer>> items, Map<FacadeTruckingReport , Integer> reportsWeight ){
-        throw new UnsupportedOperationException();
-    }
+
 
     public LinkedList<Notification> getNotifications() {
         return dc.getNotifications();
     }
 
     public LinkedList<FacadeDemand> getDemands() {
-        return null;
+        return turnListDemandToFacade( dc.getDemands() );
     }
 
     public LinkedList<FacadeTruckingReport> getActiveTruckingReports() {
-        return  null;
+        return turnListTruckingReportsToFacade(dc.getActiveTruckingReports());
     }
 
     public LinkedList<FacadeTruckingReport>  getWaitingTruckingReports() {
-        return  null;
+        return turnListTruckingReportsToFacade(dc.getWaitingTruckingReports());
+
 
     }
 
     public LinkedList<FacadeTruckingReport> getOldTruckingReports() {
-        return  null;
+        return turnListTruckingReportsToFacade(dc.getOldTruckingReports());
+
     }
 
-    public void managerApproveTruckReport(Integer trID) {
+    public void managerApproveTruckReport(Integer trID) throws TimeLimitExceededException {
+        dc.managerApproveTruckReport(trID);
     }
 
-    public void managerCancelTruckReport(Integer trID) {
+    public void managerCancelTruckReport(Integer trID) throws TimeLimitExceededException {
+        dc.managerCancelTruckReport(trID);
     }
 
-    public void setItemNewAmount(Integer first, Integer second, int supplier) {
+    public void setItemNewAmount(Integer id, Integer amount, int supplier) {
+        try {
+            dc.setDemandNewAmount(id, amount, supplier);
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+            exit(1);
+        }
+
     }
 
     public FacadeTruckingReport getTruckReport(int id) {
+        return new FacadeTruckingReport(dc.getTruckReport(id) );
     }
 
     public FacadeDeliveryForm getDeliveryForm(int id) {
+        return new FacadeDeliveryForm(dc.getDeliveryForm(id));
     }
 
     public int getTruckReportCurrentWeight(int id) {
+        return dc.getTruckReportCurrentWeight(id);
     }
-    // if already has it, does nothin
-    public void addSupplierToReport(int supplier, int tr_id) {
+
+
+    public LinkedList<Pair<Integer, Integer>> insertItemsToTruckReport(LinkedList<Pair<Integer, Integer>> left, int supplier, int capacity, int id) {
+
+      return dc.insertItemsToTruckReport(left, supplier, capacity,id);
     }
+
+    public LinkedList<Pair<Integer, Integer>> createReport(LinkedList<Pair<Integer, Integer>> items, String driverId, String truckId, int maxWeight, int supplier, LocalDate date) {
+        return dc.createTruckReport(items, driverId, truckId, maxWeight, supplier,date);
+    }
+
+    public void addDemandToPool(LinkedList<Pair<Integer, Integer>> items, int supplier) throws SQLException {
+        dc.addDemand(items, supplier);
+    }
+
+    public LinkedList<FacadeTruckingReport> getTruckReportsByDate(LocalDate date) {
+        return turnListTruckingReportsToFacade(dc.getTruckingReportsByDate(date));
+    }
+
+    private LinkedList<FacadeTruckingReport> turnListTruckingReportsToFacade(LinkedList<TruckingReport> reports)
+    {
+        LinkedList<FacadeTruckingReport> ftrs = new LinkedList<>();
+        for(TruckingReport tr: reports){
+            ftrs.add(new FacadeTruckingReport(tr));
+        }
+
+        return ftrs;
+    }
+    private LinkedList<FacadeDemand> turnListDemandToFacade(LinkedList<Demand> demands)
+    {
+        LinkedList<FacadeDemand> dems = new LinkedList<>();
+        for(Demand demand: demands){
+            dems.add(new FacadeDemand(demand));
+        }
+
+        return dems;
+    }
+
+
+
 
 
 
