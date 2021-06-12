@@ -9,21 +9,19 @@ public class DalTruckingReport  {
     private LocalDate date;
     private String truckNumber;
     private String driverID;
-    private int origin;
     private boolean completed;
-    private int replaceTRID;
+    private boolean approved;
 
     public DalTruckingReport(int ID,LocalTime leavingHour,LocalDate date,String truckNumber,String driverID
-            ,int origin,boolean completed,int replaceTRID)
+            ,boolean completed,boolean approved)
     {
         this.ID=ID;
         this.leavingHour=leavingHour;
         this.date=date;
         this.truckNumber=truckNumber;
         this.driverID=driverID;
-        this.origin=origin;
         this.completed=completed;
-        this.replaceTRID=replaceTRID;
+        this.approved=approved;
     }
 
     public int getID() {
@@ -56,5 +54,9 @@ public class DalTruckingReport  {
 
     public Boolean isCompleted() {
         return completed;
+    }
+
+    public boolean isApproved() {
+        return approved;
     }
 }

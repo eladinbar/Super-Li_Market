@@ -27,7 +27,8 @@ public class TruckingReport {
         this.truckNumber=truckNumber;
         this.driverID=driverID;
         this.suppliers = suppliers;
-        approved = false;
+        this.approved = false;
+        this.completed=false;
     }
     public TruckingReport(int ID){
         this.ID=ID;
@@ -43,7 +44,7 @@ public class TruckingReport {
         this.truckNumber=dtr.getTruckNumber();
         this.completed=dtr.isCompleted();
         this.driverID=dtr.getDriverID();
-        this.approved = dtr.getApproved();
+        this.approved = dtr.isApproved();
     }
 
     public TruckingReport(int lastReportID, TruckingReport oldTr) {
@@ -90,8 +91,8 @@ public class TruckingReport {
         return approved;
     }
 
-    public void setApproved(boolean approved) {
-        this.approved = approved;
+    public void setApproved() {
+        this.approved = true;
     }
 
     public void setID(int ID) throws SQLException {
