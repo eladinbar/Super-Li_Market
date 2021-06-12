@@ -14,6 +14,7 @@ import javax.naming.TimeLimitExceededException;
 import java.lang.invoke.LambdaConversionException;
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.*;
 
 public class DeliveryController {
@@ -130,17 +131,20 @@ public class DeliveryController {
         return notifications;
     }
 
-    public LinkedList<String> getBusyTrucksByDate(LocalDate date) {
-        LinkedList<String> result=new LinkedList<>();
+    public Pair<LinkedList<String>,LinkedList<String>> getBusyTrucksByDate(LocalDate date) {
+        Pair<LinkedList<String>,LinkedList<String>> result=new Pair<>(new LinkedList<>(),new LinkedList<>());
+        //first is trucks on morning shift , second is evening
         for (Map.Entry<Integer,TruckingReport> entry:waitingTruckingReports.entrySet())
         {
-         if (!result.contains(entry.getValue().getTruckNumber()))
-             result.add(entry.getValue().getTruckNumber());
+            if (entry.getValue().getLeavingHour().equals(LocalTime.NOON))
+                result.getSecond().add(entry.getValue().getTruckNumber());
+            else result.getFirst().add(entry.getValue().getTruckNumber());
         }
         for (Map.Entry<Integer,TruckingReport> entry:activeTruckingReports.entrySet())
         {
-            if (!result.contains(entry.getValue().getTruckNumber()))
-                result.add(entry.getValue().getTruckNumber());
+            if (entry.getValue().getLeavingHour().equals(LocalTime.NOON))
+                result.getSecond().add(entry.getValue().getTruckNumber());
+            else result.getFirst().add(entry.getValue().getTruckNumber());
         }
         return result;
 

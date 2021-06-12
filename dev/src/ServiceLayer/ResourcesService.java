@@ -35,9 +35,9 @@ public class ResourcesService {
         return rc.getDaysAndDrivers();
     }
 
-    public Pair<FacadeDriver, FacadeTruck> findDriverAndTruckForDateFromExisting(LocalDate date,LinkedList<String> busyTrucks){
-        Pair<Driver,Truck> p= rc.findDriverAndTruckForDateFromExisting(date,busyTrucks);
-        Pair<FacadeDriver, FacadeTruck> result= new Pair<>(new FacadeDriver(p.getFirst()),new FacadeTruck(p.getSecond()));
+    public Pair<Pair<FacadeDriver, FacadeTruck>,Integer> findDriverAndTruckForDateFromExisting(LocalDate date,Pair<LinkedList<String>,LinkedList<String>> busyTrucks){
+        Pair<Pair<Driver,Truck>,Integer> p= rc.findDriverAndTruckForDateFromExisting(date,busyTrucks);
+        Pair<Pair<FacadeDriver, FacadeTruck>,Integer> result= new Pair<>(new Pair<>(new FacadeDriver(p.getFirst().getFirst()),new FacadeTruck(p.getFirst().getSecond())),p.getSecond());
         return result;
     }
 
@@ -53,7 +53,7 @@ public class ResourcesService {
      */
 
 
-    public Pair<FacadeDriver, FacadeTruck> findDriverAndTruckForDateFromPool(LocalDate date,LinkedList<String> busyTrucks){
+    public Pair<FacadeDriver, FacadeTruck> findDriverAndTruckForDateFromPool(LocalDate date,Pair<LinkedList<String>,LinkedList<String>> busyTrucks){
         Pair<Driver, Truck> p=rc.findDriverAndTruckForDateFromPool(date,busyTrucks);
         Pair<FacadeDriver, FacadeTruck> result= new Pair<>(new FacadeDriver(p.getFirst()),new FacadeTruck(p.getSecond()));
         return result;
@@ -62,6 +62,22 @@ public class ResourcesService {
 
     public void addTruck(String model, String licenseNumber, int weightNeto, int maxWeight) throws KeyAlreadyExistsException, SQLException {
         rc.addTruck(model, licenseNumber, weightNeto, maxWeight);
+    }
+
+    public LinkedList<FacadeDriver> getDrivers() {
+        LinkedList<FacadeDriver> drivers=new LinkedList<>();
+        for (Driver d:rc.getDrivers())
+        {
+            drivers.add(new FacadeDriver(d));
+        }
+        return drivers;
+    }
+
+    public LinkedList<FacadeTruck> getTrucks(){
+        LinkedList<FacadeTruck> trucks=new LinkedList<>();
+        for (Truck t:rc.getTrucks())
+            trucks.add(new FacadeTruck(t));
+        return trucks;
     }
 /*
     public Truck chooseTruck(String truck,LocalDate date, int shift) throws NoSuchElementException, IllegalStateException {

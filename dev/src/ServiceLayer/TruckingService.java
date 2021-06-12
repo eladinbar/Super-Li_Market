@@ -138,13 +138,11 @@ public class TruckingService {
     }
 
     public ResponseT<  LinkedList<FacadeDriver> >getDrivers(){
-        // TODO implement
-        throw new UnsupportedOperationException();
+        return new ResponseT(resourcesService.getDrivers());
     }
 
     public ResponseT< LinkedList<FacadeTruck> > getTrucks(){
-        // TODO implement
-        throw new UnsupportedOperationException();
+        return new ResponseT<>(resourcesService.getTrucks());
     }
 
     public ResponseT<  LinkedList<FacadeDemand> > getDemands(){
@@ -416,7 +414,7 @@ public class TruckingService {
         return thisWeekReports;
     }
 
-    private LinkedList<String> getBusyTrucksByDate(LocalDate date)
+    private Pair<LinkedList<String>,LinkedList<String>> getBusyTrucksByDate(LocalDate date)
     {
         return deliveryService.getBusyTrucksByDate(date);
     }

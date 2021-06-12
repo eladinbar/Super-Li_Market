@@ -131,9 +131,8 @@ public class DeliveryService {
         return dems;
     }
 
-    public LinkedList<String> getBusyTrucksByDate(LocalDate date) {
-        LinkedList<String> trucks= dc.getBusyTrucksByDate(date);
-        return trucks;
+    public Pair<LinkedList<String>,LinkedList<String>> getBusyTrucksByDate(LocalDate date) {
+        return dc.getBusyTrucksByDate(date);
 
     }
 
