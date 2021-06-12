@@ -137,6 +137,12 @@ public class DeliveryService {
         return dems;
     }
 
+    public LinkedList<String> getBusyTrucksByDate(LocalDate date) {
+        LinkedList<String> trucks= dc.getBusyTrucksByDate(date);
+        return trucks;
+
+    }
+
 
 
 

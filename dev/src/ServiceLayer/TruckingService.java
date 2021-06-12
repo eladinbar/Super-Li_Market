@@ -362,11 +362,11 @@ public class TruckingService {
 
 
     private Pair<FacadeDriver, FacadeTruck> getDriverAndTruckFromExisting (LocalDate date){
-        return resourcesService.findDriverAndTruckForDateFromExisting(date);
+        return resourcesService.findDriverAndTruckForDateFromExisting(date,getBusyTrucksByDate(date));
     }
 
     private Pair<FacadeDriver, FacadeTruck> getDriverAndTruckFromPool (LocalDate date){
-        return resourcesService.findDriverAndTruckForDateFromPool(date);
+        return resourcesService.findDriverAndTruckForDateFromPool(date,getBusyTrucksByDate(date));
     }
 
     /**
@@ -401,6 +401,11 @@ public class TruckingService {
             }
         }
         return thisWeekReports;
+    }
+
+    private LinkedList<String> getBusyTrucksByDate(LocalDate date)
+    {
+        return deliveryService.getBusyTrucksByDate(date);
     }
 
     private int getReportLeftWeight(FacadeTruckingReport report) {

@@ -125,6 +125,22 @@ public class DeliveryController {
         return notifications;
     }
 
+    public LinkedList<String> getBusyTrucksByDate(LocalDate date) {
+        LinkedList<String> result=new LinkedList<>();
+        for (Map.Entry<Integer,TruckingReport> entry:waitingTruckingReports.entrySet())
+        {
+         if (!result.contains(entry.getValue().getTruckNumber()))
+             result.add(entry.getValue().getTruckNumber());
+        }
+        for (Map.Entry<Integer,TruckingReport> entry:activeTruckingReports.entrySet())
+        {
+            if (!result.contains(entry.getValue().getTruckNumber()))
+                result.add(entry.getValue().getTruckNumber());
+        }
+        return result;
+
+    }
+
     public int getTruckReportCurrentWeight(int report_id) {
         LinkedList<DeliveryForm> dfs  = null;
         if (activeDeliveryForms.containsKey(report_id)){
