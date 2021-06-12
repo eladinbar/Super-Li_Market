@@ -35,6 +35,7 @@ public class SupplierCardDalController extends DalController<DalSupplierCard> {
                     DalSupplierCard.selfDeliveryColumnName+ " INTEGER NOT NULL,"+
                     DalSupplierCard.paymentColumnName+" TEXT NOT NULL,"+
                     DalSupplierCard.addressColumnName + " TEXT NOT NULL,"+
+                    DalSupplierCard.deliveryAreaColumnName + " INTEGER NOT NULL,"+
                     "PRIMARY KEY ("+ DalSupplierCard.supplierIdColumnName+"),"+
                     "FOREIGN KEY (" + DalSupplierCard.supplierIdColumnName + ")" + "REFERENCES " + DalPersonCard.idColumnName + " (" + PersonCardDalController.PERSON_CARD_TABLE_NAME +") ON DELETE CASCADE "+
                     ");";
@@ -50,7 +51,7 @@ public class SupplierCardDalController extends DalController<DalSupplierCard> {
     @Override
     public boolean insert(DalSupplierCard supplierCard) throws SQLException {
         try (Connection conn = DriverManager.getConnection(connectionString)) {
-            String query = "INSERT INTO " + tableName + " VALUES (?,?,?,?,?,?)";
+            String query = "INSERT INTO " + tableName + " VALUES (?,?,?,?,?,?,?)";
             PreparedStatement stmt = conn.prepareStatement(query);
             stmt.setInt(1, supplierCard.getSupplierId());
             stmt.setInt(2, supplierCard.getCompanyNumber());
@@ -58,6 +59,7 @@ public class SupplierCardDalController extends DalController<DalSupplierCard> {
             stmt.setInt(4, supplierCard.isSelfDelivery());
             stmt.setString(5, supplierCard.getPayment());
             stmt.setString(6, supplierCard.getAddress());
+            stmt.setInt(7, supplierCard.getDeliveryAreaOfSupplier());
 
             stmt.executeUpdate();
         } catch (SQLException ex) {
@@ -87,7 +89,8 @@ public class SupplierCardDalController extends DalController<DalSupplierCard> {
                     DalSupplierCard.isPermanentDaysColumnName +"=?, "+
                     DalSupplierCard.selfDeliveryColumnName +"=?, "+
                     DalSupplierCard.paymentColumnName+"=?, "+
-                    DalSupplierCard.addressColumnName+
+                    DalSupplierCard.addressColumnName+"=?, "+
+                    DalSupplierCard.deliveryAreaColumnName+
                     "=? WHERE(" + DalSupplierCard.supplierIdColumnName + "=?)";
             PreparedStatement stmt = conn.prepareStatement(query);
 
@@ -96,7 +99,8 @@ public class SupplierCardDalController extends DalController<DalSupplierCard> {
             stmt.setInt(3, supplierCard.isSelfDelivery());
             stmt.setString(4, supplierCard.getPayment());
             stmt.setString(5, supplierCard.getAddress());
-            stmt.setInt(6, supplierCard.getSupplierId());
+            stmt.setInt(6, supplierCard.getDeliveryAreaOfSupplier());
+            stmt.setInt(7, supplierCard.getSupplierId());
             stmt.executeUpdate();
         } catch (SQLException ex) {
             throw new SQLException(ex.getMessage());
@@ -120,6 +124,7 @@ public class SupplierCardDalController extends DalController<DalSupplierCard> {
                     supplierCard.setSelfDeliveryLoad(resultSet.getInt(4));
                     supplierCard.setPaymentLoad(resultSet.getString(5));
                     supplierCard.setAddressLoad(resultSet.getString(6));
+                    supplierCard.setDeliveryAreaLoad(resultSet.getInt(7));
                     break;
                 }
             }
@@ -143,6 +148,7 @@ public class SupplierCardDalController extends DalController<DalSupplierCard> {
                 savedSupplier.setSelfDeliveryLoad(resultSet.getInt(4));
                 savedSupplier.setPaymentLoad(resultSet.getString(5));
                 savedSupplier.setAddressLoad(resultSet.getString(6));
+                savedSupplier.setDeliveryAreaLoad(resultSet.getInt(7));
                 suppliers.add(savedSupplier);
             }
         } catch (SQLException ex) {

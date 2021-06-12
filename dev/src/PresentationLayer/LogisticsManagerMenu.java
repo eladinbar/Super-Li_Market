@@ -1,3 +1,4 @@
+/*
 package PresentationLayer;
 
 import BusinessLayer.TruckingPackage.ResourcesPackage.Driver;
@@ -791,7 +792,8 @@ public class LogisticsManagerMenu {
             System.out.println(e.getMessage());
         }
 
-       /* LinkedList<FacadeTruck> trucks =  pc.getAvailableTrucks();
+       */
+/* LinkedList<FacadeTruck> trucks =  pc.getAvailableTrucks();
         int weight=pc.getWeightOfCurrReport();
         System.out.println("please notice the truck weight is: "+weight);
         System.out.println("available trucks:");
@@ -844,7 +846,8 @@ public class LogisticsManagerMenu {
                 rePlan(scanner);
             }
         }
-*/
+*//*
+
 
     }
 
@@ -1114,13 +1117,15 @@ public class LogisticsManagerMenu {
         }
     }
 
-    /**
+    */
+/**
      * ask the user for int input, if not int, asks again with a message
      * this method, does not receive -1 as special case
      *
      * @param scanner Scanner from java utils
      * @return the user's int
-     */
+     *//*
+
     private int getIntFromUserMain(Scanner scanner) {
 
         int choose = -1;
@@ -1144,13 +1149,15 @@ public class LogisticsManagerMenu {
 
     }
 
-    /**
+    */
+/**
      * ask the user for int input, if not int, asks again with a message
      *
      * @param scanner
      * @return
      * @throws ReflectiveOperationException if -1 received
-     */
+     *//*
+
     private int getIntFromUser(Scanner scanner) throws ReflectiveOperationException {
         int choose = -1;
         boolean scannerCon = true;
@@ -1225,7 +1232,8 @@ public class LogisticsManagerMenu {
 
 // old methods that may be used in the next projects
 
-    /*private void removeSite(Scanner scanner) throws ReflectiveOperationException {
+    */
+/*private void removeSite(Scanner scanner) throws ReflectiveOperationException {
         boolean con = true;
         while (con) {
             LinkedList<FacadeSite> sites = pc.showCurrentSites();
@@ -1259,9 +1267,11 @@ public class LogisticsManagerMenu {
             }
 
         }
-    }*/
+    }*//*
 
-    /*
+
+    */
+/*
 
     private void chooseLeavingHour(Scanner scanner) throws ReflectiveOperationException {
 
@@ -1279,9 +1289,11 @@ public class LogisticsManagerMenu {
 
         pc.chooseLeavingHour(time);
     }
+*//*
+
+
+
 */
-
-
 /*
     private void makeDriverAvailable(Scanner scanner) throws ReflectiveOperationException {
         LinkedList<FacadeDriver> drivers = pc.getDrivers();
@@ -1305,9 +1317,11 @@ public class LogisticsManagerMenu {
             String driver = drivers.get(chose - 1).getID();
             pc.makeAvailable_Driver(driver);
         }
-    }*/
+    }*//*
 
-  /*  private void makeTruckAvailable(Scanner scanner) throws ReflectiveOperationException {
+
+  */
+/*  private void makeTruckAvailable(Scanner scanner) throws ReflectiveOperationException {
         LinkedList<FacadeTruck> trucks = pc.getTrucks();
         if (trucks == null) System.out.println("no trucks in the system yet");
         else {
@@ -1354,7 +1368,9 @@ public class LogisticsManagerMenu {
                 System.out.println(e.getMessage());
             }
         }
-    }*/
+    }*//*
+
+*/
 /*
     private void makeTruckUnavailable(Scanner scanner) throws ReflectiveOperationException {
         LinkedList<FacadeTruck> trucks = pc.getAvailableTrucks();
@@ -1376,9 +1392,11 @@ public class LogisticsManagerMenu {
             String truck = trucks.get(chose - 1).getLicenseNumber();
             pc.makeUnavailable_Truck(truck);
         }
-    }*/
+    }*//*
 
-    /*private FacadeTruckingReport rePlan(Scanner scanner) throws ReflectiveOperationException {
+
+    */
+/*private FacadeTruckingReport rePlan(Scanner scanner) throws ReflectiveOperationException {
 
         System.out.println("Welcome to replan menu! please choose the option you'd like to re plan the report with:");
         int spot = 1;
@@ -1441,7 +1459,9 @@ public class LogisticsManagerMenu {
             default:
                 return null;
         }
-    }*/
+    }*//*
+
 
 
 }
+*/

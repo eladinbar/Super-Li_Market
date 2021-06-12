@@ -16,8 +16,9 @@ public class SupplierCard extends PersonCard {
     private List<String> contactMembers;
     private DalSupplierCard dalObject;
     private String address;
+    private int deliveryArea;
 
-    public SupplierCard(String firstName, String lastName, String email, String id, String phone, int companyNumber, boolean isPernamentDays, boolean selfDelivery, Payment payment, String address) throws SQLException {
+    public SupplierCard(String firstName, String lastName, String email, String id, String phone, int companyNumber, boolean isPernamentDays, boolean selfDelivery, Payment payment, String address,int deliveryAre) throws SQLException {
         super(firstName, lastName, email, id, phone);
         this.companyNumber = companyNumber;
         this.isPernamentDays = isPernamentDays;
@@ -26,6 +27,7 @@ public class SupplierCard extends PersonCard {
         this.contactMembers = new ArrayList<>();
         this.address=address;
         this.dalObject = toDalObjectSupplierCard();
+        this.deliveryArea = deliveryAre;
         dalObject.save();
     }
 
@@ -41,6 +43,7 @@ public class SupplierCard extends PersonCard {
         this.selfDelivery = supplierCardDal.isSelfDelivery() ==1 ? true : false;
         this.payment = Payment.valueOf(supplierCardDal.getPayment());
         this.address = supplierCardDal.getAddress();
+        this.deliveryArea = supplierCardDal.getDeliveryAreaOfSupplier();
         readContactMembers();
         this.dalObject = supplierCardDal;
     }
@@ -54,6 +57,15 @@ public class SupplierCard extends PersonCard {
             cmStrings.add(""+cm.getPersonId());
         }
         this.contactMembers = cmStrings;
+    }
+
+    public int getDeliveryAreaOfSupplier() {
+        return deliveryArea;
+    }
+
+    public void setDeliveryArea(int deliveryArea) throws SQLException {
+        this.deliveryArea = deliveryArea;
+        dalObject.setDeliveryArea(deliveryArea);
     }
 
     public int getCompanyNumber() {
@@ -118,7 +130,7 @@ public class SupplierCard extends PersonCard {
     }
 
     public DalSupplierCard toDalObjectSupplierCard() throws SQLException {
-        return new DalSupplierCard(Integer.parseInt(id),companyNumber,isPernamentDays,selfDelivery,payment, address);
+        return new DalSupplierCard(Integer.parseInt(id),companyNumber,isPernamentDays,selfDelivery,payment, address,deliveryArea);
     }
 
     public void delete(String id, String memberID) throws SQLException {

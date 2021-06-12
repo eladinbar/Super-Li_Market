@@ -403,7 +403,10 @@ public class PresentationController implements Runnable {
             case "1" -> inventoryMainMenu();
             case "2" -> suppliersMainMenu();
             case "3" -> orderMainMenu();
-            case "q" -> {terminate = true; return;}
+            case "q" -> {
+                terminate = true;
+                return;
+            }
             default -> menu.errorPrompt("invalid choice - " + choice);
         }
     }
@@ -435,7 +438,7 @@ public class PresentationController implements Runnable {
         ResponseT<List<FacadeOrder>> oo = service.createShortageOrder(lclDate);
         if (oo.errorOccurred()) {
             System.out.println(oo.getErrorMessage());
-            if(oo.value == null)
+            if (oo.value == null)
                 return;
         }
         String order = oo.value.stream().map(o -> o.getId() + "").reduce("added orders", (acc, curr) -> acc + ", " + curr);
@@ -448,7 +451,7 @@ public class PresentationController implements Runnable {
             int itemID = menu.instructAndReceive("enter item ID to add to a scheduled order: ", Integer.class);
             int amount = menu.instructAndReceive("enter amount to order: ", Integer.class);
             ResponseT<FacadeOrder> orderR = service.createScheduledOrder(day, itemID, amount);
-            if(orderR.errorOccurred()){
+            if (orderR.errorOccurred()) {
                 menu.errorPrompt(orderR.getErrorMessage());
                 return;
             }
@@ -560,7 +563,14 @@ public class PresentationController implements Runnable {
                 break;
             } else System.out.println("\nwrong input please choose again\n");
         }
-        String print = service.addSupplier(firstName, lName, email, ID, phone, companyNumber, perm, self, pay,adress).toString();
+        int area = 1;
+        while (true) {
+            area = menu.instructAndReceive("Enter delivery area\n1. North\n2. Center\n3. South\nchoose number: ", Integer.class);
+            if (area > 0 || area < 4) {
+                break;
+            } else System.out.println("\nwrong input please choose again\n");
+        }
+        String print = service.addSupplier(firstName, lName, email, ID, phone, companyNumber, perm, self, pay, adress, area).toString();
         System.out.println(print);
         if (!print.split(" ")[0].equals("\nError:")) {
             while (true) {
@@ -572,9 +582,9 @@ public class PresentationController implements Runnable {
                 if (opt == 1) {
                     System.out.println("choose items to agreement: ");
                     int productID = menu.instructAndReceive("Enter product id: ", Integer.class);
-                    int companyProductID=menu.instructAndReceive("enter your company product id: ", Integer.class);
+                    int companyProductID = menu.instructAndReceive("enter your company product id: ", Integer.class);
                     int price = menu.instructAndReceive("enter price: ", Integer.class);
-                    System.out.println(service.addItemToAgreement(ID, productID,companyProductID, price).toString());
+                    System.out.println(service.addItemToAgreement(ID, productID, companyProductID, price).toString());
                 } else if (opt == 2) break;
                 else System.out.println("invalid option try again");
             }
@@ -789,8 +799,8 @@ public class PresentationController implements Runnable {
                 case 1 -> {//add new product
                     productId = menu.instructAndReceive("please enter system product id: ", Integer.class);
                     int price = menu.instructAndReceive("please enter price: ", Integer.class);
-                    int companyProductID=menu.instructAndReceive("enter your company product id: ", Integer.class);
-                    System.out.println((service.addItemToAgreement(supplierId, productId,companyProductID, price).toString()));
+                    int companyProductID = menu.instructAndReceive("enter your company product id: ", Integer.class);
+                    System.out.println((service.addItemToAgreement(supplierId, productId, companyProductID, price).toString()));
                 }
                 case 2 -> {//delete product
                     productId = menu.instructAndReceive("please enter system product id: ", Integer.class);

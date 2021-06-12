@@ -2,6 +2,7 @@ package BusinessLayer.SuppliersPackage.OrderPackage;
 
 import BusinessLayer.SuppliersPackage.SupplierPackage.Supplier;
 import DataAccessLayer.DalObjects.SupplierObjects.DalOrder;
+import ServiceLayer.Response.ResponseT;
 
 import java.sql.SQLException;
 import java.time.LocalDate;
@@ -87,6 +88,11 @@ public class OrderController {
         orders.get(orderId).addProductToOrder(productId, amount, true);
     }
 
+    public void updateProductDeliveredAmount(int orderId, int productId, int amountSupplied) throws Exception {
+        orderExist(orderId);
+        orders.get(orderId).addAmountOfDeliveredProducts(productId, amountSupplied, true);
+    }
+
     public Order createPermOrder(int day, Supplier supplier) throws Exception {
         for (Order o : permanentOrders.get(day)) {
             if (o.getSupplier().getSc().getId().equals(supplier.getSc().getId())) {
@@ -121,5 +127,14 @@ public class OrderController {
             }
         }
         return -1;
+    }
+
+    public List<Integer> makeOrders(int day) {
+        List<Integer> pOrders = new ArrayList<>();
+        for (Order o:permanentOrders.get(day)) {
+            if(!o.getSupplier().getSc().isSelfDelivery())
+                pOrders.add(o.getId());
+        }
+        return pOrders;
     }
 }

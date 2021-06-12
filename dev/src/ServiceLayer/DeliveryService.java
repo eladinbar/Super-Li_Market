@@ -1,3 +1,4 @@
+/*
 package ServiceLayer;
 
 import BusinessLayer.InventoryPackage.Item;
@@ -34,10 +35,12 @@ public class DeliveryService {
 
 
 
-    /*    public void addDemand(int id, int site, int amount) {
+    */
+/*    public void addDemand(int id, int site, int amount) {
         Demand demand =  new Demand(id, site, amount);
         dc.addItemToDeliveryForm(demand,);
-    }*/
+    }*//*
+
 
     public FacadeDemand addDemandToReport(int itemID, int supplyAmount, int siteID) throws IllegalStateException, IllegalArgumentException, SQLException {
         LinkedList<Demand> demands = dc.getDemands();
@@ -119,9 +122,11 @@ public class DeliveryService {
         dc.removeItemFromPool(item);
     }
 
-    /**
+    */
+/**
      * @return a LinkedList of Facade Demands, that holds all the items in the current Trucking Report in build
-     */
+     *//*
+
     public LinkedList<FacadeDemand> getItemsOnTruck() throws SQLException {
         LinkedList<Demand> demands = dc.getItemsOnTruck();
         LinkedList<FacadeDemand> output = new LinkedList<>();
@@ -218,10 +223,12 @@ public class DeliveryService {
         return output;
     }
 
-    /**
+    */
+/**
      * @param site
      * @return returns only demands associated to this site
-     */
+     *//*
+
     public LinkedList<FacadeDemand> getCurrentDemands(FacadeSite site) throws SQLException {
         LinkedList<Demand> demands =  dc.getCurrentDemands();
         LinkedList<FacadeDemand> output =  new LinkedList<>();
@@ -232,9 +239,11 @@ public class DeliveryService {
         return output;
     }
 
-    /**
+    */
+/**
      * @return @list of all items in the trucking system
-     */
+     *//*
+
     public LinkedList<FacadeItem> getAllItems() {
         LinkedList<Item> items = dc.getItems();
 
@@ -383,13 +392,15 @@ public class DeliveryService {
         dc.saveReplacedTruckReport();
     }
 
-    /**
+    */
+/**
      * this method transfers the new chosen demands into an active trucking report
      * in case there is no replace active report, such as no demands left, creates a new one
      *
      * @param tr the Trucking report the active trucking report is replacing
      * @return true if it could find an active trucking report, returns false otherwise.
-     */
+     *//*
+
     public int moveDemandsFromCurrentToReport(FacadeTruckingReport tr) throws SQLException {
         return dc.moveDemandsFromCurrentToReport(tr.getID());
 
@@ -469,3 +480,4 @@ public class DeliveryService {
 }
 
 
+*/

@@ -1,3 +1,4 @@
+/*
 package ServiceLayer;
 
 import BusinessLayer.TruckingPackage.ResourcesPackage.*;
@@ -240,13 +241,16 @@ public class TruckingService {
 
         if (deliveryService.checkIfAllCompleted(trID)) {
             FacadeTruckingReport truckingReport = deliveryService.getTruckReport(trID);
-    /*         resourcesService.makeAvailable_Driver(truckingReport.getDriverID());
-             resourcesService.makeAvailable_Truck(truckingReport.getTruckNumber());*/
+    */
+/*         resourcesService.makeAvailable_Driver(truckingReport.getDriverID());
+             resourcesService.makeAvailable_Truck(truckingReport.getTruckNumber());*//*
+
             deliveryService.archive(trID);
 
         }
     }
 
+*/
 /*
     public void replaceTruck(int trid, String truckNumber, int weight) throws IllegalStateException,IllegalArgumentException,ProviderMismatchException{
         FacadeTruckingReport ftr=getTruckReport(trid);
@@ -286,7 +290,8 @@ public class TruckingService {
         resourcesService.replaceTruck(old_truck,truckNumber);
 
 
-    }*/
+    }*//*
+
 
     public int getSiteDeliveryArea(int site) {
         return deliveryService.getSiteDeliveryArea(site);
@@ -368,8 +373,10 @@ public class TruckingService {
         int replacedId = deliveryService.moveDemandsFromCurrentToReport(tr);
         FacadeTruckingReport replaced = deliveryService.getTruckReport(replacedId);
         // TODO need to check why it is here
-  /*      resourcesService.makeUnavailable_Driver(replaced.getDriverID());
-        resourcesService.makeUnavailable_Truck(replaced.getTruckNumber());*/
+  */
+/*      resourcesService.makeUnavailable_Driver(replaced.getDriverID());
+        resourcesService.makeUnavailable_Truck(replaced.getTruckNumber());*//*
+
 
     }
 
@@ -381,8 +388,10 @@ public class TruckingService {
         if (fd.getLicenseType().getSize() < (weight + ft.getWeightNeto()))
             throw new InputMismatchException("the driver cannot drive with this weight");
         // TODO need to check why its here
-      /*  resourcesService.makeUnavailable_Truck(truckNumber);
-        resourcesService.makeUnavailable_Driver(driverID);*/
+      */
+/*  resourcesService.makeUnavailable_Truck(truckNumber);
+        resourcesService.makeUnavailable_Driver(driverID);*//*
+
 
         deliveryService.setNewTruckToTR(tr.getID(), truckNumber);
         deliveryService.setNewDriverToTR(tr.getID(), driverID);
@@ -469,6 +478,7 @@ public class TruckingService {
 }
 
 
+*/
 /*
     public void makeUnavailable_Driver(String driver)throws NoSuchElementException {
         resourcesService.makeUnavailable_Driver(driver);
@@ -485,5 +495,7 @@ public class TruckingService {
     public void makeAvailable_Truck(String truck) {
         resourcesService.makeAvailable_Truck(truck);
     }
-*/
+*//*
 
+
+*/

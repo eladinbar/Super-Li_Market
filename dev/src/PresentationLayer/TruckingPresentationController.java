@@ -1,3 +1,4 @@
+/*
 package PresentationLayer;
 
 import ServiceLayer.FacadeObjects.*;
@@ -140,13 +141,15 @@ public class TruckingPresentationController {
         return truckingService.getWeightOfCurrReport();
     }
 
-    /**
+    */
+/**
      * this method removes a destination from the in-build Trucking report
      *
      * @param siteID
      * @return @returns true if succeed, throws exception otherwise
      * @throws NoSuchElementException
-     */
+     *//*
+
     public boolean removeDestination(int siteID) throws NoSuchElementException, SQLException { //returns true in succeed
         truckingService.removeDestination(siteID);
         return false;
@@ -246,9 +249,11 @@ public class TruckingPresentationController {
         return truckingService.getDriver(id);
     }
 
-    /*    public LinkedList<FacadeTruck> getAvailableTrucksCurrTr() {
+    */
+/*    public LinkedList<FacadeTruck> getAvailableTrucksCurrTr() {
             return facadeService.getAvailableTrucks();
-        }*/
+        }*//*
+
     public LinkedList<FacadeDriver> getAvailableDrivers(LocalDate date, LocalTime shift) {
         return truckingService.getAvailableDrivers(date, shift);
     }
@@ -296,6 +301,7 @@ public class TruckingPresentationController {
 
     // Not in use for now
 
+*/
 /*
     public boolean addDemandToTruckReport(int itemNumber, int amount,int siteID, int trID)throws IllegalStateException {
         if (itemNumber==0)
@@ -325,6 +331,8 @@ public class TruckingPresentationController {
     }
 
 
-    }*/
+    }*//*
+
 
 }
+*/

@@ -1,3 +1,4 @@
+/*
 package BusinessLayer.TruckingPackage.DeliveryPackage;
 
 
@@ -18,9 +19,11 @@ public class DeliveryController {
     private HashMap<Integer, LinkedList<DeliveryForm>> activeDeliveryForms;
     private HashMap<Integer, LinkedList<DeliveryForm>> oldDeliveryForms;
     private HashMap<Integer, Site> sites;//<siteID,TR>
-    /*
-        private HashMap<Integer,DeliveryForm> deliveryForms;//<dfID,TR>
     */
+/*
+        private HashMap<Integer,DeliveryForm> deliveryForms;//<dfID,TR>
+    *//*
+
     private HashMap<Integer, Item> items;
     private int lastSiteID;
     private int lastReportID;
@@ -42,9 +45,11 @@ public class DeliveryController {
         this.oldTruckingReports = new HashMap<>();
         this.oldDeliveryForms = new HashMap<>();
         this.sites = new HashMap<>();
+*/
 /*
         this.deliveryForms=new HashMap<>();
-*/
+*//*
+
         // when data base is added, need to be set by it;
         this.items = new HashMap<>();
         this.lastDeliveryForms = 1;
@@ -67,12 +72,14 @@ public class DeliveryController {
 
     }
 
-    /**
+    */
+/**
      * update the date in the current TR
      *
      * @param date
      * @throws IllegalArgumentException
-     */
+     *//*
+
     public void updateCurrTR_Date(LocalDate date) throws IllegalArgumentException, SQLException {
         LocalDate now = LocalDate.now();
         if (date.compareTo(now) != -1) {
@@ -83,12 +90,14 @@ public class DeliveryController {
 
     }
 
-    /**
+    */
+/**
      * update the leaving hour in the current TR
      *
      * @param leavingHour
      * @throws IllegalArgumentException
-     */
+     *//*
+
     public void updateCurrTR_LeavingHour(LocalTime leavingHour) throws IllegalArgumentException, SQLException {
         LocalTime now = LocalTime.now();
         if (leavingHour.compareTo(now) != -1) {
@@ -99,30 +108,36 @@ public class DeliveryController {
 
     }
 
-    /**
+    */
+/**
      * update the truck license number in the current TR
      *
      * @param number
-     */
+     *//*
+
     public void updateCurrTR_TruckNumber(String number) throws SQLException {//facade service need to check availability
         currTR.setTruckNumber(number);
     }
 
-    /**
+    */
+/**
      * update the driver ID in the current TR
      *
      * @param id
-     */
+     *//*
+
     public void updateCurrTR_DriverID(String id) throws SQLException {//facade service need to check availability
         currTR.setDriverID(id);
     }
 
-    /**
+    */
+/**
      * update the origin site in the current TR
      *
      * @param origin
      * @throws IllegalArgumentException - in case origin does not exist
-     */
+     *//*
+
     public void updateCurrTR_Origin(int origin) throws IllegalArgumentException {
         try {
             sites.get(origin);
@@ -132,24 +147,28 @@ public class DeliveryController {
         }
     }
 
-    /**
+    */
+/**
      * adding a destination to the current TR
      *
      * @param destination
      * @throws IllegalArgumentException - in case destination does not exist
-     */
+     *//*
+
     public void addCurrTR_Destination(int destination) throws IllegalArgumentException {
         if (sites.containsKey(destination))
             currTR.addDestination(destination);
         else throw new IllegalArgumentException("No such site exist");
     }
 
-    /**
+    */
+/**
      * updates for thr current TR which TR he is replacing
      *
      * @param tr_id
      * @throws NoSuchElementException
-     */
+     *//*
+
     public void updateCurrTR_TrReplaced(int tr_id) throws NoSuchElementException, SQLException {
         if (oldTruckingReports.containsKey(tr_id)) {
             currTR.setTRReplace(tr_id);
@@ -158,7 +177,8 @@ public class DeliveryController {
         } else throw new NoSuchElementException("TR was not found");
     }
 
-    /**
+    */
+/**
      * adding item to delivery form
      *
      * @param demand
@@ -166,7 +186,8 @@ public class DeliveryController {
      * @param ignore - indicating if to ignore the fact we delivering to two different delivery areas.
      * @param siteID
      * @throws IllegalStateException
-     */
+     *//*
+
     public void addItemToDeliveryForm(Demand demand, int amount, boolean ignore, int siteID) throws IllegalStateException, SQLException {
         if (currDF.isEmpty())//if list is empty
         {
@@ -258,9 +279,11 @@ public class DeliveryController {
 
     }
 
-    /**
+    */
+/**
      * Moving a TR that has been done from the active to the non active (old) zone.
-     */
+     *//*
+
     public void saveReport() throws SQLException {
         removeCurrTakenDemandsFromTotal();
         activeTruckingReports.put(currTR.getID(), currTR);
@@ -285,13 +308,15 @@ public class DeliveryController {
 
     }
 
-    /**
+    */
+/**
      * @param dfNumber
      * @param trNumber
      * @return Delivery form a specific TR
      * @throws IllegalStateException
      * @throws NoSuchElementException
-     */
+     *//*
+
     public DeliveryForm getDeliveryForm(int dfNumber, int trNumber) throws IllegalStateException, NoSuchElementException {
         DeliveryForm result = null;
         if (trNumber > currTR.getID()) {
@@ -310,12 +335,14 @@ public class DeliveryController {
 
     }
 
-    /**
+    */
+/**
      * Removes a destination from thr current TR
      *
      * @param site
      * @throws NoSuchElementException
-     */
+     *//*
+
     public void removeDestination(int site) throws NoSuchElementException, SQLException {
         LinkedList<DeliveryForm> toRemove = new LinkedList();
         if (!currTR.getDestinations().contains(site)) {
@@ -357,9 +384,11 @@ public class DeliveryController {
         updateTruckReportDestinations(currTR.getID());
     }
 
-    /**
+    */
+/**
      * @param demand- says what item to remove,in which amount,from which site.
-     */
+     *//*
+
     public void removeItemFromReport(Demand demand) throws SQLException {
 
         for (DeliveryForm df : currDF) {
@@ -430,10 +459,12 @@ public class DeliveryController {
         return demands;
     }
 
-    /**
+    */
+/**
      * @return LinkedList of demands that are not included in the current TR
      * @throws NoSuchElementException
-     */
+     *//*
+
     public LinkedList<Demand> showDemands() throws NoSuchElementException, SQLException {
 
         if (!demands.isEmpty()) {
@@ -478,9 +509,11 @@ public class DeliveryController {
         else throw new NoSuchElementException("No such site exist");
     }
 
-    /**
+    */
+/**
      * @return LinkedList with sites in the system.
-     */
+     *//*
+
     public LinkedList<Site> getCurrentSites() {
         LinkedList<Site> result = new LinkedList<>();
         LinkedList<Integer> sitesID = currTR.getDestinations();
@@ -491,10 +524,12 @@ public class DeliveryController {
         return result;
     }
 
-    /**
+    */
+/**
      * @return LinkedList with items in the Current in-build trucking Report.
      * no special order is returned
-     */
+     *//*
+
     public LinkedList<Demand> getItemsOnTruck() throws SQLException {
         LinkedList<Demand> result = new LinkedList<>();
         for (DeliveryForm df : currDF) {
@@ -526,13 +561,15 @@ public class DeliveryController {
         } else throw new NoSuchElementException("No sites in the system");
     }
 
-    /**
+    */
+/**
      * Adding a demand that we received from one of the sites.
      *
      * @param itemId
      * @param site
      * @param amount
-     */
+     *//*
+
     public void addDemandToSystem(int itemId, int site, int amount) throws SQLException {
         if (!items.containsKey(itemId)) {
             throw new NoSuchElementException("Entered wrong item id");
@@ -564,11 +601,13 @@ public class DeliveryController {
 
     }
 
-    /**
+    */
+/**
      * Calculating the total weight of the current Delivery.
      *
      * @return
-     */
+     *//*
+
     public int getWeightOfCurrReport() {
         int weight = 0;
         for (DeliveryForm df : currDF) {
@@ -887,7 +926,8 @@ public class DeliveryController {
 
     public int moveDemandsFromCurrentToReport(int replaceId) throws SQLException {
 
-        /*TruckingReport replace = getReplaceTruckingReport(replaceId);
+        */
+/*TruckingReport replace = getReplaceTruckingReport(replaceId);
         if (replace != null){
             for(DeliveryForm df: currDF){
                 boolean found = false;
@@ -904,7 +944,8 @@ public class DeliveryController {
             }
             return replace.getID();
         }
-        else*/
+        else*//*
+
 
         currTR.setTRReplace(replaceId);
         int output = currTR.getID();
@@ -914,12 +955,14 @@ public class DeliveryController {
 
     }
 
-    /**
+    */
+/**
      * this method merges 2 delivery forms
      *
      * @param df
      * @param rdf
-     */
+     *//*
+
     private void mergeDeliveryForms(DeliveryForm df, DeliveryForm rdf) throws SQLException {
         if (!(rdf.getOrigin() == df.getOrigin() && rdf.getDestination() == df.getDestination())) {
             throw new InputMismatchException("delivery forms do not has same origin or destination");
@@ -1181,3 +1224,4 @@ public class DeliveryController {
     }
 
 }
+*/
