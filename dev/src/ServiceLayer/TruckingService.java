@@ -3,20 +3,18 @@ package ServiceLayer;
 import BusinessLayer.InventoryPackage.Item;
 import BusinessLayer.Notification;
 import BusinessLayer.SuppliersPackage.OrderPackage.Order;
-import BusinessLayer.TruckingPackage.DeliveryPackage.Demand;
-import BusinessLayer.TruckingPackage.DeliveryPackage.TruckingReport;
-import BusinessLayer.TruckingPackage.ResourcesPackage.*;
+
 import InfrastructurePackage.Pair;
-import PresentationLayer.TruckingPresentationController;
+
 import ServiceLayer.FacadeObjects.*;
 import ServiceLayer.Response.ResponseT;
-import com.sun.jdi.connect.IllegalConnectorArgumentsException;
+
 
 import javax.management.openmbean.KeyAlreadyExistsException;
-import javax.swing.text.ParagraphView;
+
 import java.sql.SQLException;
 import java.time.LocalDate;
-import java.time.LocalTime;
+
 import java.util.*;
 
 public class TruckingService {
@@ -206,7 +204,6 @@ public class TruckingService {
      */
     private int getMaxWeight(FacadeTruckingReport tr){
         throw new UnsupportedOperationException();
-
     }
 
 
@@ -273,11 +270,11 @@ public class TruckingService {
     private int getDeliveryArea(int supplier ){throw new UnsupportedOperationException();}
 
     private Pair<FacadeDriver, FacadeTruck> getDriverAndTruckFromExisting (LocalDate date){
-        return resourcesService.findDriverAndTruckForDateFromExisting(date);
+        return resourcesService.findDriverAndTruckForDateFromExisting(date,getBusyTrucksByDate(date));
     }
 
     private Pair<FacadeDriver, FacadeTruck> getDriverAndTruckFromPool (LocalDate date){
-        return resourcesService.findDriverAndTruckForDateFromPool(date);
+        return resourcesService.findDriverAndTruckForDateFromPool(date,getBusyTrucksByDate(date));
     }
 
     /**
@@ -312,6 +309,11 @@ public class TruckingService {
             }
         }
         return thisWeekReports;
+    }
+
+    private LinkedList<String> getBusyTrucksByDate(LocalDate date)
+    {
+        return deliveryService.getBusyTrucksByDate(date);
     }
 
 

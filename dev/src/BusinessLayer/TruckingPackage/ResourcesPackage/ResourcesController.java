@@ -1,16 +1,13 @@
 package BusinessLayer.TruckingPackage.ResourcesPackage;
 
-import DataAccessLayer.DalObjects.TruckingObjects.DalDriver;
-import DataAccessLayer.DalControllers.TruckingControllers.DalDriverController;
-import DataAccessLayer.DalObjects.TruckingObjects.DalTruck;
-import DataAccessLayer.DalControllers.TruckingControllers.DalTruckController;
 import BusinessLayer.EmployeePackage.EmployeeException;
 import BusinessLayer.EmployeePackage.ShiftPackage.ShiftController;
+import InfrastructurePackage.Pair;
 
 import javax.management.openmbean.KeyAlreadyExistsException;
+import java.sql.ParameterMetaData;
 import java.sql.SQLException;
 import java.time.LocalDate;
-import java.time.LocalTime;
 import java.util.*;
 
 public class ResourcesController {
@@ -103,8 +100,161 @@ public class ResourcesController {
 
     }
 
+    public Pair<Driver, Truck> findDriverAndTruckForDateFromExisting(LocalDate date,LinkedList<String> busyTrucks) {
+        LinkedList<Pair<Driver,Truck>> list=findListDriversAndTrucksFromExisting(date,busyTrucks);
+        if (!list.isEmpty())
+        {
+            return list.getFirst();
+        }
+        else return null;
+    }
+
+    private LinkedList<Pair<Driver,Truck>> findListDriversAndTrucksFromExisting(LocalDate date,LinkedList<String> busyTrucks) {
+        HashMap<LocalDate, HashMap<Integer, LinkedList<String>>> shiftDrivers = getDaysAndDrivers();
+        LinkedList<Truck> freeTrucks = new LinkedList<>();
+        LinkedList<Pair<Driver,Truck>> result=new LinkedList<>();
+        for (Map.Entry<String, Truck> entry : trucks.entrySet()) {
+            if (!busyTrucks.contains(entry.getKey())) {
+                freeTrucks.add(entry.getValue());
+            }
+        }
+
+        if (shiftDrivers.containsKey(date)) {
+            HashMap<Integer, LinkedList<String>> day = shiftDrivers.get(date);//Hash Map with the two shifts
+            LinkedList<String> dayDrivers = day.get(0);
+            for (String s : day.get(1)) {
+                if (!dayDrivers.contains(s)) {
+                    dayDrivers.add(s);//to make sure no duplicates
+                }
+            }
+            dayDrivers = sortByLicense(dayDrivers);
+            Collections.sort(freeTrucks, new Comparator<Truck>() {
+                @Override
+                public int compare(Truck o1, Truck o2) {
+                    return o1.getMaxWeight() - o2.getMaxWeight();
+                }
+            });
+            for (int i = 0; i < Math.min(dayDrivers.size(), freeTrucks.size()); i++) {
+                Driver d = drivers.get(dayDrivers.removeFirst());
+                Truck t = freeTrucks.removeFirst();
+                result.add(new Pair<>(d,t));
+            }
+            return result;
+        }
+        return null;
+
+    }
+
+
+
+    private LinkedList<String> sortByLicense(LinkedList<String> dayDrivers) {
+        LinkedList<String> sorted=new LinkedList<>();
+        for (String s:dayDrivers)
+        {
+            if (drivers.get(s).getLicenseType()== Driver.License.C)
+                sorted.addLast(s);
+            else sorted.addFirst(s);
+        }
+        return sorted;
+    }
+
+    public Pair<Driver, Truck> findDriverAndTruckForDateFromPool(LocalDate date,LinkedList<String> busyTrucks) throws EmployeeException, SQLException {
+        LinkedList<Pair<Driver, Truck>> pairs = findListDriverAndTruckForDateFromPool(date, busyTrucks);
+        for (Pair p : pairs){
+            Driver d=(Driver)p.getFirst();
+            if (ShiftController.getInstance().addDriverToShift(d.getID(),date,0)
+                    ||ShiftController.getInstance().addDriverToShift(d.getID(),date,1))
+            {
+                return p;
+            }
+        }
+        return null;
+
+    }
+
     //TODO - add driver to shift gets DriverId, LocalDate, Shift number and returns true if succeeded,
     //  false otherwise
+
+    private LinkedList<Pair<Driver, Truck>> findListDriverAndTruckForDateFromPool(LocalDate date,LinkedList<String> busyTrucks) {
+        LinkedList<Pair<Driver,Truck>> res=new LinkedList<>();
+        //---------------------------------------
+        HashMap<Integer,LinkedList<String>> day=getDaysAndDrivers().get(date);
+        LinkedList<String> onShiftDrivers=day.get(0);
+        for (String s:day.get(1))
+        {
+            if (!onShiftDrivers.contains(s))
+            {
+                onShiftDrivers.add(s);
+            }
+        }
+        LinkedList<String> sittingAtHome=new LinkedList<>();
+        for (Map.Entry<String,Driver> entry:drivers.entrySet())
+        {
+            if (!onShiftDrivers.contains(entry.getKey()))
+            {
+                sittingAtHome.add(entry.getKey());
+            }
+        }
+        sortByLicense(sittingAtHome);
+        //---------------------------------------
+        LinkedList<Truck> freeTrucks=new LinkedList<>();
+        for (Map.Entry<String,Truck> entry:trucks.entrySet())
+        {
+            if (!busyTrucks.contains(entry.getKey()))
+            {
+                freeTrucks.add(entry.getValue());
+            }
+        }
+        freeTrucks.sort(Comparator.comparingInt(Truck::getMaxWeight));
+        //---------------------------------------
+        for (int i=0;i<Math.min(sittingAtHome.size(),freeTrucks.size());i++)
+        {
+            res.add(new Pair<>(drivers.get(sittingAtHome.removeFirst()),trucks.get(freeTrucks.removeFirst().getLicenseNumber())));
+        }
+        if (res.isEmpty())
+            return null;
+        return res;
+    }
+
+
+    //TODO - check if 3 methods below relevant
+    private boolean isDriverAvailable(String id, LocalDate date, Integer shift) {
+       if (!drivers_constraints.containsKey(id))
+            throw new IllegalArgumentException("cannot find this driver");
+        HashMap<LocalDate, Integer> driverConst = drivers_constraints.get(id);
+        if (!driverConst.containsKey(date))
+            return true;
+        else {
+            Integer workingShift = driverConst.get(date);
+            return ((workingShift.equals(2)) || workingShift.equals(shift));
+        }
+    }
+    public boolean hasAvailableTrucks(LocalDate date, int shift) {
+        for (Map.Entry<String, HashMap<LocalDate, Integer>> entry : trucks_constraints.entrySet()) {
+            Integer d = entry.getValue().get(date);
+
+            if (d == null)
+                return true;
+            if (!d.equals(2) && !d.equals(shift))
+                return true;
+        }
+        return false;
+    }
+
+    public void addTruck(String model, String licenseNumber, int weightNeto, int maxWeight) throws KeyAlreadyExistsException, SQLException {
+        if (!trucks.containsKey(licenseNumber)) {
+            Truck truck = new Truck(model, licenseNumber, weightNeto, maxWeight);
+            trucks.put(licenseNumber, truck);
+            trucks_constraints.put(licenseNumber, new HashMap<>());
+        } else {
+            throw new KeyAlreadyExistsException("Truck already added");
+        }
+    }
+
+
+
+
+
 
 
 //
@@ -230,40 +380,11 @@ public class ResourcesController {
 
 //
 //
-//    private boolean isDriverAvailable(String id, LocalDate date, Integer shift) {
-//        if (!drivers_constraints.containsKey(id))
-//            throw new IllegalArgumentException("cannot find this driver");
-//        HashMap<LocalDate, Integer> driverConst = drivers_constraints.get(id);
-//        if (!driverConst.containsKey(date))
-//            return true;
-//        else {
-//            Integer workingShift = driverConst.get(date);
-//            return ((workingShift.equals(2)) || workingShift.equals(shift));
-//        }
+
 //
-//    }
+
 //
-//    public void addTruck(String model, String licenseNumber, int weightNeto, int maxWeight) throws KeyAlreadyExistsException, SQLException {
-//        if (!trucks.containsKey(licenseNumber)) {
-//            Truck truck = new Truck(model, licenseNumber, weightNeto, maxWeight);
-//            trucks.put(licenseNumber, truck);
-//            trucks_constraints.put(licenseNumber, new HashMap<>());
-//        } else {
-//            throw new KeyAlreadyExistsException("Truck already added");
-//        }
-//    }
-//
-//    public boolean hasAvailableTrucks(LocalDate date, int shift) {
-//        for (Map.Entry<String, HashMap<LocalDate, Integer>> entry : trucks_constraints.entrySet()) {
-//            Integer d = entry.getValue().get(date);
-//
-//            if (d == null)
-//                return true;
-//            if (!d.equals(2) && !d.equals(shift))
-//                return true;
-//        }
-//        return false;
-//    }
+
 //
 //    public Truck chooseTruck(String truck, LocalDate date, int shift) throws IllegalStateException, NoSuchElementException {
 //

@@ -5,6 +5,7 @@ import ServiceLayer.FacadeObjects.FacadeDriver;
 import ServiceLayer.FacadeObjects.FacadeTruck;
 
 import javax.management.openmbean.KeyAlreadyExistsException;
+import java.awt.*;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.HashMap;
@@ -28,12 +29,16 @@ public class ResourcesService {
         return instance;
     }
 
+
+    //returns day,shiftType,List of drivers ID
     public HashMap<LocalDate, HashMap<Integer, LinkedList<String>>> getDayAndDrivers() throws IllegalArgumentException {
         return rc.getDaysAndDrivers();
     }
 
-    public Pair<FacadeDriver, FacadeTruck> findDriverAndTruckForDateFromExisting(LocalDate date){
-        throw new UnsupportedOperationException();
+    public Pair<FacadeDriver, FacadeTruck> findDriverAndTruckForDateFromExisting(LocalDate date,LinkedList<String> busyTrucks){
+        Pair<Driver,Truck> p= rc.findDriverAndTruckForDateFromExisting(date,busyTrucks);
+        Pair<FacadeDriver, FacadeTruck> result= new Pair<>(new FacadeDriver(p.getFirst()),new FacadeTruck(p.getSecond()));
+        return result;
     }
 
 
@@ -46,10 +51,18 @@ public class ResourcesService {
      * @param date
      * @return the Truck and Driver, returns null if cannot
      */
-    public Pair<FacadeDriver, FacadeTruck> findDriverAndTruckForDateFromPool(LocalDate date){
-        throw new UnsupportedOperationException();
+
+
+    public Pair<FacadeDriver, FacadeTruck> findDriverAndTruckForDateFromPool(LocalDate date,LinkedList<String> busyTrucks){
+        Pair<Driver, Truck> p=rc.findDriverAndTruckForDateFromPool(date,busyTrucks);
+        Pair<FacadeDriver, FacadeTruck> result= new Pair<>(new FacadeDriver(p.getFirst()),new FacadeTruck(p.getSecond()));
+        return result;
     }
 
+
+    public void addTruck(String model, String licenseNumber, int weightNeto, int maxWeight) throws KeyAlreadyExistsException, SQLException {
+        rc.addTruck(model, licenseNumber, weightNeto, maxWeight);
+    }
 /*
     public Truck chooseTruck(String truck,LocalDate date, int shift) throws NoSuchElementException, IllegalStateException {
 
@@ -66,9 +79,7 @@ public class ResourcesService {
 
 
 
-    public void addTruck(String model, String licenseNumber, int weightNeto, int maxWeight) throws KeyAlreadyExistsException, SQLException {
-        rc.addTruck(model, licenseNumber, weightNeto, maxWeight);
-    }
+
 
     public void addDriver(String id, String name, Driver.License licenseType) throws KeyAlreadyExistsException,SQLException {
 

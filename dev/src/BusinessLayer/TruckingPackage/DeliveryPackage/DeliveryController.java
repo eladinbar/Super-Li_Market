@@ -3,9 +3,11 @@ package BusinessLayer.TruckingPackage.DeliveryPackage;
 
 import BusinessLayer.Notification;
 import BusinessLayer.SuppliersPackage.OrderPackage.Order;
+import BusinessLayer.TruckingPackage.ResourcesPackage.Truck;
 import DataAccessLayer.DalControllers.TruckingControllers.*;
 import DataAccessLayer.DalObjects.TruckingObjects.*;
 import InfrastructurePackage.Pair;
+import ServiceLayer.FacadeObjects.FacadeTruck;
 
 import javax.management.openmbean.KeyAlreadyExistsException;
 import java.sql.SQLException;
@@ -74,6 +76,22 @@ public class DeliveryController {
 
     public LinkedList<Notification> getNotifications() {
         return notifications;
+    }
+
+    public LinkedList<String> getBusyTrucksByDate(LocalDate date) {
+        LinkedList<String> result=new LinkedList<>();
+        for (Map.Entry<Integer,TruckingReport> entry:waitingTruckingReports.entrySet())
+        {
+         if (!result.contains(entry.getValue().getTruckNumber()))
+             result.add(entry.getValue().getTruckNumber());
+        }
+        for (Map.Entry<Integer,TruckingReport> entry:activeTruckingReports.entrySet())
+        {
+            if (!result.contains(entry.getValue().getTruckNumber()))
+                result.add(entry.getValue().getTruckNumber());
+        }
+        return result;
+
     }
 
 

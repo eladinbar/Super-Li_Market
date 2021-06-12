@@ -2,11 +2,9 @@ package ServiceLayer;
 
 import BusinessLayer.InventoryPackage.Item;
 import BusinessLayer.Notification;
+import BusinessLayer.TruckingPackage.ResourcesPackage.Truck;
 import InfrastructurePackage.Pair;
-import ServiceLayer.FacadeObjects.FacadeDeliveryForm;
-import ServiceLayer.FacadeObjects.FacadeDemand;
-import ServiceLayer.FacadeObjects.FacadeItem;
-import ServiceLayer.FacadeObjects.FacadeTruckingReport;
+import ServiceLayer.FacadeObjects.*;
 import BusinessLayer.TruckingPackage.DeliveryPackage.*;
 
 import javax.management.openmbean.KeyAlreadyExistsException;
@@ -70,6 +68,12 @@ public class DeliveryService {
     }
 
     public void managerCancelTruckReport(Integer trID) {
+    }
+
+    public LinkedList<String> getBusyTrucksByDate(LocalDate date) {
+        LinkedList<String> trucks= dc.getBusyTrucksByDate(date);
+        return null;
+
     }
 
 
