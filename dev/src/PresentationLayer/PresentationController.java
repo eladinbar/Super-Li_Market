@@ -299,9 +299,13 @@ public class PresentationController implements Runnable {
 
     private <T extends FacadeEntity> void showSupplierDiscount() {
         String supplierID = readID();
-
+        System.out.print("Enter date in the following format dd/mm/yyyy: ");
         LocalDate date = getDateFromUser();
         ResponseT<List<FacadeDiscount<T>>> discR = service.getDiscount(supplierID, date);
+        if (discR.errorOccurred()) {
+            menu.errorPrompt(discR.getErrorMessage());
+            return;
+        }
         for (FacadeDiscount<T> d : discR.getValue()) {
             menu.printEntity(d);
         }
