@@ -14,7 +14,6 @@ public class FacadeEmployee implements FacadeObject {
     private FacadeBankAccountInfo facadeBankAccountInfo;
     private FacadeTermsOfEmployment facadeTermsOfEmployment;
     private HashMap<LocalDate,FacadeConstraint> constraints;
-    private boolean isManager;
 
     //an existing employee with given constraints
     public FacadeEmployee(String role, String ID, LocalDate transactionDate, FacadeBankAccountInfo facadeBankAccountInfo, FacadeTermsOfEmployment facadeTermsOfEmployment, HashMap<LocalDate, FacadeConstraint> constraints)
@@ -25,10 +24,6 @@ public class FacadeEmployee implements FacadeObject {
         this.facadeBankAccountInfo = facadeBankAccountInfo;
         this.facadeTermsOfEmployment = facadeTermsOfEmployment;
         this.constraints = constraints;
-        if(role.equals ("humanResourcesManager") || role.equals ( "branchManager") || role.equals ( "branchManagerAssistant" ))
-            isManager = true;
-        else
-            isManager = false;
     }
 
     //new employee with no constraints
@@ -40,10 +35,6 @@ public class FacadeEmployee implements FacadeObject {
         this.facadeBankAccountInfo = facadeBankAccountInfo;
         this.facadeTermsOfEmployment = facadeTermsOfEmployment;
         this.constraints = new HashMap<>();
-        if(role.equals ("humanResourcesManager") || role.equals ( "branchManager") || role.equals ( "branchManagerAssistant" ))
-            isManager = true;
-        else
-            isManager = false;
     }
 
     public FacadeEmployee(Employee employee){
@@ -57,10 +48,6 @@ public class FacadeEmployee implements FacadeObject {
         {
             constraints.put ( entry.getKey (), new FacadeConstraint ( entry.getValue () ) );
         }
-        if(role.equals ("humanResourcesManager") || role.equals ( "branchManager") || role.equals ( "branchManagerAssistant" ))
-            isManager = true;
-        else
-            isManager = false;
     }
 
     public LocalDate getTransactionDate() {
@@ -85,9 +72,5 @@ public class FacadeEmployee implements FacadeObject {
 
     public HashMap<LocalDate, FacadeConstraint> getConstraints(){
         return constraints;
-    }
-
-    public boolean isManager() {
-        return isManager;
     }
 }

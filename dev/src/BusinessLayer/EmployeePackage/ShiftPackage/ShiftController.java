@@ -53,7 +53,8 @@ public class ShiftController {
         return output;
     }*/
 
-    public WeeklyShiftSchedule getRecommendation(LocalDate startingDate) throws EmployeeException, SQLException {
+    public WeeklyShiftSchedule getRecommendation(LocalDate startingDate, boolean hasData) throws EmployeeException, SQLException {
+        beginning = !hasData;
         if (!beginning && startingDate.isBefore ( LocalDate.now ( ) ))
             throw new EmployeeException ( "Starting date has already passed." );
         if (startingDate.getDayOfWeek ( ) != DayOfWeek.SUNDAY)
@@ -267,13 +268,13 @@ public class ShiftController {
         }
         temp = LocalDate.now ();
         if(temp.getDayOfWeek ().equals ( DayOfWeek.SUNDAY ))
-            shifts.put ( temp, getRecommendation ( temp ) );
+            shifts.put ( temp, getRecommendation ( temp, beginning ) );
         else{
             temp = temp.minusDays ( temp.getDayOfWeek ().getValue () );
-            shifts.put ( temp, getRecommendation ( temp ) );
+            shifts.put ( temp, getRecommendation ( temp, beginning ) );
         }
-        shifts.put (sunday, getRecommendation ( sunday ));
-        shifts.put (sunday.plusDays ( 7 ), getRecommendation ( sunday.plusDays ( 7 ) ));
+        shifts.put (sunday, getRecommendation ( sunday, beginning ));
+        shifts.put (sunday.plusDays ( 7 ), getRecommendation ( sunday.plusDays ( 7 ), beginning ));
         beginning = false;
     }
 
@@ -303,14 +304,22 @@ public class ShiftController {
     }
 
     public void addDriverToShift(String id, LocalDate date, int shift) throws EmployeeException, SQLException {
+        if(!canAddDriverToShift ( id, date, shift ))
+            throw new EmployeeException ( "Couldn't add driver to shift." );
+        getShift ( date, shift ).addEmployee ( "driver", id );
+    }
+
+    public boolean canAddDriverToShift(String id, LocalDate date, int shift) throws EmployeeException, SQLException {
         if (shift == 1) {
             if (getShift ( date, 0 ).isWorking ( "driver", id ))
-                throw new EmployeeException ( "the driver is already manning the morning shift." );
+                return false;
         } else {
             if (getShift ( date, 1 ).isWorking ( "driver", id ))
-                throw new EmployeeException ( "the driver is already manning the evening shift." );
+                return false;
         }
-        getShift ( date, shift ).addEmployee ( "driver", id );
+        if(!getShift ( date, shift ).hasStoreKeeper ())
+            return false;
+        return true;
     }
 
     public boolean isDriverAssigned(String id, LocalDate date, int shift) throws EmployeeException {

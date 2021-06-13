@@ -79,6 +79,12 @@ public class Shift {
 
     public void deleteEmployee(String role, String ID) throws EmployeeException, SQLException {
         Role newRole = Role.valueOf ( role );
+        if(newRole.equals ( Role.storeKeeper )){
+            if(manning.containsKey ( newRole ) && manning.get ( newRole ).size () == 1 ){
+                if(manning.containsKey ( Role.driverC ) || manning.containsKey ( Role.driverC1 ) )
+                    throw new EmployeeException ( "Cannot remove a storekeeper while shift has a driver." );
+            }
+        }
         if(manning.containsKey ( newRole ) && manning.get ( newRole ).contains ( ID )) {
             manning.get ( newRole ).remove ( ID );
             if(manning.get ( newRole ).isEmpty ())
@@ -90,6 +96,10 @@ public class Shift {
 
     public void addEmployee(String role, String ID) throws EmployeeException, SQLException {
         Role newRole = Role.valueOf ( role );
+        if(newRole.equals ( Role.driverC ) || newRole.equals ( Role.driverC ) ){
+            if(!hasStoreKeeper ())
+                throw new EmployeeException ( "Cannot add a driver to a shift without a storekeeper." );
+        }
         if(!manning.containsKey ( newRole )){
             manning.put ( newRole, new ArrayList<> () );
         }
@@ -203,5 +213,9 @@ public class Shift {
             return driversC;
         else
             return driversC1;
+    }
+
+    public boolean hasStoreKeeper(){
+        return  manning.containsKey ( Role.storeKeeper ) && !manning.get ( Role.storeKeeper ).isEmpty ();
     }
 }

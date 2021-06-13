@@ -33,7 +33,7 @@ BufferedReader sc = new BufferedReader(new InputStreamReader(System.in));
 
     public String roleMenu(){
         System.out.println ("Choose role:\n1.branch manager\n2.branch manager assistant\n" +
-                "3.human resources manager\n4.cashier\n5.guard\n6.usher\n7.store keeper\n8.shift manager\n9.driver - license c\n10.driver - license c1\n11.trucking manager\n12.back" );
+                "3.human resources manager\n4.cashier\n5.guard\n6.usher\n7.store keeper\n8.shift manager\n9.driver - license c\n10.driver - license c1\n11.logistics manager" );
         int choice =  getInt ();
         switch (choice){
             case 1:
@@ -57,8 +57,32 @@ BufferedReader sc = new BufferedReader(new InputStreamReader(System.in));
             case 10:
                 return "driverC1";
             case 11:
-                return "truckingManager";
-            case 12:
+                return "logisticsManager";
+            default:
+                System.out.println ("choice is illegal.");
+                return null;
+        }
+    }
+
+    public String roleMenu_withoutManagers(){
+        System.out.println ("Choose role:\n1.cashier\n2.guard\n3.usher\n4.store keeper\n5.shift manager\n6.driver - license c\n7.driver - license c1\n8.back" );
+        int choice =  getInt ();
+        switch (choice){
+            case 1:
+                return "cashier";
+            case 2:
+                return "guard";
+            case 3:
+                return "usher";
+            case 4:
+                return "storeKeeper";
+            case 5:
+                return "shiftManager";
+            case 6:
+                return "driverC";
+            case 7:
+                return "driverC1";
+            case 8:
                 return null;
             default:
                 System.out.println ("choice is illegal.");
@@ -66,17 +90,31 @@ BufferedReader sc = new BufferedReader(new InputStreamReader(System.in));
         }
     }
 
-    public int managerMenu(){
+    public int managerFirstMenu(){
+        System.out.println ("Choose the option you would like:\n" +
+                "1.Shift menu.\n" +
+                "2.Employee menu\n" +
+                "3.Logout" );
+        return getInt ();
+    }
+
+    public int managerShiftMenu(){
         System.out.println ("Choose your next action:\n" +
                 "1.Create weekly shift schedule\n" +
                 "2.Show weekly shift schedule\n" +
                 "3.Show an existing shift type\n" +
                 "4.Create a new Shift type\n" +
-                "5.Get a list of employees ordered by role\n" +
-                "6.Get employee information\n" +
-                "7.Get employee constraints\n" +
-                "8.Add a new employee to the system\n" +
-                "9.Logout" );
+                "5.Back" );
+        return getInt ();
+    }
+
+    public int managerEmployeeMenu(){
+        System.out.println ("Choose your next action:\n" +
+                "1.Get a list of employees ordered by role\n" +
+                "2.Get employee information\n" +
+                "3.Get employee constraints\n" +
+                "4.Add a new employee to the system\n" +
+                "5.Back" );
         return getInt ();
     }
 
@@ -290,5 +328,18 @@ BufferedReader sc = new BufferedReader(new InputStreamReader(System.in));
         if(choice > shiftTypes.length || choice < 0)
             return null;
         return shiftTypes[choice - 1];
+    }
+
+    public int storeKeeperMenu() {
+        System.out.println ("Choose your next action:\n" +
+                "1.Show a weekly shift schedule\n" +
+                "2.Show a single shift\n" +
+                "3.Add a new constraint\n" +
+                "4.delete an existing constraint\n" +
+                "5.Show my employee card\n" +
+                "6.Show constraints\n" +
+                "7.Store management\n" +
+                "8.Logout" );
+        return getInt ();
     }
 }

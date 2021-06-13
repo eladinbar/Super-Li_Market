@@ -1,7 +1,9 @@
 package ServiceLayer;
 
 import BusinessLayer.EmployeePackage.EmployeeException;
+import BusinessLayer.EmployeePackage.EmployeeNotification;
 import BusinessLayer.EmployeePackage.EmployeePackage.Role;
+import BusinessLayer.Notification;
 import ServiceLayer.FacadeObjects.FacadeConstraint;
 import ServiceLayer.FacadeObjects.FacadeEmployee;
 import ServiceLayer.FacadeObjects.FacadeShift;
@@ -26,8 +28,8 @@ public class Employee_Package_FacadeService {
 
     //shift service responsibility
 
-    public ResponseT<FacadeWeeklyShiftSchedule> getRecommendation(LocalDate startingDate, boolean start) throws SQLException {
-        return shiftService.getRecommendation ( startingDate, start );
+    public ResponseT<FacadeWeeklyShiftSchedule> getRecommendation(LocalDate startingDate, boolean hasData) throws SQLException {
+        return shiftService.getRecommendation ( startingDate, hasData );
     }
 
     public ResponseT<FacadeWeeklyShiftSchedule> createWeeklyShiftSchedule(LocalDate startingDate, FacadeShift[][] shifts) throws SQLException {
@@ -160,5 +162,17 @@ public class Employee_Package_FacadeService {
         }catch (EmployeeException e){
             return new ResponseT<> ( e.getMessage () );
         }
+    }
+
+    public ResponseT<List<Notification>> loadAlerts() throws SQLException {
+        return employeeService.loadAlerts ( );
+    }
+
+    public Response deleteAlert(EmployeeNotification alert) throws SQLException {
+        return employeeService.deleteAlert(alert);
+    }
+
+    public ResponseT<Integer> addAlert(Role role, Notification alert) throws SQLException {
+        return employeeService.addAlert ( role, alert );
     }
 }

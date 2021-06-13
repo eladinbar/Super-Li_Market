@@ -1,6 +1,9 @@
 package DataAccessLayer.DalControllers;
 
+import BusinessLayer.Notification;
+
 import java.sql.SQLException;
+import java.util.List;
 
 public abstract class Employee_Trucking_DALController_Interface {
     protected String connection;
@@ -13,5 +16,5 @@ public abstract class Employee_Trucking_DALController_Interface {
         connection="jdbc:sqlite:/"+connection;
     }
 
-    protected abstract boolean createTable () throws SQLException ;
+    protected abstract boolean createTable () throws SQLException;
 }
