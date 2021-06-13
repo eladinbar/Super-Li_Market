@@ -415,7 +415,8 @@ public class TruckingService {
 
     private int getPossibleWeightByDate(LocalDate date) {
         LinkedList<FacadeTruckingReport> reports = getAvailableTRsByDate(date);
-        throw new UnsupportedOperationException();
+        return resourcesService.getPossibleWeightByDate(date,getBusyTrucksByDate(date));
+
         // TODO - employees need to make a new method, returns boolean and do no insert into shift
     }
 

@@ -62,11 +62,9 @@ public class ResourcesService {
         } catch (EmployeeException e) {
             e.printStackTrace();
             exit(1);
-        } catch (SQLException e) {
-            e.printStackTrace();
-            exit(1);
         }
-        Pair<FacadeDriver, FacadeTruck> result= new Pair<>(new FacadeDriver(p.getFirst().getFirst()),new FacadeTruck(p.getFirst().getSecond()));
+        Pair<Pair<FacadeDriver, FacadeTruck>,Integer> result=
+                new Pair<>(new Pair<>(new FacadeDriver(p.getFirst().getFirst()),new FacadeTruck(p.getFirst().getSecond())),p.getSecond());
         return result;
     }
 
@@ -109,6 +107,13 @@ public class ResourcesService {
 
     public void addTruckConstraint(String id, LocalDate date, int leavingHour) {
         rc.addTruckConstraint(id,date,leavingHour);
+    }
+    public void upload(HashMap driver_cons, HashMap trucks_cons) throws SQLException {
+        rc.upload(driver_cons, trucks_cons);
+    }
+
+    public int getPossibleWeightByDate(LocalDate date,Pair<LinkedList<String>,LinkedList<String>> busyTrucks) {
+       return rc.getPossibleWeightByDate(date,busyTrucks);
     }
 /*
     public Truck chooseTruck(String truck,LocalDate date, int shift) throws NoSuchElementException, IllegalStateException {
@@ -191,9 +196,7 @@ public class ResourcesService {
 
 
 
-    public void upload(HashMap driver_cons, HashMap trucks_cons) throws SQLException {
-        rc.upload(driver_cons, trucks_cons);
-    }*/
+    */
 }
 
 /*

@@ -2,6 +2,10 @@ package BusinessLayer.TruckingPackage.ResourcesPackage;
 
 import BusinessLayer.EmployeePackage.EmployeeException;
 import BusinessLayer.EmployeePackage.ShiftPackage.ShiftController;
+import DataAccessLayer.DalControllers.TruckingControllers.DalDriverController;
+import DataAccessLayer.DalControllers.TruckingControllers.DalTruckController;
+import DataAccessLayer.DalObjects.TruckingObjects.DalDriver;
+import DataAccessLayer.DalObjects.TruckingObjects.DalTruck;
 import InfrastructurePackage.Pair;
 
 import javax.management.openmbean.KeyAlreadyExistsException;
@@ -440,6 +444,63 @@ public class ResourcesController {
     public void deleteTruckConstraint(String id, LocalDate date, Integer shift) {
         deleteConstraint(id, date, shift, trucks_constraints);
     }
+    public void upload(HashMap<String, HashMap<LocalDate,Integer >> driver_cons , HashMap<String, HashMap<LocalDate,Integer >> truck_cons  )throws SQLException {
+        DalDriverController driverController  = DalDriverController.getInstance();
+        DalTruckController truckController =  DalTruckController.getInstance();
+        LinkedList<DalTruck> dalTrucks = truckController.load();
+        for (DalTruck truck: dalTrucks){
+            trucks.put(truck.getLicenseNumber(), new Truck(truck));
+            trucks_constraints.put(truck.getLicenseNumber(), new HashMap<>());
+        }
+        for (Map.Entry<String,HashMap<LocalDate,Integer>> entry: truck_cons.entrySet()){
+            for (Map.Entry<LocalDate, Integer> dates : entry.getValue().entrySet()) {
+                addTruckConstraint(entry.getKey(),dates.getKey(),dates.getValue());
+
+            }
+        }
+
+        LinkedList<DalDriver> dalDrivers = driverController.load();
+        for (DalDriver driver: dalDrivers){
+            Driver bDriver =  new Driver(driver);
+            drivers.put(driver.getID(), bDriver);
+            driversByLicense.add(bDriver);
+            drivers_constraints.put(driver.getID(), new HashMap<>());
+        }
+        for (Map.Entry<String,HashMap<LocalDate,Integer>> entry: driver_cons.entrySet()){
+            for (Map.Entry<LocalDate, Integer> dates : entry.getValue().entrySet()) {
+                addDriverConstraint(entry.getKey(),dates.getKey(),dates.getValue());
+
+            }
+        }
+
+    }
+
+    public int getPossibleWeightByDate(LocalDate date,Pair<LinkedList<String>,LinkedList<String>> busyTrucks) {
+        //TODO employees need to implement canAddToShift
+        int sum=0;
+        LinkedList<Pair<Pair<Driver, Truck>, Integer>> poolList = findListDriverAndTruckForDateFromPool(date, busyTrucks);
+        for (Pair<Pair<Driver,Truck>,Integer> pair:poolList)
+        {
+            if (canAddToShift(pair.getFirst().getFirst(),date,pair.getSecond()))
+            {
+                Driver d=pair.getFirst().getFirst();
+                Truck t=pair.getFirst().getSecond();
+                sum+=Math.min(d.getLicenseType().getSize(),t.getMaxWeight()-t.getWeightNeto());
+            }
+        }
+
+        LinkedList<Pair<Pair<Driver, Truck>, Integer>> existingList = findListDriversAndTrucksFromExisting(date, busyTrucks);
+        for (Pair<Pair<Driver,Truck>,Integer> pair:existingList)
+        {
+            if (canAddToShift(pair.getFirst().getFirst(),date,pair.getSecond()))
+            {
+                Driver d=pair.getFirst().getFirst();
+                Truck t=pair.getFirst().getSecond();
+                sum+=Math.min(d.getLicenseType().getSize(),t.getMaxWeight()-t.getWeightNeto());
+            }
+        }
+        return sum;
+    }
 
 
 //
@@ -588,36 +649,7 @@ public class ResourcesController {
 //    }
 //
 //
-//    public void upload(HashMap<String, HashMap<LocalDate,Integer >> driver_cons , HashMap<String, HashMap<LocalDate,Integer >> truck_cons  )throws SQLException {
-//        DalDriverController driverController  = DalDriverController.getInstance();
-//        DalTruckController truckController =  DalTruckController.getInstance();
-//        LinkedList<DalTruck> dalTrucks = truckController.load();
-//        for (DalTruck truck: dalTrucks){
-//            trucks.put(truck.getLicenseNumber(), new Truck(truck));
-//            trucks_constraints.put(truck.getLicenseNumber(), new HashMap<>());
-//        }
-//        for (Map.Entry<String,HashMap<LocalDate,Integer>> entry: truck_cons.entrySet()){
-//            for (Map.Entry<LocalDate, Integer> dates : entry.getValue().entrySet()) {
-//                addTruckConstraint(entry.getKey(),dates.getKey(),dates.getValue());
-//
-//            }
-//        }
-//
-//        LinkedList<DalDriver> dalDrivers = driverController.load();
-//        for (DalDriver driver: dalDrivers){
-//            Driver bDriver =  new Driver(driver);
-//            drivers.put(driver.getID(), bDriver);
-//            driversByLicense.add(bDriver);
-//            drivers_constraints.put(driver.getID(), new HashMap<>());
-//        }
-//        for (Map.Entry<String,HashMap<LocalDate,Integer>> entry: driver_cons.entrySet()){
-//            for (Map.Entry<LocalDate, Integer> dates : entry.getValue().entrySet()) {
-//                addDriverConstraint(entry.getKey(),dates.getKey(),dates.getValue());
-//
-//            }
-//        }
 
-//    }
 
 
 

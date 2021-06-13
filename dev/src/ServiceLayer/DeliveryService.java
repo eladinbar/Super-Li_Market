@@ -11,6 +11,7 @@ import BusinessLayer.TruckingPackage.DeliveryPackage.*;
 import javax.naming.TimeLimitExceededException;
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.util.HashMap;
 import java.util.LinkedList;
 
 import static java.lang.System.exit;
@@ -64,12 +65,8 @@ public class DeliveryService {
     }
 
     public void managerApproveTruckReport(Integer trID) throws TimeLimitExceededException {
-        try {
             dc.managerApproveTruckReport(trID);
-        } catch (SQLException e) {
-            e.printStackTrace();
-            exit(1);
-        }
+
     }
 
     public void managerCancelTruckReport(Integer trID) throws TimeLimitExceededException {
@@ -171,6 +168,13 @@ public class DeliveryService {
     public void upload() throws SQLException {
         dc.upload();
 
+    }
+    public HashMap<String, HashMap<LocalDate, Integer>> getDriverConstraintsFromUpload(){
+        return dc.getDriverConstraintsFromUpload();
+    }
+
+    public HashMap<String, HashMap<LocalDate, Integer>> getTruckConstraintsFromUpload() {
+        return dc.getTruckConstraintsFromUpload();
     }
 }
 
@@ -605,13 +609,7 @@ public class DeliveryService {
 
 
 
-    public HashMap<String, HashMap<LocalDate, Integer>> getDriverConstraintsFromUpload(){
-        return dc.getDriverConstraintsFromUpload();
-    }
-
-    public HashMap<String, HashMap<LocalDate, Integer>> getTruckConstraintsFromUpload() {
-        return dc.getTruckConstraintsFromUpload();
-    }*/
+    */
 
 
 

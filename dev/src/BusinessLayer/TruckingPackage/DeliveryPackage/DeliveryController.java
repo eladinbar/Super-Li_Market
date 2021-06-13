@@ -527,7 +527,12 @@ public class DeliveryController {
 
     public HashMap<String, HashMap<LocalDate, Integer>> getTruckConstraintsFromUpload() {
         HashMap<String, HashMap<LocalDate, Integer>> result = new HashMap<>();
-        for (Map.Entry<Integer, TruckingReport> entry : activeTruckingReports.entrySet()) {
+        HashMap<Integer,TruckingReport> reports=activeTruckingReports;
+        for (Map.Entry<Integer,TruckingReport> entry: waitingTruckingReports.entrySet())
+        {
+            reports.put(entry.getKey(),entry.getValue());
+        }
+        for (Map.Entry<Integer, TruckingReport> entry : reports.entrySet()) {
             TruckingReport report = getTruckReport(entry.getKey());
             String truckNumber = report.getTruckNumber();
             if (result.get(truckNumber) == null)  // checks if already exist for the specific truck
@@ -545,7 +550,12 @@ public class DeliveryController {
 
     public HashMap<String, HashMap<LocalDate, Integer>> getDriverConstraintsFromUpload() {
         HashMap<String, HashMap<LocalDate, Integer>> result = new HashMap<>();
-        for (Map.Entry<Integer, TruckingReport> entry : activeTruckingReports.entrySet()) {
+        HashMap<Integer,TruckingReport> reports=activeTruckingReports;
+        for (Map.Entry<Integer,TruckingReport> entry: waitingTruckingReports.entrySet())
+        {
+            reports.put(entry.getKey(),entry.getValue());
+        }
+        for (Map.Entry<Integer, TruckingReport> entry : reports.entrySet()) {
             TruckingReport report = getTruckReport(entry.getKey());
             String driverID = report.getDriverID();
             if (result.get(driverID) == null)  // checks if already exist for the specific truck
