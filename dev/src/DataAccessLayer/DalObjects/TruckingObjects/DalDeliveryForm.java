@@ -6,7 +6,6 @@ public class DalDeliveryForm  {
     private boolean completed;
     private int leavingWeight;
     private int TRID;
-    //TODO origin need to be deleted
     public DalDeliveryForm(int ID, int destination,boolean completed,int leavingWeight,int TRID)
     {
         this.ID=ID;

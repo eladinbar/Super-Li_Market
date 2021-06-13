@@ -8,13 +8,12 @@ import java.util.LinkedList;
 
 public class DalTruckingNotificationController extends Employee_Trucking_DALController_Interface {
     private static DalTruckingNotificationController controller;
-    //TODO - check how to createTable without PK
 
     private DalTruckingNotificationController(){
         super();
         this.tableName="TruckingNotifications";
-        this.columnNames=new String[1];
-        columnNames[0]="Content";
+        this.columnNames=new String[2];
+        columnNames[1]="Content";columnNames[0]="ID";
     }
 
     public static DalTruckingNotificationController getInstance() throws SQLException {
@@ -28,10 +27,11 @@ public class DalTruckingNotificationController extends Employee_Trucking_DALCont
     public boolean insert(DalTruckingNotification notification) throws SQLException {
 
         Connection conn= DriverManager.getConnection(connection);
-        String query= "INSERT INTO "+tableName+" VALUES (?)";
+        String query= "INSERT INTO "+tableName+" VALUES (?,?)";
         try{
             PreparedStatement st=conn.prepareStatement(query);
-            st.setString(1,notification.getContent());
+            st.setInt(1,notification.getID());
+            st.setString(2,notification.getContent());
 
 
             st.executeUpdate();
@@ -49,12 +49,13 @@ public class DalTruckingNotificationController extends Employee_Trucking_DALCont
 
     }
 
-    public boolean update(DalTruckingNotification notification) throws SQLException {//TODO do we need it? if we do need to check how
+    public boolean update(DalTruckingNotification notification) throws SQLException {
         Connection conn=DriverManager.getConnection(connection);
         String query="UPDATE "+tableName+" SET "+columnNames[1]+"=?"+" WHERE ("+columnNames[0]+"= ?)";
         try{
             PreparedStatement st=conn.prepareStatement(query);
             st.setString(1,notification.getContent());
+            st.setInt(2,notification.getID());
             st.executeUpdate();
 
 
@@ -68,12 +69,11 @@ public class DalTruckingNotificationController extends Employee_Trucking_DALCont
         return true;
     }
 
-    public boolean delete(DalTruckingNotification notification) throws SQLException {//TODO do we need it? if we do need to check how
+    public boolean deleteAll() throws SQLException {
         Connection conn=DriverManager.getConnection(connection);
-        String query="DELETE FROM " +tableName+ " WHERE("+columnNames[0]+"=?)";
+        String query="DELETE FROM " +tableName;
         try {
             PreparedStatement st=conn.prepareStatement(query);
-            st.setString(1,notification.getContent());
             st.executeUpdate();
         }
         catch (SQLException e)
@@ -84,24 +84,25 @@ public class DalTruckingNotificationController extends Employee_Trucking_DALCont
     }
     public LinkedList<DalTruckingNotification> load () throws SQLException// Select From DB
     {
-        LinkedList<DalTruckingNotification> drivers = new LinkedList<>();
+        LinkedList<DalTruckingNotification> notifications = new LinkedList<>();
         Connection conn = DriverManager.getConnection(connection);
         String query = "SELECT * FROM "+tableName;
         try {
             PreparedStatement st = conn.prepareStatement(query);
             ResultSet resultSet = st.executeQuery();
             while (resultSet.next()) {
-                drivers.add(new DalTruckingNotification(resultSet.getString(1)));
+                notifications.add(new DalTruckingNotification(resultSet.getInt(1),resultSet.getString(2)));
             }
         } catch (SQLException e) {
             throw new SQLException(e.getMessage());
         }
-        return drivers;
+        return notifications;
     }
-    public boolean createTable() throws SQLException {//TODO need to check how to create without PK
+    public boolean createTable() throws SQLException {
         Connection conn = DriverManager.getConnection(connection);
         String query = "CREATE TABLE IF NOT EXISTS TruckingNotifications("
-                +"ID Content,"
+                +"ID TEXT,"
+                +"Content TEXT,"
                 +"PRIMARY KEY (ID));";
         try {
             PreparedStatement st=conn.prepareStatement(query);
