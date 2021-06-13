@@ -6,19 +6,19 @@ import ServiceLayer.Response.ResponseT;
 import ServiceLayer.FacadeObjects.*;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class Service implements IService {
     private OrderService orderService;
     private SupplierService supplierService;
     private InventoryService inventoryService;
+    private TruckingService truckingService;
 
     public Service() {
         this.supplierService = new SupplierService();
         this.orderService = new OrderService();
         this.inventoryService = new InventoryServiceImpl();
+        this.truckingService = TruckingService.getInstance();
     }
 
     @Override
@@ -133,7 +133,7 @@ public class Service implements IService {
         ResponseT<FacadeItem> r = inventoryService.getItem(productID);
         if (!r.errorOccurred()) {
             ResponseT<FacadeItem> rp = supplierService.addItemToAgreement(id, productID, companyProductId, price, inventoryService);
-            if(rp.errorOccurred())
+            if (rp.errorOccurred())
                 return new ResponseT<>(rp.getErrorMessage());
         }
         inventoryService.addItemSupplier(productID, id);
@@ -142,7 +142,7 @@ public class Service implements IService {
 
     @Override
     public Response removeItemFromAgreement(String supplierId, int productID) {
-        if(!itemExists(productID)){
+        if (!itemExists(productID)) {
             return new ResponseT<>("no Item exist in the system: " + productID);
         }
         return supplierService.removeItemFromAgreement(supplierId, productID);
@@ -150,7 +150,7 @@ public class Service implements IService {
 
     @Override
     public Response editAgreementItemCompanyProductID(String supplierID, int productID, int companyProductID) {
-        if(!itemExists(productID)){
+        if (!itemExists(productID)) {
             return new ResponseT<>("no Item exist in the system: " + productID);
         }
         return supplierService.editAgreementItemCompanyProductID(supplierID, productID, companyProductID);
@@ -158,7 +158,7 @@ public class Service implements IService {
 
     @Override
     public Response editAgreementItemPrice(String supplierID, int productID, int price) {
-        if(!itemExists(productID)){
+        if (!itemExists(productID)) {
             return new ResponseT<>("no Item exist in the system: " + productID);
         }
         return supplierService.editAgreementItemPrice(supplierID, productID, price);
@@ -248,6 +248,25 @@ public class Service implements IService {
         }
 
         return r;
+    }
+
+    @Override
+    public Response approveTruckReport(int truckReportId) {
+        ResponseT<LinkedList<FacadeDeliveryForm>> trackReportRes = truckingService.getDeliveryFormsByTruckReport(truckReportId);
+        if (trackReportRes.errorOccurred()) {
+            return new Response("could not get Truck Report.");
+        }
+        //update the InventoryOf the products
+        for (FacadeDeliveryForm deliveryForm : trackReportRes.value) {
+            Map<Integer,Integer> itemsDelivered = deliveryForm.getItems();
+            Response updated = inventoryService.updateQuantityInventory(itemsDelivered);
+            if(updated.errorOccurred()){
+                return new Response("failed at updating delivery form num. " + deliveryForm.getID());
+            }
+
+        }
+        truckingService.SetCompleteTrackingReport(truckReportId);
+        return new Response();
     }
 
     @Override
@@ -484,7 +503,11 @@ public class Service implements IService {
 
     @Override
     public Response updateQuantityInventory(ArrayList<FacadeProduct> items) {
-        return inventoryService.updateQuantityInventory(items);
+        Map<Integer,Integer> IdAmountMap = new HashMap<>();
+        for (FacadeProduct fp: items){
+            IdAmountMap.put(fp.getProductID(),fp.getAmount());
+        }
+        return inventoryService.updateQuantityInventory(IdAmountMap);
     }
 
     @Override
