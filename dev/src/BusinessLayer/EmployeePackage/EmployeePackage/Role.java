@@ -9,7 +9,7 @@ public enum Role {
     guard,
     usher,
     storeKeeper,
-    truckingManager,
+    logisticsManager,
     driverC,
     driverC1
 }

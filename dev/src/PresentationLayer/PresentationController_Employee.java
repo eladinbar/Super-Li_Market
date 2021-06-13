@@ -262,7 +262,7 @@ public class PresentationController_Employee {
     }
 
     private void deleteRoleManning(String shiftType) {
-        String role = menuPrinter.roleMenu ();
+        String role = menuPrinter.roleMenu_withoutManagers ();
         if(role == null)
             return;
         Response response = facadeService.deleteRoleFromShiftType(shiftType, role);
@@ -273,7 +273,7 @@ public class PresentationController_Employee {
     }
 
     private void updateRoleManning(String shiftType) {
-        String role = menuPrinter.roleMenu ();
+        String role = menuPrinter.roleMenu_withoutManagers ();
         if(role == null)
             return;
         menuPrinter.print ( "Write the manning you would like for role: " );
@@ -287,7 +287,7 @@ public class PresentationController_Employee {
     }
 
     private void addRoleManning(String shiftType) {
-        String role = menuPrinter.roleMenu ();
+        String role = menuPrinter.roleMenu_withoutManagers ();
         if (role == null)
             return;
         menuPrinter.print ( "Write the manning you would like for role: " );
@@ -384,7 +384,7 @@ public class PresentationController_Employee {
     }
 
     private HashMap<String, List<String>> createManning(){
-        String role = menuPrinter.roleMenu ();
+        String role = menuPrinter.roleMenu_withoutManagers ();
         HashMap <String, List<String>> manning = new HashMap<> (  );
         List<String> roleManning = new ArrayList<> (  );
         while(role != null)
@@ -397,7 +397,7 @@ public class PresentationController_Employee {
             }
             manning.put ( role, roleManning.subList ( 0,roleManning.size () ) );
             roleManning.clear ();
-            role = menuPrinter.roleMenu ( );
+            role = menuPrinter.roleMenu_withoutManagers ( );
         }
         return manning;
     }
@@ -414,7 +414,7 @@ public class PresentationController_Employee {
     }
 
     private void addEmployeeToShift(LocalDate date, int shift) throws SQLException {
-        String role = menuPrinter.roleMenu ( );
+        String role = menuPrinter.roleMenu_withoutManagers ( );
         if(role == null)
             return;
         menuPrinter.print ( "ID: " );
@@ -428,7 +428,7 @@ public class PresentationController_Employee {
     }
 
     private void deleteEmployeeFromShift(LocalDate date, int shift) throws SQLException {
-        String role = menuPrinter.roleMenu ( );
+        String role = menuPrinter.roleMenu_withoutManagers ( );
         if(role == null)
             return;
         menuPrinter.print ( "ID: " );
@@ -463,12 +463,12 @@ public class PresentationController_Employee {
             shiftType = menuPrinter.getString ( );
         }
         HashMap<String, Integer> manning = new HashMap<> (  );
-        String role = menuPrinter.roleMenu ();
+        String role = menuPrinter.roleMenu_withoutManagers ();
         while (role != null)
         {
             menuPrinter.print ( "Write the num of employees you would like in this role: " );
             manning.put ( role, ( menuPrinter.getInt () ) );
-            role = menuPrinter.roleMenu ();
+            role = menuPrinter.roleMenu_withoutManagers ();
         }
         Response response = facadeService.createShiftType ( shiftType, manning );
         if (response.errorOccurred ( )) {
@@ -536,25 +536,25 @@ public class PresentationController_Employee {
             if(employee.value.isManager ()) {
                 if(first) {
                     createShiftTypes ( );
-                    menuPrinter.print ( "For continuing you have to create trucking manager account" );
-                    FacadeEmployee truckingManager = menuPrinter.getEmployeeDetails ( "truckingManager" );
-                    while (truckingManager == null) {
-                        truckingManager = menuPrinter.createManagerAccountMenu ( );
+                    menuPrinter.print ( "For continuing you have to create logistics manager account" );
+                    FacadeEmployee logisticsManager = menuPrinter.getEmployeeDetails ( Role.logisticsManager.name () );
+                    while (logisticsManager == null) {
+                        logisticsManager = menuPrinter.createManagerAccountMenu ( );
                     }
-                    Response response = facadeService.addEmployee ( truckingManager );
+                    Response response = facadeService.addEmployee ( logisticsManager );
                     while(response.errorOccurred ( )) {
                         menuPrinter.print ( response.getErrorMessage ( ) );
-                        menuPrinter.print ( "For continuing you have to create trucking manager account" );
-                        truckingManager = menuPrinter.getEmployeeDetails ( "truckingManager" );
-                        while (truckingManager == null) {
-                            truckingManager = menuPrinter.createManagerAccountMenu ( );
+                        menuPrinter.print ( "For continuing you have to create logistics manager account" );
+                        logisticsManager = menuPrinter.getEmployeeDetails ( Role.logisticsManager.name ( ) );
+                        while (logisticsManager == null) {
+                            logisticsManager = menuPrinter.createManagerAccountMenu ( );
                         }
-                        response = facadeService.addEmployee ( truckingManager );
+                        response = facadeService.addEmployee ( logisticsManager );
                     }
                 }
                 choice = menuPrinter.managerMenu ( );
                 handleManagerChoice ( choice, first );
-            } else if(role.equals ( "truckingManager" )){
+            } else if(role.equals ( Role.logisticsManager )){
                 LogisticsManagerMenu.getInstance ().mainMenu ();
                 logout ();
                 while(!login (false));
