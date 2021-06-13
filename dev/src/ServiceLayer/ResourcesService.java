@@ -1,9 +1,11 @@
 package ServiceLayer;
 import BusinessLayer.TruckingPackage.ResourcesPackage.*;
+import InfrastructurePackage.Pair;
 import ServiceLayer.FacadeObjects.FacadeDriver;
 import ServiceLayer.FacadeObjects.FacadeTruck;
 
 import javax.management.openmbean.KeyAlreadyExistsException;
+import java.awt.*;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.HashMap;
@@ -28,6 +30,58 @@ public class ResourcesService {
     }
 
 
+    //returns day,shiftType,List of drivers ID
+    public HashMap<LocalDate, HashMap<Integer, LinkedList<String>>> getDayAndDrivers() throws IllegalArgumentException {
+        return rc.getDaysAndDrivers();
+    }
+
+    public Pair<Pair<FacadeDriver, FacadeTruck>,Integer> findDriverAndTruckForDateFromExisting(LocalDate date,Pair<LinkedList<String>,LinkedList<String>> busyTrucks){
+        Pair<Pair<Driver,Truck>,Integer> p= rc.findDriverAndTruckForDateFromExisting(date,busyTrucks);
+        Pair<Pair<FacadeDriver, FacadeTruck>,Integer> result= new Pair<>(new Pair<>(new FacadeDriver(p.getFirst().getFirst()),new FacadeTruck(p.getFirst().getSecond())),p.getSecond());
+        return result;
+    }
+
+
+
+
+    /**
+     *
+     * @param date
+     * @return the Truck and Driver, returns null if cannot
+     */
+
+
+    public Pair<FacadeDriver, FacadeTruck> findDriverAndTruckForDateFromPool(LocalDate date,Pair<LinkedList<String>,LinkedList<String>> busyTrucks){
+        Pair<Driver, Truck> p=rc.findDriverAndTruckForDateFromPool(date,busyTrucks);
+        Pair<FacadeDriver, FacadeTruck> result= new Pair<>(new FacadeDriver(p.getFirst()),new FacadeTruck(p.getSecond()));
+        return result;
+    }
+
+
+    public void addTruck(String model, String licenseNumber, int weightNeto, int maxWeight) throws KeyAlreadyExistsException, SQLException {
+        rc.addTruck(model, licenseNumber, weightNeto, maxWeight);
+    }
+
+    public LinkedList<FacadeDriver> getDrivers() {
+        LinkedList<FacadeDriver> drivers=new LinkedList<>();
+        for (Driver d:rc.getDrivers())
+        {
+            drivers.add(new FacadeDriver(d));
+        }
+        return drivers;
+    }
+
+    public LinkedList<FacadeTruck> getTrucks(){
+        LinkedList<FacadeTruck> trucks=new LinkedList<>();
+        for (Truck t:rc.getTrucks())
+            trucks.add(new FacadeTruck(t));
+        return trucks;
+    }
+
+    public int getMaxWeight(String driverID, String truckNumber) {
+        return rc.getMaxWeight(driverID,truckNumber);
+    }
+/*
     public Truck chooseTruck(String truck,LocalDate date, int shift) throws NoSuchElementException, IllegalStateException {
 
         return rc.chooseTruck(truck,date,shift);
@@ -43,9 +97,7 @@ public class ResourcesService {
 
 
 
-    public void addTruck(String model, String licenseNumber, int weightNeto, int maxWeight) throws KeyAlreadyExistsException, SQLException {
-        rc.addTruck(model, licenseNumber, weightNeto, maxWeight);
-    }
+
 
     public void addDriver(String id, String name, Driver.License licenseType) throws KeyAlreadyExistsException,SQLException {
 
@@ -89,9 +141,6 @@ public class ResourcesService {
 
     }
 
-    public HashMap<LocalDate, HashMap<Integer, LinkedList<String>>> getDayAndDrivers() throws IllegalArgumentException {
-        return rc.getDaysAndDrivers();
-    }
 
     public LinkedList<FacadeTruck> getAvailableTrucks(LocalDate date, int shift) {
         LinkedList<Truck> trucks = rc.getAvailableTrucks(date, shift);
@@ -129,7 +178,7 @@ public class ResourcesService {
 
     public void upload(HashMap driver_cons, HashMap trucks_cons) throws SQLException {
         rc.upload(driver_cons, trucks_cons);
-    }
+    }*/
 }
 
 /*

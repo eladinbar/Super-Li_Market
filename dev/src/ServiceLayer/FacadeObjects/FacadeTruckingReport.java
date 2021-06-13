@@ -40,7 +40,7 @@ public class FacadeTruckingReport {
         truckNumber = currTR.getTruckNumber();
         driverID = currTR.getDriverID();
         origin = currTR.getOrigin();
-        destinations = currTR.getDestinations();
+        destinations = currTR.getSuppliers();
         if (currTR.getTRReplace()!= -1){
             TRReplace = new FacadeTruckingReport( currTR.getTRReplace());
         }

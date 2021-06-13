@@ -1,21 +1,23 @@
 package ServiceLayer;
 
-import BusinessLayer.TruckingPackage.ResourcesPackage.*;
+import BusinessLayer.InventoryPackage.Item;
+import BusinessLayer.Notification;
+import BusinessLayer.SuppliersPackage.OrderPackage.Order;
+import InfrastructurePackage.Pair;
 import ServiceLayer.FacadeObjects.*;
+import ServiceLayer.Response.ResponseT;
 
 import javax.management.openmbean.KeyAlreadyExistsException;
+import javax.naming.TimeLimitExceededException;
 import java.sql.SQLException;
 import java.time.LocalDate;
-import java.time.LocalTime;
-import java.util.HashMap;
-import java.util.InputMismatchException;
-import java.util.LinkedList;
-import java.util.NoSuchElementException;
+import java.util.*;
+
+import static java.lang.System.exit;
 
 public class TruckingService {
     private DeliveryService deliveryService;
     private ResourcesService resourcesService;
-    private FacadeTruckingReport currTR;
     private static TruckingService instance = null;
 
 
@@ -30,7 +32,439 @@ public class TruckingService {
         return instance;
     }
 
-    public void createTruckingReport() throws SQLException {
+ /*   TODO - things to check for debbuging
+        1. automate delivery set by getting order ( can be done alone)
+        2. addDriver to shift function
+        3. handleLeft over -  need to set new demands when no drivers are settled. and then create new shift
+        4. approve orders by manager
+        5. cancel orders by manager
+        6. need to check when adding to existing TR, adds to existing DF and creates new one
+
+
+      */
+
+
+    // TODO- need to add Notifications where needed
+
+
+    /**
+     * this method receives an Order and returns and Linked List of items that couldn't been delivered
+     * ->  if an item couldn't been delivered, it will be stored in the demands map. will be
+     * set to a delivery as soon as a new shift will we set.
+     * delivery set priority:
+     * 1.   next 7 days, existing deliveries
+     * 2.   this week, new deliveries
+     * 3.   add a driver to an existing shift this week (will also alert the Employee Manager)
+     * 4.   next week's existing TR -> alerts Trucking manager
+     * 5.   next week's new TR -> alerts Trucking manager
+     * 6.   adds to the Demands list
+     * @return List of pairs, item and its amount, only item that couldn't been delivered.
+     * if all items has been settled to a delivery, returns empty list
+     */
+    public ResponseT<  LinkedList<Pair<Integer, Integer>> > addOrder(Order order) throws SQLException {
+
+        int supplier  = getSupplierFromOrder(order);
+        LinkedList<Pair<Integer,Integer>> left = orderToItemsList(order);
+
+        LinkedList<FacadeTruckingReport> thisWeekReports =  getThisWeekReports();
+        // inserts into the next 7 days reports only
+        left = insertToExistingTR(left , supplier,thisWeekReports);
+        if (!left.isEmpty()) {
+
+            // creates reports for the next 7 days only, call drivers from home if needed
+            left = createReportsThisWeek(left, supplier);
+
+            if (!left.isEmpty()) {
+                // TODO - need to notify
+                LinkedList<FacadeTruckingReport> everyWeekReports = getActiveTruckingReports().getValue();
+                everyWeekReports.addAll(getWaitingTruckingReports().getValue());
+
+                // adds to existing TR from every week
+                left = insertToExistingTR(left, supplier, everyWeekReports);
+                if (!left.isEmpty()) {
+
+                    // creates reports for every possible date
+
+                    left = createReportsEveryWeek(left, supplier);
+                    if (!left.isEmpty()) {
+                       addDemandToPool(left,supplier);
+                    }
+                }
+            }
+        }
+
+
+
+        return new ResponseT<>(left);
+
+
+    }
+
+
+
+
+    /**
+     * this order must been done in a specific day. all of it
+     * if fails, deliveries none of it
+     * @param order -  the permanent order need to be settled
+     * @return true if succeeded, false other wise
+     */
+    public boolean addPermanentOrder(Order order) {
+        boolean succeed = false;
+        succeed  = canAddFullOrder(order);
+        if (succeed){
+            LocalDate date = order.getDate();
+            LinkedList<Pair<Integer, Integer>> left = orderToItemsList(order);
+            int supplier = getSupplierFromOrder(order);
+            LinkedList<FacadeTruckingReport> reports = getAvailableTRsByDate(date);
+            left  = insertToExistingTR(left, supplier, reports);
+
+
+            left =  createReportsForDate(left, supplier, date);
+
+            if (!left.isEmpty()){
+                System.out.println(("for some reason - didn't recognized the needed weight to possible"));
+                exit(1);
+            }
+        }
+        // TODO - need to check why it says always true
+        return succeed;
+    }
+
+
+
+    public ResponseT< LinkedList<Notification> > getNotifications(){
+        return new ResponseT<>(DeliveryService.getInstance().getNotifications());
+    }
+
+    public ResponseT<  LinkedList<FacadeDriver> >getDrivers(){
+        return new ResponseT(resourcesService.getDrivers());
+    }
+
+    public ResponseT< LinkedList<FacadeTruck> > getTrucks(){
+        return new ResponseT<>(resourcesService.getTrucks());
+    }
+
+    public ResponseT<  LinkedList<FacadeDemand> > getDemands(){
+        return new ResponseT<LinkedList<FacadeDemand>>(deliveryService.getDemands());
+    }
+
+    public ResponseT<  LinkedList<FacadeTruckingReport> > getActiveTruckingReports(){
+        return  new ResponseT<>(deliveryService.getActiveTruckingReports());
+    }
+
+
+    public ResponseT<  LinkedList<FacadeTruckingReport> > getWaitingTruckingReports(){
+        return  new ResponseT<>(deliveryService.getWaitingTruckingReports());
+    }
+
+
+    public ResponseT<  LinkedList<FacadeTruckingReport >> getOldTruckingReports(){
+        return  new ResponseT<>(deliveryService.getOldTruckingReports());
+    }
+
+
+    public void addTruck(String model, String licenseNumber, int weightNeto, int maxWeight) throws KeyAlreadyExistsException, SQLException {
+        resourcesService.addTruck(model, licenseNumber, weightNeto, maxWeight);
+    }
+    public void managerApproveTruckReport(Integer trID) throws TimeLimitExceededException {
+        deliveryService.managerApproveTruckReport(trID);
+    }
+    public void managerCancelTruckReport(Integer trID) throws TimeLimitExceededException {
+        deliveryService.managerCancelTruckReport(trID);
+    }
+    // TODO - employees should call this function
+    public void handleLeftOvers() {
+        LinkedList<FacadeDemand> demands =  getDemands().getValue();
+
+        for (FacadeDemand facadeDemand : demands){
+
+            int supplier    = facadeDemand.getSupplier();
+            LinkedList< Pair<Integer,Integer>> item = new LinkedList<>();
+            item.add (new Pair<>(facadeDemand.getItemID(), facadeDemand.getAmount()));
+            // TODO - maybe new method so it wont alert now??
+            LinkedList<FacadeTruckingReport> thisWeekReports =  getThisWeekReports();
+            // inserts into the next 7 days reports only
+            item = insertToExistingTR(item , supplier,thisWeekReports);
+            if (!item.isEmpty()) {
+
+                // creates reports for the next 7 days only, call drivers from home if needed
+                item = createReportsThisWeek(item, supplier);
+                if (!item.isEmpty()) {
+                    LinkedList<FacadeTruckingReport> everyWeekReports = getActiveTruckingReports().getValue();
+                    everyWeekReports.addAll(getWaitingTruckingReports().getValue());
+
+                    // adds to existing TR from every week
+                    item = insertToExistingTR(item, supplier, everyWeekReports);
+                    if (!item.isEmpty()) {
+
+                        // creates reports for every possible date
+
+                        item = createReportsEveryWeek(item, supplier);
+                    }
+
+
+                }
+            }
+            deliveryService.setItemNewAmount(item.getFirst().getFirst(), item.getFirst().getSecond() , supplier);
+
+
+        }
+
+    }
+
+
+
+    public ResponseT< FacadeTruckingReport> getTruckReport(int id){
+        return  new ResponseT<FacadeTruckingReport>( deliveryService.getTruckReport(id) );
+
+    }
+    public ResponseT< FacadeDeliveryForm> getDeliveryForm(int id){
+        return  new ResponseT<FacadeDeliveryForm>( deliveryService.getDeliveryForm(id) );
+    }
+
+    /**
+     * this method tries to insert as much as possible items to the received trucking Reports
+     * @param reports available TruckingReports
+     * @param itemsToInsert - List< Pair< itemId, Amount >>
+     * @param supplier -  delivery area of the Order
+     * @return items left to insert
+     */
+    private LinkedList<Pair<Integer, Integer>>
+    insertToExistingTR(LinkedList<Pair<Integer, Integer>> itemsToInsert,int supplier, LinkedList<FacadeTruckingReport> reports){
+        LinkedList<Pair<Integer, Integer>> left = itemsToInsert;
+        int area = getDeliveryArea(supplier);
+        for (FacadeTruckingReport report : reports){
+            if (!left.isEmpty()) {
+                int capacity = getMaxWeight(report);
+                LinkedList<Integer> reportAreas = getReportAreas(report);
+                //first iterates through reports, tries to add by delivery area
+
+                if (reportAreas.contains(area)) {
+
+                    left = deliveryService.insertItemsToTruckReport(left, supplier , capacity, report.getID());
+                }
+            }
+
+        }
+        if (! left.isEmpty()) {
+            for (FacadeTruckingReport report : reports) {
+                int capacity = getMaxWeight(report);
+                left = deliveryService.insertItemsToTruckReport(left, supplier, capacity, report.getID());
+            }
+        }
+        return left;
+    }
+
+
+    /**
+     *
+     * @param tr -  truck report to check
+     * @return returns min weight truck and driver can handle
+     */
+    private int getMaxWeight(FacadeTruckingReport tr){
+       return resourcesService.getMaxWeight(tr.getDriverID(),tr.getTruckNumber());
+
+    }
+
+
+    /**
+     *      this method creates new Trucking reports for the received items.
+     *      preferably sorted by delivery area
+     *      if not possible-> add new drivers to shift
+     *      only for the next 7 days
+     *
+     * @param items -> pair is < ItemID, Amount>
+     * @param supplier -> supplier id
+     *
+     * @return < left items ,LinkedList of the created TruckingReports>>
+     */
+    private LinkedList<Pair<Integer,Integer>>
+    createReportsThisWeek(    LinkedList<Pair<Integer,Integer>>  items , int supplier ){
+
+        for (LocalDate currDate  = LocalDate.now(); currDate.isBefore(LocalDate.now().plusDays(8)); currDate = currDate.plusDays(1)){
+            items = createReportsForDate(items, supplier,currDate);
+        }
+        return items;
+    }
+
+    private LinkedList<Pair<Integer,Integer>>
+    createReportsEveryWeek( LinkedList<Pair<Integer,Integer>>  items , int supplier  ){
+        LocalDate date = getLastShiftDate();
+        for (LocalDate currDate  = LocalDate.now(); currDate.isBefore(LocalDate.now().plusDays(8)); currDate = currDate.plusDays(1)){
+            items = createReportsForDate(items, supplier,currDate);
+        }
+        return items;
+    }
+
+
+    private LinkedList<Pair<Integer,Integer>>
+    createReportsForDate( LinkedList<Pair<Integer,Integer>>  items , int supplier , LocalDate date ){
+        boolean finish = false;
+        while (true){
+            // TODO need to handle hour
+            Pair<FacadeDriver, FacadeTruck> driverAndTruck = getDriverAndTruckFromExisting(date);
+            if (driverAndTruck == null){
+                driverAndTruck = getDriverAndTruckFromPool(date);
+                //TODO - notify if not null (maybe inside function
+            }
+            finish = (items.isEmpty() || driverAndTruck ==  null);
+            if (finish)
+                break;
+            int maxWeight = Math.min(driverAndTruck.getFirst().getLicenseType().getSize(),(driverAndTruck.getSecond().getMaxWeight() - driverAndTruck.getSecond().getWeightNeto() ));
+            items = deliveryService.createReport(items, driverAndTruck.getFirst().getID(), driverAndTruck.getSecond().getLicenseNumber() ,maxWeight,  supplier, date);
+        }
+        return items;
+
+    }
+    private  HashMap<LocalDate, HashMap<Integer, LinkedList<String>>>
+    getDaysAndDrivers() throws IllegalArgumentException {
+        return resourcesService.getDayAndDrivers();
+    }
+
+    private LinkedList<Pair<Integer, Integer>> orderToItemsList(Order order) {
+        LinkedList<Pair<Integer,Integer>> left = new LinkedList<>();
+        for (Map.Entry<Integer,Integer> entry : order.getProducts().entrySet()){
+            left.add(new Pair<>(entry.getKey(),entry.getValue()));
+        }
+        return left;
+    }
+
+    /**
+     * this method check whether we can deliver the whole order in the wanted date. checks by overall weight
+     * to the day's overall weight
+     * @param order already has the wanted date
+     * @return true if can, false if cannot
+     */
+    private boolean canAddFullOrder(Order order){
+        LocalDate date =  order.getDate();
+        int left = getDayLeftWeight(date);
+        int totalWeight = getOrderTotalWeight(order);
+        // TODO - need to make sure the truck and drivers for new trucking reports will actually be chosen
+        return ( totalWeight <= left);
+    }
+
+    /**
+     *
+     * @param date -  date to check
+     * @return overall weight can add to overall deliveries in this date includes the not created TRs
+     */
+    private int getDayLeftWeight(LocalDate date){
+        LinkedList<FacadeTruckingReport> reports = deliveryService.getTruckReportsByDate(date);
+        int total = 0;
+        for( FacadeTruckingReport ftr : reports){
+            total += getReportLeftWeight(ftr);
+        }
+        total += getPossibleWeightByDate(date);
+        return total;
+    }
+
+
+    private int getPossibleWeightByDate(LocalDate date) {
+        LinkedList<FacadeTruckingReport> reports = getAvailableTRsByDate(date);
+        throw new UnsupportedOperationException();
+        // TODO - employees need to make a new method, returns boolean and do no insert into shift
+    }
+
+
+    /**
+     *
+     * @param date
+     * @return pair < < driver, truck> , Shift>
+     */
+    private Pair <Pair<FacadeDriver, FacadeTruck>,Integer > getDriverAndTruckFromExisting (LocalDate date){
+        return resourcesService.findDriverAndTruckForDateFromExisting(date,getBusyTrucksByDate(date));
+    }
+
+    private Pair<FacadeDriver, FacadeTruck> getDriverAndTruckFromPool (LocalDate date){
+        return resourcesService.findDriverAndTruckForDateFromPool(date,getBusyTrucksByDate(date));
+    }
+
+    /**
+     * inserts the items into demands pool
+     * @param items -> itemId, Amount
+     * @param  supplier  ->  supplier id
+     */
+    private void addDemandToPool(LinkedList<Pair<Integer, Integer>> items , int supplier) throws SQLException {
+        deliveryService.addDemandToPool(items, supplier);
+    }
+
+
+    private LinkedList<FacadeTruckingReport> getAvailableTRsByDate(LocalDate date) {
+        // TODO implement
+        return deliveryService.getAvailableTRsByDate(date);
+    }
+    private int getSupplierFromOrder(Order order) {
+        return order.getSupplier().getSc().getCompanyNumber();
+    }
+
+    private LinkedList<FacadeTruckingReport> getThisWeekReports() {
+        LinkedList<FacadeTruckingReport> allReports = getActiveTruckingReports().getValue();
+        LinkedList<FacadeTruckingReport> waiting = getWaitingTruckingReports().getValue();
+        allReports.addAll(waiting);
+        LinkedList<FacadeTruckingReport> thisWeekReports = new LinkedList<>();
+        // filters the reports, remains only the next 7 day's reports
+        for (FacadeTruckingReport ftr: allReports){
+            if (ftr.getDate().isBefore(LocalDate.now().plusDays(7))){
+                thisWeekReports.add(ftr);
+            }
+        }
+        return thisWeekReports;
+    }
+
+    private Pair<LinkedList<String>,LinkedList<String>> getBusyTrucksByDate(LocalDate date)
+    {
+        return deliveryService.getBusyTrucksByDate(date);
+    }
+
+    private int getReportLeftWeight(FacadeTruckingReport report) {
+        int curr = deliveryService.getTruckReportCurrentWeight(report.getID());
+        int max = getMaxWeight(report);
+        return max - curr;
+    }
+
+
+
+    private int getOrderTotalWeight(Order order) {
+        Map<Integer, Integer> items = order.getProducts();
+        int total = 0;
+        for (Map.Entry<Integer,Integer> entry : items.entrySet()){
+            total += deliveryService.getItemTotalWeight(entry.getKey(), entry.getValue());
+        }
+        return total;
+    }
+
+    private LinkedList<Integer> getReportAreas(FacadeTruckingReport report) {
+        return deliveryService.getTruckReportDeliveryAreas(report.getID());
+    }
+
+
+    private LocalDate getLastShiftDate() {
+        // TODO - need to implement when possible
+        throw new UnsupportedOperationException();
+    }
+
+
+    private int getDeliveryArea(int supplier ){throw new UnsupportedOperationException();}
+
+
+    private Item getItem(int id, int supplier){
+        throw new UnsupportedOperationException();
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+  /*  public void createTruckingReport() throws SQLException {
         int id = deliveryService.createTruckingReport();
         currTR = new FacadeTruckingReport(id);
 
@@ -240,14 +674,14 @@ public class TruckingService {
 
         if (deliveryService.checkIfAllCompleted(trID)) {
             FacadeTruckingReport truckingReport = deliveryService.getTruckReport(trID);
-    /*         resourcesService.makeAvailable_Driver(truckingReport.getDriverID());
-             resourcesService.makeAvailable_Truck(truckingReport.getTruckNumber());*/
+    *//*         resourcesService.makeAvailable_Driver(truckingReport.getDriverID());
+             resourcesService.makeAvailable_Truck(truckingReport.getTruckNumber());*//*
             deliveryService.archive(trID);
 
         }
     }
 
-/*
+*//*
     public void replaceTruck(int trid, String truckNumber, int weight) throws IllegalStateException,IllegalArgumentException,ProviderMismatchException{
         FacadeTruckingReport ftr=getTruckReport(trid);
         String old_truck=ftr.getTruckNumber();
@@ -286,7 +720,7 @@ public class TruckingService {
         resourcesService.replaceTruck(old_truck,truckNumber);
 
 
-    }*/
+    }*//*
 
     public int getSiteDeliveryArea(int site) {
         return deliveryService.getSiteDeliveryArea(site);
@@ -368,8 +802,8 @@ public class TruckingService {
         int replacedId = deliveryService.moveDemandsFromCurrentToReport(tr);
         FacadeTruckingReport replaced = deliveryService.getTruckReport(replacedId);
         // TODO need to check why it is here
-  /*      resourcesService.makeUnavailable_Driver(replaced.getDriverID());
-        resourcesService.makeUnavailable_Truck(replaced.getTruckNumber());*/
+  *//*      resourcesService.makeUnavailable_Driver(replaced.getDriverID());
+        resourcesService.makeUnavailable_Truck(replaced.getTruckNumber());*//*
 
     }
 
@@ -381,8 +815,8 @@ public class TruckingService {
         if (fd.getLicenseType().getSize() < (weight + ft.getWeightNeto()))
             throw new InputMismatchException("the driver cannot drive with this weight");
         // TODO need to check why its here
-      /*  resourcesService.makeUnavailable_Truck(truckNumber);
-        resourcesService.makeUnavailable_Driver(driverID);*/
+      *//*  resourcesService.makeUnavailable_Truck(truckNumber);
+        resourcesService.makeUnavailable_Driver(driverID);*//*
 
         deliveryService.setNewTruckToTR(tr.getID(), truckNumber);
         deliveryService.setNewDriverToTR(tr.getID(), driverID);
@@ -465,7 +899,7 @@ public class TruckingService {
         HashMap driver_cons =  deliveryService.getDriverConstraintsFromUpload();
         HashMap trucks_cons = deliveryService.getTruckConstraintsFromUpload();
         resourcesService.upload(driver_cons,trucks_cons);
-    }
+    }*/
 }
 
 

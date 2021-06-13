@@ -1,28 +1,34 @@
 package BusinessLayer.TruckingPackage.DeliveryPackage;
 
+import DataAccessLayer.DalControllers.TruckingControllers.DalDeliveryFormController;
+import DataAccessLayer.DalControllers.TruckingControllers.DalItemsOnDFController;
 import DataAccessLayer.DalObjects.TruckingObjects.DalDeliveryForm;
+import DataAccessLayer.DalObjects.TruckingObjects.DalItemsOnDF;
+import InfrastructurePackage.Pair;
 
 import java.sql.SQLException;
 import java.util.HashMap;
 
 public class DeliveryForm {
     private int ID;
-    private int origin;
     private int destination;
     private HashMap<Integer, Integer> items;
     private int leavingWeight;
     private int trID;
     private boolean completed;
 
-    public DeliveryForm(int ID, int origin, int destination, HashMap<Integer, Integer> items,
-                        int leavingWeight, int trID) throws SQLException {
+    public DeliveryForm(int ID,  int destination, HashMap<Integer, Integer> items,
+                        int leavingWeight, int trID)  {
         this.ID = ID;
-        this.origin = origin;
         this.destination = destination;
         this.items = items;
         this.leavingWeight = leavingWeight;
         this.trID = trID;
         this.completed = false;
+        try {
+            DalDeliveryFormController.getInstance().insert(new DalDeliveryForm(ID,destination,completed,leavingWeight,trID));
+        }
+        catch (SQLException e){}
 
     }
 
@@ -30,7 +36,6 @@ public class DeliveryForm {
 
         this.ID = df.getID();
         this.completed = df.isCompleted();
-        this.origin = df.getOrigin();
         this.destination = df.getDestination();
         this.items = df.getItems();
         this.leavingWeight = df.getLeavingWeight();
@@ -42,17 +47,26 @@ public class DeliveryForm {
     public DeliveryForm(DalDeliveryForm deliveryForm) {
         this.ID = deliveryForm.getID();
         this.completed = deliveryForm.isCompleted();
-        this.origin = deliveryForm.getOrigin();
         this.destination = deliveryForm.getDestination();
         this.leavingWeight = deliveryForm.getLeavingWeight();
         this.trID = deliveryForm.getTRID();
         this.items = new HashMap<>();
     }
 
-    public void addItem(int itemID, int amount) {
+    public void addItem(int itemID, int amount) throws SQLException {
         if (items == null)
             items = new HashMap<>();
-        items.put(itemID, amount);
+        if (items.containsKey(itemID)){
+            int prevAmount  = items.get(itemID);
+            amount  = amount  + prevAmount;
+            items.put(itemID, amount);
+            DalItemsOnDFController.getInstance().update(new DalItemsOnDF(this.ID,itemID,amount));
+        }
+        else {
+            items.put(itemID, amount);
+            DalItemsOnDFController.getInstance().insert(new DalItemsOnDF(this.ID, itemID, amount));
+        }
+
     }
 
     public HashMap<Integer, Integer> getItems() {
@@ -71,9 +85,6 @@ public class DeliveryForm {
         return leavingWeight;
     }
 
-    public int getOrigin() {
-        return origin;
-    }
 
     public int getTrID() {
         return trID;
@@ -85,10 +96,12 @@ public class DeliveryForm {
 
     public void setCompleted() throws SQLException {
         this.completed = true;
+        DalDeliveryFormController.getInstance().update(new DalDeliveryForm(this.ID,this.destination,this.completed,this.leavingWeight,this.trID));
     }
 
     public void setDestination(int destination) throws SQLException {
         this.destination = destination;
+        DalDeliveryFormController.getInstance().update(new DalDeliveryForm(this.ID,this.destination,this.completed,this.leavingWeight,this.trID));
 
     }
 
@@ -103,11 +116,10 @@ public class DeliveryForm {
 
     public void setLeavingWeight(int leavingWeight) throws SQLException {
         this.leavingWeight = leavingWeight;
+        DalDeliveryFormController.getInstance().update(new DalDeliveryForm(this.ID,this.destination,this.completed,this.leavingWeight,this.trID));
     }
 
-    public void setOrigin(int origin) throws SQLException {
-        this.origin = origin;
-    }
+
 
     public void setTrID(int trID) throws SQLException {
         this.trID = trID;

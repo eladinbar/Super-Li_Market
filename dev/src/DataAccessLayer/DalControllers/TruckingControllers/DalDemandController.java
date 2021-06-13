@@ -11,7 +11,7 @@ public class DalDemandController extends Employee_Trucking_DALController_Interfa
     private static DalDemandController controller;
 
     private DalDemandController()
-    {//TODO - Check when tables created
+    {
         super();
         this.tableName="Demands";
         this.columnNames=new String[3];

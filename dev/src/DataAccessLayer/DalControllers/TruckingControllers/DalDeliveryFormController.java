@@ -9,16 +9,16 @@ import java.util.LinkedList;
 public class DalDeliveryFormController extends Employee_Trucking_DALController_Interface {
 
 
-    //TODO - :)
+
     private static DalDeliveryFormController controller;
 
     private DalDeliveryFormController(){
-        //TODO - Check when tables created
+
         super();
         this.tableName="DeliveryForms";
-        this.columnNames=new String[6];
-        columnNames[0]="ID";columnNames[1]="origin";columnNames[2]="destination";
-        columnNames[3]="completed";columnNames[4]="leavingWeight";columnNames[5]="TRID";
+        this.columnNames=new String[5];
+        columnNames[0]="ID";columnNames[1]="destination";
+        columnNames[2]="completed";columnNames[3]="leavingWeight";columnNames[4]="TRID";
     }
 
      public static DalDeliveryFormController getInstance() throws SQLException {
@@ -35,15 +35,14 @@ public class DalDeliveryFormController extends Employee_Trucking_DALController_I
         if (deliveryForm.isCompleted())
             completed=1;
         Connection conn= DriverManager.getConnection(connection);
-        String query= "INSERT INTO "+tableName+" VALUES (?,?,?,?,?,?)";
+        String query= "INSERT INTO "+tableName+" VALUES (?,?,?,?,?)";
         try{
             PreparedStatement st=conn.prepareStatement(query);
             st.setInt(1,deliveryForm.getID());
-            st.setInt(2,deliveryForm.getOrigin());
-            st.setInt(3,deliveryForm.getDestination());
-            st.setInt(4,completed);
-            st.setInt(5,deliveryForm.getLeavingWeight());
-            st.setInt(6,deliveryForm.getTRID());
+            st.setInt(2,deliveryForm.getDestination());
+            st.setInt(3,completed);
+            st.setInt(4,deliveryForm.getLeavingWeight());
+            st.setInt(5,deliveryForm.getTRID());
 
             st.executeUpdate();
 
@@ -65,17 +64,15 @@ public class DalDeliveryFormController extends Employee_Trucking_DALController_I
         if (deliveryForm.isCompleted())
             completed=1;
         Connection conn=DriverManager.getConnection(connection);
-        String query="UPDATE "+tableName+" SET "+columnNames[1]+"=?,"+columnNames[2]+"=?,"+columnNames[3]+"=?,"+columnNames[4]+"=?,"+
-                columnNames[5]+"=? WHERE ("+columnNames[0]+"= ?)";
+        String query="UPDATE "+tableName+" SET "+columnNames[1]+"=?,"+columnNames[2]+"=?,"+columnNames[3]+"=?,"+columnNames[4]+"=?"+ "WHERE ("+columnNames[0]+"= ?)";
         try{
             PreparedStatement st=conn.prepareStatement(query);
 
-            st.setInt(1,deliveryForm.getOrigin());
-            st.setInt(2,deliveryForm.getDestination());
-            st.setInt(3,completed);
-            st.setInt(4,deliveryForm.getLeavingWeight());
-            st.setInt(5,deliveryForm.getTRID());
-            st.setInt(6,deliveryForm.getID());
+            st.setInt(1,deliveryForm.getDestination());
+            st.setInt(2,completed);
+            st.setInt(3,deliveryForm.getLeavingWeight());
+            st.setInt(4,deliveryForm.getTRID());
+            st.setInt(5,deliveryForm.getID());
             st.executeUpdate();
 
 
@@ -114,9 +111,9 @@ public class DalDeliveryFormController extends Employee_Trucking_DALController_I
             while (resultSet.next())
             {
                 boolean completed=resultSet.getString(4).equals("true");
-                reports.add(new DalDeliveryForm(resultSet.getInt(1),resultSet.getInt(2),
-                        resultSet.getInt(3),completed,resultSet.getInt(5),
-                        resultSet.getInt(6)));
+                reports.add(new DalDeliveryForm(resultSet.getInt(1),
+                        resultSet.getInt(2),completed,resultSet.getInt(3),
+                        resultSet.getInt(5)));
             }
         }
         catch (SQLException e)
@@ -126,17 +123,16 @@ public class DalDeliveryFormController extends Employee_Trucking_DALController_I
         return reports;
     }
     public boolean createTable() throws SQLException {
+        //TODO - Check exactName in supplierCard
         Connection conn = DriverManager.getConnection(connection);
         String query = "CREATE TABLE IF NOT EXISTS DeliveryForms("
                 +"ID INTEGER,"
-                +"origin INTEGER,"
                 +"destination INTEGER,"
                 +"completed INTEGER,"
                 +"leavingWeight INTEGER,"
                 +"TRID INTEGER,"
                 +"FOREIGN KEY (TRID) REFERENCES TruckingReports(ID) ON DELETE NO ACTION ON UPDATE CASCADE,"
-                +"FOREIGN KEY (origin) REFERENCES Sites (siteID) ON DELETE NO ACTION ON UPDATE CASCADE,"
-                +"FOREIGN KEY (destination) REFERENCES Sites (siteID) ON DELETE NO ACTION ON UPDATE CASCADE,"
+                +"FOREIGN KEY (destination) REFERENCES SupplierCard (siteID) ON DELETE NO ACTION ON UPDATE CASCADE,"
 
                 +"PRIMARY KEY (ID));";
         try {

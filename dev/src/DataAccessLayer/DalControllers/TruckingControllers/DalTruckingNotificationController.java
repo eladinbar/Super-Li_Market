@@ -1,39 +1,38 @@
 package DataAccessLayer.DalControllers.TruckingControllers;
 
 import DataAccessLayer.DalControllers.Employee_Trucking_DALController_Interface;
-import DataAccessLayer.DalObjects.TruckingObjects.DalDriver;
+import DataAccessLayer.DalObjects.TruckingObjects.DalTruckingNotification;
 
 import java.sql.*;
 import java.util.LinkedList;
 
-public class DalDriverController extends Employee_Trucking_DALController_Interface {
+public class DalTruckingNotificationController extends Employee_Trucking_DALController_Interface {
+    private static DalTruckingNotificationController controller;
+    //TODO - check how to createTable without PK
 
-    private static DalDriverController controller;
-
-    private DalDriverController(){
+    private DalTruckingNotificationController(){
         super();
-        this.tableName="Drivers";
-        this.columnNames=new String[6];
-        columnNames[0]="ID";columnNames[1]="name";columnNames[2]="license";
+        this.tableName="TruckingNotifications";
+        this.columnNames=new String[1];
+        columnNames[0]="Content";
     }
 
-    public static DalDriverController getInstance() throws SQLException {
-        if (controller==null) {controller=new DalDriverController();
+    public static DalTruckingNotificationController getInstance() throws SQLException {
+        if (controller==null) {controller=new DalTruckingNotificationController();
             controller.createTable();
         }
         return controller;
     }
 
 
-    public boolean insert(DalDriver dalDriver) throws SQLException {
+    public boolean insert(DalTruckingNotification notification) throws SQLException {
 
         Connection conn= DriverManager.getConnection(connection);
-        String query= "INSERT INTO "+tableName+" VALUES (?,?,?)";
+        String query= "INSERT INTO "+tableName+" VALUES (?)";
         try{
             PreparedStatement st=conn.prepareStatement(query);
-            st.setString(1,dalDriver.getID());
-            st.setString(2,dalDriver.getName());
-            st.setString(3,dalDriver.getLicense());
+            st.setString(1,notification.getContent());
+
 
             st.executeUpdate();
 
@@ -50,14 +49,12 @@ public class DalDriverController extends Employee_Trucking_DALController_Interfa
 
     }
 
-    public boolean update(DalDriver dalDriver) throws SQLException {
+    public boolean update(DalTruckingNotification notification) throws SQLException {//TODO do we need it? if we do need to check how
         Connection conn=DriverManager.getConnection(connection);
-        String query="UPDATE "+tableName+" SET "+columnNames[1]+"=?,"+columnNames[2]+"=? WHERE ("+columnNames[0]+"= ?)";
+        String query="UPDATE "+tableName+" SET "+columnNames[1]+"=?"+" WHERE ("+columnNames[0]+"= ?)";
         try{
             PreparedStatement st=conn.prepareStatement(query);
-            st.setString(1,dalDriver.getName());
-            st.setString(2,dalDriver.getLicense());
-            st.setString(3,dalDriver.getID());
+            st.setString(1,notification.getContent());
             st.executeUpdate();
 
 
@@ -71,12 +68,12 @@ public class DalDriverController extends Employee_Trucking_DALController_Interfa
         return true;
     }
 
-    public boolean delete(DalDriver dalDriver) throws SQLException {
+    public boolean delete(DalTruckingNotification notification) throws SQLException {//TODO do we need it? if we do need to check how
         Connection conn=DriverManager.getConnection(connection);
         String query="DELETE FROM " +tableName+ " WHERE("+columnNames[0]+"=?)";
         try {
             PreparedStatement st=conn.prepareStatement(query);
-            st.setString(1,dalDriver.getID());
+            st.setString(1,notification.getContent());
             st.executeUpdate();
         }
         catch (SQLException e)
@@ -85,29 +82,26 @@ public class DalDriverController extends Employee_Trucking_DALController_Interfa
         }
         return true;
     }
-    public LinkedList<DalDriver> load () throws SQLException// Select From DB
+    public LinkedList<DalTruckingNotification> load () throws SQLException// Select From DB
     {
-        LinkedList<DalDriver> drivers = new LinkedList<>();
+        LinkedList<DalTruckingNotification> drivers = new LinkedList<>();
         Connection conn = DriverManager.getConnection(connection);
         String query = "SELECT * FROM "+tableName;
         try {
             PreparedStatement st = conn.prepareStatement(query);
             ResultSet resultSet = st.executeQuery();
             while (resultSet.next()) {
-                drivers.add(new DalDriver(resultSet.getString(1), resultSet.getString(2),
-                        resultSet.getString(3)));
+                drivers.add(new DalTruckingNotification(resultSet.getString(1)));
             }
         } catch (SQLException e) {
             throw new SQLException(e.getMessage());
         }
         return drivers;
     }
-    public boolean createTable() throws SQLException {
+    public boolean createTable() throws SQLException {//TODO need to check how to create without PK
         Connection conn = DriverManager.getConnection(connection);
-        String query = "CREATE TABLE IF NOT EXISTS Drivers("
-                +"ID TEXT,"
-                +"name TEXT,"
-                +"license TEXT,"
+        String query = "CREATE TABLE IF NOT EXISTS TruckingNotifications("
+                +"ID Content,"
                 +"PRIMARY KEY (ID));";
         try {
             PreparedStatement st=conn.prepareStatement(query);
@@ -123,3 +117,4 @@ public class DalDriverController extends Employee_Trucking_DALController_Interfa
         return true;
     }
 }
+
