@@ -315,4 +315,17 @@ BufferedReader sc = new BufferedReader(new InputStreamReader(System.in));
             return null;
         return shiftTypes[choice - 1];
     }
+
+    public int storeKeeperMenu() {
+        System.out.println ("Choose your next action:\n" +
+                "1.Show a weekly shift schedule\n" +
+                "2.Show a single shift\n" +
+                "3.Add a new constraint\n" +
+                "4.delete an existing constraint\n" +
+                "5.Show my employee card\n" +
+                "6.Show constraints\n" +
+                "7.Store management\n" +
+                "8.Logout" );
+        return getInt ();
+    }
 }

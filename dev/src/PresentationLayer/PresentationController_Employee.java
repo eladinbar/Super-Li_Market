@@ -2,6 +2,7 @@ package PresentationLayer;
 
 import BusinessLayer.EmployeePackage.EmployeePackage.Role;
 import BusinessLayer.EmployeePackage.ShiftPackage.ShiftTypes;
+import BusinessLayer.Notification;
 import ServiceLayer.Employee_Package_FacadeService;
 import ServiceLayer.FacadeObjects.FacadeConstraint;
 import ServiceLayer.FacadeObjects.FacadeEmployee;
@@ -22,11 +23,13 @@ public class PresentationController_Employee {
     Employee_Package_FacadeService facadeService;
     MenuPrinter_Employee menuPrinter;
     StringConverter stringConverter;
+    HashMap<Role, List<Notification>> alerts;
 
     public PresentationController_Employee() {
         facadeService = new Employee_Package_FacadeService ( );
         menuPrinter = new MenuPrinter_Employee ( );
         stringConverter =  StringConverter.getInstance ( );
+        alerts = new HashMap<> (  );
     }
 
     public void start() throws SQLException {
@@ -533,7 +536,14 @@ public class PresentationController_Employee {
                 menuPrinter.print ( employee.getErrorMessage () );
                 return false;
             }
-            if(employee.value.isManager ()) {
+            if(alerts.containsKey (role))
+            {
+                for(Notification msg : alerts.get ( role )){
+                    menuPrinter.print ( msg.getContent () );
+                    alerts.get ( role ).remove (msg);
+                }
+            }
+            if(employee.value.getRole ().equals ( Role.humanResourcesManager )) {
                 if(first) {
                     createShiftTypes ( );
                     menuPrinter.print ( "For continuing you have to create logistics manager account" );
@@ -558,6 +568,11 @@ public class PresentationController_Employee {
                 LogisticsManagerMenu.getInstance ().mainMenu ();
                 logout ();
                 while(!login (false));
+            } else if(role.equals ( Role.storeKeeper )) {
+                choice = menuPrinter.storeKeeperMenu ();
+                handleStoreKeeperChoice ( choice );
+            } else if(role.equals ( Role.branchManager ) || role.equals ( Role.branchManagerAssistant )) {
+                //מנהל חנות
             } else {
                 choice = menuPrinter.simpleEmployeeMenu ();
                 handleSimpleEmployeeChoice ( choice );
@@ -566,6 +581,15 @@ public class PresentationController_Employee {
         }
         else
             return false;
+    }
+
+    private void handleStoreKeeperChoice(int choice) throws SQLException {
+        if(choice == 7) {
+            //go to store keeper menu
+        }
+        if(choice == 8)
+            choice --;
+        handleSimpleEmployeeChoice ( choice );
     }
 
     private void getShift() {
@@ -819,5 +843,12 @@ public class PresentationController_Employee {
                 menuPrinter.print ( s + "\n" );
             }
         }
+    }
+
+    public void addAnAlert(Notification msg, Role role){
+        if(!alerts.containsKey ( role )) {
+            alerts.put ( role, new ArrayList<> ( ) );
+        }
+        alerts.get ( role ).add ( msg );
     }
 }
