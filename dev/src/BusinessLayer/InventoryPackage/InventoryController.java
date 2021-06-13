@@ -277,6 +277,9 @@ public class InventoryController {
                 parentCategory.addSubCategory(savedCategory);
             }
             List<Category> subCategories = getBusinessSubCategories(savedCategory.getName());
+            for (Category subCategory : subCategories) {
+                savedCategory.getSubCategories().removeIf(dudSubCategory -> subCategory.getName().equals(dudSubCategory.getName()));
+            }
             savedCategory.addSubCategories(subCategories);
             return savedCategory;
         }
@@ -592,7 +595,11 @@ public class InventoryController {
 
     public List<Item> categoryReport(String categoryName) {
         Category category = getCategory(categoryName);
+
         List<Item> inventoryCategoryReportList = new ArrayList<>(category.getItems());
+        for (Category subCategory : category.getSubCategories())
+            inventoryCategoryReportList.addAll(subCategory.getItems());
+
         return inventoryCategoryReportList;
     }
 

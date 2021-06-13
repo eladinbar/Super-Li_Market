@@ -344,6 +344,7 @@ public class PresentationController implements Runnable {
         if (categoryItems.errorOccurred()) {
             menu.errorPrompt(categoryItems.getMessage());
         }
+        catR.value.setItems(categoryItems.value);
         menu.printEntity(catR.getValue());
     }
 

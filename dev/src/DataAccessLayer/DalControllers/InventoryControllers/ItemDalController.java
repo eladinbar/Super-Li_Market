@@ -59,7 +59,7 @@ public class ItemDalController extends DalController<DalItem> {
     @Override
     public boolean insert(DalItem item) throws SQLException {
         try (Connection conn = DriverManager.getConnection(connectionString)) {
-            String command = "INSERT OR IGNORE INTO " + tableName + " VALUES (?,?, ?, ?, ?, ?,?, ?, ?, ?, ?)";
+            String command = "INSERT OR IGNORE INTO " + tableName + " VALUES (?,?, ?, ?, ?, ?,?, ?, ?, ?, ?, ?)";
             PreparedStatement stmt = conn.prepareStatement(command);
             stmt.setInt(1, item.getItemID());
             stmt.setString(2, item.getName());
