@@ -4,10 +4,8 @@ import InfrastructurePackage.Pair;
 import ServiceLayer.Response.Response;
 import ServiceLayer.Response.ResponseT;
 import ServiceLayer.FacadeObjects.*;
-import ServiceLayer.FacadeObjects.FacadeProduct;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -79,5 +77,5 @@ public interface InventoryService {
 
     ResponseT<Pair<Map<Integer, Integer >,Map<Integer, String>>> getItemsInShortAndQuantities();
 
-    Response updateQuantityInventory(ArrayList<FacadeProduct> items);
+    Response updateQuantityInventory(Map<Integer, Integer> items);
 }
