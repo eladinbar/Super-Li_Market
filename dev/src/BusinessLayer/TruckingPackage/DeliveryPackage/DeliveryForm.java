@@ -6,8 +6,13 @@ import DataAccessLayer.DalObjects.TruckingObjects.DalDeliveryForm;
 import DataAccessLayer.DalObjects.TruckingObjects.DalItemsOnDF;
 import InfrastructurePackage.Pair;
 
+import java.awt.image.ImageProducer;
 import java.sql.SQLException;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Map;
+
+import static java.lang.System.exit;
 
 public class DeliveryForm {
     private int ID;

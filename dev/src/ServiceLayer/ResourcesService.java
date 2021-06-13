@@ -1,4 +1,5 @@
 package ServiceLayer;
+import BusinessLayer.EmployeePackage.EmployeeException;
 import BusinessLayer.TruckingPackage.ResourcesPackage.*;
 import InfrastructurePackage.Pair;
 import ServiceLayer.FacadeObjects.FacadeDriver;
@@ -12,6 +13,8 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
 import java.util.NoSuchElementException;
+
+import static java.lang.System.exit;
 
 public class ResourcesService {
     private ResourcesController rc;
@@ -51,9 +54,19 @@ public class ResourcesService {
      */
 
 
-    public Pair<FacadeDriver, FacadeTruck> findDriverAndTruckForDateFromPool(LocalDate date,Pair<LinkedList<String>,LinkedList<String>> busyTrucks){
-        Pair<Driver, Truck> p=rc.findDriverAndTruckForDateFromPool(date,busyTrucks);
-        Pair<FacadeDriver, FacadeTruck> result= new Pair<>(new FacadeDriver(p.getFirst()),new FacadeTruck(p.getSecond()));
+    //TODO reimplement
+    public Pair<Pair<FacadeDriver, FacadeTruck>,Integer> findDriverAndTruckForDateFromPool(LocalDate date,Pair<LinkedList<String>,LinkedList<String>> busyTrucks){
+        Pair<Pair<Driver, Truck>,Integer> p= null;
+        try {
+            p = rc.findDriverAndTruckForDateFromPool(date,busyTrucks);
+        } catch (EmployeeException e) {
+            e.printStackTrace();
+            exit(1);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            exit(1);
+        }
+        Pair<FacadeDriver, FacadeTruck> result= new Pair<>(new FacadeDriver(p.getFirst().getFirst()),new FacadeTruck(p.getFirst().getSecond()));
         return result;
     }
 
@@ -80,6 +93,22 @@ public class ResourcesService {
 
     public int getMaxWeight(String driverID, String truckNumber) {
         return rc.getMaxWeight(driverID,truckNumber);
+    }
+
+    public void deleteDriverConstarint(String id, LocalDate date, int leavingHour) {
+        rc.deleteDriverConstraint(id, date, leavingHour);
+    }
+
+    public void deleteTruckConstarint(String id, LocalDate date, int leavingHour) {
+        rc.deleteTruckConstraint(id, date, leavingHour);
+    }
+
+    public void addDriverConstarint(String id, LocalDate date, int turnTimeToShift) {
+        rc.addDriverConstraint(id,date,turnTimeToShift);
+    }
+
+    public void addTruckConstraint(String id, LocalDate date, int leavingHour) {
+        rc.addTruckConstraint(id,date,leavingHour);
     }
 /*
     public Truck chooseTruck(String truck,LocalDate date, int shift) throws NoSuchElementException, IllegalStateException {
@@ -160,21 +189,7 @@ public class ResourcesService {
         return output;
     }
 
-    public void deleteDriverConstarint(String id, LocalDate date, int leavingHour) {
-        rc.deleteDriverConstraint(id, date, leavingHour);
-    }
 
-    public void deleteTruckConstarint(String id, LocalDate date, int leavingHour) {
-        rc.deleteTruckConstraint(id, date, leavingHour);
-    }
-
-    public void addDriverConstarint(String id, LocalDate date, int turnTimeToShift) {
-        rc.addDriverConstraint(id,date,turnTimeToShift);
-    }
-
-    public void addTruckConstraint(String id, LocalDate date, int leavingHour) {
-        rc.addTruckConstraint(id,date,leavingHour);
-    }
 
     public void upload(HashMap driver_cons, HashMap trucks_cons) throws SQLException {
         rc.upload(driver_cons, trucks_cons);

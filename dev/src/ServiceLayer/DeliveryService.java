@@ -1,6 +1,6 @@
 package ServiceLayer;
 
-import BusinessLayer.Notification;
+
 import BusinessLayer.TruckingNotifications;
 import InfrastructurePackage.Pair;
 import ServiceLayer.FacadeObjects.FacadeDeliveryForm;
@@ -31,13 +31,13 @@ public class DeliveryService {
         return instance;
     }
 
-    public LinkedList<Integer> getTruckReportDestinations(int id){
+    public LinkedList<Integer> getTruckReportDestinations(int id) {
         return dc.getTruckReportSuppliers(id);
     }
-    public LinkedList<Integer>  getTruckReportDeliveryAreas(int id){
-        return getTruckReportDeliveryAreas(id);
-    }
 
+    public LinkedList<Integer> getTruckReportDeliveryAreas(int id) {
+        return dc.getReportAreas(id);
+    }
 
 
     public LinkedList<TruckingNotifications> getNotifications() {
@@ -45,14 +45,14 @@ public class DeliveryService {
     }
 
     public LinkedList<FacadeDemand> getDemands() {
-        return turnListDemandToFacade( dc.getDemands() );
+        return turnListDemandToFacade(dc.getDemands());
     }
 
     public LinkedList<FacadeTruckingReport> getActiveTruckingReports() {
         return turnListTruckingReportsToFacade(dc.getActiveTruckingReports());
     }
 
-    public LinkedList<FacadeTruckingReport>  getWaitingTruckingReports() {
+    public LinkedList<FacadeTruckingReport> getWaitingTruckingReports() {
         return turnListTruckingReportsToFacade(dc.getWaitingTruckingReports());
 
 
@@ -64,7 +64,12 @@ public class DeliveryService {
     }
 
     public void managerApproveTruckReport(Integer trID) throws TimeLimitExceededException {
-        dc.managerApproveTruckReport(trID);
+        try {
+            dc.managerApproveTruckReport(trID);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            exit(1);
+        }
     }
 
     public void managerCancelTruckReport(Integer trID) throws TimeLimitExceededException {
@@ -74,7 +79,7 @@ public class DeliveryService {
     public void setItemNewAmount(Integer id, Integer amount, int supplier) {
         try {
             dc.setDemandNewAmount(id, amount, supplier);
-        }catch (Exception e){
+        } catch (Exception e) {
             System.out.println(e.getMessage());
             exit(1);
         }
@@ -82,7 +87,7 @@ public class DeliveryService {
     }
 
     public FacadeTruckingReport getTruckReport(int id) {
-        return new FacadeTruckingReport(dc.getTruckReport(id) );
+        return new FacadeTruckingReport(dc.getTruckReport(id));
     }
 
     public FacadeDeliveryForm getDeliveryForm(int id) {
@@ -96,22 +101,25 @@ public class DeliveryService {
 
     public LinkedList<Pair<Integer, Integer>> insertItemsToTruckReport(LinkedList<Pair<Integer, Integer>> left, int supplier, int capacity, int id) {
 
-      return dc.insertItemsToTruckReport(left, supplier, capacity,id);
+        return dc.insertItemsToTruckReport(left, supplier, capacity, id);
     }
+
     public LinkedList<FacadeTruckingReport> getAvailableTRsByDate(LocalDate date) {
-        return turnListTruckingReportsToFacade( dc.getTruckingReportsByDate(date) );
+        return turnListTruckingReportsToFacade(dc.getTruckingReportsByDate(date));
     }
+
     public LinkedList<Pair<Integer, Integer>> createReport(LinkedList<Pair<Integer, Integer>> items, String driverId, String truckId, int maxWeight, int supplier, LocalDate date, int shift) {
         try {
-            return dc.createTruckReport(items, driverId, truckId, maxWeight, supplier, date,shift);
-        }catch (Exception e){
+            return dc.createTruckReport(items, driverId, truckId, maxWeight, supplier, date, shift);
+        } catch (Exception e) {
             System.out.println(e.getMessage());
             exit(1);
         }
         return null;
     }
+
     public LinkedList<FacadeDeliveryForm> getTruckReportDeliveryForms(int report_id) {
-        return turnListDeliveryFormToFacade( dc.getTruckReportDeliveryForms(report_id));
+        return turnListDeliveryFormToFacade(dc.getTruckReportDeliveryForms(report_id));
     }
 
     public void addDemandToPool(LinkedList<Pair<Integer, Integer>> items, int supplier) throws SQLException {
@@ -122,38 +130,34 @@ public class DeliveryService {
         return turnListTruckingReportsToFacade(dc.getTruckingReportsByDate(date));
     }
 
-    private LinkedList<FacadeTruckingReport> turnListTruckingReportsToFacade(LinkedList<TruckingReport> reports)
-    {
+    private LinkedList<FacadeTruckingReport> turnListTruckingReportsToFacade(LinkedList<TruckingReport> reports) {
         LinkedList<FacadeTruckingReport> ftrs = new LinkedList<>();
-        for(TruckingReport tr: reports){
+        for (TruckingReport tr : reports) {
             ftrs.add(new FacadeTruckingReport(tr));
         }
 
         return ftrs;
     }
-    private LinkedList<FacadeDemand> turnListDemandToFacade(LinkedList<Demand> demands)
-    {
+
+    private LinkedList<FacadeDemand> turnListDemandToFacade(LinkedList<Demand> demands) {
         LinkedList<FacadeDemand> dems = new LinkedList<>();
-        for(Demand demand: demands){
+        for (Demand demand : demands) {
             dems.add(new FacadeDemand(demand));
         }
 
         return dems;
     }
 
-    private LinkedList<FacadeDeliveryForm> turnListDeliveryFormToFacade(LinkedList<DeliveryForm> deliveryForms)
-    {
+    private LinkedList<FacadeDeliveryForm> turnListDeliveryFormToFacade(LinkedList<DeliveryForm> deliveryForms) {
         LinkedList<FacadeDeliveryForm> dfs = new LinkedList<>();
-        for(DeliveryForm deliveryForm: deliveryForms){
+        for (DeliveryForm deliveryForm : deliveryForms) {
             dfs.add(new FacadeDeliveryForm(deliveryForm));
         }
-
         return dfs;
     }
 
-    public LinkedList<String> getBusyTrucksByDate(LocalDate date) {
-        LinkedList<String> trucks= dc.getBusyTrucksByDate(date);
-        return trucks;
+    public Pair<LinkedList<String>, LinkedList<String>> getBusyTrucksByDate(LocalDate date) {
+        return dc.getBusyTrucksByDate(date);
 
     }
 
@@ -164,6 +168,11 @@ public class DeliveryService {
     public void addNotification(String content) {
         dc.addNotification(content);
     }
+    public void upload() throws SQLException {
+        dc.upload();
+
+    }
+}
 
 
 
@@ -594,10 +603,7 @@ public class DeliveryService {
     }
 
 
-    public void upload() throws SQLException {
-        dc.upload();
 
-    }
 
     public HashMap<String, HashMap<LocalDate, Integer>> getDriverConstraintsFromUpload(){
         return dc.getDriverConstraintsFromUpload();
@@ -606,6 +612,6 @@ public class DeliveryService {
     public HashMap<String, HashMap<LocalDate, Integer>> getTruckConstraintsFromUpload() {
         return dc.getTruckConstraintsFromUpload();
     }*/
-}
+
 
 

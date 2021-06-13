@@ -122,7 +122,7 @@ public class DalDemandController extends Employee_Trucking_DALController_Interfa
                 +"siteID INTEGER,"
                 +"FOREIGN KEY (itemID) REFERENCES Items (ID) ON DELETE NO ACTION ON UPDATE CASCADE,"
                 +"FOREIGN KEY (siteID) REFERENCES Sites (siteID) ON DELETE NO ACTION ON UPDATE CASCADE,"
-                +"PRIMARY KEY (itemID));";
+                +"PRIMARY KEY (itemID , siteID));";
         try {
             PreparedStatement st=conn.prepareStatement(query);
             st.executeUpdate();

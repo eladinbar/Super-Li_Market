@@ -5,18 +5,24 @@ import DataAccessLayer.DalControllers.TruckingControllers.DalDemandController;
 
 import java.sql.SQLException;
 
+import static java.lang.System.exit;
+
 public class Demand {
     private int itemID;
     private int supplier;//the destination - who raised the demand
     private int amount;
 
-    public Demand(int itemID, int site_id, int amount) throws SQLException {
-        // todo DB update - did you meant insert?
+    public Demand(int itemID, int site_id, int amount) {
         this.itemID=itemID;
         this.supplier =site_id;
         this.amount=amount;
 
-
+        try {
+            DalDemandController.getInstance().insert(new DalDemand(this.itemID,this.supplier,this.amount));
+        } catch (SQLException e) {
+            e.printStackTrace();
+            exit(1);
+        }
     }
     public Demand(DalDemand demand) throws SQLException {
 
@@ -24,7 +30,7 @@ public class Demand {
         this.amount=demand.getAmount();
         this.supplier =demand.getSiteID();
 
-        DalDemandController.getInstance().insert(new DalDemand(this.itemID,this.supplier,this.amount));
+
     }
 
     public int getAmount() {
@@ -41,7 +47,10 @@ public class Demand {
 
     public void setAmount(int amount) throws SQLException {
         this.amount = amount;
-        // TODO - if amount ==0 -> delete from DB
+        if (amount==0)
+        {
+            DalDemandController.getInstance().delete(new DalDemand(itemID,0,supplier));
+        }
         DalDemandController.getInstance().update(new DalDemand(itemID,amount, supplier));
 
     }
@@ -53,7 +62,7 @@ public class Demand {
     }
 
     public void setSupplier(int supplier) throws SQLException {
-        supplier = supplier;
+        this.supplier = supplier;
         DalDemandController.getInstance().update(new DalDemand(itemID,amount, supplier));
 
     }
