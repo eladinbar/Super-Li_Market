@@ -52,7 +52,7 @@ public class ProductsInOrderDalController extends DalController<DalProductsInOrd
     @Override
     public boolean insert(DalProductsInOrder productsInOrder) throws SQLException {
         try (Connection conn = DriverManager.getConnection(connectionString)) {
-            String query = "INSERT INTO " + tableName + " VALUES (?,?,?,?)";
+            String query = "INSERT OR IGNORE INTO " + tableName + " VALUES (?,?,?,?)";
             PreparedStatement stmt = conn.prepareStatement(query);
             stmt.setInt(1, productsInOrder.getProductId());
             stmt.setInt(2, productsInOrder.getOrderId());

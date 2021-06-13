@@ -27,7 +27,7 @@ public class DalItemsOnDFController extends Employee_Trucking_DALController_Inte
 
     public boolean insert(DalItemsOnDF dalItemsOnDF) throws SQLException {
         Connection conn= DriverManager.getConnection(connection);
-        String query= "INSERT INTO "+tableName+" VALUES (?,?,?)";
+        String query= "INSERT OR IGNORE INTO "+tableName+" VALUES (?,?,?)";
         try{
             PreparedStatement st=conn.prepareStatement(query);
             st.setInt(1,dalItemsOnDF.getDFID());

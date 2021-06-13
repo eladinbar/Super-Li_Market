@@ -68,7 +68,7 @@ public class DalAlertEmployeeController extends Employee_Trucking_DALController_
 
     public boolean insert(DalALertEmployee dalALertEmployee) throws SQLException {
         Connection conn= DriverManager.getConnection(connection);
-        String query= "INSERT INTO "+tableName+" VALUES (?,?)";
+        String query= "INSERT OR IGNORE INTO "+tableName+" VALUES (?,?)";
         try{
             PreparedStatement st=conn.prepareStatement(query);
             st.setString (1,dalALertEmployee.getRole ());
