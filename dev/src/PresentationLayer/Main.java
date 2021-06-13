@@ -2,8 +2,8 @@ package PresentationLayer;
 
 import java.sql.SQLException;
 
-public class Main_Employe {
-    public Main_Employe() {
+public class Main {
+    public Main() {
     }
 
     public static void main(String[] args) throws SQLException {
