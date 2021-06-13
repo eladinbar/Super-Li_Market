@@ -41,8 +41,8 @@ public class PresentationController implements Runnable {
         int minA = menu.instructAndReceive("Enter minimum amount: ", Integer.class);
         int storageQ = menu.instructAndReceive("Enter storage quantity: ", Integer.class);
         int storeQ = menu.instructAndReceive("Enter shelf quantity: ", Integer.class);
-        String storageL = menu.instructAndReceive("Enter storage location: follow this format \"ST-A<number>-<L/R>-S<number>\"");
-        String storeL = menu.instructAndReceive("Enter shelf location: follow this format \"SH-A<number>-<L/R>-S<number>\"");
+        String storageL = menu.instructAndReceive("Enter storage location: follow this format \"ST-A<number>-<L/R>-S<number>\": ");
+        String storeL = menu.instructAndReceive("Enter shelf location: follow this format \"SH-A<number>-<L/R>-S<number>\": ");
         int intManfac = menu.instructAndReceive("Enter manufacturer ID: ", Integer.class);
         int weight = menu.instructAndReceive("Enter item weight: ", Integer.class);
         String category = menu.instructAndReceive("Enter category name: ");
@@ -280,7 +280,7 @@ public class PresentationController implements Runnable {
                 modResp = service.modifySaleName(saleR.getValue().getName(), newName);
             }
             case "2" -> {
-                double newDisc = menu.instructAndReceive("Enter sale discount: (e.g. for 10% enter 0.1)", Double.class);
+                double newDisc = menu.instructAndReceive("Enter sale discount (e.g. for 10% enter 0.1): ", Double.class);
                 modResp = service.modifySaleDiscount(saleR.getValue().getName(), newDisc);
             }
             case "3" -> {
@@ -315,7 +315,7 @@ public class PresentationController implements Runnable {
         //item amount
         int defectedAmount = menu.instructAndReceive("Enter the defect amount: ", Integer.class);
         //location2
-        String location = menu.instructAndReceive("Enter storage/shelf location: follow this format \"<ST/SH>-A<number>-<L/R>-S<number>\"");
+        String location = menu.instructAndReceive("Enter storage/shelf location: follow this format \"<ST/SH>-A<number>-<L/R>-S<number>\": ");
         Response recorded = service.recordDefect(itemID, date, defectedAmount, location);
         if (recorded.errorOccurred()) {
             menu.errorPrompt(recorded.getMessage());
@@ -399,25 +399,25 @@ public class PresentationController implements Runnable {
 
     private void mainMenu() {
         menu.printMainMenu();
-        String choice = menu.instructAndReceive("select a menu to open: ");
+        String choice = menu.instructAndReceive("Select a menu to open: ");
         switch (choice) {
             case "1" -> inventoryMainMenu();
             case "2" -> suppliersMainMenu();
             case "3" -> orderMainMenu();
             case "q" -> {terminate = true; return;}
-            default -> menu.errorPrompt("invalid choice - " + choice);
+            default -> menu.errorPrompt("Invalid choice - " + choice);
         }
     }
 
     private void orderMainMenu() {
-        System.out.println("\norder menu:");
-        System.out.println("1. create shortage order");
-        System.out.println("2. create scheduled order");
-        System.out.println("3. approve order");
-        System.out.println("4. get order");
-        System.out.println("5. add product to order");
-        System.out.println("6. remove product from order");
-        String chooseInsideMenu = menu.instructAndReceive("enter choice: ");
+        System.out.println("\nOrder menu:");
+        System.out.println("1. Create shortage order");
+        System.out.println("2. Create scheduled order");
+        System.out.println("3. Approve order");
+        System.out.println("4. Get order");
+        System.out.println("5. Add product to order");
+        System.out.println("6. Remove product from order");
+        String chooseInsideMenu = menu.instructAndReceive("Enter choice: ");
         switch (chooseInsideMenu) {
             case "1" -> createNewOrder();
             case "2" -> setPermanentOrder();
@@ -444,10 +444,10 @@ public class PresentationController implements Runnable {
     }
 
     private void setPermanentOrder() { //case 7
-        int day = menu.instructAndReceive("day (1-7) in a week to get the order: ", Integer.class);
+        int day = menu.instructAndReceive("Day (1-7) in a week to get the order: ", Integer.class);
         while (true) {
-            int itemID = menu.instructAndReceive("enter item ID to add to a scheduled order: ", Integer.class);
-            int amount = menu.instructAndReceive("enter amount to order: ", Integer.class);
+            int itemID = menu.instructAndReceive("Enter item ID to add to a scheduled order: ", Integer.class);
+            int amount = menu.instructAndReceive("Enter amount to order: ", Integer.class);
             ResponseT<FacadeOrder> orderR = service.createScheduledOrder(day, itemID, amount);
             if(orderR.errorOccurred()){
                 menu.errorPrompt(orderR.getErrorMessage());
@@ -455,7 +455,7 @@ public class PresentationController implements Runnable {
             }
             String order = orderR.toString();
             System.out.println(order);
-            String choice = menu.instructAndReceive("*) press 1 to add more items\n*) press anything else to complete \n");
+            String choice = menu.instructAndReceive("*) Press 1 to add more items\n*) Press anything else to complete \n");
             if (!choice.equals("1")) {
                 break;
             }
@@ -465,50 +465,50 @@ public class PresentationController implements Runnable {
 
     //a helper function that approve that the order arrived in the system
     private void approveOrder() {
-        int orderID = menu.instructAndReceive("please enter order ID: ", Integer.class);
+        int orderID = menu.instructAndReceive("Please enter order ID: ", Integer.class);
         System.out.println(service.approveOrder(orderID).toString());
     }
 
     //a helper function to get an order from the system
     private void getOrder() {
-        int orderID = menu.instructAndReceive("please enter order ID: ", Integer.class);
+        int orderID = menu.instructAndReceive("Please enter order ID: ", Integer.class);
         System.out.println(service.getOrder(orderID).toString());
     }
 
     //a helper function to add a product to an order
     private void addProductToOrder() {
-        int orderID = menu.instructAndReceive("please enter order ID: ", Integer.class);
-        int productID = menu.instructAndReceive("please enter item ID: ", Integer.class);
-        int amount = menu.instructAndReceive("enter amount to order: ", Integer.class);
+        int orderID = menu.instructAndReceive("Please enter order ID: ", Integer.class);
+        int productID = menu.instructAndReceive("Please enter item ID: ", Integer.class);
+        int amount = menu.instructAndReceive("Enter amount to order: ", Integer.class);
         System.out.println(service.addProductToOrder(orderID, productID, amount).toString());
     }
 
     private void removeProductFromOrder() {
-        System.out.println("\nplease enter the following details: ");
-        int orderId = menu.instructAndReceive("order id: ", Integer.class);
-        int productId = menu.instructAndReceive("product id: ", Integer.class);
+        System.out.println("\nPlease enter the following details: ");
+        int orderId = menu.instructAndReceive("Order id: ", Integer.class);
+        int productId = menu.instructAndReceive("Product id: ", Integer.class);
         System.out.println(service.removeProductFromOrder(orderId, productId).toString());
     }
 
     private void suppliersMainMenu() {
-        System.out.println("\nsupplier menu:");
-        System.out.println("1. add supplier");
-        System.out.println("2. get supplier");
-        System.out.println("3. update supplier details");
-        System.out.println("4. add quantity List");
-        System.out.println("5. edit quantity List");
-        System.out.println("6. edit agreement");
-        System.out.println("7. get quantityList");
-        System.out.println("8. get agreement");
-        System.out.println("9. remove supplier");
-        String chooseInsideMenu = menu.instructAndReceive("enter choice: ");
+        System.out.println("\nSupplier menu:");
+        System.out.println("1. Add supplier");
+        System.out.println("2. Get supplier");
+        System.out.println("3. Update supplier details");
+        System.out.println("4. Add quantity List");
+        System.out.println("5. Edit quantity List");
+        System.out.println("6. Edit agreement");
+        System.out.println("7. Get quantityList");
+        System.out.println("8. Get agreement");
+        System.out.println("9. Remove supplier");
+        String chooseInsideMenu = menu.instructAndReceive("Enter choice: ");
         switch (chooseInsideMenu) {
             case "1" -> addSupplierFunc();
             case "2" -> getSupplier();
             case "3" -> updateSupplierDetailFunc();
             case "4" -> addQuantityList();
             case "5" -> editQuantityList();
-            case "6" -> editAgrreement();
+            case "6" -> editAgreement();
             case "7" -> getQuantityList();
             case "8" -> getAgreement();
             case "9" -> removeSupplier();
@@ -517,64 +517,64 @@ public class PresentationController implements Runnable {
 
     //a helper function that add supplier to the system
     private void addSupplierFunc() {
-        System.out.print("\nplease enter following details: \n");
+        System.out.print("\nPlease enter the following details: \n");
         String firstName = readName(0);
         String lName = readName(1);
         String email = readEmail();
         String ID = readID();
         String phone = readPhone();
-        String adress = menu.instructAndReceive("adress :");
+        String address = menu.instructAndReceive("Address :");
         int companyNumber = readCompanyNumber();
         boolean perm;
         while (true) {
-            String permanent = menu.instructAndReceive("supplier approve permanent orders? y/n: ");
+            String permanent = menu.instructAndReceive("Supplier approve permanent orders? y/n: ");
             if (permanent.equals("y")) {
                 perm = true;
                 break;
             } else if (permanent.equals("n")) {
                 perm = false;
                 break;
-            } else System.out.println("wrong input please choose again\n");
+            } else System.out.println("Invalid input please choose again\n");
         }
         boolean self;
         while (true) {
-            String selfD = menu.instructAndReceive("supplier has self delivery? y/n: ");
+            String selfD = menu.instructAndReceive("Supplier has self delivery? y/n: ");
             if (selfD.equals("y")) {
                 self = true;
                 break;
             } else if (selfD.equals("n")) {
                 self = false;
                 break;
-            } else System.out.println("wrong input please choose again\n");
+            } else System.out.println("Invalid input please choose again\n");
         }
         String pay = "";
         while (true) {
-            int payment = menu.instructAndReceive("how would you like to pay?\n1. Cash\n2. Bank transfer\n3. check\nchoose number: ", Integer.class);
+            int payment = menu.instructAndReceive("How would you like to pay?\n1. Cash\n2. Bank transfer\n3. Check\nChoose number: ", Integer.class);
             if (payment == 1) {
-                pay = "cash";
+                pay = "Cash";
                 break;
             } else if (payment == 2) {
-                pay = "bankTrasfer";
+                pay = "Bank Transfer";
                 break;
             } else if (payment == 3) {
-                pay = "check";
+                pay = "Check";
                 break;
-            } else System.out.println("\nwrong input please choose again\n");
+            } else System.out.println("\nInvalid input please choose again\n");
         }
-        String print = service.addSupplier(firstName, lName, email, ID, phone, companyNumber, perm, self, pay,adress).toString();
+        String print = service.addSupplier(firstName, lName, email, ID, phone, companyNumber, perm, self, pay, address).toString();
         System.out.println(print);
         if (!print.split(" ")[0].equals("\nError:")) {
             while (true) {
-                System.out.println("\nplease choose option:");
+                System.out.println("\nPlease choose option:");
                 System.out.println("1. add item to agreement");
                 System.out.println("2. stop add items to agreement");
                 System.out.print("Option: ");
                 int opt = getIntFromUser();
                 if (opt == 1) {
-                    System.out.println("choose items to agreement: ");
+                    System.out.println("Choose items to agreement: ");
                     int productID = menu.instructAndReceive("Enter product id: ", Integer.class);
-                    int companyProductID=menu.instructAndReceive("enter your company product id: ", Integer.class);
-                    int price = menu.instructAndReceive("enter price: ", Integer.class);
+                    int companyProductID=menu.instructAndReceive("Enter your company product id: ", Integer.class);
+                    int price = menu.instructAndReceive("Enter price: ", Integer.class);
                     System.out.println(service.addItemToAgreement(ID, productID,companyProductID, price).toString());
                 } else if (opt == 2) break;
                 else System.out.println("invalid option try again");
@@ -583,7 +583,7 @@ public class PresentationController implements Runnable {
     }
 
     private void getSupplier() {
-        System.out.print("please enter supplier ");
+        System.out.print("Please enter supplier id: ");
         String supplierId = readID();
         System.out.println(service.getSupplier(supplierId).toString());
     }
@@ -591,11 +591,11 @@ public class PresentationController implements Runnable {
     //a helper funtion that edit supplier details in the system
     private void updateSupplierDetailFunc() {
         int opt = -1;
-        System.out.println("please enter supplier id");
+        System.out.println("Please enter supplier id: ");
         String supplierID = readID();
         boolean flag = true;
         while (flag) {
-            System.out.println("\nPlease choose an option to Edit:");
+            System.out.println("\nPlease choose an option to Edit: ");
             System.out.println("1. edit first name");
             System.out.println("2. edit last name");
             System.out.println("3. edit phone number");
@@ -607,37 +607,37 @@ public class PresentationController implements Runnable {
             System.out.println("9. add contact person");
             System.out.println("10. remove contact person");
             System.out.println("for main menu choose any other option");
-            System.out.print("option : ");
+            System.out.print("Option : ");
             int choose = getIntFromUser();
             switch (choose) {
                 case 1:
-                    System.out.print("please enter ");
+                    System.out.print("Please enter ");
                     String firstName = readName(0);
                     System.out.println(service.updateFirstName(supplierID, firstName).toString());
                     break;
                 case 2:
-                    System.out.print("please enter ");
+                    System.out.print("Please enter ");
                     String lastName = readName(1);
                     System.out.println(service.updateLastName(supplierID, lastName).toString());
                     break;
                 case 3:
-                    System.out.print("please enter ");
+                    System.out.print("Please enter ");
                     String phoneNum = readPhone();
                     System.out.println(service.updatePhone(supplierID, phoneNum).toString());
                     break;
                 case 4:
-                    System.out.print("please enter ");
+                    System.out.print("Please enter ");
                     String emailAddr = readEmail();
                     System.out.println(service.updateEmail(supplierID, emailAddr).toString());
                     break;
                 case 5:
-                    System.out.print("please enter ");
+                    System.out.print("Please enter ");
                     int cn = readCompanyNumber();
                     System.out.println(service.updateCompanyNumber(supplierID, cn).toString());
                     break;
                 case 6:
                     while (true) {
-                        System.out.print("choose:\n1. permanent days\n2. non permanent days\n option number: ");
+                        System.out.print("Choose:\n1. Permanent Days\n2. Non-Permanent Days\n Option number: ");
                         opt = getIntFromUser();
                         if (opt == 1) {
                             System.out.println(service.updatePernamentDays(supplierID, true).toString());
@@ -646,12 +646,12 @@ public class PresentationController implements Runnable {
                             System.out.println(service.updatePernamentDays(supplierID, false).toString());
                             break;
                         } else
-                            System.out.println("invalid option please chose again");
+                            System.out.println("Invalid option please choose again");
                     }
                     break;
                 case 7:
                     while (true) {
-                        System.out.print("choose:\n1. self delivery\n2. not self delivery\n option number: ");
+                        System.out.print("Choose:\n1. Self Delivery\n2. Not Self Delivery\n Option number: ");
                         opt = getIntFromUser();
                         if (opt == 1) {
                             System.out.println(service.updateSelfDelivery(supplierID, true).toString());
@@ -660,38 +660,38 @@ public class PresentationController implements Runnable {
                             System.out.println(service.updateSelfDelivery(supplierID, false).toString());
                             break;
                         } else
-                            System.out.println("invalid option please chose again");
+                            System.out.println("Invalid option please choose again");
                     }
                     break;
                 case 8:
                     while (true) {
-                        System.out.print("please choose a payment method\n1. Cash\n2. Bank transfer\n3. check\nchoose number: ");
+                        System.out.print("Please choose a payment method\n1. Cash\n2. Bank Transfer\n3. Check\nChoose number: ");
                         opt = getIntFromUser();
                         if (opt == 1) {
-                            System.out.println(service.updatePayment(supplierID, "cash"));
+                            System.out.println(service.updatePayment(supplierID, "Cash"));
                             break;
                         }
                         if (opt == 2) {
-                            System.out.println(service.updatePayment(supplierID, "bankTransfer"));
+                            System.out.println(service.updatePayment(supplierID, "Bank Transfer"));
                             break;
                         }
                         if (opt == 3) {
-                            System.out.println(service.updatePayment(supplierID, "check"));
+                            System.out.println(service.updatePayment(supplierID, "Check"));
                             break;
                         } else
-                            System.out.println("invalid option please chose again");
+                            System.out.println("Invalid option please choose again");
                     }
                     break;
                 case 9:
                     while (true) {
-                        System.out.println("Choose an option:\n1. add a contact person\n2. back to suppliers menu");
+                        System.out.println("Choose an option:\n1. Add a contact person\n2. Back to suppliers menu");
                         opt = getIntFromUser();
                         if (opt == 2)
                             break;
                         else if (opt != 1)
-                            System.out.println("invalid option");
+                            System.out.println("Invalid option");
                         else if (opt == 1) {
-                            System.out.print("\nplease enter following details: ");
+                            System.out.print("\nPlease enter following details: ");
                             String fName = readName(0);
                             String lName = readName(1);
                             String email = readEmail();
@@ -702,7 +702,7 @@ public class PresentationController implements Runnable {
                     }
                     break;
                 case 10:
-                    System.out.println("please enter a contact member id to remove:");
+                    System.out.println("Please enter a contact member id to remove: ");
                     String memberID = readID();
                     System.out.println(service.deleteContactMember(supplierID, memberID).toString());
                     break;
@@ -713,28 +713,28 @@ public class PresentationController implements Runnable {
     }
 
     private void addQuantityList() { //case 4
-        System.out.print("please enter supplier ");
+        System.out.print("Please enter supplier id: ");
         String supplierId = readID();
         System.out.println(service.addQuantityList(supplierId).toString());
         while (true) {
-            System.out.println("please choose an option");
-            System.out.println("1. add new product");
-            System.out.println("2. exit");
-            System.out.print("option: ");
+            System.out.println("Please choose an option");
+            System.out.println("1. Add new product");
+            System.out.println("2. Exit");
+            System.out.print("Option: ");
             int num = getIntFromUser();
             if (num == 2)
                 break;
-            System.out.println("\nplease enter the following details: ");
-            int productId = menu.instructAndReceive("product id: ", Integer.class);
-            int amount = menu.instructAndReceive("amount of products to get a discount: ", Integer.class);
-            int discount = menu.instructAndReceive("discount amount: ", Integer.class);
+            System.out.println("\nPlease enter the following details: ");
+            int productId = menu.instructAndReceive("Product id: ", Integer.class);
+            int amount = menu.instructAndReceive("Amount of products to get a discount: ", Integer.class);
+            int discount = menu.instructAndReceive("Discount amount: ", Integer.class);
             System.out.println(service.addQuantityListItem(supplierId, productId, amount, discount).toString());
         }
         System.out.println(service.getQuantityList(supplierId).toString());
     }
 
     private void editQuantityList() { //case 5
-        System.out.print("please enter supplier ");
+        System.out.print("Please enter supplier id: ");
         String supplierId = readID();
         System.out.println("Please choose an option to Edit:");
         System.out.println("1. edit product amount");
@@ -746,24 +746,24 @@ public class PresentationController implements Runnable {
         int num = getIntFromUser();
         switch (num) {
             case 1 -> { //edit product amount
-                int prodId = menu.instructAndReceive("product id: ", Integer.class);
-                int amount = menu.instructAndReceive("new amount of products to get a discount: ", Integer.class);
+                int prodId = menu.instructAndReceive("Product id: ", Integer.class);
+                int amount = menu.instructAndReceive("New amount of products to get a discount: ", Integer.class);
                 System.out.println(service.editQuantityListAmount(supplierId, prodId, amount).toString());
             }
             case 2 -> {  //edit product discount
-                int prodId = menu.instructAndReceive("product id: ", Integer.class);
-                int discount = menu.instructAndReceive("new discount amount: ", Integer.class);
+                int prodId = menu.instructAndReceive("Product id: ", Integer.class);
+                int discount = menu.instructAndReceive("New discount amount: ", Integer.class);
                 System.out.println(service.editQuantityListDiscount(supplierId, prodId, discount).toString());
             }
             case 3 -> { //add new product
-                int productId = menu.instructAndReceive("product id: ", Integer.class);
-                int amount = menu.instructAndReceive("amount of products to get a discount: ", Integer.class);
-                System.out.println("discount amount: ");
-                int discount = menu.instructAndReceive("discount amount: ", Integer.class);
+                int productId = menu.instructAndReceive("Product id: ", Integer.class);
+                int amount = menu.instructAndReceive("Amount of products to get a discount: ", Integer.class);
+                System.out.println("Discount amount: ");
+                int discount = menu.instructAndReceive("Discount amount: ", Integer.class);
                 System.out.println(service.addQuantityListItem(supplierId, productId, amount, discount).toString());
             }
             case 4 -> { //delete product
-                int productId = menu.instructAndReceive("product id: ", Integer.class);
+                int productId = menu.instructAndReceive("Product id: ", Integer.class);
                 System.out.println(service.deleteQuantityListItem(supplierId, productId).toString());
             }
             case 5 -> { //delete quantity list
@@ -772,62 +772,62 @@ public class PresentationController implements Runnable {
         }
     }
 
-    private void editAgrreement() {
-        System.out.print("Please enter supplier ");
+    private void editAgreement() {
+        System.out.print("Please enter supplier id: ");
         String supplierId = readID();
         boolean flag = true;
         while (flag) {
-            System.out.println("\nplease choose an option:");
-            System.out.println("1. add product");
-            System.out.println("2. remove product");
-            System.out.println("3. edit company product id");
-            System.out.println("4. edit product price");
-            System.out.println("5. back to main menu");
+            System.out.println("\nPlease choose an option:");
+            System.out.println("1. Add product");
+            System.out.println("2. Remove product");
+            System.out.println("3. Edit company product id");
+            System.out.println("4. Edit product price");
+            System.out.println("5. Back to main menu");
             System.out.print("Option:");
             int opt = getIntFromUser();
             int productId = -1;
             switch (opt) {
                 case 1 -> {//add new product
-                    productId = menu.instructAndReceive("please enter system product id: ", Integer.class);
-                    int price = menu.instructAndReceive("please enter price: ", Integer.class);
-                    int companyProductID=menu.instructAndReceive("enter your company product id: ", Integer.class);
+                    productId = menu.instructAndReceive("Please enter system product id: ", Integer.class);
+                    int price = menu.instructAndReceive("Please enter price: ", Integer.class);
+                    int companyProductID=menu.instructAndReceive("Enter your company product id: ", Integer.class);
                     System.out.println((service.addItemToAgreement(supplierId, productId,companyProductID, price).toString()));
                 }
                 case 2 -> {//delete product
-                    productId = menu.instructAndReceive("please enter system product id: ", Integer.class);
+                    productId = menu.instructAndReceive("Please enter system product id: ", Integer.class);
                     System.out.println(service.removeItemFromAgreement(supplierId, productId).toString());
                 }
                 case 3 -> {
-                    System.out.println("\nplease enter the following details: ");
-                    productId = menu.instructAndReceive("product id: ", Integer.class);
-                    int newCompId = menu.instructAndReceive("enter new company product id: ", Integer.class);
+                    System.out.println("\nPlease enter the following details: ");
+                    productId = menu.instructAndReceive("Product id: ", Integer.class);
+                    int newCompId = menu.instructAndReceive("Enter new company product id: ", Integer.class);
                     System.out.println(service.editAgreementItemCompanyProductID(supplierId, productId, newCompId).toString());
                 }
                 case 4 -> {
-                    productId = menu.instructAndReceive("product id: ", Integer.class);
-                    int price = menu.instructAndReceive("enter new price: ", Integer.class);
+                    productId = menu.instructAndReceive("Product id: ", Integer.class);
+                    int price = menu.instructAndReceive("Enter new price: ", Integer.class);
                     System.out.println(service.editAgreementItemPrice(supplierId, productId, price).toString());
                 }
                 case 5 -> flag = false;
-                default -> System.out.println("wrong input try again");
+                default -> System.out.println("Invalid input try again");
             }
         }
     }
 
     private void getAgreement() {
-        System.out.print("please enter supplier ");
+        System.out.print("Please enter supplier id: ");
         String supplierID = readID();
         System.out.println(service.getAgreement(supplierID).toString());
     }
 
     private void getQuantityList() {
-        System.out.print("please enter supplier ");
+        System.out.print("Please enter supplier id: ");
         String supplierID = readID();
         System.out.println(service.getQuantityList(supplierID).toString());
     }
 
     private void removeSupplier() {
-        System.out.print("please enter supplier ");
+        System.out.print("Please enter supplier id: ");
         String id = readID();
         System.out.println(service.removeSupplier(id).toString());
     }
@@ -843,7 +843,7 @@ public class PresentationController implements Runnable {
             case "4" -> discountMenuOperations();
             case "5" -> recordDefect();
             case "6" -> reportMenuOperations();
-            default -> menu.errorPrompt("invalid choice - " + choice);
+            default -> menu.errorPrompt("Invalid choice - " + choice);
         }
 
 
@@ -858,7 +858,7 @@ public class PresentationController implements Runnable {
             case "2" -> addItem();
             case "3" -> editItem();
             case "4" -> removeItem();
-            default -> menu.errorPrompt("invalid choice - " + choice);
+            default -> menu.errorPrompt("Invalid choice - " + choice);
         }
     }
 
@@ -870,7 +870,7 @@ public class PresentationController implements Runnable {
             case "2" -> addCategory();
             case "3" -> editCategory();
             case "4" -> removeCategory();
-            default -> menu.errorPrompt("invalid choice - " + choice);
+            default -> menu.errorPrompt("Invalid choice - " + choice);
         }
     }
 
@@ -882,7 +882,7 @@ public class PresentationController implements Runnable {
             case "2" -> addItemSale();
             case "3" -> addCategorySale();
             case "4" -> modifySale();
-            default -> menu.errorPrompt("invalid choice - " + choice);
+            default -> menu.errorPrompt("Invalid choice - " + choice);
         }
     }
 
@@ -892,7 +892,7 @@ public class PresentationController implements Runnable {
         if ("1".equals(choice))
             showSupplierDiscount();
         else
-            menu.errorPrompt("invalid choice - " + choice);
+            menu.errorPrompt("Invalid choice - " + choice);
     }
 
     private void reportMenuOperations() {
@@ -903,7 +903,7 @@ public class PresentationController implements Runnable {
             case "2" -> categoryReport();
             case "3" -> itemShortageReport();
             case "4" -> defectsReport();
-            default -> menu.errorPrompt("invalid choice - " + choice);
+            default -> menu.errorPrompt("Invalid choice - " + choice);
         }
 
     }
@@ -920,7 +920,7 @@ public class PresentationController implements Runnable {
                 lclDate = LocalDate.parse(output, dateTimeFormatter);
                 con = false;
             } catch (Exception e) {
-                System.out.print("invalid date input, please insert again (dd/mm/yyyy): ");
+                System.out.print("Invalid date input, please insert again (dd/mm/yyyy): ");
             }
         }
         return lclDate;
@@ -934,15 +934,15 @@ public class PresentationController implements Runnable {
             try {
                 choose = scan.nextInt();
                 if (choose < 0) {
-                    System.out.println("you must choose an none-negative number ");
+                    System.out.println("You must choose an none-negative number ");
                 } else {
                     scannerCon = false;
                 }
             } catch (InputMismatchException ie) {
-                System.out.println("wrong input - a number must be inserted please try again ");
+                System.out.println("Invalid input - a number must be inserted please try again ");
                 scan.nextLine();
             } catch (Exception e) {
-                System.out.println("wrong input - a number must be inserted please try again ");
+                System.out.println("Invalid input - a number must be inserted please try again ");
                 scan.nextLine();
             }
         }
@@ -952,44 +952,44 @@ public class PresentationController implements Runnable {
 
     private void nameCheck(String name) throws Exception {
         if (name == null || name.equals(""))
-            throw new Exception("name cannot be null or empty spaces");
+            throw new Exception("Name cannot be null or empty spaces");
         //checks length of the name
         if (name.length() > MaxNamesLength)
-            throw new Exception("name length is too long");
+            throw new Exception("Name length is too long");
         //check if contains only letters
         char[] arrayName = name.toLowerCase().toCharArray();
         for (char c : arrayName) {
             if (c < 'a' || c > 'z')
-                throw new Exception("the name must contain letters only");
+                throw new Exception("The name must contain letters only");
         }
     }
 
     private void idCheck(String id) throws Exception {
         if (id == null || id.equals(""))
-            throw new Exception("id cannot be null or empty spaces");
+            throw new Exception("ID cannot be null or empty spaces");
         if (id.length() != idLength)
-            throw new Exception("id must contain " + idLength + " letters");
+            throw new Exception("ID must contain " + idLength + " letters");
         //check if contains only numbers
         char[] idArray = id.toCharArray();
         for (char c : idArray) {
             if (c < '0' || c > '9')
-                throw new Exception("the id must contain numbers only");
+                throw new Exception("The ID must contain numbers only");
         }
     }
 
     private void phoneCheck(String phone) throws Exception {
         if (phone == null || phone.equals(""))
-            throw new Exception("phone cannot be null or empty spaces");
+            throw new Exception("Phone cannot be null or empty spaces");
         if (phone.length() != PhoneLength)
-            throw new Exception("phone must contain " + PhoneLength + " letters, given phone :" + phone);
+            throw new Exception("Phone must contain " + PhoneLength + " letters, given phone :" + phone);
         //check if contains only numbers
         char[] idArray = phone.toCharArray();
         for (char c : idArray) {
             if (c < '0' || c > '9')
-                throw new Exception("the number must contain numbers only");
+                throw new Exception("The number must contain numbers only");
         }
         if (phone.charAt(0) != '0')
-            throw new Exception("phone number must begin with 0");
+            throw new Exception("Phone number must begin with 0");
     }
 
     private void emailCheck(String email) throws Exception {
@@ -1000,15 +1000,15 @@ public class PresentationController implements Runnable {
 
         Pattern pat = Pattern.compile(emailRegex);
         if (email == null)
-            throw new Exception("email cannot be null");
+            throw new Exception("Email cannot be null");
         if (!pat.matcher(email).matches())
-            throw new Exception("invalid email");
+            throw new Exception("Invalid email");
     }
 
     //method that check if companyNumber is legal
     private void companyNumberCheck(int comanyNumber) throws Exception {
         if (comanyNumber < 0 || comanyNumber > MaxCompanyNumber)
-            throw new Exception("invalid company number" + comanyNumber);
+            throw new Exception("Invalid company number" + comanyNumber);
     }
 
     private String readID() {
@@ -1018,7 +1018,7 @@ public class PresentationController implements Runnable {
                 idCheck(id);
                 return id;
             } catch (Exception e) {
-                System.out.print(e.getMessage() + "\ntry again: ");
+                System.out.print(e.getMessage() + "\nTry again: ");
             }
         }
     }
@@ -1034,7 +1034,7 @@ public class PresentationController implements Runnable {
                 nameCheck(name);
                 return name;
             } catch (Exception e) {
-                System.out.print(e.getMessage() + "\ntry again: ");
+                System.out.print(e.getMessage() + "\nTry again: ");
             }
         }
     }
@@ -1046,7 +1046,7 @@ public class PresentationController implements Runnable {
                 phoneCheck(phone);
                 return phone;
             } catch (Exception e) {
-                System.out.print(e.getMessage() + "\ntry again: ");
+                System.out.print(e.getMessage() + "\nTry again: ");
             }
         }
     }
@@ -1058,22 +1058,20 @@ public class PresentationController implements Runnable {
                 emailCheck(email);
                 return email;
             } catch (Exception e) {
-                System.out.print(e.getMessage() + "\ntry again: ");
+                System.out.print(e.getMessage() + "\nTry again: ");
             }
         }
     }
 
     private int readCompanyNumber() {
         while (true) {
-            int cn = menu.instructAndReceive("company number: ", Integer.class);
+            int cn = menu.instructAndReceive("Company number: ", Integer.class);
             try {
                 companyNumberCheck(cn);
                 return cn;
             } catch (Exception e) {
-                System.out.print(e.getMessage() + "\ntry again: ");
+                System.out.print(e.getMessage() + "\nTry again: ");
             }
         }
     }
-
-
 }
