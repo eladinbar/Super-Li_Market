@@ -10,7 +10,7 @@ public class DalItemsOnDFController extends Employee_Trucking_DALController_Inte
 
     private static DalItemsOnDFController controller;
 
-    private DalItemsOnDFController(){//TODO - Check when tables created
+    private DalItemsOnDFController(){
         super();
         this.tableName="ItemsOnDFs";
         this.columnNames=new String[3];

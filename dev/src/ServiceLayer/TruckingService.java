@@ -13,6 +13,7 @@ import javax.management.openmbean.KeyAlreadyExistsException;
 import javax.naming.TimeLimitExceededException;
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.*;
 
 import static java.lang.System.exit;
@@ -46,7 +47,6 @@ public class TruckingService {
       */
 
 
-    // TODO- need to add Notifications where needed
 
 
     /**
@@ -77,7 +77,6 @@ public class TruckingService {
             left = createReportsThisWeek(left, supplier);
 
             if (!left.isEmpty()) {
-                // TODO - need to notify
                 addNotification("Order number: " + order.getId() + "\nhas been settled to deliveries in more the a week");
                 LinkedList<FacadeTruckingReport> everyWeekReports = getActiveTruckingReports().getValue();
                 everyWeekReports.addAll(getWaitingTruckingReports().getValue());
@@ -142,13 +141,11 @@ public class TruckingService {
     }
 
     public ResponseT<  LinkedList<FacadeDriver> >getDrivers(){
-        // TODO implement
-        throw new UnsupportedOperationException();
+        return new ResponseT(resourcesService.getDrivers());
     }
 
     public ResponseT< LinkedList<FacadeTruck> > getTrucks(){
-        // TODO implement
-        throw new UnsupportedOperationException();
+        return new ResponseT<>(resourcesService.getTrucks());
     }
 
     public ResponseT<  LinkedList<FacadeDemand> > getDemands(){
@@ -177,8 +174,23 @@ public class TruckingService {
         deliveryService.managerApproveTruckReport(trID);
     }
     public void managerCancelTruckReport(Integer trID) throws TimeLimitExceededException {
+        FacadeTruckingReport ftr= deliveryService.getTruckReport(trID);
+        String ft=ftr.getTruckNumber();
+        String fd=ftr.getDriverID();
+        LocalDate date=ftr.getDate();
+        int shift=turnTimeToShift(ftr.getLeavingHour());
+        resourcesService.deleteDriverConstarint(fd,date,shift);
+        resourcesService.deleteTruckConstarint(ft,date,shift);
         deliveryService.managerCancelTruckReport(trID);
+
     }
+
+    private int turnTimeToShift(LocalTime leavingHour) {
+        if (leavingHour.equals(LocalTime.of(14,00)))
+            return 1;
+        else return  0;
+    }
+
     // TODO - employees should call this function
     public void handleLeftOvers() {
         LinkedList<FacadeDemand> demands =  getDemands().getValue();
@@ -279,7 +291,7 @@ public class TruckingService {
                 //first iterates through reports, tries to add by delivery area
 
                 if (reportAreas.contains(area)) {
-                    //  TODO need to notify Supplier manager
+
                     left = deliveryService.insertItemsToTruckReport(left, supplier , capacity, report.getID());
                 }
             }
@@ -301,8 +313,7 @@ public class TruckingService {
      * @return returns min weight truck and driver can handle
      */
     private int getMaxWeight(FacadeTruckingReport tr){
-        // TODO implement
-        throw new UnsupportedOperationException();
+       return resourcesService.getMaxWeight(tr.getDriverID(),tr.getTruckNumber());
 
     }
 
@@ -348,13 +359,14 @@ public class TruckingService {
                 ret = getDriverAndTruckFromPool(date);
                 driverAndTruck = ret.getFirst();
 
-                //TODO - notify if not null (maybe inside function
             }
             finish = (items.isEmpty() || driverAndTruck ==  null);
             if (finish)
                 break;
             int maxWeight = Math.min(driverAndTruck.getFirst().getLicenseType().getSize(),(driverAndTruck.getSecond().getMaxWeight() - driverAndTruck.getSecond().getWeightNeto() ));
             items = deliveryService.createReport(items, driverAndTruck.getFirst().getID(), driverAndTruck.getSecond().getLicenseNumber() ,maxWeight,  supplier, date,shift);
+            resourcesService.addDriverConstarint(driverAndTruck.getFirst().getID(),date,shift);
+            resourcesService.addTruckConstraint(driverAndTruck.getSecond().getLicenseNumber(),date,shift);
         }
         return items;
 
@@ -403,7 +415,8 @@ public class TruckingService {
 
     private int getPossibleWeightByDate(LocalDate date) {
         LinkedList<FacadeTruckingReport> reports = getAvailableTRsByDate(date);
-        throw new UnsupportedOperationException();
+        return resourcesService.getPossibleWeightByDate(date,getBusyTrucksByDate(date));
+
         // TODO - employees need to make a new method, returns boolean and do no insert into shift
     }
 
@@ -414,11 +427,10 @@ public class TruckingService {
      * @return pair < < driver, truck> , Shift>
      */
     private Pair <Pair<FacadeDriver, FacadeTruck>,Integer > getDriverAndTruckFromExisting (LocalDate date){
-        // TODO
         return resourcesService.findDriverAndTruckForDateFromExisting(date,getBusyTrucksByDate(date));
     }
 
-    private Pair<FacadeDriver, FacadeTruck> getDriverAndTruckFromPool (LocalDate date){
+    private Pair<Pair<FacadeDriver, FacadeTruck>,Integer> getDriverAndTruckFromPool (LocalDate date){
         return resourcesService.findDriverAndTruckForDateFromPool(date,getBusyTrucksByDate(date));
     }
 
@@ -453,7 +465,7 @@ public class TruckingService {
         return thisWeekReports;
     }
 
-    private LinkedList<String> getBusyTrucksByDate(LocalDate date)
+    private Pair<LinkedList<String>,LinkedList<String>> getBusyTrucksByDate(LocalDate date)
     {
         return deliveryService.getBusyTrucksByDate(date);
     }
@@ -498,6 +510,7 @@ public class TruckingService {
     }
 
 
+
     public String getItemName(int itemID) {
         throw new UnsupportedOperationException();
     }
@@ -505,6 +518,18 @@ public class TruckingService {
     public int getSupplierName(int supplier) {
         throw new UnsupportedOperationException();
     }
+
+
+    public void upload() throws SQLException {
+        deliveryService.upload();
+        HashMap driver_cons =  deliveryService.getDriverConstraintsFromUpload();
+        HashMap trucks_cons = deliveryService.getTruckConstraintsFromUpload();
+        resourcesService.upload(driver_cons,trucks_cons);
+    }
+
+
+
+
 
 
 
@@ -847,7 +872,7 @@ public class TruckingService {
 
         int replacedId = deliveryService.moveDemandsFromCurrentToReport(tr);
         FacadeTruckingReport replaced = deliveryService.getTruckReport(replacedId);
-        // TODO need to check why it is here
+
   *//*      resourcesService.makeUnavailable_Driver(replaced.getDriverID());
         resourcesService.makeUnavailable_Truck(replaced.getTruckNumber());*//*
 
@@ -860,7 +885,7 @@ public class TruckingService {
             throw new InputMismatchException("the truck's cannot carry this weight");
         if (fd.getLicenseType().getSize() < (weight + ft.getWeightNeto()))
             throw new InputMismatchException("the driver cannot drive with this weight");
-        // TODO need to check why its here
+
       *//*  resourcesService.makeUnavailable_Truck(truckNumber);
         resourcesService.makeUnavailable_Driver(driverID);*//*
 
@@ -940,12 +965,7 @@ public class TruckingService {
     }
 
 
-    public void upload() throws SQLException {
-        deliveryService.upload();
-        HashMap driver_cons =  deliveryService.getDriverConstraintsFromUpload();
-        HashMap trucks_cons = deliveryService.getTruckConstraintsFromUpload();
-        resourcesService.upload(driver_cons,trucks_cons);
-    }*/
+    */
 }
 
 
