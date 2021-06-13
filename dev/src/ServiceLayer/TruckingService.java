@@ -7,6 +7,7 @@ import BusinessLayer.TruckingNotifications;
 import BusinessLayer.TruckingPackage.DeliveryPackage.DeliveryForm;
 import InfrastructurePackage.Pair;
 import ServiceLayer.FacadeObjects.*;
+import ServiceLayer.Response.Response;
 import ServiceLayer.Response.ResponseT;
 
 import javax.management.openmbean.KeyAlreadyExistsException;
@@ -48,6 +49,7 @@ public class TruckingService {
 
 
 // TODO need to add exceptions
+    // TODO need to handle responses
 
     /**
      * this method receives an Order and returns and Linked List of items that couldn't been delivered
@@ -119,7 +121,8 @@ public class TruckingService {
      */
     public boolean addPermanentOrder(Order order) {
         boolean succeed ;
-        succeed  = canAddFullOrder(order);
+        // TODO need to handle response
+        succeed  = canAddFullOrder(order).getValue();
         if (succeed){
             LocalDate date = order.getDate();
             LinkedList<Pair<Integer, Integer>> left = orderToItemsList(order);
@@ -402,11 +405,15 @@ public class TruckingService {
      * @param order already has the wanted date
      * @return true if can, false if cannot
      */
-    private boolean canAddFullOrder(Order order){
+    private ResponseT<Boolean> canAddFullOrder(Order order){
         LocalDate date =  order.getDate();
-        int left = getDayLeftWeight(date);
+        ResponseT<Integer> val = getDayLeftWeight(date);
+        if(val.errorOccurred()){
+            return new ResponseT<>(val.getErrorMessage());
+        }
+        int left = val.getValue();
         int totalWeight = getOrderTotalWeight(order);
-        return ( totalWeight <= left);
+        return new ResponseT<> ( totalWeight <= left);
     }
 
     /**
@@ -414,14 +421,19 @@ public class TruckingService {
      * @param date -  date to check
      * @return overall weight can add to overall deliveries in this date includes the not created TRs
      */
-    private int getDayLeftWeight(LocalDate date){
+    private ResponseT<Integer> getDayLeftWeight(LocalDate date){
         LinkedList<FacadeTruckingReport> reports = deliveryService.getTruckReportsByDate(date);
         int total = 0;
-        for( FacadeTruckingReport ftr : reports){
-            total += getReportLeftWeight(ftr);
+        for (FacadeTruckingReport ftr : reports) {
+            ResponseT<Integer> sum = getReportLeftWeight(ftr);
+            if (sum.errorOccurred()){
+                return  sum;
+            }
+            total += sum.getValue();
         }
         total += getPossibleWeightByDate(date);
-        return total;
+        return new ResponseT<>(total);
+
     }
 
 
@@ -482,10 +494,15 @@ public class TruckingService {
         return deliveryService.getBusyTrucksByDate(date);
     }
 
-    private int getReportLeftWeight(FacadeTruckingReport report) {
-        int curr = deliveryService.getTruckReportCurrentWeight(report.getID());
-        int max = getMaxWeight(report);
-        return max - curr;
+    private ResponseT< Integer> getReportLeftWeight(FacadeTruckingReport report) {
+        try {
+            int curr = deliveryService.getTruckReportCurrentWeight(report.getID());
+            int max = getMaxWeight(report);
+            return new ResponseT<>( max - curr);
+        }catch (NoSuchElementException e){
+            return new ResponseT(e.getMessage());
+        }
+
     }
 
     private void addNotification(String content) {

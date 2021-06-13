@@ -93,7 +93,7 @@ public class DeliveryService {
         return new FacadeDeliveryForm(dc.getDeliveryForm(id));
     }
 
-    public int getTruckReportCurrentWeight(int id) {
+    public int getTruckReportCurrentWeight(int id) throws NoSuchElementException{
         return dc.getTruckReportCurrentWeight(id);
     }
 

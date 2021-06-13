@@ -162,7 +162,7 @@ public class DeliveryController {
 
     }
 
-    public int getTruckReportCurrentWeight(int report_id) {
+    public int getTruckReportCurrentWeight(int report_id) throws NoSuchElementException{
         if (getTruckReport(report_id)== null){
             throw new NoSuchElementException("couldn't find report with the id:"+ report_id);
         }
