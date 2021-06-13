@@ -63,7 +63,7 @@ public class DeliveryController {
     }
 
     private LocalTime shiftToTime(int shift) {
-        if (shift ==1)
+        if (shift ==0)
             return LocalTime.of(6,0);
         else
             return LocalTime.of(14, 0);
@@ -99,10 +99,26 @@ public class DeliveryController {
 
     public LinkedList<TruckingReport> getWaitingTruckingReports(){
         LinkedList<TruckingReport> tr =  new LinkedList<>();
+        updateWaitingReports();
         for (Map.Entry<Integer,TruckingReport> entry : waitingTruckingReports.entrySet()){
             tr.add(entry.getValue());
         }
+
         return tr;
+    }
+
+    private void updateWaitingReports() {
+        HashMap<Integer, TruckingReport> waitingReports = new HashMap<>();
+        for (Map.Entry<Integer,TruckingReport> entry : waitingTruckingReports.entrySet()){
+            if (entry.getValue().getDate().isBefore(LocalDate.now()))
+                waitingReports.put(entry.getKey(),entry.getValue());
+            else {
+                oldTruckingReports.put(entry.getKey(), entry.getValue());
+                oldDeliveryForms.put(entry.getKey(), activeDeliveryForms.remove(entry.getKey()));
+            }
+        }
+        waitingTruckingReports = waitingReports;
+
     }
 
     public LinkedList<TruckingReport> getOldTruckingReports(){
