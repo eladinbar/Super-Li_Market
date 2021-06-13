@@ -4,6 +4,7 @@ import InfrastructurePackage.Pair;
 import ServiceLayer.Response.Response;
 import ServiceLayer.Response.ResponseT;
 import ServiceLayer.FacadeObjects.*;
+import  ServiceLayer.TruckingService;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -14,6 +15,7 @@ public class Service implements IService {
     private OrderService orderService;
     private SupplierService supplierService;
     private InventoryService inventoryService;
+    private TruckingService trackingService;
 
     public Service() {
         this.supplierService = new SupplierService();
@@ -243,6 +245,20 @@ public class Service implements IService {
         }
 
         return r;
+    }
+
+    @Override
+    public Response approveTruckReport(int truckReportId){
+        List<FacadeDeliveryForm> trackReportRes = trackingService.getDeliveryForms(truckReportId);
+        //updateOrders according to the delivery froms
+
+        //convert supplier Id to Product ID
+        for (FacadeDeliveryForm df :  trackReportRes) {
+            supplierService.getAgreement();
+        }
+
+
+        //update the InventoryOf the products
     }
 
     @Override

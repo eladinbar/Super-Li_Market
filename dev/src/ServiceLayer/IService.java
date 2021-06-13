@@ -132,6 +132,8 @@ public interface IService {
     ResponseT<List<FacadeItem>> itemShortageReport();
     ResponseT<List<FacadeDefectEntry>> defectsReport(LocalDate fromDate, LocalDate toDate);
 
+    Response approveTruckReport(int truckReportId);
+
     ResponseT<Pair<Map<Integer, Integer >,Map<Integer, String>>>getItemsInShortAndQuantities();
 
     Response updateQuantityInventory(ArrayList<FacadeProduct> items);
