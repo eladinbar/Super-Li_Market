@@ -72,44 +72,63 @@ public class TruckingService {
      */
     public ResponseT<  LinkedList<Pair<Integer, Integer>> > addOrder(FacadeOrder order)  {
 
-            int supplier = getSupplierFromOrder(order);
-            LinkedList<Pair<Integer, Integer>> left = orderToItemsList(order);
+        int supplier = getSupplierFromOrder(order);
+        LinkedList<Pair<Integer, Integer>> left = orderToItemsList(order);
+        ResponseT<LinkedList<FacadeTruckingReport>> res = getThisWeekReports();
+        if (res.errorOccurred()){
+            return new ResponseT<>(res.getErrorMessage());
+        }
+        LinkedList<FacadeTruckingReport> thisWeekReports = res.getValue();
+        // inserts into the next 7 days reports only
 
-            LinkedList<FacadeTruckingReport> thisWeekReports = getThisWeekReports();
-            // inserts into the next 7 days reports only
-            left = insertToExistingTR(left, supplier, thisWeekReports);
+        ResponseT<LinkedList<Pair<Integer, Integer>>> res2 = insertToExistingTR(left, supplier, thisWeekReports);
+        if (res.errorOccurred()){
+            return new ResponseT<>(res.getErrorMessage());
+        }
+        left = res2.getValue();
+        if (!left.isEmpty()) {
+
+            // creates reports for the next 7 days only, call drivers from home if needed
+            ResponseT<LinkedList<Pair<Integer, Integer>>> res3 = createReportsThisWeek(left, supplier);
+            if (res3.errorOccurred()){
+                return new ResponseT<>(res.getErrorMessage());
+            }
+            left  =res3.getValue();
             if (!left.isEmpty()) {
+                addNotification("Order number: " + order.getId() + "\nhas been settled to deliveries in more the a week");
+                LinkedList<FacadeTruckingReport> everyWeekReports = getActiveTruckingReports().getValue();
+                everyWeekReports.addAll(getWaitingTruckingReports().getValue());
 
-                // creates reports for the next 7 days only, call drivers from home if needed
-                left = createReportsThisWeek(left, supplier);
-
+                // adds to existing TR from every week
+                res2 = insertToExistingTR(left, supplier, everyWeekReports);
+                if (res2.errorOccurred()){
+                    return new ResponseT<>(res.getErrorMessage());
+                }
+                left= res2.getValue();
                 if (!left.isEmpty()) {
-                    addNotification("Order number: " + order.getId() + "\nhas been settled to deliveries in more the a week");
-                    LinkedList<FacadeTruckingReport> everyWeekReports = getActiveTruckingReports().getValue();
-                    everyWeekReports.addAll(getWaitingTruckingReports().getValue());
 
-                    // adds to existing TR from every week
-                    left = insertToExistingTR(left, supplier, everyWeekReports);
+                    // creates reports for every possible date
+
+                    res3=  createReportsEveryWeek(left, supplier);
+                    if (res3.errorOccurred()){
+                        return new ResponseT<>(res.getErrorMessage());
+                    }
+                    left = res3.getValue();
                     if (!left.isEmpty()) {
-
-                        // creates reports for every possible date
-
-                        left = createReportsEveryWeek(left, supplier);
-                        if (!left.isEmpty()) {
-                            addNotification("order number: " + order.getId() + "" +
-                                    "\nhas failed to be delivered as a whole. the remain items has been delivered to pool");
-                            try {
-                                addDemandToPool(left, supplier);
-                            } catch (SQLException e) {
-                                e.printStackTrace();
-                            }
+                        addNotification("order number: " + order.getId() + "" +
+                                "\nhas failed to be delivered as a whole. the remain items has been delivered to pool");
+                        try {
+                            addDemandToPool(left, supplier);
+                        } catch (SQLException e) {
+                            return new ResponseT<>("problem has been occurred with DB");
                         }
                     }
                 }
             }
+        }
 
 
-            return new ResponseT<>(left);
+        return new ResponseT<>(left);
 
 
 
@@ -124,26 +143,35 @@ public class TruckingService {
      * @param order -  the permanent order need to be settled
      * @return true if succeeded, false other wise
      */
-    public boolean addPermanentOrder(FacadeOrder order) {
+    public ResponseT<Boolean> addPermanentOrder(FacadeOrder order) {
         boolean succeed ;
-        // TODO need to handle response
-        succeed  = canAddFullOrder(order).getValue();
+        ResponseT<Boolean> res = canAddFullOrder(order);
+        if (res.errorOccurred()){
+            return res;
+        }
+        succeed  = res.getValue();
         if (succeed){
             LocalDate date = order.getDate();
             LinkedList<Pair<Integer, Integer>> left = orderToItemsList(order);
             int supplier = getSupplierFromOrder(order);
             LinkedList<FacadeTruckingReport> reports = getAvailableTRsByDate(date);
-            left  = insertToExistingTR(left, supplier, reports);
 
-
-            left =  createReportsForDate(left, supplier, date);
-
+            ResponseT<LinkedList<Pair<Integer, Integer>>> res2 = insertToExistingTR(left, supplier, reports);
+            if (res2.errorOccurred()){
+                return new ResponseT<>(res.getErrorMessage());
+            }
+            left = res2.getValue();
+            res2 =  createReportsForDate(left, supplier, date);
+            if (res2.errorOccurred()){
+                return new ResponseT<>(res.getErrorMessage());
+            }
+            left = res2.getValue();
             if (!left.isEmpty()){
-                System.out.println(("for some reason - didn't recognized the needed weight to possible"));
-                exit(1);
+                return new ResponseT<>("for some reason - didn't recognized the needed weight to possible");
+
             }
         }
-        return succeed;
+        return new ResponseT<>( succeed);
     }
 
 
@@ -198,39 +226,59 @@ public class TruckingService {
 
     }
 
-    private int turnTimeToShift(LocalTime leavingHour) {
-        if (leavingHour.equals(LocalTime.of(14,00)))
-            return 1;
-        else return  0;
-    }
 
     // TODO - employees should call this function
     public void handleLeftOvers() {
-        LinkedList<FacadeDemand> demands =  getDemands().getValue();
+        ResponseT<LinkedList<FacadeDemand>> res2 = getDemands();
+        if (res2.errorOccurred()){
+            return ;
+        }
+        LinkedList<FacadeDemand> demands = res2.getValue();
 
         for (FacadeDemand facadeDemand : demands){
 
             int supplier    = facadeDemand.getSupplier();
             LinkedList< Pair<Integer,Integer>> item = new LinkedList<>();
             item.add (new Pair<>(facadeDemand.getItemID(), facadeDemand.getAmount()));
-            LinkedList<FacadeTruckingReport> thisWeekReports =  getThisWeekReports();
+            ResponseT<LinkedList<FacadeTruckingReport>> res = getThisWeekReports();
+            if (res.errorOccurred()){
+                System.out.println(res.getErrorMessage());
+                return;
+            }
+            LinkedList<FacadeTruckingReport> thisWeekReports =  res.getValue();
             // inserts into the next 7 days reports only
-            item = insertToExistingTR(item , supplier,thisWeekReports);
+            ResponseT<LinkedList<Pair<Integer, Integer>>> res3 = insertToExistingTR(item, supplier, thisWeekReports);
+            if (res3.errorOccurred()){
+                return;
+            }
+            item = res3.getValue();
             if (!item.isEmpty()) {
 
                 // creates reports for the next 7 days only, call drivers from home if needed
-                item = createReportsThisWeek(item, supplier);
+                ResponseT<LinkedList<Pair<Integer, Integer>>> res4 = createReportsThisWeek(item, supplier);
+                if (res4.errorOccurred()){
+                    return;
+                }
+                item = res4.getValue();
                 if (!item.isEmpty()) {
                     LinkedList<FacadeTruckingReport> everyWeekReports = getActiveTruckingReports().getValue();
                     everyWeekReports.addAll(getWaitingTruckingReports().getValue());
 
                     // adds to existing TR from every week
-                    item = insertToExistingTR(item, supplier, everyWeekReports);
+                    res3 = insertToExistingTR(item, supplier, thisWeekReports);
+                    if (res3.errorOccurred()){
+                        return;
+                    }
+                    item = res3.getValue();
                     if (!item.isEmpty()) {
 
                         // creates reports for every possible date
 
-                        item = createReportsEveryWeek(item, supplier);
+                        res4 =  createReportsEveryWeek(item, supplier);
+                        if (res4.errorOccurred()){
+                            return;
+                        }
+                        item = res4.getValue();
                     }
 
 
@@ -264,9 +312,6 @@ public class TruckingService {
     public ResponseT< LinkedList<FacadeDeliveryForm>> getDeliveryFormsByTruckReport(int report_id) {
         return new ResponseT<>(deliveryService.getTruckReportDeliveryForms(report_id));
     }
-    public int getItemWeight(int itemID) {
-        return deliveryService.getItemTotalWeight(itemID, 1);
-    }
 
     public LinkedList<FacadeDemand> sortDemandsBySite(LinkedList<FacadeDemand> demands) {
         for (int i = demands.size() - 1; i >= 0; i--) {
@@ -298,13 +343,17 @@ public class TruckingService {
      * @param supplier -  delivery area of the Order
      * @return items left to insert
      */
-    private LinkedList<Pair<Integer, Integer>>
+    private ResponseT< LinkedList<Pair<Integer, Integer>> >
     insertToExistingTR(LinkedList<Pair<Integer, Integer>> itemsToInsert,int supplier, LinkedList<FacadeTruckingReport> reports){
         LinkedList<Pair<Integer, Integer>> left = itemsToInsert;
         int area = getDeliveryArea(supplier);
         for (FacadeTruckingReport report : reports){
             if (!left.isEmpty()) {
-                int capacity = getMaxWeight(report);
+                ResponseT<Integer> res = getMaxWeight(report);
+                if (res.errorOccurred()){
+                    return new ResponseT<>(res.getErrorMessage());
+                }
+                int capacity = res.getValue();
                 LinkedList<Integer> reportAreas = getReportAreas(report);
                 //first iterates through reports, tries to add by delivery area
 
@@ -317,11 +366,15 @@ public class TruckingService {
         }
         if (! left.isEmpty()) {
             for (FacadeTruckingReport report : reports) {
-                int capacity = getMaxWeight(report);
+                ResponseT<Integer> res = getMaxWeight(report);
+                if (res.errorOccurred()){
+                    return new ResponseT<>(res.getErrorMessage());
+                }
+                int capacity = res.getValue();
                 left = deliveryService.insertItemsToTruckReport(left, supplier, capacity, report.getID());
             }
         }
-        return left;
+        return new ResponseT<>(left);
     }
 
 
@@ -330,8 +383,8 @@ public class TruckingService {
      * @param tr -  truck report to check
      * @return returns min weight truck and driver can handle
      */
-    private int getMaxWeight(FacadeTruckingReport tr){
-       return resourcesService.getMaxWeight(tr.getDriverID(),tr.getTruckNumber());
+    private ResponseT<Integer> getMaxWeight(FacadeTruckingReport tr){
+       return new ResponseT<>(resourcesService.getMaxWeight(tr.getDriverID(),tr.getTruckNumber()));
 
     }
 
@@ -347,34 +400,51 @@ public class TruckingService {
      *
      * @return < left items ,LinkedList of the created TruckingReports>>
      */
-    private LinkedList<Pair<Integer,Integer>>
+    private ResponseT< LinkedList<Pair<Integer,Integer>>>
     createReportsThisWeek(    LinkedList<Pair<Integer,Integer>>  items , int supplier ){
 
         for (LocalDate currDate  = LocalDate.now(); currDate.isBefore(LocalDate.now().plusDays(8)); currDate = currDate.plusDays(1)){
-            items = createReportsForDate(items, supplier,currDate);
+
+            ResponseT<LinkedList<Pair<Integer, Integer>>> res = createReportsForDate(items, supplier, currDate);
+            if (res.errorOccurred()){
+                return new ResponseT<>(res.getErrorMessage());
+            }
+            items =res.getValue();
         }
-        return items;
+        return new ResponseT<>( items);
     }
 
-    private LinkedList<Pair<Integer,Integer>>
+    private ResponseT< LinkedList<Pair<Integer,Integer>>>
     createReportsEveryWeek( LinkedList<Pair<Integer,Integer>>  items , int supplier  ){
         LocalDate date = getLastShiftDate();
         for (LocalDate currDate  = LocalDate.now(); currDate.isBefore(LocalDate.now().plusDays(8)); currDate = currDate.plusDays(1)){
-            items = createReportsForDate(items, supplier,currDate);
+            ResponseT<LinkedList<Pair<Integer, Integer>>> res = createReportsForDate(items, supplier, currDate);
+            if (res.errorOccurred()){
+                return new ResponseT<>(res.getErrorMessage());
+            }
+            items =res.getValue();
         }
-        return items;
+        return new ResponseT<>( items);
     }
 
 
-    private LinkedList<Pair<Integer,Integer>>
+    private ResponseT< LinkedList<Pair<Integer,Integer>>>
     createReportsForDate( LinkedList<Pair<Integer,Integer>>  items , int supplier , LocalDate date ){
         boolean finish = false;
         while (true){
-            Pair<Pair<FacadeDriver, FacadeTruck>, Integer> ret = getDriverAndTruckFromExisting(date);
+            ResponseT<Pair<Pair<FacadeDriver, FacadeTruck>, Integer>> res = getDriverAndTruckFromExisting(date);
+            if (res.errorOccurred()){
+                return new ResponseT<>(res.getErrorMessage());
+            }
+            Pair<Pair<FacadeDriver, FacadeTruck>, Integer> ret =res.getValue();
             Pair<FacadeDriver, FacadeTruck> driverAndTruck = ret.getFirst();
             int shift = ret.getSecond();
             if (driverAndTruck == null){
-                ret = getDriverAndTruckFromPool(date);
+                res = getDriverAndTruckFromPool(date);
+                if (res.errorOccurred()){
+                    return new ResponseT<>(res.getErrorMessage());
+                }
+                ret = res.getValue();
                 driverAndTruck = ret.getFirst();
 
             }
@@ -386,7 +456,7 @@ public class TruckingService {
             resourcesService.addDriverConstarint(driverAndTruck.getFirst().getID(),date,shift);
             resourcesService.addTruckConstraint(driverAndTruck.getSecond().getLicenseNumber(),date,shift);
         }
-        return items;
+        return new ResponseT<>( items);
 
     }
     private  HashMap<LocalDate, HashMap<Integer, LinkedList<String>>>
@@ -437,7 +507,11 @@ public class TruckingService {
             total += sum.getValue();
         }
         try {
-            total += getPossibleWeightByDate(date);
+            ResponseT<Integer> res = getPossibleWeightByDate(date);
+            if (res.errorOccurred()){
+                return new ResponseT<>(res.getErrorMessage());
+            }
+            total += res.getValue();
         } catch (EmployeeException e) {
             e.printStackTrace();
         } catch (SQLException throwables) {
@@ -450,12 +524,22 @@ public class TruckingService {
     }
 
 
-    private int getPossibleWeightByDate(LocalDate date) throws EmployeeException, SQLException {
+    private ResponseT<Integer> getPossibleWeightByDate(LocalDate date) throws EmployeeException, SQLException {
         LinkedList<FacadeTruckingReport> reports = getAvailableTRsByDate(date);
-        return resourcesService.getPossibleWeightByDate(date,getBusyTrucksByDate(date));
+        ResponseT<Pair<LinkedList<String>, LinkedList<String>>> res = getBusyTrucksByDate(date);
+        if (res.errorOccurred()){
+            return new ResponseT<>(res.getErrorMessage());
+        }
+        return new ResponseT<>( resourcesService.getPossibleWeightByDate(date,res.getValue()));
 
         // TODO - employees need to make a new method, returns boolean and do no insert into shift
     }
+    private int turnTimeToShift(LocalTime leavingHour) {
+        if (leavingHour.equals(LocalTime.of(14,00)))
+            return 1;
+        else return  0;
+    }
+
 
 
     /**
@@ -463,12 +547,20 @@ public class TruckingService {
      * @param date
      * @return pair < < driver, truck> , Shift>
      */
-    private Pair <Pair<FacadeDriver, FacadeTruck>,Integer > getDriverAndTruckFromExisting (LocalDate date){
-        return resourcesService.findDriverAndTruckForDateFromExisting(date,getBusyTrucksByDate(date));
+    private ResponseT< Pair <Pair<FacadeDriver, FacadeTruck>,Integer >> getDriverAndTruckFromExisting (LocalDate date){
+        ResponseT<Pair<LinkedList<String>, LinkedList<String>>> res = getBusyTrucksByDate(date);
+        if (res.errorOccurred()){
+            return new ResponseT<>(res.getErrorMessage());
+        }
+        return new ResponseT<>( resourcesService.findDriverAndTruckForDateFromExisting(date,res.getValue()));
     }
 
-    private Pair<Pair<FacadeDriver, FacadeTruck>,Integer> getDriverAndTruckFromPool (LocalDate date){
-        return resourcesService.findDriverAndTruckForDateFromPool(date,getBusyTrucksByDate(date));
+    private ResponseT< Pair <Pair<FacadeDriver, FacadeTruck>,Integer >>  getDriverAndTruckFromPool (LocalDate date){
+        ResponseT<Pair<LinkedList<String>, LinkedList<String>>> res = getBusyTrucksByDate(date);
+        if (res.errorOccurred()){
+            return new ResponseT<>(res.getErrorMessage());
+        }
+        return new ResponseT<>( resourcesService.findDriverAndTruckForDateFromPool(date,res.getValue()));
     }
 
     /**
@@ -488,7 +580,7 @@ public class TruckingService {
         return order.getSupplier().getSc().getCompanyNumber();
     }
 
-    private LinkedList<FacadeTruckingReport> getThisWeekReports() {
+    private ResponseT< LinkedList<FacadeTruckingReport> > getThisWeekReports() {
         LinkedList<FacadeTruckingReport> allReports = getActiveTruckingReports().getValue();
         LinkedList<FacadeTruckingReport> waiting = getWaitingTruckingReports().getValue();
         allReports.addAll(waiting);
@@ -499,18 +591,22 @@ public class TruckingService {
                 thisWeekReports.add(ftr);
             }
         }
-        return thisWeekReports;
+        return new ResponseT<>( thisWeekReports);
     }
 
-    private Pair<LinkedList<String>,LinkedList<String>> getBusyTrucksByDate(LocalDate date)
+    private ResponseT< Pair<LinkedList<String>,LinkedList<String>> > getBusyTrucksByDate(LocalDate date)
     {
-        return deliveryService.getBusyTrucksByDate(date);
+        return new ResponseT<>( deliveryService.getBusyTrucksByDate(date));
     }
 
     private ResponseT< Integer> getReportLeftWeight(FacadeTruckingReport report) {
         try {
             int curr = deliveryService.getTruckReportCurrentWeight(report.getID());
-            int max = getMaxWeight(report);
+            ResponseT<Integer> res = getMaxWeight(report);
+            if (res.errorOccurred()){
+                return res;
+            }
+            int max = res.getValue();
             return new ResponseT<>( max - curr);
         }catch (NoSuchElementException e){
             return new ResponseT(e.getMessage());

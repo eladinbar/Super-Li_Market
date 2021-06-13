@@ -53,9 +53,8 @@ public class DeliveryController {
 
 
 
-    public LinkedList<Pair<Integer, Integer>> createTruckReport(LinkedList<Pair<Integer, Integer>> items, String driverId, String truckId, int maxWeight, int supplier, LocalDate date, int shift)  {
-
-
+    public LinkedList<Pair<Integer, Integer>> createTruckReport(LinkedList<Pair<Integer, Integer>> items, String driverId,
+                                                                String truckId, int maxWeight, int supplier, LocalDate date, int shift)  {
 
         LinkedList<Integer> suppliers=new LinkedList<>();
         suppliers.add(supplier);

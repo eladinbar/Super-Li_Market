@@ -325,7 +325,7 @@ public class Service implements IService {
                 temp = temp.plusDays(1);
             fOrder.setDate(temp);
             if(!fOrder.getSupplier().getSc().isSelfDelivery()) {
-                if(TruckingService.getInstance().addPermanentOrder(fOrder));
+                if(TruckingService.getInstance().addPermanentOrder(fOrder).getValue());
             }
         }
         return new ResponseT<>(retList);
