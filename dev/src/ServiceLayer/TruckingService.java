@@ -1,5 +1,6 @@
 package ServiceLayer;
 
+import BusinessLayer.EmployeePackage.EmployeeException;
 import BusinessLayer.InventoryPackage.Item;
 import BusinessLayer.Notification;
 import BusinessLayer.SuppliersPackage.OrderPackage.Order;
@@ -431,13 +432,21 @@ public class TruckingService {
             }
             total += sum.getValue();
         }
-        total += getPossibleWeightByDate(date);
+        try {
+            total += getPossibleWeightByDate(date);
+        } catch (EmployeeException e) {
+            e.printStackTrace();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+
+            //TODo need to implement here
+        }
         return new ResponseT<>(total);
 
     }
 
 
-    private int getPossibleWeightByDate(LocalDate date) {
+    private int getPossibleWeightByDate(LocalDate date) throws EmployeeException, SQLException {
         LinkedList<FacadeTruckingReport> reports = getAvailableTRsByDate(date);
         return resourcesService.getPossibleWeightByDate(date,getBusyTrucksByDate(date));
 

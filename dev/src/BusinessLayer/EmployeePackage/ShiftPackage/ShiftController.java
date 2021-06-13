@@ -303,10 +303,11 @@ public class ShiftController {
          return daysAndDrivers;
     }
 
-    public void addDriverToShift(String id, LocalDate date, int shift) throws EmployeeException, SQLException {
+    public boolean addDriverToShift(String id, LocalDate date, int shift) throws EmployeeException, SQLException {
         if(!canAddDriverToShift ( id, date, shift ))
-            throw new EmployeeException ( "Couldn't add driver to shift." );
+            return false;
         getShift ( date, shift ).addEmployee ( "driver", id );
+        return true;
     }
 
     public boolean canAddDriverToShift(String id, LocalDate date, int shift) throws EmployeeException, SQLException {

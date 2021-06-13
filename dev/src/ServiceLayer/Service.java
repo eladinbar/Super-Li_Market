@@ -268,7 +268,7 @@ public class Service implements IService {
             }
 
         }
-        truckingService.SetCompleteTrackingReport(truckReportId);
+        truckingService.setCompletedTruckReport(truckReportId);
         return new Response();
     }
 

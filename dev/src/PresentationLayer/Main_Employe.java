@@ -1,4 +1,3 @@
-/*
 package PresentationLayer;
 
 import java.sql.SQLException;
@@ -12,5 +11,3 @@ public class Main_Employe {
         presentationController.start();
     }
 }
-
-*/

@@ -112,7 +112,7 @@ public class ResourcesService {
         rc.upload(driver_cons, trucks_cons);
     }
 
-    public int getPossibleWeightByDate(LocalDate date,Pair<LinkedList<String>,LinkedList<String>> busyTrucks) {
+    public int getPossibleWeightByDate(LocalDate date,Pair<LinkedList<String>,LinkedList<String>> busyTrucks) throws EmployeeException, SQLException {
        return rc.getPossibleWeightByDate(date,busyTrucks);
     }
 /*

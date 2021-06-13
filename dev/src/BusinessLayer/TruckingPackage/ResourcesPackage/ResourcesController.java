@@ -475,13 +475,13 @@ public class ResourcesController {
 
     }
 
-    public int getPossibleWeightByDate(LocalDate date,Pair<LinkedList<String>,LinkedList<String>> busyTrucks) {
+    public int getPossibleWeightByDate(LocalDate date,Pair<LinkedList<String>,LinkedList<String>> busyTrucks) throws EmployeeException, SQLException {
         //TODO employees need to implement canAddToShift
         int sum=0;
         LinkedList<Pair<Pair<Driver, Truck>, Integer>> poolList = findListDriverAndTruckForDateFromPool(date, busyTrucks);
         for (Pair<Pair<Driver,Truck>,Integer> pair:poolList)
         {
-            if (canAddToShift(pair.getFirst().getFirst(),date,pair.getSecond()))
+            if (ShiftController.getInstance().canAddDriverToShift(pair.getFirst().getFirst().getID(),date,pair.getSecond()))
             {
                 Driver d=pair.getFirst().getFirst();
                 Truck t=pair.getFirst().getSecond();
@@ -492,7 +492,7 @@ public class ResourcesController {
         LinkedList<Pair<Pair<Driver, Truck>, Integer>> existingList = findListDriversAndTrucksFromExisting(date, busyTrucks);
         for (Pair<Pair<Driver,Truck>,Integer> pair:existingList)
         {
-            if (canAddToShift(pair.getFirst().getFirst(),date,pair.getSecond()))
+            if (ShiftController.getInstance().canAddDriverToShift(pair.getFirst().getFirst().getID(),date,pair.getSecond()))
             {
                 Driver d=pair.getFirst().getFirst();
                 Truck t=pair.getFirst().getSecond();

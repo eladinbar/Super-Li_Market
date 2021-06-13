@@ -14,6 +14,8 @@ public class DalTruckingReport  {
     private boolean completed;
     private boolean approved;
 
+    public DalTruckingReport(){}
+
     public DalTruckingReport(int ID,LocalTime leavingHour,LocalDate date,String truckNumber,String driverID
             ,boolean completed,boolean approved)
     {

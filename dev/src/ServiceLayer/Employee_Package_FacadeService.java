@@ -1,4 +1,3 @@
-/*
 package ServiceLayer;
 
 import BusinessLayer.EmployeePackage.EmployeeException;
@@ -105,7 +104,7 @@ public class Employee_Package_FacadeService {
 
     public Response updateBankAccount(String Id, int accountNum, int bankBranch, String bank) {
         return employeeService.updateBankAccount ( Id,accountNum,bankBranch,bank );
-}
+    }
 
     public Response updateTermsOfEmployee(String Id, int salary, int educationFund, int sickDays, int daysOff) throws SQLException {
         return employeeService.updateTermsOfEmployee ( Id,salary,educationFund,sickDays,daysOff );
@@ -177,4 +176,3 @@ public class Employee_Package_FacadeService {
         return employeeService.addAlert ( role, alert );
     }
 }
-*/

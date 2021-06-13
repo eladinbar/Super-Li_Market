@@ -1,7 +1,7 @@
 package BusinessLayer.TruckingPackage.DeliveryPackage;
 
 import DataAccessLayer.DalControllers.TruckingControllers.DalTruckingReportController;
-import DataAccessLayer.DalObjects.TruckingObjects.DalTruckingReport;
+import DataAccessLayer.DalObjects.TruckingObjects.*;
 
 import java.sql.SQLException;
 import java.time.LocalDate;
@@ -33,9 +33,8 @@ public class TruckingReport {
         this.approved = false;
         this.completed=false;
         try {
-            DalTruckingReportController.getInstance().insert
-                    (new DalTruckingReport(this.ID,this.leavingHour,this.date,this.truckNumber,this.driverID
-                            ,this.completed,this.approved));
+            DalTruckingReportController.getInstance().insert(new DalTruckingReport(this.ID,this.leavingHour,this.date,this.truckNumber,this.driverID
+                    ,this.completed,this.approved));
         } catch (SQLException e) {
             e.printStackTrace();
             exit(1);

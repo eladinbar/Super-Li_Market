@@ -565,7 +565,6 @@ public class PresentationController implements Runnable {
                 break;
             } else System.out.println("\nInvalid input please choose again\n");
         }
-        String print = service.addSupplier(firstName, lName, email, ID, phone, companyNumber, perm, self, pay, address).toString();
         int area = 1;
         while (true) {
             area = menu.instructAndReceive("Enter delivery area\n1. North\n2. Center\n3. South\nchoose number: ", Integer.class);
@@ -573,7 +572,7 @@ public class PresentationController implements Runnable {
                 break;
             } else System.out.println("\nwrong input please choose again\n");
         }
-        String print = service.addSupplier(firstName, lName, email, ID, phone, companyNumber, perm, self, pay, adress, area).toString();
+        String print = service.addSupplier(firstName, lName, email, ID, phone, companyNumber, perm, self, pay, address, area).toString();
         System.out.println(print);
         if (!print.split(" ")[0].equals("\nError:")) {
             while (true) {
