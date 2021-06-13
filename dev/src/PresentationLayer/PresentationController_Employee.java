@@ -1,8 +1,10 @@
 package PresentationLayer;
 
+import BusinessLayer.EmployeePackage.EmployeeNotification;
 import BusinessLayer.EmployeePackage.EmployeePackage.Role;
 import BusinessLayer.EmployeePackage.ShiftPackage.ShiftTypes;
 import BusinessLayer.Notification;
+import DataAccessLayer.DalControllers.EmployeeControllers.DalAlertEmployeeController;
 import ServiceLayer.Employee_Package_FacadeService;
 import ServiceLayer.FacadeObjects.FacadeConstraint;
 import ServiceLayer.FacadeObjects.FacadeEmployee;
@@ -23,7 +25,7 @@ public class PresentationController_Employee {
     Employee_Package_FacadeService facadeService;
     MenuPrinter_Employee menuPrinter;
     StringConverter stringConverter;
-    HashMap<Role, List<Notification>> alerts;
+    HashMap<Role,List<EmployeeNotification>> alerts;
 
     public PresentationController_Employee() {
         facadeService = new Employee_Package_FacadeService ( );
@@ -42,6 +44,7 @@ public class PresentationController_Employee {
 
     private void uploadClean() throws SQLException {
         ResponseT<Boolean> start = loadData ( );
+        loadAlerts ();
         if (start.errorOccurred ( )) {
             menuPrinter.print ( start.getErrorMessage ( ) );
             return;
@@ -74,6 +77,13 @@ public class PresentationController_Employee {
                 while (!login ( false )) ;
             }
         }
+    }
+
+    private void loadAlerts() throws SQLException {
+        ResponseT alerts = facadeService.loadAlerts();
+        if(alerts.errorOccurred ())
+            menuPrinter.print ( alerts.getMessage () );
+        this.alerts = (HashMap<Role, List<EmployeeNotification>>) alerts.value;
     }
 
     private ResponseT<Boolean> loadData() throws SQLException {
@@ -536,13 +546,6 @@ public class PresentationController_Employee {
                 menuPrinter.print ( employee.getErrorMessage () );
                 return false;
             }
-            if(alerts.containsKey (role))
-            {
-                for(Notification msg : alerts.get ( role )){
-                    menuPrinter.print ( msg.getContent () );
-                    alerts.get ( role ).remove (msg);
-                }
-            }
             if(employee.value.getRole ().equals ( Role.humanResourcesManager )) {
                 if(first) {
                     createShiftTypes ( );
@@ -562,6 +565,8 @@ public class PresentationController_Employee {
                         response = facadeService.addEmployee ( logisticsManager );
                     }
                 }
+                else
+                    printAlerts();
                 choice = menuPrinter.managerMenu ( );
                 handleManagerChoice ( choice, first );
             } else if(role.equals ( Role.logisticsManager )){
@@ -581,6 +586,14 @@ public class PresentationController_Employee {
         }
         else
             return false;
+    }
+
+    private void printAlerts() throws SQLException {
+        for( EmployeeNotification alert: alerts.get ( Role.humanResourcesManager ))
+        {
+            menuPrinter.print ( "Alert: " + alert.getContent () );
+            facadeService.deleteAlert(alert);
+        }
     }
 
     private void handleStoreKeeperChoice(int choice) throws SQLException {
@@ -845,10 +858,14 @@ public class PresentationController_Employee {
         }
     }
 
-    public void addAnAlert(Notification msg, Role role){
-        if(!alerts.containsKey ( role )) {
-            alerts.put ( role, new ArrayList<> ( ) );
+    public void addAnAlert(Role role, Notification alert) throws SQLException {
+        ResponseT<Integer> id = facadeService.addAlert(role, alert);
+        if(id.errorOccurred ()) {
+            menuPrinter.print ( id.getErrorMessage ( ) );
+            return;
         }
-        alerts.get ( role ).add ( msg );
+        if(!alerts.containsKey ( role ))
+            alerts.put ( role, new ArrayList<> (  ) );
+        alerts.get ( role ).add ( new EmployeeNotification ( id.value, role.name (), alert.getContent () ));
     }
 }
