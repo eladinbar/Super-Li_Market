@@ -47,7 +47,7 @@ public class PersonCardDalController extends DalController<DalPersonCard> {
     @Override
     public boolean insert(DalPersonCard personCard) throws SQLException {
         try (Connection conn = DriverManager.getConnection(connectionString)) {
-            String query = "INSERT INTO " + tableName + " VALUES (?,?,?,?,?)";
+            String query = "INSERT OR IGNORE INTO " + tableName + " VALUES (?,?,?,?,?)";
             PreparedStatement stmt = conn.prepareStatement(query);
             stmt.setString(1, personCard.getId());
             stmt.setString(2, personCard.getFirstName());
