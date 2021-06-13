@@ -7,19 +7,17 @@ import java.util.Map;
 
 public class FacadeDeliveryForm implements FacadeObject{
     private int ID;
-    private int origin;
-    private int destination;
+    private int supplier;
     private HashMap<Integer, Integer> items;
     private int leavingWeight;
     private int trID;
     private boolean completed;
 
 
-    public FacadeDeliveryForm(int ID, int origin, int destination, HashMap<Integer,Integer> items,
-                        int leavingWeight, int trID){
+    public FacadeDeliveryForm(int ID, int origin, int supplier, HashMap<Integer,Integer> items,
+                              int leavingWeight, int trID){
         this.ID = ID;
-        this.origin = origin;
-        this.destination = destination;
+        this.supplier = supplier;
         this.items = items;
         this.leavingWeight = leavingWeight;
         this.trID =trID;
@@ -28,8 +26,7 @@ public class FacadeDeliveryForm implements FacadeObject{
 
     public FacadeDeliveryForm(DeliveryForm df){
         this.ID =  df.getID();
-        this.origin = df.getOrigin();
-        destination = df.getDestination();
+        supplier = df.getDestination();
         items = new HashMap<Integer,Integer>();
         for (Map.Entry<Integer,Integer> entry: df.getItems().entrySet() ) {
             this.items.put(entry.getKey() , entry.getValue());
@@ -43,8 +40,8 @@ public class FacadeDeliveryForm implements FacadeObject{
         return items;
     }
 
-    public int getDestination() {
-        return destination;
+    public int getSupplier() {
+        return supplier;
     }
 
     public int getID() {
@@ -55,9 +52,6 @@ public class FacadeDeliveryForm implements FacadeObject{
         return leavingWeight;
     }
 
-    public int getOrigin() {
-        return origin;
-    }
 
     public int getTrID() {
         return trID;
@@ -67,8 +61,8 @@ public class FacadeDeliveryForm implements FacadeObject{
         return completed;
     }
 
-    public void setDestination(int destination) {
-        this.destination = destination;
+    public void setSupplier(int supplier) {
+        this.supplier = supplier;
     }
 
     public void setID(int ID) {
@@ -83,9 +77,6 @@ public class FacadeDeliveryForm implements FacadeObject{
         this.leavingWeight = leavingWeight;
     }
 
-    public void setOrigin(int origin) {
-        this.origin = origin;
-    }
 
     public void setTrID(int trID) {
         this.trID = trID;
