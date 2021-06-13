@@ -706,10 +706,10 @@ public class InventoryServiceImpl implements InventoryService {
     }
 
     @Override
-    public Response updateQuantityInventory(ArrayList<FacadeProduct> items) {
-        for (FacadeProduct i: items) {
-            inventoryController.modifyItemShelfQuantity(i.getProductID(),
-                    i.getAmount() + inventoryController.getItem(i.getProductID()).getStorageQuantity());
+    public Response updateQuantityInventory(Map<Integer, Integer> items) {
+        for (Integer i: items.keySet()) {
+            inventoryController.modifyItemShelfQuantity(i,
+                    items.get(i) + inventoryController.getItem(i).getStorageQuantity());
         }
         return new Response(true, "inventory updated");
     }
