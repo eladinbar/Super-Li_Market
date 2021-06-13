@@ -253,7 +253,7 @@ public class Item {
     public void save(String categoryName) {
         try {
             dalCopyItem = new DalItem(ID, name, costPrice, sellingPrice, manufacturerID, minAmount,
-                    getShelfQuantity(), getStorageQuantity(), getShelfLocation(), getStorageLocation(), categoryName);
+                    getShelfQuantity(), getStorageQuantity(), getShelfLocation(), getStorageLocation(), getWeight(), categoryName);
             dalCopyItem.save();
         } catch (SQLException ex) {
             throw new RuntimeException("Something went wrong.");

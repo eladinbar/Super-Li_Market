@@ -274,6 +274,7 @@ public class InventoryController {
             Category parentCategory = getBusinessCategory(savedCategory.getParentCategory().getName());
             if (parentCategory != null) {
                 savedCategory.setParentCategory(parentCategory);
+                parentCategory.getSubCategories().removeIf(dudCategory -> dudCategory.getName().equals(savedCategory.getName()));
                 parentCategory.addSubCategory(savedCategory);
             }
             List<Category> subCategories = getBusinessSubCategories(savedCategory.getName());

@@ -47,7 +47,7 @@ public class DalItem extends DalObject<DalItem> {
     }
 
     public DalItem(int itemID, String name, double costPrice, double sellingPrice, int manufacturerID, int minAmount,
-                   int shelfQuantity, int storageQuantity, String shelfLocation, String storageLocation, String categoryName) throws SQLException {
+                   int shelfQuantity, int storageQuantity, String shelfLocation, String storageLocation, int weight, String categoryName) throws SQLException {
         super(ItemDalController.getInstance());
         this.itemID = itemID;
         this.name = name;
@@ -60,6 +60,7 @@ public class DalItem extends DalObject<DalItem> {
         this.shelfLocation = shelfLocation;
         this.storageLocation = storageLocation;
         this.categoryName = categoryName;
+        this.weight = weight;
     }
 
     public int getItemID() {

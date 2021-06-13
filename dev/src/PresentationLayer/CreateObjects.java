@@ -63,34 +63,34 @@ public class CreateObjects {
 
         //Adding items
         //Tnuva milk 3% regular
-        service.addItem(845, "Regular milk 3%", "Tnuva", 3.45, 5.15, 20,
-                "SH-A1-L-S5", "ST-A5-S8", 40, 20, 111, 5, new ArrayList<>());
+        service.addItem(845, "Regular Milk 3%", "Tnuva", 3.45, 5.15, 20,
+                "SH-A1-L-S5", "ST-A5-S8", 40, 20, 111, 4, new ArrayList<>());
         //Tnuva milk regulat 1%
-        service.addItem(846, "Regular milk 1%", "Tnuva", 3.45, 5.15, 20,
-                "SH-A1-L-S6", "ST-A5-L-S9", 40, 20, 111, 5, new ArrayList<>());
+        service.addItem(846, "Regular Milk 1%", "Tnuva", 3.45, 5.15, 20,
+                "SH-A1-L-S6", "ST-A5-L-S9", 40, 20, 111, 3, new ArrayList<>());
         //Tnuva non-Lactose milk
         service.addItem(847, "Non-Lactose Milk", "Tnuva", 3.95, 6.99, 10,
                 "SH-A8-R-S9", "ST-A5-L-S10", 40, 20, 111, 5, new ArrayList<>());
         //tara regular
-        service.addItem(98754, "Regular milk 3%", "Tara", 3.95, 6.99, 10,
+        service.addItem(98754, "Regular Milk 3%", "Tara", 3.95, 6.99, 10,
                 "SH-A19-R-S54", "ST-A12-R-S15", 40, 20, 112, 5, new ArrayList<>());
         //tara coffee milk
         service.addItem(98755, "Coffee Milk", "Tara", 4.00, 6.99, 10,
-                "SH-A19-R-55", "ST-A20-R-S1", 15, 2, 112, 5, new ArrayList<>());
+                "SH-A19-R-55", "ST-A20-R-S1", 15, 2, 112, 6, new ArrayList<>());
         //tara vanila milk
         service.addItem(98759, "Vanilla  Milk", "Tara", 3.95, 6.99, 10,
-                "SH-A3-L-S16", "ST-A7-R-S17", 40, 20, 112, 5, new ArrayList<>());
+                "SH-A3-L-S16", "ST-A7-R-S17", 40, 20, 112, 8, new ArrayList<>());
         //Yotvata choclate milk
-        service.addItem(287, "Choclate milk", "Yotvata", 3.95, 6.99, 10,
-                "SH-A3-L-S16", "ST-A7-R-S17", 40, 20, 113, 5, new ArrayList<>());
+        service.addItem(287, "Chocolate Milk", "Yotvata", 3.95, 6.99, 10,
+                "SH-A3-L-S16", "ST-A7-R-S17", 40, 20, 113, 9, new ArrayList<>());
         //Yotvata Caramel Milk
-        service.addItem(265, "Caramel milk", "Tnuva", 3.95, 6.99, 10,
-                "SH-A3-L-S16", "ST-A7-R-S17", 10, 0, 113, 5, new ArrayList<>());
+        service.addItem(265, "Caramel Milk", "Tnuva", 3.95, 6.99, 10,
+                "SH-A3-L-S16", "ST-A7-R-S17", 10, 0, 113, 11, new ArrayList<>());
         //Gouda Cheese
         service.addItem(78525, "Gouda Cheese 200g", "Hard Cheeses", 3.95, 12.99, 350,
                 "SH-A4-R-S1", "ST-A6-R-S2", 400, 45, 124, 10, new ArrayList<>());
         //Cream cheese
-        service.addItem(88435, "cream cheese", "Soft cheeses", 3.95, 6.99, 10,
+        service.addItem(88435, "Cream Cheese", "Soft cheeses", 3.95, 6.99, 10,
                 "SH-A28-R-S3", "ST-A14-L-S8", 40, 20, 124, 3, new ArrayList<>());
         //frozen pizza
         service.addItem(45667, "Frozen Pizza Big", "Dairy products", 15.95, 25.99, 25,
@@ -102,10 +102,10 @@ public class CreateObjects {
         service.addItem(867, "Let's Potato Chips", "Potato Chips", 3.95, 6.99, 10,
                 "SH-A34-R-S9", "ST-A32-R-S10", 40, 20, 111, 1, new ArrayList<>());
         //Tapu chips
-        service.addItem(868, "Tapu chips", "Potato Chips", 3.95, 6.99, 10,
+        service.addItem(868, "Tapu Chips", "Potato Chips", 3.95, 6.99, 10,
                 "SH-A8-R-S9", "ST-A5-L-S10", 40, 20, 111, 2, new ArrayList<>());
         //Snyders
-        service.addItem(81474, "Snyders Chadar", "Snacks", 10, 16, 10,
+        service.addItem(81474, "Snyders Cheddar", "Snacks", 10, 16, 10,
                 "SH-A1-R-S1", "ST-A1-L-S1", 40, 20, 357, 8, new ArrayList<>());
 
         //Cola Zero
@@ -121,14 +121,14 @@ public class CreateObjects {
         service.addItem(24285, "Goldstar 500ml", "Beers", 5.6, 12, 54,
                 "SH-A6-R-S14", "ST-A6-L-S15", 17, 300, 917, 500, new ArrayList<>());
         //Guinness beer
-        service.addItem(25285, "Guinness beer 400ml", "Beers", 7.6, 14.5, 500,
+        service.addItem(25285, "Guinness Beer 400ml", "Beers", 7.6, 14.5, 500,
                 "SH-A6-R-S15", "ST-A6-L-S15", 400, 300, 1556, 375, new ArrayList<>());
         //Jack daniels 750ml
-        service.addItem(25885, "Jack daniels 750ml", "Liqueurs", 7.6, 14.5, 500,
+        service.addItem(25885, "Jack Daniels 750ml", "Liqueurs", 7.6, 14.5, 500,
                 "SH-A6-R-S15", "ST-A6-L-S15", 400, 300, 1558, 750, new ArrayList<>());
 
         //Chicken breasts 1kg
-        service.addItem(7789, "Chicken breasts 1kg", "Chicken", 21.3, 45.5, 5,
+        service.addItem(7789, "Chicken Breast 1kg", "Chicken", 21.3, 45.5, 5,
                 "SH-A9-L-S18", "ST-A39-L-S1", 10, 5, 9032, 1000, new ArrayList<>());
         //Chicken Wings 1kg
         service.addItem(7790, "Chicken Wings 1kg", "Chicken", 26.3, 54.5, 10,
