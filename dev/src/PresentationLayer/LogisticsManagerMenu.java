@@ -69,7 +69,6 @@ public class LogisticsManagerMenu {
 
     }
 
-    // TODO need to check
     private boolean currentStatusMenu(Scanner scanner) {
         int spot = 1;
         System.out.println(spot + ".\tShow Notifications");

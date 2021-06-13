@@ -240,13 +240,16 @@ public class Service implements IService {
         if (orderR.errorOccurred())
             return orderR;
         ArrayList<FacadeProduct> productList = orderR.value.getProducts();
-        inventoryService.updateQuantityInventory(productList);
+        Map<Integer,Integer> IdAmountMap = new HashMap<>();
+        for (FacadeProduct fp: productList){
+            IdAmountMap.put(fp.getProductID(),fp.getAmount());
+        }
+        inventoryService.updateQuantityInventory(IdAmountMap);
         for (FacadeProduct p : productList) {
             if(p.getDiscount() > 0){
                 inventoryService.addItemDiscount(orderR.value.getSupplier().getSc().getId(), p.getDiscount(), orderR.value.getDate(), p.getAmount(), p.getProductID());
             }
         }
-
         return r;
     }
 
@@ -265,7 +268,7 @@ public class Service implements IService {
             }
 
         }
-        truckingService.SetCompleteTrackingReport(truckReportId);
+        truckingService.setCompletedTruckReport(truckReportId);
         return new Response();
     }
 
