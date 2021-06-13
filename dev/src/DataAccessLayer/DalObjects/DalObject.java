@@ -8,9 +8,7 @@ import java.util.List;
 public abstract class DalObject<T extends DalObject<T>> {
     protected DalController<T> controller;
 
-    public DalObject() {
-
-    }
+    public DalObject() {}
 
     /// <summary>
     /// A protected constructor that initializes the given controller.

@@ -100,7 +100,7 @@ public class Service implements IService {
     @Override
     public Response editQuantityListAmount(String supplierID, int productID, int amount) {
         if (!itemExists(productID)) {
-            return new ResponseT<>("no Item exist in the system: " + productID);
+            return new ResponseT<>("No item with ID '" + productID + "' exists in the system");
         }
         return supplierService.editQuantityListAmount(supplierID, productID, amount);
     }
@@ -108,7 +108,7 @@ public class Service implements IService {
     @Override
     public Response editQuantityListDiscount(String supplierID, int productID, int discount) {
         if (!itemExists(productID)) {
-            return new ResponseT<>("no Item exist in the system: " + productID);
+            return new ResponseT<>("No item with ID '" + productID + "' exists in the system");
         }
         return supplierService.editQuantityListDiscount(supplierID, productID, discount);
     }
@@ -142,24 +142,24 @@ public class Service implements IService {
 
     @Override
     public Response removeItemFromAgreement(String supplierId, int productID) {
-        if (!itemExists(productID)) {
-            return new ResponseT<>("no Item exist in the system: " + productID);
+        if(!itemExists(productID)){
+            return new ResponseT<>("No item with ID '" + productID + "' exists in the system");
         }
         return supplierService.removeItemFromAgreement(supplierId, productID);
     }
 
     @Override
     public Response editAgreementItemCompanyProductID(String supplierID, int productID, int companyProductID) {
-        if (!itemExists(productID)) {
-            return new ResponseT<>("no Item exist in the system: " + productID);
+        if(!itemExists(productID)){
+            return new ResponseT<>("No item with ID '" + productID + "' exists in the system");
         }
         return supplierService.editAgreementItemCompanyProductID(supplierID, productID, companyProductID);
     }
 
     @Override
     public Response editAgreementItemPrice(String supplierID, int productID, int price) {
-        if (!itemExists(productID)) {
-            return new ResponseT<>("no Item exist in the system: " + productID);
+        if(!itemExists(productID)){
+            return new ResponseT<>("No item with ID '" + productID + "' exists in the system");
         }
         return supplierService.editAgreementItemPrice(supplierID, productID, price);
     }
@@ -174,8 +174,8 @@ public class Service implements IService {
         ResponseT<Pair<Map<Integer, Integer>, Map<Integer, String>>> itemInShort = inventoryService.getItemsInShortAndQuantities();
         if (itemInShort.errorOccurred())
             return new ResponseT<>(itemInShort.getErrorMessage());
-        if (itemInShort.value == null) {
-            return new ResponseT<>("there is no item shortage");
+        if(itemInShort.value==null) {
+            return new ResponseT<>("There is no item shortage");
         }
         ResponseT<Map<String, Map<Integer, Integer>>> r = supplierService.createShortageOrders(itemInShort.value.getFirst()); //yes always returns a value;
         ResponseT<List<FacadeOrder>> orderR;
@@ -193,7 +193,7 @@ public class Service implements IService {
     @Override
     public ResponseT<FacadeOrder> createScheduledOrder(int day, int itemID, int amount) {
         if (!itemExists(itemID)) {
-            return new ResponseT<>("no Item exist in the system: " + itemID);
+            return new ResponseT<>("No item with ID '" + itemID + "' exists in the system");
         }
         ResponseT<FacadeSupplier> cheap = supplierService.getCheapestSupplier(itemID, amount, true);
         if (cheap.errorOccurred())
@@ -214,7 +214,7 @@ public class Service implements IService {
     @Override
     public Response deleteQuantityListItem(String supplierID, int productID) {
         if (!itemExists(productID))
-            return new ResponseT<>("no Item exist in the system: " + productID);
+            return new ResponseT<>("No item with ID '" + productID + "' exists in the system");
         return supplierService.deleteQuantityListItem(supplierID, productID);
     }
 
@@ -280,8 +280,8 @@ public class Service implements IService {
     @Override
     public Response addProductToOrder(int orderId, int productID, int amount) {
         getOrder(orderId);
-        if (!itemExists(productID))
-            return new ResponseT<>("no Item exist in the system: " + productID);
+        if(!itemExists(productID))
+            return new ResponseT<>("No item with ID '" + productID + "' exists in the system");
         return orderService.addProductToOrder(orderId, productID, amount);
     }
 
@@ -296,8 +296,8 @@ public class Service implements IService {
     @Override
     public Response removeProductFromOrder(int orderID, int productID) {
         getOrder(orderID);
-        if (!itemExists(productID))
-            return new ResponseT<>("no Item exist in the system: " + productID);
+        if(!itemExists(productID))
+            return new ResponseT<>("No item with ID '" + productID + "' exists in the system");
         return orderService.removeProductFromOrder(orderID, productID);
     }
 
@@ -317,16 +317,16 @@ public class Service implements IService {
 
     @Override
     public ResponseT<Double> getPrice(String supplierID, int amount, int productID) {
-        if (!itemExists(productID)) {
-            return new ResponseT<>("no Item exist in the system: " + productID);
+        if(!itemExists(productID)){
+            return new ResponseT<>("No item with ID '" + productID + "' exists in the system");
         }
         return supplierService.getPrice(supplierID, amount, productID);
     }
 
     @Override
     public ResponseT<FacadeSupplier> getCheapestSupplier(int productID, int amount, boolean scheduled) {
-        if (!itemExists(productID)) {
-            return new ResponseT<>("no Item exist in the system: " + productID);
+        if(!itemExists(productID)){
+            return new ResponseT<>("No item with ID '" + productID + "' exists in the system");
         }
         return supplierService.getCheapestSupplier(productID, amount, scheduled);
     }
@@ -339,16 +339,16 @@ public class Service implements IService {
 
     @Override
     public ResponseT<Double> getProductDiscount(String supplierID, int amount, int productID) {
-        if (!itemExists(productID)) {
-            return new ResponseT<>("no Item exist in the system: " + productID);
+        if(!itemExists(productID)){
+            return new ResponseT<>("No item with ID '" + productID + "' exists in the system");
         }
         return supplierService.getProductDiscount(supplierID, amount, productID);
     }
 
     @Override
     public ResponseT<Integer> getSupplierCompanyProductID(String supplierID, int productID) {
-        if (!itemExists(productID)) {
-            return new ResponseT<>("no Item exist in the system: " + productID);
+        if(!itemExists(productID)){
+            return new ResponseT<>("No item with ID '" + productID + "' exists in the system");
         }
         return supplierService.getSupplierCompanyProductID(supplierID, productID);
     }
@@ -360,8 +360,8 @@ public class Service implements IService {
     }
 
     @Override
-    public Response addItem(int id, String name, String categoryName, double costPrice, double sellingPrice, int minAmount, String shelfLocation, String storageLocation, int shelfQuantity, int storageQuantity, int manufacturerId, List<String> suppliersIds) {
-        return inventoryService.addItem(id, name, categoryName, costPrice, sellingPrice, minAmount, shelfLocation, storageLocation, shelfQuantity, storageQuantity, manufacturerId, suppliersIds);
+    public Response addItem(int id, String name, String categoryName, double costPrice, double sellingPrice, int minAmount, String shelfLocation, String storageLocation, int shelfQuantity, int storageQuantity, int manufacturerId, int weight, List<String> suppliersIds) {
+        return inventoryService.addItem(id,name,categoryName,costPrice,sellingPrice,minAmount,shelfLocation,storageLocation,shelfQuantity,storageQuantity,manufacturerId,weight,suppliersIds);
     }
 
     @Override
