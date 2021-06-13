@@ -385,7 +385,7 @@ public class PresentationController implements Runnable {
         }
     }
 
-    private void setupSystem() {
+    public void setupSystem() {
         String toSetup = menu.instructAndReceive("Would you like to load the system with data? [y/n]\n 'no' will start up a clean system ");
         toSetup = toSetup.toLowerCase();
         if (toSetup.compareTo("y") != 0) {
@@ -396,7 +396,7 @@ public class PresentationController implements Runnable {
         co.setupSystem();
     }
 
-    private void mainMenu() {
+    public void mainMenu() {
         menu.printMainMenu();
         String choice = menu.instructAndReceive("select a menu to open: ");
         switch (choice) {
@@ -894,7 +894,7 @@ public class PresentationController implements Runnable {
             menu.errorPrompt("invalid choice - " + choice);
     }
 
-    private void reportMenuOperations() {
+    public void reportMenuOperations() {
         menu.printReportMenu();
         String choice = menu.instructAndReceive("Select Report option: ");
         switch (choice) {

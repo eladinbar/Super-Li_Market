@@ -12,6 +12,7 @@ import ServiceLayer.FacadeObjects.FacadeShift;
 import ServiceLayer.FacadeObjects.FacadeWeeklyShiftSchedule;
 import ServiceLayer.Response.Response;
 import ServiceLayer.Response.ResponseT;
+import ServiceLayer.TruckingService;
 
 import java.sql.SQLException;
 import java.time.DayOfWeek;
@@ -26,6 +27,7 @@ public class PresentationController_Employee {
     MenuPrinter_Employee menuPrinter;
     StringConverter stringConverter;
     HashMap<Role,List<EmployeeNotification>> alerts;
+    PresentationController pc;
     boolean hasData = false;
 
     public PresentationController_Employee() {
@@ -33,6 +35,7 @@ public class PresentationController_Employee {
         menuPrinter = new MenuPrinter_Employee ( );
         stringConverter =  StringConverter.getInstance ( );
         alerts = new HashMap<> (  );
+        pc = new PresentationController();
     }
 
     public void start() throws SQLException {
@@ -95,7 +98,8 @@ public class PresentationController_Employee {
     private void uploadData() throws SQLException {
         if(!createData())
             return;
-        LogisticsManagerMenu.getInstance().putInitialTestState();
+        TruckingService.getInstance().putInitialTestState();
+        pc.setupSystem();
         while (!login ( false ));
     }
 
@@ -602,7 +606,7 @@ public class PresentationController_Employee {
                 choice = menuPrinter.storeKeeperMenu ();
                 handleStoreKeeperChoice ( choice );
             } else if(role.equals ( Role.branchManager ) || role.equals ( Role.branchManagerAssistant )) {
-                //מנהל חנות
+                pc.reportMenuOperations();
             } else {
                 choice = menuPrinter.simpleEmployeeMenu ();
                 handleSimpleEmployeeChoice ( choice );
@@ -623,7 +627,7 @@ public class PresentationController_Employee {
 
     private void handleStoreKeeperChoice(int choice) throws SQLException {
         if(choice == 7) {
-            //go to store keeper menu
+            pc.mainMenu();
         }
         if(choice == 8)
             choice --;
