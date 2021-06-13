@@ -5,6 +5,7 @@ import ServiceLayer.Response.Response;
 import ServiceLayer.Response.ResponseT;
 import ServiceLayer.FacadeObjects.*;
 
+import java.sql.SQLException;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.util.*;
@@ -276,7 +277,11 @@ public class Service implements IService {
             }
 
         }
-        TruckingService.getInstance().setCompletedTruckReport(truckReportId);
+        try {
+            TruckingService.getInstance().setCompletedTruckReport(truckReportId);
+        } catch (SQLException e) {
+            new ResponseT(e.getMessage());
+        }
         return new Response();
     }
 

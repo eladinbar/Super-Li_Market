@@ -12,17 +12,14 @@ public class Demand {
     private int supplier;//the destination - who raised the demand
     private int amount;
 
-    public Demand(int itemID, int site_id, int amount) {
+    public Demand(int itemID, int site_id, int amount) throws SQLException {
         this.itemID=itemID;
         this.supplier =site_id;
         this.amount=amount;
 
-        try {
-            DalDemandController.getInstance().insert(new DalDemand(this.itemID,this.supplier,this.amount));
-        } catch (SQLException e) {
-            e.printStackTrace();
-            exit(1);
-        }
+
+        DalDemandController.getInstance().insert(new DalDemand(this.itemID,this.supplier,this.amount));
+
     }
     public Demand(DalDemand demand) throws SQLException {
 

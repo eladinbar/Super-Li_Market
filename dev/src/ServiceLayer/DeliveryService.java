@@ -42,7 +42,7 @@ public class DeliveryService {
     }
 
 
-    public LinkedList<TruckingNotifications> getNotifications() {
+    public LinkedList<TruckingNotifications> getNotifications() throws SQLException {
         return dc.getNotifications();
     }
 
@@ -65,12 +65,12 @@ public class DeliveryService {
 
     }
 
-    public void managerApproveTruckReport(Integer trID) throws TimeLimitExceededException {
+    public void managerApproveTruckReport(Integer trID) throws TimeLimitExceededException, SQLException {
             dc.managerApproveTruckReport(trID);
 
     }
 
-    public void managerCancelTruckReport(Integer trID) throws TimeLimitExceededException {
+    public void managerCancelTruckReport(Integer trID) throws TimeLimitExceededException, SQLException {
         dc.managerCancelTruckReport(trID);
     }
 
@@ -98,7 +98,7 @@ public class DeliveryService {
     }
 
 
-    public LinkedList<Pair<Integer, Integer>> insertItemsToTruckReport(LinkedList<Pair<Integer, Integer>> left, int supplier, int capacity, int id) {
+    public LinkedList<Pair<Integer, Integer>> insertItemsToTruckReport(LinkedList<Pair<Integer, Integer>> left, int supplier, int capacity, int id) throws SQLException {
 
         return dc.insertItemsToTruckReport(left, supplier, capacity, id);
     }
@@ -164,7 +164,7 @@ public class DeliveryService {
         return dc.getItemTotalWeight(item_id, amount);
     }
 
-    public void addNotification(String content) {
+    public void addNotification(String content) throws SQLException {
         dc.addNotification(content);
     }
     public void upload() throws SQLException {
@@ -179,7 +179,7 @@ public class DeliveryService {
         return dc.getTruckConstraintsFromUpload();
     }
 
-    public void setCompletedTruckReport(int report_id) {
+    public void setCompletedTruckReport(int report_id) throws SQLException {
         dc.setCompletedTruckReport(report_id);
     }
 }

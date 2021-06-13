@@ -22,8 +22,7 @@ public class TruckingReport {
 
 
     public TruckingReport(int ID, LocalDate date, LocalTime leavingHour, String  truckNumber, String driverID
-                          , LinkedList<Integer> suppliers)
-    {
+                          , LinkedList<Integer> suppliers) throws SQLException {
         this.ID=ID;
         this.date=date;
         this.leavingHour=leavingHour;
@@ -32,13 +31,10 @@ public class TruckingReport {
         this.suppliers = suppliers;
         this.approved = false;
         this.completed=false;
-        try {
-            DalTruckingReportController.getInstance().insert(new DalTruckingReport(this.ID,this.leavingHour,this.date,this.truckNumber,this.driverID
+
+        DalTruckingReportController.getInstance().insert(new DalTruckingReport(this.ID,this.leavingHour,this.date,this.truckNumber,this.driverID
                     ,this.completed,this.approved));
-        } catch (SQLException e) {
-            e.printStackTrace();
-            exit(1);
-        }
+
     }
     public TruckingReport(int ID){
         this.ID=ID;

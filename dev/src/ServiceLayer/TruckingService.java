@@ -178,7 +178,11 @@ public class TruckingService {
 
     public ResponseT< LinkedList<TruckingNotifications> > getNotifications(){
 
-        return new ResponseT<>( deliveryService.getNotifications());
+        try {
+            return new ResponseT<>( deliveryService.getNotifications());
+        } catch (SQLException e) {
+            return new ResponseT<>(e.getMessage());
+        }
     }
 
     public ResponseT<  LinkedList<FacadeDriver> >getDrivers(){
@@ -212,7 +216,12 @@ public class TruckingService {
         resourcesService.addTruck(model, licenseNumber, weightNeto, maxWeight);
     }
     public void managerApproveTruckReport(Integer trID) throws TimeLimitExceededException {
-        deliveryService.managerApproveTruckReport(trID);
+        try {
+            deliveryService.managerApproveTruckReport(trID);
+        } catch (SQLException e) {
+            System.out.println((e.getMessage()));
+
+        }
     }
     public void managerCancelTruckReport(Integer trID) throws TimeLimitExceededException {
         FacadeTruckingReport ftr= deliveryService.getTruckReport(trID);
@@ -222,7 +231,11 @@ public class TruckingService {
         int shift=turnTimeToShift(ftr.getLeavingHour());
         resourcesService.deleteDriverConstarint(fd,date,shift);
         resourcesService.deleteTruckConstarint(ft,date,shift);
-        deliveryService.managerCancelTruckReport(trID);
+        try {
+            deliveryService.managerCancelTruckReport(trID);
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
 
     }
 
@@ -330,7 +343,7 @@ public class TruckingService {
         return demands;
     }
 
-    public void setCompletedTruckReport(int report_id){
+    public void setCompletedTruckReport(int report_id) throws SQLException {
         deliveryService.setCompletedTruckReport(report_id);
     }
 
@@ -346,32 +359,46 @@ public class TruckingService {
     private ResponseT< LinkedList<Pair<Integer, Integer>> >
     insertToExistingTR(LinkedList<Pair<Integer, Integer>> itemsToInsert,int supplier, LinkedList<FacadeTruckingReport> reports){
         LinkedList<Pair<Integer, Integer>> left = itemsToInsert;
-        int area = getDeliveryArea(supplier);
+        ResponseT<Integer> res = getDeliveryArea(supplier);
+        if (res.errorOccurred()){
+            return new ResponseT<>(res.getErrorMessage());
+        }
+        int area = res.getValue();
         for (FacadeTruckingReport report : reports){
             if (!left.isEmpty()) {
-                ResponseT<Integer> res = getMaxWeight(report);
-                if (res.errorOccurred()){
-                    return new ResponseT<>(res.getErrorMessage());
+                ResponseT<Integer> res2 = getMaxWeight(report);
+                if (res2.errorOccurred()){
+                    return new ResponseT<>(res2.getErrorMessage());
                 }
-                int capacity = res.getValue();
+                int capacity = res2.getValue();
                 LinkedList<Integer> reportAreas = getReportAreas(report);
                 //first iterates through reports, tries to add by delivery area
 
                 if (reportAreas.contains(area)) {
 
-                    left = deliveryService.insertItemsToTruckReport(left, supplier , capacity, report.getID());
+                    try {
+                        left = deliveryService.insertItemsToTruckReport(left, supplier , capacity, report.getID());
+                    } catch (SQLException e) {
+                        return new ResponseT<>(e.getMessage());
+
+                    }
                 }
             }
 
         }
         if (! left.isEmpty()) {
             for (FacadeTruckingReport report : reports) {
-                ResponseT<Integer> res = getMaxWeight(report);
-                if (res.errorOccurred()){
-                    return new ResponseT<>(res.getErrorMessage());
+                ResponseT<Integer> res2 = getMaxWeight(report);
+                if (res2.errorOccurred()){
+                    return new ResponseT<>(res2.getErrorMessage());
                 }
-                int capacity = res.getValue();
-                left = deliveryService.insertItemsToTruckReport(left, supplier, capacity, report.getID());
+                int capacity = res2.getValue();
+                try {
+                    left = deliveryService.insertItemsToTruckReport(left, supplier, capacity, report.getID());
+                } catch (SQLException e) {
+                    return new ResponseT<>(e.getMessage());
+
+                }
             }
         }
         return new ResponseT<>(left);
@@ -615,7 +642,11 @@ public class TruckingService {
     }
 
     private void addNotification(String content) {
-        deliveryService.addNotification(content);
+        try {
+            deliveryService.addNotification(content);
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
     }
 
 
@@ -640,21 +671,21 @@ public class TruckingService {
     }
 
 
-    private int getDeliveryArea(int supplier ){
+    private ResponseT<Integer> getDeliveryArea(int supplier ){
         ResponseT<FacadeSupplier> res = service.getSupplier(""+ supplier);
         if(res.errorOccurred()){
-            return 0;
+            return new ResponseT<>(res.getErrorMessage());
         }
-        return res.getValue().getSc().getArea();
+        return new ResponseT<>( res.getValue().getSc().getArea());
     }
 
 
-    private FacadeItem getItem(int id, int supplier){
+    private ResponseT< FacadeItem>  getItem(int id, int supplier){
         ResponseT<FacadeItem> res = service.getItem(id);
         if(res.errorOccurred()){
-            return null;
+            return new ResponseT<>(res.getErrorMessage());
         }
-        return res.getValue();
+        return new ResponseT<>( res.getValue());
     }
 
 
