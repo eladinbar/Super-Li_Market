@@ -303,14 +303,22 @@ public class ShiftController {
     }
 
     public void addDriverToShift(String id, LocalDate date, int shift) throws EmployeeException, SQLException {
+        if(!canAddDriverToShift ( id, date, shift ))
+            throw new EmployeeException ( "Couldn't add driver to shift." );
+        getShift ( date, shift ).addEmployee ( "driver", id );
+    }
+
+    public boolean canAddDriverToShift(String id, LocalDate date, int shift) throws EmployeeException, SQLException {
         if (shift == 1) {
             if (getShift ( date, 0 ).isWorking ( "driver", id ))
-                throw new EmployeeException ( "the driver is already manning the morning shift." );
+                return false;
         } else {
             if (getShift ( date, 1 ).isWorking ( "driver", id ))
-                throw new EmployeeException ( "the driver is already manning the evening shift." );
+                return false;
         }
-        getShift ( date, shift ).addEmployee ( "driver", id );
+        if(!getShift ( date, shift ).hasStoreKeeper ())
+            return false;
+        return true;
     }
 
     public boolean isDriverAssigned(String id, LocalDate date, int shift) throws EmployeeException {

@@ -204,4 +204,8 @@ public class Shift {
         else
             return driversC1;
     }
+
+    public boolean hasStoreKeeper(){
+        return  manning.containsKey ( Role.storeKeeper ) && !manning.get ( Role.storeKeeper ).isEmpty ();
+    }
 }
