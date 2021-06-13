@@ -27,7 +27,7 @@ BufferedReader sc = new BufferedReader(new InputStreamReader(System.in));
     }
 
     public String loginID(){
-        System.out.println ("To login type you Id:" );
+        System.out.println ("To login type your Id:" );
         return getString ();
     }
 

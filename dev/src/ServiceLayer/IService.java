@@ -47,6 +47,7 @@ public interface IService {
     Response updateProductDeliveredAmount(int orderId, int productID, int amount);
     Response removeProductFromOrder(int orderID, int productID);
     ResponseT<List<Integer>> makeOrders(int day);
+    Response sendOrderToTruck(int orderID);
 
     //agreement
     ResponseT<FacadeItem> addItemToAgreement(String id, int productID, int companyProductId, int price);

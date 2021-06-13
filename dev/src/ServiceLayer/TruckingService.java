@@ -1,6 +1,7 @@
 package ServiceLayer;
 
 import BusinessLayer.EmployeePackage.EmployeeException;
+import BusinessLayer.EmployeePackage.ShiftPackage.ShiftController;
 import BusinessLayer.InventoryPackage.Item;
 import BusinessLayer.Notification;
 import BusinessLayer.SuppliersPackage.OrderPackage.Order;
@@ -23,12 +24,15 @@ import static java.lang.System.exit;
 public class TruckingService {
     private DeliveryService deliveryService;
     private ResourcesService resourcesService;
+    private IService service;
+
     private static TruckingService instance = null;
 
 
     private TruckingService() {
         deliveryService = DeliveryService.getInstance();
         resourcesService = ResourcesService.getInstance();
+        service = Service.getInstance();
     }
 
     public static TruckingService getInstance() {
@@ -66,7 +70,7 @@ public class TruckingService {
      * @return List of pairs, item and its amount, only item that couldn't been delivered.
      * if all items has been settled to a delivery, returns empty list
      */
-    public ResponseT<  LinkedList<Pair<Integer, Integer>> > addOrder(Order order)  {
+    public ResponseT<  LinkedList<Pair<Integer, Integer>> > addOrder(FacadeOrder order)  {
 
             int supplier = getSupplierFromOrder(order);
             LinkedList<Pair<Integer, Integer>> left = orderToItemsList(order);
@@ -120,7 +124,7 @@ public class TruckingService {
      * @param order -  the permanent order need to be settled
      * @return true if succeeded, false other wise
      */
-    public boolean addPermanentOrder(Order order) {
+    public boolean addPermanentOrder(FacadeOrder order) {
         boolean succeed ;
         // TODO need to handle response
         succeed  = canAddFullOrder(order).getValue();
@@ -390,9 +394,9 @@ public class TruckingService {
         return resourcesService.getDayAndDrivers();
     }
 
-    private LinkedList<Pair<Integer, Integer>> orderToItemsList(Order order) {
+    private LinkedList<Pair<Integer, Integer>> orderToItemsList(FacadeOrder order) {
         LinkedList<Pair<Integer,Integer>> left = new LinkedList<>();
-        for (Map.Entry<Integer,Integer> entry : order.getProducts().entrySet()){
+        for (Map.Entry<Integer,Integer> entry : order.getProductMap().entrySet()){
             left.add(new Pair<>(entry.getKey(),entry.getValue()));
         }
         return left;
@@ -406,7 +410,7 @@ public class TruckingService {
      * @param order already has the wanted date
      * @return true if can, false if cannot
      */
-    private ResponseT<Boolean> canAddFullOrder(Order order){
+    private ResponseT<Boolean> canAddFullOrder(FacadeOrder order){
         LocalDate date =  order.getDate();
         ResponseT<Integer> val = getDayLeftWeight(date);
         if(val.errorOccurred()){
@@ -480,7 +484,7 @@ public class TruckingService {
     private LinkedList<FacadeTruckingReport> getAvailableTRsByDate(LocalDate date) {
         return deliveryService.getAvailableTRsByDate(date);
     }
-    private int getSupplierFromOrder(Order order) {
+    private int getSupplierFromOrder(FacadeOrder order) {
         return order.getSupplier().getSc().getCompanyNumber();
     }
 
@@ -520,8 +524,8 @@ public class TruckingService {
 
 
 
-    private int getOrderTotalWeight(Order order) {
-        Map<Integer, Integer> items = order.getProducts();
+    private int getOrderTotalWeight(FacadeOrder order) {
+        Map<Integer, Integer> items = order.getProductMap();
         int total = 0;
         for (Map.Entry<Integer,Integer> entry : items.entrySet()){
             total += deliveryService.getItemTotalWeight(entry.getKey(), entry.getValue());
@@ -535,26 +539,45 @@ public class TruckingService {
 
 
     private LocalDate getLastShiftDate() {
-        // TODO - need to implement when possible
-        throw new UnsupportedOperationException();
+        return ShiftController.getInstance().getLastShiftDate();
+
     }
 
 
-    private int getDeliveryArea(int supplier ){throw new UnsupportedOperationException();}
+    private int getDeliveryArea(int supplier ){
+        ResponseT<FacadeSupplier> res = service.getSupplier(""+ supplier);
+        if(res.errorOccurred()){
+            return 0;
+        }
+        return res.getValue().getSc().getArea();
+    }
 
 
-    private Item getItem(int id, int supplier){
-        throw new UnsupportedOperationException();
+    private FacadeItem getItem(int id, int supplier){
+        ResponseT<FacadeItem> res = service.getItem(id);
+        if(res.errorOccurred()){
+            return null;
+        }
+        return res.getValue();
     }
 
 
 
     public String getItemName(int itemID) {
-        throw new UnsupportedOperationException();
+        ResponseT<FacadeItem> res = service.getItem(itemID);
+        if(res.errorOccurred()){
+            return res.getErrorMessage();
+        }
+        return res.getValue().getName();
     }
 
-    public int getSupplierName(int supplier) {
-        throw new UnsupportedOperationException();
+    public String  getSupplierName(int supplier) {
+        ResponseT<FacadeSupplier> res = service.getSupplier("" + supplier);
+        if(res.errorOccurred()){
+            return res.getErrorMessage();
+        }
+        return res.getValue().getSc().getName();
+
     }
 
 

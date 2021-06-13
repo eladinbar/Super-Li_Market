@@ -149,6 +149,8 @@ public class OrderDalController extends DalController<DalOrder> {
             if (resultSet.next())
                 return resultSet.getInt(1) + 1;
             return 0;
+        } catch (SQLException ex){
+            throw new SQLException(ex.getMessage());
         }
     }
 }

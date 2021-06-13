@@ -4,6 +4,8 @@ import InfrastructurePackage.TextFormatter;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class FacadeOrder {
     private int id;
@@ -39,6 +41,14 @@ public class FacadeOrder {
 
     public ArrayList<FacadeProduct> getProducts() {
         return products;
+    }
+
+    public Map<Integer,Integer> getProductMap(){
+        Map<Integer,Integer> toReturn= new HashMap<>();
+        for (FacadeProduct p: products) {
+            toReturn.put(p.getProductID(),p.getAmount());
+        }
+        return  toReturn;
     }
 
     public FacadeSupplier getSupplier() {
@@ -79,5 +89,37 @@ public class FacadeOrder {
             case 7 -> toReturn += "Saturday";
         }
         return toReturn;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public void setProducts(ArrayList<FacadeProduct> products) {
+        this.products = products;
+    }
+
+    public void setDate(LocalDate date) {
+        this.date = date;
+    }
+
+    public boolean isDelivered() {
+        return delivered;
+    }
+
+    public void setDelivered(boolean delivered) {
+        this.delivered = delivered;
+    }
+
+    public void setSupplier(FacadeSupplier supplier) {
+        this.supplier = supplier;
+    }
+
+    public String getDay() {
+        return day;
+    }
+
+    public void setDay(String day) {
+        this.day = day;
     }
 }

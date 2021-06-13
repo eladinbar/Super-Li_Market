@@ -28,7 +28,7 @@ public class PresentationController implements Runnable {
     public PresentationController() {
         this.menu = new InventorySupplierMenu();
         terminate = false;
-        service = new Service();
+        service = Service.getInstance();
         scan = new Scanner(System.in);
     }
 
@@ -443,7 +443,10 @@ public class PresentationController implements Runnable {
             if (oo.value == null)
                 return;
         }
-        String order = oo.value.stream().map(o -> o.getId() + "").reduce("added orders", (acc, curr) -> acc + ", " + curr);
+        String order = oo.value.stream().map(o -> o.getId() + "").reduce("added orders", (acc, curr) -> {
+            service.sendOrderToTruck(Integer.parseInt(curr));
+            return acc + ", " + curr;
+        });
         System.out.println(order);
     }
 

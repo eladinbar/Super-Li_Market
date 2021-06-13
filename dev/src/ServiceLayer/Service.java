@@ -5,20 +5,28 @@ import ServiceLayer.Response.Response;
 import ServiceLayer.Response.ResponseT;
 import ServiceLayer.FacadeObjects.*;
 
+import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.util.*;
 
 public class Service implements IService {
+    private static Service instance;
+
+
     private OrderService orderService;
     private SupplierService supplierService;
     private InventoryService inventoryService;
-    private TruckingService truckingService;
 
-    public Service() {
+    private Service() {
         this.supplierService = new SupplierService();
         this.orderService = new OrderService();
         this.inventoryService = new InventoryServiceImpl();
-        this.truckingService = TruckingService.getInstance();
+    }
+
+    public static Service getInstance(){
+        if(instance == null)
+            instance = new Service();
+        return instance;
     }
 
     @Override
@@ -255,7 +263,7 @@ public class Service implements IService {
 
     @Override
     public Response approveTruckReport(int truckReportId) {
-        ResponseT<LinkedList<FacadeDeliveryForm>> trackReportRes = truckingService.getDeliveryFormsByTruckReport(truckReportId);
+        ResponseT<LinkedList<FacadeDeliveryForm>> trackReportRes = TruckingService.getInstance().getDeliveryFormsByTruckReport(truckReportId);
         if (trackReportRes.errorOccurred()) {
             return new Response("could not get Truck Report.");
         }
@@ -268,7 +276,7 @@ public class Service implements IService {
             }
 
         }
-        truckingService.setCompletedTruckReport(truckReportId);
+        TruckingService.getInstance().setCompletedTruckReport(truckReportId);
         return new Response();
     }
 
@@ -304,15 +312,32 @@ public class Service implements IService {
     @Override
     public ResponseT<List<Integer>> makeOrders(int day) {
         ResponseT<List<Integer>> oIDs = orderService.makeOrders(day);
+        int localDateDay = day == 1 ? 7 : day-1;
+        if(oIDs.errorOccurred())
+            return oIDs;
+        List<Integer> retList = new ArrayList<>();
         for (int id:oIDs.value) {
             FacadeOrder fOrder = getOrder(id).value;
-            //todo with ido
-            //localDate = localDate of day in the next week
-            //create order
-            //foreach add items to order
-            //send to ido after every foreach or after create order?
+            if(fOrder==null)
+                return new ResponseT<>("order does not exists");
+            LocalDate temp = LocalDate.now().plusDays(7);
+            while(temp.getDayOfWeek().equals(DayOfWeek.of(localDateDay)))
+                temp = temp.plusDays(1);
+            fOrder.setDate(temp);
+            if(!fOrder.getSupplier().getSc().isSelfDelivery()) {
+                if(TruckingService.getInstance().addPermanentOrder(fOrder));
+            }
         }
-        return null;
+        return new ResponseT<>(retList);
+    }
+
+    @Override
+    public Response sendOrderToTruck(int orderID) {
+        ResponseT<FacadeOrder> o = orderService.getOrder(orderID,inventoryService,supplierService);
+        if(o.errorOccurred())
+            return o;
+        TruckingService.getInstance().addOrder(o.value);
+        return new Response();
     }
 
     @Override

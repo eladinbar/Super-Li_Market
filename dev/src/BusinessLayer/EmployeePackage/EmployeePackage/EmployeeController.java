@@ -213,9 +213,6 @@ public class EmployeeController {
     }
 
     public Employee addManager(FacadeEmployee e) throws EmployeeException, SQLException {
-        if(!e.getRole ().equals ( Role.humanResourcesManager )){
-            throw new EmployeeException("Only an administrator can perform this operation");
-        }
         if(!validId(e.getID())){
             throw new EmployeeException("An invalid ID was entered ");
         }
@@ -462,7 +459,7 @@ public class EmployeeController {
         String bankName = "Diskont";
         BankAccountInfo employeeAccountInfo = new BankAccountInfo ( accountNum, bankBranch, bankName );
         TermsOfEmployment termsOfEmployment = new TermsOfEmployment ( salary + 1, educationFund, sickDays, daysOff );
-        Employee truckingManager = new Employee ( "truckingManager", "066666666", termsOfEmployment, LocalDate.now ( ), employeeAccountInfo );
+        Employee truckingManager = new Employee ( Role.logisticsManager.name(), "066666666", termsOfEmployment, LocalDate.now ( ), employeeAccountInfo );
         addEmplForExistingData ( truckingManager );
     }
 

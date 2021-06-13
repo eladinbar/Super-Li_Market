@@ -27,6 +27,14 @@ public class FacadePersonCard {
         return id;
     }
 
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public String getName() {
+        return firstName + " " + lastName;
+    }
+
     @Override
     public String toString() {
         return "personCard{" +

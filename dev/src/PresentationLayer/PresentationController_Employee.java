@@ -2,6 +2,7 @@ package PresentationLayer;
 
 import BusinessLayer.EmployeePackage.EmployeeNotification;
 import BusinessLayer.EmployeePackage.EmployeePackage.Role;
+import BusinessLayer.EmployeePackage.ShiftPackage.ShiftController;
 import BusinessLayer.EmployeePackage.ShiftPackage.ShiftTypes;
 import BusinessLayer.Notification;
 import DataAccessLayer.DalControllers.EmployeeControllers.DalAlertEmployeeController;
@@ -23,6 +24,7 @@ import java.util.List;
 import java.util.Map;
 
 public class PresentationController_Employee {
+    private static PresentationController_Employee instance = null;
     Employee_Package_FacadeService facadeService;
     MenuPrinter_Employee menuPrinter;
     StringConverter stringConverter;
@@ -30,12 +32,18 @@ public class PresentationController_Employee {
     PresentationController pc;
     boolean hasData = false;
 
-    public PresentationController_Employee() {
+    private PresentationController_Employee() {
         facadeService = new Employee_Package_FacadeService ( );
         menuPrinter = new MenuPrinter_Employee ( );
         stringConverter =  StringConverter.getInstance ( );
         alerts = new HashMap<> (  );
         pc = new PresentationController();
+    }
+
+    public static PresentationController_Employee getInstance() {
+        if (instance == null)
+            instance = new PresentationController_Employee ( );
+        return instance;
     }
 
     public void start() throws SQLException {
@@ -393,6 +401,7 @@ public class PresentationController_Employee {
         }
         else
             getRecommendation ();
+        TruckingService.getInstance().handleLeftOvers();
     }
 
     private FacadeShift createFirstShift(LocalDate date) throws SQLException {

@@ -14,6 +14,7 @@ public class FacadeSupplier {
         this.ag = new FacadeAgreement(supplier.getAg());
     }
 
+
     public FacadeSupplierCard getSc() {
         return sc;
     }
