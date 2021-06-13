@@ -90,17 +90,31 @@ BufferedReader sc = new BufferedReader(new InputStreamReader(System.in));
         }
     }
 
-    public int managerMenu(){
+    public int managerFirstMenu(){
+        System.out.println ("Choose the option you would like:\n" +
+                "1.Shift menu.\n" +
+                "2.Employee menu\n" +
+                "3.Logout" );
+        return getInt ();
+    }
+
+    public int managerShiftMenu(){
         System.out.println ("Choose your next action:\n" +
                 "1.Create weekly shift schedule\n" +
                 "2.Show weekly shift schedule\n" +
                 "3.Show an existing shift type\n" +
                 "4.Create a new Shift type\n" +
-                "5.Get a list of employees ordered by role\n" +
-                "6.Get employee information\n" +
-                "7.Get employee constraints\n" +
-                "8.Add a new employee to the system\n" +
-                "9.Logout" );
+                "5.Back" );
+        return getInt ();
+    }
+
+    public int managerEmployeeMenu(){
+        System.out.println ("Choose your next action:\n" +
+                "1.Get a list of employees ordered by role\n" +
+                "2.Get employee information\n" +
+                "3.Get employee constraints\n" +
+                "4.Add a new employee to the system\n" +
+                "5.Back" );
         return getInt ();
     }
 

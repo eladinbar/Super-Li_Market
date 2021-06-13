@@ -28,8 +28,8 @@ public class Employee_Package_FacadeService {
 
     //shift service responsibility
 
-    public ResponseT<FacadeWeeklyShiftSchedule> getRecommendation(LocalDate startingDate, boolean start) throws SQLException {
-        return shiftService.getRecommendation ( startingDate, start );
+    public ResponseT<FacadeWeeklyShiftSchedule> getRecommendation(LocalDate startingDate, boolean hasData) throws SQLException {
+        return shiftService.getRecommendation ( startingDate, hasData );
     }
 
     public ResponseT<FacadeWeeklyShiftSchedule> createWeeklyShiftSchedule(LocalDate startingDate, FacadeShift[][] shifts) throws SQLException {

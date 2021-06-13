@@ -26,6 +26,7 @@ public class PresentationController_Employee {
     MenuPrinter_Employee menuPrinter;
     StringConverter stringConverter;
     HashMap<Role,List<EmployeeNotification>> alerts;
+    boolean hasData = false;
 
     public PresentationController_Employee() {
         facadeService = new Employee_Package_FacadeService ( );
@@ -49,7 +50,8 @@ public class PresentationController_Employee {
             menuPrinter.print ( start.getErrorMessage ( ) );
             return;
         }
-        if (!start.value) {
+        hasData = start.value;
+        if (!hasData) {
             char choice = menuPrinter.uploadClean ( );
             FacadeEmployee manager;
             if (choice == 'y') {
@@ -107,62 +109,75 @@ public class PresentationController_Employee {
         return true;
     }
 
-    private void handleManagerChoice(int choice, boolean start) throws SQLException {
+    private void handleManagerChoice(int choice) throws SQLException {
         switch (choice){
             case 1:
-                createWeeklyShiftSchedule ( start );
-                choice = menuPrinter.managerMenu ();
-                handleManagerChoice ( choice, false );
+                choice = menuPrinter.managerShiftMenu ();
+                handleManagerShiftChoice ( choice);
                 break;
             case 2:
-                getWeeklyShiftScheduleManager ( );
-                choice = menuPrinter.managerMenu ();
-                handleManagerChoice ( choice, start );
+                choice = menuPrinter.managerEmployeeMenu ();
+                handleManagerEmployeeChoice (choice);
                 break;
             case 3:
-                getShiftType ();
-                choice = menuPrinter.managerMenu ();
-                handleManagerChoice ( choice, start );
-                break;
-            case 4:
-                createShiftType ( 2 );
-                choice = menuPrinter.managerMenu ();
-                handleManagerChoice ( choice, start );
-                break;
-            case 5:
-                getEmployeeList();
-                choice = menuPrinter.managerMenu ();
-                handleManagerChoice ( choice, start );
-                break;
-            case 6:
-                getEmployeeByManager( );
-                choice = menuPrinter.managerMenu ();
-                handleManagerChoice ( choice, start );
-                break;
-            case 7:
-                getConstraintsOfEmployee ();
-                choice = menuPrinter.managerMenu ();
-                handleManagerChoice ( choice, start );
-                break;
-            case 8:
-                addEmployee (  );
-                choice = menuPrinter.managerMenu ();
-                handleManagerChoice ( choice, start );
-                break;
-            case 9:
                 if(!logout ())
                 {
-                    choice = menuPrinter.managerMenu ();
-                    handleManagerChoice ( choice, start );
+                    choice = menuPrinter.managerFirstMenu ();
+                    handleManagerChoice ( choice);
                 }
                 while(!login (false));
                 break;
             default:
                 menuPrinter.printChoiceException();
-                choice = menuPrinter.managerMenu ();
-                handleManagerChoice ( choice, start );
+                choice = menuPrinter.managerFirstMenu ();
+                handleManagerChoice ( choice);
         }
     }
+
+    private void handleManagerShiftChoice(int choice) throws SQLException {
+        switch (choice) {
+            case 1:
+                createWeeklyShiftSchedule ( );
+                break;
+            case 2:
+                getWeeklyShiftScheduleManager ( );
+                break;
+            case 3:
+                getShiftType ( );
+                break;
+            case 4:
+                createShiftType ( 2 );
+                break;
+            case 5:
+               break;
+            default:
+                menuPrinter.printChoiceException ();
+                break;
+        }
+    }
+
+    private void handleManagerEmployeeChoice(int choice) throws SQLException {
+        switch (choice) {
+            case 1:
+                getEmployeeList ( );
+                break;
+            case 2:
+                getEmployeeByManager ( );
+                break;
+            case 3:
+                getConstraintsOfEmployee ( );
+                break;
+            case 4:
+                addEmployee ( );
+                break;
+            case 5:
+                break;
+            default:
+                menuPrinter.printChoiceException ();
+                break;
+        }
+    }
+
 
     private void handleSimpleEmployeeChoice(int choice) throws SQLException {
         switch (choice){
@@ -313,9 +328,9 @@ public class PresentationController_Employee {
         menuPrinter.print ( "Role added successfully." );
     }
 
-    private void getRecommendation(boolean start) throws SQLException {
+    private void getRecommendation() throws SQLException {
         LocalDate date = menuPrinter.schedule ();
-        ResponseT<FacadeWeeklyShiftSchedule> weeklyShiftSchedule = facadeService.getRecommendation ( date, start );
+        ResponseT<FacadeWeeklyShiftSchedule> weeklyShiftSchedule = facadeService.getRecommendation ( date, hasData );
         if(weeklyShiftSchedule.errorOccurred ())
         {
             menuPrinter.print ( weeklyShiftSchedule.getErrorMessage () );
@@ -325,7 +340,8 @@ public class PresentationController_Employee {
         editSchedule ();
     }
 
-    private void createWeeklyShiftSchedule(boolean start) throws SQLException {
+    private void createWeeklyShiftSchedule() throws SQLException {
+        int day = 0;
         int choice = menuPrinter.createWeeklyShiftSchedule();
         if(choice < 1 || choice > 2)
         {
@@ -339,7 +355,8 @@ public class PresentationController_Employee {
             while (!dateLegal) {
                 if (date == null)
                     return;
-                if(!start && !date.getDayOfWeek ().equals ( DayOfWeek.SUNDAY )){
+                day = date.getDayOfWeek ().getValue ();
+                if(hasData && !date.getDayOfWeek ().equals ( DayOfWeek.SUNDAY )){
                     menuPrinter.print ( "The selected date is not sunday.\n try again." );
                     date = menuPrinter.schedule ();
                 }
@@ -347,11 +364,19 @@ public class PresentationController_Employee {
                     dateLegal = true;
             }
             FacadeShift[][] shifts = new FacadeShift[7][2];
-            for ( int i = 0 ; i < 6 ; i++ ) {
-                shifts[i][0] = createFirstShift ( date.plusDays ( i ) );
-                shifts[i][1] = createSecondShift ( date.plusDays ( i ) );
+            for ( int i = 0 ; i < 5 ; i++ ) {
+                if(i <= day)
+                {
+                    shifts[i][0] = null;
+                    shifts[i][1] = null;
+                }
+                else {
+                    shifts[i][0] = createFirstShift ( date.plusDays ( i ) );
+                    shifts[i][1] = createSecondShift ( date.plusDays ( i ) );
+                }
             }
-            shifts[5][0] = createFirstShift ( date.plusDays ( 5 ) );
+            if(day <= 5)
+                shifts[5][0] = createFirstShift ( date.plusDays ( 5 ) );
             shifts[6][1] = createSecondShift ( date.plusDays ( 6 ) );
             ResponseT<FacadeWeeklyShiftSchedule> weeklyShiftSchedule = facadeService.createWeeklyShiftSchedule ( date, shifts );
             if (weeklyShiftSchedule.errorOccurred ( )) {
@@ -363,7 +388,7 @@ public class PresentationController_Employee {
             editSchedule ();
         }
         else
-            getRecommendation ( start );
+            getRecommendation ();
     }
 
     private FacadeShift createFirstShift(LocalDate date) throws SQLException {
@@ -547,7 +572,7 @@ public class PresentationController_Employee {
                 return false;
             }
             if(employee.value.getRole ().equals ( Role.humanResourcesManager )) {
-                if(first) {
+                if(!hasData) {
                     createShiftTypes ( );
                     menuPrinter.print ( "For continuing you have to create logistics manager account" );
                     FacadeEmployee logisticsManager = menuPrinter.getEmployeeDetails ( Role.logisticsManager.name () );
@@ -567,8 +592,8 @@ public class PresentationController_Employee {
                 }
                 else
                     printAlerts();
-                choice = menuPrinter.managerMenu ( );
-                handleManagerChoice ( choice, first );
+                choice = menuPrinter.managerFirstMenu ();
+                handleManagerChoice ( choice );
             } else if(role.equals ( Role.logisticsManager )){
                 LogisticsManagerMenu.getInstance ().mainMenu ();
                 logout ();

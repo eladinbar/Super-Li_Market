@@ -53,7 +53,8 @@ public class ShiftController {
         return output;
     }*/
 
-    public WeeklyShiftSchedule getRecommendation(LocalDate startingDate) throws EmployeeException, SQLException {
+    public WeeklyShiftSchedule getRecommendation(LocalDate startingDate, boolean hasData) throws EmployeeException, SQLException {
+        beginning = !hasData;
         if (!beginning && startingDate.isBefore ( LocalDate.now ( ) ))
             throw new EmployeeException ( "Starting date has already passed." );
         if (startingDate.getDayOfWeek ( ) != DayOfWeek.SUNDAY)
@@ -267,13 +268,13 @@ public class ShiftController {
         }
         temp = LocalDate.now ();
         if(temp.getDayOfWeek ().equals ( DayOfWeek.SUNDAY ))
-            shifts.put ( temp, getRecommendation ( temp ) );
+            shifts.put ( temp, getRecommendation ( temp, beginning ) );
         else{
             temp = temp.minusDays ( temp.getDayOfWeek ().getValue () );
-            shifts.put ( temp, getRecommendation ( temp ) );
+            shifts.put ( temp, getRecommendation ( temp, beginning ) );
         }
-        shifts.put (sunday, getRecommendation ( sunday ));
-        shifts.put (sunday.plusDays ( 7 ), getRecommendation ( sunday.plusDays ( 7 ) ));
+        shifts.put (sunday, getRecommendation ( sunday, beginning ));
+        shifts.put (sunday.plusDays ( 7 ), getRecommendation ( sunday.plusDays ( 7 ), beginning ));
         beginning = false;
     }
 
