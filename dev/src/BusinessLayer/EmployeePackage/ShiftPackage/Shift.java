@@ -79,6 +79,12 @@ public class Shift {
 
     public void deleteEmployee(String role, String ID) throws EmployeeException, SQLException {
         Role newRole = Role.valueOf ( role );
+        if(newRole.equals ( Role.storeKeeper )){
+            if(manning.containsKey ( newRole ) && manning.get ( newRole ).size () == 1 ){
+                if(manning.containsKey ( Role.driverC ) || manning.containsKey ( Role.driverC1 ) )
+                    throw new EmployeeException ( "Cannot remove a storekeeper while shift has a driver." );
+            }
+        }
         if(manning.containsKey ( newRole ) && manning.get ( newRole ).contains ( ID )) {
             manning.get ( newRole ).remove ( ID );
             if(manning.get ( newRole ).isEmpty ())
