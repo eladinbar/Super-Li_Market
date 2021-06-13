@@ -29,12 +29,12 @@ public class SupplierController {
     }
 
     //method that add new supplier to the system
-    public Supplier addSupplier(String firstName, String lastName, String email, String id, String phone, int companyNumber, boolean isPermanentDays, boolean selfDelivery, String payment,String address) throws Exception {
+    public Supplier addSupplier(String firstName, String lastName, String email, String id, String phone, int companyNumber, boolean isPermanentDays, boolean selfDelivery, String payment,String address,int area) throws Exception {
         if (suppliers.containsKey(id)) //case that the supplier already exists
             throw new Exception("supplier with the id : " + id + " already exists");
         emailCheck(email);
         phoneCheck(phone);
-        Supplier newSup = new Supplier(firstName, lastName, email, id, phone, companyNumber, isPermanentDays, selfDelivery, payment,address);
+        Supplier newSup = new Supplier(firstName, lastName, email, id, phone, companyNumber, isPermanentDays, selfDelivery, payment,address,area);
         suppliers.put(id, newSup);
         if (persons.containsKey(id))
             persons.remove(id);
@@ -97,6 +97,12 @@ public class SupplierController {
         Supplier supplier = getSupplier(id);
         Payment enumPay = supplier.paymentCheck(pay);
         supplier.getSc().setPayment(enumPay);
+    }
+
+    public void updateDeliveryArea(String id, int area) throws Exception {
+        existSupplier(id);
+        Supplier supplier = getSupplier(id);
+        supplier.getSc().setDeliveryArea(area);
     }
 
     public void addContactMember(String supplierId, String firstName, String lastName, String email, String memberID, String phone) throws Exception {

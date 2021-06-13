@@ -1,3 +1,4 @@
+/*
 package PresentationLayer;
 
 import BusinessLayer.EmployeePackage.EmployeeNotification;
@@ -898,3 +899,4 @@ public class PresentationController_Employee {
         alerts.get ( role ).add ( new EmployeeNotification ( id.value, role.name (), alert.getContent () ));
     }
 }
+*/

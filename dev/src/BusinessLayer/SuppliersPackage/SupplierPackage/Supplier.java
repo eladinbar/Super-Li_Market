@@ -16,9 +16,9 @@ public class Supplier {
     private final int PhoneLength = 10;
     private final int idLength = 9;
 
-    public Supplier(String firstName, String lastName, String email, String id, String phone, int companyNumber, boolean isPernamentDays, boolean selfDelivery, String payment,String address) throws Exception {
+    public Supplier(String firstName, String lastName, String email, String id, String phone, int companyNumber, boolean isPernamentDays, boolean selfDelivery, String payment,String address,int area) throws Exception {
         Payment pay = paymentCheck(payment);
-        this.sc = new SupplierCard(firstName, lastName, email, id, phone, companyNumber, isPernamentDays, selfDelivery, pay,address);
+        this.sc = new SupplierCard(firstName, lastName, email, id, phone, companyNumber, isPernamentDays, selfDelivery, pay,address,area);
         this.ag = new Agreement();
     }
 

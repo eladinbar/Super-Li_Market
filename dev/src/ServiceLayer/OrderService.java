@@ -1,5 +1,6 @@
 package ServiceLayer;
 
+import BusinessLayer.SuppliersPackage.OrderPackage.Order;
 import BusinessLayer.SuppliersPackage.OrderPackage.OrderController;
 import BusinessLayer.SuppliersPackage.SupplierPackage.Supplier;
 import BusinessLayer.SuppliersPackage.SupplierPackage.SupplierController;
@@ -145,5 +146,25 @@ public class OrderService {
             return new ResponseT<>("there is no shortage in the store");
         }
         return new ResponseT<>(orderList);
+    }
+
+    public Response updateProductDeliveredAmount(int orderId, int productID, int amount) {
+        Response toReturn = new Response();
+        try {
+            oc.updateProductDeliveredAmount(orderId, productID, amount);
+        } catch (Exception e) {
+            toReturn = new Response(e.getMessage());
+        }
+        return toReturn;
+    }
+
+    public ResponseT<List<Integer>> makeOrders(int day) {
+        ResponseT<List<Integer>> toReturn;
+        try {
+            toReturn = makeOrders(day);
+        } catch (Exception e) {
+            toReturn = new ResponseT(e.getMessage());
+        }
+        return toReturn;
     }
 }
