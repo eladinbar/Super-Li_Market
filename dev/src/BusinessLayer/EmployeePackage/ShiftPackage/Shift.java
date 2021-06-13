@@ -90,6 +90,10 @@ public class Shift {
 
     public void addEmployee(String role, String ID) throws EmployeeException, SQLException {
         Role newRole = Role.valueOf ( role );
+        if(newRole.equals ( Role.driverC ) || newRole.equals ( Role.driverC ) ){
+            if(!hasStoreKeeper ())
+                throw new EmployeeException ( "Cannot add a driver to a shift without a storekeeper." );
+        }
         if(!manning.containsKey ( newRole )){
             manning.put ( newRole, new ArrayList<> () );
         }
