@@ -22,8 +22,8 @@ public class Service implements IService {
     }
 
     @Override
-    public ResponseT<FacadeSupplier> addSupplier(String firstName, String lastName, String email, String id, String phone, int companyNumber, boolean isPernamentDays, boolean selfDelivery, String payment, String adress) {
-        return supplierService.addSupplier(firstName, lastName, email, id, phone, companyNumber, isPernamentDays, selfDelivery, payment,adress);
+    public ResponseT<FacadeSupplier> addSupplier(String firstName, String lastName, String email, String id, String phone, int companyNumber, boolean isPernamentDays, boolean selfDelivery, String payment, String adress,int area) {
+        return supplierService.addSupplier(firstName, lastName, email, id, phone, companyNumber, isPernamentDays, selfDelivery, payment,adress,area);
     }
 
     @Override
@@ -35,6 +35,11 @@ public class Service implements IService {
     @Override
     public Response updateFirstName(String id, String firstName) {
         return supplierService.updateFirstName(id, firstName);
+    }
+
+    @Override
+    public Response updateDeliveryArea(String id, int area) {
+        return supplierService.updateDeliveryArea(id, area);
     }
 
     @Override
@@ -259,11 +264,33 @@ public class Service implements IService {
     }
 
     @Override
+    public Response updateProductDeliveredAmount(int orderId, int productID, int amount) {
+        getOrder(orderId);
+        if(!itemExists(productID))
+            return new ResponseT<>("no Item exist in the system: " + productID);
+        return orderService.updateProductDeliveredAmount(orderId, productID, amount);
+    }
+
+    @Override
     public Response removeProductFromOrder(int orderID, int productID) {
         getOrder(orderID);
         if(!itemExists(productID))
             return new ResponseT<>("no Item exist in the system: " + productID);
         return orderService.removeProductFromOrder(orderID, productID);
+    }
+
+    @Override
+    public ResponseT<List<Integer>> makeOrders(int day) {
+        ResponseT<List<Integer>> oIDs = orderService.makeOrders(day);
+        for (int id:oIDs.value) {
+            FacadeOrder fOrder = getOrder(id).value;
+            //todo with ido
+            //localDate = localDate of day in the next week
+            //create order
+            //foreach add items to order
+            //send to ido after every foreach or after create order?
+        }
+        return null;
     }
 
     @Override

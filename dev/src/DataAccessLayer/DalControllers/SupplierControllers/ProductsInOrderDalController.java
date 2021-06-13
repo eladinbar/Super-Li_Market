@@ -34,7 +34,8 @@ public class ProductsInOrderDalController extends DalController<DalProductsInOrd
             String command = "CREATE TABLE IF NOT EXISTS " + tableName + " (" +
                     DalProductsInOrder.productIdColumnName + " INTEGER NOT NULL," +
                     DalProductsInOrder.orderIdColumnName + " INTEGER NOT NULL," +
-                    DalProductsInOrder.amountColumnName + " INTEGET NOT NULL," +
+                    DalProductsInOrder.amountColumnName + " INTEGER NOT NULL," +
+                    DalProductsInOrder.amountSuppliedColumnName + " INTEGER NOT NULL," +
                     "PRIMARY KEY ("+ DalProductsInOrder.productIdColumnName +", "+ DalProductsInOrder.orderIdColumnName+ "),"+
                     "FOREIGN KEY (" + DalProductsInOrder.productIdColumnName + ")" + "REFERENCES " + DalItem.itemIdColumnName + " (" + ItemDalController.ITEM_TABLE_NAME +") ON DELETE CASCADE "+
                     "FOREIGN KEY (" + DalProductsInOrder.orderIdColumnName + ")" + "REFERENCES " + DalOrder.orderIdColumnName + " (" + OrderDalController.ORDER_TABLE_NAME +") ON DELETE CASCADE "+
@@ -51,11 +52,12 @@ public class ProductsInOrderDalController extends DalController<DalProductsInOrd
     @Override
     public boolean insert(DalProductsInOrder productsInOrder) throws SQLException {
         try (Connection conn = DriverManager.getConnection(connectionString)) {
-            String query = "INSERT INTO " + tableName + " VALUES (?,?,?)";
+            String query = "INSERT INTO " + tableName + " VALUES (?,?,?,?)";
             PreparedStatement stmt = conn.prepareStatement(query);
             stmt.setInt(1, productsInOrder.getProductId());
             stmt.setInt(2, productsInOrder.getOrderId());
             stmt.setInt(3, productsInOrder.getAmount());
+            stmt.setInt(4, productsInOrder.getAmountSupplied());
             stmt.executeUpdate();
         } catch (SQLException ex) {
             throw new SQLException(ex.getMessage());
@@ -80,13 +82,15 @@ public class ProductsInOrderDalController extends DalController<DalProductsInOrd
     @Override
     public boolean update(DalProductsInOrder productInOrder) throws SQLException {
         try (Connection conn = DriverManager.getConnection(connectionString)) {
+            //todo run query on data base
             String query = "UPDATE " + tableName + " SET " + DalProductsInOrder.amountColumnName +
-                    "=? WHERE(" + DalProductsInOrder.productIdColumnName +"=? AND "+ DalProductsInOrder.orderIdColumnName+ "=?)";
+                    "=?, "+ DalProductsInOrder.amountSuppliedColumnName + "=? WHERE(" + DalProductsInOrder.productIdColumnName +"=? AND "+ DalProductsInOrder.orderIdColumnName+ "=?)";
             PreparedStatement stmt = conn.prepareStatement(query);
 
             stmt.setInt(1, productInOrder.getAmount());
-            stmt.setInt(2, productInOrder.getProductId());
-            stmt.setInt(3, productInOrder.getOrderId());
+            stmt.setInt(2, productInOrder.getAmountSupplied());
+            stmt.setInt(3, productInOrder.getProductId());
+            stmt.setInt(4, productInOrder.getOrderId());
             stmt.executeUpdate();
         } catch (SQLException ex) {
             throw new SQLException(ex.getMessage());
@@ -107,6 +111,7 @@ public class ProductsInOrderDalController extends DalController<DalProductsInOrd
                 && resultSet.getInt(2) == productInOrder.getOrderId();
                 if (isDesired) {
                     productInOrder.setAmountLoad(resultSet.getInt(3));
+                    productInOrder.setAmountSuppliedLoad(resultSet.getInt(4));
                     break; //Desired category discount found
                 }
             }
@@ -130,7 +135,8 @@ public class ProductsInOrderDalController extends DalController<DalProductsInOrd
                 if (isDesired) {
                     int productId = resultSet.getInt(1);
                     int amount = resultSet.getInt(3);
-                    DalProductsInOrder savedProduct = new DalProductsInOrder(productId, product.getOrderId(), amount);
+                    int amountSupplied = resultSet.getInt(4);
+                    DalProductsInOrder savedProduct = new DalProductsInOrder(productId, product.getOrderId(), amount,amountSupplied);
                     productsInOrderDal.add(savedProduct);
                 }
             }

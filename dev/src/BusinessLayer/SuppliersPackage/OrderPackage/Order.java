@@ -1,8 +1,10 @@
 package BusinessLayer.SuppliersPackage.OrderPackage;
 
+import BusinessLayer.SuppliersPackage.SupplierPackage.QuantityList;
 import BusinessLayer.SuppliersPackage.SupplierPackage.Supplier;
 import DataAccessLayer.DalObjects.SupplierObjects.DalOrder;
 import DataAccessLayer.DalObjects.SupplierObjects.DalProductsInOrder;
+import DataAccessLayer.DalObjects.SupplierObjects.DalQuantityListItems;
 
 import java.sql.SQLException;
 import java.time.DayOfWeek;
@@ -12,15 +14,19 @@ import java.util.*;
 public class Order {
     private int id;
     private Map<Integer, Integer> products;
+    private Map<Integer, Integer> amountSupplied;
     private LocalDate date;
     private boolean delivered;
     private Supplier supplier;
     private DalOrder dalObject;
+    private Map<Integer,DalProductsInOrder> DalProductsInOrder;
     private int day;
 
     public Order(int id, LocalDate date, Supplier supplier, int day) throws SQLException {
         this.id = id;
         this.products = new HashMap<>();
+        this.amountSupplied = new HashMap<>();
+        this.DalProductsInOrder = new HashMap<>();
         this.date = date;
         this.delivered = false;
         this.supplier = supplier;
@@ -31,6 +37,8 @@ public class Order {
 
     public Order(DalOrder orderDal, Supplier supplier) throws Exception {
         this.products = new HashMap<>();
+        this.amountSupplied = new HashMap<>();
+        this.DalProductsInOrder = new HashMap<>();
         this.id = orderDal.getOrderId();
         this.delivered = orderDal.isDelivered() == 1 ? true : false;
         this.date = LocalDate.parse(orderDal.getDate());
@@ -42,6 +50,8 @@ public class Order {
 
     public Order(int id) throws SQLException {
         this.products = new HashMap<>();
+        this.amountSupplied = new HashMap<>();
+        this.DalProductsInOrder = new HashMap<>();
         this.id = id;
         this.dalObject = new DalOrder(id);
     }
@@ -82,6 +92,7 @@ public class Order {
     }
 
     public void approveOrder() throws Exception {
+        //todo check if all items supplied
         if (delivered)
             throw new Exception("order already delivered");
         delivered = true;
@@ -103,8 +114,22 @@ public class Order {
         if (amount < 1)
             throw new Exception("illegal amount");
         products.put(productId, amount);
+        amountSupplied.put(productId,0);
         if (flag)
-            save(productId, id, amount);
+            save(productId, id, amount,0);
+    }
+
+    public void addAmountOfDeliveredProducts(int productId,int amount,boolean flag) throws Exception {
+        if (!supplier.getAg().getProducts().containsKey(productId))
+            throw new Exception("supplier does not supply the product :" + productId);
+        if (!amountSupplied.containsKey(productId))
+            throw new Exception("product " + productId + " does not exists in the order ");
+        if (amount < 1 || amountSupplied.get(productId) + amount > products.get(productId))
+            throw new Exception("illegal amount");
+        products.put(productId, amount);
+        amountSupplied.put(productId,amountSupplied.get(productId) + amount);
+        if(flag)
+            this.DalProductsInOrder.get(productId).setAmountSupplied(amountSupplied.get(productId));
     }
 
     public void removeProductFromOrder(int productID) throws Exception {
@@ -114,6 +139,7 @@ public class Order {
         if (!products.containsKey(productID))
             throw new Exception("order does not contain the chosen product");
         products.remove(productID);
+        amountSupplied.remove(productID);
         delete(productID, id);
     }
 
@@ -138,7 +164,9 @@ public class Order {
         DalProductsInOrder productInOrderDal = new DalProductsInOrder(id);
         productInOrderDal.find(orderItems);
         for (DalProductsInOrder product : orderItems) {
+            this.DalProductsInOrder.put(product.getProductId(),product);
             addProductToOrder(product.getProductId(), product.getAmount(), false);
+            addAmountOfDeliveredProducts(product.getProductId(),product.getAmountSupplied(),false);
         }
     }
 
@@ -150,8 +178,10 @@ public class Order {
         return dalObject.save();
     }
 
-    private boolean save(int productId, int orderId, int amount) throws SQLException {
-        return dalObject.save(productId, orderId, amount);
+    private boolean save(int productId, int orderId, int amount,int amountSupplied) throws SQLException {
+        DalProductsInOrder dalProduct = new DalProductsInOrder(productId, orderId,amount,amountSupplied);
+        this.DalProductsInOrder.put(id,dalProduct);
+        return dalObject.save(dalProduct);
     }
 
     protected boolean delete(int productId, int orderId) throws SQLException {

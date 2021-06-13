@@ -12,12 +12,13 @@ import java.util.Map;
 
 public interface IService {
     //add supplier and edit all supplier fields
-    ResponseT<FacadeSupplier> addSupplier(String firstName, String lastName, String email, String id, String phone, int companyNumber, boolean isPernamentDays, boolean selfDelivery, String payment, String adress);
+    ResponseT<FacadeSupplier> addSupplier(String firstName, String lastName, String email, String id, String phone, int companyNumber, boolean isPernamentDays, boolean selfDelivery, String payment, String adress,int area);
     Response removeSupplier(String id);
     Response updateFirstName(String id, String lirstName);
     Response updateLastName(String id, String lastName);
     Response updatePhone(String id, String phone);
     Response updateEmail(String id, String email);
+    Response updateDeliveryArea(String id, int area);
     Response updateCompanyNumber(String id, int companyNumber);
     Response updateSelfDelivery(String id, boolean self);
     Response updatePernamentDays(String id, boolean perm);
@@ -43,7 +44,9 @@ public interface IService {
     Response approveOrder(int orderID);
     ResponseT<FacadeOrder> getOrder(int orderID);
     Response addProductToOrder(int orderId, int productId, int amount);
+    Response updateProductDeliveredAmount(int orderId, int productID, int amount);
     Response removeProductFromOrder(int orderID, int productID);
+    ResponseT<List<Integer>> makeOrders(int day);
 
     //agreement
     ResponseT<FacadeItem> addItemToAgreement(String id, int productID, int companyProductId, int price);
