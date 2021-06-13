@@ -232,9 +232,6 @@ public class TruckingService {
             addNotification("all demands in pool has been settled successfully!");
         else
             addNotification("couldn't handle all demands in pool :( ");
-
-
-
     }
 
 
@@ -528,6 +525,22 @@ public class TruckingService {
     }
 
 
+
+    public void putInitialTestState() {
+
+
+        try {
+            addTruck("Mercedes", "62321323", 2000, 12000);
+
+            addTruck("Man", "1231231", 1500, 8000);
+            addTruck("Volvo", "123", 1000, 10000);
+            addTruck("Volvo", "12121", 1000, 14000);
+        }catch (SQLException e) {
+            e.printStackTrace();
+            exit(1);
+        }
+
+    }
 
 
 
