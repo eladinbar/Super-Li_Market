@@ -47,7 +47,7 @@ public class TruckingService {
       */
 
 
-
+// TODO need to add exceptions
 
     /**
      * this method receives an Order and returns and Linked List of items that couldn't been delivered
@@ -63,43 +63,47 @@ public class TruckingService {
      * @return List of pairs, item and its amount, only item that couldn't been delivered.
      * if all items has been settled to a delivery, returns empty list
      */
-    public ResponseT<  LinkedList<Pair<Integer, Integer>> > addOrder(Order order) throws SQLException {
+    public ResponseT<  LinkedList<Pair<Integer, Integer>> > addOrder(Order order)  {
 
-        int supplier  = getSupplierFromOrder(order);
-        LinkedList<Pair<Integer,Integer>> left = orderToItemsList(order);
+            int supplier = getSupplierFromOrder(order);
+            LinkedList<Pair<Integer, Integer>> left = orderToItemsList(order);
 
-        LinkedList<FacadeTruckingReport> thisWeekReports =  getThisWeekReports();
-        // inserts into the next 7 days reports only
-        left = insertToExistingTR(left , supplier,thisWeekReports);
-        if (!left.isEmpty()) {
-
-            // creates reports for the next 7 days only, call drivers from home if needed
-            left = createReportsThisWeek(left, supplier);
-
+            LinkedList<FacadeTruckingReport> thisWeekReports = getThisWeekReports();
+            // inserts into the next 7 days reports only
+            left = insertToExistingTR(left, supplier, thisWeekReports);
             if (!left.isEmpty()) {
-                addNotification("Order number: " + order.getId() + "\nhas been settled to deliveries in more the a week");
-                LinkedList<FacadeTruckingReport> everyWeekReports = getActiveTruckingReports().getValue();
-                everyWeekReports.addAll(getWaitingTruckingReports().getValue());
 
-                // adds to existing TR from every week
-                left = insertToExistingTR(left, supplier, everyWeekReports);
+                // creates reports for the next 7 days only, call drivers from home if needed
+                left = createReportsThisWeek(left, supplier);
+
                 if (!left.isEmpty()) {
+                    addNotification("Order number: " + order.getId() + "\nhas been settled to deliveries in more the a week");
+                    LinkedList<FacadeTruckingReport> everyWeekReports = getActiveTruckingReports().getValue();
+                    everyWeekReports.addAll(getWaitingTruckingReports().getValue());
 
-                    // creates reports for every possible date
-
-                    left = createReportsEveryWeek(left, supplier);
+                    // adds to existing TR from every week
+                    left = insertToExistingTR(left, supplier, everyWeekReports);
                     if (!left.isEmpty()) {
-                        addNotification("order number: "+ order.getId()  + "" +
-                                "\nhas failed to be delivered as a whole. the remain items has been delivered to pool");
-                       addDemandToPool(left,supplier);
+
+                        // creates reports for every possible date
+
+                        left = createReportsEveryWeek(left, supplier);
+                        if (!left.isEmpty()) {
+                            addNotification("order number: " + order.getId() + "" +
+                                    "\nhas failed to be delivered as a whole. the remain items has been delivered to pool");
+                            try {
+                                addDemandToPool(left, supplier);
+                            } catch (SQLException e) {
+                                e.printStackTrace();
+                            }
+                        }
                     }
                 }
             }
-        }
 
 
+            return new ResponseT<>(left);
 
-        return new ResponseT<>(left);
 
 
     }
@@ -114,7 +118,7 @@ public class TruckingService {
      * @return true if succeeded, false other wise
      */
     public boolean addPermanentOrder(Order order) {
-        boolean succeed = false;
+        boolean succeed ;
         succeed  = canAddFullOrder(order);
         if (succeed){
             LocalDate date = order.getDate();
@@ -137,7 +141,8 @@ public class TruckingService {
 
 
     public ResponseT< LinkedList<TruckingNotifications> > getNotifications(){
-        return new ResponseT<>(DeliveryService.getInstance().getNotifications());
+
+        return new ResponseT<>( deliveryService.getNotifications());
     }
 
     public ResponseT<  LinkedList<FacadeDriver> >getDrivers(){
@@ -237,7 +242,11 @@ public class TruckingService {
 
 
     public ResponseT< FacadeTruckingReport> getTruckReport(int id){
-        return  new ResponseT<FacadeTruckingReport>( deliveryService.getTruckReport(id) );
+        try {
+            return new ResponseT<FacadeTruckingReport>(deliveryService.getTruckReport(id));
+        }catch (NoSuchElementException e){
+            return new ResponseT<>("No report found with such ID: " + id);
+        }
 
     }
     public ResponseT< FacadeDeliveryForm> getDeliveryForm(int id){
@@ -266,6 +275,10 @@ public class TruckingService {
             demands.set(index, temp);
         }
         return demands;
+    }
+
+    public void setCompletedTruckReport(int report_id){
+        deliveryService.setCompletedTruckReport(report_id);
     }
 
     // <<<<<<<<<<<<<<<<<<<<<<<<<<<<<< private methods >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
@@ -380,6 +393,8 @@ public class TruckingService {
         }
         return left;
     }
+
+
 
     /**
      * this method check whether we can deliver the whole order in the wanted date. checks by overall weight

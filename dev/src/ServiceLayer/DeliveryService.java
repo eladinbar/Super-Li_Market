@@ -13,6 +13,7 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.NoSuchElementException;
 
 import static java.lang.System.exit;
 
@@ -83,8 +84,9 @@ public class DeliveryService {
 
     }
 
-    public FacadeTruckingReport getTruckReport(int id) {
-        return new FacadeTruckingReport(dc.getTruckReport(id));
+    public FacadeTruckingReport getTruckReport(int id)throws NoSuchElementException {
+
+        return new FacadeTruckingReport( dc.getTruckReport(id));
     }
 
     public FacadeDeliveryForm getDeliveryForm(int id) {
@@ -175,6 +177,10 @@ public class DeliveryService {
 
     public HashMap<String, HashMap<LocalDate, Integer>> getTruckConstraintsFromUpload() {
         return dc.getTruckConstraintsFromUpload();
+    }
+
+    public void setCompletedTruckReport(int report_id) {
+        dc.setCompletedTruckReport(report_id);
     }
 }
 

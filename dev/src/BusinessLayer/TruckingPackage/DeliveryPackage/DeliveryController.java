@@ -53,7 +53,7 @@ public class DeliveryController {
 
 
 
-    public LinkedList<Pair<Integer, Integer>> createTruckReport(LinkedList<Pair<Integer, Integer>> items, String driverId, String truckId, int maxWeight, int supplier, LocalDate date, int shift) throws SQLException {
+    public LinkedList<Pair<Integer, Integer>> createTruckReport(LinkedList<Pair<Integer, Integer>> items, String driverId, String truckId, int maxWeight, int supplier, LocalDate date, int shift)  {
 
 
 
@@ -65,12 +65,7 @@ public class DeliveryController {
         return items;
     }
 
-    private LocalTime shiftToTime(int shift) {
-        if (shift ==0)
-            return LocalTime.of(6,0);
-        else
-            return LocalTime.of(14, 0);
-    }
+
 
     /**
      * adds demands to pool, if already has demand for this item and supplier, adds its to the existing demands
@@ -168,6 +163,9 @@ public class DeliveryController {
     }
 
     public int getTruckReportCurrentWeight(int report_id) {
+        if (getTruckReport(report_id)== null){
+            throw new NoSuchElementException("couldn't find report with the id:"+ report_id);
+        }
         LinkedList<DeliveryForm> dfs  = null;
         if (activeDeliveryForms.containsKey(report_id)){
             dfs = activeDeliveryForms.get(report_id);
@@ -214,9 +212,10 @@ public class DeliveryController {
             }
         }
         return  output;
+
     }
 
-    public LinkedList<Pair<Integer, Integer>> insertItemsToTruckReport(LinkedList<Pair<Integer, Integer>> items, int supplier, int capacity, int report_id) {
+    public LinkedList<Pair<Integer, Integer>> insertItemsToTruckReport(LinkedList<Pair<Integer, Integer>> items, int supplier, int capacity, int report_id) throws NoSuchElementException{
         int currentWeight = getTruckReportCurrentWeight(report_id);
         int area =  getSupplierArea(supplier);
         LocalDate report_date = getTruckReport(report_id).getDate();
@@ -370,7 +369,7 @@ public class DeliveryController {
         else if (waitingTruckingReports.containsKey(trNumber)){
             return waitingTruckingReports.get(trNumber);
         }
-        else throw new NoSuchElementException("No Report with that ID");
+        else throw new NoSuchElementException("No Report with such ID");
 
     }
 
@@ -455,7 +454,12 @@ public class DeliveryController {
     }
 
 
-
+    private LocalTime shiftToTime(int shift) {
+        if (shift ==0)
+            return LocalTime.of(6,0);
+        else
+            return LocalTime.of(14, 0);
+    }
 
 
     private void addSupplierToReport(int supplier,  int report_id) {
@@ -648,8 +652,24 @@ public class DeliveryController {
         oldTruckingReports=oldReports;
     }
 
+    public void setCompletedTruckReport(int report_id) {
+        TruckingReport report = getTruckReport(report_id);
+        LinkedList<DeliveryForm> deliveryForms = getTruckReportDeliveryForms(report_id);
+        report.setCompleted();
+        for (DeliveryForm df:deliveryForms){
+            try {
+                df.setCompleted();
+            } catch (SQLException e) {
+                e.printStackTrace();
+                exit(1);
+            }
 
-
+        }
+        activeDeliveryForms.remove(report_id);
+        waitingTruckingReports.remove(report_id);
+        oldTruckingReports.put(report_id, report);
+        oldDeliveryForms.put(report_id,activeDeliveryForms.remove(report_id));
+    }
 
 
 //    public int createNewTruckingReport() throws SQLException {
