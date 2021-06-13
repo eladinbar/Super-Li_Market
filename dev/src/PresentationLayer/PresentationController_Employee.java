@@ -118,6 +118,7 @@ public class PresentationController_Employee {
             menuPrinter.print ( response.getErrorMessage () );
             return false;
         }
+        hasData = true;
         return true;
     }
 
@@ -584,7 +585,7 @@ public class PresentationController_Employee {
                 menuPrinter.print ( employee.getErrorMessage () );
                 return false;
             }
-            if(employee.value.getRole ().equals ( Role.humanResourcesManager )) {
+            if(employee.value.getRole ().equals ( Role.humanResourcesManager.name() )) {
                 if(!hasData) {
                     createShiftTypes ( );
                     menuPrinter.print ( "For continuing you have to create logistics manager account" );
@@ -607,14 +608,14 @@ public class PresentationController_Employee {
                     printAlerts();
                 choice = menuPrinter.managerFirstMenu ();
                 handleManagerChoice ( choice );
-            } else if(role.equals ( Role.logisticsManager )){
+            } else if(role.equals ( Role.logisticsManager.name() )){
                 LogisticsManagerMenu.getInstance ().mainMenu ();
                 logout ();
                 while(!login (false));
-            } else if(role.equals ( Role.storeKeeper )) {
+            } else if(role.equals ( Role.storeKeeper.name() )) {
                 choice = menuPrinter.storeKeeperMenu ();
                 handleStoreKeeperChoice ( choice );
-            } else if(role.equals ( Role.branchManager ) || role.equals ( Role.branchManagerAssistant )) {
+            } else if(role.equals ( Role.branchManager.name() ) || role.equals ( Role.branchManagerAssistant.name() )) {
                 pc.reportMenuOperations();
             } else {
                 choice = menuPrinter.simpleEmployeeMenu ();
@@ -627,6 +628,8 @@ public class PresentationController_Employee {
     }
 
     private void printAlerts() throws SQLException {
+        if(alerts.isEmpty())
+            return;
         for( EmployeeNotification alert: alerts.get ( Role.humanResourcesManager ))
         {
             menuPrinter.print ( "Alert: " + alert.getContent () );
@@ -637,6 +640,7 @@ public class PresentationController_Employee {
     private void handleStoreKeeperChoice(int choice) throws SQLException {
         if(choice == 7) {
             pc.mainMenu();
+            choice = menuPrinter.storeKeeperMenu();
         }
         if(choice == 8)
             choice --;
