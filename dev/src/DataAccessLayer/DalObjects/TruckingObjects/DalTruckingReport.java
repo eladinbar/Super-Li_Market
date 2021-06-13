@@ -1,5 +1,7 @@
 package DataAccessLayer.DalObjects.TruckingObjects;
 
+import BusinessLayer.TruckingPackage.DeliveryPackage.TruckingReport;
+
 import java.time.LocalDate;
 import java.time.LocalTime;
 

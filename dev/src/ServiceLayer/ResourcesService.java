@@ -42,9 +42,7 @@ public class ResourcesService {
     }
 
 
-    // TODO - this method also need to call "addDriverToShift" if couldn't find any Driver available.
-    //  as well as alerts to the Manager
-    //  tries to get the driver and truck with the highest capability
+
 
     /**
      *
@@ -78,6 +76,10 @@ public class ResourcesService {
         for (Truck t:rc.getTrucks())
             trucks.add(new FacadeTruck(t));
         return trucks;
+    }
+
+    public int getMaxWeight(String driverID, String truckNumber) {
+        return rc.getMaxWeight(driverID,truckNumber);
     }
 /*
     public Truck chooseTruck(String truck,LocalDate date, int shift) throws NoSuchElementException, IllegalStateException {

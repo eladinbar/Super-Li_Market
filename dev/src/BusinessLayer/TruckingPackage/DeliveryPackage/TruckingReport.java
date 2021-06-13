@@ -1,5 +1,6 @@
 package BusinessLayer.TruckingPackage.DeliveryPackage;
 
+import DataAccessLayer.DalControllers.TruckingControllers.DalTruckingReportController;
 import DataAccessLayer.DalObjects.TruckingObjects.DalTruckingReport;
 
 import java.sql.SQLException;
@@ -91,8 +92,10 @@ public class TruckingReport {
         return approved;
     }
 
-    public void setApproved() {
+    public void setApproved() throws SQLException {
         this.approved = true;
+        DalTruckingReportController.getInstance().update(
+                new DalTruckingReport(this.ID,this.leavingHour,this.date,this.truckNumber,this.driverID,this.completed,this.approved));
     }
 
     public void setID(int ID) throws SQLException {

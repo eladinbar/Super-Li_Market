@@ -1,6 +1,9 @@
 package BusinessLayer.TruckingPackage.DeliveryPackage;
 
+import DataAccessLayer.DalControllers.TruckingControllers.DalDeliveryFormController;
+import DataAccessLayer.DalControllers.TruckingControllers.DalItemsOnDFController;
 import DataAccessLayer.DalObjects.TruckingObjects.DalDeliveryForm;
+import DataAccessLayer.DalObjects.TruckingObjects.DalItemsOnDF;
 import InfrastructurePackage.Pair;
 
 import java.sql.SQLException;
@@ -22,7 +25,10 @@ public class DeliveryForm {
         this.leavingWeight = leavingWeight;
         this.trID = trID;
         this.completed = false;
-        // todo DB insert
+        try {
+            DalDeliveryFormController.getInstance().insert(new DalDeliveryForm(ID,destination,completed,leavingWeight,trID));
+        }
+        catch (SQLException e){}
 
     }
 
@@ -47,16 +53,19 @@ public class DeliveryForm {
         this.items = new HashMap<>();
     }
 
-    public void addItem(int itemID, int amount) {
+    public void addItem(int itemID, int amount) throws SQLException {
         if (items == null)
             items = new HashMap<>();
         if (items.containsKey(itemID)){
             int prevAmount  = items.get(itemID);
             amount  = amount  + prevAmount;
-
+            items.put(itemID, amount);
+            DalItemsOnDFController.getInstance().update(new DalItemsOnDF(this.ID,itemID,amount));
         }
-        items.put(itemID, amount);
-        // TODO - insert/ update to DB
+        else {
+            items.put(itemID, amount);
+            DalItemsOnDFController.getInstance().insert(new DalItemsOnDF(this.ID, itemID, amount));
+        }
 
     }
 
@@ -86,13 +95,13 @@ public class DeliveryForm {
     }
 
     public void setCompleted() throws SQLException {
-        // todo DB update
         this.completed = true;
+        DalDeliveryFormController.getInstance().update(new DalDeliveryForm(this.ID,this.destination,this.completed,this.leavingWeight,this.trID));
     }
 
     public void setDestination(int destination) throws SQLException {
-        // todo DB update
         this.destination = destination;
+        DalDeliveryFormController.getInstance().update(new DalDeliveryForm(this.ID,this.destination,this.completed,this.leavingWeight,this.trID));
 
     }
 
@@ -106,8 +115,8 @@ public class DeliveryForm {
     }
 
     public void setLeavingWeight(int leavingWeight) throws SQLException {
-        // todo DB update
         this.leavingWeight = leavingWeight;
+        DalDeliveryFormController.getInstance().update(new DalDeliveryForm(this.ID,this.destination,this.completed,this.leavingWeight,this.trID));
     }
 
 

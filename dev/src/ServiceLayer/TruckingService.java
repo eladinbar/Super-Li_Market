@@ -263,8 +263,7 @@ public class TruckingService {
      * @return returns min weight truck and driver can handle
      */
     private int getMaxWeight(FacadeTruckingReport tr){
-        // TODO implement
-        throw new UnsupportedOperationException();
+       return resourcesService.getMaxWeight(tr.getDriverID(),tr.getTruckNumber());
 
     }
 
@@ -374,7 +373,6 @@ public class TruckingService {
      * @return pair < < driver, truck> , Shift>
      */
     private Pair <Pair<FacadeDriver, FacadeTruck>,Integer > getDriverAndTruckFromExisting (LocalDate date){
-        // TODO
         return resourcesService.findDriverAndTruckForDateFromExisting(date,getBusyTrucksByDate(date));
     }
 

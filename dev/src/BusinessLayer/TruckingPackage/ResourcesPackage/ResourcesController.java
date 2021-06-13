@@ -308,6 +308,19 @@ public class ResourcesController {
         return result;
     }
 
+    public int getMaxWeight(String driverID, String truckNumber) {
+        int driverWeight;
+        int truckWeight=trucks.get(truckNumber).getMaxWeight()-trucks.get(truckNumber).getWeightNeto();
+        if (drivers.get(driverID).getLicenseType()== Driver.License.C)
+        {
+            driverWeight=12000;
+        }
+        else driverWeight=20000;
+        return Math.min(driverWeight,truckWeight);
+
+
+    }
+
 
 //
 //    public void addDriver(String id, String name, Driver.License licenseType) throws KeyAlreadyExistsException, SQLException {

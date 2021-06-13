@@ -7,6 +7,8 @@ import BusinessLayer.Notification;
 import BusinessLayer.SuppliersPackage.OrderPackage.Order;
 import BusinessLayer.TruckingNotifications;
 import BusinessLayer.TruckingPackage.ResourcesPackage.Truck;
+import DataAccessLayer.DalControllers.TruckingControllers.DalTruckingReportController;
+import DataAccessLayer.DalObjects.TruckingObjects.DalTruckingReport;
 import InfrastructurePackage.Pair;
 import ServiceLayer.InventoryService;
 
@@ -128,6 +130,11 @@ public class DeliveryController {
     public LinkedList<Notification> getNotifications() {
         // TODO need to delete from pool
         // TODO need to delete from DB
+        //TODO check if notifications is the right type
+        for (TruckingNotifications notification:notifications)
+        {
+
+        }
         return notifications;
     }
 
@@ -337,8 +344,8 @@ public class DeliveryController {
 
     }
 
-    public void managerApproveTruckReport(Integer trID) throws TimeLimitExceededException {
-        // todo DB update approved
+    public void managerApproveTruckReport(Integer trID) throws TimeLimitExceededException, SQLException {
+        //TODO - check what to do with exception
         TruckingReport report = getTruckReport(trID);
         if (report.getDate().isBefore(LocalDate.now()))
             throw new TimeLimitExceededException();
@@ -358,11 +365,19 @@ public class DeliveryController {
             throw new TimeLimitExceededException();
         if (!report.isApproved()) {
 
-            waitingTruckingReports.remove(trID);
+            TruckingReport delete=waitingTruckingReports.remove(trID);
             //TODO - need to remove delivery Forms
-
+            //TODO add method to get list of DF by TRID
 
             //TODO - need to delete from DB as well as deliveryForms
+            try {
+                DalTruckingReport tr=new DalTruckingReport(delete.getID(),delete.getLeavingHour(),delete.getDate(),delete.getTruckNumber(),delete.getDriverID(),delete.isCompleted(),delete.isApproved());
+                DalTruckingReportController.getInstance().delete(tr);
+            }
+            catch (SQLException e)
+            {
+
+            }
         }
     }
 
@@ -419,7 +434,7 @@ public class DeliveryController {
         }
         return areas;
     }
-    // TODO - need to get from DB
+    // TODO - need to get from DB ,edit: ?
     private LinkedList<DeliveryForm> getOldDeliveryForms(int report_id) {
         return oldDeliveryForms.get(report_id);
     }
