@@ -12,23 +12,20 @@ public class FacadeTruckingReport {
     private LocalTime leavingHour;
     private String  truckNumber;
     private String driverID;
-    private int origin;
-    private LinkedList<Integer> destinations;
-    private FacadeTruckingReport TRReplace;
+    private LinkedList<Integer> suppliers;
     private boolean completed;
+    private boolean approved;
 
     public FacadeTruckingReport(int ID, LocalDate date, LocalTime leavingHour, String truckNumber, String driverID,
-                                int origin, LinkedList<Integer> destinations, TruckingReport TRReplace)
+                              LinkedList<Integer> suppliers , boolean approved)
     {
         this.ID = ID;
         this.date = date;
         this.leavingHour = leavingHour;
         this.truckNumber = truckNumber;
         this.driverID = driverID;
-        this.origin = origin;
-        this.destinations = destinations;
-        this.TRReplace = new FacadeTruckingReport(TRReplace);
-
+        this.suppliers = suppliers;
+        this.approved = false;
         this.completed=false;
 
     }
@@ -39,11 +36,8 @@ public class FacadeTruckingReport {
         leavingHour = currTR.getLeavingHour();
         truckNumber = currTR.getTruckNumber();
         driverID = currTR.getDriverID();
-        origin = currTR.getOrigin();
-        destinations = currTR.getSuppliers();
-        if (currTR.getTRReplace()!= -1){
-            TRReplace = new FacadeTruckingReport( currTR.getTRReplace());
-        }
+        suppliers = currTR.getSuppliers();
+        approved = currTR.isApproved();
         completed = currTR.isCompleted();
 
     }
@@ -56,9 +50,6 @@ public class FacadeTruckingReport {
         return ID;
     }
 
-    public int getOrigin() {
-        return origin;
-    }
 
     public LocalDate getDate() {
         return date;
@@ -76,13 +67,10 @@ public class FacadeTruckingReport {
         return truckNumber;
     }
 
-    public LinkedList<Integer> getDestinations() {
-        return destinations;
+    public LinkedList<Integer> getSuppliers() {
+        return suppliers;
     }
 
-    public FacadeTruckingReport getTRReplace() {
-        return TRReplace;
-    }
 
     public void setCompleted() {
         this.completed = true;
@@ -92,16 +80,13 @@ public class FacadeTruckingReport {
         this.ID = ID;
     }
 
-    public void setOrigin(int origin) {
-        this.origin = origin;
-    }
 
     public void setDate(LocalDate date) {
         this.date = date;
     }
 
-    public void setDestinations(LinkedList<Integer> destinations) {
-        this.destinations = destinations;
+    public void setSuppliers(LinkedList<Integer> suppliers) {
+        this.suppliers = suppliers;
     }
 
     public void setDriverID(String driverID) {
@@ -112,12 +97,20 @@ public class FacadeTruckingReport {
         this.leavingHour = leavingHour;
     }
 
-    public void setTRReplace(FacadeTruckingReport TRReplace) {
-        this.TRReplace = TRReplace;
-    }
 
     public void setTruckNumber(String  truckNumber) {
         this.truckNumber = truckNumber;
     }
 
+    public void setApproved(boolean approved) {
+        this.approved = approved;
+    }
+
+    public boolean isApproved() {
+        return approved;
+    }
+
+    public boolean isCompleted() {
+        return completed;
+    }
 }

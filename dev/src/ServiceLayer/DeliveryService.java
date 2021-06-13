@@ -1,6 +1,7 @@
 package ServiceLayer;
 
 import BusinessLayer.Notification;
+import BusinessLayer.TruckingNotifications;
 import InfrastructurePackage.Pair;
 import ServiceLayer.FacadeObjects.FacadeDeliveryForm;
 import ServiceLayer.FacadeObjects.FacadeDemand;
@@ -39,7 +40,7 @@ public class DeliveryService {
 
 
 
-    public LinkedList<Notification> getNotifications() {
+    public LinkedList<TruckingNotifications> getNotifications() {
         return dc.getNotifications();
     }
 
@@ -100,8 +101,17 @@ public class DeliveryService {
     public LinkedList<FacadeTruckingReport> getAvailableTRsByDate(LocalDate date) {
         return turnListTruckingReportsToFacade( dc.getTruckingReportsByDate(date) );
     }
-    public LinkedList<Pair<Integer, Integer>> createReport(LinkedList<Pair<Integer, Integer>> items, String driverId, String truckId, int maxWeight, int supplier, LocalDate date) {
-        return dc.createTruckReport(items, driverId, truckId, maxWeight, supplier,date);
+    public LinkedList<Pair<Integer, Integer>> createReport(LinkedList<Pair<Integer, Integer>> items, String driverId, String truckId, int maxWeight, int supplier, LocalDate date, int shift) {
+        try {
+            return dc.createTruckReport(items, driverId, truckId, maxWeight, supplier, date,shift);
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+            exit(1);
+        }
+        return null;
+    }
+    public LinkedList<FacadeDeliveryForm> getTruckReportDeliveryForms(int report_id) {
+        return turnListDeliveryFormToFacade( dc.getTruckReportDeliveryForms(report_id));
     }
 
     public void addDemandToPool(LinkedList<Pair<Integer, Integer>> items, int supplier) throws SQLException {
@@ -131,10 +141,30 @@ public class DeliveryService {
         return dems;
     }
 
-    public Pair<LinkedList<String>,LinkedList<String>> getBusyTrucksByDate(LocalDate date) {
-        return dc.getBusyTrucksByDate(date);
+    private LinkedList<FacadeDeliveryForm> turnListDeliveryFormToFacade(LinkedList<DeliveryForm> deliveryForms)
+    {
+        LinkedList<FacadeDeliveryForm> dfs = new LinkedList<>();
+        for(DeliveryForm deliveryForm: deliveryForms){
+            dfs.add(new FacadeDeliveryForm(deliveryForm));
+        }
+
+        return dfs;
+    }
+
+    public LinkedList<String> getBusyTrucksByDate(LocalDate date) {
+        LinkedList<String> trucks= dc.getBusyTrucksByDate(date);
+        return trucks;
 
     }
+
+    public int getItemTotalWeight(Integer item_id, Integer amount) {
+        return dc.getItemTotalWeight(item_id, amount);
+    }
+
+    public void addNotification(String content) {
+        dc.addNotification(content);
+    }
+
 
 
 

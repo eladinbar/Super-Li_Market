@@ -3,6 +3,8 @@ package ServiceLayer;
 import BusinessLayer.InventoryPackage.Item;
 import BusinessLayer.Notification;
 import BusinessLayer.SuppliersPackage.OrderPackage.Order;
+import BusinessLayer.TruckingNotifications;
+import BusinessLayer.TruckingPackage.DeliveryPackage.DeliveryForm;
 import InfrastructurePackage.Pair;
 import ServiceLayer.FacadeObjects.*;
 import ServiceLayer.Response.ResponseT;
@@ -39,7 +41,7 @@ public class TruckingService {
         4. approve orders by manager
         5. cancel orders by manager
         6. need to check when adding to existing TR, adds to existing DF and creates new one
-
+        7. need to check properly the get driver and truck method
 
       */
 
@@ -57,7 +59,7 @@ public class TruckingService {
      * 3.   add a driver to an existing shift this week (will also alert the Employee Manager)
      * 4.   next week's existing TR -> alerts Trucking manager
      * 5.   next week's new TR -> alerts Trucking manager
-     * 6.   adds to the Demands list
+     * 6.   adds to the Demands list -> alerts Trucking manager
      * @return List of pairs, item and its amount, only item that couldn't been delivered.
      * if all items has been settled to a delivery, returns empty list
      */
@@ -76,6 +78,7 @@ public class TruckingService {
 
             if (!left.isEmpty()) {
                 // TODO - need to notify
+                addNotification("Order number: " + order.getId() + "\nhas been settled to deliveries in more the a week");
                 LinkedList<FacadeTruckingReport> everyWeekReports = getActiveTruckingReports().getValue();
                 everyWeekReports.addAll(getWaitingTruckingReports().getValue());
 
@@ -87,6 +90,8 @@ public class TruckingService {
 
                     left = createReportsEveryWeek(left, supplier);
                     if (!left.isEmpty()) {
+                        addNotification("order number: "+ order.getId()  + "" +
+                                "\nhas failed to be delivered as a whole. the remain items has been delivered to pool");
                        addDemandToPool(left,supplier);
                     }
                 }
@@ -127,13 +132,12 @@ public class TruckingService {
                 exit(1);
             }
         }
-        // TODO - need to check why it says always true
         return succeed;
     }
 
 
 
-    public ResponseT< LinkedList<Notification> > getNotifications(){
+    public ResponseT< LinkedList<TruckingNotifications> > getNotifications(){
         return new ResponseT<>(DeliveryService.getInstance().getNotifications());
     }
 
@@ -182,7 +186,6 @@ public class TruckingService {
             int supplier    = facadeDemand.getSupplier();
             LinkedList< Pair<Integer,Integer>> item = new LinkedList<>();
             item.add (new Pair<>(facadeDemand.getItemID(), facadeDemand.getAmount()));
-            // TODO - maybe new method so it wont alert now??
             LinkedList<FacadeTruckingReport> thisWeekReports =  getThisWeekReports();
             // inserts into the next 7 days reports only
             item = insertToExistingTR(item , supplier,thisWeekReports);
@@ -210,6 +213,13 @@ public class TruckingService {
 
 
         }
+        demands = getDemands().getValue();
+        if (demands.isEmpty())
+            addNotification("all demands in pool has been settled successfully!");
+        else
+            addNotification("couldn't handle all demands in pool :( ");
+
+
 
     }
 
@@ -222,6 +232,32 @@ public class TruckingService {
     public ResponseT< FacadeDeliveryForm> getDeliveryForm(int id){
         return  new ResponseT<FacadeDeliveryForm>( deliveryService.getDeliveryForm(id) );
     }
+
+    public ResponseT< LinkedList<FacadeDeliveryForm>> getDeliveryFormsByTruckReport(int report_id) {
+        return new ResponseT<>(deliveryService.getTruckReportDeliveryForms(report_id));
+    }
+    public int getItemWeight(int itemID) {
+        return deliveryService.getItemTotalWeight(itemID, 1);
+    }
+
+    public LinkedList<FacadeDemand> sortDemandsBySite(LinkedList<FacadeDemand> demands) {
+        for (int i = demands.size() - 1; i >= 0; i--) {
+            FacadeDemand min = demands.get(i);
+            int index = i;
+            for (int j = i; j >= 0; j--) {
+                if (demands.get(j).getSupplier() < min.getSupplier()) {
+                    min = demands.get(j);
+                    index = j;
+                }
+            }
+            FacadeDemand temp = demands.get(i);
+            demands.set(i, min);
+            demands.set(index, temp);
+        }
+        return demands;
+    }
+
+    // <<<<<<<<<<<<<<<<<<<<<<<<<<<<<< private methods >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
     /**
      * this method tries to insert as much as possible items to the received trucking Reports
@@ -241,7 +277,7 @@ public class TruckingService {
                 //first iterates through reports, tries to add by delivery area
 
                 if (reportAreas.contains(area)) {
-
+                    //  TODO need to notify Supplier manager
                     left = deliveryService.insertItemsToTruckReport(left, supplier , capacity, report.getID());
                 }
             }
@@ -302,17 +338,20 @@ public class TruckingService {
     createReportsForDate( LinkedList<Pair<Integer,Integer>>  items , int supplier , LocalDate date ){
         boolean finish = false;
         while (true){
-            // TODO need to handle hour
-            Pair<FacadeDriver, FacadeTruck> driverAndTruck = getDriverAndTruckFromExisting(date);
+            Pair<Pair<FacadeDriver, FacadeTruck>, Integer> ret = getDriverAndTruckFromExisting(date);
+            Pair<FacadeDriver, FacadeTruck> driverAndTruck = ret.getFirst();
+            int shift = ret.getSecond();
             if (driverAndTruck == null){
-                driverAndTruck = getDriverAndTruckFromPool(date);
+                ret = getDriverAndTruckFromPool(date);
+                driverAndTruck = ret.getFirst();
+
                 //TODO - notify if not null (maybe inside function
             }
             finish = (items.isEmpty() || driverAndTruck ==  null);
             if (finish)
                 break;
             int maxWeight = Math.min(driverAndTruck.getFirst().getLicenseType().getSize(),(driverAndTruck.getSecond().getMaxWeight() - driverAndTruck.getSecond().getWeightNeto() ));
-            items = deliveryService.createReport(items, driverAndTruck.getFirst().getID(), driverAndTruck.getSecond().getLicenseNumber() ,maxWeight,  supplier, date);
+            items = deliveryService.createReport(items, driverAndTruck.getFirst().getID(), driverAndTruck.getSecond().getLicenseNumber() ,maxWeight,  supplier, date,shift);
         }
         return items;
 
@@ -340,7 +379,6 @@ public class TruckingService {
         LocalDate date =  order.getDate();
         int left = getDayLeftWeight(date);
         int totalWeight = getOrderTotalWeight(order);
-        // TODO - need to make sure the truck and drivers for new trucking reports will actually be chosen
         return ( totalWeight <= left);
     }
 
@@ -391,7 +429,6 @@ public class TruckingService {
 
 
     private LinkedList<FacadeTruckingReport> getAvailableTRsByDate(LocalDate date) {
-        // TODO implement
         return deliveryService.getAvailableTRsByDate(date);
     }
     private int getSupplierFromOrder(Order order) {
@@ -423,6 +460,10 @@ public class TruckingService {
         return max - curr;
     }
 
+    private void addNotification(String content) {
+        deliveryService.addNotification(content);
+    }
+
 
 
     private int getOrderTotalWeight(Order order) {
@@ -451,6 +492,22 @@ public class TruckingService {
     private Item getItem(int id, int supplier){
         throw new UnsupportedOperationException();
     }
+
+
+    public String getItemName(int itemID) {
+        throw new UnsupportedOperationException();
+    }
+
+    public int getSupplierName(int supplier) {
+        throw new UnsupportedOperationException();
+    }
+
+
+
+
+
+
+
 
 
 
@@ -605,22 +662,7 @@ public class TruckingService {
         return resourcesService.getTrucks();
     }
 
-    public LinkedList<FacadeDemand> sortDemandsBySite(LinkedList<FacadeDemand> demands) {
-        for (int i = demands.size() - 1; i >= 0; i--) {
-            FacadeDemand min = demands.get(i);
-            int index = i;
-            for (int j = i; j >= 0; j--) {
-                if (demands.get(j).getSite() < min.getSite()) {
-                    min = demands.get(j);
-                    index = j;
-                }
-            }
-            FacadeDemand temp = demands.get(i);
-            demands.set(i, min);
-            demands.set(index, temp);
-        }
-        return demands;
-    }
+
 
 
 
