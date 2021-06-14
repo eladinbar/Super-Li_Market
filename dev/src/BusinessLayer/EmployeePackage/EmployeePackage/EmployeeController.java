@@ -531,9 +531,9 @@ public class EmployeeController {
         return true;
     }
 
-    public List<Notification> loadAlerts() throws SQLException {
+    public List<EmployeeNotification> loadAlerts() throws SQLException {
         List<DalALertEmployee> alerts = DalAlertEmployeeController.getInstance().Load ();
-        List<Notification> output = new ArrayList<> (  );
+        List<EmployeeNotification> output = new ArrayList<> (  );
         for (DalALertEmployee alert : alerts)
             output.add ( new EmployeeNotification ( alert.getId (), alert.getRole (), alert.getAlert ()));
         return output;
