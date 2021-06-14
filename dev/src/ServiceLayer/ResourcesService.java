@@ -40,8 +40,11 @@ public class ResourcesService {
 
     public Pair<Pair<FacadeDriver, FacadeTruck>,Integer> findDriverAndTruckForDateFromExisting(LocalDate date,Pair<LinkedList<String>,LinkedList<String>> busyTrucks) throws EmployeeException {
         Pair<Pair<Driver,Truck>,Integer> p= rc.findDriverAndTruckForDateFromExisting(date,busyTrucks);
-        Pair<Pair<FacadeDriver, FacadeTruck>,Integer> result= new Pair<>(new Pair<>(new FacadeDriver(p.getFirst().getFirst()),new FacadeTruck(p.getFirst().getSecond())),p.getSecond());
-        return result;
+        if (p != null) {
+            Pair<Pair<FacadeDriver, FacadeTruck>, Integer> result = new Pair<>(new Pair<>(new FacadeDriver(p.getFirst().getFirst()), new FacadeTruck(p.getFirst().getSecond())), p.getSecond());
+            return result;
+        }
+        return null;
     }
 
 

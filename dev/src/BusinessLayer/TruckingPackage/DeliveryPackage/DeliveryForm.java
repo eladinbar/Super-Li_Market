@@ -32,6 +32,9 @@ public class DeliveryForm {
         this.completed = false;
         try {
             DalDeliveryFormController.getInstance().insert(new DalDeliveryForm(ID,destination,completed,leavingWeight,trID));
+            for (Map.Entry<Integer, Integer> item: items.entrySet()){
+                DalItemsOnDFController.getInstance().insert(new DalItemsOnDF(ID, item.getKey(), item.getValue()));
+            }
         }
         catch (SQLException e){}
 

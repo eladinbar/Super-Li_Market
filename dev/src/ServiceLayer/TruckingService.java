@@ -7,6 +7,7 @@ import BusinessLayer.Notification;
 import BusinessLayer.SuppliersPackage.OrderPackage.Order;
 import BusinessLayer.TruckingNotifications;
 import BusinessLayer.TruckingPackage.DeliveryPackage.DeliveryForm;
+import DataAccessLayer.DalControllers.TruckingControllers.*;
 import InfrastructurePackage.Pair;
 import ServiceLayer.FacadeObjects.*;
 import ServiceLayer.Response.Response;
@@ -463,13 +464,16 @@ public class TruckingService {
     private ResponseT< LinkedList<Pair<Integer,Integer>>>
     createReportsThisWeek(    LinkedList<Pair<Integer,Integer>>  items , String supplier ) throws EmployeeException, SQLException {
 
-        for (LocalDate currDate  = LocalDate.now(); currDate.isBefore(LocalDate.now().plusDays(8)); currDate = currDate.plusDays(1)){
+        for (LocalDate currDate  = LocalDate.now(); currDate.isBefore(LocalDate.now().plusDays(8)) && !items.isEmpty(); currDate = currDate.plusDays(1)){
 
             ResponseT<LinkedList<Pair<Integer, Integer>>> res = createReportsForDate(items, supplier, currDate);
             if (res.errorOccurred()){
                 return new ResponseT<>(res.getErrorMessage());
             }
-            items =res.getValue();
+            if (res.getValue() != null) {
+
+                items = res.getValue();
+            }
         }
         return new ResponseT<>( items);
     }
@@ -493,9 +497,13 @@ public class TruckingService {
         boolean finish = false;
         while (true){
             ResponseT<Pair<Pair<FacadeDriver, FacadeTruck>, Integer>> res = getDriverAndTruckFromExisting(date);
+            if (res ==null){
+                return new ResponseT<>(items);
+            }
             if (res.errorOccurred()){
                 return new ResponseT<>(res.getErrorMessage());
             }
+
             Pair<Pair<FacadeDriver, FacadeTruck>, Integer> ret =res.getValue();
             Pair<FacadeDriver, FacadeTruck> driverAndTruck = ret.getFirst();
             int shift = ret.getSecond();
@@ -619,7 +627,10 @@ public class TruckingService {
             return new ResponseT<>(res.getErrorMessage());
         }
         // TODO need to handle null
-        return new ResponseT<>( resourcesService.findDriverAndTruckForDateFromExisting(date,res.getValue()));
+        Pair<Pair<FacadeDriver, FacadeTruck>, Integer> driverAndTruck = resourcesService.findDriverAndTruckForDateFromExisting(date, res.getValue());
+        if (driverAndTruck == null)
+            return null;
+        return new ResponseT<>( driverAndTruck);
     }
 
     private ResponseT< Pair <Pair<FacadeDriver, FacadeTruck>,Integer >>  getDriverAndTruckFromPool (LocalDate date) throws EmployeeException, SQLException {
@@ -762,9 +773,13 @@ public class TruckingService {
 
 
     public void putInitialTestState() {
-
-
         try {
+            DalTruckingNotificationController notificationController = DalTruckingNotificationController.getInstance();
+            DalDemandController dalDemandController = DalDemandController.getInstance();
+            DalItemsOnDFController itemsOnDF = DalItemsOnDFController.getInstance();
+            DalDeliveryFormController delivery = DalDeliveryFormController.getInstance();
+            DalTruckingReportController truckingReport = DalTruckingReportController.getInstance();
+
             addTruck("Mercedes", "62321323", 2000, 12000);
 
             addTruck("Man", "1231231", 1500, 8000);
