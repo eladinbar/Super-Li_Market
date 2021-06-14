@@ -510,7 +510,6 @@ public class DeliveryController {
         return lastNotification;
     }
 
-    // TODO - need to get from DB
     private LinkedList<DeliveryForm> getOldDeliveryForms(int report_id) {
         return oldDeliveryForms.get(report_id);
     }
@@ -529,7 +528,6 @@ public class DeliveryController {
            throw new NoSuchElementException(res.getErrorMessage());
         }
         FacadeItem item  = res.getValue();
-        // TODO need to implement
         return item.getWeight();
     }
 

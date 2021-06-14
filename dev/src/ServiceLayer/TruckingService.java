@@ -54,9 +54,6 @@ public class TruckingService {
       */
 
 
-// TODO need to add exceptions
-    // TODO need to handle responses
-
     /**
      * this method receives an Order and returns and Linked List of items that couldn't been delivered
      * ->  if an item couldn't been delivered, it will be stored in the demands map. will be
@@ -258,7 +255,6 @@ public class TruckingService {
     }
 
 
-    // TODO - employees should call this function
     public void handleLeftOvers() {
         ResponseT<LinkedList<FacadeDemand>> res2 = getDemands();
         if (res2.errorOccurred()){
@@ -591,7 +587,6 @@ public class TruckingService {
         } catch (SQLException throwables) {
             throwables.printStackTrace();
 
-            //TODo need to implement here
         }
         return new ResponseT<>(total);
 
@@ -606,7 +601,6 @@ public class TruckingService {
         }
         return new ResponseT<>( resourcesService.getPossibleWeightByDate(date,res.getValue()));
 
-        // TODO - employees need to make a new method, returns boolean and do no insert into shift
     }
     private int turnTimeToShift(LocalTime leavingHour) {
         if (leavingHour.equals(LocalTime.of(14,00)))
@@ -626,7 +620,6 @@ public class TruckingService {
         if (res.errorOccurred()){
             return new ResponseT<>(res.getErrorMessage());
         }
-        // TODO need to handle null
         Pair<Pair<FacadeDriver, FacadeTruck>, Integer> driverAndTruck = resourcesService.findDriverAndTruckForDateFromExisting(date, res.getValue());
         if (driverAndTruck == null)
             return null;

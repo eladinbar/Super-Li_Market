@@ -193,7 +193,6 @@ public class ResourcesController {
         return sorted;
     }
 
-    //TODO check this method
     public Pair<Pair<Driver, Truck>,Integer> findDriverAndTruckForDateFromPool
     (LocalDate date,Pair<LinkedList<String>,LinkedList<String>> busyTrucks) throws EmployeeException, SQLException {
         LinkedList<Pair<Pair<Driver, Truck>,Integer>> pairs = findListDriverAndTruckForDateFromPool(date, busyTrucks);
@@ -404,7 +403,6 @@ public class ResourcesController {
 
 
     }
-    //TODO check if correct
     public void addDriver(String id, String name, Driver.License licenseType) throws KeyAlreadyExistsException, SQLException {
         if (!drivers.containsKey(id)) {
             Driver driver;

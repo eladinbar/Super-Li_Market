@@ -123,7 +123,6 @@ public class DalDeliveryFormController extends Employee_Trucking_DALController_I
         return reports;
     }
     public boolean createTable() throws SQLException {
-        //TODO - Check exactName in supplierCard
         Connection conn = DriverManager.getConnection(connection);
         String query = "CREATE TABLE IF NOT EXISTS DeliveryForms("
                 +"ID INTEGER,"

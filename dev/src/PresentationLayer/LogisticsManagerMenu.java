@@ -69,7 +69,6 @@ public class LogisticsManagerMenu {
 
     }
 
-    // TODO need to check
     private boolean currentStatusMenu(Scanner scanner) {
         int spot = 1;
         System.out.println(spot + ".\tShow Notifications");
@@ -540,10 +539,9 @@ public class LogisticsManagerMenu {
     }
 
 
-// TODO need to check all down>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
 
-   /* // TODO need to check
+   /*
     private boolean managerDriverAndTrucks(Scanner scanner) {
         int spot = 1;
         System.out.println(spot + "\tAdd new Truck to the System");

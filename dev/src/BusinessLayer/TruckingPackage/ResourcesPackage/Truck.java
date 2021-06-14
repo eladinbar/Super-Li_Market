@@ -18,7 +18,6 @@ public class Truck {
         this.weightNeto=weightNeto;
         this.maxWeight=maxWeight;
         DalTruckController.getInstance().insert(new DalTruck(model,licenseNumber,weightNeto,maxWeight));
-        // TODO need to check if need to move it from here because of exception inside Constructor
 
 
     }
