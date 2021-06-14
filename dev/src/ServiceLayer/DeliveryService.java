@@ -33,7 +33,7 @@ public class DeliveryService {
         return instance;
     }
 
-    public LinkedList<Integer> getTruckReportDestinations(int id) {
+    public LinkedList<String> getTruckReportDestinations(int id) {
         return dc.getTruckReportSuppliers(id);
     }
 
@@ -74,7 +74,7 @@ public class DeliveryService {
         dc.managerCancelTruckReport(trID);
     }
 
-    public void setItemNewAmount(Integer id, Integer amount, int supplier) {
+    public void setItemNewAmount(Integer id, Integer amount, String supplier) {
         try {
             dc.setDemandNewAmount(id, amount, supplier);
         } catch (Exception e) {
@@ -98,7 +98,8 @@ public class DeliveryService {
     }
 
 
-    public LinkedList<Pair<Integer, Integer>> insertItemsToTruckReport(LinkedList<Pair<Integer, Integer>> left, int supplier, int capacity, int id) throws SQLException {
+    public LinkedList<Pair<Integer, Integer>> insertItemsToTruckReport(LinkedList<Pair<Integer, Integer>> left,
+                                                                       String supplier, int capacity, int id) throws SQLException {
 
         return dc.insertItemsToTruckReport(left, supplier, capacity, id);
     }
@@ -107,7 +108,7 @@ public class DeliveryService {
         return turnListTruckingReportsToFacade(dc.getTruckingReportsByDate(date));
     }
 
-    public LinkedList<Pair<Integer, Integer>> createReport(LinkedList<Pair<Integer, Integer>> items, String driverId, String truckId, int maxWeight, int supplier, LocalDate date, int shift) {
+    public LinkedList<Pair<Integer, Integer>> createReport(LinkedList<Pair<Integer, Integer>> items, String driverId, String truckId, int maxWeight, String supplier, LocalDate date, int shift) {
         try {
             return dc.createTruckReport(items, driverId, truckId, maxWeight, supplier, date, shift);
         } catch (Exception e) {
@@ -121,7 +122,7 @@ public class DeliveryService {
         return turnListDeliveryFormToFacade(dc.getTruckReportDeliveryForms(report_id));
     }
 
-    public void addDemandToPool(LinkedList<Pair<Integer, Integer>> items, int supplier) throws SQLException {
+    public void addDemandToPool(LinkedList<Pair<Integer, Integer>> items, String supplier) throws SQLException {
         dc.addDemand(items, supplier);
     }
 

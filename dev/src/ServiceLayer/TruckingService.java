@@ -72,7 +72,7 @@ public class TruckingService {
      */
     public ResponseT<  LinkedList<Pair<Integer, Integer>> > addOrder(FacadeOrder order)  {
 
-        int supplier = getSupplierFromOrder(order);
+        String supplier = getSupplierFromOrder(order);
         LinkedList<Pair<Integer, Integer>> left = orderToItemsList(order);
         ResponseT<LinkedList<FacadeTruckingReport>> res = getThisWeekReports();
         if (res.errorOccurred()){
@@ -82,16 +82,21 @@ public class TruckingService {
         // inserts into the next 7 days reports only
 
         ResponseT<LinkedList<Pair<Integer, Integer>>> res2 = insertToExistingTR(left, supplier, thisWeekReports);
-        if (res.errorOccurred()){
-            return new ResponseT<>(res.getErrorMessage());
+        if (res2.errorOccurred()){
+            return new ResponseT<>(res2.getErrorMessage());
         }
         left = res2.getValue();
         if (!left.isEmpty()) {
 
             // creates reports for the next 7 days only, call drivers from home if needed
-            ResponseT<LinkedList<Pair<Integer, Integer>>> res3 = createReportsThisWeek(left, supplier);
+            ResponseT<LinkedList<Pair<Integer, Integer>>> res3 = null;
+            try {
+                res3 = createReportsThisWeek(left, supplier);
+            } catch (EmployeeException | SQLException e) {
+                return new ResponseT<>(e.getMessage());
+            }
             if (res3.errorOccurred()){
-                return new ResponseT<>(res.getErrorMessage());
+                return new ResponseT<>(res3.getErrorMessage());
             }
             left  =res3.getValue();
             if (!left.isEmpty()) {
@@ -109,7 +114,11 @@ public class TruckingService {
 
                     // creates reports for every possible date
 
-                    res3=  createReportsEveryWeek(left, supplier);
+                    try {
+                        res3=  createReportsEveryWeek(left, supplier);
+                    } catch (EmployeeException | SQLException e) {
+                        return new ResponseT<>(e.getMessage());
+                    }
                     if (res3.errorOccurred()){
                         return new ResponseT<>(res.getErrorMessage());
                     }
@@ -153,7 +162,7 @@ public class TruckingService {
         if (succeed){
             LocalDate date = order.getDate();
             LinkedList<Pair<Integer, Integer>> left = orderToItemsList(order);
-            int supplier = getSupplierFromOrder(order);
+            String supplier = getSupplierFromOrder(order);
             LinkedList<FacadeTruckingReport> reports = getAvailableTRsByDate(date);
 
             ResponseT<LinkedList<Pair<Integer, Integer>>> res2 = insertToExistingTR(left, supplier, reports);
@@ -161,7 +170,15 @@ public class TruckingService {
                 return new ResponseT<>(res.getErrorMessage());
             }
             left = res2.getValue();
-            res2 =  createReportsForDate(left, supplier, date);
+            try {
+                res2 =  createReportsForDate(left, supplier, date);
+            } catch (EmployeeException e) {
+                return new ResponseT<>(e.getMessage());
+
+            } catch (SQLException e) {
+                return new ResponseT<>(e.getMessage());
+
+            }
             if (res2.errorOccurred()){
                 return new ResponseT<>(res.getErrorMessage());
             }
@@ -244,13 +261,14 @@ public class TruckingService {
     public void handleLeftOvers() {
         ResponseT<LinkedList<FacadeDemand>> res2 = getDemands();
         if (res2.errorOccurred()){
+            System.out.println(res2.getErrorMessage());
             return ;
         }
         LinkedList<FacadeDemand> demands = res2.getValue();
 
         for (FacadeDemand facadeDemand : demands){
 
-            int supplier    = facadeDemand.getSupplier();
+            String supplier    = facadeDemand.getSupplier();
             LinkedList< Pair<Integer,Integer>> item = new LinkedList<>();
             item.add (new Pair<>(facadeDemand.getItemID(), facadeDemand.getAmount()));
             ResponseT<LinkedList<FacadeTruckingReport>> res = getThisWeekReports();
@@ -268,8 +286,16 @@ public class TruckingService {
             if (!item.isEmpty()) {
 
                 // creates reports for the next 7 days only, call drivers from home if needed
-                ResponseT<LinkedList<Pair<Integer, Integer>>> res4 = createReportsThisWeek(item, supplier);
+                ResponseT<LinkedList<Pair<Integer, Integer>>> res4 = null;
+                try {
+                    res4 = createReportsThisWeek(item, supplier);
+                } catch (EmployeeException | SQLException e) {
+                    System.out.println((e.getMessage()));
+                    return;
+
+                }
                 if (res4.errorOccurred()){
+                    System.out.println(res4.getErrorMessage());
                     return;
                 }
                 item = res4.getValue();
@@ -280,6 +306,7 @@ public class TruckingService {
                     // adds to existing TR from every week
                     res3 = insertToExistingTR(item, supplier, thisWeekReports);
                     if (res3.errorOccurred()){
+                        System.out.println(res3.getErrorMessage());
                         return;
                     }
                     item = res3.getValue();
@@ -287,8 +314,14 @@ public class TruckingService {
 
                         // creates reports for every possible date
 
-                        res4 =  createReportsEveryWeek(item, supplier);
+                        try {
+                            res4 =  createReportsEveryWeek(item, supplier);
+                        } catch (EmployeeException | SQLException e) {
+                            System.out.println(e.getMessage());
+                            return;
+                        }
                         if (res4.errorOccurred()){
+                            System.out.println(res4.getMessage());
                             return;
                         }
                         item = res4.getValue();
@@ -331,7 +364,7 @@ public class TruckingService {
             FacadeDemand min = demands.get(i);
             int index = i;
             for (int j = i; j >= 0; j--) {
-                if (demands.get(j).getSupplier() < min.getSupplier()) {
+                if (Integer.parseInt( demands.get(j).getSupplier() )  < Integer.parseInt(min.getSupplier())) {
                     min = demands.get(j);
                     index = j;
                 }
@@ -357,7 +390,7 @@ public class TruckingService {
      * @return items left to insert
      */
     private ResponseT< LinkedList<Pair<Integer, Integer>> >
-    insertToExistingTR(LinkedList<Pair<Integer, Integer>> itemsToInsert,int supplier, LinkedList<FacadeTruckingReport> reports){
+    insertToExistingTR(LinkedList<Pair<Integer, Integer>> itemsToInsert,String supplier, LinkedList<FacadeTruckingReport> reports){
         LinkedList<Pair<Integer, Integer>> left = itemsToInsert;
         ResponseT<Integer> res = getDeliveryArea(supplier);
         if (res.errorOccurred()){
@@ -428,7 +461,7 @@ public class TruckingService {
      * @return < left items ,LinkedList of the created TruckingReports>>
      */
     private ResponseT< LinkedList<Pair<Integer,Integer>>>
-    createReportsThisWeek(    LinkedList<Pair<Integer,Integer>>  items , int supplier ){
+    createReportsThisWeek(    LinkedList<Pair<Integer,Integer>>  items , String supplier ) throws EmployeeException, SQLException {
 
         for (LocalDate currDate  = LocalDate.now(); currDate.isBefore(LocalDate.now().plusDays(8)); currDate = currDate.plusDays(1)){
 
@@ -442,7 +475,7 @@ public class TruckingService {
     }
 
     private ResponseT< LinkedList<Pair<Integer,Integer>>>
-    createReportsEveryWeek( LinkedList<Pair<Integer,Integer>>  items , int supplier  ){
+    createReportsEveryWeek( LinkedList<Pair<Integer,Integer>>  items , String supplier  ) throws EmployeeException, SQLException {
         LocalDate date = getLastShiftDate();
         for (LocalDate currDate  = LocalDate.now(); currDate.isBefore(LocalDate.now().plusDays(8)); currDate = currDate.plusDays(1)){
             ResponseT<LinkedList<Pair<Integer, Integer>>> res = createReportsForDate(items, supplier, currDate);
@@ -456,7 +489,7 @@ public class TruckingService {
 
 
     private ResponseT< LinkedList<Pair<Integer,Integer>>>
-    createReportsForDate( LinkedList<Pair<Integer,Integer>>  items , int supplier , LocalDate date ){
+    createReportsForDate( LinkedList<Pair<Integer,Integer>>  items , String supplier , LocalDate date ) throws EmployeeException, SQLException {
         boolean finish = false;
         while (true){
             ResponseT<Pair<Pair<FacadeDriver, FacadeTruck>, Integer>> res = getDriverAndTruckFromExisting(date);
@@ -472,7 +505,13 @@ public class TruckingService {
                     return new ResponseT<>(res.getErrorMessage());
                 }
                 ret = res.getValue();
-                driverAndTruck = ret.getFirst();
+                if (res.getValue() == null){
+                    driverAndTruck = null;
+                }
+                else{
+                    driverAndTruck = ret.getFirst();
+
+                }
 
             }
             finish = (items.isEmpty() || driverAndTruck ==  null);
@@ -487,7 +526,7 @@ public class TruckingService {
 
     }
     private  HashMap<LocalDate, HashMap<Integer, LinkedList<String>>>
-    getDaysAndDrivers() throws IllegalArgumentException {
+    getDaysAndDrivers() throws IllegalArgumentException,EmployeeException {
         return resourcesService.getDayAndDrivers();
     }
 
@@ -574,20 +613,25 @@ public class TruckingService {
      * @param date
      * @return pair < < driver, truck> , Shift>
      */
-    private ResponseT< Pair <Pair<FacadeDriver, FacadeTruck>,Integer >> getDriverAndTruckFromExisting (LocalDate date){
+    private ResponseT< Pair <Pair<FacadeDriver, FacadeTruck>,Integer >> getDriverAndTruckFromExisting (LocalDate date) throws EmployeeException {
         ResponseT<Pair<LinkedList<String>, LinkedList<String>>> res = getBusyTrucksByDate(date);
         if (res.errorOccurred()){
             return new ResponseT<>(res.getErrorMessage());
         }
+        // TODO need to handle null
         return new ResponseT<>( resourcesService.findDriverAndTruckForDateFromExisting(date,res.getValue()));
     }
 
-    private ResponseT< Pair <Pair<FacadeDriver, FacadeTruck>,Integer >>  getDriverAndTruckFromPool (LocalDate date){
+    private ResponseT< Pair <Pair<FacadeDriver, FacadeTruck>,Integer >>  getDriverAndTruckFromPool (LocalDate date) throws EmployeeException, SQLException {
         ResponseT<Pair<LinkedList<String>, LinkedList<String>>> res = getBusyTrucksByDate(date);
         if (res.errorOccurred()){
             return new ResponseT<>(res.getErrorMessage());
         }
-        return new ResponseT<>( resourcesService.findDriverAndTruckForDateFromPool(date,res.getValue()));
+        Pair<Pair<FacadeDriver, FacadeTruck>, Integer> val = resourcesService.findDriverAndTruckForDateFromPool(date, res.getValue());
+        if (val == null){
+            return null;
+        }
+        return new ResponseT<>( val);
     }
 
     /**
@@ -595,7 +639,7 @@ public class TruckingService {
      * @param items -> itemId, Amount
      * @param  supplier  ->  supplier id
      */
-    private void addDemandToPool(LinkedList<Pair<Integer, Integer>> items , int supplier) throws SQLException {
+    private void addDemandToPool(LinkedList<Pair<Integer, Integer>> items , String supplier) throws SQLException {
         deliveryService.addDemandToPool(items, supplier);
     }
 
@@ -603,8 +647,8 @@ public class TruckingService {
     private LinkedList<FacadeTruckingReport> getAvailableTRsByDate(LocalDate date) {
         return deliveryService.getAvailableTRsByDate(date);
     }
-    private int getSupplierFromOrder(FacadeOrder order) {
-        return order.getSupplier().getSc().getCompanyNumber();
+    private String getSupplierFromOrder(FacadeOrder order) {
+        return order.getSupplier().getSc().getId();
     }
 
     private ResponseT< LinkedList<FacadeTruckingReport> > getThisWeekReports() {
@@ -671,7 +715,7 @@ public class TruckingService {
     }
 
 
-    private ResponseT<Integer> getDeliveryArea(int supplier ){
+    private ResponseT<Integer> getDeliveryArea(String supplier ){
         ResponseT<FacadeSupplier> res = service.getSupplier(""+ supplier);
         if(res.errorOccurred()){
             return new ResponseT<>(res.getErrorMessage());
@@ -698,7 +742,7 @@ public class TruckingService {
         return res.getValue().getName();
     }
 
-    public String  getSupplierName(int supplier) {
+    public String  getSupplierName(String supplier) {
         ResponseT<FacadeSupplier> res = service.getSupplier("" + supplier);
         if(res.errorOccurred()){
             return res.getErrorMessage();

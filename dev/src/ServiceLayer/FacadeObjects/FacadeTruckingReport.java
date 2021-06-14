@@ -12,12 +12,12 @@ public class FacadeTruckingReport {
     private LocalTime leavingHour;
     private String  truckNumber;
     private String driverID;
-    private LinkedList<Integer> suppliers;
+    private LinkedList<String> suppliers;
     private boolean completed;
     private boolean approved;
 
     public FacadeTruckingReport(int ID, LocalDate date, LocalTime leavingHour, String truckNumber, String driverID,
-                              LinkedList<Integer> suppliers , boolean approved)
+                              LinkedList<String> suppliers , boolean approved)
     {
         this.ID = ID;
         this.date = date;
@@ -67,7 +67,7 @@ public class FacadeTruckingReport {
         return truckNumber;
     }
 
-    public LinkedList<Integer> getSuppliers() {
+    public LinkedList<String> getSuppliers() {
         return suppliers;
     }
 
@@ -85,7 +85,7 @@ public class FacadeTruckingReport {
         this.date = date;
     }
 
-    public void setSuppliers(LinkedList<Integer> suppliers) {
+    public void setSuppliers(LinkedList<String> suppliers) {
         this.suppliers = suppliers;
     }
 

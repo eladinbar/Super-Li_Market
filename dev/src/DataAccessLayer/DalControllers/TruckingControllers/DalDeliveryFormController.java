@@ -39,7 +39,7 @@ public class DalDeliveryFormController extends Employee_Trucking_DALController_I
         try{
             PreparedStatement st=conn.prepareStatement(query);
             st.setInt(1,deliveryForm.getID());
-            st.setInt(2,deliveryForm.getDestination());
+            st.setString(2,deliveryForm.getDestination());
             st.setInt(3,completed);
             st.setInt(4,deliveryForm.getLeavingWeight());
             st.setInt(5,deliveryForm.getTRID());
@@ -68,7 +68,7 @@ public class DalDeliveryFormController extends Employee_Trucking_DALController_I
         try{
             PreparedStatement st=conn.prepareStatement(query);
 
-            st.setInt(1,deliveryForm.getDestination());
+            st.setString(1,deliveryForm.getDestination());
             st.setInt(2,completed);
             st.setInt(3,deliveryForm.getLeavingWeight());
             st.setInt(4,deliveryForm.getTRID());
@@ -112,7 +112,7 @@ public class DalDeliveryFormController extends Employee_Trucking_DALController_I
             {
                 boolean completed=resultSet.getString(4).equals("true");
                 reports.add(new DalDeliveryForm(resultSet.getInt(1),
-                        resultSet.getInt(2),completed,resultSet.getInt(3),
+                        resultSet.getString(2),completed,resultSet.getInt(3),
                         resultSet.getInt(5)));
             }
         }
@@ -127,7 +127,7 @@ public class DalDeliveryFormController extends Employee_Trucking_DALController_I
         Connection conn = DriverManager.getConnection(connection);
         String query = "CREATE TABLE IF NOT EXISTS DeliveryForms("
                 +"ID INTEGER,"
-                +"destination INTEGER,"
+                +"destination TEXT,"
                 +"completed INTEGER,"
                 +"leavingWeight INTEGER,"
                 +"TRID INTEGER,"

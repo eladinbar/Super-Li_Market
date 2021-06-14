@@ -38,7 +38,7 @@ public class DalDemandController extends Employee_Trucking_DALController_Interfa
             PreparedStatement st=conn.prepareStatement(query);
             st.setInt(1,dalDemand.getItemID());
             st.setInt(2,dalDemand.getAmount());
-            st.setInt(3,dalDemand.getSiteID());
+            st.setString(3,dalDemand.getSiteID());
 
 
             st.executeUpdate();
@@ -64,7 +64,7 @@ public class DalDemandController extends Employee_Trucking_DALController_Interfa
 
             st.setInt(1,dalDemand.getAmount());
             st.setInt(2,dalDemand.getItemID());
-            st.setInt(3,dalDemand.getSiteID());
+            st.setString(3,dalDemand.getSiteID());
             st.executeUpdate();
 
 
@@ -87,7 +87,7 @@ public class DalDemandController extends Employee_Trucking_DALController_Interfa
             st.setString(1,columnNames[0]);
             st.setInt(2,dalDemand.getItemID());
             st.setString(3,columnNames[2]);
-            st.setInt(4,dalDemand.getSiteID());
+            st.setString(4,dalDemand.getSiteID());
             st.executeUpdate();
         }
         catch (SQLException e)
@@ -106,7 +106,7 @@ public class DalDemandController extends Employee_Trucking_DALController_Interfa
             ResultSet resultSet = st.executeQuery();
             while (resultSet.next()) {
                 demands.add(new DalDemand(resultSet.getInt(1), resultSet.getInt(2),
-                        resultSet.getInt(3)));
+                        resultSet.getString(3)));
             }
         } catch (SQLException e) {
             throw new SQLException(e.getMessage());
@@ -119,7 +119,7 @@ public class DalDemandController extends Employee_Trucking_DALController_Interfa
         String query = "CREATE TABLE IF NOT EXISTS Demands("
                 +"itemID INTEGER,"
                 +"amount INTEGER,"
-                +"siteID INTEGER,"
+                +"siteID TEXT,"
                 +"FOREIGN KEY (itemID) REFERENCES Items (ID) ON DELETE NO ACTION ON UPDATE CASCADE,"
                 +"FOREIGN KEY (siteID) REFERENCES Sites (siteID) ON DELETE NO ACTION ON UPDATE CASCADE,"
                 +"PRIMARY KEY (itemID , siteID));";
