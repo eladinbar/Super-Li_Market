@@ -75,19 +75,19 @@ public class PresentationController_Employee {
                     menuPrinter.print ( facadeEmployee.getErrorMessage ( ) );
                     return;
                 }
-                while (!login ( true ));
-                while (!login ( false )) ;
+                while (!login ( ));
+                while (!login ( )) ;
             } else
                 menuPrinter.print ( "Only a manager can start a clean program." );
         } else {
             if (ShiftTypes.getInstance ().numOfShiftTypes () < 2) {
                 char choice = menuPrinter.uploadClean ( );
                 if (choice == 'y') {
-                    while (!login ( true )) ;
+                    while (!login ( )) ;
                 } else
                     menuPrinter.print ( "Only a manager can start a program without shift types." );
             } else {
-                while (!login ( false )) ;
+                while (!login ( )) ;
             }
         }
     }
@@ -96,7 +96,12 @@ public class PresentationController_Employee {
         ResponseT alerts = facadeService.loadAlerts();
         if(alerts.errorOccurred ())
             menuPrinter.print ( alerts.getMessage () );
-        this.alerts = (HashMap<Role, List<EmployeeNotification>>) alerts.value;
+        List<EmployeeNotification> loaded = (List<EmployeeNotification>) alerts.value;
+        for( EmployeeNotification n : loaded){
+            if(!this.alerts.containsKey ( n.getRole () ))
+                this.alerts.put ( Role.valueOf (n.getRole ()), new ArrayList<> (  ) );
+            this.alerts.get ( Role.valueOf ( n.getRole () ) ).add ( n );
+        }
     }
 
     private ResponseT<Boolean> loadData() throws SQLException {
@@ -108,7 +113,7 @@ public class PresentationController_Employee {
             return;
         TruckingService.getInstance().putInitialTestState();
         pc.setupSystem();
-        while (!login ( false ));
+        while (!login ( ));
     }
 
     private boolean createData() throws SQLException {
@@ -127,10 +132,14 @@ public class PresentationController_Employee {
             case 1:
                 choice = menuPrinter.managerShiftMenu ();
                 handleManagerShiftChoice ( choice);
+                choice = menuPrinter.managerFirstMenu ();
+                handleManagerChoice ( choice );
                 break;
             case 2:
                 choice = menuPrinter.managerEmployeeMenu ();
                 handleManagerEmployeeChoice (choice);
+                choice = menuPrinter.managerFirstMenu ();
+                handleManagerChoice ( choice );
                 break;
             case 3:
                 if(!logout ())
@@ -138,7 +147,7 @@ public class PresentationController_Employee {
                     choice = menuPrinter.managerFirstMenu ();
                     handleManagerChoice ( choice);
                 }
-                while(!login (false));
+                while(!login ());
                 break;
             default:
                 menuPrinter.printChoiceException();
@@ -230,7 +239,7 @@ public class PresentationController_Employee {
                     choice = menuPrinter.simpleEmployeeMenu ();
                     handleSimpleEmployeeChoice ( choice );
                 }
-                while(!login (false));
+                while(!login ());
                 break;
             default:
                 menuPrinter.printChoiceException();
@@ -574,7 +583,7 @@ public class PresentationController_Employee {
         return true;
     }
 
-    private boolean login(boolean first) throws SQLException {
+    private boolean login() throws SQLException {
         String id = menuPrinter.loginID ( );
         String role = menuPrinter.roleMenu ();
         int choice;
@@ -611,7 +620,7 @@ public class PresentationController_Employee {
             } else if(role.equals ( Role.logisticsManager.name() )){
                 LogisticsManagerMenu.getInstance ().mainMenu ();
                 logout ();
-                while(!login (false));
+                while(!login());
             } else if(role.equals ( Role.storeKeeper.name() )) {
                 choice = menuPrinter.storeKeeperMenu ();
                 handleStoreKeeperChoice ( choice );

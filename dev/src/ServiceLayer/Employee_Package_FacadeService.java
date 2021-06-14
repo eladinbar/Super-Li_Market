@@ -2,6 +2,7 @@ package ServiceLayer;
 
 import BusinessLayer.EmployeePackage.EmployeeException;
 import BusinessLayer.EmployeePackage.EmployeeNotification;
+import BusinessLayer.EmployeePackage.EmployeePackage.Employee;
 import BusinessLayer.EmployeePackage.EmployeePackage.Role;
 import BusinessLayer.Notification;
 import ServiceLayer.FacadeObjects.FacadeConstraint;
@@ -164,7 +165,7 @@ public class Employee_Package_FacadeService {
         }
     }
 
-    public ResponseT<List<Notification>> loadAlerts() throws SQLException {
+    public ResponseT<List<EmployeeNotification>> loadAlerts() throws SQLException {
         return employeeService.loadAlerts ( );
     }
 
