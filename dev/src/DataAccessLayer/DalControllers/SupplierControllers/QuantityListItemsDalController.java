@@ -52,7 +52,7 @@ public class QuantityListItemsDalController extends DalController<DalQuantityLis
     @Override
     public boolean insert(DalQuantityListItems quantityListItem) throws SQLException {
         try (Connection conn = DriverManager.getConnection(connectionString)) {
-            String query = "INSERT INTO " + tableName + " VALUES (?,?,?,?)";
+            String query = "INSERT OR IGNORE INTO " + tableName + " VALUES (?,?,?,?)";
             PreparedStatement stmt = conn.prepareStatement(query);
             stmt.setInt(1, quantityListItem.getProductId());
             stmt.setString(2, quantityListItem.getSupplierId());

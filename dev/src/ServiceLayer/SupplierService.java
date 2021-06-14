@@ -21,10 +21,10 @@ public class SupplierService {
         return sp;
     }
 
-    public ResponseT<FacadeSupplier> addSupplier(String firstName, String lastName, String email, String id, String phone, int companyNumber, boolean isPernamentDays, boolean selfDelivery, String payment, String address) {
+    public ResponseT<FacadeSupplier> addSupplier(String firstName, String lastName, String email, String id, String phone, int companyNumber, boolean isPernamentDays, boolean selfDelivery, String payment, String address,int area) {
         ResponseT<FacadeSupplier> toReturn;
         try {
-            toReturn = new ResponseT<>(new FacadeSupplier(sp.addSupplier(firstName, lastName, email, id, phone, companyNumber, isPernamentDays, selfDelivery, payment,address)));
+            toReturn = new ResponseT<>(new FacadeSupplier(sp.addSupplier(firstName, lastName, email, id, phone, companyNumber, isPernamentDays, selfDelivery, payment,address,area)));
         } catch (Exception e) {
             toReturn = new ResponseT<>(e.getMessage());
         }
@@ -46,6 +46,16 @@ public class SupplierService {
         Response toReturn = new Response();
         try {
             sp.updateCompanySupplier(id, companyNumber);
+        } catch (Exception e) {
+            toReturn = new Response(e.getMessage());
+        }
+        return toReturn;
+    }
+
+    public Response updateDeliveryArea(String id, int deliveryArea) {
+        Response toReturn = new Response();
+        try {
+            sp.updateDeliveryArea(id, deliveryArea);
         } catch (Exception e) {
             toReturn = new Response(e.getMessage());
         }

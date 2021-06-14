@@ -9,8 +9,9 @@ public class FacadeSupplierCard extends FacadePersonCard {
     private String payment;
     private List<String> contactMembers;
     private String address;
+    private int area;
 
-    public FacadeSupplierCard(String firstName, String lastName, String email, String id, String phone, int companyNumber, boolean isPernamentDays, boolean selfDelivery, String payment, List<String> contactMembers, String address) {
+    public FacadeSupplierCard(String firstName, String lastName, String email, String id, String phone, int companyNumber, boolean isPernamentDays, boolean selfDelivery, String payment, List<String> contactMembers, String address, int area) {
         super(firstName, lastName, email, id, phone);
         this.companyNumber = companyNumber;
         this.isPernamentDays = isPernamentDays;
@@ -18,6 +19,8 @@ public class FacadeSupplierCard extends FacadePersonCard {
         this.payment = payment;
         this.contactMembers = contactMembers;
         this.address = address;
+        this.area = area;
+        // TODO need to do area
     }
 
     public FacadeSupplierCard(BusinessLayer.SuppliersPackage.SupplierPackage.SupplierCard sc) {
@@ -28,8 +31,13 @@ public class FacadeSupplierCard extends FacadePersonCard {
         this.payment = sc.getPayment().name();
         this.contactMembers = sc.getContactMembers();
         this.address = sc.getAddress();
+        area =  sc.getDeliveryAreaOfSupplier();
+
     }
 
+    public int getArea() {
+        return area;
+    }
 
     @Override
     public String toString() {
@@ -48,5 +56,53 @@ public class FacadeSupplierCard extends FacadePersonCard {
 
     public String getAddress() {
         return address;
+    }
+
+    public int getCompanyNumber() {
+        return companyNumber;
+    }
+
+    public void setCompanyNumber(int companyNumber) {
+        this.companyNumber = companyNumber;
+    }
+
+    public boolean isPernamentDays() {
+        return isPernamentDays;
+    }
+
+    public void setPernamentDays(boolean pernamentDays) {
+        isPernamentDays = pernamentDays;
+    }
+
+    public boolean isSelfDelivery() {
+        return selfDelivery;
+    }
+
+    public void setSelfDelivery(boolean selfDelivery) {
+        this.selfDelivery = selfDelivery;
+    }
+
+    public String getPayment() {
+        return payment;
+    }
+
+    public void setPayment(String payment) {
+        this.payment = payment;
+    }
+
+    public List<String> getContactMembers() {
+        return contactMembers;
+    }
+
+    public void setContactMembers(List<String> contactMembers) {
+        this.contactMembers = contactMembers;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public void setArea(int area) {
+        this.area = area;
     }
 }

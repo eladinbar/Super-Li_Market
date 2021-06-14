@@ -50,7 +50,7 @@ public class OrderDalController extends DalController<DalOrder> {
     @Override
     public boolean insert(DalOrder order) throws SQLException {
         try (Connection conn = DriverManager.getConnection(connectionString)) {
-            String query = "INSERT INTO " + tableName + " VALUES (?,?,?,?,?)";
+            String query = "INSERT OR IGNORE INTO " + tableName + " VALUES (?,?,?,?,?)";
             PreparedStatement stmt = conn.prepareStatement(query);
             stmt.setInt(1, order.getOrderId());
             stmt.setString(2, order.getSupplierId());
@@ -149,6 +149,8 @@ public class OrderDalController extends DalController<DalOrder> {
             if (resultSet.next())
                 return resultSet.getInt(1) + 1;
             return 0;
+        } catch (SQLException ex){
+            throw new SQLException(ex.getMessage());
         }
     }
 }

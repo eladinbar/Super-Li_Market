@@ -2,12 +2,12 @@ package DataAccessLayer.DalObjects.SupplierObjects;
 
 import DataAccessLayer.DalControllers.SupplierControllers.OrderDalController;
 import DataAccessLayer.DalControllers.SupplierControllers.ProductsInOrderDalController;
-import DataAccessLayer.DalObjects.DalObject$;
+import DataAccessLayer.DalObjects.DalObject;
 
 import java.sql.SQLException;
 import java.time.LocalDate;
 
-public class DalOrder extends DalObject$<DalOrder> {
+public class DalOrder extends DalObject<DalOrder> {
     public static final String orderIdColumnName = "Order_ID";
     public static final String supplierIdColumnName = "Supplier_ID";
     public static final String dateColumnName = "Date";
@@ -117,12 +117,12 @@ public class DalOrder extends DalObject$<DalOrder> {
         update();
     }
 
-    public boolean save(int productId, int orderId, int amount) throws SQLException {
-        return ProductsInOrderDalController.getInstance().insert(new DalProductsInOrder(productId, orderId,amount));
+    public boolean save(DalProductsInOrder dal) throws SQLException {
+        return ProductsInOrderDalController.getInstance().insert(dal);
     }
 
     public boolean delete (int productId, int orderId) throws SQLException {
-        return ProductsInOrderDalController.getInstance().delete(new DalProductsInOrder(productId, orderId, 0));
+        return ProductsInOrderDalController.getInstance().delete(new DalProductsInOrder(productId, orderId, 0,0));
     }
 
     public int getOrderCounter() throws SQLException {

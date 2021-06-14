@@ -11,7 +11,7 @@ public class DalDemandController extends Employee_Trucking_DALController_Interfa
     private static DalDemandController controller;
 
     private DalDemandController()
-    {//TODO - Check when tables created
+    {
         super();
         this.tableName="Demands";
         this.columnNames=new String[3];
@@ -33,7 +33,7 @@ public class DalDemandController extends Employee_Trucking_DALController_Interfa
 
     public boolean insert(DalDemand dalDemand) throws SQLException {
         Connection conn= DriverManager.getConnection(connection);
-        String query= "INSERT INTO "+tableName+" VALUES (?,?,?)";
+        String query= "INSERT OR IGNORE INTO "+tableName+" VALUES (?,?,?)";
         try{
             PreparedStatement st=conn.prepareStatement(query);
             st.setInt(1,dalDemand.getItemID());
@@ -122,7 +122,7 @@ public class DalDemandController extends Employee_Trucking_DALController_Interfa
                 +"siteID INTEGER,"
                 +"FOREIGN KEY (itemID) REFERENCES Items (ID) ON DELETE NO ACTION ON UPDATE CASCADE,"
                 +"FOREIGN KEY (siteID) REFERENCES Sites (siteID) ON DELETE NO ACTION ON UPDATE CASCADE,"
-                +"PRIMARY KEY (itemID));";
+                +"PRIMARY KEY (itemID , siteID));";
         try {
             PreparedStatement st=conn.prepareStatement(query);
             st.executeUpdate();

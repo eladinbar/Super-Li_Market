@@ -3,18 +3,19 @@ package DataAccessLayer.DalObjects.SupplierObjects;
 import BusinessLayer.SuppliersPackage.SupplierPackage.Payment;
 import DataAccessLayer.DalControllers.SupplierControllers.SupplierCardDalController;
 import DataAccessLayer.DalControllers.SupplierControllers.SupplierContactMembersDalController;
-import DataAccessLayer.DalObjects.DalObject$;
+import DataAccessLayer.DalObjects.DalObject;
 
 import java.sql.SQLException;
 import java.util.List;
 
-public class DalSupplierCard extends DalObject$<DalSupplierCard> {
+public class DalSupplierCard extends DalObject<DalSupplierCard> {
     public static final String supplierIdColumnName = "Supplier_ID";
     public static final String companyNumberColumnName = "Company_Number";
     public static final String isPermanentDaysColumnName = "Is_Permanent_Days";
     public static final String selfDeliveryColumnName = "Self_Delivery";
     public static final String paymentColumnName = "Payment";
     public static final String addressColumnName = "Address";
+    public static final String deliveryAreaColumnName = "Delivery_Area";
 
     private int supplierId; //foreign key (personCard)
     private int companyNumber;
@@ -22,12 +23,13 @@ public class DalSupplierCard extends DalObject$<DalSupplierCard> {
     private boolean selfDelivery;
     private Payment payment;
     private String address;
+    private int deliveryArea;
 
     public DalSupplierCard() throws SQLException {
         super(SupplierCardDalController.getInstance());
     }
 
-    public DalSupplierCard(int supplierId, int companyNumber, boolean isPermanentDays, boolean selfDelivery, Payment payment, String address) throws SQLException {
+    public DalSupplierCard(int supplierId, int companyNumber, boolean isPermanentDays, boolean selfDelivery, Payment payment, String address, int area) throws SQLException {
         super(SupplierCardDalController.getInstance());
         this.supplierId = supplierId;
         this.companyNumber = companyNumber;
@@ -35,6 +37,7 @@ public class DalSupplierCard extends DalObject$<DalSupplierCard> {
         this.selfDelivery = selfDelivery;
         this.payment = payment;
         this.address = address;
+        this.deliveryArea = area;
     }
 
     public DalSupplierCard(int supplierId) throws SQLException {
@@ -44,6 +47,19 @@ public class DalSupplierCard extends DalObject$<DalSupplierCard> {
 
     public String getAddress() {
         return address;
+    }
+
+    public int getDeliveryAreaOfSupplier() {
+        return deliveryArea;
+    }
+
+    public void setDeliveryArea(int deliveryArea) throws SQLException {
+        this.deliveryArea = deliveryArea;
+        update();
+    }
+
+    public void setDeliveryAreaLoad(int deliveryArea) throws SQLException {
+        this.deliveryArea = deliveryArea;
     }
 
     public void setAddress(String address) throws SQLException {
@@ -98,42 +114,42 @@ public class DalSupplierCard extends DalObject$<DalSupplierCard> {
     }
 
     public void setPermanentDays(int permanentDays) throws SQLException {
-        if (permanentDays==1)
-            this.isPermanentDays=true;
+        if (permanentDays == 1)
+            this.isPermanentDays = true;
         else
-            this.isPermanentDays=false;
+            this.isPermanentDays = false;
         update();
     }
 
     public void setPermanentDaysLoad(int permanentDays) throws SQLException {
-        if (permanentDays==1)
-            this.isPermanentDays=true;
+        if (permanentDays == 1)
+            this.isPermanentDays = true;
         else
-            this.isPermanentDays=false;
+            this.isPermanentDays = false;
     }
 
     public void setPermanentDays(boolean permanentDays) throws SQLException {
-        this.isPermanentDays=permanentDays;
+        this.isPermanentDays = permanentDays;
         update();
     }
 
     public void setSelfDelivery(int selfDelivery) throws SQLException {
-        if (selfDelivery==1)
-            this.selfDelivery=true;
+        if (selfDelivery == 1)
+            this.selfDelivery = true;
         else
-            this.selfDelivery=false;
+            this.selfDelivery = false;
         update();
     }
 
     public void setSelfDeliveryLoad(int selfDelivery) throws SQLException {
-        if (selfDelivery==1)
-            this.selfDelivery=true;
+        if (selfDelivery == 1)
+            this.selfDelivery = true;
         else
-            this.selfDelivery=false;
+            this.selfDelivery = false;
     }
 
     public void setSelfDelivery(boolean selfDelivery) throws SQLException {
-        this.selfDelivery=selfDelivery;
+        this.selfDelivery = selfDelivery;
         update();
     }
 
@@ -147,12 +163,12 @@ public class DalSupplierCard extends DalObject$<DalSupplierCard> {
     }
 
     public void setPayment(Payment payment) throws SQLException {
-        this.payment=payment;
+        this.payment = payment;
         update();
     }
 
-    public boolean save(String id,String contactMemberID) throws SQLException {
-        SupplierContactMembersDalController.getInstance().insert(new DalSupplierContactMembers(Integer.parseInt(id),Integer.parseInt(contactMemberID)));
+    public boolean save(String id, String contactMemberID) throws SQLException {
+        SupplierContactMembersDalController.getInstance().insert(new DalSupplierContactMembers(Integer.parseInt(id), Integer.parseInt(contactMemberID)));
         return controller.insert(this);
     }
 

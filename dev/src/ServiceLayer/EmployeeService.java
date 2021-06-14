@@ -1,10 +1,13 @@
 package ServiceLayer;
 
 import BusinessLayer.EmployeePackage.EmployeeException;
+import BusinessLayer.EmployeePackage.EmployeeNotification;
 import BusinessLayer.EmployeePackage.EmployeePackage.Constraint;
 import BusinessLayer.EmployeePackage.EmployeePackage.Employee;
 import BusinessLayer.EmployeePackage.EmployeePackage.EmployeeController;
 import BusinessLayer.EmployeePackage.EmployeePackage.Role;
+import BusinessLayer.Notification;
+import DataAccessLayer.DalControllers.EmployeeControllers.DalAlertEmployeeController;
 import ServiceLayer.FacadeObjects.FacadeConstraint;
 import ServiceLayer.FacadeObjects.FacadeEmployee;
 import ServiceLayer.Response.Response;
@@ -195,7 +198,22 @@ public class EmployeeService {
         }
     }
 
+    public ResponseT<List<Notification>> loadAlerts() throws SQLException {
+        List<Notification> alerts = employeeController.loadAlerts();
+        return new ResponseT<> ( alerts );
+    }
+
+    public Response deleteAlert(EmployeeNotification alert) throws SQLException {
+        employeeController.deleteAlert(alert);
+        return new Response (  );
+    }
+
+    public ResponseT<Integer> addAlert(Role role, Notification alert) throws SQLException {
+        employeeController.addAlert ( role, alert );
+        return new ResponseT ( DalAlertEmployeeController.getInstance ().getLast () );
+    }
     //private methods:
+
     private HashMap<LocalDate, FacadeConstraint> convertConstrainToFacade(HashMap<LocalDate, Constraint> toConvert) {
         HashMap<LocalDate, FacadeConstraint> converted = new HashMap<>();
         for (LocalDate date: toConvert.keySet()) {

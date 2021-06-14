@@ -1,11 +1,11 @@
 package DataAccessLayer.DalObjects.SupplierObjects;
 
 import DataAccessLayer.DalControllers.SupplierControllers.QuantityListItemsDalController;
-import DataAccessLayer.DalObjects.DalObject$;
+import DataAccessLayer.DalObjects.DalObject;
 
 import java.sql.SQLException;
 
-public class DalQuantityListItems extends DalObject$<DalQuantityListItems> {
+public class DalQuantityListItems extends DalObject<DalQuantityListItems> {
     public static final String productIdColumnName = "Product_Id";
     public static final String supplierIdColumnName = "Supplier_Id";
     public static final String amountColumnName = "Amount";

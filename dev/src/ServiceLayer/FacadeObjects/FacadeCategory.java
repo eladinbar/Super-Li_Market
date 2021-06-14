@@ -27,6 +27,10 @@ public class FacadeCategory extends FacadeEntity {
         return items;
     }
 
+    public void setItems(List<FacadeItem> items) {
+        this.items = items;
+    }
+
     public String getParentCategory() {
         return parentCategory;
     }

@@ -1,11 +1,14 @@
 package BusinessLayer.TruckingPackage.DeliveryPackage;
 
-import DataAccessLayer.DalObjects.TruckingObjects.DalTruckingReport;
+import DataAccessLayer.DalControllers.TruckingControllers.DalTruckingReportController;
+import DataAccessLayer.DalObjects.TruckingObjects.*;
 
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.LinkedList;
+
+import static java.lang.System.exit;
 
 public class TruckingReport {
     private int ID;
@@ -13,28 +16,29 @@ public class TruckingReport {
     private LocalTime leavingHour;
     private String  truckNumber;
     private String  driverID;
-    private int origin;
-    private LinkedList<Integer> destinations;
-    private int TRReplace;
+    private LinkedList<Integer> suppliers;
     private boolean completed;
+    private boolean approved;
 
 
-    public TruckingReport(int ID, LocalDate date, LocalTime leavingHour, String  truckNumber, String driverID,
-                          int origin, LinkedList<Integer> destinations)
-    {
+    public TruckingReport(int ID, LocalDate date, LocalTime leavingHour, String  truckNumber, String driverID
+                          , LinkedList<Integer> suppliers) throws SQLException {
         this.ID=ID;
         this.date=date;
         this.leavingHour=leavingHour;
         this.truckNumber=truckNumber;
         this.driverID=driverID;
-        this.origin=origin;
-        this.destinations=destinations;
-        this.TRReplace=-1;
+        this.suppliers = suppliers;
+        this.approved = false;
+        this.completed=false;
+
+        DalTruckingReportController.getInstance().insert(new DalTruckingReport(this.ID,this.leavingHour,this.date,this.truckNumber,this.driverID
+                    ,this.completed,this.approved));
+
     }
     public TruckingReport(int ID){
         this.ID=ID;
-        this.destinations = new LinkedList<>();
-        this.TRReplace=-1;
+        this.suppliers = new LinkedList<>();
 
     }
 
@@ -42,12 +46,11 @@ public class TruckingReport {
         this.ID=dtr.getID();
         this.date=dtr.getDate();
         this.leavingHour=dtr.getLeavingHour();
-        this.destinations=new LinkedList<>();
+        this.suppliers =new LinkedList<>();
         this.truckNumber=dtr.getTruckNumber();
         this.completed=dtr.isCompleted();
         this.driverID=dtr.getDriverID();
-        this.origin=dtr.getOrigin();
-        this.TRReplace=dtr.getReplaceTRID();
+        this.approved = dtr.isApproved();
     }
 
     public TruckingReport(int lastReportID, TruckingReport oldTr) {
@@ -56,18 +59,13 @@ public class TruckingReport {
         this.leavingHour=oldTr.leavingHour;
         this.truckNumber=oldTr.truckNumber;
         this.driverID=oldTr.driverID;
-        this.origin=oldTr.origin;
-        this.destinations=oldTr.destinations;
-        this.TRReplace=oldTr.getID();
+        this.suppliers =oldTr.suppliers;
     }
 
     public int getID() {
         return ID;
     }
 
-    public int getOrigin() {
-        return origin;
-    }
 
     public LocalDate getDate() {
         return date;
@@ -85,67 +83,112 @@ public class TruckingReport {
         return truckNumber;
     }
 
-    public LinkedList<Integer> getDestinations() {
-        return destinations;
+    public LinkedList<Integer> getSuppliers() {
+        return suppliers;
     }
 
-    public int getTRReplace() {
-        return TRReplace;
-    }
 
-    public void setCompleted() throws SQLException {
+    public void setCompleted()  {
 
         this.completed = true;
+        try {
+            DalTruckingReportController.getInstance().update
+                    (new DalTruckingReport(this.ID,this.leavingHour,this.date,this.truckNumber,this.driverID
+                            ,this.completed,this.approved));
+        } catch (SQLException e) {
+            e.printStackTrace();
+            exit(1);
+        }
     }
 
-    public void setID(int ID) throws SQLException {
-        this.ID = ID;
-
+    public boolean isApproved() {
+        return approved;
     }
 
-    public void setOrigin(int origin) throws SQLException {
-        this.origin = origin;
-
+    public void setApproved() throws SQLException {
+        this.approved = true;
+        try {
+            DalTruckingReportController.getInstance().update
+                    (new DalTruckingReport(this.ID,this.leavingHour,this.date,this.truckNumber,this.driverID
+                            ,this.completed,this.approved));
+        } catch (SQLException e) {
+            e.printStackTrace();
+            exit(1);
+        }
     }
 
-    public void setDate(LocalDate date) throws SQLException {
+
+
+    public void setDate(LocalDate date)  {
         this.date = date;
+        try {
+            DalTruckingReportController.getInstance().update
+                    (new DalTruckingReport(this.ID,this.leavingHour,this.date,this.truckNumber,this.driverID
+                            ,this.completed,this.approved));
+        } catch (SQLException e) {
+            e.printStackTrace();
+            exit(1);
+        }
 
     }
 
-    public void setDestinations(LinkedList<Integer> destinations) throws SQLException {
-        this.destinations = destinations;
+    public void setSuppliers(LinkedList<Integer> suppliers) {
+        this.suppliers = suppliers;
+        try {
+            DalTruckingReportController.getInstance().update
+                    (new DalTruckingReport(this.ID,this.leavingHour,this.date,this.truckNumber,this.driverID
+                    ,this.completed,this.approved));
+        } catch (SQLException e) {
+            e.printStackTrace();
+            exit(1);
+        }
 
     }
 
-    public void setDriverID(String driverID) throws SQLException {
+    public void setDriverID(String driverID)  {
         this.driverID = driverID;
+        try {
+            DalTruckingReportController.getInstance().update
+                    (new DalTruckingReport(this.ID,this.leavingHour,this.date,this.truckNumber,this.driverID
+                            ,this.completed,this.approved));
+        } catch (SQLException e) {
+            e.printStackTrace();
+            exit(1);
+        }
 
     }
 
     public void setLeavingHour(LocalTime leavingHour) throws SQLException {
         this.leavingHour = leavingHour;
+        try {
+            DalTruckingReportController.getInstance().update
+                    (new DalTruckingReport(this.ID,this.leavingHour,this.date,this.truckNumber,this.driverID
+                            ,this.completed,this.approved));
+        } catch (SQLException e) {
+            e.printStackTrace();
+            exit(1);
+        }
 
     }
 
-    public void setTRReplace(int TRReplace) throws SQLException {
-        this.TRReplace = TRReplace;
-/*
-        DalTruckingReportController.getInstance().update(new DalTruckingReport(ID,leavingHour,date,truckNumber,driverID,origin,completed,TRReplace));
-*/
 
-    }
 
-    public void setTruckNumber(String truckNumber) throws SQLException {
+    public void setTruckNumber(String truckNumber)  {
         this.truckNumber = truckNumber;
-/*
-        DalTruckingReportController.getInstance().update(new DalTruckingReport(ID,leavingHour,date,truckNumber,driverID,origin,completed,TRReplace));
-*/
+        try {
+            DalTruckingReportController.getInstance().update
+                    (new DalTruckingReport(this.ID,this.leavingHour,this.date,this.truckNumber,this.driverID
+                            ,this.completed,this.approved));
+        } catch (SQLException e) {
+            e.printStackTrace();
+            exit(1);
+        }
+
 
     }
 
-    public void addDestination(int destination)  {
-        destinations.add(destination);
+    public void addSupplier(int supplier)  {
+        suppliers.add(supplier);
 
     }
 

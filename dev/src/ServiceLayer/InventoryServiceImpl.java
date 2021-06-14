@@ -26,7 +26,7 @@ public class InventoryServiceImpl implements InventoryService {
     @Override
     public Response addItem(int id, String name, String categoryName, double costPrice, double sellingPrice,
                             int minAmount, String shelfLocation, String storageLocation, int shelfQuantity,
-                            int storageQuantity, int manufacturerId, List<String> suppliersIds) {
+                            int storageQuantity, int manufacturerId, int weight, List<String> suppliersIds) {
         Response response;
         //Check basic argument constraints
         if (id < 0 | name == null || name.trim().isEmpty() | costPrice < 0 | sellingPrice < 0 | minAmount < 0 |
@@ -38,8 +38,8 @@ public class InventoryServiceImpl implements InventoryService {
         //Call business layer function
         try {
             inventoryController.addItem(id, name, categoryName, costPrice, sellingPrice,
-                    minAmount, shelfLocation, storageLocation,
-                    shelfQuantity, storageQuantity, manufacturerId, suppliersIds);
+                    minAmount, shelfLocation, storageLocation, shelfQuantity, storageQuantity,
+                    manufacturerId, weight, suppliersIds);
             response = new Response(false, "Item added successfully.");
             return response;
         } catch (Exception ex) {
@@ -295,8 +295,11 @@ public class InventoryServiceImpl implements InventoryService {
             //Simplify business layer category fields
             List<FacadeItem> simpleItems = getSimpleItems(tempCategory.getItems());
             List<String> simpleSubCategories = getSimpleCategories(tempCategory.getSubCategories());
+            //Ensure category indeed has a parent category
+            BusinessLayer.InventoryPackage.Category tempParentCategory = tempCategory.getParentCategory();
             //Create simple category
-            FacadeCategory simpleCategory = new FacadeCategory(categoryName, simpleItems, tempCategory.getParentCategory().getName(),
+            FacadeCategory simpleCategory = new FacadeCategory(categoryName.equals("") ? "Uncategorized" : categoryName, simpleItems,
+                    tempParentCategory!=null ? tempCategory.getParentCategory().getName() : "",
                     simpleSubCategories);
             responseT = new ResponseT<>(false, "", simpleCategory);
             return responseT;
@@ -565,7 +568,7 @@ public class InventoryServiceImpl implements InventoryService {
         clearDate(discountDate);
         Response response;
         if (supplierId.isEmpty() || (discount <= 0 || discount >= 1) || itemCount <= 0 || itemId <= 0) {
-            response = new Response(true, "One oe more Arguments is invalid");
+            response = new Response(true, "One or more arguments is invalid");
             return response;
         }
         try {
@@ -583,7 +586,7 @@ public class InventoryServiceImpl implements InventoryService {
         clearDate(discountDate);
         Response response;
         if (supplierId.isEmpty() || (discount <= 0 || discount >= 1) || itemCount <= 0 || categoryName.isEmpty() || categoryName.isBlank()) {
-            response = new Response(true, "One oe more Arguments is invalid");
+            response = new Response(true, "One or more arguments is invalid");
             return response;
         }
         try {
@@ -603,7 +606,7 @@ public class InventoryServiceImpl implements InventoryService {
         clearDate(entryDate);
         Response response;
         if (itemId <= 0 || defectQuantity <= 0 || defectLocation.isEmpty() || defectLocation.isBlank()) {
-            response = new Response(true, "One oe more Arguments is invalid");
+            response = new Response(true, "One or more arguments is invalid");
             return response;
         }
         try {
@@ -706,12 +709,12 @@ public class InventoryServiceImpl implements InventoryService {
     }
 
     @Override
-    public Response updateQuantityInventory(ArrayList<FacadeProduct> items) {
-        for (FacadeProduct i: items) {
-            inventoryController.modifyItemShelfQuantity(i.getProductID(),
-                    i.getAmount() + inventoryController.getItem(i.getProductID()).getStorageQuantity());
+    public Response updateQuantityInventory(Map<Integer, Integer> items) {
+        for (Integer i: items.keySet()) {
+            inventoryController.modifyItemShelfQuantity(i,
+                    items.get(i) + inventoryController.getItem(i).getStorageQuantity());
         }
-        return new Response(true, "inventory updated");
+        return new Response(true, "Inventory updated");
     }
 
     private void clearDate(LocalDate... dates) {

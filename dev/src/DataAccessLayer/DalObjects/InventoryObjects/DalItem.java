@@ -1,11 +1,11 @@
 package DataAccessLayer.DalObjects.InventoryObjects;
 
 import DataAccessLayer.DalControllers.InventoryControllers.ItemDalController;
-import DataAccessLayer.DalObjects.DalObject$;
+import DataAccessLayer.DalObjects.DalObject;
 
 import java.sql.SQLException;
 
-public class DalItem extends DalObject$<DalItem> {
+public class DalItem extends DalObject<DalItem> {
     public static final String itemIdColumnName = "Item_ID"; //Primary Key
     public static final String itemNameColumnName = "Name";
     public static final String costPriceColumnName = "Cost_Price";
@@ -16,6 +16,7 @@ public class DalItem extends DalObject$<DalItem> {
     public static final String storageQuantityColumnName = "Storage_Quantity";
     public static final String shelfLocationColumnName = "Shelf_Location";
     public static final String storageLocationColumnName = "Storage_Location";
+    public static final String weightColumnName = "Weight";
     public static final String categoryNameColumnName = "Category_Name"; //Foreign Key
 
     private int itemID;
@@ -28,6 +29,7 @@ public class DalItem extends DalObject$<DalItem> {
     private int storageQuantity;
     private String shelfLocation;
     private String storageLocation;
+    private int weight;
     private String categoryName;
 
     public DalItem() throws SQLException {
@@ -45,7 +47,7 @@ public class DalItem extends DalObject$<DalItem> {
     }
 
     public DalItem(int itemID, String name, double costPrice, double sellingPrice, int manufacturerID, int minAmount,
-                   int shelfQuantity, int storageQuantity, String shelfLocation, String storageLocation, String categoryName) throws SQLException {
+                   int shelfQuantity, int storageQuantity, String shelfLocation, String storageLocation, int weight, String categoryName) throws SQLException {
         super(ItemDalController.getInstance());
         this.itemID = itemID;
         this.name = name;
@@ -58,6 +60,7 @@ public class DalItem extends DalObject$<DalItem> {
         this.shelfLocation = shelfLocation;
         this.storageLocation = storageLocation;
         this.categoryName = categoryName;
+        this.weight = weight;
     }
 
     public int getItemID() {
@@ -134,6 +137,14 @@ public class DalItem extends DalObject$<DalItem> {
 
     public void setStorageLocation(String storageLocation) {
         this.storageLocation = storageLocation;
+    }
+
+    public int getWeight() {
+        return weight;
+    }
+
+    public void setWeight(int weight) {
+        this.weight = weight;
     }
 
     public String getCategoryName() {

@@ -1,8 +1,12 @@
 package BusinessLayer.EmployeePackage.EmployeePackage;
 
+import BusinessLayer.EmployeePackage.EmployeeNotification;
+import BusinessLayer.Notification;
+import DataAccessLayer.DalControllers.EmployeeControllers.DalAlertEmployeeController;
 import DataAccessLayer.DalControllers.EmployeeControllers.DalBankBranchController;
 import DataAccessLayer.DalControllers.EmployeeControllers.DalConstraintController;
 import DataAccessLayer.DalControllers.EmployeeControllers.DalEmployeeController;
+import DataAccessLayer.DalObjects.EmployeeObjects.DalALertEmployee;
 import DataAccessLayer.DalObjects.EmployeeObjects.DalBankBranch;
 import DataAccessLayer.DalObjects.EmployeeObjects.DalConstraint;
 import DataAccessLayer.DalObjects.EmployeeObjects.DalEmployee;
@@ -12,18 +16,18 @@ import ServiceLayer.FacadeObjects.FacadeEmployee;
 import ServiceLayer.FacadeObjects.FacadeTermsOfEmployment;
 import BusinessLayer.TruckingPackage.ResourcesPackage.Driver;
 import BusinessLayer.TruckingPackage.ResourcesPackage.ResourcesController;
+import ServiceLayer.Response.Response;
 
 import java.sql.SQLException;
 import java.time.LocalDate;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.Map;
+import java.util.*;
 
 public class EmployeeController {
     private static EmployeeController instance = null;
 
     private HashMap<String, Employee> employees;
     private Employee loggedIn;
+    List<EmployeeNotification> alerts;
 
     private EmployeeController(){
         this.loggedIn = null;
@@ -209,9 +213,6 @@ public class EmployeeController {
     }
 
     public Employee addManager(FacadeEmployee e) throws EmployeeException, SQLException {
-        if(!e.isManager ()){
-            throw new EmployeeException("Only an administrator can perform this operation");
-        }
         if(!validId(e.getID())){
             throw new EmployeeException("An invalid ID was entered ");
         }
@@ -458,7 +459,7 @@ public class EmployeeController {
         String bankName = "Diskont";
         BankAccountInfo employeeAccountInfo = new BankAccountInfo ( accountNum, bankBranch, bankName );
         TermsOfEmployment termsOfEmployment = new TermsOfEmployment ( salary + 1, educationFund, sickDays, daysOff );
-        Employee truckingManager = new Employee ( "truckingManager", "066666666", termsOfEmployment, LocalDate.now ( ), employeeAccountInfo );
+        Employee truckingManager = new Employee ( Role.logisticsManager.name(), "066666666", termsOfEmployment, LocalDate.now ( ), employeeAccountInfo );
         addEmplForExistingData ( truckingManager );
     }
 
@@ -528,5 +529,25 @@ public class EmployeeController {
             this.employees.put ( employee.getID (), employee );
         }
         return true;
+    }
+
+    public List<Notification> loadAlerts() throws SQLException {
+        List<DalALertEmployee> alerts = DalAlertEmployeeController.getInstance().Load ();
+        List<Notification> output = new ArrayList<> (  );
+        for (DalALertEmployee alert : alerts)
+            output.add ( new EmployeeNotification ( alert.getId (), alert.getRole (), alert.getAlert ()));
+        return output;
+    }
+
+    public void deleteAlert(EmployeeNotification alert) throws SQLException {
+        DalAlertEmployeeController.getInstance ().delete (alert.getId ());
+    }
+
+    public void addAlert(Role role, Notification alert) throws SQLException {
+        DalAlertEmployeeController.getInstance ().insert ( new DalALertEmployee ( -1, role.name (), alert.getContent () ) );
+        int id = DalAlertEmployeeController.getInstance ( ).getLast ( );
+        if(role.equals ( Role.humanResourcesManager )){
+            alerts.add ( new EmployeeNotification ( -1, role.name (), alert.getContent ()));
+        }
     }
 }

@@ -1,6 +1,6 @@
 package DataAccessLayer.DalControllers;
 
-import DataAccessLayer.DalObjects.DalObject$;
+import DataAccessLayer.DalObjects.DalObject;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -8,7 +8,7 @@ import java.util.List;
 /** <summary>
 An abstract class used as the basis to form connections with the database for reading and writing purposes.
 </summary> */
-public abstract class DalController<T extends DalObject$<T>>{
+public abstract class DalController<T extends DalObject<T>>{
     protected String tableName;
     protected final String databaseName = "SuperLi";
     protected final String path = System.getProperty("user.dir") + "\\" + databaseName + ".db";

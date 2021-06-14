@@ -1,8 +1,6 @@
 package DataAccessLayer.DalObjects.TruckingObjects;
 
-//TODO - message
-
-public class DalDriver implements DalObject$ {
+public class DalDriver  {
     private String ID;
     private String name;
     private String license;
