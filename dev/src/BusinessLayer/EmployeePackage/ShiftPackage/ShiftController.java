@@ -430,12 +430,14 @@ public class ShiftController {
                 }
             }
         }
+
         shift = getListOfShift ( shifts, temp, j );
         j = j + shift.size ();
         newShift = createShift ( shift );
         week[5][0] = newShift;
         temp = shifts.get ( j );
         shift = getListOfShift ( shifts, temp, j );
+        j = j + shift.size ();
         newShift = createShift ( shift );
         week[6][1] = newShift;
         WeeklyShiftSchedule weeklyShiftSchedule = new WeeklyShiftSchedule ( week[0][0].getDate ( ), week );
