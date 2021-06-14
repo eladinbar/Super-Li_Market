@@ -505,7 +505,13 @@ public class TruckingService {
                     return new ResponseT<>(res.getErrorMessage());
                 }
                 ret = res.getValue();
-                driverAndTruck = ret.getFirst();
+                if (res.getValue() == null){
+                    driverAndTruck = null;
+                }
+                else{
+                    driverAndTruck = ret.getFirst();
+
+                }
 
             }
             finish = (items.isEmpty() || driverAndTruck ==  null);
@@ -612,6 +618,7 @@ public class TruckingService {
         if (res.errorOccurred()){
             return new ResponseT<>(res.getErrorMessage());
         }
+        // TODO need to handle null
         return new ResponseT<>( resourcesService.findDriverAndTruckForDateFromExisting(date,res.getValue()));
     }
 
@@ -620,7 +627,11 @@ public class TruckingService {
         if (res.errorOccurred()){
             return new ResponseT<>(res.getErrorMessage());
         }
-        return new ResponseT<>( resourcesService.findDriverAndTruckForDateFromPool(date,res.getValue()));
+        Pair<Pair<FacadeDriver, FacadeTruck>, Integer> val = resourcesService.findDriverAndTruckForDateFromPool(date, res.getValue());
+        if (val == null){
+            return null;
+        }
+        return new ResponseT<>( val);
     }
 
     /**

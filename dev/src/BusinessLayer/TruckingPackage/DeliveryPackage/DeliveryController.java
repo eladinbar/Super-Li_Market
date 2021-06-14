@@ -64,6 +64,8 @@ public class DeliveryController {
         suppliers.add(supplier);
         TruckingReport tr= new TruckingReport(lastReportID,date,shiftToTime(shift),truckId,driverId,suppliers);
         lastReportID++;
+        waitingTruckingReports.put(tr.getID(), tr);
+        activeDeliveryForms.put(tr.getID(),new LinkedList<>());
         items = insertItemsToTruckReport(items, supplier,maxWeight,tr.getID());
         return items;
     }
