@@ -412,7 +412,8 @@ public class PresentationController {
             System.out.println("4. Get order");
             System.out.println("5. Add product to order");
             System.out.println("6. Remove product from order");
-            System.out.println("7. Return");
+            System.out.println("7. Send Scheduled Order");
+            System.out.println("8. Return");
             String chooseInsideMenu = menu.instructAndReceive("Enter choice: ");
             switch (chooseInsideMenu) {
                 case "1" -> createNewOrder();
@@ -421,10 +422,21 @@ public class PresentationController {
                 case "4" -> getOrder();
                 case "5" -> addProductToOrder();
                 case "6" -> removeProductFromOrder();
-                case "7" -> terminate = true;
+                case "7" -> sendOrders();
+                case "8" -> terminate = true;
                 default -> menu.errorPrompt("Invalid choice - " + chooseInsideMenu);
             }
         }
+    }
+
+    private void sendOrders() {
+        int day = menu.instructAndReceive("Day (1-7) in a week to get the order: ", Integer.class);
+        while (day<1 || day> 7) {
+            System.out.println("invalid day, please insert again");
+            day = menu.instructAndReceive("Day (1-7) in a week to get the order: ", Integer.class);
+        }
+        System.out.println(service.makeOrders(day));
+
     }
 
     //implemented

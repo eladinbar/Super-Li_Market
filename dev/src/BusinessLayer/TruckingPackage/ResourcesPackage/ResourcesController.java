@@ -487,7 +487,6 @@ public class ResourcesController {
     }
 
     public int getPossibleWeightByDate(LocalDate date,Pair<LinkedList<String>,LinkedList<String>> busyTrucks) throws EmployeeException, SQLException {
-        //TODO employees need to implement canAddToShift
         int sum=0;
         LinkedList<Pair<Pair<Driver, Truck>, Integer>> poolList = findListDriverAndTruckForDateFromPool(date, busyTrucks);
         for (Pair<Pair<Driver,Truck>,Integer> pair:poolList)
