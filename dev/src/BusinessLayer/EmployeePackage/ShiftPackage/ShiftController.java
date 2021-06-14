@@ -308,7 +308,7 @@ public class ShiftController {
     }
 
     public boolean isDriverAssigned(String id, LocalDate date, int shift) throws EmployeeException {
-        return getShift ( date, shift ).isWorking ( "driver", id );
+        return getShift ( date, shift ).isWorking ( employeeController.getEmployee ( id ).getRole ().name (), id );
     }
 
     private boolean isExist(LocalDate date){
