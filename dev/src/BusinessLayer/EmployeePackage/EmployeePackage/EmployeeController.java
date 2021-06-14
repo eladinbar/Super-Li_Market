@@ -89,12 +89,12 @@ public class EmployeeController {
         return employees.get(id);
     }
 
-    public Employee getEmployee(String Id) throws EmployeeException {
-        if(loggedIn==null){
+    public Employee getEmployee(String Id, boolean allowed) throws EmployeeException {
+        if(!allowed && loggedIn==null){
             throw new EmployeeException("No user is logged in");
         }
 
-        if(!loggedIn.getIsManager()) {
+        if(!allowed && !loggedIn.getIsManager()) {
             throw new EmployeeException("Only an administrator can perform this operation");
         }
         if(!employees.containsKey(Id)) {
