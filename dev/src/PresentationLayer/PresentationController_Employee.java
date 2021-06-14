@@ -626,6 +626,8 @@ public class PresentationController_Employee {
                 handleStoreKeeperChoice ( choice );
             } else if(role.equals ( Role.branchManager.name() ) || role.equals ( Role.branchManagerAssistant.name() )) {
                 pc.reportMenuOperations();
+                logout ();
+                while(!login());
             } else {
                 choice = menuPrinter.simpleEmployeeMenu ();
                 handleSimpleEmployeeChoice ( choice );
