@@ -451,13 +451,15 @@ public class DeliveryController {
     public DeliveryForm getDeliveryForm(int id) throws  NoSuchElementException{
         DeliveryForm deliveryForm = null;
         for (Map.Entry<Integer,LinkedList< DeliveryForm>> entry : activeDeliveryForms.entrySet()){
-            if (entry.getValue().contains(id)){
-                return entry.getValue().get(id);
+            for (DeliveryForm df : entry.getValue()){
+                if (df.getID() == id)
+                    return df;
             }
         }
         for (Map.Entry<Integer,LinkedList< DeliveryForm>> entry : oldDeliveryForms.entrySet()){
-            if (entry.getValue().contains(id)){
-                return entry.getValue().get(id);
+            for (DeliveryForm df : entry.getValue()){
+                if (df.getID() == id)
+                    return df;
             }
         }
         throw new NoSuchElementException("cannot find DeliveryForm With Such id: " + id);

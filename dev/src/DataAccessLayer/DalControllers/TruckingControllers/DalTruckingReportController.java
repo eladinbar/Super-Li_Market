@@ -132,8 +132,8 @@ public class DalTruckingReportController extends Employee_Trucking_DALController
             ResultSet resultSet=st.executeQuery();
             while (resultSet.next())
             {
-                LocalTime lt=LocalTime.parse(resultSet.getString(2));
-                String s1=resultSet.getString(3);
+                LocalTime lt=LocalTime.parse(resultSet.getString(3));
+                String s1=resultSet.getString(2);
                 //DateTimeFormatter formatter=DateTimeFormatter.ofPattern("yyyy-MM-dd");
                 LocalDate ld=LocalDate.parse(s1);
                 boolean completed=resultSet.getString(6).equals("1");
