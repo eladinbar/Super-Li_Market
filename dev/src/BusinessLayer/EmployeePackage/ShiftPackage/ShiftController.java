@@ -158,11 +158,11 @@ public class ShiftController {
             throw new EmployeeException ( "Super-Lee does not work at Shabbat." );
         if(!employeeController.isExist(role, ID))
             throw new EmployeeException ( "Id - " + ID + " and role - " + role + " does not exist in system." );
-        if(employeeController.getEmployee ( ID ).getConstraints ().containsKey ( date ) &&
-                employeeController.getEmployee ( ID ).getConstraints ().get ( date ). isMorningShift () && shift == 0)
+        if(employeeController.getEmployee ( ID, false ).getConstraints ().containsKey ( date ) &&
+                employeeController.getEmployee ( ID, false ).getConstraints ().get ( date ). isMorningShift () && shift == 0)
             throw new EmployeeException ( "Employee is unavailable." );
-        if(employeeController.getEmployee ( ID ).getConstraints ().containsKey ( date ) &&
-                employeeController.getEmployee ( ID ).getConstraints ().get ( date ). isEveningShift () && shift == 1)
+        if(employeeController.getEmployee ( ID, false ).getConstraints ().containsKey ( date ) &&
+                employeeController.getEmployee ( ID, false ).getConstraints ().get ( date ). isEveningShift () && shift == 1)
             throw new EmployeeException ( "Employee is unavailable." );
         if(getWeeklyShiftSchedule ( date ).getShift ( date, 1-shift ).isWorking ( role, ID ))
             throw new EmployeeException ( "Employee is already manning the other shift of the day." );
@@ -303,7 +303,7 @@ public class ShiftController {
     }
 
     public boolean isDriverAssigned(String id, LocalDate date, int shift) throws EmployeeException {
-        return getShift ( date, shift ).isWorking ( employeeController.getEmployee ( id ).getRole ().name (), id );
+        return getShift ( date, shift ).isWorking ( employeeController.getEmployee ( id, true ).getRole ().name (), id );
     }
 
     private boolean isExist(LocalDate date){
