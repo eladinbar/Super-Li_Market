@@ -84,16 +84,22 @@ public class DalOrder extends DalObject<DalOrder> {
     }
 
     public void setDate(String date) throws SQLException {
-        this.date = LocalDate.parse(date);
+        if (date == null)
+            this.date = null;
+        else
+            this.date = LocalDate.parse(date);
         update();
     }
 
     public void setDateLoad(String date) throws SQLException {
-        this.date = LocalDate.parse(date);
+        if (date == null)
+            this.date = null;
+        else
+            this.date = LocalDate.parse(date);
     }
 
     public void setDate(LocalDate date) throws SQLException {
-        this.date=date;
+        this.date = date;
         update();
     }
 

@@ -1,10 +1,8 @@
 package BusinessLayer.SuppliersPackage.OrderPackage;
 
-import BusinessLayer.SuppliersPackage.SupplierPackage.QuantityList;
 import BusinessLayer.SuppliersPackage.SupplierPackage.Supplier;
 import DataAccessLayer.DalObjects.SupplierObjects.DalOrder;
 import DataAccessLayer.DalObjects.SupplierObjects.DalProductsInOrder;
-import DataAccessLayer.DalObjects.SupplierObjects.DalQuantityListItems;
 
 import java.sql.SQLException;
 import java.time.DayOfWeek;
@@ -30,8 +28,8 @@ public class Order {
         this.date = date;
         this.delivered = false;
         this.supplier = supplier;
-        this.dalObject = toDalObject();
         this.day = day;
+        this.dalObject = toDalObject();
         save();
     }
 
@@ -41,7 +39,7 @@ public class Order {
         this.DalProductsInOrder = new HashMap<>();
         this.id = orderDal.getOrderId();
         this.delivered = orderDal.isDelivered() == 1 ? true : false;
-        this.date = LocalDate.parse(orderDal.getDate());
+        this.date = orderDal.getDate() == null ? null : LocalDate.parse(orderDal.getDate());
         this.supplier = supplier;
         this.day = orderDal.getDay();
         this.dalObject = toDalObject();
@@ -67,6 +65,10 @@ public class Order {
 
     public Map<Integer, Integer> getProducts() {
         return products;
+    }
+
+    public int getDay() {
+        return day;
     }
 
     public LocalDate getDate() {
@@ -124,9 +126,8 @@ public class Order {
             throw new Exception("supplier does not supply the product :" + productId);
         if (!amountSupplied.containsKey(productId))
             throw new Exception("product " + productId + " does not exists in the order ");
-        if (amount < 1 || amountSupplied.get(productId) + amount > products.get(productId))
+        if (amount < 0 || amountSupplied.get(productId) + amount > products.get(productId))
             throw new Exception("illegal amount");
-        products.put(productId, amount);
         amountSupplied.put(productId,amountSupplied.get(productId) + amount);
         if(flag)
             this.DalProductsInOrder.get(productId).setAmountSupplied(amountSupplied.get(productId));

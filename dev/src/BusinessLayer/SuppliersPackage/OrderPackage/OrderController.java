@@ -69,7 +69,7 @@ public class OrderController {
         Order newOrder = new Order(orderDal, supplier);
         orders.put(orderID, newOrder);
         if (newOrder.getDate() == null)
-            permanentOrders.get(newOrder.getDate()).add(newOrder);
+            permanentOrders.get(newOrder.getDay()).add(newOrder);
         return newOrder;
     }
 
