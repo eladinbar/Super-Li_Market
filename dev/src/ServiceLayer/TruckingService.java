@@ -89,7 +89,12 @@ public class TruckingService {
         if (!left.isEmpty()) {
 
             // creates reports for the next 7 days only, call drivers from home if needed
-            ResponseT<LinkedList<Pair<Integer, Integer>>> res3 = createReportsThisWeek(left, supplier);
+            ResponseT<LinkedList<Pair<Integer, Integer>>> res3 = null;
+            try {
+                res3 = createReportsThisWeek(left, supplier);
+            } catch (EmployeeException | SQLException e) {
+                return new ResponseT<>(e.getMessage());
+            }
             if (res3.errorOccurred()){
                 return new ResponseT<>(res.getErrorMessage());
             }
@@ -109,7 +114,11 @@ public class TruckingService {
 
                     // creates reports for every possible date
 
-                    res3=  createReportsEveryWeek(left, supplier);
+                    try {
+                        res3=  createReportsEveryWeek(left, supplier);
+                    } catch (EmployeeException | SQLException e) {
+                        return new ResponseT<>(e.getMessage());
+                    }
                     if (res3.errorOccurred()){
                         return new ResponseT<>(res.getErrorMessage());
                     }
@@ -161,7 +170,15 @@ public class TruckingService {
                 return new ResponseT<>(res.getErrorMessage());
             }
             left = res2.getValue();
-            res2 =  createReportsForDate(left, supplier, date);
+            try {
+                res2 =  createReportsForDate(left, supplier, date);
+            } catch (EmployeeException e) {
+                return new ResponseT<>(e.getMessage());
+
+            } catch (SQLException e) {
+                return new ResponseT<>(e.getMessage());
+
+            }
             if (res2.errorOccurred()){
                 return new ResponseT<>(res.getErrorMessage());
             }
@@ -244,6 +261,7 @@ public class TruckingService {
     public void handleLeftOvers() {
         ResponseT<LinkedList<FacadeDemand>> res2 = getDemands();
         if (res2.errorOccurred()){
+            System.out.println(res2.getErrorMessage());
             return ;
         }
         LinkedList<FacadeDemand> demands = res2.getValue();
@@ -268,8 +286,16 @@ public class TruckingService {
             if (!item.isEmpty()) {
 
                 // creates reports for the next 7 days only, call drivers from home if needed
-                ResponseT<LinkedList<Pair<Integer, Integer>>> res4 = createReportsThisWeek(item, supplier);
+                ResponseT<LinkedList<Pair<Integer, Integer>>> res4 = null;
+                try {
+                    res4 = createReportsThisWeek(item, supplier);
+                } catch (EmployeeException | SQLException e) {
+                    System.out.println((e.getMessage()));
+                    return;
+
+                }
                 if (res4.errorOccurred()){
+                    System.out.println(res4.getErrorMessage());
                     return;
                 }
                 item = res4.getValue();
@@ -280,6 +306,7 @@ public class TruckingService {
                     // adds to existing TR from every week
                     res3 = insertToExistingTR(item, supplier, thisWeekReports);
                     if (res3.errorOccurred()){
+                        System.out.println(res3.getErrorMessage());
                         return;
                     }
                     item = res3.getValue();
@@ -287,8 +314,14 @@ public class TruckingService {
 
                         // creates reports for every possible date
 
-                        res4 =  createReportsEveryWeek(item, supplier);
+                        try {
+                            res4 =  createReportsEveryWeek(item, supplier);
+                        } catch (EmployeeException | SQLException e) {
+                            System.out.println(e.getMessage());
+                            return;
+                        }
                         if (res4.errorOccurred()){
+                            System.out.println(res4.getMessage());
                             return;
                         }
                         item = res4.getValue();
