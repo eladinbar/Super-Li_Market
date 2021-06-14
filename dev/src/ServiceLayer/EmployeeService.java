@@ -198,8 +198,8 @@ public class EmployeeService {
         }
     }
 
-    public ResponseT<List<Notification>> loadAlerts() throws SQLException {
-        List<Notification> alerts = employeeController.loadAlerts();
+    public ResponseT<List<EmployeeNotification>> loadAlerts() throws SQLException {
+        List<EmployeeNotification> alerts = employeeController.loadAlerts();
         return new ResponseT<> ( alerts );
     }
 

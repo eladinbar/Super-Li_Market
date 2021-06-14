@@ -13,7 +13,7 @@ public class DalAlertEmployeeController extends Employee_Trucking_DALController_
     private DalAlertEmployeeController() throws SQLException {
         super();
         tableName = "RESOURCE_MANAGER_ALERTS";
-        columnNames = new String[] {"rowid","ROLE", "ALERTS"};
+        columnNames = new String[] {"ID","ROLE", "ALERTS"};
         try {
             createTable();
         }
@@ -27,9 +27,10 @@ public class DalAlertEmployeeController extends Employee_Trucking_DALController_
     protected boolean createTable() throws SQLException {
         Connection conn = DriverManager.getConnection(connection);
         String query = "CREATE TABLE IF NOT EXISTS RESOURCE_MANAGER_ALERTS("
-                +"rowid INTEGER PRIMARY KEY AUTHORIZATION ,"
-                +"ROLE TEXT"
-                +"ALERT TEXT);";
+                +"ID INTEGER AUTHORIZATION ,"
+                +"ROLE TEXT,"
+                +"ALERT TEXT,"
+                +"PRIMARY KEY (ID));";
         try {
             PreparedStatement st=conn.prepareStatement(query);
             st.executeUpdate();
