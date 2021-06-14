@@ -16,13 +16,13 @@ public class TruckingReport {
     private LocalTime leavingHour;
     private String  truckNumber;
     private String  driverID;
-    private LinkedList<Integer> suppliers;
+    private LinkedList<String> suppliers;
     private boolean completed;
     private boolean approved;
 
 
     public TruckingReport(int ID, LocalDate date, LocalTime leavingHour, String  truckNumber, String driverID
-                          , LinkedList<Integer> suppliers) throws SQLException {
+                          , LinkedList<String> suppliers) throws SQLException {
         this.ID=ID;
         this.date=date;
         this.leavingHour=leavingHour;
@@ -83,7 +83,7 @@ public class TruckingReport {
         return truckNumber;
     }
 
-    public LinkedList<Integer> getSuppliers() {
+    public LinkedList<String> getSuppliers() {
         return suppliers;
     }
 
@@ -132,7 +132,7 @@ public class TruckingReport {
 
     }
 
-    public void setSuppliers(LinkedList<Integer> suppliers) {
+    public void setSuppliers(LinkedList<String> suppliers) {
         this.suppliers = suppliers;
         try {
             DalTruckingReportController.getInstance().update
@@ -187,7 +187,7 @@ public class TruckingReport {
 
     }
 
-    public void addSupplier(int supplier)  {
+    public void addSupplier(String supplier)  {
         suppliers.add(supplier);
 
     }
