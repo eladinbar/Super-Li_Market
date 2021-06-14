@@ -1,0 +1,28 @@
+Student IDs:
+Elad Inbar - 205358211
+Edan Levy - 204868020
+Ido Livne - 203834734
+Raz Bamnolker - 206117400
+Ayala Zelda Link Badash - 314978925
+Ofir Povimonski - 315994442
+Gal Brown - 316415553
+Shaked Dollberg - 208677682
+
+Employee IDs and occupations:
+Human Resources Manager - 789000000
+Branch Manager - 123000000
+Logistics Manager - 066666666
+Storekeeper - 033333330
+
+To load the system choose whether you would like to create new data to the system or start the system with no
+pre-existing data loaded into the system.
+After loading the system you are required to login to a specific user. Enter the appropriate ID above to connect.
+Choose the appropriate occupation and you will then be granted with the system's menus.
+
+Human Resources Manager can access shifts and employee related menus.
+Branch Manager can access order and supplier menus.
+Logistics Manager can access trucking/logistics menus.
+Storekeeper can access inventory, order and supplier menus.
+
+For additional more specific information regarding the menus' specifics, please refer to the attached word documents detailing
+all the different menus.
