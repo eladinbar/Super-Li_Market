@@ -42,17 +42,6 @@ public class TruckingService {
         return instance;
     }
 
- /*   TODO - things to check for debbuging
-        1. automate delivery set by getting order ( can be done alone)
-        2. addDriver to shift function
-        3. handleLeft over -  need to set new demands when no drivers are settled. and then create new shift
-        4. approve orders by manager
-        5. cancel orders by manager
-        6. need to check when adding to existing TR, adds to existing DF and creates new one
-        7. need to check properly the get driver and truck method
-
-      */
-
 
     /**
      * this method receives an Order and returns and Linked List of items that couldn't been delivered
