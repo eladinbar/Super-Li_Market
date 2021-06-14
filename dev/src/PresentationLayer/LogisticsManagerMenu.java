@@ -185,7 +185,7 @@ public class LogisticsManagerMenu {
         else {
             for (FacadeTruck truck : trucks) {
                 System.out.println("Trucks License Number: " + truck.getLicenseNumber() +
-                        "\nmodel: " + truck.getModel() + " maxWeight: " + truck.getMaxWeight());
+                        "\n\tmodel: " + truck.getModel() + "\t\tmaxWeight: " + truck.getMaxWeight());
 
             }
         }
@@ -301,8 +301,8 @@ public class LogisticsManagerMenu {
                 com = "Completed";
             rep = "approved "+ com;
         }
-        System.out.println("\tTrucking report ID: " + tr.getID() + "\nOrigin site:"  + "\tDate:" + tr.getDate() +
-                "\tLeaving Hour:" + tr.getLeavingHour() + "status: " + rep );
+        System.out.println("\tTrucking report ID: " + tr.getID() + "\n" + "\tDate: " + tr.getDate() +
+                "\n\tLeaving Hour: " + tr.getLeavingHour() + "\n\tstatus: " + rep );
 
         System.out.println("related delivery form:");
         ResponseT<LinkedList<FacadeDeliveryForm>> res = ts.getDeliveryFormsByTruckReport(tr.getID());
@@ -325,7 +325,7 @@ public class LogisticsManagerMenu {
     private void printDeliveryForm(FacadeDeliveryForm deliveryForm) {
         System.out.println("ID:" + deliveryForm.getID()+ "\tsupplier: " + deliveryForm.getSupplier() + "" +
                 "\nitems:");
-        System.out.println("\t\tname\t\tAmount");
+        System.out.println("\tname\t\t\tAmount");
         HashMap<Integer, Integer> items = deliveryForm.getItems();
         for (Map.Entry<Integer,Integer> entry: items.entrySet()){
             printItem(entry.getKey(), entry.getValue());
@@ -336,7 +336,7 @@ public class LogisticsManagerMenu {
 
     private void printItem(Integer item_id, Integer amount) {
         String name = ts.getItemName(item_id);
-        System.out.println("\t\t" + name+"\t\t"+amount);
+        System.out.println("\t" + name+"\t\t\t"+amount);
 
     }
 
@@ -359,7 +359,7 @@ public class LogisticsManagerMenu {
         }
         System.out.println("\nplease choose the truck report you'd like to approve or cancel");
         int chose = getIntFromUser(scanner);
-        while (chose<1 || chose > reports.size()-1){
+        while (chose<1 || chose > reports.size()){
             System.out.println("number out bounds, please try again");
             chose= getIntFromUser(scanner);
         }

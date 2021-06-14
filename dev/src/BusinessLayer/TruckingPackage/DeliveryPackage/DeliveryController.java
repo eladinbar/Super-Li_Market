@@ -547,7 +547,7 @@ public class DeliveryController {
 
     public HashMap<String, HashMap<LocalDate, Integer>> getTruckConstraintsFromUpload() {
         HashMap<String, HashMap<LocalDate, Integer>> result = new HashMap<>();
-        HashMap<Integer,TruckingReport> reports=activeTruckingReports;
+        HashMap<Integer,TruckingReport> reports=new HashMap<>( activeTruckingReports);
         for (Map.Entry<Integer,TruckingReport> entry: waitingTruckingReports.entrySet())
         {
             reports.put(entry.getKey(),entry.getValue());
@@ -570,7 +570,7 @@ public class DeliveryController {
 
     public HashMap<String, HashMap<LocalDate, Integer>> getDriverConstraintsFromUpload() {
         HashMap<String, HashMap<LocalDate, Integer>> result = new HashMap<>();
-        HashMap<Integer,TruckingReport> reports=activeTruckingReports;
+        HashMap<Integer, TruckingReport> reports = new HashMap<>(activeTruckingReports);
         for (Map.Entry<Integer,TruckingReport> entry: waitingTruckingReports.entrySet())
         {
             reports.put(entry.getKey(),entry.getValue());

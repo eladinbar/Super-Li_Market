@@ -110,9 +110,9 @@ public class DalDeliveryFormController extends Employee_Trucking_DALController_I
             ResultSet resultSet=st.executeQuery();
             while (resultSet.next())
             {
-                boolean completed=resultSet.getString(4).equals("true");
+                boolean completed=resultSet.getString(3).equals("true");
                 reports.add(new DalDeliveryForm(resultSet.getInt(1),
-                        resultSet.getString(2),completed,resultSet.getInt(3),
+                        resultSet.getString(2),completed,resultSet.getInt(4),
                         resultSet.getInt(5)));
             }
         }
