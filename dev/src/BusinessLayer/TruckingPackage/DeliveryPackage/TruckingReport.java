@@ -188,7 +188,8 @@ public class TruckingReport {
     }
 
     public void addSupplier(String supplier)  {
-        suppliers.add(supplier);
+        if (!suppliers.contains(supplier))
+            suppliers.add(supplier);
 
     }
 

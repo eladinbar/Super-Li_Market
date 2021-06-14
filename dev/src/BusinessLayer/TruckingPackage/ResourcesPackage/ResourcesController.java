@@ -14,6 +14,7 @@ import java.time.LocalDate;
 import java.util.*;
 
 import static java.lang.System.exit;
+import static java.lang.System.out;
 
 public class ResourcesController {
     private HashMap<String, Driver> drivers;
@@ -107,7 +108,15 @@ public class ResourcesController {
     }
 
     private LinkedList<Pair<Pair<Driver,Truck>,Integer>> findListDriversAndTrucksFromExisting(LocalDate date,Pair<LinkedList<String>,LinkedList<String>> busyTrucks) throws EmployeeException {
-        HashMap<LocalDate, HashMap<Integer, LinkedList<String>>> shiftDrivers = getDaysAndDrivers();
+//        HashMap<LocalDate, HashMap<Integer, LinkedList<String>>> shiftDrivers = getDaysAndDrivers();
+        HashMap<LocalDate, HashMap<Integer, LinkedList<String>>> shiftDrivers =  new HashMap<>();
+        HashMap<Integer, LinkedList<String>> temp = new HashMap<>();
+
+        temp.put(0,turnDriversToList(getAvailableDrivers(date, 0)));
+        temp.put(1,turnDriversToList(getAvailableDrivers(date, 1)));
+         shiftDrivers.put(date, temp);
+
+
         LinkedList<Truck> freeTrucks = new LinkedList<>();
         LinkedList<Pair<Pair<Driver,Truck>,Integer>> result=new LinkedList<>();
         for (Map.Entry<String, Truck> entry : trucks.entrySet()) {
@@ -164,6 +173,13 @@ public class ResourcesController {
 
     }
 
+    private LinkedList<String> turnDriversToList(LinkedList<Driver> drivers) {
+        LinkedList<String > output =  new LinkedList<>();
+        for (Driver d: drivers){
+            output.add(d.getID());
+        }
+        return output;
+    }
 
 
     private LinkedList<String> sortByLicense(LinkedList<String> dayDrivers) {
@@ -497,6 +513,79 @@ public class ResourcesController {
         return sum;
     }
 
+    public LinkedList<Truck> getAvailableTrucks(LocalDate date, int shift) {
+        LinkedList<Truck> output = new LinkedList<>();
+        for (Map.Entry<String, HashMap<LocalDate, Integer>> entry : trucks_constraints.entrySet()) {
+            if (!entry.getValue().containsKey(date))
+                output.add(getTruck(entry.getKey()));
+            else {
+                if (!entry.getValue().get(date).equals(2) && !entry.getValue().get(date).equals(shift)) {
+                    output.add(getTruck(entry.getKey()));
+                }
+            }
+        }
+        return output;
+    }
+
+
+    public LinkedList<Driver> getAvailableDrivers(LocalDate date, int shift) throws EmployeeException {
+        LinkedList<String> working_drivers = getDriversForDate(date,shift);
+        LinkedList<Driver> output = new LinkedList<>();
+        if (working_drivers!= null && !working_drivers.isEmpty()) {
+            for (Map.Entry<String, HashMap<LocalDate, Integer>> entry : drivers_constraints.entrySet()) {
+                if (working_drivers.contains(entry.getKey())) {
+                    if (!entry.getValue().containsKey(date))
+                        output.add(getDriver(entry.getKey()));
+                    else {
+                        if (!entry.getValue().get(date).equals(2) && !entry.getValue().get(date).equals(shift)) {
+                            output.add(getDriver(entry.getKey()));
+                        }
+                    }
+                }
+            }
+        }
+        return output;
+    }
+
+    private LinkedList<String> getDriversForDate(LocalDate date, int shift) throws EmployeeException {
+        HashMap<LocalDate, HashMap<Integer,LinkedList<String >>> all = getDaysAndDrivers();
+        LinkedList<String> output ;
+        output = all.get(date).get(shift);
+        return output;
+    }
+
+
+    public Driver getDriver(String driverID) {
+        return drivers.get(driverID);
+    }
+
+    public Truck getTruck(String truckNumber) {
+        return trucks.get(truckNumber);
+    }
+
+    private boolean isDriverAvailable(String driver, LocalDate date, int shift) {
+
+        Integer cons = drivers_constraints.get(driver).get(date);
+        if (cons == null)
+            return true;
+        else {
+            if ((cons.equals(shift)) || cons.equals(2))
+                return false;
+            else return true;
+        }
+    }
+
+    private boolean isTruckAvailable(String truck, LocalDate date, int shift) {
+        Integer cons = trucks_constraints.get(truck).get(date);
+        if (cons == null)
+            return true;
+        else {
+            if ((cons.equals(shift)) || cons.equals(2))
+                return false;
+            else return true;
+        }
+    }
+
 
 //
 
@@ -563,15 +652,7 @@ public class ResourcesController {
 //        ResourcesController.instance = instance;
 //    }
 //
-//
-//    public Driver getDriver(String driverID) {
-//        return drivers.get(driverID);
-//    }
-//
-//    public Truck getTruck(String truckNumber) {
-//        return trucks.get(truckNumber);
-//    }
-//
+
 //
 //
 //
@@ -582,66 +663,11 @@ public class ResourcesController {
 //            return LocalTime.of(14, 0);
 //    }
 //
-//    public LinkedList<Driver> getAvailableDrivers(LocalDate date, int shift) {
-//        LinkedList<String> working_drivers = getDriversForDate(date,shift);
-//        LinkedList<Driver> output = new LinkedList<>();
-//        for (Map.Entry<String, HashMap<LocalDate, Integer>> entry : drivers_constraints.entrySet()) {
-//            if(working_drivers.contains(entry.getKey())) {
-//                if (!entry.getValue().containsKey(date))
-//                    output.add(getDriver(entry.getKey()));
-//                else {
-//                    if (!entry.getValue().get(date).equals(2) && !entry.getValue().get(date).equals(shift)) {
-//                        output.add(getDriver(entry.getKey()));
-//                    }
-//                }
-//            }
-//        }
-//        return output;
-//    }
+
 //
-//    private LinkedList<String> getDriversForDate(LocalDate date, int shift) {
-//        HashMap<LocalDate, HashMap<Integer,LinkedList<String >>> all = getDaysAndDrivers();
-//        LinkedList<String> output ;
-//        output = all.get(date).get(shift);
-//        return output;
-//    }
+
 //
-//    public LinkedList<Truck> getAvailableTrucks(LocalDate date, int shift) {
-//        LinkedList<Truck> output = new LinkedList<>();
-//        for (Map.Entry<String, HashMap<LocalDate, Integer>> entry : trucks_constraints.entrySet()) {
-//            if (!entry.getValue().containsKey(date))
-//                output.add(getTruck(entry.getKey()));
-//            else {
-//                if (!entry.getValue().get(date).equals(2) && !entry.getValue().get(date).equals(shift)) {
-//                    output.add(getTruck(entry.getKey()));
-//                }
-//            }
-//        }
-//        return output;
-//    }
-//
-//    private boolean isDriverAvailable(String driver, LocalDate date, int shift) {
-//
-//        Integer cons = drivers_constraints.get(driver).get(date);
-//        if (cons == null)
-//            return true;
-//        else {
-//            if ((cons.equals(shift)) || cons.equals(2))
-//                return false;
-//            else return true;
-//        }
-//    }
-//
-//    private boolean isTruckAvailable(String truck, LocalDate date, int shift) {
-//        Integer cons = trucks_constraints.get(truck).get(date);
-//        if (cons == null)
-//            return true;
-//        else {
-//            if ((cons.equals(shift)) || cons.equals(2))
-//                return false;
-//            else return true;
-//        }
-//    }
+
 //
 //
 

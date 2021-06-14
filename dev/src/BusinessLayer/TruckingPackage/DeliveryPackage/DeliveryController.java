@@ -119,7 +119,7 @@ public class DeliveryController {
     private void updateWaitingReports() {
         HashMap<Integer, TruckingReport> waitingReports = new HashMap<>();
         for (Map.Entry<Integer,TruckingReport> entry : waitingTruckingReports.entrySet()){
-            if (entry.getValue().getDate().isBefore(LocalDate.now()))
+            if (!entry.getValue().getDate().isBefore(LocalDate.now().minusDays(1)))
                 waitingReports.put(entry.getKey(),entry.getValue());
             else {
                 oldTruckingReports.put(entry.getKey(), entry.getValue());
@@ -156,7 +156,18 @@ public class DeliveryController {
     public Pair<LinkedList<String>,LinkedList<String>> getBusyTrucksByDate(LocalDate date) {
         Pair<LinkedList<String>,LinkedList<String>> result=new Pair<>(new LinkedList<>(),new LinkedList<>());
         //first is trucks on morning shift , second is evening
-        for (Map.Entry<Integer,TruckingReport> entry:waitingTruckingReports.entrySet())
+        LinkedList<TruckingReport> reports = getTruckingReportsByDate(date);
+
+        for (TruckingReport report: reports){
+            if (report.getLeavingHour().equals(LocalTime.of(14,0))){
+                result.getSecond().add(report.getTruckNumber());
+            }
+            else
+                result.getFirst().add(report.getTruckNumber());
+
+
+        }
+/*        for (Map.Entry<Integer,TruckingReport> entry:waitingTruckingReports.entrySet())
         {
             if (entry.getValue().getLeavingHour().equals(LocalTime.of(14,0)))
                 result.getSecond().add(entry.getValue().getTruckNumber());
@@ -167,7 +178,7 @@ public class DeliveryController {
             if (entry.getValue().getLeavingHour().equals(LocalTime.of(14,0)))
                 result.getSecond().add(entry.getValue().getTruckNumber());
             else result.getFirst().add(entry.getValue().getTruckNumber());
-        }
+        }*/
         return result;
 
     }
@@ -312,7 +323,7 @@ public class DeliveryController {
             else
                 dfs = oldDeliveryForms.get(report_id);
             for (DeliveryForm df : dfs){
-                if (df.getDestination() == supplier)
+                if (df.getDestination().equals( supplier))
                     output = df;
             }
         }
@@ -335,11 +346,23 @@ public class DeliveryController {
        int itemWeight = getItemWeight(item.getFirst());
        while (!found){
            totalWeight = output * itemWeight;
-           if (totalWeight == leftWeight)
+           if (minimumAmount >= maxAmount){
+               output = maxAmount;
                found = true;
+               break;
+           }
+           if (totalWeight == leftWeight){
+               found = true;
+               break;
+
+           }
            // if adding 1 more exceeds, finished
-           else if (( totalWeight < leftWeight) &&  (totalWeight + itemWeight > leftWeight) )
-               found= true;
+           else if (( totalWeight < leftWeight) &&  (totalWeight + itemWeight > leftWeight) ) {
+               found = true;
+               break;
+
+           }
+
            else{
                if (totalWeight< leftWeight){
                    minimumAmount = output + 1;
@@ -507,7 +530,7 @@ public class DeliveryController {
         }
         FacadeItem item  = res.getValue();
         // TODO need to implement
-        throw new UnsupportedOperationException();
+        return item.getWeight();
     }
 
     public LinkedList<DeliveryForm> getTruckReportDeliveryForms(int report_id) {
