@@ -33,7 +33,7 @@ public class DalDemandController extends Employee_Trucking_DALController_Interfa
 
     public boolean insert(DalDemand dalDemand) throws SQLException {
         Connection conn= DriverManager.getConnection(connection);
-        String query= "INSERT INTO "+tableName+" VALUES (?,?,?)";
+        String query= "INSERT OR IGNORE INTO "+tableName+" VALUES (?,?,?)";
         try{
             PreparedStatement st=conn.prepareStatement(query);
             st.setInt(1,dalDemand.getItemID());

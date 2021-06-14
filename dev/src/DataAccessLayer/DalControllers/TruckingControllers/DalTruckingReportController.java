@@ -41,7 +41,7 @@ public class DalTruckingReportController extends Employee_Trucking_DALController
             approved=1;
 
         Connection conn= DriverManager.getConnection(connection);
-        String query="INSERT INTO "+tableName+" VALUES "+"(?,?,?,?,?,?,?)";
+        String query="INSERT OR IGNORE INTO "+tableName+" VALUES "+"(?,?,?,?,?,?,?)";
         String year=truckingReport.getDate().toString();
         try{
             PreparedStatement st=conn.prepareStatement(query);

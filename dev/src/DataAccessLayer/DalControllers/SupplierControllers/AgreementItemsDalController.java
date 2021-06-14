@@ -51,7 +51,7 @@ public class AgreementItemsDalController extends DalController<DalAgreementItems
     @Override
     public boolean insert(DalAgreementItems agreementItem) throws SQLException {
         try (Connection conn = DriverManager.getConnection(connectionString)) {
-            String query = "INSERT INTO " + tableName + " VALUES (?,?,?,?)";
+            String query = "INSERT OR IGNORE INTO " + tableName + " VALUES (?,?,?,?)";
             PreparedStatement stmt = conn.prepareStatement(query);
             stmt.setInt(1, agreementItem.getProductId());
             stmt.setInt(2, agreementItem.getSupplierId());

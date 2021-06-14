@@ -55,7 +55,7 @@ public class DalShiftController extends Employee_Trucking_DALController_Interfac
 
     public boolean insert(DalShift dalShift) throws SQLException {
         Connection conn= DriverManager.getConnection(connection);
-        String query= "INSERT INTO "+tableName+" VALUES (?,?,?,?,?)";
+        String query= "INSERT OR IGNORE INTO "+tableName+" VALUES (?,?,?,?,?)";
         try{
             PreparedStatement st=conn.prepareStatement(query);
             st.setString(1,dalShift.getEmployeeId());
