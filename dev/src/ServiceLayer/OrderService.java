@@ -167,4 +167,13 @@ public class OrderService {
         }
         return toReturn;
     }
+
+    public ResponseT<FacadeOrder> createOrderFromExisting(FacadeOrder fOrder, LocalDate temp,SupplierController sp) {
+        Map<Integer, Integer> tempMap = fOrder.getProductMap();
+        ResponseT<FacadeOrder> order = createOrder(temp, fOrder.getSupplier().getSc().getId(), sp);
+        if (order.errorOccurred()) return new ResponseT<>(order.getErrorMessage());
+        for (int itemID : tempMap.keySet())
+            addProductToOrder(order.value.getId(), itemID, tempMap.get(itemID));
+        return Service.getInstance().getOrder(order.value.getId());
+    }
 }

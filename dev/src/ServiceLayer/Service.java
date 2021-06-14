@@ -331,15 +331,25 @@ public class Service implements IService {
             if(fOrder==null)
                 return new ResponseT<>("order does not exists");
             LocalDate temp = LocalDate.now().plusDays(7);
-            while(temp.getDayOfWeek().equals(DayOfWeek.of(localDateDay)))
+            while(!temp.getDayOfWeek().equals(DayOfWeek.of(localDateDay)))
                 temp = temp.plusDays(1);
+            ResponseT<FacadeOrder> fO = orderService.createOrderFromExisting(fOrder,temp,supplierService.getSp());
             fOrder.setDate(temp);
-            if(!fOrder.getSupplier().getSc().isSelfDelivery()) {
-                if(!TruckingService.getInstance().addPermanentOrder(fOrder).getValue())
-                    retList.add(fOrder.getId());
+            if(!fO.value.getSupplier().getSc().isSelfDelivery()) {
+                if(!TruckingService.getInstance().addPermanentOrder(fO.value).getValue())
+                    retList.add(fO.value.getId());
             }
         }
-        return new ResponseT<>(retList);
+        if (retList.isEmpty())
+            return new ResponseT<>(retList);
+        else {
+            String response = "The following orders weren't trackable: ";
+            for (int num : retList) {
+                response += num + ", ";
+            }
+            response = response.substring(0, response.length() - 1);
+            return new ResponseT<>(response);
+        }
     }
 
     @Override
@@ -347,7 +357,8 @@ public class Service implements IService {
         ResponseT<FacadeOrder> o = orderService.getOrder(orderID,inventoryService,supplierService);
         if(o.errorOccurred())
             return o;
-        TruckingService.getInstance().addOrder(o.value);
+        if(!o.value.getSupplier().getSc().isSelfDelivery())
+            TruckingService.getInstance().addOrder(o.value);
         return new Response();
     }
 
