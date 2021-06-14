@@ -2,6 +2,7 @@ package PresentationLayer;
 
 import InfrastructurePackage.Pair;
 import ServiceLayer.IService;
+import ServiceLayer.ResourcesService;
 import ServiceLayer.Response.*;
 import ServiceLayer.Response.Response;
 import ServiceLayer.Service;
@@ -13,12 +14,12 @@ import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.regex.Pattern;
 
-public class PresentationController implements Runnable {
+public class PresentationController {
     private final IService service;
 
     private Scanner scan;
     private final InventorySupplierMenu menu;
-    private boolean terminate;
+
     private final int MaxCompanyNumber = 100;
     private final int MaxNamesLength = 20;
     private final int PhoneLength = 10;
@@ -27,7 +28,7 @@ public class PresentationController implements Runnable {
 
     public PresentationController() {
         this.menu = new InventorySupplierMenu();
-        terminate = false;
+
         service = Service.getInstance();
         scan = new Scanner(System.in);
     }
@@ -381,55 +382,48 @@ public class PresentationController implements Runnable {
 
     }
 
-    @Override
-    public void run() {
-        menu.printWelcomePrompt();
-        setupSystem();
-        while (!terminate) {
-            mainMenu();
-        }
-    }
-
     public void setupSystem() {
-        String toSetup = menu.instructAndReceive("Would you like to load the system with data? [y/n]\n 'no' will start up a clean system ");
-        toSetup = toSetup.toLowerCase();
-        if (toSetup.compareTo("y") != 0) {
-            System.out.println("Starting clean system");
-            return;
-        }
-        CreateObjects co = new CreateObjects(service);
+        CreateObjects co = new CreateObjects();
         co.setupSystem();
     }
 
     public void mainMenu() {
-        menu.printMainMenu();
-        String choice = menu.instructAndReceive("Select a menu to open: ");
-        switch (choice) {
-            case "1" -> inventoryMainMenu();
-            case "2" -> suppliersMainMenu();
-            case "3" -> orderMainMenu();
-            case "q" -> {terminate = true; return;}
-            default -> menu.errorPrompt("Invalid choice - " + choice);
+        boolean terminate = false;
+        while (!terminate) {
+            menu.printMainMenu();
+            String choice = menu.instructAndReceive("Select a menu to open: ");
+            switch (choice) {
+                case "1" -> inventoryMainMenu();
+                case "2" -> suppliersMainMenu();
+                case "3" -> orderMainMenu();
+                case "4" -> terminate = true;
+                default -> menu.errorPrompt("Invalid choice - " + choice);
+            }
         }
     }
 
     private void orderMainMenu() {
-        System.out.println("\nOrder menu:");
-        System.out.println("1. Create shortage order");
-        System.out.println("2. Create scheduled order");
-        System.out.println("3. Approve order");
-        System.out.println("4. Get order");
-        System.out.println("5. Add product to order");
-        System.out.println("6. Remove product from order");
-        String chooseInsideMenu = menu.instructAndReceive("Enter choice: ");
-        switch (chooseInsideMenu) {
-            case "1" -> createNewOrder();
-            case "2" -> setPermanentOrder();
-            case "3" -> approveOrder();
-            case "4" -> getOrder();
-            case "5" -> addProductToOrder();
-            case "6" -> removeProductFromOrder();
-
+        boolean terminate = false;
+        while (!terminate) {
+            System.out.println("\nOrder menu:");
+            System.out.println("1. Create shortage order");
+            System.out.println("2. Create scheduled order");
+            System.out.println("3. Approve order");
+            System.out.println("4. Get order");
+            System.out.println("5. Add product to order");
+            System.out.println("6. Remove product from order");
+            System.out.println("7. Return");
+            String chooseInsideMenu = menu.instructAndReceive("Enter choice: ");
+            switch (chooseInsideMenu) {
+                case "1" -> createNewOrder();
+                case "2" -> setPermanentOrder();
+                case "3" -> approveOrder();
+                case "4" -> getOrder();
+                case "5" -> addProductToOrder();
+                case "6" -> removeProductFromOrder();
+                case "7" -> terminate = true;
+                default -> menu.errorPrompt("Invalid choice - " + chooseInsideMenu);
+            }
         }
     }
 
@@ -498,28 +492,35 @@ public class PresentationController implements Runnable {
     }
 
     private void suppliersMainMenu() {
-        System.out.println("\nSupplier menu:");
-        System.out.println("1. Add supplier");
-        System.out.println("2. Get supplier");
-        System.out.println("3. Update supplier details");
-        System.out.println("4. Add quantity List");
-        System.out.println("5. Edit quantity List");
-        System.out.println("6. Edit agreement");
-        System.out.println("7. Get quantityList");
-        System.out.println("8. Get agreement");
-        System.out.println("9. Remove supplier");
-        String chooseInsideMenu = menu.instructAndReceive("Enter choice: ");
-        switch (chooseInsideMenu) {
-            case "1" -> addSupplierFunc();
-            case "2" -> getSupplier();
-            case "3" -> updateSupplierDetailFunc();
-            case "4" -> addQuantityList();
-            case "5" -> editQuantityList();
-            case "6" -> editAgreement();
-            case "7" -> getQuantityList();
-            case "8" -> getAgreement();
-            case "9" -> removeSupplier();
+        boolean terminate = false;
+        while (!terminate) {
+            System.out.println("\nSupplier menu:");
+            System.out.println("1. Add supplier");
+            System.out.println("2. Get supplier");
+            System.out.println("3. Update supplier details");
+            System.out.println("4. Add quantity List");
+            System.out.println("5. Edit quantity List");
+            System.out.println("6. Edit agreement");
+            System.out.println("7. Get quantityList");
+            System.out.println("8. Get agreement");
+            System.out.println("9. Remove supplier");
+            System.out.println("10. return");
+            String chooseInsideMenu = menu.instructAndReceive("Enter choice: ");
+            switch (chooseInsideMenu) {
+                case "1" -> addSupplierFunc();
+                case "2" -> getSupplier();
+                case "3" -> updateSupplierDetailFunc();
+                case "4" -> addQuantityList();
+                case "5" -> editQuantityList();
+                case "6" -> editAgreement();
+                case "7" -> getQuantityList();
+                case "8" -> getAgreement();
+                case "9" -> removeSupplier();
+                case "10" -> terminate = true;
+                default -> menu.errorPrompt("Invalid choice - " + chooseInsideMenu);
+            }
         }
+
     }
 
     //a helper function that add supplier to the system
@@ -587,9 +588,9 @@ public class PresentationController implements Runnable {
                 if (opt == 1) {
                     System.out.println("Choose items to agreement: ");
                     int productID = menu.instructAndReceive("Enter product id: ", Integer.class);
-                    int companyProductID=menu.instructAndReceive("Enter your company product id: ", Integer.class);
+                    int companyProductID = menu.instructAndReceive("Enter your company product id: ", Integer.class);
                     int price = menu.instructAndReceive("Enter price: ", Integer.class);
-                    System.out.println(service.addItemToAgreement(ID, productID,companyProductID, price).toString());
+                    System.out.println(service.addItemToAgreement(ID, productID, companyProductID, price).toString());
                 } else if (opt == 2) break;
                 else System.out.println("invalid option try again");
             }
@@ -804,8 +805,8 @@ public class PresentationController implements Runnable {
                 case 1 -> {//add new product
                     productId = menu.instructAndReceive("Please enter system product id: ", Integer.class);
                     int price = menu.instructAndReceive("Please enter price: ", Integer.class);
-                    int companyProductID=menu.instructAndReceive("Enter your company product id: ", Integer.class);
-                    System.out.println((service.addItemToAgreement(supplierId, productId,companyProductID, price).toString()));
+                    int companyProductID = menu.instructAndReceive("Enter your company product id: ", Integer.class);
+                    System.out.println((service.addItemToAgreement(supplierId, productId, companyProductID, price).toString()));
                 }
                 case 2 -> {//delete product
                     productId = menu.instructAndReceive("Please enter system product id: ", Integer.class);
@@ -847,79 +848,115 @@ public class PresentationController implements Runnable {
     }
 
     private void inventoryMainMenu() {
-        menu.printInventoryMainMenu();
-        String choice = menu.instructAndReceive("Select a sub menu: ");
-
-        switch (choice) {
-            case "1" -> itemMenuOperations();
-            case "2" -> categoryMenuOperations();
-            case "3" -> saleMenuOperations();
-            case "4" -> discountMenuOperations();
-            case "5" -> recordDefect();
-            case "6" -> reportMenuOperations();
-            default -> menu.errorPrompt("Invalid choice - " + choice);
+        boolean terminate = false;
+        while (!terminate) {
+            menu.printInventoryMainMenu();
+            String choice = menu.instructAndReceive("Select a sub menu: ");
+            switch (choice) {
+                case "1" -> itemMenuOperations();
+                case "2" -> categoryMenuOperations();
+                case "3" -> saleMenuOperations();
+                case "4" -> discountMenuOperations();
+                case "5" -> recordDefect();
+                case "6" -> reportMenuOperations();
+                case "7" -> acceptShipment();
+                case "8" -> terminate = true;
+                default -> menu.errorPrompt("Invalid choice - " + choice);
+            }
         }
+    }
 
-
+    private void acceptShipment() {
+        int trId = menu.instructAndReceive("Enter Trucking Report ID to Confirm the Shipment: ", Integer.class);
+        Response updated = service.approveTruckReport(trId);
+        if (updated.errorOccurred()) {
+            menu.errorPrompt(updated.getErrorMessage());
+        }
     }
 
 
     private void itemMenuOperations() {
-        menu.printItemMenu();
-        String choice = menu.instructAndReceive("Select item option: ");
-        switch (choice) {
-            case "1" -> showItem();
-            case "2" -> addItem();
-            case "3" -> editItem();
-            case "4" -> removeItem();
-            default -> menu.errorPrompt("Invalid choice - " + choice);
+
+        boolean terminate = false;
+        while (!terminate) {
+            menu.printItemMenu();
+            String choice = menu.instructAndReceive("Select item option: ");
+            switch (choice) {
+                case "1" -> showItem();
+                case "2" -> addItem();
+                case "3" -> editItem();
+                case "4" -> removeItem();
+                case "7" -> terminate = true;
+                default -> menu.errorPrompt("Invalid choice - " + choice);
+            }
         }
     }
 
     private void categoryMenuOperations() {
-        menu.printCategoryMenu();
-        String choice = menu.instructAndReceive("Select category option: ");
-        switch (choice) {
-            case "1" -> showCategory();
-            case "2" -> addCategory();
-            case "3" -> editCategory();
-            case "4" -> removeCategory();
-            default -> menu.errorPrompt("Invalid choice - " + choice);
+
+        boolean terminate = false;
+        while (!terminate) {
+            menu.printCategoryMenu();
+            String choice = menu.instructAndReceive("Select category option: ");
+            switch (choice) {
+                case "1" -> showCategory();
+                case "2" -> addCategory();
+                case "3" -> editCategory();
+                case "4" -> removeCategory();
+                case "5" -> terminate = true;
+                default -> menu.errorPrompt("Invalid choice - " + choice);
+
+            }
         }
     }
 
     private void saleMenuOperations() {
-        menu.printSaleMenu();
-        String choice = menu.instructAndReceive("Select Sale option: ");
-        switch (choice) {
-            case "1" -> showSale();
-            case "2" -> addItemSale();
-            case "3" -> addCategorySale();
-            case "4" -> modifySale();
-            default -> menu.errorPrompt("Invalid choice - " + choice);
+        boolean terminate = false;
+        while (!terminate) {
+            menu.printSaleMenu();
+            String choice = menu.instructAndReceive("Select Sale option: ");
+            switch (choice) {
+                case "1" -> showSale();
+                case "2" -> addItemSale();
+                case "3" -> addCategorySale();
+                case "4" -> modifySale();
+                case "5" -> terminate = true;
+                default -> menu.errorPrompt("Invalid choice - " + choice);
+
+            }
         }
     }
 
     private void discountMenuOperations() {
-        menu.printDiscountMenu();
-        String choice = menu.instructAndReceive("Select supplier discount option: ");
-        if ("1".equals(choice))
-            showSupplierDiscount();
-        else
-            menu.errorPrompt("Invalid choice - " + choice);
+        boolean terminated = false;
+        while(!terminated) {
+            menu.printDiscountMenu();
+            String choice = menu.instructAndReceive("Select supplier discount option: ");
+            if ("1".equals(choice))
+                showSupplierDiscount();
+            else if ("2".equals(choice))
+                terminated = true;
+            else
+                menu.errorPrompt("Invalid choice - " + choice);
+        }
     }
 
     public void reportMenuOperations() {
-        menu.printReportMenu();
-        String choice = menu.instructAndReceive("Select Report option: ");
-        switch (choice) {
-            case "1" -> inventoryReport();
-            case "2" -> categoryReport();
-            case "3" -> itemShortageReport();
-            case "4" -> defectsReport();
-            default -> menu.errorPrompt("Invalid choice - " + choice);
-        }
 
+        boolean terminate = false;
+        while (!terminate) {
+            menu.printReportMenu();
+            String choice = menu.instructAndReceive("Select Report option: ");
+            switch (choice) {
+                case "1" -> inventoryReport();
+                case "2" -> categoryReport();
+                case "3" -> itemShortageReport();
+                case "4" -> defectsReport();
+                case "5" -> terminate = true;
+                default -> menu.errorPrompt("Invalid choice - " + choice);
+
+            }
+        }
     }
 
     //a helper function to get a Date from the user

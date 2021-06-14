@@ -264,7 +264,12 @@ public class Service implements IService {
 
     @Override
     public Response approveTruckReport(int truckReportId) {
-        ResponseT<LinkedList<FacadeDeliveryForm>> trackReportRes = TruckingService.getInstance().getDeliveryFormsByTruckReport(truckReportId);
+        ResponseT<LinkedList<FacadeDeliveryForm>> trackReportRes;
+        try {
+            trackReportRes = TruckingService.getInstance().getDeliveryFormsByTruckReport(truckReportId);
+        } catch (NoSuchElementException e){
+            return new Response("No Truck Report Found.");
+        }
         if (trackReportRes.errorOccurred()) {
             return new Response("could not get Truck Report.");
         }

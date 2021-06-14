@@ -1,6 +1,7 @@
 package PresentationLayer;
 
 import ServiceLayer.IService;
+import ServiceLayer.Service;
 
 import java.time.LocalDate;
 import java.time.Month;
@@ -13,10 +14,10 @@ public class CreateObjects {
     private List<Integer> suppliers;
     private List<Integer> products;
 
-    public CreateObjects(IService service) {
+    public CreateObjects() {
         suppliers = new ArrayList<>();
         products = new ArrayList<>();
-        this.service = service;
+        this.service = Service.getInstance();
     }
 
     public void createObjectsForTests() {
