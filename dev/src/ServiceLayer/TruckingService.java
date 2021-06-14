@@ -731,7 +731,7 @@ public class TruckingService {
         return res.getValue().getName();
     }
 
-    public String  getSupplierName(int supplier) {
+    public String  getSupplierName(String supplier) {
         ResponseT<FacadeSupplier> res = service.getSupplier("" + supplier);
         if(res.errorOccurred()){
             return res.getErrorMessage();
