@@ -34,14 +34,17 @@ public class ResourcesService {
 
 
     //returns day,shiftType,List of drivers ID
-    public HashMap<LocalDate, HashMap<Integer, LinkedList<String>>> getDayAndDrivers() throws IllegalArgumentException {
+    public HashMap<LocalDate, HashMap<Integer, LinkedList<String>>> getDayAndDrivers() throws IllegalArgumentException, EmployeeException {
         return rc.getDaysAndDrivers();
     }
 
-    public Pair<Pair<FacadeDriver, FacadeTruck>,Integer> findDriverAndTruckForDateFromExisting(LocalDate date,Pair<LinkedList<String>,LinkedList<String>> busyTrucks){
+    public Pair<Pair<FacadeDriver, FacadeTruck>,Integer> findDriverAndTruckForDateFromExisting(LocalDate date,Pair<LinkedList<String>,LinkedList<String>> busyTrucks) throws EmployeeException {
         Pair<Pair<Driver,Truck>,Integer> p= rc.findDriverAndTruckForDateFromExisting(date,busyTrucks);
-        Pair<Pair<FacadeDriver, FacadeTruck>,Integer> result= new Pair<>(new Pair<>(new FacadeDriver(p.getFirst().getFirst()),new FacadeTruck(p.getFirst().getSecond())),p.getSecond());
-        return result;
+        if (p != null) {
+            Pair<Pair<FacadeDriver, FacadeTruck>, Integer> result = new Pair<>(new Pair<>(new FacadeDriver(p.getFirst().getFirst()), new FacadeTruck(p.getFirst().getSecond())), p.getSecond());
+            return result;
+        }
+        return null;
     }
 
 
@@ -53,19 +56,13 @@ public class ResourcesService {
      * @return the Truck and Driver, returns null if cannot
      */
 
-
-    //TODO reimplement
-    public Pair<Pair<FacadeDriver, FacadeTruck>,Integer> findDriverAndTruckForDateFromPool(LocalDate date,Pair<LinkedList<String>,LinkedList<String>> busyTrucks){
-        Pair<Pair<Driver, Truck>,Integer> p= null;
-        try {
-            p = rc.findDriverAndTruckForDateFromPool(date,busyTrucks);
-        } catch (EmployeeException e) {
-            e.printStackTrace();
-            exit(1);
-        }
-        Pair<Pair<FacadeDriver, FacadeTruck>,Integer> result=
-                new Pair<>(new Pair<>(new FacadeDriver(p.getFirst().getFirst()),new FacadeTruck(p.getFirst().getSecond())),p.getSecond());
-        return result;
+    public Pair<Pair<FacadeDriver, FacadeTruck>,Integer> findDriverAndTruckForDateFromPool(LocalDate date,Pair<LinkedList<String>,LinkedList<String>> busyTrucks) throws EmployeeException, SQLException {
+        Pair<Pair<Driver, Truck>,Integer> p=rc.findDriverAndTruckForDateFromPool(date,busyTrucks);
+        if (p != null) {
+            Pair<Pair<FacadeDriver, FacadeTruck>, Integer> result =
+                    new Pair<>(new Pair<>(new FacadeDriver(p.getFirst().getFirst()), new FacadeTruck(p.getFirst().getSecond())), p.getSecond());
+            return result;
+        }return null;
     }
 
 

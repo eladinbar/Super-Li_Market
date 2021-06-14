@@ -69,7 +69,6 @@ public class LogisticsManagerMenu {
 
     }
 
-    // TODO need to check
     private boolean currentStatusMenu(Scanner scanner) {
         int spot = 1;
         System.out.println(spot + ".\tShow Notifications");
@@ -117,7 +116,16 @@ public class LogisticsManagerMenu {
     }
 
     private void printNotifications() {
-        LinkedList<TruckingNotifications> notes = ts.getNotifications().getValue();
+        ResponseT<LinkedList<TruckingNotifications>> res = ts.getNotifications();
+        if (res.errorOccurred()){
+            System.out.println(res.getErrorMessage());
+            return;
+        }
+        LinkedList<TruckingNotifications> notes = res.getValue() ;
+        if (notes.isEmpty()){
+            System.out.println("no new notifications ");
+            return;
+        }
         int spot =1;
         for (TruckingNotifications n : notes){
             System.out.print(spot + ")");
@@ -166,7 +174,12 @@ public class LogisticsManagerMenu {
 //<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<Print Methods >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
     private void printTrucks() {
-        LinkedList<FacadeTruck> trucks = ts.getTrucks().getValue();
+        ResponseT<LinkedList<FacadeTruck>> res = ts.getTrucks();
+        if (res.errorOccurred()){
+            System.out.println(res.getErrorMessage());
+            return;
+        }
+        LinkedList<FacadeTruck> trucks = res.getValue();
         if (trucks == null || trucks.isEmpty())
             System.out.println("no Trucks in the system yet");
         else {
@@ -180,8 +193,15 @@ public class LogisticsManagerMenu {
 
     private void printDemands() {
         try {
-
-            LinkedList<FacadeDemand> demands = ts.getDemands().getValue();
+            ResponseT<LinkedList<FacadeDemand>> res = ts.getDemands();
+            if (res.errorOccurred()){
+                System.out.println(res.getErrorMessage());
+                return;
+            }
+            LinkedList<FacadeDemand> demands = res.getValue();
+            if(demands.isEmpty()){
+                System.out.println("No demands left in the system");
+            }
             demands = sortDemandsBySite(demands);
             int spot =1;
             for (FacadeDemand demand: demands){
@@ -202,7 +222,13 @@ public class LogisticsManagerMenu {
 
 
     private void printDrivers() {
-        LinkedList<FacadeDriver> drivers = ts.getDrivers().getValue();
+        ResponseT<LinkedList<FacadeDriver>> res = ts.getDrivers();
+        if (res.errorOccurred()){
+            System.out.println(res.getErrorMessage());
+            return;
+        }
+        LinkedList<FacadeDriver> drivers = res.getValue();
+
         if (drivers == null || drivers.isEmpty()) System.out.println("no Drivers in the system yet");
         else {
             for (FacadeDriver facadeDriver : drivers) {
@@ -213,9 +239,21 @@ public class LogisticsManagerMenu {
     }
 
 
+
     private void showActiveTruckingReports() {
-        LinkedList<FacadeTruckingReport> truckingReports = ts.getActiveTruckingReports().getValue();
-        truckingReports.addAll(ts.getWaitingTruckingReports().getValue());
+        ResponseT<LinkedList<FacadeTruckingReport>> res = ts.getActiveTruckingReports();
+        ResponseT<LinkedList<FacadeTruckingReport>> res2 = ts.getWaitingTruckingReports();
+        if (res.errorOccurred() ){
+            System.out.println(res.getErrorMessage());
+            return;
+        }
+        if (res2.errorOccurred() ){
+            System.out.println(res.getErrorMessage());
+            return;
+        }
+
+        LinkedList<FacadeTruckingReport> truckingReports = res.getValue();
+        truckingReports.addAll(res2.getValue());
 
         if (truckingReports.isEmpty())
             System.out.println("No active Trucking Reports");
@@ -233,7 +271,12 @@ public class LogisticsManagerMenu {
 
 
     private void showOldTruckingReports() {
-        LinkedList<FacadeTruckingReport> truckingReports = ts.getOldTruckingReports().getValue();
+        ResponseT<LinkedList<FacadeTruckingReport>> res = ts.getOldTruckingReports();
+        if (res.errorOccurred()){
+            System.out.println(res.getErrorMessage());
+            return;
+        }
+        LinkedList<FacadeTruckingReport> truckingReports = res.getValue();
 
         if (truckingReports.isEmpty())
             System.out.println("No active Trucking Reports");
@@ -262,7 +305,13 @@ public class LogisticsManagerMenu {
                 "\tLeaving Hour:" + tr.getLeavingHour() + "status: " + rep );
 
         System.out.println("related delivery form:");
-        LinkedList<FacadeDeliveryForm> dfs = ts.getDeliveryFormsByTruckReport(tr.getID()).getValue();
+        ResponseT<LinkedList<FacadeDeliveryForm>> res = ts.getDeliveryFormsByTruckReport(tr.getID());
+        if (res.errorOccurred()){
+            System.out.println(res.getErrorMessage());
+            return;
+        }
+        LinkedList<FacadeDeliveryForm> dfs = res.getValue();
+
         spot =1;
         for (FacadeDeliveryForm deliveryForm: dfs){
             System.out.print(spot+")");
@@ -293,8 +342,16 @@ public class LogisticsManagerMenu {
 
 
     private void approveTruckReports(java.util.Scanner scanner) throws ReflectiveOperationException {
-        // TODO - if waiting truck report date has passed, delete it
-        LinkedList<FacadeTruckingReport> reports = ts.getWaitingTruckingReports().getValue();
+        ResponseT<LinkedList<FacadeTruckingReport>> res = ts.getWaitingTruckingReports();
+        if (res.errorOccurred()){
+            System.out.println(res.getErrorMessage());
+            return;
+        }
+        LinkedList<FacadeTruckingReport> reports = res.getValue();
+        if (reports.isEmpty()){
+            System.out.println("no reports to approve yet");
+            return;
+        }
         int spot =1;
         for (FacadeTruckingReport report: reports){
             System.out.print(spot+")");
@@ -482,10 +539,9 @@ public class LogisticsManagerMenu {
     }
 
 
-// TODO need to check all down>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
 
-   /* // TODO need to check
+   /*
     private boolean managerDriverAndTrucks(Scanner scanner) {
         int spot = 1;
         System.out.println(spot + "\tAdd new Truck to the System");

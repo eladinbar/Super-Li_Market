@@ -9,11 +9,12 @@ import DataAccessLayer.DalObjects.TruckingObjects.DalTruck;
 import InfrastructurePackage.Pair;
 
 import javax.management.openmbean.KeyAlreadyExistsException;
+import java.nio.charset.StandardCharsets;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.*;
 
-import static java.lang.System.exit;
+import static java.lang.System.*;
 
 public class ResourcesController {
     private HashMap<String, Driver> drivers;
@@ -43,14 +44,9 @@ public class ResourcesController {
 
 
 
-    public HashMap<LocalDate, HashMap<Integer, LinkedList<String>>> getDaysAndDrivers() throws IllegalArgumentException {
+    public HashMap<LocalDate, HashMap<Integer, LinkedList<String>>> getDaysAndDrivers() throws IllegalArgumentException,EmployeeException  {
     HashMap<LocalDate, HashMap<Integer, List<String>>> received = null;
-    try {
         received = ShiftController.getInstance().getDaysAndDrivers();
-    } catch (EmployeeException e) {
-        System.out.println("Employee's Exception thrown in Resources Service. exits...");
-        exit(1);
-    }
 
 
     HashMap<LocalDate, HashMap<Integer, LinkedList<String>>> output = new HashMap<>();
@@ -102,7 +98,7 @@ public class ResourcesController {
 
     }
 
-    public Pair<Pair<Driver, Truck>,Integer> findDriverAndTruckForDateFromExisting(LocalDate date,Pair<LinkedList<String>,LinkedList<String>> busyTrucks) {
+    public Pair<Pair<Driver, Truck>,Integer> findDriverAndTruckForDateFromExisting(LocalDate date,Pair<LinkedList<String>,LinkedList<String>> busyTrucks) throws EmployeeException {
         LinkedList<Pair<Pair<Driver,Truck>,Integer>> list=findListDriversAndTrucksFromExisting(date,busyTrucks);
         if (list!=null&&!list.isEmpty())
         {
@@ -111,8 +107,16 @@ public class ResourcesController {
         else return null;
     }
 
-    private LinkedList<Pair<Pair<Driver,Truck>,Integer>> findListDriversAndTrucksFromExisting(LocalDate date,Pair<LinkedList<String>,LinkedList<String>> busyTrucks) {
-        HashMap<LocalDate, HashMap<Integer, LinkedList<String>>> shiftDrivers = getDaysAndDrivers();
+    private LinkedList<Pair<Pair<Driver,Truck>,Integer>> findListDriversAndTrucksFromExisting(LocalDate date,Pair<LinkedList<String>,LinkedList<String>> busyTrucks) throws EmployeeException {
+//        HashMap<LocalDate, HashMap<Integer, LinkedList<String>>> shiftDrivers = getDaysAndDrivers();
+        HashMap<LocalDate, HashMap<Integer, LinkedList<String>>> shiftDrivers =  new HashMap<>();
+        HashMap<Integer, LinkedList<String>> temp = new HashMap<>();
+
+        temp.put(0,turnDriversToList(getAvailableDrivers(date, 0)));
+        temp.put(1,turnDriversToList(getAvailableDrivers(date, 1)));
+         shiftDrivers.put(date, temp);
+
+
         LinkedList<Truck> freeTrucks = new LinkedList<>();
         LinkedList<Pair<Pair<Driver,Truck>,Integer>> result=new LinkedList<>();
         for (Map.Entry<String, Truck> entry : trucks.entrySet()) {
@@ -123,46 +127,59 @@ public class ResourcesController {
 
         if (shiftDrivers.containsKey(date)) {
             HashMap<Integer, LinkedList<String>> day = shiftDrivers.get(date);//Hash Map with the two shifts
-            LinkedList<String> dayDrivers = day.get(0);
+            if (day.get(0)!= null) {
+                LinkedList<String> dayDrivers = day.get(0);
 
-            dayDrivers = sortByLicense(dayDrivers);
-            freeTrucks.sort(Comparator.comparingInt(Truck::getMaxWeight));
-            for (int i = 0; i < Math.min(dayDrivers.size(), freeTrucks.size()); i++) {
-                Driver d = drivers.get(dayDrivers.removeFirst());
-                Truck t = freeTrucks.removeFirst();
-                result.add(new Pair<>(new Pair<>(d,t),0));
+                dayDrivers = sortByLicense(dayDrivers);
+                freeTrucks.sort(Comparator.comparingInt(Truck::getMaxWeight));
+                for (int i = 0; i < Math.min(dayDrivers.size(), freeTrucks.size()); i++) {
+                    Driver d = drivers.get(dayDrivers.removeFirst());
+                    Truck t = freeTrucks.removeFirst();
+                    result.add(new Pair<>(new Pair<>(d, t), 0));
+                }
             }
 
             //------ Night Shift ---------------------
             LinkedList<String> nightDrivers=new LinkedList<>();
-            for (String s : day.get(1)) {
-                if (!day.get(0).contains(s)) {
-                    nightDrivers.add(s);//to make sure no duplicates
+            if (day.get(1) != null) {
+                for (String s : day.get(1)) {
+                    if (day.get(0) ==  null ||!day.get(0).contains(s)) {
+                        nightDrivers.add(s);//to make sure no duplicates
+                    }
+                }
+                nightDrivers = sortByLicense(nightDrivers);
+                freeTrucks=  new LinkedList<>();
+                for (Map.Entry<String, Truck> entry : trucks.entrySet()) {
+                    if (!busyTrucks.getSecond().contains(entry.getKey())) {
+                        freeTrucks.add(entry.getValue());
+                    }
+                }
+                Collections.sort(freeTrucks, new Comparator<Truck>() {
+                    @Override
+                    public int compare(Truck o1, Truck o2) {
+                        return o2.getMaxWeight() - o1.getMaxWeight();
+                    }
+                });
+                int limit = Math.min(nightDrivers.size(), freeTrucks.size());
+                for (int i = 0; i < limit; i++) {
+                    Driver d = drivers.get(nightDrivers.removeFirst());
+                    Truck t = freeTrucks.removeFirst();
+                    result.add(new Pair<>(new Pair<>(d, t), 1));
                 }
             }
-            for (Map.Entry<String, Truck> entry : trucks.entrySet()) {
-                if (!busyTrucks.getSecond().contains(entry.getKey())) {
-                    freeTrucks.add(entry.getValue());
-                }
-            }
-            Collections.sort(freeTrucks, new Comparator<Truck>() {
-                @Override
-                public int compare(Truck o1, Truck o2) {
-                    return o1.getMaxWeight() - o2.getMaxWeight();
-                }
-            });
-            for (int i = 0; i < Math.min(nightDrivers.size(), freeTrucks.size()); i++) {
-                Driver d = drivers.get(nightDrivers.removeFirst());
-                Truck t = freeTrucks.removeFirst();
-                result.add(new Pair<>(new Pair<>(d,t),1));
-            }
-
             return result;
         }
         return null;
 
     }
 
+    private LinkedList<String> turnDriversToList(LinkedList<Driver> drivers) {
+        LinkedList<String > output =  new LinkedList<>();
+        for (Driver d: drivers){
+            output.add(d.getID());
+        }
+        return output;
+    }
 
 
     private LinkedList<String> sortByLicense(LinkedList<String> dayDrivers) {
@@ -176,60 +193,126 @@ public class ResourcesController {
         return sorted;
     }
 
-    //TODO check this method
     public Pair<Pair<Driver, Truck>,Integer> findDriverAndTruckForDateFromPool
-    (LocalDate date,Pair<LinkedList<String>,LinkedList<String>> busyTrucks) throws EmployeeException {
+    (LocalDate date,Pair<LinkedList<String>,LinkedList<String>> busyTrucks) throws EmployeeException, SQLException {
         LinkedList<Pair<Pair<Driver, Truck>,Integer>> pairs = findListDriverAndTruckForDateFromPool(date, busyTrucks);
         if (pairs!=null){
         for (Pair<Pair<Driver,Truck>,Integer> p : pairs) {
             Driver d = p.getFirst().getFirst();
-            try {
                 if (ShiftController.getInstance().addDriverToShift(d.getID(), date, 0)
                         || ShiftController.getInstance().addDriverToShift(d.getID(), date, 1)) {
                     return p;
                 }
-            } catch (SQLException e) {
-                e.printStackTrace();
-                exit(1);
-            }
+
         }
         }
         return null;
 
     }
+    private LinkedList<Pair<Pair<Driver, Truck>,Integer>> findListDriverAndTruckForDateFromPool
+            (LocalDate date,Pair<LinkedList<String>,LinkedList<String>> busyTrucks) throws EmployeeException, SQLException {
+        // all drivers that can be called from home
+        LinkedList<String> morningAvailableDrivers =  new LinkedList<>();
+        LinkedList<String> eveningAvailableDrivers =  new LinkedList<>();
+        for (Map.Entry<String,Driver> driver : drivers.entrySet()){
+            HashMap<LocalDate, Integer> cons = drivers_constraints.get(driver.getKey());
+            if (cons.get(date) == null){
+                if (ShiftController.getInstance().canAddDriverToShift(driver.getKey(),date,0)){
+                    morningAvailableDrivers.add(driver.getKey());
 
+                }
+                if (ShiftController.getInstance().canAddDriverToShift(driver.getKey(),date,1)) {
+
+                    eveningAvailableDrivers.add(driver.getKey());
+                }
+            }
+
+        }
+
+        morningAvailableDrivers = sortByLicense(morningAvailableDrivers);
+        eveningAvailableDrivers = sortByLicense(eveningAvailableDrivers);
+
+        // finds trucks now
+        LinkedList<Truck> morningAvailableTrucks =  new LinkedList<>();
+        LinkedList<Truck> eveningAvailableTrucks =  new LinkedList<>();
+        for (Map.Entry<String,Truck> truck : trucks.entrySet()){
+            if (!busyTrucks.getFirst().contains(truck.getKey())){
+                morningAvailableTrucks.add(truck.getValue());
+            }
+            if (!busyTrucks.getSecond().contains(truck.getKey())){
+                eveningAvailableTrucks.add(truck.getValue());
+            }
+
+        }
+        Collections.sort(morningAvailableTrucks, new Comparator<Truck>() {
+            @Override
+            public int compare(Truck o1, Truck o2) {
+                return o2.getMaxWeight() - o1.getMaxWeight();
+            }
+        });
+        Collections.sort(eveningAvailableTrucks, new Comparator<Truck>() {
+            @Override
+            public int compare(Truck o1, Truck o2) {
+                return o2.getMaxWeight() - o1.getMaxWeight();
+            }
+        });
+
+        // now all linkedLists are sorted and properly inserted.
+        // merging the lists
+
+        LinkedList<Pair<Pair<Driver, Truck>,Integer>> output = new LinkedList<>();
+        // loop through mornings
+        for (String driver: morningAvailableDrivers){
+            if (morningAvailableTrucks.isEmpty())
+                break;
+            output.add(new Pair<>(new Pair<>(drivers.get(driver), morningAvailableTrucks.removeFirst()), 0));
+        }
+        for (String driver: eveningAvailableDrivers){
+            if (morningAvailableTrucks.isEmpty())
+                break;
+            output.add(new Pair<>(new Pair<>(drivers.get(driver), eveningAvailableTrucks.removeFirst()), 1));
+        }
+        return  output;
+
+
+    }
+/*
 
     private LinkedList<Pair<Pair<Driver, Truck>,Integer>> findListDriverAndTruckForDateFromPool
-            (LocalDate date,Pair<LinkedList<String>,LinkedList<String>> busyTrucks) {
+            (LocalDate date,Pair<LinkedList<String>,LinkedList<String>> busyTrucks) throws EmployeeException {
         LinkedList<Pair<Pair<Driver,Truck>,Integer>> res=new LinkedList<>();
+        LinkedList<Truck> freeTrucks = new LinkedList<>();
+        LinkedList<String> onShiftDrivers =  new LinkedList<>();
         //---------------------------------------
         HashMap<Integer,LinkedList<String>> day=getDaysAndDrivers().get(date);
-        LinkedList<String> onShiftDrivers=day.get(0);
-        LinkedList<String> morningSittingAtHome=new LinkedList<>();
-        for (Map.Entry<String,Driver> entry:drivers.entrySet())
-        {
-            if (!onShiftDrivers.contains(entry.getKey()))
-            {
-                morningSittingAtHome.add(entry.getKey());
+        if (day.get(0) !=  null) {
+            onShiftDrivers = day.get(0);
+            LinkedList<String> morningSittingAtHome = new LinkedList<>();
+            for (Map.Entry<String, Driver> entry : drivers.entrySet()) {
+                if (!onShiftDrivers.contains(entry.getKey())) {
+                    morningSittingAtHome.add(entry.getKey());
+                }
             }
-        }
-        sortByLicense(morningSittingAtHome);
-        //---------------------------------------
-        LinkedList<Truck> freeTrucks=new LinkedList<>();
-        for (Map.Entry<String,Truck> entry:trucks.entrySet())
-        {
-            if (!busyTrucks.getFirst().contains(entry.getKey()))
-            {
-                freeTrucks.add(entry.getValue());
-            }
-        }
-        freeTrucks.sort(Comparator.comparingInt(Truck::getMaxWeight));
-        //---------------------------------------
+            sortByLicense(morningSittingAtHome);
 
-        for (int i=0;i<Math.min(morningSittingAtHome.size(),freeTrucks.size());i++)
-        {
-            res.add(new Pair<>(new Pair(drivers.get(morningSittingAtHome.removeFirst()),trucks.get(freeTrucks.removeFirst().getLicenseNumber()))
-            ,0));
+            //---------------------------------------
+            freeTrucks =  new LinkedList<>();
+            for (Map.Entry<String, Truck> entry : trucks.entrySet()) {
+                if (!busyTrucks.getFirst().contains(entry.getKey())) {
+                    freeTrucks.add(entry.getValue());
+                }
+            }
+            Collections.sort(freeTrucks, new Comparator<Truck>() {
+                @Override
+                public int compare(Truck o1, Truck o2) {
+                    return o2.getMaxWeight() - o1.getMaxWeight();
+                }
+            });            //---------------------------------------
+
+            for (int i = 0; i < Math.min(morningSittingAtHome.size(), freeTrucks.size()); i++) {
+                res.add(new Pair<>(new Pair(drivers.get(morningSittingAtHome.removeFirst()), trucks.get(freeTrucks.removeFirst().getLicenseNumber()))
+                        , 0));
+            }
         }
 
         freeTrucks=new LinkedList<>();
@@ -241,20 +324,19 @@ public class ResourcesController {
             }
         }
         freeTrucks.sort(Comparator.comparingInt(Truck::getMaxWeight));
-
-        for (String s:day.get(1))
-        {
-            if (!onShiftDrivers.contains(s))
-            {
-                onShiftDrivers.add(s);
+        if (day.get(1)!= null) {
+            for (String s : day.get(1)) {
+                if (!onShiftDrivers.contains(s)) {
+                    onShiftDrivers.add(s);
+                }
             }
         }
-
 
         if (res.isEmpty())
             return null;
         return res;
     }
+*/
 
 
 
@@ -321,16 +403,11 @@ public class ResourcesController {
 
 
     }
-    //TODO check if correct
-    public void addDriver(String id, String name, Driver.License licenseType) throws KeyAlreadyExistsException {
+    public void addDriver(String id, String name, Driver.License licenseType) throws KeyAlreadyExistsException, SQLException {
         if (!drivers.containsKey(id)) {
-            Driver driver = null;
-            try {
-                driver = new Driver(id, name, licenseType);
-            } catch (SQLException e) {
-                e.printStackTrace();
-                exit(1);
-            }
+            Driver driver;
+            driver = new Driver(id, name, licenseType);
+
             drivers.put(id, driver);
             if (licenseType == Driver.License.C1)
                 driversByLicense.addLast(driver);
@@ -476,7 +553,6 @@ public class ResourcesController {
     }
 
     public int getPossibleWeightByDate(LocalDate date,Pair<LinkedList<String>,LinkedList<String>> busyTrucks) throws EmployeeException, SQLException {
-        //TODO employees need to implement canAddToShift
         int sum=0;
         LinkedList<Pair<Pair<Driver, Truck>, Integer>> poolList = findListDriverAndTruckForDateFromPool(date, busyTrucks);
         for (Pair<Pair<Driver,Truck>,Integer> pair:poolList)
@@ -500,6 +576,79 @@ public class ResourcesController {
             }
         }
         return sum;
+    }
+
+    public LinkedList<Truck> getAvailableTrucks(LocalDate date, int shift) {
+        LinkedList<Truck> output = new LinkedList<>();
+        for (Map.Entry<String, HashMap<LocalDate, Integer>> entry : trucks_constraints.entrySet()) {
+            if (!entry.getValue().containsKey(date))
+                output.add(getTruck(entry.getKey()));
+            else {
+                if (!entry.getValue().get(date).equals(2) && !entry.getValue().get(date).equals(shift)) {
+                    output.add(getTruck(entry.getKey()));
+                }
+            }
+        }
+        return output;
+    }
+
+
+    public LinkedList<Driver> getAvailableDrivers(LocalDate date, int shift) throws EmployeeException {
+        LinkedList<String> working_drivers = getDriversForDate(date,shift);
+        LinkedList<Driver> output = new LinkedList<>();
+        if (working_drivers!= null && !working_drivers.isEmpty()) {
+            for (Map.Entry<String, HashMap<LocalDate, Integer>> entry : drivers_constraints.entrySet()) {
+                if (working_drivers.contains(entry.getKey())) {
+                    if (!entry.getValue().containsKey(date))
+                        output.add(getDriver(entry.getKey()));
+                    else {
+                        if (!entry.getValue().get(date).equals(2) && !entry.getValue().get(date).equals(shift)) {
+                            output.add(getDriver(entry.getKey()));
+                        }
+                    }
+                }
+            }
+        }
+        return output;
+    }
+
+    private LinkedList<String> getDriversForDate(LocalDate date, int shift) throws EmployeeException {
+        HashMap<LocalDate, HashMap<Integer,LinkedList<String >>> all = getDaysAndDrivers();
+        LinkedList<String> output ;
+        output = all.get(date).get(shift);
+        return output;
+    }
+
+
+    public Driver getDriver(String driverID) {
+        return drivers.get(driverID);
+    }
+
+    public Truck getTruck(String truckNumber) {
+        return trucks.get(truckNumber);
+    }
+
+    private boolean isDriverAvailable(String driver, LocalDate date, int shift) {
+
+        Integer cons = drivers_constraints.get(driver).get(date);
+        if (cons == null)
+            return true;
+        else {
+            if ((cons.equals(shift)) || cons.equals(2))
+                return false;
+            else return true;
+        }
+    }
+
+    private boolean isTruckAvailable(String truck, LocalDate date, int shift) {
+        Integer cons = trucks_constraints.get(truck).get(date);
+        if (cons == null)
+            return true;
+        else {
+            if ((cons.equals(shift)) || cons.equals(2))
+                return false;
+            else return true;
+        }
     }
 
 
@@ -568,15 +717,7 @@ public class ResourcesController {
 //        ResourcesController.instance = instance;
 //    }
 //
-//
-//    public Driver getDriver(String driverID) {
-//        return drivers.get(driverID);
-//    }
-//
-//    public Truck getTruck(String truckNumber) {
-//        return trucks.get(truckNumber);
-//    }
-//
+
 //
 //
 //
@@ -587,66 +728,11 @@ public class ResourcesController {
 //            return LocalTime.of(14, 0);
 //    }
 //
-//    public LinkedList<Driver> getAvailableDrivers(LocalDate date, int shift) {
-//        LinkedList<String> working_drivers = getDriversForDate(date,shift);
-//        LinkedList<Driver> output = new LinkedList<>();
-//        for (Map.Entry<String, HashMap<LocalDate, Integer>> entry : drivers_constraints.entrySet()) {
-//            if(working_drivers.contains(entry.getKey())) {
-//                if (!entry.getValue().containsKey(date))
-//                    output.add(getDriver(entry.getKey()));
-//                else {
-//                    if (!entry.getValue().get(date).equals(2) && !entry.getValue().get(date).equals(shift)) {
-//                        output.add(getDriver(entry.getKey()));
-//                    }
-//                }
-//            }
-//        }
-//        return output;
-//    }
+
 //
-//    private LinkedList<String> getDriversForDate(LocalDate date, int shift) {
-//        HashMap<LocalDate, HashMap<Integer,LinkedList<String >>> all = getDaysAndDrivers();
-//        LinkedList<String> output ;
-//        output = all.get(date).get(shift);
-//        return output;
-//    }
+
 //
-//    public LinkedList<Truck> getAvailableTrucks(LocalDate date, int shift) {
-//        LinkedList<Truck> output = new LinkedList<>();
-//        for (Map.Entry<String, HashMap<LocalDate, Integer>> entry : trucks_constraints.entrySet()) {
-//            if (!entry.getValue().containsKey(date))
-//                output.add(getTruck(entry.getKey()));
-//            else {
-//                if (!entry.getValue().get(date).equals(2) && !entry.getValue().get(date).equals(shift)) {
-//                    output.add(getTruck(entry.getKey()));
-//                }
-//            }
-//        }
-//        return output;
-//    }
-//
-//    private boolean isDriverAvailable(String driver, LocalDate date, int shift) {
-//
-//        Integer cons = drivers_constraints.get(driver).get(date);
-//        if (cons == null)
-//            return true;
-//        else {
-//            if ((cons.equals(shift)) || cons.equals(2))
-//                return false;
-//            else return true;
-//        }
-//    }
-//
-//    private boolean isTruckAvailable(String truck, LocalDate date, int shift) {
-//        Integer cons = trucks_constraints.get(truck).get(date);
-//        if (cons == null)
-//            return true;
-//        else {
-//            if ((cons.equals(shift)) || cons.equals(2))
-//                return false;
-//            else return true;
-//        }
-//    }
+
 //
 //
 

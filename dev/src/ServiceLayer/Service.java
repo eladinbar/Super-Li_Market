@@ -5,6 +5,7 @@ import ServiceLayer.Response.Response;
 import ServiceLayer.Response.ResponseT;
 import ServiceLayer.FacadeObjects.*;
 
+import java.sql.SQLException;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.util.*;
@@ -263,7 +264,12 @@ public class Service implements IService {
 
     @Override
     public Response approveTruckReport(int truckReportId) {
-        ResponseT<LinkedList<FacadeDeliveryForm>> trackReportRes = TruckingService.getInstance().getDeliveryFormsByTruckReport(truckReportId);
+        ResponseT<LinkedList<FacadeDeliveryForm>> trackReportRes;
+        try {
+            trackReportRes = TruckingService.getInstance().getDeliveryFormsByTruckReport(truckReportId);
+        } catch (NoSuchElementException e){
+            return new Response("No Truck Report Found.");
+        }
         if (trackReportRes.errorOccurred()) {
             return new Response("could not get Truck Report.");
         }
@@ -276,7 +282,11 @@ public class Service implements IService {
             }
 
         }
-        TruckingService.getInstance().setCompletedTruckReport(truckReportId);
+        try {
+            TruckingService.getInstance().setCompletedTruckReport(truckReportId);
+        } catch (SQLException e) {
+            new ResponseT(e.getMessage());
+        }
         return new Response();
     }
 
@@ -325,7 +335,8 @@ public class Service implements IService {
                 temp = temp.plusDays(1);
             fOrder.setDate(temp);
             if(!fOrder.getSupplier().getSc().isSelfDelivery()) {
-                if(TruckingService.getInstance().addPermanentOrder(fOrder));
+                if(!TruckingService.getInstance().addPermanentOrder(fOrder).getValue())
+                    retList.add(fOrder.getId());
             }
         }
         return new ResponseT<>(retList);

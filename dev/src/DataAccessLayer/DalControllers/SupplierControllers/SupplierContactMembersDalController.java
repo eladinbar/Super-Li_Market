@@ -45,7 +45,7 @@ public class SupplierContactMembersDalController extends DalController<DalSuppli
     @Override
     public boolean insert(DalSupplierContactMembers person) throws SQLException {
         try (Connection conn = DriverManager.getConnection(connectionString)) {
-            String query = "INSERT OR IGNORE INTO " + tableName + " VALUES (?,?)";
+            String query = "INSERT OR IGNORE  INTO " + tableName + " VALUES (?,?)";
             PreparedStatement stmt = conn.prepareStatement(query);
             stmt.setInt(1, person.getSupplierId());
             stmt.setInt(2, person.getPersonId());

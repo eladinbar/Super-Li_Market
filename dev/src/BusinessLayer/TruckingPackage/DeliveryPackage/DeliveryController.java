@@ -5,6 +5,10 @@ import BusinessLayer.TruckingNotifications;
 import DataAccessLayer.DalControllers.TruckingControllers.*;
 import DataAccessLayer.DalObjects.TruckingObjects.*;
 import InfrastructurePackage.Pair;
+import ServiceLayer.FacadeObjects.FacadeItem;
+import ServiceLayer.FacadeObjects.FacadeSupplier;
+import ServiceLayer.Response.ResponseT;
+import ServiceLayer.Service;
 
 import javax.naming.TimeLimitExceededException;
 import java.sql.SQLException;
@@ -53,14 +57,15 @@ public class DeliveryController {
 
 
 
-    public LinkedList<Pair<Integer, Integer>> createTruckReport(LinkedList<Pair<Integer, Integer>> items, String driverId, String truckId, int maxWeight, int supplier, LocalDate date, int shift)  {
+    public LinkedList<Pair<Integer, Integer>> createTruckReport(LinkedList<Pair<Integer, Integer>> items, String driverId,
+                                                                String truckId, int maxWeight, String supplier, LocalDate date, int shift) throws SQLException {
 
-
-
-        LinkedList<Integer> suppliers=new LinkedList<>();
+        LinkedList<String> suppliers=new LinkedList<>();
         suppliers.add(supplier);
         TruckingReport tr= new TruckingReport(lastReportID,date,shiftToTime(shift),truckId,driverId,suppliers);
         lastReportID++;
+        waitingTruckingReports.put(tr.getID(), tr);
+        activeDeliveryForms.put(tr.getID(),new LinkedList<>());
         items = insertItemsToTruckReport(items, supplier,maxWeight,tr.getID());
         return items;
     }
@@ -73,13 +78,19 @@ public class DeliveryController {
      * @param supplier supplier for this demand
      * @throws SQLException
      */
-    public void addDemand(LinkedList<Pair<Integer,Integer>> items, int supplier) throws SQLException {
+    public void addDemand(LinkedList<Pair<Integer,Integer>> items, String supplier) throws SQLException {
+        boolean found ;
         for (Pair<Integer,Integer> item : items) {
+            found = false;
             for (Demand demand : demands) {
-                if (demand.getItemID() == item.getFirst() && demand.getSupplier() == supplier) {
+                if (demand.getItemID() == item.getFirst() && demand.getSupplier() .equals( supplier)) {
                     demand.setAmount(demand.getAmount() + item.getSecond());
+                    found = true;
                     break;
                 }
+
+            }
+            if (!found){
                 Demand d = new Demand(item.getFirst(),supplier,item.getSecond());
                 demands.add(d);
             }
@@ -91,6 +102,8 @@ public class DeliveryController {
         for (Map.Entry<Integer,TruckingReport> entry : activeTruckingReports.entrySet()){
             tr.add(entry.getValue());
         }
+
+
         return tr;
     }
 
@@ -106,7 +119,7 @@ public class DeliveryController {
     private void updateWaitingReports() {
         HashMap<Integer, TruckingReport> waitingReports = new HashMap<>();
         for (Map.Entry<Integer,TruckingReport> entry : waitingTruckingReports.entrySet()){
-            if (entry.getValue().getDate().isBefore(LocalDate.now()))
+            if (!entry.getValue().getDate().isBefore(LocalDate.now().minusDays(1)))
                 waitingReports.put(entry.getKey(),entry.getValue());
             else {
                 oldTruckingReports.put(entry.getKey(), entry.getValue());
@@ -130,15 +143,12 @@ public class DeliveryController {
      * show all the current notifications, deletes them after showed
      * @return current notifications since last time
      */
-    public LinkedList<TruckingNotifications> getNotifications() {
+    public LinkedList<TruckingNotifications> getNotifications() throws SQLException {
         LinkedList<TruckingNotifications> output = notifications;
         notifications = new LinkedList<>();
-        try {
-            DalTruckingNotificationController.getInstance().deleteAll();
-        } catch (SQLException e) {
-            e.printStackTrace();
-            exit(1);
-        }
+
+        DalTruckingNotificationController.getInstance().deleteAll();
+
 
         return output;
     }
@@ -146,18 +156,29 @@ public class DeliveryController {
     public Pair<LinkedList<String>,LinkedList<String>> getBusyTrucksByDate(LocalDate date) {
         Pair<LinkedList<String>,LinkedList<String>> result=new Pair<>(new LinkedList<>(),new LinkedList<>());
         //first is trucks on morning shift , second is evening
-        for (Map.Entry<Integer,TruckingReport> entry:waitingTruckingReports.entrySet())
+        LinkedList<TruckingReport> reports = getTruckingReportsByDate(date);
+
+        for (TruckingReport report: reports){
+            if (report.getLeavingHour().equals(LocalTime.of(14,0))){
+                result.getSecond().add(report.getTruckNumber());
+            }
+            else
+                result.getFirst().add(report.getTruckNumber());
+
+
+        }
+/*        for (Map.Entry<Integer,TruckingReport> entry:waitingTruckingReports.entrySet())
         {
-            if (entry.getValue().getLeavingHour().equals(LocalTime.NOON))
+            if (entry.getValue().getLeavingHour().equals(LocalTime.of(14,0)))
                 result.getSecond().add(entry.getValue().getTruckNumber());
             else result.getFirst().add(entry.getValue().getTruckNumber());
         }
         for (Map.Entry<Integer,TruckingReport> entry:activeTruckingReports.entrySet())
         {
-            if (entry.getValue().getLeavingHour().equals(LocalTime.NOON))
+            if (entry.getValue().getLeavingHour().equals(LocalTime.of(14,0)))
                 result.getSecond().add(entry.getValue().getTruckNumber());
             else result.getFirst().add(entry.getValue().getTruckNumber());
-        }
+        }*/
         return result;
 
     }
@@ -215,10 +236,9 @@ public class DeliveryController {
 
     }
 
-    public LinkedList<Pair<Integer, Integer>> insertItemsToTruckReport(LinkedList<Pair<Integer, Integer>> items, int supplier, int capacity, int report_id) throws NoSuchElementException{
+    public LinkedList<Pair<Integer, Integer>> insertItemsToTruckReport(LinkedList<Pair<Integer, Integer>> items, String supplier,
+                                                                       int capacity, int report_id) throws NoSuchElementException, SQLException {
         int currentWeight = getTruckReportCurrentWeight(report_id);
-        int area =  getSupplierArea(supplier);
-        LocalDate report_date = getTruckReport(report_id).getDate();
         LinkedList<Pair<Integer,Integer>> left =  new LinkedList<>();
         // check the report can add more items
         if ( currentWeight< capacity) {
@@ -234,12 +254,8 @@ public class DeliveryController {
                         DeliveryForm toInsert = getDeliveryFormBySupplier(report_id ,supplier );
                         // if returns null - does not have this supplier yet, need to create new DF
                         if (toInsert != null){
-                            try {
-                                toInsert.addItem(item.getFirst(), amount);
-                            } catch (SQLException e) {
-                                e.printStackTrace();
-                                exit(1);
-                            }
+                            toInsert.addItem(item.getFirst(), amount);
+
                             updateLeavingWeight(toInsert);
                         }
                         else{
@@ -270,18 +286,15 @@ public class DeliveryController {
         return left;
     }
 
-    private void updateLeavingWeight(DeliveryForm deliveryForm) {
+    private void updateLeavingWeight(DeliveryForm deliveryForm) throws SQLException {
         int total =0;
         HashMap<Integer, Integer> items = deliveryForm.getItems();
         for (Map.Entry<Integer, Integer> entry : items.entrySet()){
             total += getItemTotalWeight(entry.getKey(),entry.getValue());
         }
-        try {
-            deliveryForm.setLeavingWeight(total);
-        } catch (SQLException e) {
-            e.printStackTrace();
-            exit(1);
-        }
+
+        deliveryForm.setLeavingWeight(total);
+
     }
 
     public int getItemTotalWeight(Integer itemID, int amount) {
@@ -298,9 +311,9 @@ public class DeliveryController {
      * @param supplier the supplier id.
      * @return the delivery form, returns null if couldn't find
      */
-    private DeliveryForm getDeliveryFormBySupplier(int report_id, int supplier) {
+    private DeliveryForm getDeliveryFormBySupplier(int report_id, String supplier) {
         TruckingReport report = getTruckReport(report_id);
-        LinkedList<Integer> suppliers = report.getSuppliers();
+        LinkedList<String> suppliers = report.getSuppliers();
         DeliveryForm output = null;
         if (suppliers.contains(supplier)){
             LinkedList<DeliveryForm> dfs =  null;
@@ -310,7 +323,7 @@ public class DeliveryController {
             else
                 dfs = oldDeliveryForms.get(report_id);
             for (DeliveryForm df : dfs){
-                if (df.getDestination() == supplier)
+                if (df.getDestination().equals( supplier))
                     output = df;
             }
         }
@@ -333,11 +346,23 @@ public class DeliveryController {
        int itemWeight = getItemWeight(item.getFirst());
        while (!found){
            totalWeight = output * itemWeight;
-           if (totalWeight == leftWeight)
+           if (minimumAmount >= maxAmount){
+               output = maxAmount;
                found = true;
+               break;
+           }
+           if (totalWeight == leftWeight){
+               found = true;
+               break;
+
+           }
            // if adding 1 more exceeds, finished
-           else if (( totalWeight < leftWeight) &&  (totalWeight + itemWeight > leftWeight) )
-               found= true;
+           else if (( totalWeight < leftWeight) &&  (totalWeight + itemWeight > leftWeight) ) {
+               found = true;
+               break;
+
+           }
+
            else{
                if (totalWeight< leftWeight){
                    minimumAmount = output + 1;
@@ -352,7 +377,7 @@ public class DeliveryController {
        return output;
     }
 
-    public LinkedList<Integer> getTruckReportSuppliers(int report_id) {
+    public LinkedList<String> getTruckReportSuppliers(int report_id) {
         return getTruckReport(report_id).getSuppliers();
 
     }
@@ -373,52 +398,37 @@ public class DeliveryController {
 
     }
 
-    public void managerApproveTruckReport(Integer trID) throws TimeLimitExceededException {
+    public void managerApproveTruckReport(Integer trID) throws TimeLimitExceededException, SQLException {
         TruckingReport report = getTruckReport(trID);
         if (report.getDate().isBefore(LocalDate.now()))
-            throw new TimeLimitExceededException();
+            throw new TimeLimitExceededException("the report date has already passed and cannot be approved");
         if (!report.isApproved()) {
-            try {
-                report.setApproved();
-            } catch (SQLException e) {
-                e.printStackTrace();
-                exit(1);
-            }
-
-
+            report.setApproved();
             waitingTruckingReports.remove(trID);
             activeTruckingReports.put(trID, report);
         }
     }
 
-    public void managerCancelTruckReport(int trID) throws TimeLimitExceededException {
+    public void managerCancelTruckReport(int trID) throws TimeLimitExceededException, SQLException {
 
         TruckingReport report = getTruckReport(trID);
         if (report.getDate().isBefore(LocalDate.now()))
-            throw new TimeLimitExceededException();
+            throw new TimeLimitExceededException("the report date has already passed and cannot be approved");
         if (!report.isApproved()) {
-            try {
-                DalDeliveryFormController controller=DalDeliveryFormController.getInstance();
-                LinkedList<DeliveryForm> dfs = activeDeliveryForms.get(trID);
-                for (DeliveryForm df:dfs){
-                    controller.delete(new DalDeliveryForm(df.getID(),df.getDestination(),df.isCompleted(),df.getLeavingWeight(),df.getTrID()));
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
-                exit(1);
+            DalDeliveryFormController controller=DalDeliveryFormController.getInstance();
+            LinkedList<DeliveryForm> dfs = activeDeliveryForms.get(trID);
+            for (DeliveryForm df:dfs){
+                controller.delete(new DalDeliveryForm(df.getID(),df.getDestination(),df.isCompleted(),df.getLeavingWeight(),df.getTrID()));
             }
+
 
             TruckingReport delete= waitingTruckingReports.remove(trID);
 
             activeDeliveryForms.remove(trID);
-            try {
-                DalTruckingReport tr=new DalTruckingReport(delete.getID(),delete.getLeavingHour(),delete.getDate(),delete.getTruckNumber(),delete.getDriverID(),delete.isCompleted(),delete.isApproved());
-                DalTruckingReportController.getInstance().delete(tr);
-            }
-            catch (SQLException e)
-            {
+            DalTruckingReport tr=new DalTruckingReport(delete.getID(),delete.getLeavingHour(),delete.getDate(),delete.getTruckNumber(),delete.getDriverID(),delete.isCompleted(),delete.isApproved());
+            DalTruckingReportController.getInstance().delete(tr);
 
-            }
+
         }
     }
 
@@ -427,9 +437,9 @@ public class DeliveryController {
         return demands;
     }
 
-    public void setDemandNewAmount(Integer id, Integer amount, int supplier) throws SQLException {
+    public void setDemandNewAmount(Integer id, Integer amount, String supplier) throws SQLException {
         for (Demand demand : demands){
-            if ((demand.getSupplier() == supplier ) && (demand.getItemID() == id)){
+            if ((demand.getSupplier() .equals( supplier )) && (demand.getItemID() == id)){
                 if (amount == 0){
                     demands.remove(demand);
                 }
@@ -438,7 +448,7 @@ public class DeliveryController {
         }
     }
 
-    public DeliveryForm getDeliveryForm(int id) {
+    public DeliveryForm getDeliveryForm(int id) throws  NoSuchElementException{
         DeliveryForm deliveryForm = null;
         for (Map.Entry<Integer,LinkedList< DeliveryForm>> entry : activeDeliveryForms.entrySet()){
             if (entry.getValue().contains(id)){
@@ -450,7 +460,7 @@ public class DeliveryController {
                 return entry.getValue().get(id);
             }
         }
-        return null;
+        throw new NoSuchElementException("cannot find DeliveryForm With Such id: " + id);
     }
 
 
@@ -462,7 +472,7 @@ public class DeliveryController {
     }
 
 
-    private void addSupplierToReport(int supplier,  int report_id) {
+    private void addSupplierToReport(String supplier,  int report_id) throws SQLException {
         int supplier_area =  getSupplierArea(supplier);
         LinkedList<Integer> report_areas = getReportAreas(report_id);
         if (!report_areas.contains(supplier_area)){
@@ -473,22 +483,18 @@ public class DeliveryController {
 
     }
 
-    public void addNotification(String s) {
+    public void addNotification(String s) throws SQLException {
         notifications.add(new TruckingNotifications(s));
         lastNotification++;
-        try {
-            DalTruckingNotificationController.getInstance().insert(new DalTruckingNotification(lastNotification,s));
-        } catch (SQLException e) {
-            e.printStackTrace();
-            exit(1);
-        }
+        DalTruckingNotificationController.getInstance().insert(new DalTruckingNotification(lastNotification,s));
+
     }
 
 
     public LinkedList<Integer> getReportAreas(int report_id) {
         LinkedList<Integer> areas = new LinkedList<>();
-        LinkedList<Integer> suppliers = getTruckReport(report_id).getSuppliers();
-        for (Integer supplier: suppliers){
+        LinkedList<String> suppliers = getTruckReport(report_id).getSuppliers();
+        for (String supplier: suppliers){
             if (!areas.contains(getSupplierArea(supplier))){
                 areas.add(getSupplierArea(supplier));
             }
@@ -504,21 +510,29 @@ public class DeliveryController {
         return lastNotification;
     }
 
-    // TODO - need to get from DB
     private LinkedList<DeliveryForm> getOldDeliveryForms(int report_id) {
         return oldDeliveryForms.get(report_id);
     }
 
-    private int getSupplierArea(int supplier) {
-        throw new UnsupportedOperationException();
-        // TODO - need to implement when possible
+    private int getSupplierArea(String supplier) throws NoSuchElementException {
+        ResponseT<FacadeSupplier> res = Service.getInstance().getSupplier(""+ supplier);
+        if(res.errorOccurred()){
+            throw new NoSuchElementException(res.getErrorMessage());
+        }
+        return res.getValue().getSc().getArea();
     }
 
     private int getItemWeight(Integer item_id) {
-        throw new UnsupportedOperationException();
+        ResponseT<FacadeItem> res = Service.getInstance().getItem(item_id);
+        if(res.errorOccurred()){
+           throw new NoSuchElementException(res.getErrorMessage());
+        }
+        FacadeItem item  = res.getValue();
+        return item.getWeight();
     }
 
     public LinkedList<DeliveryForm> getTruckReportDeliveryForms(int report_id) {
+        getTruckReport(report_id);
         LinkedList<DeliveryForm> dfs =  new LinkedList<>();
         if (activeDeliveryForms.containsKey(report_id))
             dfs = activeDeliveryForms.get(report_id);
@@ -626,8 +640,11 @@ public class DeliveryController {
         LinkedList<DalTruckingNotification> dalTruckingNotifications=notificationController.load();
         for (DalTruckingNotification notification:dalTruckingNotifications)
         {
-            notifications.add(new TruckingNotifications(notification));
+            TruckingNotifications note = new TruckingNotifications(notification);
+            lastNotification = Math.max(notification.getID(), lastNotification);
+            notifications.add(note);
         }
+        lastNotification ++;
 
     }
 
@@ -652,17 +669,12 @@ public class DeliveryController {
         oldTruckingReports=oldReports;
     }
 
-    public void setCompletedTruckReport(int report_id) {
+    public void setCompletedTruckReport(int report_id) throws SQLException {
         TruckingReport report = getTruckReport(report_id);
         LinkedList<DeliveryForm> deliveryForms = getTruckReportDeliveryForms(report_id);
         report.setCompleted();
         for (DeliveryForm df:deliveryForms){
-            try {
-                df.setCompleted();
-            } catch (SQLException e) {
-                e.printStackTrace();
-                exit(1);
-            }
+            df.setCompleted();
 
         }
         activeDeliveryForms.remove(report_id);

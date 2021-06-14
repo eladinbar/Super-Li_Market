@@ -3,9 +3,9 @@ package DataAccessLayer.DalObjects.TruckingObjects;
 public class DalDemand  {
     private int itemID;
     private int amount;
-    private int siteID;
+    private String siteID;
 
-    public DalDemand(int itemID,int amount,int siteID)
+    public DalDemand(int itemID,int amount,String siteID)
     {
         this.amount=amount;
         this.itemID=itemID;
@@ -20,7 +20,7 @@ public class DalDemand  {
         return itemID;
     }
 
-    public int getSiteID() {
+    public String getSiteID() {
         return siteID;
     }
 }

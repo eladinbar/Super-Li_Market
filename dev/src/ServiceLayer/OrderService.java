@@ -161,7 +161,7 @@ public class OrderService {
     public ResponseT<List<Integer>> makeOrders(int day) {
         ResponseT<List<Integer>> toReturn;
         try {
-            toReturn = makeOrders(day);
+            toReturn =new ResponseT<>( oc.makeOrders(day));
         } catch (Exception e) {
             toReturn = new ResponseT(e.getMessage());
         }

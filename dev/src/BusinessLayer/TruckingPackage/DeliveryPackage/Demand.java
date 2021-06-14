@@ -9,20 +9,17 @@ import static java.lang.System.exit;
 
 public class Demand {
     private int itemID;
-    private int supplier;//the destination - who raised the demand
+    private String supplier;//the destination - who raised the demand
     private int amount;
 
-    public Demand(int itemID, int site_id, int amount) {
+    public Demand(int itemID, String site_id, int amount) throws SQLException {
         this.itemID=itemID;
         this.supplier =site_id;
         this.amount=amount;
 
-        try {
-            DalDemandController.getInstance().insert(new DalDemand(this.itemID,this.supplier,this.amount));
-        } catch (SQLException e) {
-            e.printStackTrace();
-            exit(1);
-        }
+
+        DalDemandController.getInstance().insert(new DalDemand(this.itemID,this.amount,this.supplier));
+
     }
     public Demand(DalDemand demand) throws SQLException {
 
@@ -41,7 +38,7 @@ public class Demand {
         return itemID;
     }
 
-    public int getSupplier() {
+    public String getSupplier() {
         return supplier;
     }
 
@@ -61,7 +58,7 @@ public class Demand {
 
     }
 
-    public void setSupplier(int supplier) throws SQLException {
+    public void setSupplier(String supplier) throws SQLException {
         this.supplier = supplier;
         DalDemandController.getInstance().update(new DalDemand(itemID,amount, supplier));
 

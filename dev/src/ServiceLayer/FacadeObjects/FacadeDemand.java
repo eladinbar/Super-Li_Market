@@ -3,10 +3,10 @@ import BusinessLayer.TruckingPackage.DeliveryPackage.*;
 
 public class FacadeDemand {
     private int itemID;
-    private int supplier;
+    private String supplier;
     private int amount;
 
-    public FacadeDemand(int itemID, int site_id, int amount){
+    public FacadeDemand(int itemID, String site_id, int amount){
         this.itemID = itemID;
         this.supplier = site_id;
         this.amount = amount;
@@ -28,7 +28,7 @@ public class FacadeDemand {
         return itemID;
     }
 
-    public int getSupplier() {
+    public String getSupplier() {
         return supplier;
     }
 

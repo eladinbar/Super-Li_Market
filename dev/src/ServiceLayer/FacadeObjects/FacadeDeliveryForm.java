@@ -7,14 +7,14 @@ import java.util.Map;
 
 public class FacadeDeliveryForm implements FacadeObject{
     private int ID;
-    private int supplier;
+    private String supplier;
     private HashMap<Integer, Integer> items;
     private int leavingWeight;
     private int trID;
     private boolean completed;
 
 
-    public FacadeDeliveryForm(int ID, int origin, int supplier, HashMap<Integer,Integer> items,
+    public FacadeDeliveryForm(int ID, int origin, String supplier, HashMap<Integer,Integer> items,
                               int leavingWeight, int trID){
         this.ID = ID;
         this.supplier = supplier;
@@ -40,7 +40,7 @@ public class FacadeDeliveryForm implements FacadeObject{
         return items;
     }
 
-    public int getSupplier() {
+    public String getSupplier() {
         return supplier;
     }
 
@@ -61,7 +61,7 @@ public class FacadeDeliveryForm implements FacadeObject{
         return completed;
     }
 
-    public void setSupplier(int supplier) {
+    public void setSupplier(String supplier) {
         this.supplier = supplier;
     }
 

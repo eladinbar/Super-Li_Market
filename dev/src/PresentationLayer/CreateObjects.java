@@ -1,6 +1,7 @@
 package PresentationLayer;
 
 import ServiceLayer.IService;
+import ServiceLayer.Service;
 
 import java.time.LocalDate;
 import java.time.Month;
@@ -13,24 +14,24 @@ public class CreateObjects {
     private List<Integer> suppliers;
     private List<Integer> products;
 
-    public CreateObjects(IService service) {
+    public CreateObjects() {
         suppliers = new ArrayList<>();
         products = new ArrayList<>();
-        this.service = service;
+        this.service = Service.getInstance();
     }
 
     public void createObjectsForTests() {
         int id = 333333333;
         int phone = 544444444;
         for (int i = 0; i < 10; i++, phone++, id++) {
-            service.addSupplier("Supplier", "LastName", "email" + i + "@gmail.com", "" + id, "0" + phone, 1, true, true, "cash", "adress",0);
+            service.addSupplier("Supplier", "LastName", "email" + i + "@gmail.com", "" + id, "0" + phone, 1, true, false, "cash", "adress",0);
             suppliers.add(id);
             service.addQuantityList("" + id);
             service.addItemToAgreement("" + id, i, i, i);
             service.addQuantityListItem("" + id, i, i, i + 3);
         }
         for (int i = 10; i < 20; i++, phone++, id++) {
-            service.addSupplier("Supplier", "LastName", "email" + i + "@gmail.com", "" + id, "0" + phone, 1, false, true, "check", "adress",0);
+            service.addSupplier("Supplier", "LastName", "email" + i + "@gmail.com", "" + id, "0" + phone, 1, true, false, "check", "adress",0);
             suppliers.add(id);
         }
     }

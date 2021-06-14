@@ -16,14 +16,13 @@ public class TruckingReport {
     private LocalTime leavingHour;
     private String  truckNumber;
     private String  driverID;
-    private LinkedList<Integer> suppliers;
+    private LinkedList<String> suppliers;
     private boolean completed;
     private boolean approved;
 
 
     public TruckingReport(int ID, LocalDate date, LocalTime leavingHour, String  truckNumber, String driverID
-                          , LinkedList<Integer> suppliers)
-    {
+                          , LinkedList<String> suppliers) throws SQLException {
         this.ID=ID;
         this.date=date;
         this.leavingHour=leavingHour;
@@ -32,13 +31,10 @@ public class TruckingReport {
         this.suppliers = suppliers;
         this.approved = false;
         this.completed=false;
-        try {
-            DalTruckingReportController.getInstance().insert(new DalTruckingReport(this.ID,this.leavingHour,this.date,this.truckNumber,this.driverID
+
+        DalTruckingReportController.getInstance().insert(new DalTruckingReport(this.ID,this.leavingHour,this.date,this.truckNumber,this.driverID
                     ,this.completed,this.approved));
-        } catch (SQLException e) {
-            e.printStackTrace();
-            exit(1);
-        }
+
     }
     public TruckingReport(int ID){
         this.ID=ID;
@@ -87,7 +83,7 @@ public class TruckingReport {
         return truckNumber;
     }
 
-    public LinkedList<Integer> getSuppliers() {
+    public LinkedList<String> getSuppliers() {
         return suppliers;
     }
 
@@ -136,7 +132,7 @@ public class TruckingReport {
 
     }
 
-    public void setSuppliers(LinkedList<Integer> suppliers) {
+    public void setSuppliers(LinkedList<String> suppliers) {
         this.suppliers = suppliers;
         try {
             DalTruckingReportController.getInstance().update
@@ -191,8 +187,9 @@ public class TruckingReport {
 
     }
 
-    public void addSupplier(int supplier)  {
-        suppliers.add(supplier);
+    public void addSupplier(String supplier)  {
+        if (!suppliers.contains(supplier))
+            suppliers.add(supplier);
 
     }
 

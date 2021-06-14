@@ -113,9 +113,6 @@ public class InventorySupplierMenu {
     private List<String> setupDiscountMenuList() {
         ArrayList<String> list = new ArrayList<>();
         list.add("Show supplier discount");
-        list.add("Add item discount");
-        list.add("Add category discount");
-
         return list;
     }
 
@@ -157,6 +154,7 @@ public class InventorySupplierMenu {
         list.add("Supplier discount menu");
         list.add("Report defect");
         list.add("Reports menu");
+        list.add("Approve Shipment");
 
         return list;
     }
@@ -215,6 +213,7 @@ public class InventorySupplierMenu {
             System.out.println(option + ". " + s);
             option++;
         }
+        System.out.println(option + ". return");
     }
 
     public void errorPrompt(String errorInput) {

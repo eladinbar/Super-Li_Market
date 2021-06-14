@@ -2,11 +2,11 @@ package DataAccessLayer.DalObjects.TruckingObjects;
 
 public class DalDeliveryForm  {
     private int ID;
-    private int destination;
+    private String destination;
     private boolean completed;
     private int leavingWeight;
     private int TRID;
-    public DalDeliveryForm(int ID, int destination,boolean completed,int leavingWeight,int TRID)
+    public DalDeliveryForm(int ID, String destination,boolean completed,int leavingWeight,int TRID)
     {
         this.ID=ID;
 
@@ -21,7 +21,7 @@ public class DalDeliveryForm  {
         return ID;
     }
 
-    public int getDestination() {
+    public String getDestination() {
         return destination;
     }
 

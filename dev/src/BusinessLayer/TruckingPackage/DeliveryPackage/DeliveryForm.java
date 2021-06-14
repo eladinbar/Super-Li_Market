@@ -16,13 +16,13 @@ import static java.lang.System.exit;
 
 public class DeliveryForm {
     private int ID;
-    private int destination;
+    private String destination;
     private HashMap<Integer, Integer> items;
     private int leavingWeight;
     private int trID;
     private boolean completed;
 
-    public DeliveryForm(int ID,  int destination, HashMap<Integer, Integer> items,
+    public DeliveryForm(int ID,  String destination, HashMap<Integer, Integer> items,
                         int leavingWeight, int trID)  {
         this.ID = ID;
         this.destination = destination;
@@ -32,6 +32,9 @@ public class DeliveryForm {
         this.completed = false;
         try {
             DalDeliveryFormController.getInstance().insert(new DalDeliveryForm(ID,destination,completed,leavingWeight,trID));
+            for (Map.Entry<Integer, Integer> item: items.entrySet()){
+                DalItemsOnDFController.getInstance().insert(new DalItemsOnDF(ID, item.getKey(), item.getValue()));
+            }
         }
         catch (SQLException e){}
 
@@ -78,7 +81,7 @@ public class DeliveryForm {
         return items;
     }
 
-    public int getDestination() {
+    public String getDestination() {
         return destination;
     }
 
@@ -104,7 +107,7 @@ public class DeliveryForm {
         DalDeliveryFormController.getInstance().update(new DalDeliveryForm(this.ID,this.destination,this.completed,this.leavingWeight,this.trID));
     }
 
-    public void setDestination(int destination) throws SQLException {
+    public void setDestination(String destination) throws SQLException {
         this.destination = destination;
         DalDeliveryFormController.getInstance().update(new DalDeliveryForm(this.ID,this.destination,this.completed,this.leavingWeight,this.trID));
 
