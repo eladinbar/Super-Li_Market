@@ -130,7 +130,7 @@ public class EmployeeService {
 
     public ResponseT<FacadeEmployee> getEmployee(String Id){
         try{
-            return new ResponseT<>(new FacadeEmployee(employeeController.getEmployee(Id)));
+            return new ResponseT<>(new FacadeEmployee(employeeController.getEmployee(Id, false)));
         }
         catch (EmployeeException e){
             return new ResponseT<>(e.getMessage());

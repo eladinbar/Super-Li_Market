@@ -73,11 +73,11 @@ public class ShiftService {
     private void checkConstraintRole(HashMap<Role, List<String>> manning, LocalDate date, int shift) throws EmployeeException {
         for ( Map.Entry<Role, List<String>> entry : manning.entrySet ( ) ) {
             for ( String ID : entry.getValue ( ) ) {
-                if (EmployeeController.getInstance ( ).getEmployee ( ID ).getConstraints ( ).containsKey ( date ) &&
-                        EmployeeController.getInstance ( ).getEmployee ( ID ).getConstraints ( ).get ( date ).isMorningShift ( ) && shift == 0)
+                if (EmployeeController.getInstance ( ).getEmployee ( ID, false ).getConstraints ( ).containsKey ( date ) &&
+                        EmployeeController.getInstance ( ).getEmployee ( ID, false ).getConstraints ( ).get ( date ).isMorningShift ( ) && shift == 0)
                     throw new EmployeeException ( "Employee is unavailable." );
-                if (EmployeeController.getInstance ( ).getEmployee ( ID ).getConstraints ( ).containsKey ( date ) &&
-                        EmployeeController.getInstance ( ).getEmployee ( ID ).getConstraints ( ).get ( date ).isEveningShift ( ) && shift == 1)
+                if (EmployeeController.getInstance ( ).getEmployee ( ID, false ).getConstraints ( ).containsKey ( date ) &&
+                        EmployeeController.getInstance ( ).getEmployee ( ID, false ).getConstraints ( ).get ( date ).isEveningShift ( ) && shift == 1)
                     throw new EmployeeException ( "Employee is unavailable." );
             }
         }
@@ -86,11 +86,11 @@ public class ShiftService {
     private void checkConstraint(HashMap<String, List<String>> manning, LocalDate date, int shift) throws EmployeeException {
         for ( Map.Entry<String, List<String>> entry : manning.entrySet ( ) ) {
             for ( String ID : entry.getValue ( ) ) {
-                if (EmployeeController.getInstance ( ).getEmployee ( ID ).getConstraints ( ).containsKey ( date ) &&
-                        EmployeeController.getInstance ( ).getEmployee ( ID ).getConstraints ( ).get ( date ).isMorningShift ( ) && shift == 0)
+                if (EmployeeController.getInstance ( ).getEmployee ( ID, false ).getConstraints ( ).containsKey ( date ) &&
+                        EmployeeController.getInstance ( ).getEmployee ( ID, false ).getConstraints ( ).get ( date ).isMorningShift ( ) && shift == 0)
                     throw new EmployeeException ( "Employee is unavailable." );
-                if (EmployeeController.getInstance ( ).getEmployee ( ID ).getConstraints ( ).containsKey ( date ) &&
-                        EmployeeController.getInstance ( ).getEmployee ( ID ).getConstraints ( ).get ( date ).isEveningShift ( ) && shift == 1)
+                if (EmployeeController.getInstance ( ).getEmployee ( ID, false ).getConstraints ( ).containsKey ( date ) &&
+                        EmployeeController.getInstance ( ).getEmployee ( ID, false ).getConstraints ( ).get ( date ).isEveningShift ( ) && shift == 1)
                     throw new EmployeeException ( "Employee is unavailable." );
             }
         }
