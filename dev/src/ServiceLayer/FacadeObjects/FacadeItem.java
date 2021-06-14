@@ -55,6 +55,10 @@ public class FacadeItem extends FacadeEntity {
         return ID;
     }
 
+    public int getWeight() {
+        return weight;
+    }
+
     public String getName() {
         return name;
     }
