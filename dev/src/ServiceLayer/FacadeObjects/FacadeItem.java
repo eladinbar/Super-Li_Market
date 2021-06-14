@@ -13,10 +13,11 @@ public class FacadeItem extends FacadeEntity {
     private String storageLocation;
     private int manufacturerID;
     private String category;
+    private int weight;
 
     public FacadeItem(int ID, String name, double costPrice, double sellingPrice,
                       int minAmount, int shelfQuantity, int storageQuantity,
-                      String shelfLocation, String storageLocation, int manufacturerID) {
+                      String shelfLocation, String storageLocation, int manufacturerID, int weight) {
         this.ID = ID;
         this.name = name;
         this.costPrice = costPrice;
@@ -28,12 +29,13 @@ public class FacadeItem extends FacadeEntity {
         this.totalQuantity = storageQuantity + shelfQuantity;
         this.shelfLocation = shelfLocation;
         this.storageLocation = storageLocation;
-        this.category = "uncategorized";
+        this.weight = weight;
+        this.category = "Uncategorized";
     }
 
     public FacadeItem(int ID, String name, double costPrice, double sellingPrice,
                       int minAmount, int shelfQuantity, int storageQuantity,
-                      String shelfLocation, String storageLocation, int manufacturerID, String category) {
+                      String shelfLocation, String storageLocation, int manufacturerID, int weight, String category) {
         this.ID = ID;
         this.name = name;
         this.costPrice = costPrice;
@@ -45,6 +47,7 @@ public class FacadeItem extends FacadeEntity {
         this.totalQuantity = storageQuantity + shelfQuantity;
         this.shelfLocation = shelfLocation;
         this.storageLocation = storageLocation;
+        this.weight = weight;
         this.category = category;
     }
 
@@ -118,6 +121,7 @@ public class FacadeItem extends FacadeEntity {
                 "shelfLocation: " + shelfLocation + '\n' +
                 "storageLocation: " + storageLocation + '\n' +
                 "manufacturerID: " + manufacturerID + '\n' +
+                "weight: " + weight + '\n' +
                 "category: " + category;
     }
 }
