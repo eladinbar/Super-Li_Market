@@ -155,13 +155,13 @@ public class DeliveryController {
         //first is trucks on morning shift , second is evening
         for (Map.Entry<Integer,TruckingReport> entry:waitingTruckingReports.entrySet())
         {
-            if (entry.getValue().getLeavingHour().equals(LocalTime.NOON))
+            if (entry.getValue().getLeavingHour().equals(LocalTime.of(14,0)))
                 result.getSecond().add(entry.getValue().getTruckNumber());
             else result.getFirst().add(entry.getValue().getTruckNumber());
         }
         for (Map.Entry<Integer,TruckingReport> entry:activeTruckingReports.entrySet())
         {
-            if (entry.getValue().getLeavingHour().equals(LocalTime.NOON))
+            if (entry.getValue().getLeavingHour().equals(LocalTime.of(14,0)))
                 result.getSecond().add(entry.getValue().getTruckNumber());
             else result.getFirst().add(entry.getValue().getTruckNumber());
         }

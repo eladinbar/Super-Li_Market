@@ -428,7 +428,7 @@ public class TruckingService {
      * @return < left items ,LinkedList of the created TruckingReports>>
      */
     private ResponseT< LinkedList<Pair<Integer,Integer>>>
-    createReportsThisWeek(    LinkedList<Pair<Integer,Integer>>  items , int supplier ){
+    createReportsThisWeek(    LinkedList<Pair<Integer,Integer>>  items , int supplier ) throws EmployeeException, SQLException {
 
         for (LocalDate currDate  = LocalDate.now(); currDate.isBefore(LocalDate.now().plusDays(8)); currDate = currDate.plusDays(1)){
 
@@ -442,7 +442,7 @@ public class TruckingService {
     }
 
     private ResponseT< LinkedList<Pair<Integer,Integer>>>
-    createReportsEveryWeek( LinkedList<Pair<Integer,Integer>>  items , int supplier  ){
+    createReportsEveryWeek( LinkedList<Pair<Integer,Integer>>  items , int supplier  ) throws EmployeeException, SQLException {
         LocalDate date = getLastShiftDate();
         for (LocalDate currDate  = LocalDate.now(); currDate.isBefore(LocalDate.now().plusDays(8)); currDate = currDate.plusDays(1)){
             ResponseT<LinkedList<Pair<Integer, Integer>>> res = createReportsForDate(items, supplier, currDate);
@@ -456,7 +456,7 @@ public class TruckingService {
 
 
     private ResponseT< LinkedList<Pair<Integer,Integer>>>
-    createReportsForDate( LinkedList<Pair<Integer,Integer>>  items , int supplier , LocalDate date ){
+    createReportsForDate( LinkedList<Pair<Integer,Integer>>  items , int supplier , LocalDate date ) throws EmployeeException, SQLException {
         boolean finish = false;
         while (true){
             ResponseT<Pair<Pair<FacadeDriver, FacadeTruck>, Integer>> res = getDriverAndTruckFromExisting(date);
@@ -487,7 +487,7 @@ public class TruckingService {
 
     }
     private  HashMap<LocalDate, HashMap<Integer, LinkedList<String>>>
-    getDaysAndDrivers() throws IllegalArgumentException {
+    getDaysAndDrivers() throws IllegalArgumentException,EmployeeException {
         return resourcesService.getDayAndDrivers();
     }
 
@@ -574,7 +574,7 @@ public class TruckingService {
      * @param date
      * @return pair < < driver, truck> , Shift>
      */
-    private ResponseT< Pair <Pair<FacadeDriver, FacadeTruck>,Integer >> getDriverAndTruckFromExisting (LocalDate date){
+    private ResponseT< Pair <Pair<FacadeDriver, FacadeTruck>,Integer >> getDriverAndTruckFromExisting (LocalDate date) throws EmployeeException {
         ResponseT<Pair<LinkedList<String>, LinkedList<String>>> res = getBusyTrucksByDate(date);
         if (res.errorOccurred()){
             return new ResponseT<>(res.getErrorMessage());
@@ -582,7 +582,7 @@ public class TruckingService {
         return new ResponseT<>( resourcesService.findDriverAndTruckForDateFromExisting(date,res.getValue()));
     }
 
-    private ResponseT< Pair <Pair<FacadeDriver, FacadeTruck>,Integer >>  getDriverAndTruckFromPool (LocalDate date){
+    private ResponseT< Pair <Pair<FacadeDriver, FacadeTruck>,Integer >>  getDriverAndTruckFromPool (LocalDate date) throws EmployeeException, SQLException {
         ResponseT<Pair<LinkedList<String>, LinkedList<String>>> res = getBusyTrucksByDate(date);
         if (res.errorOccurred()){
             return new ResponseT<>(res.getErrorMessage());

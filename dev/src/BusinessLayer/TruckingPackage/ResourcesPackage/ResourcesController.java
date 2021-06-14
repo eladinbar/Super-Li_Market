@@ -43,14 +43,9 @@ public class ResourcesController {
 
 
 
-    public HashMap<LocalDate, HashMap<Integer, LinkedList<String>>> getDaysAndDrivers() throws IllegalArgumentException {
+    public HashMap<LocalDate, HashMap<Integer, LinkedList<String>>> getDaysAndDrivers() throws IllegalArgumentException,EmployeeException  {
     HashMap<LocalDate, HashMap<Integer, List<String>>> received = null;
-    try {
         received = ShiftController.getInstance().getDaysAndDrivers();
-    } catch (EmployeeException e) {
-        System.out.println("Employee's Exception thrown in Resources Service. exits...");
-        exit(1);
-    }
 
 
     HashMap<LocalDate, HashMap<Integer, LinkedList<String>>> output = new HashMap<>();
@@ -102,7 +97,7 @@ public class ResourcesController {
 
     }
 
-    public Pair<Pair<Driver, Truck>,Integer> findDriverAndTruckForDateFromExisting(LocalDate date,Pair<LinkedList<String>,LinkedList<String>> busyTrucks) {
+    public Pair<Pair<Driver, Truck>,Integer> findDriverAndTruckForDateFromExisting(LocalDate date,Pair<LinkedList<String>,LinkedList<String>> busyTrucks) throws EmployeeException {
         LinkedList<Pair<Pair<Driver,Truck>,Integer>> list=findListDriversAndTrucksFromExisting(date,busyTrucks);
         if (list!=null&&!list.isEmpty())
         {
@@ -111,7 +106,7 @@ public class ResourcesController {
         else return null;
     }
 
-    private LinkedList<Pair<Pair<Driver,Truck>,Integer>> findListDriversAndTrucksFromExisting(LocalDate date,Pair<LinkedList<String>,LinkedList<String>> busyTrucks) {
+    private LinkedList<Pair<Pair<Driver,Truck>,Integer>> findListDriversAndTrucksFromExisting(LocalDate date,Pair<LinkedList<String>,LinkedList<String>> busyTrucks) throws EmployeeException {
         HashMap<LocalDate, HashMap<Integer, LinkedList<String>>> shiftDrivers = getDaysAndDrivers();
         LinkedList<Truck> freeTrucks = new LinkedList<>();
         LinkedList<Pair<Pair<Driver,Truck>,Integer>> result=new LinkedList<>();
@@ -178,20 +173,16 @@ public class ResourcesController {
 
     //TODO check this method
     public Pair<Pair<Driver, Truck>,Integer> findDriverAndTruckForDateFromPool
-    (LocalDate date,Pair<LinkedList<String>,LinkedList<String>> busyTrucks) throws EmployeeException {
+    (LocalDate date,Pair<LinkedList<String>,LinkedList<String>> busyTrucks) throws EmployeeException, SQLException {
         LinkedList<Pair<Pair<Driver, Truck>,Integer>> pairs = findListDriverAndTruckForDateFromPool(date, busyTrucks);
         if (pairs!=null){
         for (Pair<Pair<Driver,Truck>,Integer> p : pairs) {
             Driver d = p.getFirst().getFirst();
-            try {
                 if (ShiftController.getInstance().addDriverToShift(d.getID(), date, 0)
                         || ShiftController.getInstance().addDriverToShift(d.getID(), date, 1)) {
                     return p;
                 }
-            } catch (SQLException e) {
-                e.printStackTrace();
-                exit(1);
-            }
+
         }
         }
         return null;
@@ -200,7 +191,7 @@ public class ResourcesController {
 
 
     private LinkedList<Pair<Pair<Driver, Truck>,Integer>> findListDriverAndTruckForDateFromPool
-            (LocalDate date,Pair<LinkedList<String>,LinkedList<String>> busyTrucks) {
+            (LocalDate date,Pair<LinkedList<String>,LinkedList<String>> busyTrucks) throws EmployeeException {
         LinkedList<Pair<Pair<Driver,Truck>,Integer>> res=new LinkedList<>();
         //---------------------------------------
         HashMap<Integer,LinkedList<String>> day=getDaysAndDrivers().get(date);
@@ -322,15 +313,11 @@ public class ResourcesController {
 
     }
     //TODO check if correct
-    public void addDriver(String id, String name, Driver.License licenseType) throws KeyAlreadyExistsException {
+    public void addDriver(String id, String name, Driver.License licenseType) throws KeyAlreadyExistsException, SQLException {
         if (!drivers.containsKey(id)) {
-            Driver driver = null;
-            try {
-                driver = new Driver(id, name, licenseType);
-            } catch (SQLException e) {
-                e.printStackTrace();
-                exit(1);
-            }
+            Driver driver;
+            driver = new Driver(id, name, licenseType);
+
             drivers.put(id, driver);
             if (licenseType == Driver.License.C1)
                 driversByLicense.addLast(driver);
