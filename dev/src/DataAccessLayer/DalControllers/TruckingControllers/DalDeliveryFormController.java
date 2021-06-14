@@ -88,7 +88,7 @@ public class DalDeliveryFormController extends Employee_Trucking_DALController_I
 
     public boolean delete(DalDeliveryForm deliveryForm) throws SQLException {
         Connection conn=DriverManager.getConnection(connection);
-        String query="DELETE FROM "+tableName+" WHERE("+columnNames[0]+"=?)";
+        String query="DELETE FROM "+tableName+" WHERE ("+columnNames[0]+"=?)";
         try {
             PreparedStatement st=conn.prepareStatement(query);
             st.setInt(1,deliveryForm.getID());

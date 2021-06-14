@@ -75,7 +75,7 @@ public class DalTruckController extends Employee_Trucking_DALController_Interfac
 
     public boolean delete(DalTruck dalTruck) throws SQLException {
         Connection conn=DriverManager.getConnection(connection);
-        String query="DELETE FROM "+tableName+" WHERE"+columnNames[0]+ "=? ";
+        String query="DELETE FROM "+tableName+" WHERE ("+columnNames[0]+ "=?) ";
         try {
             PreparedStatement st=conn.prepareStatement(query);
             st.setString(1,dalTruck.getLicenseNumber());
