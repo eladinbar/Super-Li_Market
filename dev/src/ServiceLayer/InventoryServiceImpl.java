@@ -714,7 +714,7 @@ public class InventoryServiceImpl implements InventoryService {
             inventoryController.modifyItemShelfQuantity(i,
                     items.get(i) + inventoryController.getItem(i).getStorageQuantity());
         }
-        return new Response(true, "Inventory updated");
+        return new Response(false, "Inventory updated");
     }
 
     private void clearDate(LocalDate... dates) {

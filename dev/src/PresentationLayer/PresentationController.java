@@ -603,7 +603,7 @@ public class PresentationController {
         System.out.println(service.getSupplier(supplierId).toString());
     }
 
-    //a helper funtion that edit supplier details in the system
+    //a helper function that edit supplier details in the system
     private void updateSupplierDetailFunc() {
         int opt = -1;
         System.out.println("Please enter supplier id: ");
@@ -871,7 +871,9 @@ public class PresentationController {
         Response updated = service.approveTruckReport(trId);
         if (updated.errorOccurred()) {
             menu.errorPrompt(updated.getErrorMessage());
+            return;
         }
+        System.out.println("Shipment updated!");
     }
 
 
