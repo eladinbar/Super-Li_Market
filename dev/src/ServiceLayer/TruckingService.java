@@ -582,8 +582,7 @@ public class TruckingService {
                 return new ResponseT<>(res.getErrorMessage());
             }
             total += res.getValue();
-        } catch (EmployeeException e) {
-            e.printStackTrace();
+        } catch (EmployeeException e) { e.printStackTrace();
         } catch (SQLException throwables) {
             throwables.printStackTrace();
 

@@ -216,7 +216,7 @@ public class ResourcesController {
         LinkedList<String> eveningAvailableDrivers =  new LinkedList<>();
         for (Map.Entry<String,Driver> driver : drivers.entrySet()){
             HashMap<LocalDate, Integer> cons = drivers_constraints.get(driver.getKey());
-            if (cons.get(date) == null){
+            if (cons.get(date) == null || cons.isEmpty()){
                 if (ShiftController.getInstance().canAddDriverToShift(driver.getKey(),date,0)){
                     morningAvailableDrivers.add(driver.getKey());
 

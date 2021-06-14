@@ -295,7 +295,7 @@ public class ShiftController {
     }
 
     public boolean canAddDriverToShift(String id, LocalDate date, int shift) throws EmployeeException {
-        if (isDriverAssigned ( id, date, shift - 1 ))
+        if (isDriverAssigned ( id, date, shift  ))
             return false;
         if(!getShift ( date, shift ).hasStoreKeeper ())
             return false;
