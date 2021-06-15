@@ -15,14 +15,15 @@ Logistics Manager - 066666666
 Storekeeper - 033333330
 
 To load the system choose whether you would like to create new data to the system or start the system with no
-pre-existing data loaded into the system.
-After loading the system you are required to login to a specific user. Enter the appropriate ID above to connect.
-Choose the appropriate occupation and you will then be granted with the system's menus.
+pre-existing data loaded into it.
+After loading the system you will be prompted to login to a specific user. In order to connect to a desired role
+you will be required to enter the appropriate ID out of the IDs listed above.
+Afterwards, choose the appropriate occupation and you will then be granted with the system's menus.
 
 Human Resources Manager can access shifts and employee related menus.
 Branch Manager can access order and supplier menus.
 Logistics Manager can access trucking/logistics menus.
 Storekeeper can access inventory, order and supplier menus.
 
-For additional more specific information regarding the menus' specifics, please refer to the attached word documents detailing
-all the different menus.
+For additional, more specific information regarding the menus' specifics, please refer to the attached word documents
+detailing all the different menus' functionality and intricacies.
