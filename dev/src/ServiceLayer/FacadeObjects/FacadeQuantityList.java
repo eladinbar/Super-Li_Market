@@ -12,6 +12,7 @@ public class FacadeQuantityList {
         this.amount = amount;
         this.discount = discount;
     }
+
     public FacadeQuantityList(BusinessLayer.SuppliersPackage.SupplierPackage.QuantityList ql){
         this.amount=ql.getAmount();
         this.discount=ql.getDiscount();

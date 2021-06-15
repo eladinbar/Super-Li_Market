@@ -126,7 +126,6 @@ public class EmployeeController {
         }
     }
 
-
     public void deleteConstraint (LocalDate date, int shift) throws EmployeeException, SQLException {
         if (loggedIn == null) {
             throw new EmployeeException ( "No user is logged in" );
@@ -165,7 +164,6 @@ public class EmployeeController {
     }
 
     public Employee addEmployee(FacadeEmployee e) throws EmployeeException, SQLException {
-
         if(loggedIn==null){
             throw new EmployeeException("No user is logged in");
         }
@@ -249,7 +247,6 @@ public class EmployeeController {
         return employees.get(Id);
     }
 
-
     public void updateBankAccount(String Id, int accountNum, int bankBranch, String bank) throws EmployeeException, SQLException {
         if(loggedIn==null){
             throw new EmployeeException("No user is logged in");
@@ -289,7 +286,6 @@ public class EmployeeController {
         toUpdate.setDaysOff(daysOff);
         DalEmployeeController.getInstance ().insert ( new DalEmployee ( loggedIn.getID (), loggedIn.getRole ().name (), loggedIn.getTransactionDate (),
                 daysOff, salary, sickDays,educationFund, loggedIn.isEmployed ()));
-
     }
 
     public LinkedList<String> getRoleInDate(LocalDate date, Role roleName, int shift) throws EmployeeException {
@@ -332,15 +328,15 @@ public class EmployeeController {
     }
 
     public void createData () throws EmployeeException, SQLException {
-            createUshers();
-            createGuard();
-            creatCashier();
-            creatStoreKeeper();
-            createManagers();
-            createShiftManagers();
-            creatDriverC ();
-            creatDriverC1 ();
-            creatTruckingManager ();
+        createUshers();
+        createGuard();
+        creatCashier();
+        creatStoreKeeper();
+        createManagers();
+        createShiftManagers();
+        creatDriverC ();
+        creatDriverC1 ();
+        creatTruckingManager ();
     }
 
     private void createShiftManagers() throws EmployeeException, SQLException {
@@ -394,7 +390,6 @@ public class EmployeeController {
             BankAccountInfo employeeAccountInfo = new BankAccountInfo(accountNum+i, bankBranch, bankName);
             TermsOfEmployment termsOfEmployment = new TermsOfEmployment(salary+1, educationFund,sickDays, daysOff );
             Employee guard = new Employee("guard", "01111111"+i, termsOfEmployment, LocalDate.now(), employeeAccountInfo);
-
             try {
                 giveConstrForExistingData(guard, LocalDate.now().plusWeeks(2).plusDays(5), 1, "wedding");
                 addEmplForExistingData(guard);

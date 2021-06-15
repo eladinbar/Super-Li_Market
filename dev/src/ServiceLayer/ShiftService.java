@@ -19,7 +19,7 @@ import java.util.List;
 import java.util.Map;
 
 public class ShiftService {
-    private ShiftController shiftController;
+    private final ShiftController shiftController;
 
     public ShiftService()
     {

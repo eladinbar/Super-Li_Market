@@ -10,9 +10,9 @@ import java.util.Calendar;
 import java.util.List;
 
 public class CreateObjects {
-    private IService service;
-    private List<Integer> suppliers;
-    private List<Integer> products;
+    private final IService service;
+    private final List<Integer> suppliers;
+    private final List<Integer> products;
 
     public CreateObjects() {
         suppliers = new ArrayList<>();

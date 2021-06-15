@@ -24,26 +24,21 @@ public class DalEmployeeController extends Employee_Trucking_DALController_Inter
 
     @Override
     protected boolean createTable() throws SQLException {
-        Connection conn = DriverManager.getConnection(connection);
-        String query = "CREATE TABLE IF NOT EXISTS EMPLOYEES("
-                +"ID TEXT,"
-                +"ROLE TEXT,"
-                +"TRANSACTIONDATE DATE,"
-                +"DAYSOFF INTEGER,"
-                +"SALARY INTEGER,"
-                +"SICKDAYS INTEGER,"
-                +"EDUCATIONFUND INTEGER,"
-                +"EMPLOYED INTEGER,"
-                +"PRIMARY KEY (ID));";
-        try {
-            PreparedStatement st=conn.prepareStatement(query);
+        try (Connection conn = DriverManager.getConnection(connection)) {
+            String query = "CREATE TABLE IF NOT EXISTS EMPLOYEES("
+                    + "ID TEXT,"
+                    + "ROLE TEXT,"
+                    + "TRANSACTIONDATE DATE,"
+                    + "DAYSOFF INTEGER,"
+                    + "SALARY INTEGER,"
+                    + "SICKDAYS INTEGER,"
+                    + "EDUCATIONFUND INTEGER,"
+                    + "EMPLOYED INTEGER,"
+                    + "PRIMARY KEY (ID));";
+            PreparedStatement st = conn.prepareStatement(query);
             st.executeUpdate();
-        }
-        catch (SQLException e){
+        } catch (SQLException e) {
             throw e;
-        }
-        finally {
-            conn.close();
         }
         return true;
     }
@@ -53,62 +48,47 @@ public class DalEmployeeController extends Employee_Trucking_DALController_Inter
         return instance;
     }
     public boolean insert(DalEmployee dalEmployee) throws SQLException {
-        Connection conn= DriverManager.getConnection(connection);
-        String query= "INSERT OR IGNORE INTO "+tableName+" VALUES (?,?,?,?,?,?,?,?)";
-        try{
-            PreparedStatement st=conn.prepareStatement(query);
-            st.setString(1,dalEmployee.getId());
-            st.setString(2,dalEmployee.getRole());
-            st.setDate(3, new Date(dalEmployee.getTransactionDate().getYear(), dalEmployee.getTransactionDate().getMonth().getValue(),dalEmployee.getTransactionDate().getDayOfMonth()));
-            st.setInt(4,dalEmployee.getDaysOff());
+        try (Connection conn = DriverManager.getConnection(connection)) {
+            String query = "INSERT OR IGNORE INTO " + tableName + " VALUES (?,?,?,?,?,?,?,?)";
+            PreparedStatement st = conn.prepareStatement(query);
+            st.setString(1, dalEmployee.getId());
+            st.setString(2, dalEmployee.getRole());
+            st.setDate(3, new Date(dalEmployee.getTransactionDate().getYear(), dalEmployee.getTransactionDate().getMonth().getValue(), dalEmployee.getTransactionDate().getDayOfMonth()));
+            st.setInt(4, dalEmployee.getDaysOff());
             st.setInt(5, dalEmployee.getSalary());
             st.setInt(6, dalEmployee.getSickDays());
             st.setInt(7, dalEmployee.getEducationFund());
             int bool = 0;
-            if(dalEmployee.getEmployed()) {bool =1;}
-            st.setInt(8,bool);
-
+            if (dalEmployee.getEmployed()) {
+                bool = 1;
+            }
+            st.setInt(8, bool);
             st.executeUpdate();
-
-        }
-        catch (SQLException e){
+        } catch (SQLException e) {
             throw e;
         }
-        finally {
-            conn.close();
-        }
-
         return true;
-
-
     }
 
     public boolean update(DalEmployee dalEmployee) throws SQLException {
-        Connection conn=DriverManager.getConnection(connection);
-        String query="UPDATE "+tableName+" SET "+columnNames[0]+"=?"+columnNames[1]+"=?, "+columnNames[2]+"=?, "+columnNames[3]+"=?, "+columnNames[4]+"=?, "+columnNames[5]+"=?, "+columnNames[6]+"=?"+columnNames[7]+"=?, WHERE ("+columnNames[0]+"=?)";
-        try{
-            PreparedStatement st=conn.prepareStatement(query);
-            st.setString(1,dalEmployee.getId());
-            st.setString(2,dalEmployee.getRole());
-            st.setDate(3, new Date(dalEmployee.getTransactionDate().getYear(), dalEmployee.getTransactionDate().getMonth().getValue(),dalEmployee.getTransactionDate().getDayOfMonth()));
-            st.setInt(4,dalEmployee.getDaysOff());
+        try (Connection conn = DriverManager.getConnection(connection)) {
+            String query = "UPDATE " + tableName + " SET " + columnNames[0] + "=?" + columnNames[1] + "=?, " + columnNames[2] + "=?, " + columnNames[3] + "=?, " + columnNames[4] + "=?, " + columnNames[5] + "=?, " + columnNames[6] + "=?" + columnNames[7] + "=?, WHERE (" + columnNames[0] + "=?)";
+            PreparedStatement st = conn.prepareStatement(query);
+            st.setString(1, dalEmployee.getId());
+            st.setString(2, dalEmployee.getRole());
+            st.setDate(3, new Date(dalEmployee.getTransactionDate().getYear(), dalEmployee.getTransactionDate().getMonth().getValue(), dalEmployee.getTransactionDate().getDayOfMonth()));
+            st.setInt(4, dalEmployee.getDaysOff());
             st.setInt(5, dalEmployee.getSalary());
             st.setInt(6, dalEmployee.getSickDays());
             int bool = 0;
-            if(dalEmployee.getEmployed()) {bool =1;}
+            if (dalEmployee.getEmployed()) {
+                bool = 1;
+            }
             st.setInt(7, bool);
             st.setInt(8, dalEmployee.getEducationFund());
-
-
             st.executeUpdate();
-
-
-        }
-        catch (SQLException e){
+        } catch (SQLException e) {
             throw e;
-        }
-        finally {
-            conn.close();
         }
         return true;
     }
@@ -121,14 +101,13 @@ public class DalEmployeeController extends Employee_Trucking_DALController_Inter
             st.setString(1,dalEmployee.getId());
             st.executeUpdate();
         }
-        catch (SQLException e)
-        {
+        catch (SQLException e) {
             throw e;
         }
         return true;
     }
-    public LinkedList<DalEmployee> load () throws SQLException// Select From DB
-    {
+
+    public LinkedList<DalEmployee> load () throws SQLException { // Select From DB
         LinkedList<DalEmployee> employees = new LinkedList<>();
         Connection conn = DriverManager.getConnection(connection);
         String query = "SELECT * FROM "+tableName;

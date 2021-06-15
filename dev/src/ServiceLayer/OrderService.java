@@ -1,6 +1,5 @@
 package ServiceLayer;
 
-import BusinessLayer.SuppliersPackage.OrderPackage.Order;
 import BusinessLayer.SuppliersPackage.OrderPackage.OrderController;
 import BusinessLayer.SuppliersPackage.SupplierPackage.Supplier;
 import BusinessLayer.SuppliersPackage.SupplierPackage.SupplierController;
@@ -16,7 +15,7 @@ import java.util.List;
 import java.util.Map;
 
 public class OrderService {
-    private OrderController oc;
+    private final OrderController oc;
 
     public OrderService() {
         this.oc = new OrderController();

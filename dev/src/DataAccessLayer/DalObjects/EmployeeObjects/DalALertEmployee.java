@@ -1,7 +1,5 @@
 package DataAccessLayer.DalObjects.EmployeeObjects;
 
-import BusinessLayer.EmployeePackage.EmployeePackage.Role;
-
 public class DalALertEmployee {
     private int ID;
     private String role;

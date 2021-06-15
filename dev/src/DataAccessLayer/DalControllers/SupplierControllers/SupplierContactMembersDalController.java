@@ -88,7 +88,6 @@ public class SupplierContactMembersDalController extends DalController<DalSuppli
                 isDesired = resultSet.getInt(1) == (supplierContactMember.getSupplierId())
                 && resultSet.getInt(2) == supplierContactMember.getPersonId();
                 if (isDesired) {
-                    //todo
                     break; //Desired category discount found
                 }
             }

@@ -10,6 +10,7 @@ public class TruckingNotifications extends Notification{
         super(content);
         this.content = LocalDate.now() + ":\n" + content;
     }
+
     public TruckingNotifications(DalTruckingNotification dalTruckingNotification)
     {
         super(dalTruckingNotification.getContent());

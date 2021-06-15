@@ -8,8 +8,6 @@ import java.util.LinkedList;
 
 public class DalDeliveryFormController extends Employee_Trucking_DALController_Interface {
 
-
-
     private static DalDeliveryFormController controller;
 
     private DalDeliveryFormController(){
@@ -34,54 +32,36 @@ public class DalDeliveryFormController extends Employee_Trucking_DALController_I
         int completed=0;
         if (deliveryForm.isCompleted())
             completed=1;
-        Connection conn= DriverManager.getConnection(connection);
-        String query= "INSERT OR IGNORE INTO "+tableName+" VALUES (?,?,?,?,?)";
-        try{
-            PreparedStatement st=conn.prepareStatement(query);
-            st.setInt(1,deliveryForm.getID());
-            st.setString(2,deliveryForm.getDestination());
-            st.setInt(3,completed);
-            st.setInt(4,deliveryForm.getLeavingWeight());
-            st.setInt(5,deliveryForm.getTRID());
-
+        try (Connection conn = DriverManager.getConnection(connection)) {
+            String query = "INSERT OR IGNORE INTO " + tableName + " VALUES (?,?,?,?,?)";
+            PreparedStatement st = conn.prepareStatement(query);
+            st.setInt(1, deliveryForm.getID());
+            st.setString(2, deliveryForm.getDestination());
+            st.setInt(3, completed);
+            st.setInt(4, deliveryForm.getLeavingWeight());
+            st.setInt(5, deliveryForm.getTRID());
             st.executeUpdate();
-
-        }
-        catch (SQLException e){
+        } catch (SQLException e) {
             throw new SQLException(e.getMessage());
         }
-        finally {
-            conn.close();
-        }
-
         return true;
-
-
     }
 
     public boolean update(DalDeliveryForm deliveryForm) throws SQLException {
         int completed=0;
         if (deliveryForm.isCompleted())
             completed=1;
-        Connection conn=DriverManager.getConnection(connection);
-        String query="UPDATE "+tableName+" SET "+columnNames[1]+"=?,"+columnNames[2]+"=?,"+columnNames[3]+"=?,"+columnNames[4]+"=?"+ "WHERE ("+columnNames[0]+"= ?)";
-        try{
-            PreparedStatement st=conn.prepareStatement(query);
-
-            st.setString(1,deliveryForm.getDestination());
-            st.setInt(2,completed);
-            st.setInt(3,deliveryForm.getLeavingWeight());
-            st.setInt(4,deliveryForm.getTRID());
-            st.setInt(5,deliveryForm.getID());
+        try (Connection conn = DriverManager.getConnection(connection)) {
+            String query = "UPDATE " + tableName + " SET " + columnNames[1] + "=?," + columnNames[2] + "=?," + columnNames[3] + "=?," + columnNames[4] + "=?" + "WHERE (" + columnNames[0] + "= ?)";
+            PreparedStatement st = conn.prepareStatement(query);
+            st.setString(1, deliveryForm.getDestination());
+            st.setInt(2, completed);
+            st.setInt(3, deliveryForm.getLeavingWeight());
+            st.setInt(4, deliveryForm.getTRID());
+            st.setInt(5, deliveryForm.getID());
             st.executeUpdate();
-
-
-        }
-        catch (SQLException e){
+        } catch (SQLException e) {
             throw new SQLException(e.getMessage());
-        }
-        finally {
-            conn.close();
         }
         return true;
     }
@@ -94,14 +74,13 @@ public class DalDeliveryFormController extends Employee_Trucking_DALController_I
             st.setInt(1,deliveryForm.getID());
             st.executeUpdate();
         }
-        catch (SQLException e)
-        {
+        catch (SQLException e) {
             throw new SQLException(e.getMessage());
         }
         return true;
     }
-    public LinkedList<DalDeliveryForm> load () throws SQLException// Select From DB
-    {
+
+    public LinkedList<DalDeliveryForm> load () throws SQLException { // Select From DB
         LinkedList<DalDeliveryForm> reports=new LinkedList<>();
         Connection conn=DriverManager.getConnection(connection);
         String query="SELECT * FROM "+tableName;
@@ -122,28 +101,23 @@ public class DalDeliveryFormController extends Employee_Trucking_DALController_I
         }
         return reports;
     }
+
     public boolean createTable() throws SQLException {
-        Connection conn = DriverManager.getConnection(connection);
-        String query = "CREATE TABLE IF NOT EXISTS DeliveryForms("
-                +"ID INTEGER,"
-                +"destination TEXT,"
-                +"completed INTEGER,"
-                +"leavingWeight INTEGER,"
-                +"TRID INTEGER,"
-                +"FOREIGN KEY (TRID) REFERENCES TruckingReports(ID) ON DELETE NO ACTION ON UPDATE CASCADE,"
-                +"FOREIGN KEY (destination) REFERENCES SupplierCard (siteID) ON DELETE NO ACTION ON UPDATE CASCADE,"
+        try (Connection conn = DriverManager.getConnection(connection)) {
+            String query = "CREATE TABLE IF NOT EXISTS DeliveryForms("
+                    + "ID INTEGER,"
+                    + "destination TEXT,"
+                    + "completed INTEGER,"
+                    + "leavingWeight INTEGER,"
+                    + "TRID INTEGER,"
+                    + "FOREIGN KEY (TRID) REFERENCES TruckingReports(ID) ON DELETE NO ACTION ON UPDATE CASCADE,"
+                    + "FOREIGN KEY (destination) REFERENCES SupplierCard (siteID) ON DELETE NO ACTION ON UPDATE CASCADE,"
 
-                +"PRIMARY KEY (ID));";
-        try {
-            PreparedStatement st=conn.prepareStatement(query);
-
+                    + "PRIMARY KEY (ID));";
+            PreparedStatement st = conn.prepareStatement(query);
             st.executeUpdate();
-        }
-        catch (SQLException e){
+        } catch (SQLException e) {
             throw new SQLException(e.getMessage());
-        }
-        finally {
-            conn.close();
         }
         return true;
     }

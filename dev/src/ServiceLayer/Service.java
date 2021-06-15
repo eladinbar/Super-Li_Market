@@ -13,10 +13,9 @@ import java.util.*;
 public class Service implements IService {
     private static Service instance;
 
-
-    private OrderService orderService;
-    private SupplierService supplierService;
-    private InventoryService inventoryService;
+    private final OrderService orderService;
+    private final SupplierService supplierService;
+    private final InventoryService inventoryService;
 
     private Service() {
         this.supplierService = new SupplierService();

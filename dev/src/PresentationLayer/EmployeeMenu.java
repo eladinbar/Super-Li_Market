@@ -9,14 +9,11 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.time.LocalDate;
 
-public class MenuPrinter_Employee {
+public class EmployeeMenu {
 
 BufferedReader sc = new BufferedReader(new InputStreamReader(System.in));
 
-    //Scanner sc = new Scanner ( System.in );
-
     public int uploadProgram(){
-        //sc.useDelimiter ( "\n" );
         System.out.println ("choose the option you'd like:\n1.upload a program with an existing data.\n2.upload a program without an existing data." );
         return getInt ();
     }
@@ -129,7 +126,6 @@ BufferedReader sc = new BufferedReader(new InputStreamReader(System.in));
                 "7.Logout" );
         return getInt ();
     }
-
 
     public FacadeEmployee createManagerAccountMenu() {
         String role;

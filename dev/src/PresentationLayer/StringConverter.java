@@ -2,7 +2,6 @@ package PresentationLayer;
 
 import ServiceLayer.FacadeObjects.*;
 
-
 public class StringConverter {
     private static StringConverter instance = null;
 

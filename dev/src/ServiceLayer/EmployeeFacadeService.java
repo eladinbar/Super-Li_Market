@@ -2,7 +2,6 @@ package ServiceLayer;
 
 import BusinessLayer.EmployeePackage.EmployeeException;
 import BusinessLayer.EmployeePackage.EmployeeNotification;
-import BusinessLayer.EmployeePackage.EmployeePackage.Employee;
 import BusinessLayer.EmployeePackage.EmployeePackage.Role;
 import BusinessLayer.Notification;
 import ServiceLayer.FacadeObjects.FacadeConstraint;
@@ -17,11 +16,11 @@ import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
 
-public class Employee_Package_FacadeService {
-    private EmployeeService employeeService;
-    private ShiftService shiftService;
+public class EmployeeFacadeService {
+    private final EmployeeService employeeService;
+    private final ShiftService shiftService;
 
-    public Employee_Package_FacadeService()
+    public EmployeeFacadeService()
     {
         employeeService = new EmployeeService ();
         shiftService = new ShiftService ();
@@ -122,7 +121,6 @@ public class Employee_Package_FacadeService {
     public ResponseT<FacadeEmployee> addManager(FacadeEmployee manager) {
         return employeeService.addManager ( manager );
     }
-
 
     public ResponseT<HashMap<LocalDate,FacadeConstraint>> getConstraints() {
         return employeeService.getConstraints();

@@ -5,8 +5,6 @@ import DataAccessLayer.DalControllers.TruckingControllers.DalDemandController;
 
 import java.sql.SQLException;
 
-import static java.lang.System.exit;
-
 public class Demand {
     private int itemID;
     private String supplier;//the destination - who raised the demand
@@ -16,18 +14,12 @@ public class Demand {
         this.itemID=itemID;
         this.supplier =site_id;
         this.amount=amount;
-
-
         DalDemandController.getInstance().insert(new DalDemand(this.itemID,this.amount,this.supplier));
-
     }
     public Demand(DalDemand demand) throws SQLException {
-
         this.itemID=demand.getItemID();
         this.amount=demand.getAmount();
         this.supplier =demand.getSiteID();
-
-
     }
 
     public int getAmount() {
@@ -49,18 +41,15 @@ public class Demand {
             DalDemandController.getInstance().delete(new DalDemand(itemID,0,supplier));
         }
         DalDemandController.getInstance().update(new DalDemand(itemID,amount, supplier));
-
     }
 
     public void setItemID(int itemID) throws SQLException {
         this.itemID = itemID;
         DalDemandController.getInstance().update(new DalDemand(itemID,amount, supplier));
-
     }
 
     public void setSupplier(String supplier) throws SQLException {
         this.supplier = supplier;
         DalDemandController.getInstance().update(new DalDemand(itemID,amount, supplier));
-
     }
 }

@@ -2,7 +2,6 @@ package DataAccessLayer.DalObjects.EmployeeObjects;
 
 import java.time.LocalDate;
 
-
 public class DalEmployee {
     private String Id;
     private String role;
@@ -25,7 +24,6 @@ public class DalEmployee {
     }
 
     // getters
-
 
     public String getId() {
         return Id;
@@ -58,6 +56,7 @@ public class DalEmployee {
     public boolean getEmployed() {
         return employed;
     }
+
     //setters
 
     public void setId(String id) {

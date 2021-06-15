@@ -24,49 +24,30 @@ public class DalDriverController extends Employee_Trucking_DALController_Interfa
         return controller;
     }
 
-
     public boolean insert(DalDriver dalDriver) throws SQLException {
-
-        Connection conn= DriverManager.getConnection(connection);
-        String query= "INSERT OR IGNORE INTO "+tableName+" VALUES (?,?,?)";
-        try{
-            PreparedStatement st=conn.prepareStatement(query);
-            st.setString(1,dalDriver.getID());
-            st.setString(2,dalDriver.getName());
-            st.setString(3,dalDriver.getLicense());
-
+        try (Connection conn = DriverManager.getConnection(connection)) {
+            String query = "INSERT OR IGNORE INTO " + tableName + " VALUES (?,?,?)";
+            PreparedStatement st = conn.prepareStatement(query);
+            st.setString(1, dalDriver.getID());
+            st.setString(2, dalDriver.getName());
+            st.setString(3, dalDriver.getLicense());
             st.executeUpdate();
-
-        }
-        catch (SQLException e){
+        } catch (SQLException e) {
             throw new SQLException(e.getMessage());
         }
-        finally {
-            conn.close();
-        }
-
         return true;
-
-
     }
 
     public boolean update(DalDriver dalDriver) throws SQLException {
-        Connection conn=DriverManager.getConnection(connection);
-        String query="UPDATE "+tableName+" SET "+columnNames[1]+"=?,"+columnNames[2]+"=? WHERE ("+columnNames[0]+"= ?)";
-        try{
-            PreparedStatement st=conn.prepareStatement(query);
-            st.setString(1,dalDriver.getName());
-            st.setString(2,dalDriver.getLicense());
-            st.setString(3,dalDriver.getID());
+        try (Connection conn = DriverManager.getConnection(connection)) {
+            String query = "UPDATE " + tableName + " SET " + columnNames[1] + "=?," + columnNames[2] + "=? WHERE (" + columnNames[0] + "= ?)";
+            PreparedStatement st = conn.prepareStatement(query);
+            st.setString(1, dalDriver.getName());
+            st.setString(2, dalDriver.getLicense());
+            st.setString(3, dalDriver.getID());
             st.executeUpdate();
-
-
-        }
-        catch (SQLException e){
+        } catch (SQLException e) {
             throw new SQLException(e.getMessage());
-        }
-        finally {
-            conn.close();
         }
         return true;
     }
@@ -79,14 +60,12 @@ public class DalDriverController extends Employee_Trucking_DALController_Interfa
             st.setString(1,dalDriver.getID());
             st.executeUpdate();
         }
-        catch (SQLException e)
-        {
+        catch (SQLException e) {
             throw new SQLException(e.getMessage());
         }
         return true;
     }
-    public LinkedList<DalDriver> load () throws SQLException// Select From DB
-    {
+    public LinkedList<DalDriver> load () throws SQLException { // Select From DB
         LinkedList<DalDriver> drivers = new LinkedList<>();
         Connection conn = DriverManager.getConnection(connection);
         String query = "SELECT * FROM "+tableName;
@@ -103,22 +82,16 @@ public class DalDriverController extends Employee_Trucking_DALController_Interfa
         return drivers;
     }
     public boolean createTable() throws SQLException {
-        Connection conn = DriverManager.getConnection(connection);
-        String query = "CREATE TABLE IF NOT EXISTS Drivers("
-                +"ID TEXT,"
-                +"name TEXT,"
-                +"license TEXT,"
-                +"PRIMARY KEY (ID));";
-        try {
-            PreparedStatement st=conn.prepareStatement(query);
-
+        try (Connection conn = DriverManager.getConnection(connection)) {
+            String query = "CREATE TABLE IF NOT EXISTS Drivers("
+                    + "ID TEXT,"
+                    + "name TEXT,"
+                    + "license TEXT,"
+                    + "PRIMARY KEY (ID));";
+            PreparedStatement st = conn.prepareStatement(query);
             st.executeUpdate();
-        }
-        catch (SQLException e){
+        } catch (SQLException e) {
             throw new SQLException(e.getMessage());
-        }
-        finally {
-            conn.close();
         }
         return true;
     }

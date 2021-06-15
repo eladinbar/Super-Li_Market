@@ -23,78 +23,56 @@ public class DalConstraintController extends Employee_Trucking_DALController_Int
 
     @Override
     protected boolean createTable() throws SQLException {
-        Connection conn = DriverManager.getConnection(connection);
-        String query = "CREATE TABLE IF NOT EXISTS CONSTRAINTS("
-                +"EMPLOYEEID TEXT,"
-                +"REASON TEXT,"
-                +"DATE TEXT,"
-                +"SHIFT INTEGER,"
-                +"FOREIGN KEY (EMPLOYEEID) REFERENCES EMPLOYEES(ID),"
-                +"PRIMARY KEY (DATE, EMPLOYEEID));";
-        try {
-            PreparedStatement st=conn.prepareStatement(query);
+        try (Connection conn = DriverManager.getConnection(connection)) {
+            String query = "CREATE TABLE IF NOT EXISTS CONSTRAINTS("
+                    + "EMPLOYEEID TEXT,"
+                    + "REASON TEXT,"
+                    + "DATE TEXT,"
+                    + "SHIFT INTEGER,"
+                    + "FOREIGN KEY (EMPLOYEEID) REFERENCES EMPLOYEES(ID),"
+                    + "PRIMARY KEY (DATE, EMPLOYEEID));";
+            PreparedStatement st = conn.prepareStatement(query);
             st.executeUpdate();
-        }
-        catch (SQLException e){
+        } catch (SQLException e) {
             throw e;
-        }
-        finally {
-            conn.close();
         }
         return true;
     }
-
 
     public static DalConstraintController getInstance()throws SQLException{
         if(instance==null){ instance = new DalConstraintController();}
         return instance;
     }
+
     public boolean insert(DalConstraint dalConstraint) throws SQLException {
-        Connection conn= DriverManager.getConnection(connection);
-        String query= "INSERT OR IGNORE INTO "+tableName+" VALUES (?,?,?,?)";
-        try{
-            PreparedStatement st=conn.prepareStatement(query);
-            st.setString(1,dalConstraint.getEmployeeId());
-            st.setString(2,dalConstraint.getReason());
-            st.setString (3, dalConstraint.getDate ().toString ());
-            st.setInt(4,dalConstraint.getShift());
+        try (Connection conn = DriverManager.getConnection(connection)) {
+            String query = "INSERT OR IGNORE INTO " + tableName + " VALUES (?,?,?,?)";
+            PreparedStatement st = conn.prepareStatement(query);
+            st.setString(1, dalConstraint.getEmployeeId());
+            st.setString(2, dalConstraint.getReason());
+            st.setString(3, dalConstraint.getDate().toString());
+            st.setInt(4, dalConstraint.getShift());
             st.executeUpdate();
 
-        }
-        catch (SQLException e){
+        } catch (SQLException e) {
             throw e;
         }
-        finally {
-            conn.close();
-        }
-
         return true;
-
-
     }
 
     public boolean update(DalConstraint dalConstraint) throws SQLException {
-        Connection conn=DriverManager.getConnection(connection);
-        String query="UPDATE "+tableName+" SET "+columnNames[0]+"=?, "+columnNames[1]+"=?, "+columnNames[2]+"=?, "+columnNames[3]+"=?, WHERE ("+columnNames[0]+"=? AND "+columnNames[2]+"=?)";
-        try{
-            PreparedStatement st=conn.prepareStatement(query);
-            st.setString(1,dalConstraint.getEmployeeId());
-            st.setString(2,dalConstraint.getReason());
-            st.setString (3, dalConstraint.getDate ().toString ());
-            st.setInt(4,dalConstraint.getShift());
-            st.setString(5,dalConstraint.getEmployeeId());
-            st.setString (6, dalConstraint.getDate ().toString ());
-
-
+        try (Connection conn = DriverManager.getConnection(connection)) {
+            String query = "UPDATE " + tableName + " SET " + columnNames[0] + "=?, " + columnNames[1] + "=?, " + columnNames[2] + "=?, " + columnNames[3] + "=?, WHERE (" + columnNames[0] + "=? AND " + columnNames[2] + "=?)";
+            PreparedStatement st = conn.prepareStatement(query);
+            st.setString(1, dalConstraint.getEmployeeId());
+            st.setString(2, dalConstraint.getReason());
+            st.setString(3, dalConstraint.getDate().toString());
+            st.setInt(4, dalConstraint.getShift());
+            st.setString(5, dalConstraint.getEmployeeId());
+            st.setString(6, dalConstraint.getDate().toString());
             st.executeUpdate();
-
-
-        }
-        catch (SQLException e){
+        } catch (SQLException e) {
             throw new SQLException(e.getMessage());
-        }
-        finally {
-            conn.close();
         }
         return true;
     }
@@ -114,6 +92,7 @@ public class DalConstraintController extends Employee_Trucking_DALController_Int
         }
         return true;
     }
+
     public LinkedList<DalConstraint> load () throws SQLException// Select From DB
     {
         LinkedList<DalConstraint> constraints = new LinkedList<>();
@@ -134,6 +113,5 @@ public class DalConstraintController extends Employee_Trucking_DALController_Int
         }
         return constraints;
     }
-
-    }
+}
 

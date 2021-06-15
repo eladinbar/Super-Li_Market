@@ -55,8 +55,6 @@ public class EmployeeService {
         }
     }
 
-
-
     public Response deleteConstraint (LocalDate date, int shift) throws SQLException {
         try{
             employeeController.deleteConstraint(date, shift);
@@ -125,9 +123,6 @@ public class EmployeeService {
         }
     }
 
-
-
-
     public ResponseT<FacadeEmployee> getEmployee(String Id){
         try{
             return new ResponseT<>(new FacadeEmployee(employeeController.getEmployee(Id, false)));
@@ -155,8 +150,6 @@ public class EmployeeService {
             return new ResponseT<>(e.getMessage());
         }
     }
-
-
 
     public ResponseT<HashMap<LocalDate,FacadeConstraint>> getConstraints(String id) {
         try{
@@ -212,8 +205,8 @@ public class EmployeeService {
         employeeController.addAlert ( role, alert );
         return new ResponseT ( DalAlertEmployeeController.getInstance ().getLast () );
     }
-    //private methods:
 
+    //private methods:
     private HashMap<LocalDate, FacadeConstraint> convertConstrainToFacade(HashMap<LocalDate, Constraint> toConvert) {
         HashMap<LocalDate, FacadeConstraint> converted = new HashMap<>();
         for (LocalDate date: toConvert.keySet()) {

@@ -26,44 +26,29 @@ public class DalItemsOnDFController extends Employee_Trucking_DALController_Inte
     }
 
     public boolean insert(DalItemsOnDF dalItemsOnDF) throws SQLException {
-        Connection conn= DriverManager.getConnection(connection);
-        String query= "INSERT OR IGNORE INTO "+tableName+" VALUES (?,?,?)";
-        try{
-            PreparedStatement st=conn.prepareStatement(query);
-            st.setInt(1,dalItemsOnDF.getDFID());
-            st.setInt(2,dalItemsOnDF.getItemID());
-            st.setInt(3,dalItemsOnDF.getAmount());
-
+        try (Connection conn = DriverManager.getConnection(connection)) {
+            String query = "INSERT OR IGNORE INTO " + tableName + " VALUES (?,?,?)";
+            PreparedStatement st = conn.prepareStatement(query);
+            st.setInt(1, dalItemsOnDF.getDFID());
+            st.setInt(2, dalItemsOnDF.getItemID());
+            st.setInt(3, dalItemsOnDF.getAmount());
             st.executeUpdate();
-
-        }
-        catch (SQLException e){
+        } catch (SQLException e) {
             throw new SQLException(e.getMessage());
         }
-        finally {
-            conn.close();
-        }
-
         return true;
-
-
     }
 
     public boolean update(DalItemsOnDF dalItemsOnDF) throws SQLException {
-        Connection conn=DriverManager.getConnection(connection);
-        String query="UPDATE "+tableName+" SET "+columnNames[2]+"=? WHERE ("+columnNames[0]+"= ? AND "+columnNames[1]+"=?) ";
-        try{
-            PreparedStatement st=conn.prepareStatement(query);
-            st.setInt(1,dalItemsOnDF.getAmount());
-            st.setInt(2,dalItemsOnDF.getDFID());
-            st.setInt(3,dalItemsOnDF.getItemID());
+        try (Connection conn = DriverManager.getConnection(connection)) {
+            String query = "UPDATE " + tableName + " SET " + columnNames[2] + "=? WHERE (" + columnNames[0] + "= ? AND " + columnNames[1] + "=?) ";
+            PreparedStatement st = conn.prepareStatement(query);
+            st.setInt(1, dalItemsOnDF.getAmount());
+            st.setInt(2, dalItemsOnDF.getDFID());
+            st.setInt(3, dalItemsOnDF.getItemID());
             st.executeUpdate();
-        }
-        catch (SQLException e){
+        } catch (SQLException e) {
             throw new SQLException(e.getMessage());
-        }
-        finally {
-            conn.close();
         }
         return true;
     }
@@ -83,8 +68,8 @@ public class DalItemsOnDFController extends Employee_Trucking_DALController_Inte
         }
         return true;
     }
-    public LinkedList<DalItemsOnDF> load () throws SQLException// Select From DB
-    {
+
+    public LinkedList<DalItemsOnDF> load () throws SQLException { // Select From DB
         LinkedList<DalItemsOnDF> items = new LinkedList<>();
         Connection conn = DriverManager.getConnection(connection);
         String query = "SELECT * FROM "+tableName;
@@ -99,25 +84,20 @@ public class DalItemsOnDFController extends Employee_Trucking_DALController_Inte
         }
         return items;
     }
-    public boolean createTable() throws SQLException {
-        Connection conn = DriverManager.getConnection(connection);
-        String query = "CREATE TABLE IF NOT EXISTS ItemsOnDFs("
-                +"DFID INTEGER,"
-                +"itemID INTEGER,"
-                +"amount INTEGER,"
-                +"FOREIGN KEY (DFID) REFERENCES DeliveryForms(DFID),"
-                +"FOREIGN KEY (itemID) REFERENCES Items (ID) ON DELETE NO ACTION ON UPDATE CASCADE,"
-                +"PRIMARY KEY (itemID , DFID));";
-        try {
-            PreparedStatement st=conn.prepareStatement(query);
 
+    public boolean createTable() throws SQLException {
+        try (Connection conn = DriverManager.getConnection(connection)) {
+            String query = "CREATE TABLE IF NOT EXISTS ItemsOnDFs("
+                    + "DFID INTEGER,"
+                    + "itemID INTEGER,"
+                    + "amount INTEGER,"
+                    + "FOREIGN KEY (DFID) REFERENCES DeliveryForms(DFID),"
+                    + "FOREIGN KEY (itemID) REFERENCES Items (ID) ON DELETE NO ACTION ON UPDATE CASCADE,"
+                    + "PRIMARY KEY (itemID , DFID));";
+            PreparedStatement st = conn.prepareStatement(query);
             st.executeUpdate();
-        }
-        catch (SQLException e){
+        } catch (SQLException e) {
             throw new SQLException(e.getMessage());
-        }
-        finally {
-            conn.close();
         }
         return true;
     }

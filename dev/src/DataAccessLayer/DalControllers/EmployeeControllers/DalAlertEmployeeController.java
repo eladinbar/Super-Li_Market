@@ -20,26 +20,20 @@ public class DalAlertEmployeeController extends Employee_Trucking_DALController_
         catch(SQLException e){
             throw e;
         }
-
     }
 
     @Override
     protected boolean createTable() throws SQLException {
-        Connection conn = DriverManager.getConnection(connection);
-        String query = "CREATE TABLE IF NOT EXISTS RESOURCE_MANAGER_ALERTS("
-                +"ID INTEGER AUTHORIZATION ,"
-                +"ROLE TEXT,"
-                +"ALERT TEXT,"
-                +"PRIMARY KEY (ID));";
-        try {
-            PreparedStatement st=conn.prepareStatement(query);
+        try (Connection conn = DriverManager.getConnection(connection)) {
+            String query = "CREATE TABLE IF NOT EXISTS RESOURCE_MANAGER_ALERTS("
+                    + "ID INTEGER AUTHORIZATION ,"
+                    + "ROLE TEXT,"
+                    + "ALERT TEXT,"
+                    + "PRIMARY KEY (ID));";
+            PreparedStatement st = conn.prepareStatement(query);
             st.executeUpdate();
-        }
-        catch (SQLException e){
+        } catch (SQLException e) {
             throw e;
-        }
-        finally {
-            conn.close();
         }
         return true;
     }
@@ -60,7 +54,6 @@ public class DalAlertEmployeeController extends Employee_Trucking_DALController_
         return alerts;
     }
 
-
     public static DalAlertEmployeeController getInstance() throws SQLException{
 
         if(instance==null){ instance = new DalAlertEmployeeController ();}
@@ -68,21 +61,15 @@ public class DalAlertEmployeeController extends Employee_Trucking_DALController_
     }
 
     public boolean insert(DalALertEmployee dalALertEmployee) throws SQLException {
-        Connection conn= DriverManager.getConnection(connection);
-        String query= "INSERT OR IGNORE INTO "+tableName+" VALUES (?,?)";
-        try{
-            PreparedStatement st=conn.prepareStatement(query);
-            st.setString (1,dalALertEmployee.getRole ());
-            st.setString(2,dalALertEmployee.getAlert());
+        try (Connection conn = DriverManager.getConnection(connection)) {
+            String query = "INSERT OR IGNORE INTO " + tableName + " VALUES (?,?)";
+            PreparedStatement st = conn.prepareStatement(query);
+            st.setString(1, dalALertEmployee.getRole());
+            st.setString(2, dalALertEmployee.getAlert());
             st.executeUpdate();
-        }
-        catch (SQLException e){
+        } catch (SQLException e) {
             throw e;
         }
-        finally {
-            conn.close();
-        }
-
         return true;
     }
 

@@ -64,18 +64,6 @@ public interface IService {
     ResponseT<Double> getOrderTotalDiscount(int orderID);
     ResponseT<FacadeSupplier> getCheapestSupplier(int productID, int amount, boolean scheduled);
 
-    /*
-    ResponseT<order> createOrderFromShortage(LocalDate date,String supplier,List<Integer> productsID,List<Integer> amount);
-    */
-
-    /*
-    //system
-    ResponseT<List<product>> getAllSystemProducts();
-    ResponseT<List<product>> getAllSupplierProducts();
-    ResponseT<List<order>> getAllOrders();
-    ResponseT<List<supplier>> getAllSuppliers();
-    */
-
     //-------------------------------------------------------------------------Item functions
 
     Response addItem(int id, String name, String categoryName, double costPrice, double sellingPrice, int minAmount,
@@ -116,8 +104,6 @@ public interface IService {
     Response addItemSale(String saleName, int itemID, double saleDiscount, LocalDate startDate, LocalDate endDate);
     Response addCategorySale(String saleName, String categoryName, double saleDiscount, LocalDate startDate, LocalDate endDate);
 
-
-
     Response modifySaleName(String oldName, String newName);
     Response modifySaleDiscount(String saleName, double newDiscount);
     Response modifySaleDates(String saleName, LocalDate startDate, LocalDate endDate);
@@ -142,6 +128,4 @@ public interface IService {
     ResponseT<Pair<Map<Integer, Integer >,Map<Integer, String>>>getItemsInShortAndQuantities();
 
     Response updateQuantityInventory(ArrayList<FacadeProduct> items);
-
-
 }

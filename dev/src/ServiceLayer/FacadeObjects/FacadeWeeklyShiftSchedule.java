@@ -10,15 +10,13 @@ public class FacadeWeeklyShiftSchedule implements FacadeObject {
     private FacadeShift[][] shifts;
 
     //an existing schedule with given shifts
-    public FacadeWeeklyShiftSchedule(LocalDate date, FacadeShift[][] shifts)
-    {
+    public FacadeWeeklyShiftSchedule(LocalDate date, FacadeShift[][] shifts) {
         this.date = date;
         this.shifts = shifts;
     }
 
     //a new schedule with no shifts
-    public FacadeWeeklyShiftSchedule(LocalDate date)
-    {
+    public FacadeWeeklyShiftSchedule(LocalDate date) {
         this.date = date;
         this.shifts = new FacadeShift[7][2];
     }

@@ -1,8 +1,8 @@
 package ServiceLayer.FacadeObjects;
 
 public class FacadeSupplier {
-    private FacadeSupplierCard sc;
-    private FacadeAgreement ag;
+    private final FacadeSupplierCard sc;
+    private final FacadeAgreement ag;
 
     public FacadeSupplier(FacadeSupplierCard sc, FacadeAgreement ag) throws Exception {
         this.sc = sc;
@@ -23,6 +23,7 @@ public class FacadeSupplier {
     public String toString() {
         return sc.toString();
     }
+
     protected String getName(){
         return sc.firstName+" "+sc.lastName;
     }

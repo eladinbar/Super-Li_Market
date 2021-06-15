@@ -8,7 +8,6 @@ import ServiceLayer.Response.*;
 import ServiceLayer.Response.ResponseT;
 import ServiceLayer.FacadeObjects.*;
 import ServiceLayer.FacadeObjects.FacadeDefectEntry;
-import ServiceLayer.FacadeObjects.FacadeProduct;
 
 import java.time.LocalDate;
 import java.util.*;
@@ -425,7 +424,6 @@ public class InventoryServiceImpl implements InventoryService {
 
     @Override
     public Response addItemSale(String saleName, int itemID, double saleDiscount, LocalDate startDate, LocalDate endDate) {
-        clearDate(startDate, endDate);
         Response response;
         //Check basic argument constraints
         if (saleName == null || saleName.trim().equals("") | itemID < 0 | saleDiscount < 0) {
@@ -445,7 +443,6 @@ public class InventoryServiceImpl implements InventoryService {
 
     @Override
     public Response addCategorySale(String saleName, String categoryName, double saleDiscount, LocalDate startDate, LocalDate endDate) {
-        clearDate(startDate, endDate);
         Response response;
         //Check basic argument constraints
         if (saleName == null || saleName.trim().equals("") | saleDiscount < 0) {
@@ -493,7 +490,6 @@ public class InventoryServiceImpl implements InventoryService {
 
     @Override
     public Response modifySaleDates(String saleName, LocalDate startDate, LocalDate endDate) {
-        clearDate(startDate, endDate);
         Response response;
         try {
             inventoryController.modifySaleDates(saleName, startDate, endDate);
@@ -510,7 +506,6 @@ public class InventoryServiceImpl implements InventoryService {
 
     @SuppressWarnings("unchecked")
     public <T extends FacadeEntity> ResponseT<List<FacadeDiscount<T>>> getDiscount(String supplierId, LocalDate discountDate) {
-        clearDate(discountDate);
         //response to return created
         ResponseT<List<FacadeDiscount<T>>> responseT;
         List<FacadeDiscount<T>> simpleDiscs = new ArrayList<>();
@@ -562,10 +557,8 @@ public class InventoryServiceImpl implements InventoryService {
         return responseT;
     }
 
-
     @Override
     public Response addItemDiscount(String supplierId, double discount, LocalDate discountDate, int itemCount, int itemId) {
-        clearDate(discountDate);
         Response response;
         if (supplierId.isEmpty() || (discount <= 0 || discount >= 1) || itemCount <= 0 || itemId <= 0) {
             response = new Response(true, "One or more arguments is invalid");
@@ -583,7 +576,6 @@ public class InventoryServiceImpl implements InventoryService {
 
     @Override
     public Response addCategoryDiscount(String supplierId, double discount, LocalDate discountDate, int itemCount, String categoryName) {
-        clearDate(discountDate);
         Response response;
         if (supplierId.isEmpty() || (discount <= 0 || discount >= 1) || itemCount <= 0 || categoryName.isEmpty() || categoryName.isBlank()) {
             response = new Response(true, "One or more arguments is invalid");
@@ -603,7 +595,6 @@ public class InventoryServiceImpl implements InventoryService {
 
     @Override
     public Response recordDefect(int itemId, LocalDate entryDate, int defectQuantity, String defectLocation) {
-        clearDate(entryDate);
         Response response;
         if (itemId <= 0 || defectQuantity <= 0 || defectLocation.isEmpty() || defectLocation.isBlank()) {
             response = new Response(true, "One or more arguments is invalid");
@@ -677,7 +668,6 @@ public class InventoryServiceImpl implements InventoryService {
 
     @Override
     public ResponseT<List<FacadeDefectEntry>> defectsReport(LocalDate fromDate, LocalDate toDate) {
-        clearDate(fromDate, toDate);
         ResponseT<List<FacadeDefectEntry>> defectResponse;
         List<FacadeDefectEntry> simpleEntries = new ArrayList<>();
         try {
@@ -715,10 +705,5 @@ public class InventoryServiceImpl implements InventoryService {
                     items.get(i) + inventoryController.getItem(i).getStorageQuantity());
         }
         return new Response(false, "Inventory updated");
-    }
-
-    private void clearDate(LocalDate... dates) {
-        for (LocalDate cl : dates) {
-        }
     }
 }

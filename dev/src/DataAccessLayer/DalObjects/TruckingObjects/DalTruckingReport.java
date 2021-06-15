@@ -1,7 +1,5 @@
 package DataAccessLayer.DalObjects.TruckingObjects;
 
-import BusinessLayer.TruckingPackage.DeliveryPackage.TruckingReport;
-
 import java.time.LocalDate;
 import java.time.LocalTime;
 
@@ -17,8 +15,7 @@ public class DalTruckingReport  {
     public DalTruckingReport(){}
 
     public DalTruckingReport(int ID,LocalTime leavingHour,LocalDate date,String truckNumber,String driverID
-            ,boolean completed,boolean approved)
-    {
+            ,boolean completed,boolean approved) {
         this.ID=ID;
         this.leavingHour=leavingHour;
         this.date=date;
@@ -31,7 +28,6 @@ public class DalTruckingReport  {
     public int getID() {
         return ID;
     }
-
 
     public LocalDate getDate() {
         return date;

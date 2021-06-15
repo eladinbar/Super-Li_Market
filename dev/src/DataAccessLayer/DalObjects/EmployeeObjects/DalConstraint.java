@@ -8,7 +8,6 @@ public class DalConstraint {
     private LocalDate date;
     private int shift;
 
-
     public DalConstraint(String EmployeeId, String reason, LocalDate date, int shift){
         this.EmployeeId = EmployeeId;
         this.reason = reason;
@@ -34,7 +33,8 @@ public class DalConstraint {
         return shift;
     }
 
-// setters
+    // setters
+
     public void setEmployeeId(String employeeId) { EmployeeId = employeeId; }
 
     public void setReason(String reason) {

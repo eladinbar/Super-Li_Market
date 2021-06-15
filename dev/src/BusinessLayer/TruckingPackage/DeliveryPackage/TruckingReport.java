@@ -20,7 +20,6 @@ public class TruckingReport {
     private boolean completed;
     private boolean approved;
 
-
     public TruckingReport(int ID, LocalDate date, LocalTime leavingHour, String  truckNumber, String driverID
                           , LinkedList<String> suppliers) throws SQLException {
         this.ID=ID;
@@ -39,7 +38,6 @@ public class TruckingReport {
     public TruckingReport(int ID){
         this.ID=ID;
         this.suppliers = new LinkedList<>();
-
     }
 
     public TruckingReport(DalTruckingReport dtr) throws SQLException {
@@ -66,7 +64,6 @@ public class TruckingReport {
         return ID;
     }
 
-
     public LocalDate getDate() {
         return date;
     }
@@ -87,9 +84,7 @@ public class TruckingReport {
         return suppliers;
     }
 
-
     public void setCompleted()  {
-
         this.completed = true;
         try {
             DalTruckingReportController.getInstance().update
@@ -117,8 +112,6 @@ public class TruckingReport {
         }
     }
 
-
-
     public void setDate(LocalDate date)  {
         this.date = date;
         try {
@@ -129,7 +122,6 @@ public class TruckingReport {
             e.printStackTrace();
             exit(1);
         }
-
     }
 
     public void setSuppliers(LinkedList<String> suppliers) {
@@ -142,7 +134,6 @@ public class TruckingReport {
             e.printStackTrace();
             exit(1);
         }
-
     }
 
     public void setDriverID(String driverID)  {
@@ -155,7 +146,6 @@ public class TruckingReport {
             e.printStackTrace();
             exit(1);
         }
-
     }
 
     public void setLeavingHour(LocalTime leavingHour) throws SQLException {
@@ -168,10 +158,7 @@ public class TruckingReport {
             e.printStackTrace();
             exit(1);
         }
-
     }
-
-
 
     public void setTruckNumber(String truckNumber)  {
         this.truckNumber = truckNumber;
@@ -183,14 +170,11 @@ public class TruckingReport {
             e.printStackTrace();
             exit(1);
         }
-
-
     }
 
     public void addSupplier(String supplier)  {
         if (!suppliers.contains(supplier))
             suppliers.add(supplier);
-
     }
 
     public boolean isCompleted() {

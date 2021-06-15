@@ -473,7 +473,6 @@ public class PresentationController {
                 break;
             }
         }
-
     }
 
     //a helper function that approve that the order arrived in the system
@@ -532,7 +531,6 @@ public class PresentationController {
                 default -> menu.errorPrompt("Invalid choice - " + chooseInsideMenu);
             }
         }
-
     }
 
     //a helper function that add supplier to the system
@@ -919,7 +917,6 @@ public class PresentationController {
                 case "4" -> removeCategory();
                 case "5" -> terminate = true;
                 default -> menu.errorPrompt("Invalid choice - " + choice);
-
             }
         }
     }
@@ -936,7 +933,6 @@ public class PresentationController {
                 case "4" -> modifySale();
                 case "5" -> terminate = true;
                 default -> menu.errorPrompt("Invalid choice - " + choice);
-
             }
         }
     }
@@ -968,7 +964,6 @@ public class PresentationController {
                 case "4" -> defectsReport();
                 case "5" -> terminate = true;
                 default -> menu.errorPrompt("Invalid choice - " + choice);
-
             }
         }
     }

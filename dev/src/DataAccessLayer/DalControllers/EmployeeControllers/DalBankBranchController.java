@@ -19,27 +19,21 @@ public class DalBankBranchController extends Employee_Trucking_DALController_Int
        catch(SQLException e){
            throw e;
        }
-
     }
 
     @Override
     protected boolean createTable() throws SQLException {
-        Connection conn = DriverManager.getConnection(connection);
-        String query = "CREATE TABLE IF NOT EXISTS BANKS("
-                +"EMPLOYEEID TEXT,"
-                +"BANK TEXT ,"
-                +"BANKBRANCH INTEGER,"
-                +"ACCOUNTNUMBER INTEGER,"
-                +"PRIMARY KEY (ACCOUNTNUMBER));";
-        try {
-            PreparedStatement st=conn.prepareStatement(query);
+        try (Connection conn = DriverManager.getConnection(connection)) {
+            String query = "CREATE TABLE IF NOT EXISTS BANKS("
+                    + "EMPLOYEEID TEXT,"
+                    + "BANK TEXT ,"
+                    + "BANKBRANCH INTEGER,"
+                    + "ACCOUNTNUMBER INTEGER,"
+                    + "PRIMARY KEY (ACCOUNTNUMBER));";
+            PreparedStatement st = conn.prepareStatement(query);
             st.executeUpdate();
-        }
-        catch (SQLException e){
+        } catch (SQLException e) {
             throw e;
-        }
-        finally {
-            conn.close();
         }
         return true;
     }

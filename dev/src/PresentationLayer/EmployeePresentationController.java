@@ -2,11 +2,9 @@ package PresentationLayer;
 
 import BusinessLayer.EmployeePackage.EmployeeNotification;
 import BusinessLayer.EmployeePackage.EmployeePackage.Role;
-import BusinessLayer.EmployeePackage.ShiftPackage.ShiftController;
 import BusinessLayer.EmployeePackage.ShiftPackage.ShiftTypes;
 import BusinessLayer.Notification;
-import DataAccessLayer.DalControllers.EmployeeControllers.DalAlertEmployeeController;
-import ServiceLayer.Employee_Package_FacadeService;
+import ServiceLayer.EmployeeFacadeService;
 import ServiceLayer.FacadeObjects.FacadeConstraint;
 import ServiceLayer.FacadeObjects.FacadeEmployee;
 import ServiceLayer.FacadeObjects.FacadeShift;
@@ -23,26 +21,26 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class PresentationController_Employee {
-    private static PresentationController_Employee instance = null;
-    Employee_Package_FacadeService facadeService;
-    MenuPrinter_Employee menuPrinter;
+public class EmployeePresentationController {
+    private static EmployeePresentationController instance = null;
+    EmployeeFacadeService facadeService;
+    EmployeeMenu menuPrinter;
     StringConverter stringConverter;
     HashMap<Role,List<EmployeeNotification>> alerts;
     PresentationController pc;
     boolean hasData = false;
 
-    private PresentationController_Employee() {
-        facadeService = new Employee_Package_FacadeService ( );
-        menuPrinter = new MenuPrinter_Employee ( );
+    private EmployeePresentationController() {
+        facadeService = new EmployeeFacadeService( );
+        menuPrinter = new EmployeeMenu( );
         stringConverter =  StringConverter.getInstance ( );
         alerts = new HashMap<> (  );
         pc = new PresentationController();
     }
 
-    public static PresentationController_Employee getInstance() {
+    public static EmployeePresentationController getInstance() {
         if (instance == null)
-            instance = new PresentationController_Employee ( );
+            instance = new EmployeePresentationController( );
         return instance;
     }
 
@@ -556,8 +554,6 @@ public class PresentationController_Employee {
         int choice = menuPrinter.shiftTypeMenu();
         handleShiftTypeMenuChoice(shiftType, choice);
     }
-
-
 
     private boolean getWeeklyShiftSchedule() {
         boolean  dateLegal = false;

@@ -21,8 +21,6 @@ public class Driver {
         public int getSize() {
             return size;
         }
-
-
     }
 
     public Driver(String ID, String name , License license) throws SQLException {
@@ -31,7 +29,6 @@ public class Driver {
         this.licenseType = license;
 
         DalDriverController.getInstance().insert(new DalDriver(ID, name, licenseToString(licenseType)));
-
     }
 
     public Driver(DalDriver dalDriver){
@@ -54,8 +51,6 @@ public class Driver {
         return licenseType;
     }
 
-
-
     public void setID(String ID) throws SQLException {
         this.ID = ID;
         DalDriverController.getInstance().update(new DalDriver(ID, name, licenseToString(licenseType)));
@@ -64,13 +59,11 @@ public class Driver {
     public void setName(String name) throws SQLException {
         this.name = name;
         DalDriverController.getInstance().update(new DalDriver(ID, name, licenseToString(licenseType)));
-
     }
 
     public void setLicenseType(License licenseType) throws SQLException {
         this.licenseType = licenseType;
         DalDriverController.getInstance().update(new DalDriver(ID, name, licenseToString(licenseType)));
-
     }
 
     private String licenseToString(License license){
@@ -79,6 +72,5 @@ public class Driver {
             l = "C1";
         }
         return l;
-
     }
 }

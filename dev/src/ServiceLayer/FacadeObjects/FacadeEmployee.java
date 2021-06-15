@@ -44,8 +44,7 @@ public class FacadeEmployee implements FacadeObject {
         facadeBankAccountInfo = new FacadeBankAccountInfo ( employee.getBank () );
         facadeTermsOfEmployment = new FacadeTermsOfEmployment ( employee.getTerms () );
         constraints = new HashMap<> (  );
-        for( Map.Entry<LocalDate, Constraint> entry : employee.getConstraints ().entrySet () )
-        {
+        for( Map.Entry<LocalDate, Constraint> entry : employee.getConstraints ().entrySet ()) {
             constraints.put ( entry.getKey (), new FacadeConstraint ( entry.getValue () ) );
         }
     }

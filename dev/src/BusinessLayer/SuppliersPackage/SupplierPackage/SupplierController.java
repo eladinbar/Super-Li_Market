@@ -208,8 +208,7 @@ public class SupplierController {
                         cheapestSup = sup;
                     }
                 }
-            } catch (Exception ignored) {
-            }
+            } catch (Exception ignored) {}
         }
         if (cheapestSup == null)
             throw new Exception("There is no supplier that supply the product: " + productID);
@@ -252,5 +251,4 @@ public class SupplierController {
             }
         }
     }
-
 }

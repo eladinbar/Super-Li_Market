@@ -4,15 +4,10 @@ import DataAccessLayer.DalControllers.TruckingControllers.DalDeliveryFormControl
 import DataAccessLayer.DalControllers.TruckingControllers.DalItemsOnDFController;
 import DataAccessLayer.DalObjects.TruckingObjects.DalDeliveryForm;
 import DataAccessLayer.DalObjects.TruckingObjects.DalItemsOnDF;
-import InfrastructurePackage.Pair;
 
-import java.awt.image.ImageProducer;
 import java.sql.SQLException;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
-
-import static java.lang.System.exit;
 
 public class DeliveryForm {
     private int ID;
@@ -37,19 +32,15 @@ public class DeliveryForm {
             }
         }
         catch (SQLException e){}
-
     }
 
     public DeliveryForm(DeliveryForm df) {
-
         this.ID = df.getID();
         this.completed = df.isCompleted();
         this.destination = df.getDestination();
         this.items = df.getItems();
         this.leavingWeight = df.getLeavingWeight();
         this.trID = df.getTrID();
-
-
     }
 
     public DeliveryForm(DalDeliveryForm deliveryForm) {
@@ -74,7 +65,6 @@ public class DeliveryForm {
             items.put(itemID, amount);
             DalItemsOnDFController.getInstance().insert(new DalItemsOnDF(this.ID, itemID, amount));
         }
-
     }
 
     public HashMap<Integer, Integer> getItems() {
@@ -92,7 +82,6 @@ public class DeliveryForm {
     public int getLeavingWeight() {
         return leavingWeight;
     }
-
 
     public int getTrID() {
         return trID;
@@ -127,21 +116,15 @@ public class DeliveryForm {
         DalDeliveryFormController.getInstance().update(new DalDeliveryForm(this.ID,this.destination,this.completed,this.leavingWeight,this.trID));
     }
 
-
-
     public void setTrID(int trID) throws SQLException {
         this.trID = trID;
     }
 
     public void setUncompleted() throws SQLException {
         completed = false;
-/*
-        DalDeliveryFormController.getInstance().update(new DalDeliveryForm(ID, origin, destination, completed,leavingWeight,trID));
-*/
     }
 
     public void setIDWithoutSave(int lastDeliveryForms) {
         this.ID = lastDeliveryForms;
     }
 }
-

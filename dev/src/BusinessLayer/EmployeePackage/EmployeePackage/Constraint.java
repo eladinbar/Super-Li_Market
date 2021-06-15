@@ -1,8 +1,8 @@
 package BusinessLayer.EmployeePackage.EmployeePackage;
+
 import BusinessLayer.EmployeePackage.EmployeeException;
 
 import java.time.LocalDate;
-
 
 public class Constraint {
     private LocalDate date;
@@ -17,6 +17,7 @@ public class Constraint {
         this.eveningShift = evningShift;
         this.reason = reason;
     }
+
 // Getters:
     public LocalDate getDate(){
         return date;
@@ -34,6 +35,7 @@ public class Constraint {
     public String getReason() {
         return reason;
     }
+
 // Setters:
     public void setDate(LocalDate date) throws EmployeeException {
         if(!validDate(date)){ throw new EmployeeException("A constraint can be filed up to two weeks in advance");}
@@ -52,9 +54,8 @@ public class Constraint {
         this.reason = reason;
     }
 
-//private methods
-private boolean validDate(LocalDate date) {
+    //private methods
+    private boolean validDate(LocalDate date) {
     return (LocalDate.now().isBefore(date.minusWeeks(2)));
 }
-
 }

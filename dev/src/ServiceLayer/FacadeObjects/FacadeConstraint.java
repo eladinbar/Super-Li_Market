@@ -10,8 +10,7 @@ public class FacadeConstraint implements FacadeObject {
     private boolean eveningShift;
     private String reason;
 
-    public FacadeConstraint(LocalDate date, boolean morningShift, boolean eveningShift, String reason)
-    {
+    public FacadeConstraint(LocalDate date, boolean morningShift, boolean eveningShift, String reason) {
         this.date = date;
         this.morningShift = morningShift;
         this.eveningShift = eveningShift;

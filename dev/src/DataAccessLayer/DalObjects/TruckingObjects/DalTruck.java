@@ -6,8 +6,7 @@ public class DalTruck  {
     private int weightNeto;
     private int maxWeight;
 
-    public DalTruck(String model,String licenseNumber,int weightNeto,int maxWeight)
-    {
+    public DalTruck(String model,String licenseNumber,int weightNeto,int maxWeight) {
         this.licenseNumber=licenseNumber;
         this.maxWeight=maxWeight;
         this.model=model;

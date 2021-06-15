@@ -39,7 +39,6 @@ public class AgreementItemsDalController extends DalController<DalAgreementItems
                     "FOREIGN KEY (" + DalAgreementItems.productIdColumnName + ")" + "REFERENCES " + DalItem.itemIdColumnName + " (" + ItemDalController.ITEM_TABLE_NAME + ") ON DELETE CASCADE " +
                     "FOREIGN KEY (" + DalAgreementItems.supplierIdColumnName + ")" + "REFERENCES " + DalSupplierCard.supplierIdColumnName + " (" + SupplierCardDalController.SUPPLIER_CARD_TABLE_NAME + ") ON DELETE CASCADE " +
                     ");";
-
             PreparedStatement stmt = conn.prepareStatement(command);
             stmt.executeUpdate();
         } catch (SQLException ex) {
@@ -86,7 +85,6 @@ public class AgreementItemsDalController extends DalController<DalAgreementItems
                     "=?, " + DalAgreementItems.productCompIdColumnName + "=? WHERE(" + DalAgreementItems.productIdColumnName +"=? AND "+
                     DalAgreementItems.supplierIdColumnName+ "=?)";
             PreparedStatement stmt = conn.prepareStatement(query);
-
             stmt.setDouble(1, agreementItem.getPrice());
             stmt.setInt(2, agreementItem.getProductCompId());
             stmt.setInt(3, agreementItem.getProductId());

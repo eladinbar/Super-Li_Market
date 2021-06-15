@@ -19,7 +19,6 @@ public class FacadeDemand {
 
     }
 
-
     public int getAmount() {
         return amount;
     }
@@ -39,5 +38,4 @@ public class FacadeDemand {
     public void setItemID(int itemID) {
         this.itemID = itemID;
     }
-
 }

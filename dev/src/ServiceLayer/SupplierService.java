@@ -11,7 +11,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class SupplierService {
-    private SupplierController sp;
+    private final SupplierController sp;
 
     public SupplierService() {
         sp = new SupplierController();
@@ -342,6 +342,5 @@ public class SupplierService {
         if(noSupplier.isEmpty())
             return new ResponseT<>(orders);
         return new ResponseT<>(true,"The following Items have no supplier: " + noSupplier.substring(0, noSupplier.length()-2), orders);
-
     }
 }

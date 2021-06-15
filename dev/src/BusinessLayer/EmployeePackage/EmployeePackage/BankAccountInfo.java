@@ -13,7 +13,6 @@ public class BankAccountInfo {
         this.bank = bank;
     }
 
-
 //Getters:
     public int getAccountNumber() {
         return accountNumber;

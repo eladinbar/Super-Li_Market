@@ -5,8 +5,7 @@ public class DalDemand  {
     private int amount;
     private String siteID;
 
-    public DalDemand(int itemID,int amount,String siteID)
-    {
+    public DalDemand(int itemID,int amount,String siteID) {
         this.amount=amount;
         this.itemID=itemID;
         this.siteID=siteID;

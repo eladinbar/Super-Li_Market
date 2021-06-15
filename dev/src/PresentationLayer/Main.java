@@ -7,6 +7,6 @@ public class Main {
     }
 
     public static void main(String[] args) throws SQLException {
-        PresentationController_Employee.getInstance().start();
+        EmployeePresentationController.getInstance().start();
     }
 }

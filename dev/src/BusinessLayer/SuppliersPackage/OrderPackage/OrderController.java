@@ -2,7 +2,6 @@ package BusinessLayer.SuppliersPackage.OrderPackage;
 
 import BusinessLayer.SuppliersPackage.SupplierPackage.Supplier;
 import DataAccessLayer.DalObjects.SupplierObjects.DalOrder;
-import ServiceLayer.Response.ResponseT;
 
 import java.sql.SQLException;
 import java.time.LocalDate;

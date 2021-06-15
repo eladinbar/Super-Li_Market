@@ -23,48 +23,28 @@ public class DalTruckingNotificationController extends Employee_Trucking_DALCont
         return controller;
     }
 
-
     public boolean insert(DalTruckingNotification notification) throws SQLException {
-
-        Connection conn= DriverManager.getConnection(connection);
-        String query= "INSERT OR IGNORE INTO "+tableName+" VALUES (?,?)";
-        try{
-            PreparedStatement st=conn.prepareStatement(query);
-            st.setInt(1,notification.getID());
-            st.setString(2,notification.getContent());
-
-
+        try (Connection conn = DriverManager.getConnection(connection)) {
+            String query = "INSERT OR IGNORE INTO " + tableName + " VALUES (?,?)";
+            PreparedStatement st = conn.prepareStatement(query);
+            st.setInt(1, notification.getID());
+            st.setString(2, notification.getContent());
             st.executeUpdate();
-
-        }
-        catch (SQLException e){
+        } catch (SQLException e) {
             throw new SQLException(e.getMessage());
         }
-        finally {
-            conn.close();
-        }
-
         return true;
-
-
     }
 
     public boolean update(DalTruckingNotification notification) throws SQLException {
-        Connection conn=DriverManager.getConnection(connection);
-        String query="UPDATE "+tableName+" SET "+columnNames[1]+"=?"+" WHERE ("+columnNames[0]+"= ?)";
-        try{
-            PreparedStatement st=conn.prepareStatement(query);
-            st.setString(1,notification.getContent());
-            st.setInt(2,notification.getID());
+        try (Connection conn = DriverManager.getConnection(connection)) {
+            String query = "UPDATE " + tableName + " SET " + columnNames[1] + "=?" + " WHERE (" + columnNames[0] + "= ?)";
+            PreparedStatement st = conn.prepareStatement(query);
+            st.setString(1, notification.getContent());
+            st.setInt(2, notification.getID());
             st.executeUpdate();
-
-
-        }
-        catch (SQLException e){
+        } catch (SQLException e) {
             throw new SQLException(e.getMessage());
-        }
-        finally {
-            conn.close();
         }
         return true;
     }
@@ -82,6 +62,7 @@ public class DalTruckingNotificationController extends Employee_Trucking_DALCont
         }
         return true;
     }
+
     public LinkedList<DalTruckingNotification> load () throws SQLException// Select From DB
     {
         LinkedList<DalTruckingNotification> notifications = new LinkedList<>();
@@ -98,24 +79,18 @@ public class DalTruckingNotificationController extends Employee_Trucking_DALCont
         }
         return notifications;
     }
-    public boolean createTable() throws SQLException {
-        Connection conn = DriverManager.getConnection(connection);
-        String query = "CREATE TABLE IF NOT EXISTS TruckingNotifications("
-                +"ID TEXT,"
-                +"Content TEXT,"
-                +"PRIMARY KEY (ID));";
-        try {
-            PreparedStatement st=conn.prepareStatement(query);
 
+    public boolean createTable() throws SQLException {
+        try (Connection conn = DriverManager.getConnection(connection)) {
+            String query = "CREATE TABLE IF NOT EXISTS TruckingNotifications("
+                    + "ID TEXT,"
+                    + "Content TEXT,"
+                    + "PRIMARY KEY (ID));";
+            PreparedStatement st = conn.prepareStatement(query);
             st.executeUpdate();
-        }
-        catch (SQLException e){
+        } catch (SQLException e) {
             throw new SQLException(e.getMessage());
-        }
-        finally {
-            conn.close();
         }
         return true;
     }
 }
-

@@ -8,7 +8,7 @@ import DataAccessLayer.DalObjects.EmployeeObjects.DalShiftType;
 import BusinessLayer.EmployeePackage.EmployeeException;
 import BusinessLayer.EmployeePackage.EmployeePackage.EmployeeController;
 import BusinessLayer.EmployeePackage.EmployeePackage.Role;
-import PresentationLayer.PresentationController_Employee;
+import PresentationLayer.EmployeePresentationController;
 
 import java.sql.SQLException;
 import java.time.DayOfWeek;
@@ -290,7 +290,7 @@ public class ShiftController {
             return false;
         getShift ( date, shift ).addEmployee ( "driver", id );
         EmployeeNotification en = new EmployeeNotification(-1, Role.humanResourcesManager.name(), date.toString() + ": driver was added to shift " + shift );
-        PresentationController_Employee.getInstance().addAnAlert(Role.humanResourcesManager, en);
+        EmployeePresentationController.getInstance().addAnAlert(Role.humanResourcesManager, en);
         return true;
     }
 

@@ -7,7 +7,6 @@ public class DalTruckingNotification {
     public DalTruckingNotification(int ID,String content){
         this.ID=ID;
         this.content=content;
-
     }
 
     public String getContent() {
@@ -17,5 +16,4 @@ public class DalTruckingNotification {
     public int getID() {
         return ID;
     }
-
 }

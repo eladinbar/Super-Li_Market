@@ -94,7 +94,6 @@ public class Order {
     }
 
     public void approveOrder() throws Exception {
-        //todo check if all items supplied
         if (delivered)
             throw new Exception("order already delivered");
         delivered = true;
@@ -145,7 +144,7 @@ public class Order {
     }
 
     public Double getOrderTotalPrice() throws Exception {
-        Double sum = 0.0;
+        double sum = 0.0;
         for (int productID : products.keySet()) {
             sum += supplier.getPrice(products.get(productID), productID);
         }
@@ -161,7 +160,7 @@ public class Order {
     }
 
     private void readOrderProducts() throws Exception {
-        List<DalProductsInOrder> orderItems = new ArrayList();
+        List<DalProductsInOrder> orderItems = new ArrayList<>();
         DalProductsInOrder productInOrderDal = new DalProductsInOrder(id);
         productInOrderDal.find(orderItems);
         for (DalProductsInOrder product : orderItems) {

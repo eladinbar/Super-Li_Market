@@ -6,16 +6,14 @@ public class DalDeliveryForm  {
     private boolean completed;
     private int leavingWeight;
     private int TRID;
-    public DalDeliveryForm(int ID, String destination,boolean completed,int leavingWeight,int TRID)
-    {
-        this.ID=ID;
 
+    public DalDeliveryForm(int ID, String destination,boolean completed,int leavingWeight,int TRID) {
+        this.ID=ID;
         this.destination=destination;
         this.completed=completed;
         this.leavingWeight=leavingWeight;
         this.TRID=TRID;
     }
-
 
     public int getID() {
         return ID;

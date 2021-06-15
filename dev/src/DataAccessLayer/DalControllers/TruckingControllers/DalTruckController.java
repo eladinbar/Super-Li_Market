@@ -26,49 +26,31 @@ public class DalTruckController extends Employee_Trucking_DALController_Interfac
     }
 
     public boolean insert(DalTruck dalTruck) throws SQLException {
-        Connection conn= DriverManager.getConnection(connection);
-        String query= "INSERT OR IGNORE INTO "+tableName+" VALUES (?,?,?,?)";
-        try{
-            PreparedStatement st=conn.prepareStatement(query);
-            st.setString(1,dalTruck.getLicenseNumber());
-            st.setString(2,dalTruck.getModel());
-            st.setInt(3,dalTruck.getWeightNeto());
-            st.setInt(4,dalTruck.getMaxWeight());
+        try (Connection conn = DriverManager.getConnection(connection)) {
+            String query = "INSERT OR IGNORE INTO " + tableName + " VALUES (?,?,?,?)";
+            PreparedStatement st = conn.prepareStatement(query);
+            st.setString(1, dalTruck.getLicenseNumber());
+            st.setString(2, dalTruck.getModel());
+            st.setInt(3, dalTruck.getWeightNeto());
+            st.setInt(4, dalTruck.getMaxWeight());
             st.executeUpdate();
-
-        }
-        catch (SQLException e){
+        } catch (SQLException e) {
             throw new SQLException(e.getMessage());
         }
-        finally {
-            conn.close();
-        }
-
         return true;
-
-
     }
 
     public boolean update(DalTruck dalTruck) throws SQLException {
-        Connection conn=DriverManager.getConnection(connection);
-        String query="UPDATE "+tableName+" SET "+columnNames[1]+"=?, "+columnNames[2]+"=?, "+columnNames[3]+"=? WHERE ("+columnNames[0]+"=?)";
-        try{
-            PreparedStatement st=conn.prepareStatement(query);
-
-            st.setString(1,dalTruck.getModel());
-            st.setInt(2,dalTruck.getWeightNeto());
-            st.setInt(3,dalTruck.getMaxWeight());
-            st.setString(4,dalTruck.getLicenseNumber());
-
+        try (Connection conn = DriverManager.getConnection(connection)) {
+            String query = "UPDATE " + tableName + " SET " + columnNames[1] + "=?, " + columnNames[2] + "=?, " + columnNames[3] + "=? WHERE (" + columnNames[0] + "=?)";
+            PreparedStatement st = conn.prepareStatement(query);
+            st.setString(1, dalTruck.getModel());
+            st.setInt(2, dalTruck.getWeightNeto());
+            st.setInt(3, dalTruck.getMaxWeight());
+            st.setString(4, dalTruck.getLicenseNumber());
             st.executeUpdate();
-
-
-        }
-        catch (SQLException e){
+        } catch (SQLException e) {
             throw new SQLException(e.getMessage());
-        }
-        finally {
-            conn.close();
         }
         return true;
     }
@@ -87,8 +69,8 @@ public class DalTruckController extends Employee_Trucking_DALController_Interfac
         }
         return true;
     }
-    public LinkedList<DalTruck> load () throws SQLException// Select From DB
-    {
+
+    public LinkedList<DalTruck> load () throws SQLException { // Select From DB
         LinkedList<DalTruck> trucks = new LinkedList<>();
         Connection conn = DriverManager.getConnection(connection);
         String query = "SELECT * FROM "+tableName;
@@ -107,22 +89,17 @@ public class DalTruckController extends Employee_Trucking_DALController_Interfac
     }
 
     public boolean createTable() throws SQLException {
-        Connection conn = DriverManager.getConnection(connection);
-        String query = "CREATE TABLE IF NOT EXISTS Trucks("
-                +"licenseNumber TEXT,"
-                +"model TEXT,"
-                +"weightNeto INTEGER,"
-                +"maxWeight INTEGER,"
-                +"PRIMARY KEY (licenseNumber));";
-        try {
-            PreparedStatement st=conn.prepareStatement(query);
+        try (Connection conn = DriverManager.getConnection(connection)) {
+            String query = "CREATE TABLE IF NOT EXISTS Trucks("
+                    + "licenseNumber TEXT,"
+                    + "model TEXT,"
+                    + "weightNeto INTEGER,"
+                    + "maxWeight INTEGER,"
+                    + "PRIMARY KEY (licenseNumber));";
+            PreparedStatement st = conn.prepareStatement(query);
             st.executeUpdate();
-        }
-        catch (SQLException e){
+        } catch (SQLException e) {
             throw new SQLException(e.getMessage());
-        }
-        finally {
-            conn.close();
         }
         return true;
     }

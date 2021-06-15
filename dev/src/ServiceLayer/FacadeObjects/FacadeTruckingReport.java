@@ -27,7 +27,6 @@ public class FacadeTruckingReport {
         this.suppliers = suppliers;
         this.approved = false;
         this.completed=false;
-
     }
 
     public FacadeTruckingReport(TruckingReport currTR) {
@@ -39,7 +38,6 @@ public class FacadeTruckingReport {
         suppliers = currTR.getSuppliers();
         approved = currTR.isApproved();
         completed = currTR.isCompleted();
-
     }
 
     public FacadeTruckingReport(int id) {
@@ -49,7 +47,6 @@ public class FacadeTruckingReport {
     public int getID() {
         return ID;
     }
-
 
     public LocalDate getDate() {
         return date;
@@ -71,7 +68,6 @@ public class FacadeTruckingReport {
         return suppliers;
     }
 
-
     public void setCompleted() {
         this.completed = true;
     }
@@ -79,7 +75,6 @@ public class FacadeTruckingReport {
     public void setID(int ID) {
         this.ID = ID;
     }
-
 
     public void setDate(LocalDate date) {
         this.date = date;
@@ -96,7 +91,6 @@ public class FacadeTruckingReport {
     public void setLeavingHour(LocalTime leavingHour) {
         this.leavingHour = leavingHour;
     }
-
 
     public void setTruckNumber(String  truckNumber) {
         this.truckNumber = truckNumber;

@@ -30,12 +30,10 @@ public class InventorySupplierMenu {
     //menu lists for report
     private final List<String> reportsOperationMenuList;
 
-
-
     //menu lists suppliers
     private final List<String> suppliersMainMenuList;
 
-    private Scanner scan;
+    private final Scanner scan;
 
     public InventorySupplierMenu() {
         itemModificationList = setupItemModList();
@@ -43,7 +41,6 @@ public class InventorySupplierMenu {
         categoryModificationList = setupCategoryModList();
         saleModificationList = setupSaleModList();
         scan = new Scanner(System.in);
-
 
         inventoryMainMenuList = setupInventoryMainMenuList();
         itemOperationMenuList = setupItemMenu();
@@ -173,31 +170,39 @@ public class InventorySupplierMenu {
     public void printWelcomePrompt() {
         System.out.println("Welcome to the 'Super-Lee' Inventory System!");
     }
+
     public void printMainMenu() {
         printMenu(mainMenuSelectionList);
-
     }
+
     public void printInventoryMainMenu(){
         printMenu(inventoryMainMenuList);
     }
+
     public void printItemMenu(){
         printMenu(itemOperationMenuList);
     }
+
     public void printCategoryMenu(){
         printMenu(categoryOperationMenuList);
     }
+
     public void printSaleMenu(){
         printMenu(saleOperationMenuList);
     }
+
     public void printDiscountMenu(){
         printMenu(discountOperationMenuList);
     }
+
     public void printReportMenu(){
         printMenu(reportsOperationMenuList);
     }
+
     public void printItemModMenu(){
         printMenu(itemModificationList);
     }
+
     public void printCategoryModList(){
         printMenu(categoryModificationList);
     }
@@ -228,6 +233,7 @@ public class InventorySupplierMenu {
     public void itemHeader() {
         System.out.println(tf.formatItemMenuColumns());
     }
+
     public void productHeader(){
         System.out.println(tf.formatProductMenuColumns());
     }
@@ -318,7 +324,6 @@ public class InventorySupplierMenu {
                 System.out.println("something went wrong");
                 return null;
             }
-
         }
         if (type == Double.class) {
             Double wantedDouble;
@@ -335,7 +340,6 @@ public class InventorySupplierMenu {
                 return null;
             }
         }
-
         return (T) next;
     }
 
@@ -349,16 +353,12 @@ public class InventorySupplierMenu {
         handleEntityAliment(item, getMethods);
     }
 
-
     private <T> void handleEntityAliment(T elem, Method[] getMethods) throws IllegalAccessException, InvocationTargetException {
         String output = "";
         for (int i = 0; i < getMethods.length - 1; i++) {
             Method currentMethod = getMethods[i];
             Object value = currentMethod.invoke(elem);
             String stringRep = value.toString();
-//            if (value instanceof Calendar) {
-//                stringRep = tf.dateFormat((Calendar) value);
-//            }
             output = output + tf.centerString(stringRep, tf.getPaddingSize()) + "|";
         }
         Object value = getMethods[getMethods.length - 1].invoke(elem);
@@ -369,6 +369,4 @@ public class InventorySupplierMenu {
     public void printDefectMenu() {
         System.out.println(tf.defectsMenuFormat());
     }
-
-
 }

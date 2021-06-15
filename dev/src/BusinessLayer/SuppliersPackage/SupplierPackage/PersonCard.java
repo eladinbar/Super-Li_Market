@@ -93,16 +93,7 @@ public class PersonCard {
         dalObject.update();
     }
 
-//    public void save(String id,String memberID) throws SQLException {
-//        toDalObject().save(id,memberID);
-//    }
-
     public DalPersonCard toDalObject() throws SQLException {
         return new DalPersonCard(firstName, lastName, email, id, phone);
     }
-
-//    public void delete(String id, String memberID) throws SQLException {
-//        dalObject.delete(id, memberID);
-//    }
-
 }

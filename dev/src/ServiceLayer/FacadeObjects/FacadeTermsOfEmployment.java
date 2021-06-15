@@ -8,16 +8,14 @@ public class FacadeTermsOfEmployment implements FacadeObject {
     private int sickDays;
     private int daysOff;
 
-    public FacadeTermsOfEmployment(int salary, int educationFund, int sickDays, int daysOff)
-    {
+    public FacadeTermsOfEmployment(int salary, int educationFund, int sickDays, int daysOff) {
         this.salary = salary;
         this.educationFund = educationFund;
         this.sickDays = sickDays;
         this.daysOff = daysOff;
     }
 
-    public FacadeTermsOfEmployment(TermsOfEmployment termsOfEmployment)
-    {
+    public FacadeTermsOfEmployment(TermsOfEmployment termsOfEmployment) {
         salary = termsOfEmployment.getSalary();
         educationFund = termsOfEmployment.getEducationFund();
         sickDays = termsOfEmployment.getSickDays();

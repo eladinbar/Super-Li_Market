@@ -23,24 +23,18 @@ public class DalShiftTypeController extends Employee_Trucking_DALController_Inte
 
     @Override
     protected boolean createTable() throws SQLException {
-        Connection conn = DriverManager.getConnection(connection);
+        try (Connection conn = DriverManager.getConnection(connection)) {
             String query = "CREATE TABLE IF NOT EXISTS SHIFTTYPES("
-                +"AMOUNT INTEGER,"
-                +"TYPE INTEGER,"
-                +"ROLE TEXT,"
-                +"PRIMARY KEY (TYPE, ROLE));";
-        try {
-            PreparedStatement st=conn.prepareStatement(query);
+                    + "AMOUNT INTEGER,"
+                    + "TYPE INTEGER,"
+                    + "ROLE TEXT,"
+                    + "PRIMARY KEY (TYPE, ROLE));";
+            PreparedStatement st = conn.prepareStatement(query);
             st.executeUpdate();
-        }
-        catch (SQLException e){
+        } catch (SQLException e) {
             throw e;
         }
-        finally {
-            conn.close();
-        }
         return true;
-
     }
 
     public static DalShiftTypeController getInstance()throws SQLException{
@@ -49,48 +43,31 @@ public class DalShiftTypeController extends Employee_Trucking_DALController_Inte
     }
 
     public boolean insert(DalShiftType dalShiftType) throws SQLException {
-        Connection conn= DriverManager.getConnection(connection);
-        String query= "INSERT OR IGNORE INTO "+tableName+" VALUES (?,?,?)";
-        try{
-            PreparedStatement st=conn.prepareStatement(query);
-            st.setInt(1,dalShiftType.getAmount());
-            st.setString(2,dalShiftType.getType());
-            st.setString(3,dalShiftType.getRole());
+        try (Connection conn = DriverManager.getConnection(connection)) {
+            String query = "INSERT OR IGNORE INTO " + tableName + " VALUES (?,?,?)";
+            PreparedStatement st = conn.prepareStatement(query);
+            st.setInt(1, dalShiftType.getAmount());
+            st.setString(2, dalShiftType.getType());
+            st.setString(3, dalShiftType.getRole());
             st.executeUpdate();
-
-        }
-        catch (SQLException e){
+        } catch (SQLException e) {
             throw e;
         }
-        finally {
-            conn.close();
-        }
-
         return true;
-
-
     }
 
     public boolean update(DalShiftType dalShiftType) throws SQLException {
-        Connection conn=DriverManager.getConnection(connection);
-        String query="UPDATE "+tableName+" SET "+columnNames[0]+"=?, "+columnNames[1]+"=?, "+columnNames[2]+"=?, WHERE ("+columnNames[1]+"=? AND "+columnNames[2]+"=?)";
-        try{
-            PreparedStatement st=conn.prepareStatement(query);
-            st.setInt(1,dalShiftType.getAmount());
-            st.setString(2,dalShiftType.getType());
-            st.setString(3,dalShiftType.getRole());
-            st.setString(4,dalShiftType.getType());
-            st.setString(5,dalShiftType.getRole());
-
+        try (Connection conn = DriverManager.getConnection(connection)) {
+            String query = "UPDATE " + tableName + " SET " + columnNames[0] + "=?, " + columnNames[1] + "=?, " + columnNames[2] + "=?, WHERE (" + columnNames[1] + "=? AND " + columnNames[2] + "=?)";
+            PreparedStatement st = conn.prepareStatement(query);
+            st.setInt(1, dalShiftType.getAmount());
+            st.setString(2, dalShiftType.getType());
+            st.setString(3, dalShiftType.getRole());
+            st.setString(4, dalShiftType.getType());
+            st.setString(5, dalShiftType.getRole());
             st.executeUpdate();
-
-
-        }
-        catch (SQLException e){
+        } catch (SQLException e) {
             throw e;
-        }
-        finally {
-            conn.close();
         }
         return true;
     }

@@ -13,7 +13,6 @@ public class FacadeDeliveryForm implements FacadeObject{
     private int trID;
     private boolean completed;
 
-
     public FacadeDeliveryForm(int ID, int origin, String supplier, HashMap<Integer,Integer> items,
                               int leavingWeight, int trID){
         this.ID = ID;
@@ -52,7 +51,6 @@ public class FacadeDeliveryForm implements FacadeObject{
         return leavingWeight;
     }
 
-
     public int getTrID() {
         return trID;
     }
@@ -76,7 +74,6 @@ public class FacadeDeliveryForm implements FacadeObject{
     public void setLeavingWeight(int leavingWeight) {
         this.leavingWeight = leavingWeight;
     }
-
 
     public void setTrID(int trID) {
         this.trID = trID;

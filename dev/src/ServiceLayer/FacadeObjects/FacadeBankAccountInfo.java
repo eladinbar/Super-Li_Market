@@ -7,15 +7,13 @@ public class FacadeBankAccountInfo implements FacadeObject {
     private int bankBranch;
     private String bank;
 
-    public FacadeBankAccountInfo(int accountNumber, int bankBranch, String bank)
-    {
+    public FacadeBankAccountInfo(int accountNumber, int bankBranch, String bank) {
         this.accountNumber = accountNumber;
         this.bankBranch = bankBranch;
         this.bank = bank;
     }
 
-    public FacadeBankAccountInfo(BankAccountInfo bankAccountInfo)
-    {
+    public FacadeBankAccountInfo(BankAccountInfo bankAccountInfo) {
         accountNumber = bankAccountInfo.getAccountNumber();
         bankBranch = bankAccountInfo.getBankBranch();
         bank = bankAccountInfo.getBank();

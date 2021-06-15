@@ -6,8 +6,6 @@ public class FacadeDriver {
     private String name;
     private Driver.License licenseType;
 
-
-
     public FacadeDriver(String ID, String name, boolean available,  Driver.License license){
         this.ID = ID;
         this.name = name;
@@ -31,8 +29,6 @@ public class FacadeDriver {
     public Driver.License getLicenseType() {
         return licenseType;
     }
-
-
 
     public void setID(String  ID) {
         this.ID = ID;

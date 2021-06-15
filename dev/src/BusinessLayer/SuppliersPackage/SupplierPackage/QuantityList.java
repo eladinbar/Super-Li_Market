@@ -89,10 +89,6 @@ public class QuantityList {
         return dalObjects.get(itemId).save();
     }
 
-//    public void update(int itemId) throws SQLException {
-//        dalObjects.get(itemId).update();
-//    }
-
     public boolean find(int itemId) throws SQLException {
         return dalObjects.get(itemId).find();
     }

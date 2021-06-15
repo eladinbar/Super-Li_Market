@@ -14,7 +14,8 @@ public class TermsOfEmployment {
         this.sickDays = sickDays;
         this.daysOff = daysOff;
     }
-// getters
+
+    //Getters
     public int getSalary() {
         return salary;
     }
@@ -30,17 +31,18 @@ public class TermsOfEmployment {
     public int getDaysOff() {
         return daysOff;
     }
-//Setters
 
-
+    //Setters
     public void setSalary(int salary) throws EmployeeException {
         if(salary<0){throw new EmployeeException("Invalid salary entered");}
         this.salary = salary;
     }
+
     public void setEducationFund(int educationFund) throws EmployeeException {
         if(educationFund<0){throw new EmployeeException("Invalid education fund entered");}
         this.educationFund = educationFund;
     }
+
     public void setDaysOff(int daysOff) throws EmployeeException {
         if(daysOff<0){throw new EmployeeException("Invalid days off entered");}
         this.daysOff = daysOff;

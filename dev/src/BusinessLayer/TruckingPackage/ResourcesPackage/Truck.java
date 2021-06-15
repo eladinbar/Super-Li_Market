@@ -11,15 +11,12 @@ public class Truck {
     private int weightNeto;
     private  int maxWeight;
 
-    public Truck(String model,String licenseNumber,int weightNeto,int maxWeight) throws SQLException
-    {
+    public Truck(String model,String licenseNumber,int weightNeto,int maxWeight) throws SQLException {
         this.model=model;
         this.licenseNumber=licenseNumber;
         this.weightNeto=weightNeto;
         this.maxWeight=maxWeight;
         DalTruckController.getInstance().insert(new DalTruck(model,licenseNumber,weightNeto,maxWeight));
-
-
     }
 
     public Truck(DalTruck dalTruck){
@@ -28,7 +25,6 @@ public class Truck {
         this.weightNeto= dalTruck.getWeightNeto();
         this.maxWeight= dalTruck.getMaxWeight();
     }
-
 
     public String getLicenseNumber() {
         return licenseNumber;
@@ -69,5 +65,4 @@ public class Truck {
         DalTruckController.getInstance().insert(new DalTruck(model,licenseNumber,weightNeto,maxWeight));
 
     }
-
 }

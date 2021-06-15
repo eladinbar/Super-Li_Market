@@ -13,7 +13,6 @@ public class DalShiftType {
 
     // getters
 
-
     public int getAmount() {
         return amount;
     }
@@ -25,7 +24,9 @@ public class DalShiftType {
     public String getRole() {
         return role;
     }
-// setters
+
+    // setters
+
     public void setAmount(int amount) {
         this.amount = amount;
     }

@@ -7,13 +7,11 @@ public class FacadeTruck implements FacadeObject{
     private int weightNeto;
     private  int maxWeight;
 
-    public FacadeTruck(String model,String licenseNumber,int weightNeto,int maxWeight)
-    {
+    public FacadeTruck(String model,String licenseNumber,int weightNeto,int maxWeight) {
         this.model = model;
         this.licenseNumber = licenseNumber;
         this.weightNeto = weightNeto;
         this.maxWeight = maxWeight;
-
     }
 
     public FacadeTruck(Truck truck) {
@@ -22,8 +20,6 @@ public class FacadeTruck implements FacadeObject{
         this.weightNeto = truck.getWeightNeto();
         this. maxWeight = truck.getMaxWeight();
     }
-
-
 
     public String  getLicenseNumber() {
         return licenseNumber;
@@ -40,6 +36,4 @@ public class FacadeTruck implements FacadeObject{
     public String getModel() {
         return model;
     }
-
-
 }

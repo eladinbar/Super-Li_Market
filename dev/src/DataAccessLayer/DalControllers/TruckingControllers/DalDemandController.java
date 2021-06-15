@@ -10,8 +10,7 @@ public class DalDemandController extends Employee_Trucking_DALController_Interfa
 
     private static DalDemandController controller;
 
-    private DalDemandController()
-    {
+    private DalDemandController() {
         super();
         this.tableName="Demands";
         this.columnNames=new String[3];
@@ -19,68 +18,44 @@ public class DalDemandController extends Employee_Trucking_DALController_Interfa
 
     }
 
-
-
     public static DalDemandController getInstance() throws SQLException {
         if (controller==null) {
             controller = new DalDemandController();
             controller.createTable();
         }
         return controller;
-
     }
 
-
     public boolean insert(DalDemand dalDemand) throws SQLException {
-        Connection conn= DriverManager.getConnection(connection);
-        String query= "INSERT OR IGNORE INTO "+tableName+" VALUES (?,?,?)";
-        try{
-            PreparedStatement st=conn.prepareStatement(query);
-            st.setInt(1,dalDemand.getItemID());
-            st.setInt(2,dalDemand.getAmount());
-            st.setString(3,dalDemand.getSiteID());
-
-
+        try (Connection conn = DriverManager.getConnection(connection)) {
+            String query = "INSERT OR IGNORE INTO " + tableName + " VALUES (?,?,?)";
+            PreparedStatement st = conn.prepareStatement(query);
+            st.setInt(1, dalDemand.getItemID());
+            st.setInt(2, dalDemand.getAmount());
+            st.setString(3, dalDemand.getSiteID());
             st.executeUpdate();
-
-        }
-        catch (SQLException e){
+        } catch (SQLException e) {
             throw new SQLException(e.getMessage());
         }
-        finally {
-            conn.close();
-        }
-
         return true;
-
-
     }
 
     public boolean update(DalDemand dalDemand) throws SQLException {
-        Connection conn=DriverManager.getConnection(connection);
-        String query="UPDATE "+tableName+" SET "+columnNames[1]+"=? WHERE "+columnNames[0]+"=? AND "+columnNames[2]+"=?";
-        try{
-            PreparedStatement st=conn.prepareStatement(query);
-
-            st.setInt(1,dalDemand.getAmount());
-            st.setInt(2,dalDemand.getItemID());
-            st.setString(3,dalDemand.getSiteID());
+        try (Connection conn = DriverManager.getConnection(connection)) {
+            String query = "UPDATE " + tableName + " SET " + columnNames[1] + "=? WHERE " + columnNames[0] + "=? AND " + columnNames[2] + "=?";
+            PreparedStatement st = conn.prepareStatement(query);
+            st.setInt(1, dalDemand.getAmount());
+            st.setInt(2, dalDemand.getItemID());
+            st.setString(3, dalDemand.getSiteID());
             st.executeUpdate();
-
-
-        }
-        catch (SQLException e){
+        } catch (SQLException e) {
             throw new SQLException(e.getMessage());
-        }
-        finally {
-            conn.close();
         }
         return true;
     }
 
     public boolean delete(DalDemand dalDemand) throws SQLException {
-
-        Connection conn=DriverManager.getConnection(connection);
+        Connection conn = DriverManager.getConnection(connection);
         String query="DELETE FROM "+tableName+" WHERE ?=? AND ?=?";
         try {
             PreparedStatement st=conn.prepareStatement(query);
@@ -90,14 +65,13 @@ public class DalDemandController extends Employee_Trucking_DALController_Interfa
             st.setString(4,dalDemand.getSiteID());
             st.executeUpdate();
         }
-        catch (SQLException e)
-        {
+        catch (SQLException e) {
             throw new SQLException(e.getMessage());
         }
         return true;
     }
-    public LinkedList<DalDemand> load () throws SQLException// Select From DB
-    {
+
+    public LinkedList<DalDemand> load () throws SQLException { // Select From DB
         LinkedList<DalDemand> demands = new LinkedList<>();
         Connection conn = DriverManager.getConnection(connection);
         String query = "SELECT * FROM "+tableName;
@@ -115,23 +89,18 @@ public class DalDemandController extends Employee_Trucking_DALController_Interfa
     }
 
     public boolean createTable() throws SQLException {
-        Connection conn = DriverManager.getConnection(connection);
-        String query = "CREATE TABLE IF NOT EXISTS Demands("
-                +"itemID INTEGER,"
-                +"amount INTEGER,"
-                +"siteID TEXT,"
-                +"FOREIGN KEY (itemID) REFERENCES Items (ID) ON DELETE NO ACTION ON UPDATE CASCADE,"
-                +"FOREIGN KEY (siteID) REFERENCES Sites (siteID) ON DELETE NO ACTION ON UPDATE CASCADE,"
-                +"PRIMARY KEY (itemID , siteID));";
-        try {
-            PreparedStatement st=conn.prepareStatement(query);
+        try (Connection conn = DriverManager.getConnection(connection)) {
+            String query = "CREATE TABLE IF NOT EXISTS Demands("
+                    + "itemID INTEGER,"
+                    + "amount INTEGER,"
+                    + "siteID TEXT,"
+                    + "FOREIGN KEY (itemID) REFERENCES Items (ID) ON DELETE NO ACTION ON UPDATE CASCADE,"
+                    + "FOREIGN KEY (siteID) REFERENCES Sites (siteID) ON DELETE NO ACTION ON UPDATE CASCADE,"
+                    + "PRIMARY KEY (itemID , siteID));";
+            PreparedStatement st = conn.prepareStatement(query);
             st.executeUpdate();
-        }
-        catch (SQLException e){
+        } catch (SQLException e) {
             throw new SQLException(e.getMessage());
-        }
-        finally {
-            conn.close();
         }
         return true;
     }

@@ -6,13 +6,13 @@ public class DalBankBranch {
     private int bankBranch;
     private int accountNumber;
 
-
     public DalBankBranch( String employeeId, String bank, int bankBranch, int accountNumber){
         this.employeeId = employeeId;
         this.bank = bank;
         this.bankBranch = bankBranch;
         this.accountNumber = accountNumber;
     }
+
 // getters
 
     public String getEmployeeId() {
@@ -48,6 +48,4 @@ public class DalBankBranch {
     public void setAccountNumber(int accountNumber) {
         this.accountNumber = accountNumber;
     }
-
-
 }

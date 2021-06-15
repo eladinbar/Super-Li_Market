@@ -15,10 +15,10 @@ public class DalShift {
         this.date = date;
         this.shift = shift;
         this.role = role;
-
     }
 
     // getters
+
     public String getEmployeeId() { return EmployeeId;}
 
     public String getType() {
@@ -38,6 +38,7 @@ public class DalShift {
     }
 
     // setters
+
     public void setEmployeeId(String employeeId) { EmployeeId = employeeId;}
 
     public void setType(String type) {

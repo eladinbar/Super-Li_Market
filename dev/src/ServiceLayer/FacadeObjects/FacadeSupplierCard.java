@@ -20,7 +20,6 @@ public class FacadeSupplierCard extends FacadePersonCard {
         this.contactMembers = contactMembers;
         this.address = address;
         this.area = area;
-        // TODO need to do area
     }
 
     public FacadeSupplierCard(BusinessLayer.SuppliersPackage.SupplierPackage.SupplierCard sc) {
@@ -32,7 +31,6 @@ public class FacadeSupplierCard extends FacadePersonCard {
         this.contactMembers = sc.getContactMembers();
         this.address = sc.getAddress();
         area =  sc.getDeliveryAreaOfSupplier();
-
     }
 
     public int getArea() {

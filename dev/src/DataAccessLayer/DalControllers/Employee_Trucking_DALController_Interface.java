@@ -1,9 +1,6 @@
 package DataAccessLayer.DalControllers;
 
-import BusinessLayer.Notification;
-
 import java.sql.SQLException;
-import java.util.List;
 
 public abstract class Employee_Trucking_DALController_Interface {
     protected String connection;
